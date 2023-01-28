@@ -5,8 +5,8 @@
 	"description": "Slippi Client",
 	"main": "src/electron.cjs",
 	"type": "module",
-	"target": "esnext",
-	"module": "commonjs",
+	"nodeIntegration": true,
+	"sandbox": true,
 	"author": "Sindre Vatnaland",
 	"scripts": {
 		"dev": "cross-env NODE_ENV=dev npm run dev:all",
