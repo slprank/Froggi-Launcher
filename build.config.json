@@ -1,9 +1,29 @@
 {
-	"appId": "com.example.app",
+	"appId": "com.slpRankClient.app",
 	"productName": "slpRank-client",
 	"directories": {
 		"output": "out"
 	},
+	"artifactName": "slpRank-client-${version}-${os}.${ext}",
+	"win": {
+		"icon": "bin/static/icon.png",
+		"target": [
+			{
+				"target": "nsis",
+				"arch": ["x64"]
+			}
+		]
+	},
+	"linux": {
+		"icon": "bin/static/icon.png",
+		"target": ["default"]
+	},
+	"mac": {
+		"icon": "bin/static/icon.png",
+		"target": ["default"],
+		"extraResources": ["res", "favicon.png"]
+	},
+	"executableName": "slp-rank-client",
 	"files": [
 		"src/electron.cjs",
 		"src/preload.cjs",
