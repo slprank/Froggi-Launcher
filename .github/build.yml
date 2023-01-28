@@ -1,7 +1,11 @@
-name: Build
+
+name: Build & Release
+
 on:
-    push:
-        branches:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
             - main
 
 jobs:
