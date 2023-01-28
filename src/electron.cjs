@@ -1,8 +1,26 @@
 const windowStateManager = require('electron-window-state');
-const { app, BrowserWindow, ipcMain } = require('electron');
 const contextMenu = require('electron-context-menu');
+const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const {
+	SlpParser,
+	DolphinConnection,
+	Ports,
+	ConnectionEvent,
+	ConnectionStatus,
+	DolphinMessageType,
+	Command,
+	SlpCommandEventPayload,
+	SlpParserEvent,
+	FrameEntryType,
+	SlpStream,
+	SlpStreamEvent,
+	SlippiGame,
+	GameMode,
+} = require('@slippi/slippi-js');
 const serve = require('electron-serve');
 const path = require('path');
+const log = require('electron-log');
+
 const slippi = require('./electron-utils/slippi.cjs');
 const obs = require('./electron-utils/obs.cjs');
 const autoUpdater = require('./electron-utils/autoUpdater.cjs');

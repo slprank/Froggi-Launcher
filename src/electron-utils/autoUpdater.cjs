@@ -38,7 +38,7 @@ const initAutoUpdater = (mainWindow, ipcMain) => {
 	autoUpdater.on('update-downloaded', (data) => {
 		console.log(`Download complete: ${data.version}`);
 		console.log(
-			`Download url: https://github.com/slprank/slpRank-app/releases/download/${data.releaseName}/${data.files[0].url}`,
+			`Download url: https://github.com/slprank/slpRank-client/releases/download/${data.releaseName}/${data.files[0].url}`,
 		);
 		mainWindow.webContents.send('update-status', `Install`);
 		autoUpdater.quitAndInstall();

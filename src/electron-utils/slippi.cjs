@@ -1,12 +1,18 @@
 const {
-	ConnectionEvent,
-	ConnectionStatus,
+	SlpParser,
 	DolphinConnection,
 	Ports,
-	SlpParser,
+	ConnectionEvent,
+	ConnectionStatus,
+	DolphinMessageType,
+	Command,
+	SlpCommandEventPayload,
 	SlpParserEvent,
+	FrameEntryType,
 	SlpStream,
 	SlpStreamEvent,
+	SlippiGame,
+	GameMode,
 } = require('@slippi/slippi-js');
 const initSlippiJs = (mainWindow, ipcMain) => {
 	console.log('Init slippi-js');
@@ -35,6 +41,7 @@ const initSlippiJs = (mainWindow, ipcMain) => {
 
 	dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
 		console.log('status');
+		mainWindow.webContents.send('test', status);
 		// Disconnect from Slippi server when we disconnect from Dolphin
 		if (status === ConnectionStatus.DISCONNECTED) {
 			mainWindow.webContents.send('dolphin-status', 'disconnected');
@@ -47,7 +54,6 @@ const initSlippiJs = (mainWindow, ipcMain) => {
 			mainWindow.webContents.send('dolphin-status', 'connecting');
 		}
 	});
-	console.log('init-end');
 };
 
 module.exports = { initSlippiJs };

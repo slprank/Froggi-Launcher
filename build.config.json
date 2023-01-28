@@ -7,9 +7,9 @@
 	"files": [
 		"src/electron.cjs",
 		"src/preload.cjs",
-		"src/electron-utils/slippi.js",
-		"src/electron-utils/obs.js",
-		"src/electron-utils/autoUpdater.js",
+		"src/electron-utils/slippi.cjs",
+		"src/electron-utils/obs.cjs",
+		"src/electron-utils/autoUpdater.cjs",
 		{
 			"from": "build",
 			"to": ""

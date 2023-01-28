@@ -10,6 +10,9 @@
 			desktop = `Received Message "${data}" from Electron`;
 			console.log(desktop);
 		});
+		window.electron.receive('test', (data: any) => {
+			console.log(data)
+		});
 	}
 
 	const agent = window.electron ? 'Electron' : 'Browser';
