@@ -1,0 +1,17 @@
+node_modules
+.svelte-kit
+
+dist
+build
+package
+out
+
+.env
+.env.*
+*.local
+!.env.example
+
+yarn-error.log
+pnpm-lock.yaml
+
+.DS_Store
