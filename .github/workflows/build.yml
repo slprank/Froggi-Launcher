@@ -1,12 +1,10 @@
-
 name: Build & Release
 
 on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
-            - main
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
 
 jobs:
     build_on_mac:
