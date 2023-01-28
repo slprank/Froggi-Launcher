@@ -21,6 +21,8 @@ const initSlippiJs = (mainWindow, ipcMain) => {
 	var parser = new SlpParser();
 	var slpStream = new SlpStream();
 
+	dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+
 	slpStream.on(SlpStreamEvent.COMMAND, (event) => {
 		console.log('event');
 		// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
@@ -40,7 +42,7 @@ const initSlippiJs = (mainWindow, ipcMain) => {
 	});
 
 	dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
-		console.log('status');
+		console.log('status', status);
 		mainWindow.webContents.send('test', status);
 		// Disconnect from Slippi server when we disconnect from Dolphin
 		if (status === ConnectionStatus.DISCONNECTED) {
@@ -52,6 +54,16 @@ const initSlippiJs = (mainWindow, ipcMain) => {
 		}
 		if (status === ConnectionStatus.CONNECTING) {
 			mainWindow.webContents.send('dolphin-status', 'connecting');
+		}
+	});
+
+	ipcMain.on('ipc', (event, arg) => {
+		// Command to connect to Dolphin
+		if (arg === 'connectDolphin') {
+			if (dolphinConnection.getStatus() === ConnectionStatus.DISCONNECTED) {
+				// Now try connect to our local Dolphin instance
+				dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+			}
 		}
 	});
 };

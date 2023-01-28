@@ -76,14 +76,6 @@ function createWindow() {
 		windowState.saveState(mainWindow);
 	});
 
-	mainWindow.once('focus', () => {
-		slippi.initSlippiJs(mainWindow, ipcMain);
-		obs.initObsWebSocket(mainWindow, ipcMain);
-
-		if (dev) return;
-		autoUpdater.initAutoUpdater(mainWindow, ipcMain);
-	});
-
 	return mainWindow;
 }
 
@@ -119,6 +111,14 @@ function createMainWindow() {
 
 	if (dev) loadVite(port);
 	else serveURL(mainWindow);
+
+	mainWindow.webContents.once('dom-ready', () => {
+		slippi.initSlippiJs(mainWindow, ipcMain);
+		obs.initObsWebSocket(mainWindow, ipcMain);
+
+		if (dev) return;
+		autoUpdater.initAutoUpdater(mainWindow, ipcMain);
+	});
 }
 
 app.once('ready', createMainWindow);
