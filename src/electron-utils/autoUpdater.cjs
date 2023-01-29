@@ -4,14 +4,14 @@ const initAutoUpdater = (mainWindow, ipcMain, log) => {
 
 		const { autoUpdater } = require('electron-updater');
 
-		autoUpdater.checkForUpdates();
 		autoUpdater.autoInstallOnAppQuit = true;
 
 		log.info('current version', autoUpdater.currentVersion);
+
 		autoUpdater
 			.checkForUpdates()
 			.then((data) => log.info('update', data))
-			.catch((err) => console.error(err));
+			.catch((err) => log.error(err));
 
 		autoUpdater.on('checking-for-update', () => {
 			log.info('Checking for update');

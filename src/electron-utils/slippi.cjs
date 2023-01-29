@@ -3,9 +3,9 @@ const {
 	DolphinConnection,
 	Ports,
 	ConnectionEvent,
-	ConnectionStatus,
 	DolphinMessageType,
 	Command,
+	ConnectionStatus,
 	SlpCommandEventPayload,
 	SlpParserEvent,
 	FrameEntryType,
@@ -13,7 +13,9 @@ const {
 	SlpStreamEvent,
 	SlippiGame,
 	GameMode,
+	Stats,
 } = require('@slippi/slippi-js');
+
 const initSlippiJs = (mainWindow, ipcMain, log) => {
 	try {
 		log.info('Init slippi-js');
@@ -25,16 +27,19 @@ const initSlippiJs = (mainWindow, ipcMain, log) => {
 		dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 
 		slpStream.on(SlpStreamEvent.COMMAND, (event) => {
-			log.info('event');
+			console.log(event.command);
+			console.log(event.payload);
 			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
 			parser.handleCommand(event.command, event.payload);
 		});
 
 		parser.on(SlpParserEvent.SETTINGS, (frameEntry) => {
+			console.log('start', frameEntry);
 			mainWindow.webContents.send('game-start', 'something');
 		});
 
 		parser.on(SlpParserEvent.END, (frameEntry) => {
+			console.log('end', frameEntry);
 			mainWindow.webContents.send('game-end', 'something');
 		});
 
@@ -58,9 +63,32 @@ const initSlippiJs = (mainWindow, ipcMain, log) => {
 			}
 		});
 
+		dolphinConnection.on(ConnectionEvent.MESSAGE, (message) => {
+			switch (message.type) {
+				case DolphinMessageType.CONNECT_REPLY:
+					console.log('Connected: ' + message);
+					break;
+				case DolphinMessageType.GAME_EVENT:
+					var decoded = Buffer.from(message.payload, 'base64');
+					slpStream.write(decoded);
+					break;
+			}
+		});
+
+		dolphinConnection.on(ConnectionEvent.ERROR, (err) => {
+			// Log the error messages we get from Dolphin
+			log.error('Dolphin connection error', err);
+		});
+
+		dolphinConnection.on(ConnectionEvent.ERROR, (err) => {
+			// Log the error messages we get from Dolphin
+			log.error('Dolphin connection error', err);
+		});
+
 		ipcMain.on('ipc', (event, arg) => {
 			// Command to connect to Dolphin
 			if (arg === 'connectDolphin') {
+				log.info(arg);
 				if (dolphinConnection.getStatus() === ConnectionStatus.DISCONNECTED) {
 					// Now try connect to our local Dolphin instance
 					dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
