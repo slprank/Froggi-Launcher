@@ -35,6 +35,7 @@
 		"src/**/*.d.ts",
 		"src/**/*.ts",
 		"src/**/*.svelte",
+		"src/app.css",
 		"src/electron.js",
 		"src/preload.cjs",
 		"static/icon.png",

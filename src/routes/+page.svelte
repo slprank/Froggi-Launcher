@@ -11,17 +11,18 @@
 			console.log(desktop);
 		});
 		window.electron.receive('test', (data: any) => {
-			console.log(data)
+			console.log(data);
 		});
 	}
 
 	const agent = window.electron ? 'Electron' : 'Browser';
 </script>
 
-<main>
+<main class="grid h-screen place-items-center">
 	<Logo />
 
 	<h1>Hello {agent}!</h1>
+	<h1 class="text-3xl font-bold underline cursor-wait">Hello tailwind!</h1>
 
 	<Counter id="0" {agent} />
 
