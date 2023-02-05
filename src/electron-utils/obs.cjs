@@ -1,15 +1,12 @@
+// https://github.com/obs-websocket-community-projects/obs-websocket-js
+
 const initObsWebSocket = (mainWindow, ipcMain, log) => {
 	try {
-		log.info('obs');
-
-		const OBSWebSocket = require('obs-websocket-js').default;
-		const obs = new OBSWebSocket();
+		log.info('Init OBS');
 
 		// Inits scene change from svelte
 		ipcMain.handle('obs:switch', async (_, scene) => {
-			if (!scene) return;
-			await obs.connect('ws://127.0.0.1:4455');
-			await obs.call('SetCurrentProgramScene', { sceneName: scene });
+			changeObsScene(scene);
 		});
 	} catch (err) {
 		log.error(err);
@@ -18,8 +15,9 @@ const initObsWebSocket = (mainWindow, ipcMain, log) => {
 
 const changeObsScene = async (scene) => {
 	try {
-		log.info('obs');
+		log.info(`Change OBS scene: ${scene}`);
 
+		const OBSWebSocket = require('obs-websocket-js').default;
 		const obs = new OBSWebSocket();
 
 		await obs.connect('ws://127.0.0.1:4455');

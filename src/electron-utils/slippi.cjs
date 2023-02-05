@@ -1,3 +1,5 @@
+// https://github.com/project-slippi/slippi-js
+
 const {
 	SlpParser,
 	DolphinConnection,
@@ -49,7 +51,7 @@ const initSlippiJs = (mainWindow, ipcMain, log) => {
 
 		dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
 			log.info('status', status);
-			mainWindow.webContents.send('test', status);
+			mainWindow.webContents.send('dolphin:connection:status', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin
 			if (status === ConnectionStatus.DISCONNECTED) {
 				mainWindow.webContents.send('dolphin-status', 'disconnected');
