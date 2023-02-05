@@ -1,6 +1,7 @@
 {
-  "[svelte]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "svelte.svelte-vscode"
-  }
+	"[svelte]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "svelte.svelte-vscode"
+	},
+	"cSpell.words": ["slippi"]
 }

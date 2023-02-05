@@ -7,9 +7,11 @@ const log = require('electron-log');
 
 const fs = require('fs');
 try {
-	const slippi = require('./electron-utils/slippi.cjs');
-	const obs = require('./electron-utils/obs.cjs');
+	const achievements = require('./electron-utils/achievements.cjs');
 	const autoUpdater = require('./electron-utils/autoUpdater.cjs');
+	const obs = require('./electron-utils/obs.cjs');
+	const slippi = require('./electron-utils/slippi.cjs');
+	const statDisplay = require('./electron-utils/statDisplay.cjs');
 
 	const os = require('os');
 
@@ -121,8 +123,11 @@ try {
 		mainWindow.webContents.once('dom-ready', () => {
 			const parser = slippi.initSlippiJs(mainWindow, ipcMain, log);
 			obs.initObsWebSocket(mainWindow, ipcMain, log);
+			statDisplay.initStatDisplay(mainWindow, ipcMain, log, parser);
+			achievements.initAchievements(mainWindow, ipcMain, log, parser);
 		});
 
+		// Find a better solution to init autoUpdate
 		mainWindow.webContents.once('focus', () => {
 			if (dev) return;
 			autoUpdater.initAutoUpdater(mainWindow, ipcMain, log);
