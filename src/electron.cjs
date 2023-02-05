@@ -119,7 +119,7 @@ try {
 		else serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', () => {
-			slippi.initSlippiJs(mainWindow, ipcMain, log);
+			const parser = slippi.initSlippiJs(mainWindow, ipcMain, log);
 			obs.initObsWebSocket(mainWindow, ipcMain, log);
 		});
 
