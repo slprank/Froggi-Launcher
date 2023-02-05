@@ -35,16 +35,16 @@ const initSlippiJs = (mainWindow, ipcMain, log) => {
 
 		parser.on(SlpParserEvent.SETTINGS, (frameEntry) => {
 			console.log('start', frameEntry);
-			mainWindow.webContents.send('game-start', 'something');
+			mainWindow.webContents.send('game:start', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.END, (frameEntry) => {
 			console.log('end', frameEntry);
-			mainWindow.webContents.send('game-end', 'something');
+			mainWindow.webContents.send('game:end', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.FINALIZED_FRAME, (frameEntry) => {
-			mainWindow.webContents.send('game-frame', 'something');
+			mainWindow.webContents.send('game:frame', frameEntry);
 		});
 
 		dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
@@ -95,6 +95,8 @@ const initSlippiJs = (mainWindow, ipcMain, log) => {
 				}
 			}
 		});
+
+		return parser;
 	} catch (err) {
 		log.error(err);
 	}
