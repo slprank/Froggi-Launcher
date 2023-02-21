@@ -102,6 +102,24 @@ try {
 		],
 	});
 
+	// Not properly tested
+	function serveHtml() {
+		const express = require('express');
+		const app = express();
+		app.use(express.static(path.join(__dirname, '../build')));
+		const http = require('http');
+		const server = http.createServer(app);
+
+		// Does not route
+		app.get('/', (req, res) => {
+			res.sendFile(__dirname + '../build/index.html');
+		});
+
+		server.listen(3200, () => {
+			console.log('listening on *:3200');
+		});
+	}
+
 	function loadVite(port) {
 		mainWindow.loadURL(`http://localhost:${port}`).catch((e) => {
 			log.error('Error loading URL, retrying', e);
@@ -118,7 +136,8 @@ try {
 		});
 
 		if (dev) loadVite(port);
-		else serveURL(mainWindow);
+		if (!dev) serveURL(mainWindow);
+		serveHtml();
 
 		mainWindow.webContents.once('dom-ready', () => {
 			const parser = slippi.initSlippiJs(mainWindow, ipcMain, log);

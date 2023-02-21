@@ -2,6 +2,7 @@
 	import Counter from '$lib/Counter.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 
 	let desktop: string;
 
@@ -22,7 +23,14 @@
 	<Logo />
 
 	<h1>Hello {agent}!</h1>
-	<h1 class="text-3xl font-bold underline cursor-wait">Hello tailwind!</h1>
+	<h1
+		class="text-3xl font-bold underline cursor-wait"
+		on:click={() => {
+			goto('test');
+		}}
+	>
+		Hello tailwind!
+	</h1>
 
 	<Counter id="0" {agent} />
 
