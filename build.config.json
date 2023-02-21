@@ -26,6 +26,7 @@
 	"executableName": "slp-rank-client",
 	"files": [
 		"build/index.html",
+		"build/**/*",
 		"src/electron.cjs",
 		"src/preload.cjs",
 		"src/electron-utils/achievements.cjs",
