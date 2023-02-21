@@ -27,9 +27,11 @@
 	"files": [
 		"src/electron.cjs",
 		"src/preload.cjs",
-		"src/electron-utils/slippi.cjs",
-		"src/electron-utils/obs.cjs",
+		"src/electron-utils/achievements.cjs",
 		"src/electron-utils/autoUpdater.cjs",
+		"src/electron-utils/obs.cjs",
+		"src/electron-utils/slippi.cjs",
+		"src/electron-utils/statsDisplay.cjs",
 		{
 			"from": "build",
 			"to": ""

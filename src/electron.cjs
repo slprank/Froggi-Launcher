@@ -11,7 +11,7 @@ try {
 	const autoUpdater = require('./electron-utils/autoUpdater.cjs');
 	const obs = require('./electron-utils/obs.cjs');
 	const slippi = require('./electron-utils/slippi.cjs');
-	const statDisplay = require('./electron-utils/statDisplay.cjs');
+	const statsDisplay = require('./electron-utils/statsDisplay.cjs');
 
 	const os = require('os');
 
@@ -123,7 +123,7 @@ try {
 		mainWindow.webContents.once('dom-ready', () => {
 			const parser = slippi.initSlippiJs(mainWindow, ipcMain, log);
 			obs.initObsWebSocket(mainWindow, ipcMain, log);
-			statDisplay.initStatDisplay(mainWindow, ipcMain, log, parser);
+			statsDisplay.initStatsDisplay(mainWindow, ipcMain, log, parser);
 			achievements.initAchievements(mainWindow, ipcMain, log, parser);
 		});
 
