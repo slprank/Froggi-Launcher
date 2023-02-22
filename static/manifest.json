@@ -1,0 +1,18 @@
+{
+	"short_name": "Slp Rank Client",
+	"name": "Slp Rank Client",
+	"Scope": "/",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "favicon.ico",
+			"type": "image/png",
+			"sizes": "114x114"
+		}
+	],
+	"background_color": "#FFFFFF",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#ffffffbf",
+	"description": "Slippi Rank Client"
+}
