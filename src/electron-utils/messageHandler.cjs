@@ -11,20 +11,14 @@ class MessageHandler {
 		this.app.use(this.cors());
 		this.http = require('http');
 		this.server = this.http.createServer(this.app);
-		this.socketIO = require('socket.io')(this.http, {});
+		const { WebSocketServer } = require('ws');
+		this.webSocketServer = new WebSocketServer({ port: 3100 });
 
 		this.mainWindow = mainWindow;
 	}
-	initWebSocket() {
-		try {
-			// Not tested
-			this.socketIO.on('connection', (socket) => {
-				console.log(`⚡: ${socket.id} user just connected!`);
-				socket.on('disconnect', () => {
-					console.log('🔥: A user disconnected');
-				});
-			});
 
+	initHtml() {
+		try {
 			this.app.get('/', (req, res) => {
 				res.sendFile(this.dir + '/index.html');
 			});
@@ -37,8 +31,37 @@ class MessageHandler {
 		}
 	}
 
+	initWebSocket() {
+		try {
+			// https://socket.io/docs/v4/client-api/
+			this.webSocketServer.on('connection', (socket) => {
+				// send a message to the client
+				socket.send(
+					JSON.stringify({
+						type: 'hello from server',
+						content: [1, '2'],
+					}),
+				);
+
+				// receive a message from the client
+				socket.on('message', (data) => {
+					const packet = JSON.parse(data);
+
+					switch (packet.type) {
+						case 'hello from client':
+							// ...
+							break;
+					}
+				});
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	sendMessage(topic, payload) {
 		this.mainWindow.webContents.send(topic, payload);
+		this.server.emit('message', Math.random().toLocaleString()); // Might need to change
 		console.log('Sending', topic, payload);
 	}
 }

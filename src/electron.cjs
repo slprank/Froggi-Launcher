@@ -126,6 +126,7 @@ try {
 
 		mainWindow.webContents.once('dom-ready', () => {
 			const messageHandler = new MessageHandler(rootDir, mainWindow, log);
+			messageHandler.initHtml();
 			messageHandler.initWebSocket();
 			const parser = slippi.initSlippiJs(messageHandler, ipcMain, log);
 			obs.initObsWebSocket(messageHandler, ipcMain, log);

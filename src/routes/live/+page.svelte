@@ -1,20 +1,17 @@
 <script lang="ts">
-	import io from 'socket.io-client';
+	// https://socket.io/docs/v4/client-api/
 
-	const socket = io('http://localhost:3200');
+	import { page } from '$app/stores';
+	console.log($page.url.origin); // Current url device
 
-	socket.connect();
+	const socket = new WebSocket('ws://localhost:3100');
 
-	socket.on('connect', () => {
-		console.log('Device connected');
-		test = 'Connected';
+	// receive a message from the server
+	socket.addEventListener('message', ({ data }) => {
+		test = data;
 	});
 
 	let test: string;
-
-	socket.on('message', (e: string) => {
-		test = e;
-	});
 </script>
 
 <h1>Hello Test</h1>
