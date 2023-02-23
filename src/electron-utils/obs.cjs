@@ -1,6 +1,6 @@
 // https://github.com/obs-websocket-community-projects/obs-websocket-js
 
-const initObsWebSocket = (mainWindow, ipcMain, log) => {
+const initObsWebSocket = (sendMessage, ipcMain, log) => {
 	try {
 		log.info('Init OBS');
 

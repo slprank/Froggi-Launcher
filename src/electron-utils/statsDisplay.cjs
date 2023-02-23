@@ -1,6 +1,6 @@
 const { SlpParserEvent } = require('@slippi/slippi-js');
 
-const initStatsDisplay = (mainWindow, ipcMain, log, parser) => {
+const initStatsDisplay = (sendMessage, ipcMain, log, parser) => {
 	try {
 		log.info('Init Stat Display');
 
@@ -10,7 +10,7 @@ const initStatsDisplay = (mainWindow, ipcMain, log, parser) => {
 			// Emit players to electron
 			// Emit player to web-socket
 			console.log('start', frameEntry);
-			mainWindow.webContents.send('game:players', frameEntry);
+			sendMessage('game:players', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.END, (frameEntry) => {
@@ -21,11 +21,11 @@ const initStatsDisplay = (mainWindow, ipcMain, log, parser) => {
 			// Emit stats to electron
 			// Emit stats to web-socket
 			console.log('end', frameEntry);
-			mainWindow.webContents.send('game:stats', frameEntry);
+			sendMessage('game:stats', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.FINALIZED_FRAME, (frameEntry) => {
-			mainWindow.webContents.send('game:frame', frameEntry);
+			sendMessage('game:frame', frameEntry);
 		});
 
 		return parser;

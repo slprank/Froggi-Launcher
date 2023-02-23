@@ -18,7 +18,7 @@ const {
 	Stats,
 } = require('@slippi/slippi-js');
 
-const initSlippiJs = (mainWindow, ipcMain, log) => {
+const initSlippiJs = (messageHandler, ipcMain, log) => {
 	try {
 		log.info('Init slippi-js');
 
@@ -37,31 +37,31 @@ const initSlippiJs = (mainWindow, ipcMain, log) => {
 
 		parser.on(SlpParserEvent.SETTINGS, (frameEntry) => {
 			console.log('start', frameEntry);
-			mainWindow.webContents.send('game:start', frameEntry);
+			messageHandler.sendMessage('game:start', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.END, (frameEntry) => {
 			console.log('end', frameEntry);
-			mainWindow.webContents.send('game:end', frameEntry);
+			messageHandler.sendMessage('game:end', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.FINALIZED_FRAME, (frameEntry) => {
-			mainWindow.webContents.send('game:frame', frameEntry);
+			messageHandler.sendMessage('game:frame', frameEntry);
 		});
 
 		dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
 			log.info('status', status);
-			mainWindow.webContents.send('dolphin:connection:status', status);
+			messageHandler.sendMessage('dolphin:connection:status', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin
 			if (status === ConnectionStatus.DISCONNECTED) {
-				mainWindow.webContents.send('dolphin-status', 'disconnected');
+				messageHandler.sendMessage('dolphin-status', 'disconnected');
 				dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 			}
 			if (status === ConnectionStatus.CONNECTED) {
-				mainWindow.webContents.send('dolphin-status', 'connected');
+				messageHandler.sendMessage('dolphin-status', 'connected');
 			}
 			if (status === ConnectionStatus.CONNECTING) {
-				mainWindow.webContents.send('dolphin-status', 'connecting');
+				messageHandler.sendMessage('dolphin-status', 'connecting');
 			}
 		});
 

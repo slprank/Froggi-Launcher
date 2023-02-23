@@ -26,7 +26,7 @@
 	<h1
 		class="text-3xl font-bold underline cursor-wait"
 		on:click={() => {
-			goto('test');
+			goto('live');
 		}}
 	>
 		Hello tailwind!

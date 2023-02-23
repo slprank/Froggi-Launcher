@@ -12,12 +12,16 @@ try {
 	const obs = require('./electron-utils/obs.cjs');
 	const slippi = require('./electron-utils/slippi.cjs');
 	const statsDisplay = require('./electron-utils/statsDisplay.cjs');
+	const { MessageHandler } = require('./electron-utils/messageHandler.cjs');
+	const rootDir = `${__dirname}/../`;
 
 	const os = require('os');
 
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
+
+	let io;
 
 	if (isWindows) {
 		if (!fs.existsSync(path.join(`C:/slpRank-client-logs`)))
@@ -102,24 +106,6 @@ try {
 		],
 	});
 
-	// Not properly tested
-	function serveHtml() {
-		const express = require('express');
-		const app = express();
-		app.use(express.static(path.join(__dirname, '../build')));
-		const http = require('http');
-		const server = http.createServer(app);
-
-		// Does not route
-		app.get('/', (req, res) => {
-			res.sendFile(__dirname + '../build/index.html');
-		});
-
-		server.listen(3200, () => {
-			console.log('listening on *:3200');
-		});
-	}
-
 	function loadVite(port) {
 		mainWindow.loadURL(`http://localhost:${port}`).catch((e) => {
 			log.error('Error loading URL, retrying', e);
@@ -137,13 +123,14 @@ try {
 
 		if (dev) loadVite(port);
 		if (!dev) serveURL(mainWindow);
-		serveHtml();
 
 		mainWindow.webContents.once('dom-ready', () => {
-			const parser = slippi.initSlippiJs(mainWindow, ipcMain, log);
-			obs.initObsWebSocket(mainWindow, ipcMain, log);
-			statsDisplay.initStatsDisplay(mainWindow, ipcMain, log, parser);
-			achievements.initAchievements(mainWindow, ipcMain, log, parser);
+			const messageHandler = new MessageHandler(rootDir, mainWindow, log);
+			messageHandler.initWebSocket();
+			const parser = slippi.initSlippiJs(messageHandler, ipcMain, log);
+			obs.initObsWebSocket(messageHandler, ipcMain, log);
+			statsDisplay.initStatsDisplay(messageHandler, ipcMain, log, parser);
+			achievements.initAchievements(messageHandler, ipcMain, log, parser);
 		});
 
 		// Find a better solution to init autoUpdate
