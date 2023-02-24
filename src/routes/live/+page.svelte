@@ -2,9 +2,10 @@
 	// https://socket.io/docs/v4/client-api/
 
 	import { page } from '$app/stores';
+	console.log($page.url); // Current url device
 	console.log($page.url.origin); // Current url device
 
-	const socket = new WebSocket('ws://localhost:3100');
+	const socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
 
 	// receive a message from the server
 	socket.addEventListener('message', ({ data }) => {
