@@ -9,7 +9,7 @@
 	"sandbox": true,
 	"author": "Sindre Vatnaland",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=dev npm run dev:all",
+		"dev": "cross-env NODE_ENV=dev vite build && npm run dev:all",
 		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
 		"dev:svelte": "vite dev",
 		"dev:electron": "electron src/electron.cjs",

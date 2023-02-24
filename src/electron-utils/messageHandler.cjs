@@ -13,6 +13,7 @@ class MessageHandler {
 		this.server = this.http.createServer(this.app);
 		const { WebSocketServer } = require('ws');
 		this.webSocketServer = new WebSocketServer({ port: 3100 });
+		this.webSockets = [];
 
 		this.mainWindow = mainWindow;
 	}
@@ -33,25 +34,10 @@ class MessageHandler {
 
 	initWebSocket() {
 		try {
-			// https://socket.io/docs/v4/client-api/
 			this.webSocketServer.on('connection', (socket) => {
-				// send a message to the client
-				socket.send(
-					JSON.stringify({
-						type: 'hello from server',
-						content: [1, '2'],
-					}),
-				);
-
-				// receive a message from the client
-				socket.on('message', (data) => {
-					const packet = JSON.parse(data);
-
-					switch (packet.type) {
-						case 'hello from client':
-							// ...
-							break;
-					}
+				this.webSockets.push(socket);
+				socket.on('close', () => {
+					this.webContents = this.webSockets.filter((s) => s != socket);
 				});
 			});
 		} catch (err) {
@@ -61,7 +47,9 @@ class MessageHandler {
 
 	sendMessage(topic, payload) {
 		this.mainWindow.webContents.send(topic, payload);
-		this.server.emit('message', Math.random().toLocaleString()); // Might need to change
+		this.webSockets.forEach((socket) => {
+			socket.send(JSON.stringify(`{${topic}: ${payload}}`));
+		});
 		console.log('Sending', topic, payload);
 	}
 }
