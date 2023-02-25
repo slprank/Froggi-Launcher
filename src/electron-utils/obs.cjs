@@ -5,7 +5,7 @@ const initObsWebSocket = (sendMessage, ipcMain, log) => {
 		log.info('Init OBS');
 
 		// Inits scene change from svelte
-		ipcMain.handle('obs:switch', async (_, scene) => {
+		ipcMain.handle('obs_switch', async (_, scene) => {
 			changeObsScene(scene);
 		});
 	} catch (err) {

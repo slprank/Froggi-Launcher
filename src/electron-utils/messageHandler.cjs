@@ -5,7 +5,6 @@ class MessageHandler {
 		this.path = require('path');
 		this.express = require('express');
 		this.app = this.express();
-		console.log(this.dir);
 		this.app.use(this.express.static(this.path.join(this.dir + '/build')));
 		this.cors = require('cors');
 		this.app.use(this.cors());
@@ -48,9 +47,12 @@ class MessageHandler {
 	sendMessage(topic, payload) {
 		this.mainWindow.webContents.send(topic, payload);
 		this.webSockets.forEach((socket) => {
-			socket.send(JSON.stringify(`{${topic}: ${payload}}`));
+			socket.send(
+				JSON.stringify({
+					[topic]: payload,
+				}),
+			);
 		});
-		console.log('Sending', topic, payload);
 	}
 }
 

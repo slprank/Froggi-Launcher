@@ -132,12 +132,6 @@ try {
 			obs.initObsWebSocket(messageHandler, ipcMain, log);
 			statsDisplay.initStatsDisplay(messageHandler, ipcMain, log, parser);
 			achievements.initAchievements(messageHandler, ipcMain, log, parser);
-			setInterval(() => {
-				messageHandler.sendMessage('message', Math.random());
-			}, 1000);
-			setInterval(() => {
-				messageHandler.sendMessage('test', 'test');
-			}, 1500);
 		});
 
 		// Find a better solution to init autoUpdate

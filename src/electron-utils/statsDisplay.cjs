@@ -1,31 +1,19 @@
 const { SlpParserEvent } = require('@slippi/slippi-js');
 
-const initStatsDisplay = (sendMessage, ipcMain, log, parser) => {
+const initStatsDisplay = (messageHandler, ipcMain, log, parser) => {
 	try {
 		log.info('Init Stat Display');
 
 		parser.on(SlpParserEvent.SETTINGS, (frameEntry) => {
-			// Handle frameEntry
-			// Get players data
-			// Emit players to electron
-			// Emit player to web-socket
-			console.log('start', frameEntry);
-			sendMessage('game:players', frameEntry);
+			messageHandler.sendMessage('game_settings', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.END, (frameEntry) => {
-			// Handle frameEntry
-			// Get post game stats
-			// Detect if change in rating
-
-			// Emit stats to electron
-			// Emit stats to web-socket
-			console.log('end', frameEntry);
-			sendMessage('game:stats', frameEntry);
+			messageHandler.sendMessage('game_end', frameEntry);
 		});
 
 		parser.on(SlpParserEvent.FINALIZED_FRAME, (frameEntry) => {
-			sendMessage('game:frame', frameEntry);
+			messageHandler.sendMessage('game_frame', frameEntry);
 		});
 
 		return parser;

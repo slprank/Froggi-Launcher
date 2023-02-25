@@ -1,6 +1,6 @@
 const { SlpParserEvent } = require('@slippi/slippi-js');
 
-const initAchievements = (mainWindow, ipcMain, log, parser) => {
+const initAchievements = (messageHandler, ipcMain, log, parser) => {
 	try {
 		log.info('Init Stat Display');
 
@@ -12,8 +12,7 @@ const initAchievements = (mainWindow, ipcMain, log, parser) => {
 			// If any new achievements:
 			// Emit achievement to electron
 			// Emit achievement to web-socket
-			console.log('end', frameEntry);
-			mainWindow.webContents.send('game:stats', frameEntry);
+			messageHandler.sendMessage('game_stats', frameEntry);
 		});
 
 		return parser;
