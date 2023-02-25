@@ -3,11 +3,30 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { socket } from '$lib/utils/store.svelte';
+	import { browser } from '$app/environment';
+	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
+	import { goto } from '$app/navigation';
+
+	if (!window.electron && browser) {
+		connectWebSocket();
+	}
+
+	function connectWebSocket() {
+		paramRedirect();
+		$socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
+		$socket.onclose = () => {
+			// Handle reconnect by refreshing
+			setTimeout(() => {
+				const route = localStorage.getItem('recentRoute') ?? '';
+				if (!route) window.location.href = $page.url.origin;
+				window.location.href = `${$page.url.origin}?route=${route}`;
+			}, 1000);
+		};
+	}
 
 	let ready: boolean = false;
 	onMount(() => {
 		ready = true;
-		$socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
 	});
 </script>
 

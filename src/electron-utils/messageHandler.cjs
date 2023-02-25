@@ -1,16 +1,17 @@
 class MessageHandler {
 	constructor(dir, mainWindow, log) {
 		log.info('Creating message handler..');
-		this.dir = dir;
-		this.path = require('path');
-		this.express = require('express');
-		this.app = this.express();
-		this.app.use(this.express.static(this.path.join(this.dir + '/build')));
-		this.cors = require('cors');
-		this.app.use(this.cors());
-		this.http = require('http');
-		this.server = this.http.createServer(this.app);
+		const path = require('path');
+		const express = require('express');
+		const cors = require('cors');
+		const http = require('http');
 		const { WebSocketServer } = require('ws');
+
+		this.dir = dir;
+		this.app = express();
+		this.app.use(express.static(path.join(this.dir + '/build')));
+		this.app.use(cors());
+		this.server = http.createServer(this.app);
 		this.webSocketServer = new WebSocketServer({ port: 3100 });
 		this.webSockets = [];
 

@@ -13,6 +13,10 @@ try {
 	const slippi = require('./electron-utils/slippi.cjs');
 	const statsDisplay = require('./electron-utils/statsDisplay.cjs');
 	const { MessageHandler } = require('./electron-utils/messageHandler.cjs');
+	const { StatsDisplay } = require('./electron-utils/statsDisplay.cjs');
+	const { SlippiJs } = require('./electron-utils/slippi.cjs');
+	const { ObsWebSocket } = require('./electron-utils/obs.cjs');
+	const { Achievements } = require('./electron-utils/achievements.cjs');
 	const rootDir = `${__dirname}/../`;
 
 	const os = require('os');
@@ -126,12 +130,19 @@ try {
 
 		mainWindow.webContents.once('dom-ready', () => {
 			const messageHandler = new MessageHandler(rootDir, mainWindow, log);
+			const slippiJs = new SlippiJs(messageHandler, ipcMain, log);
+			const statsDisplay = new StatsDisplay(
+				messageHandler,
+				ipcMain,
+				log,
+				slippiJs.slpStream,
+				slippiJs.parser,
+			);
+			const obsWebSocket = new ObsWebSocket(messageHandler, ipcMain, log);
+			const achievements = new Achievements(messageHandler, ipcMain, log);
+
 			messageHandler.initHtml();
 			messageHandler.initWebSocket();
-			const parser = slippi.initSlippiJs(messageHandler, ipcMain, log);
-			obs.initObsWebSocket(messageHandler, ipcMain, log);
-			statsDisplay.initStatsDisplay(messageHandler, ipcMain, log, parser);
-			achievements.initAchievements(messageHandler, ipcMain, log, parser);
 		});
 
 		// Find a better solution to init autoUpdate

@@ -1,28 +1,20 @@
 const { SlpParserEvent } = require('@slippi/slippi-js');
 
-const initAchievements = (messageHandler, ipcMain, log, parser) => {
-	try {
-		log.info('Init Stat Display');
+class Achievements {
+	constructor(messageHandler, ipcMain, log) {
+		this.messageHandler = messageHandler;
+		this.ipcMain = ipcMain;
+		this.log = log;
 
-		parser.on(SlpParserEvent.END, (frameEntry) => {
-			// Handle frameEntry
-
-			// Update achievements
-
-			// If any new achievements:
-			// Emit achievement to electron
-			// Emit achievement to web-socket
-			messageHandler.sendMessage('game_stats', frameEntry);
-		});
-
-		return parser;
-	} catch (err) {
-		log.error(err);
+		this.initAchievements();
 	}
-};
+	initAchievements() {
+		this.log.info('Init Stat Display');
+	}
 
-const updateAchievements = () => {
-	log.info('Updating achievements');
-};
+	updateAchievements = () => {
+		log.info('Updating achievements');
+	};
+}
 
-module.exports = { initAchievements };
+module.exports = { Achievements };
