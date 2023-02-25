@@ -5,6 +5,7 @@
 	import { socket } from '$lib/utils/store.svelte';
 	import { browser } from '$app/environment';
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
+	import Device from 'svelte-device-info';
 	import NoSleep from 'nosleep.js';
 
 	if (!window.electron && browser) {
@@ -16,12 +17,14 @@
 		$socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
 		$socket.onclose = () => {
 			// Handle reconnect by refreshing
-			setTimeout(() => {
-				const route = localStorage.getItem('recentRoute') ?? '';
-				if (!route) window.location.href = $page.url.origin;
-				window.location.href = `${$page.url.origin}?route=${route}`;
-			}, 1000);
+			setTimeout(reconnect, 1000);
 		};
+	}
+
+	function reconnect() {
+		const route = localStorage.getItem('recentRoute') ?? '';
+		if (!route) window.location.href = $page.url.origin;
+		window.location.href = `${$page.url.origin}?route=${route}`;
 	}
 
 	document.addEventListener(
@@ -39,6 +42,12 @@
 		ready = true;
 	});
 </script>
+
+<svelte:window
+	on:focus={() => {
+		if (Device.isMobile || Device.isTablet) reconnect();
+	}}
+/>
 
 <div class="dragbar" />
 
