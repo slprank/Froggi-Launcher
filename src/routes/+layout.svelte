@@ -5,7 +5,7 @@
 	import { socket } from '$lib/utils/store.svelte';
 	import { browser } from '$app/environment';
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
-	import { goto } from '$app/navigation';
+	import NoSleep from 'nosleep.js';
 
 	if (!window.electron && browser) {
 		connectWebSocket();
@@ -24,6 +24,16 @@
 		};
 	}
 
+	document.addEventListener(
+		'touchstart',
+		function enableNoSleep() {
+			document.removeEventListener('click', enableNoSleep, false);
+			noSleep.enable();
+		},
+		false,
+	);
+
+	let noSleep = new NoSleep();
 	let ready: boolean = false;
 	onMount(() => {
 		ready = true;
