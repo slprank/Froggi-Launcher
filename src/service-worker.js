@@ -1,13 +1,17 @@
 import { build, files, version } from '$service-worker';
 
 // Create a unique cache name for this deployment
-const CACHE = `cache-${version}`;
+const CACHE = `cache-v${version}`;
 
-const ASSETS = ['./offline.html'];
-
-const urlsToCache = ['/', '/live'];
+const ASSETS = ['offline.html', 'favicon.ico'];
 
 self.addEventListener('install', (event) => {
+	/*
+	caches.keys().then((names) => {
+		names.filter((name) => name != CACHE).forEach((name) => caches.delete(name));
+	});^
+	*/
+
 	// Create a new cache and add all files to it
 	async function addFilesToCache() {
 		const cache = await caches.open(CACHE);
@@ -47,7 +51,7 @@ self.addEventListener('fetch', (event) => {
 
 			return response;
 		} catch {
-			return cache.match('./offline.html');
+			return cache.match('offline.html');
 		}
 	}
 
