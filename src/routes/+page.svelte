@@ -2,7 +2,7 @@
 	import Counter from '$lib/Counter.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import { browser } from '$app/environment';
-	import { routeTo } from '$lib/utils/routeHandler.svelte';
+	import { goto } from '$app/navigation';
 
 	let desktop: string;
 
@@ -26,7 +26,7 @@
 	<h1
 		class="text-3xl font-bold underline cursor-wait"
 		on:click={() => {
-			routeTo('live');
+			goto('live');
 		}}
 	>
 		Hello tailwind!

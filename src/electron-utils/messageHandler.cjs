@@ -24,12 +24,13 @@ class MessageHandler {
 				res.resolve(this.dir + '/index.html');
 			});
 
-			this.app.get('/:subroute1', (req, res) => {
-				res.redirect(`/?route1=${req.params.subroute1}`);
-			});
-
-			this.app.get('/:subroute1/:subroute2', (req, res) => {
-				res.redirect(`/?route1=${req.params.subroute1}&route2=${req.params.subroute2}`);
+			this.app.get('*', (req, res) => {
+				const params = req.params[0]
+					.split('/')
+					.slice(1)
+					.map((route, i) => `route${i + 1}=${route}`)
+					.join('&');
+				res.redirect(`/?${params}`);
 			});
 
 			this.server.listen(3200, (err) => {
