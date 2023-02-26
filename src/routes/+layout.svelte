@@ -8,6 +8,9 @@
 	import Device from 'svelte-device-info';
 	import NoSleep from 'nosleep.js';
 
+	let noSleep = new NoSleep();
+	let ready: boolean = false;
+
 	if (!window.electron && browser) {
 		connectWebSocket();
 	}
@@ -34,8 +37,12 @@
 		false,
 	);
 
-	let noSleep = new NoSleep();
-	let ready: boolean = false;
+	if ('serviceWorker' in navigator) {
+		addEventListener('load', function () {
+			navigator.serviceWorker.register('./../service-worker.js');
+		});
+	}
+
 	onMount(() => {
 		ready = true;
 	});
