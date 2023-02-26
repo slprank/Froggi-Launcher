@@ -39,6 +39,8 @@
 		"src/electron.js",
 		"src/preload.cjs",
 		"static/icon.png",
+		"static/offline.html",
+		"static/favicon.ico",
 		"src/electron-utils/slippi.cjs",
 		"src/electron-utils/obs.cjs",
 		"src/electron-utils/autoUpdater.cjs"
