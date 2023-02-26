@@ -22,9 +22,7 @@
 	}
 
 	function reconnect() {
-		const route = localStorage.getItem('recentRoute') ?? '';
-		if (!route) window.location.href = $page.url.origin;
-		window.location.href = `${$page.url.origin}?route=${route}`;
+		window.location.reload();
 	}
 
 	document.addEventListener(

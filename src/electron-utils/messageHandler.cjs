@@ -21,10 +21,18 @@ class MessageHandler {
 	initHtml() {
 		try {
 			this.app.get('/', (req, res) => {
-				res.sendFile(this.dir + '/index.html');
+				res.resolve(this.dir + '/index.html');
 			});
 
-			this.server.listen(3200, () => {
+			this.app.get('/:subroute1', (req, res) => {
+				res.redirect(`/?route1=${req.params.subroute1}`);
+			});
+
+			this.app.get('/:subroute1/:subroute2', (req, res) => {
+				res.redirect(`/?route1=${req.params.subroute1}&route2=${req.params.subroute2}`);
+			});
+
+			this.server.listen(3200, (err) => {
 				console.log('listening on *:3200');
 			});
 		} catch (err) {

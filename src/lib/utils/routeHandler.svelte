@@ -5,15 +5,14 @@
 
 	function paramRedirect() {
 		page.subscribe((page) => {
-			const route = page.url.searchParams.get('route'); // ?route=live => redirect to live page
-			if (!route) return;
-			localStorage.setItem('recentRoute', route);
-			goto(route);
+			const route1 = page.url.searchParams.get('route1'); // ?route=some => redirect to /some
+			const route2 = page.url.searchParams.get('route2');
+			if (!route1) return;
+			goto(`${route1}/${route2 ?? ''}`);
 		});
 	}
 
 	function routeTo(route: string) {
-		if (!window.electron && browser) localStorage.setItem('recentRoute', route);
 		goto(route);
 	}
 
