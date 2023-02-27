@@ -2,45 +2,61 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { socket } from '$lib/utils/store.svelte';
-	import { browser } from '$app/environment';
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
-	import Device from 'svelte-device-info';
-	import NoSleep from 'nosleep.js';
+	import {
+		isMobile,
+		isTablet,
+		isBrowser,
+		eventEmitter,
+		isElectron,
+	} from '$lib/utils/store.svelte';
+	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 
-	let noSleep = new NoSleep();
 	let ready: boolean = false;
 
-	if (!window.electron && browser) {
-		connectWebSocket();
+	if ($isBrowser) {
+		initNoSleep();
+		initWebSocket();
+		initServiceWorker();
 	}
 
-	function connectWebSocket() {
+	if ($isElectron) {
+		initElectronEvents();
+	}
+
+	function initWebSocket() {
 		paramRedirect();
-		$socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
-		$socket.onclose = () => {
-			// Handle reconnect by refreshing
-			setTimeout(reconnect, 1000);
+		const socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
+		socket.onclose = () => {
+			setTimeout(reload, 1000);
 		};
-	}
-
-	function reconnect() {
-		window.location.reload();
-	}
-
-	document.addEventListener(
-		'touchstart',
-		function enableNoSleep() {
-			document.removeEventListener('click', enableNoSleep, false);
-			noSleep.enable();
-		},
-		false,
-	);
-
-	if ('serviceWorker' in navigator) {
-		addEventListener('load', function () {
-			navigator.serviceWorker.register('./../service-worker.js');
+		socket.addEventListener('message', ({ data }) => {
+			let parse = JSON.parse(data);
+			for (const [key, value] of Object.entries(parse)) {
+				$eventEmitter.emit(key, value);
+			}
 		});
+	}
+
+	function initElectronEvents() {
+		window.electron.receive('message', (data: any) => {
+			let parse = JSON.parse(data);
+			for (const [key, value] of Object.entries(parse)) {
+				$eventEmitter.emit(key, value);
+			}
+		});
+	}
+
+	function initServiceWorker() {
+		if ('serviceWorker' in navigator) {
+			addEventListener('load', function () {
+				navigator.serviceWorker.register('./../service-worker.js');
+			});
+		}
+	}
+
+	function reload() {
+		window.location.reload();
 	}
 
 	onMount(() => {
@@ -50,7 +66,7 @@
 
 <svelte:window
 	on:focus={() => {
-		if (Device.isMobile || Device.isTablet) reconnect();
+		if (isMobile || isTablet) reload();
 	}}
 />
 

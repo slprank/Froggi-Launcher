@@ -55,7 +55,12 @@ class MessageHandler {
 	}
 
 	sendMessage(topic, payload) {
-		this.mainWindow.webContents.send(topic, payload);
+		this.mainWindow.webContents.send(
+			'message',
+			JSON.stringify({
+				[topic]: payload,
+			}),
+		);
 		this.webSockets.forEach((socket) => {
 			socket.send(
 				JSON.stringify({

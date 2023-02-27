@@ -1,44 +1,22 @@
 <script lang="ts">
-	import { socket } from '$lib/utils/store.svelte';
-	import { browser } from '$app/environment';
+	import { eventEmitter } from '$lib/utils/store.svelte';
 
-	// receive a message from the server
-	if (window.electron && browser) {
-		window.electron.receive('game_start', (data: any) => {
-			gameStart(data);
-		});
-		window.electron.receive('game_frame', (data: any) => {
-			gameFrameData(data);
-		});
-		window.electron.receive('game_end', (data: any) => {
-			gameEnd(data);
-		});
-	} else {
-		$socket.addEventListener('message', ({ data }) => {
-			let parse = JSON.parse(data);
-			gameStart(parse?.game_start);
-			gameFrameData(parse?.game_frame);
-			gameEnd(parse?.game_end);
-		});
-	}
-
-	function gameStart(data: any) {
-		if (!data) return;
+	$eventEmitter.on('game_start', (data: any) => {
 		player1CharacterId = data?.players[0].characterId;
 		player1CharacterColor = data?.players[0].characterColor;
 		gameStatus = 'start';
-	}
-	function gameFrameData(data: any) {
-		if (!data) return;
+	});
+
+	$eventEmitter.on('game_frame', (data: any) => {
 		gameFrame = data.start.frame;
 		player1Percent = data.players[0].post.percent;
 		player1ShieldSize = data.players[0].post.shieldSize;
 		player1PositionX = data.players[0].post.positionX;
-	}
-	function gameEnd(data: any) {
-		if (!data) return;
+	});
+
+	$eventEmitter.on('game_end', (data: any) => {
 		gameStatus = 'End';
-	}
+	});
 
 	$: gameStatus = '';
 	$: gameFrame = '';

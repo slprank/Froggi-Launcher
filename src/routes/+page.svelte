@@ -3,16 +3,14 @@
 	import Logo from '$lib/Logo.svelte';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { isElectron } from '$lib/utils/store.svelte';
 
 	let desktop: string;
 
-	if (window.electron && browser) {
+	if ($isElectron) {
 		window.electron.receive('from-main', (data: any) => {
 			desktop = `Received Message "${data}" from Electron`;
 			console.log(desktop);
-		});
-		window.electron.receive('test', (data: any) => {
-			console.log(data);
 		});
 	}
 

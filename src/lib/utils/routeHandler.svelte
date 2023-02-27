@@ -3,6 +3,8 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
+	// TODO: Include searchParam which does not include `route`
+	// TODO: Handle /user route when implementing user page
 	function paramRedirect() {
 		const availableRoutes = getAvailableRoutes();
 		page.subscribe((page) => {
