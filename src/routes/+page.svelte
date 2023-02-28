@@ -17,7 +17,11 @@
 	const agent = window.electron ? 'Electron' : 'Browser';
 </script>
 
-<main class="grid h-screen place-items-center">
+<main
+	class="grid h-screen w-screen place-items-center bg-cover bg-center"
+	style="background-image: url('./background/MeleeWallpaper.png')"
+>
+	<div class="fixed h-100 w-100 bg-gradient-to-r from-cyan-500" />
 	<Logo />
 
 	<h1>Hello {agent}!</h1>

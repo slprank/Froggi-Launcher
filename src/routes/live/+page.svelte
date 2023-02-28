@@ -27,13 +27,18 @@
 	$: player1PositionX = '';
 </script>
 
-<h1>Game status: {gameStatus}</h1>
-<h1>Game frame: {gameFrame}</h1>
-<h1>Player 1 CharacterId: {player1CharacterId}</h1>
-<h1>Player 1 CharacterColor: {player1CharacterColor}</h1>
-<h1>Player 1 Percent: {player1Percent}</h1>
-<h1>Player 1 Shield Size: {player1ShieldSize}</h1>
-<h1>Player 1 Position X: {player1PositionX}</h1>
+<div
+	class="h-screen w-screen bg-cover bg-center pl-20"
+	style="background-image: url('./background/MeleeMenuAll.png')"
+>
+	<h1 class="text-white">Game status: {gameStatus}</h1>
+	<h1 class="text-white">Game frame: {gameFrame}</h1>
+	<h1 class="text-white">Player 1 CharacterId: {player1CharacterId}</h1>
+	<h1 class="text-white">Player 1 CharacterColor: {player1CharacterColor}</h1>
+	<h1 class="text-white">Player 1 Percent: {player1Percent}</h1>
+	<h1 class="text-white">Player 1 Shield Size: {player1ShieldSize}</h1>
+	<h1 class="text-white">Player 1 Position X: {player1PositionX}</h1>
+</div>
 
 <style>
 </style>

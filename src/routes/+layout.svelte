@@ -11,6 +11,7 @@
 		isElectron,
 	} from '$lib/utils/store.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
+	import Navbar from '$lib/Navbar.svelte';
 
 	let ready: boolean = false;
 
@@ -64,15 +65,10 @@
 	});
 </script>
 
-<svelte:window
-	on:focus={() => {
-		if (isMobile || isTablet) reload();
-	}}
-/>
-
 <div class="dragbar" />
 
 {#if ready}
+	<Navbar />
 	<slot />
 {/if}
 
