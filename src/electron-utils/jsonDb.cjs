@@ -1,19 +1,23 @@
 class JsonDb {
 	constructor(log) {
+		const { JsonDB, Config } = require('node-json-db');
+		this.db = new JsonDB(new Config('./src/electron-utils/slippiSettings.json', true, true));
 		this.log = log;
-	}
-
-	initDatabase() {
-		// Create db and fill dummy data
+		this.db.push('/user', { hallo: 'silje' });
+		this.db.getData('/user').then((data) => {
+			log.info(data);
+		});
 	}
 
 	updateCurrentPlayer(payload) {
-		// Create or update current player
+		this.db.push('/user', payload);
 	}
 	updateCurrentGame(payload) {
-		// Create or update game
+		this.db.push('/game', payload);
 	}
-	getEntity(table, key) {}
+	getEntity = async (key) => {
+		return this.db.getData(key);
+	};
 }
 
 module.exports = { JsonDb };

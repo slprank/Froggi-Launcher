@@ -36,6 +36,7 @@
 		"src/electron-utils/slippi.cjs",
 		"src/electron-utils/statsDisplay.cjs",
 		"src/electron-utils/jsonDb.cjs",
+		"src/electron-utils/slippiSettings.json",
 		"src/preload.cjs",
 		{
 			"from": "build",
