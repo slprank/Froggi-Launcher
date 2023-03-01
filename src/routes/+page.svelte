@@ -21,7 +21,7 @@
 	class="grid h-screen w-screen place-items-center bg-cover bg-center"
 	style="background-image: url('./background/MeleeWallpaper.png')"
 >
-	<div class="fixed h-100 w-100 bg-gradient-to-r from-cyan-500" />
+	<div class="fixed h-screen w-screen bg-gradient-to-t from-black z-40" />
 	<Logo />
 
 	<h1>Hello {agent}!</h1>

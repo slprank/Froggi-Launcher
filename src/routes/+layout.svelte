@@ -11,7 +11,7 @@
 		isElectron,
 	} from '$lib/utils/store.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
-	import Navbar from '$lib/Navbar.svelte';
+	import Navbar from '$lib/components/navbar/Navbar.svelte';
 
 	let ready: boolean = false;
 
