@@ -1,5 +1,5 @@
 class MessageHandler {
-	constructor(dir, mainWindow, log) {
+	constructor(dir, mainWindow, log, jsonDb) {
 		log.info('Creating message handler..');
 		const path = require('path');
 		const express = require('express');
@@ -14,6 +14,7 @@ class MessageHandler {
 		this.server = http.createServer(this.app);
 		this.webSocketServer = new WebSocketServer({ port: 3100 });
 		this.webSockets = [];
+		this.json = jsonDb;
 
 		this.mainWindow = mainWindow;
 	}
@@ -43,6 +44,7 @@ class MessageHandler {
 
 	initWebSocket() {
 		try {
+			// On connection send saved data from db
 			this.webSocketServer.on('connection', (socket) => {
 				this.webSockets.push(socket);
 				socket.on('close', () => {

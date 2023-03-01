@@ -35,6 +35,7 @@
 		"src/electron-utils/messageHandler.cjs",
 		"src/electron-utils/slippi.cjs",
 		"src/electron-utils/statsDisplay.cjs",
+		"src/electron-utils/jsonDb.cjs",
 		"src/preload.cjs",
 		{
 			"from": "build",

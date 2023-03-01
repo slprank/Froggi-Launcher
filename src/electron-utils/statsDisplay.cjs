@@ -32,7 +32,7 @@ class StatsDisplay {
 			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
 			this.parser.handleCommand(event.command, event.payload);
 			if (event.command == 54) {
-				this.messageHandler.sendMessage('game_start', this.parser.getSettings());
+				this.messageGameStart(this.parser.getSettings());
 			}
 		});
 
@@ -43,6 +43,52 @@ class StatsDisplay {
 		this.parser.on(SlpParserEvent.FRAME, (frameEntry) => {
 			this.messageHandler.sendMessage('game_frame', frameEntry);
 		});
+	}
+
+	messageGameStart(settings) {
+		if (!settings.players.some((p) => !p.connectCode)) this.messageOfflineData();
+		let [player1, player2] = [
+			getRankStats(settings.players[0].connectCode),
+			getRankStats(settings.players[0].connectCode),
+		];
+		this.messageHandler.sendMessage('game_start', settings);
+	}
+
+	messageRankData() {
+		let [player1, player2] = [
+			getRankStats(settings.players[0].connectCode), // Create API
+			getRankStats(settings.players[0].connectCode),
+		];
+
+		// Player {
+		//	 connectCode
+		// 	 displayName
+		//   character {
+		//		characterId
+		//		characterColor
+		//		characterName
+		//	 }
+		// 	 rankedNetplayProfile {
+		//	 	...
+		//   }
+		//}
+
+		// CharacterId, Color, Name
+
+		// Game mode - `mode.unranked-2022-12-20T06:52:39.18-0`
+
+		// Check if gameNumber is 1 - reset score
+
+		// Update data in DB
+		this.messageHandler.sendMessage('game_start', settings);
+	}
+
+	messageOfflineData() {
+		// Get players from json db
+
+		// Handle score manually?
+
+		this.messageHandler.sendMessage('game_start', settings);
 	}
 }
 
