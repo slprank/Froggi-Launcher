@@ -17,7 +17,7 @@ try {
 	const { ObsWebSocket } = require('./electron-utils/obs.cjs');
 	const { StatsDisplay } = require('./electron-utils/statsDisplay.cjs');
 	const { SlippiJs } = require('./electron-utils/slippi.cjs');
-	const { JsonDb } = require('./electron-utils/jsonDb.cjs');
+	const { ElectronStore } = require('./electron-utils/electronStore.cjs');
 	const rootDir = `${__dirname}/../`;
 
 	const os = require('os');
@@ -130,8 +130,8 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', () => {
-			const jsonDb = new JsonDb(log);
-			const messageHandler = new MessageHandler(rootDir, mainWindow, log, jsonDb);
+			const electronStore = new ElectronStore(log);
+			const messageHandler = new MessageHandler(rootDir, mainWindow, log, electronStore);
 			const slippiJs = new SlippiJs(messageHandler, ipcMain, log);
 			const statsDisplay = new StatsDisplay(
 				messageHandler,
@@ -139,7 +139,7 @@ try {
 				log,
 				slippiJs.slpStream,
 				slippiJs.parser,
-				jsonDb,
+				electronStore,
 			);
 			const obsWebSocket = new ObsWebSocket(messageHandler, ipcMain, log);
 			const achievements = new Achievements(messageHandler, ipcMain, log);
