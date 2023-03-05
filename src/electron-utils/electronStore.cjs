@@ -4,6 +4,7 @@ class ElectronStore {
 	constructor(log) {
 		const Store = require('electron-store');
 		this.store = new Store();
+		this.log = log;
 	}
 
 	// SETTINGS
@@ -24,29 +25,52 @@ class ElectronStore {
 	}
 
 	// GAME
+	// Save pre and post game (In case opening app mid game)
+	// Save players rank, set score and last frame*
 	setGame(gameStats) {
 		if (!gameStats?.matchId) return;
 		if (!gameStats.players.some((p) => p.connectCode == this.getCurrentPlayer())) return;
 
-		const regex = /mode\.(\w+)/;
-		const gameMode = gameStats.matchId.match(regex)[1];
-
 		this.store.set(
-			`users.${this.getCurrentPlayer()}.games.${gameStats.matchId}.${gameStats.gameNumber}`,
+			`user.${this.getCurrentPlayer()}.game.${gameStats.matchId}.${gameStats.gameNumber}`,
 			gameStats,
 		);
 	}
 
 	getGame(matchId, gameNumber) {
-		return this.store.get(`users.${this.getCurrentPlayer()}.games.${matchId}.${gameNumber}`);
+		return this.store.get(`user.${this.getCurrentPlayer()}.game.${matchId}.${gameNumber}`);
 	}
 
 	getSet(matchId) {
-		return this.store.get(`users.${this.getCurrentPlayer()}.games.${matchId}`);
+		return this.store.get(`user.${this.getCurrentPlayer()}.game.${matchId}`);
 	}
 
-	getAllSets(mode = null) {
-		// Add logic to get all set given a mode
+	getAllSets(mode) {
+		if (!mode) return;
+		const sets = this.store.get(`user.${this.getCurrentPlayer()}.game`);
+		const matchIds = Object.keys(sets);
+		const regex = /mode\.(\w+)/;
+
+		const setIds = matchIds.filter((m) => m.match(regex)[1] == mode);
+		return setIds.map((id) => sets[id]);
+	}
+
+	// SESSION
+	getSession() {
+		this.store.get(`session.${this.getCurrentPlayer()}`);
+	}
+
+	setSession(session) {
+		this.store.set(`session.${this.getCurrentPlayer()}`, session);
+	}
+
+	// RECENT SETS
+	getRecentSets(mode, number = 10) {
+		if (!mode) return;
+		const sets = this.getAllSets(mode);
+		const recentSets = rankedSet.sort((a, b) => a.matchId > b.matchId).slice(0, number);
+
+		return recentSets.map((id) => sets[id]);
 	}
 }
 

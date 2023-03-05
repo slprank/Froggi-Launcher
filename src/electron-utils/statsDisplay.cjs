@@ -47,11 +47,7 @@ class StatsDisplay {
 
 	messageGameStart(settings) {
 		if (!settings.players.some((p) => !p.connectCode)) this.messageOfflineData();
-		let [player1, player2] = [
-			getRankStats(settings.players[0].connectCode),
-			getRankStats(settings.players[0].connectCode),
-		];
-		this.messageHandler.sendMessage('game_start', settings);
+		this.messageRankData();
 	}
 
 	messageRankData() {
@@ -61,16 +57,16 @@ class StatsDisplay {
 		];
 
 		// Player {
-		//	 connectCode
-		// 	 displayName
+		//	 connectCode,
+		// 	 displayName,
 		//   character {
 		//		characterId
 		//		characterColor
 		//		characterName
-		//	 }
+		//	 },
 		// 	 rankedNetplayProfile {
 		//	 	...
-		//   }
+		//   },
 		//}
 
 		// CharacterId, Color, Name
