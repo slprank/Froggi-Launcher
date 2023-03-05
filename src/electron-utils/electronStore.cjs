@@ -72,6 +72,25 @@ class ElectronStore {
 
 		return recentSets.map((id) => sets[id]);
 	}
+
+	// Rank
+	getPlayerCurrentRank() {
+		this.store.get(`user.${this.getCurrentPlayer()}.rank.current`);
+	}
+
+	setPlayerCurrentRank(rankStats) {
+		if (this.getPlayerCurrentRank() == rankStats) return; // TODO: Check if number of ranked games are changed
+		this.store.set(`user.${this.getCurrentPlayer()}.rank.current`, rankStats);
+		this.updatePlayerRank(rankStats);
+	}
+
+	getPlayerRankHistory() {
+		this.store.get(`user.${this.getCurrentPlayer()}.rank.history`);
+	}
+
+	updatePlayerRankHistory(rankStats) {
+		this.store.set(`user.${this.getCurrentPlayer()}.rank.history.${Date.now()}`, rankStats);
+	}
 }
 
 module.exports = { ElectronStore };

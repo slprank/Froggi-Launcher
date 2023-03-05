@@ -17,12 +17,14 @@ const {
 } = require('@slippi/slippi-js');
 
 class StatsDisplay {
-	constructor(messageHandler, ipcMain, log, slpStream, slpParser) {
+	constructor(messageHandler, ipcMain, log, slpStream, slpParser, store, api) {
 		this.messageHandler = messageHandler;
 		this.ipcMain = ipcMain;
 		this.log = log;
 		this.slpStream = slpStream;
 		this.parser = slpParser;
+		this.store = store;
+		this.api = api;
 
 		this.initStatDisplay();
 	}
@@ -37,7 +39,12 @@ class StatsDisplay {
 		});
 
 		this.parser.on(SlpParserEvent.END, (frameEntry) => {
-			this.messageHandler.sendMessage('game_end', frameEntry);
+			this.messageGameEnd(
+				frameEntry,
+				this.parser.getLatestFrame(),
+				this.parser.getSettings(),
+				this.getRecentGameStats(),
+			);
 		});
 
 		this.parser.on(SlpParserEvent.FRAME, (frameEntry) => {
@@ -45,6 +52,7 @@ class StatsDisplay {
 		});
 	}
 
+	// GAME START
 	messageGameStart(settings) {
 		if (!settings.players.some((p) => !p.connectCode)) this.messageOfflineData();
 		this.messageRankData();
@@ -52,8 +60,8 @@ class StatsDisplay {
 
 	messageRankData() {
 		let [player1, player2] = [
-			getRankStats(settings.players[0].connectCode), // Create API
-			getRankStats(settings.players[0].connectCode),
+			this.api.getPlayerRank(settings.players[0].connectCode),
+			this.api.getPlayerRank(settings.players[1].connectCode),
 		];
 
 		// Player {
@@ -85,6 +93,47 @@ class StatsDisplay {
 		// Handle score manually?
 
 		this.messageHandler.sendMessage('game_start', settings);
+	}
+
+	// GAME END
+	messageGameEnd(frameEntry, latestFrame, settings, stats) {
+		console.log(frameEntry, latestFrame, settings, stats);
+		// Get game from db
+		// Update score
+		// Save game in db
+
+		// Get players rank
+		// Set current player rank in db
+
+		// If win/loss number changed - Message rank up/down - 10 sec
+
+		// Message - post game stats
+	}
+
+	messageRankChange() {
+		//
+	}
+
+	// OTHER
+
+	getGameFiles() {
+		const fs = require('fs');
+		const re = new RegExp('^Game_.*.slp$');
+		const path = require('path');
+
+		const slippiDir = this.store.getSlippiRootDirectory();
+
+		let files = fs.readdirSync(slippiDir).map((filename) => `${path.parse(filename).name}.slp`);
+
+		files = files.filter((f) => re.test(f)).map((f) => `${slippiDir}/${f}`);
+		return files.sort((a, b) => a.length - b.length);
+	}
+
+	getRecentGameStats() {
+		const files = this.getGameFiles();
+		const game = new SlippiGame(files[files.length - 1]);
+
+		return game.getStats();
 	}
 }
 

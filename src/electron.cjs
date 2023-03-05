@@ -13,6 +13,7 @@ try {
 	const slippi = require('./electron-utils/slippi.cjs');
 	const statsDisplay = require('./electron-utils/statsDisplay.cjs');
 	const { Achievements } = require('./electron-utils/achievements.cjs');
+	const { Api } = require('./electron-utils/api.cjs');
 	const { MessageHandler } = require('./electron-utils/messageHandler.cjs');
 	const { ObsWebSocket } = require('./electron-utils/obs.cjs');
 	const { StatsDisplay } = require('./electron-utils/statsDisplay.cjs');
@@ -130,6 +131,7 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', () => {
+			const api = new Api(log);
 			const electronStore = new ElectronStore(log);
 			const messageHandler = new MessageHandler(rootDir, mainWindow, log, electronStore);
 			const slippiJs = new SlippiJs(messageHandler, ipcMain, log);
@@ -140,6 +142,7 @@ try {
 				slippiJs.slpStream,
 				slippiJs.parser,
 				electronStore,
+				api,
 			);
 			const obsWebSocket = new ObsWebSocket(messageHandler, ipcMain, log);
 			const achievements = new Achievements(messageHandler, ipcMain, log);

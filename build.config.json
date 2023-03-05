@@ -30,6 +30,7 @@
 		"src/electron.cjs",
 		"src/electron-utils/**/*",
 		"src/electron-utils/achievements.cjs",
+		"src/electron-utils/api.cjs",
 		"src/electron-utils/autoUpdater.cjs",
 		"src/electron-utils/obs.cjs",
 		"src/electron-utils/messageHandler.cjs",

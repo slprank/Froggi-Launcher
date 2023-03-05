@@ -30,7 +30,7 @@
 	],
 	"dependencies": {
 		"@slippi/slippi-js": "^6.6.0",
-		"axios": "^1.2.5",
+		"axios": "^1.3.4",
 		"cors": "^2.8.5",
 		"electron-context-menu": "^3.6.1",
 		"electron-log": "^4.4.8",
