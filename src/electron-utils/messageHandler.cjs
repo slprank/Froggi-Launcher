@@ -1,5 +1,5 @@
 class MessageHandler {
-	constructor(dir, mainWindow, log, jsonDb) {
+	constructor(dir, mainWindow, log, store) {
 		log.info('Creating message handler..');
 		const path = require('path');
 		const express = require('express');
@@ -14,7 +14,7 @@ class MessageHandler {
 		this.server = http.createServer(this.app);
 		this.webSocketServer = new WebSocketServer({ port: 3100 });
 		this.webSockets = [];
-		this.json = jsonDb;
+		this.store = store;
 
 		this.mainWindow = mainWindow;
 	}
@@ -50,10 +50,22 @@ class MessageHandler {
 				socket.on('close', () => {
 					this.webContents = this.webSockets.filter((s) => s != socket);
 				});
+				this.initData();
 			});
 		} catch (err) {
 			console.log(err);
 		}
+	}
+
+	initData() {
+		this.sendMessage('initCurrentPlayerRankStats', this.store.getCurrentPlayerRankStats());
+		this.sendMessage('initCurrentPlayersRankStats', this.store.getCurrentPlayersRankStats());
+		this.sendMessage('initGameSettings', this.store.getGameSettings());
+		this.sendMessage('initGameStats', this.store.getGameStats());
+		this.sendMessage('initGameScore', this.store.getGameScore());
+		this.sendMessage('initSessionStats', this.store.getSessionStats());
+		this.sendMessage('initRecentRankedSets', this.store.getRecentRankedSets());
+		this.sendMessage('initStatsScene', this.store.getStatsScene());
 	}
 
 	sendMessage(topic, payload) {
