@@ -3,6 +3,7 @@
 class ElectronStore {
 	constructor(log) {
 		const Store = require('electron-store');
+		this.ip = require('ip');
 		this.store = new Store();
 		this.log = log;
 	}
@@ -30,6 +31,13 @@ class ElectronStore {
 
 	setSlippiRootDirectory(dir) {
 		this.store.set('settings.slippiReplayDir', JSON.stringify(dir));
+	}
+
+	getLocalUrl() {
+		urls = {};
+		urls.local = `http://localhost:3200`;
+		urls.external = `http://${ip.address()}:3200`;
+		return urls;
 	}
 
 	// LIVE STATS
@@ -89,9 +97,9 @@ class ElectronStore {
 	setSessionStats(rankStats) {
 		let session = {
 			startRankStats: rankStats,
-			startDate: this.dateTimeNow(),
+			startTime: this.dateTimeNow(),
 			currentRankStats: rankStats,
-			latestDate: this.dateTimeNow(),
+			latestUpdate: this.dateTimeNow(),
 		};
 		this.store.set(`player.${this.getCurrentPlayer()}.session`, JSON.stringify(session));
 		return session;
@@ -105,7 +113,7 @@ class ElectronStore {
 	}
 
 	getRecentRankedSets() {
-		this.getRecentSets('ranked');
+		return this.getRecentSets('ranked');
 	}
 
 	// GAME
@@ -114,7 +122,7 @@ class ElectronStore {
 	setGame(gameStats) {
 		if (!gameStats?.matchId) return;
 		if (!gameStats.players.some((p) => p.connectCode == this.getCurrentPlayer())) return;
-
+		gameStats.timestamp = this.dateTimeNow();
 		this.store.set(
 			`player.${this.getCurrentPlayer()}.game.${gameStats.matchId}.${gameStats.gameNumber}`,
 			gameStats,
@@ -164,7 +172,10 @@ class ElectronStore {
 	}
 
 	updatePlayerRankHistory(rankStats) {
-		this.store.set(`player.${this.getCurrentPlayer()}.rank.history.${Date.now()}`, rankStats);
+		this.store.set(
+			`player.${this.getCurrentPlayer()}.rank.history.${this.dateTimeNow()}`,
+			rankStats,
+		);
 	}
 }
 

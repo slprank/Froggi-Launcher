@@ -58,6 +58,7 @@ class MessageHandler {
 	}
 
 	initData() {
+		this.sendMessage('initUrls', this.store.getLocalUrl());
 		this.sendMessage('initCurrentPlayerRankStats', this.store.getCurrentPlayerRankStats());
 		this.sendMessage('initCurrentPlayersRankStats', this.store.getCurrentPlayersRankStats());
 		this.sendMessage('initGameSettings', this.store.getGameSettings());
