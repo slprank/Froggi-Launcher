@@ -58,15 +58,15 @@ class MessageHandler {
 	}
 
 	initData() {
-		this.sendMessage('initUrls', this.store.getLocalUrl());
-		this.sendMessage('initCurrentPlayerRankStats', this.store.getCurrentPlayerRankStats());
-		this.sendMessage('initCurrentPlayersRankStats', this.store.getCurrentPlayersRankStats());
-		this.sendMessage('initGameSettings', this.store.getGameSettings());
-		this.sendMessage('initGameStats', this.store.getGameStats());
-		this.sendMessage('initGameScore', this.store.getGameScore());
-		this.sendMessage('initSessionStats', this.store.getSessionStats());
-		this.sendMessage('initRecentRankedSets', this.store.getRecentRankedSets());
-		this.sendMessage('initStatsScene', this.store.getStatsScene());
+		this.sendMessage('urls', this.store.getLocalUrl());
+		this.sendMessage('currentPlayer_rank_stats', this.store.getCurrentPlayerRankStats());
+		//this.sendMessage('initCurrentPlayersRankStats', this.store.getCurrentPlayersRankStats());
+		//this.sendMessage('initGameSettings', this.store.getGameSettings());
+		//this.sendMessage('initGameStats', this.store.getGameStats());
+		//this.sendMessage('initGameScore', this.store.getGameScore());
+		//this.sendMessage('initSessionStats', this.store.getSessionStats());
+		//this.sendMessage('initRecentRankedSets', this.store.getRecentRankedSets());
+		//this.sendMessage('initStatsScene', this.store.getStatsScene());
 	}
 
 	sendMessage(topic, payload) {

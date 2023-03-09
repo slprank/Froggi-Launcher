@@ -12,6 +12,7 @@
 	} from '$lib/utils/store.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
+	import { initWebSocket } from '$lib/utils/initWebSocket.svelte';
 
 	let ready: boolean = false;
 
@@ -19,24 +20,11 @@
 		initNoSleep();
 		initWebSocket();
 		initServiceWorker();
+		paramRedirect();
 	}
 
 	if ($isElectron) {
 		initElectronEvents();
-	}
-
-	function initWebSocket() {
-		paramRedirect();
-		const socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
-		socket.onclose = () => {
-			setTimeout(reload, 1000);
-		};
-		socket.addEventListener('message', ({ data }) => {
-			let parse = JSON.parse(data);
-			for (const [key, value] of Object.entries(parse)) {
-				$eventEmitter.emit(key, value);
-			}
-		});
 	}
 
 	function initElectronEvents() {

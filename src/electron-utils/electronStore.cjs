@@ -34,9 +34,9 @@ class ElectronStore {
 	}
 
 	getLocalUrl() {
-		urls = {};
+		let urls = {};
 		urls.local = `http://localhost:3200`;
-		urls.external = `http://${ip.address()}:3200`;
+		urls.external = `http://${this.ip.address()}:3200`;
 		return urls;
 	}
 
