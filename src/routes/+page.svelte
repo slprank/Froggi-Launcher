@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
 	import Logo from '$lib/Logo.svelte';
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { isElectron } from '$lib/utils/store.svelte';
 
@@ -21,26 +20,27 @@
 	class="grid h-screen w-screen place-items-center bg-cover bg-center"
 	style="background-image: url('./background/MeleeWallpaper.png')"
 >
-	<div class="fixed h-screen w-screen bg-gradient-to-t from-black z-40" />
-	<Logo />
+	<div class="fixed place-items-center grid h-screen w-screen bg-gradient-to-t from-black z-40">
+		<Logo />
 
-	<h1>Hello {agent}!</h1>
-	<h1
-		class="text-3xl font-bold underline cursor-wait"
-		on:click={() => {
-			goto('live');
-		}}
-	>
-		Hello tailwind!
-	</h1>
+		<h1>Hello {agent}!</h1>
+		<h1
+			class="text-3xl font-bold underline cursor-wait "
+			on:click={() => {
+				goto('live');
+			}}
+		>
+			Hello tailwind!
+		</h1>
 
-	<Counter id="0" {agent} />
+		<Counter id="0" {agent} />
 
-	{#if desktop}
-		<br />
-		<br />
-		{desktop}
-	{/if}
+		{#if desktop}
+			<br />
+			<br />
+			{desktop}
+		{/if}
+	</div>
 </main>
 
 <style>
@@ -52,6 +52,7 @@
 	:global(body) {
 		margin: 0;
 		padding: 0;
+		background-color: black;
 	}
 
 	main {
