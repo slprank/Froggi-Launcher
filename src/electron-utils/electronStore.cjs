@@ -15,14 +15,13 @@ class ElectronStore {
 		return d;
 	}
 
-	// Json parse on get?
 	// SETTINGS
 	getCurrentPlayer() {
 		return this.store.get('settings.currentPlayer');
 	}
 
 	setCurrentPlayer(connectCode) {
-		this.store.set('settings.currentPlayer', JSON.stringify(connectCode));
+		this.store.set('settings.currentPlayer', connectCode);
 	}
 
 	getSlippiRootDirectory() {
@@ -30,7 +29,7 @@ class ElectronStore {
 	}
 
 	setSlippiRootDirectory(dir) {
-		this.store.set('settings.slippiReplayDir', JSON.stringify(dir));
+		this.store.set('settings.slippiReplayDir', dir);
 	}
 
 	getLocalUrl() {
@@ -46,7 +45,7 @@ class ElectronStore {
 	}
 
 	setStatsScene(scene) {
-		this.store.set('stats.scene', JSON.stringify(scene));
+		this.store.set('stats.scene', scene);
 	}
 
 	getCurrentPlayerRankStats() {
@@ -54,7 +53,7 @@ class ElectronStore {
 	}
 
 	setCurrentPlayerRankStats(playerRankStats) {
-		this.store.set('stats.currentPlayerRankStats', JSON.stringify(playerRankStats));
+		this.store.set('stats.currentPlayerRankStats', playerRankStats);
 	}
 
 	getCurrentPlayersRankStats() {
@@ -62,7 +61,7 @@ class ElectronStore {
 	}
 
 	setCurrentPlayersRankStats(playersRankStats) {
-		this.store.set('stats.currentPlayersRankStats', JSON.stringify(playersRankStats));
+		this.store.set('stats.currentPlayersRankStats', playersRankStats);
 	}
 
 	getGameSettings() {
@@ -79,7 +78,7 @@ class ElectronStore {
 
 	setGameStats(gameStats, latestFrame) {
 		if (latestFrame) gameStats.latestFrame = latestFrame;
-		this.store.set('stats.game.stats', JSON.stringify(gameStats));
+		this.store.set('stats.game.stats', gameStats);
 	}
 
 	getGameScore() {
@@ -87,7 +86,7 @@ class ElectronStore {
 	}
 
 	setGameScore(score) {
-		this.store.set('stats.game.score', JSON.stringify(score));
+		this.store.set('stats.game.score', score);
 	}
 
 	getSessionStats() {
@@ -101,7 +100,7 @@ class ElectronStore {
 			currentRankStats: rankStats,
 			latestUpdate: this.dateTimeNow(),
 		};
-		this.store.set(`player.${this.getCurrentPlayer()}.session`, JSON.stringify(session));
+		this.store.set(`player.${this.getCurrentPlayer()}.session`, session);
 		return session;
 	}
 
@@ -140,18 +139,17 @@ class ElectronStore {
 	getAllSets(mode) {
 		if (!mode) return;
 		const sets = this.store.get(`player.${this.getCurrentPlayer()}.game`);
-		const matchIds = Object.keys(sets);
+		const matchIds = Object.keys(sets ?? {});
 		const regex = /mode\.(\w+)/;
-
 		const setIds = matchIds.filter((m) => m.match(regex)[1] == mode);
-		return setIds.map((id) => sets[id]);
+		return setIds?.map((id) => sets[id]);
 	}
 
 	// RECENT SETS
 	getRecentSets(mode, number = 10) {
 		if (!mode) return;
-		const sets = this.getAllSets(mode);
-		const recentSets = rankedSet.sort((a, b) => a.matchId > b.matchId).slice(0, number);
+		const rankedSets = this.getAllSets(mode);
+		const recentSets = rankedSets.sort((a, b) => a.matchId > b.matchId).slice(0, number);
 
 		return recentSets.map((id) => sets[id]);
 	}

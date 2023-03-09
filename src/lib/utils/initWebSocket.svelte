@@ -19,7 +19,7 @@
 			eventEmitter.subscribe((eventEmitter) => {
 				const socket = new WebSocket(`ws://${page.url.hostname}:3100`);
 				socket.onclose = () => {
-					setTimeout(window.location.reload, 1000);
+					setTimeout(reload, 1000);
 				};
 				socket.addEventListener('message', ({ data }) => {
 					let parse = JSON.parse(data);
@@ -36,29 +36,29 @@
 		console.log('Initializing listeners');
 		eventEmitter.subscribe((emitter) => {
 			emitter.on('currentPlayer_rank_stats', (rankStats: any) => {
-				console.log(rankStats);
+				console.log({ rankStats });
 				currentPlayerRankStats.set(rankStats);
 			});
 			emitter.on('currentPlayers_rank_stats', (playersRankStats: any) => {
 				console.log(playersRankStats);
 				currentPlayersRankStats.set(playersRankStats);
 			});
-			emitter.on('gameScore', (score: any) => {
-				gameScore.set(score);
-			});
-			emitter.on('gameSettings', (settings: any) => {
+			emitter.on('game_settings', (settings: any) => {
 				gameSettings.set(settings);
 			});
-			emitter.on('gameStats', (stats: any) => {
+			emitter.on('game_score', (score: any) => {
+				gameScore.set(score);
+			});
+			emitter.on('game_stats', (stats: any) => {
 				gameStats.set(stats);
 			});
-			emitter.on('recentRankedSets', (recentSets: any) => {
+			emitter.on('recent_ranked_sets', (recentSets: any) => {
 				recentRankedSets.set(recentSets);
 			});
-			emitter.on('sessionStats', (session: any) => {
+			emitter.on('session_stats', (session: any) => {
 				sessionStats.set(session);
 			});
-			emitter.on('statsScene', (scene: any) => {
+			emitter.on('stats_scene', (scene: any) => {
 				statsScene.set(scene);
 			});
 			emitter.on('urls', (url: any) => {
@@ -67,6 +67,10 @@
 				urls.set(url);
 			});
 		});
+	};
+
+	const reload = () => {
+		window.location.reload();
 	};
 
 	export { initWebSocket };
