@@ -1,4 +1,5 @@
 const initAutoUpdater = (mainWindow, ipcMain, log) => {
+	// TODO: Convert to a class
 	try {
 		log.info('autoUpdater');
 

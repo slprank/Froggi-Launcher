@@ -14,11 +14,12 @@ try {
 	const statsDisplay = require('./electron-utils/statsDisplay.cjs');
 	const { Achievements } = require('./electron-utils/achievements.cjs');
 	const { Api } = require('./electron-utils/api.cjs');
+	const { ElectronStore } = require('./electron-utils/electronStore.cjs');
 	const { MessageHandler } = require('./electron-utils/messageHandler.cjs');
 	const { ObsWebSocket } = require('./electron-utils/obs.cjs');
-	const { StatsDisplay } = require('./electron-utils/statsDisplay.cjs');
 	const { SlippiJs } = require('./electron-utils/slippi.cjs');
-	const { ElectronStore } = require('./electron-utils/electronStore.cjs');
+	const { StatsDisplay } = require('./electron-utils/statsDisplay.cjs');
+	const { Test } = require('./electron-utils/test.cjs');
 	const rootDir = `${__dirname}/../`;
 
 	const os = require('os');
@@ -26,8 +27,6 @@ try {
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
-
-	let io;
 
 	if (isWindows) {
 		if (!fs.existsSync(path.join(`C:/slpRank-client-logs`)))
@@ -147,6 +146,10 @@ try {
 			const obsWebSocket = new ObsWebSocket(messageHandler, ipcMain, log);
 			const achievements = new Achievements(messageHandler, ipcMain, log);
 
+			const test = new Test(messageHandler, ipcMain, log, electronStore, api, statsDisplay);
+
+			test.testLiveStats();
+
 			messageHandler.initHtml();
 			messageHandler.initWebSocket();
 		});
@@ -171,6 +174,8 @@ try {
 	ipcMain.on('to-main', (event, count) => {
 		return mainWindow.webContents.send('from-main', `next count is ${count + 1}`);
 	});
+
+	ipcMain.on('test-live-stats', (_, rating) => {});
 } catch (err) {
 	log.error(err);
 }

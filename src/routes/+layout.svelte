@@ -3,28 +3,36 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
-	import {
-		isMobile,
-		isTablet,
-		isBrowser,
-		eventEmitter,
-		isElectron,
-	} from '$lib/utils/store.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import { initWebSocket } from '$lib/utils/initWebSocket.svelte';
+	import {
+		isBrowser,
+		isElectron,
+		eventEmitter,
+		currentPlayerRankStats,
+		currentPlayersRankStats,
+		gameScore,
+		gameSettings,
+		gameStats,
+		recentRankedSets,
+		sessionStats,
+		statsScene,
+		urls,
+	} from '$lib/utils/store.svelte';
 
 	let ready: boolean = false;
 
-	if ($isBrowser) {
-		initNoSleep();
-		initWebSocket(); // TODO: Do not reinitialize on route
-		initServiceWorker();
-		paramRedirect();
-	}
+	function initDevices() {
+		if ($isBrowser) {
+			initNoSleep();
+			initWebSocket();
+			initServiceWorker();
+			paramRedirect();
+		}
 
-	if ($isElectron) {
-		initElectronEvents();
+		if ($isElectron) {
+			initElectronEvents();
+		}
 	}
 
 	function initElectronEvents() {
@@ -44,7 +52,67 @@
 		}
 	}
 
+	function initWebSocket() {
+		console.log('Initializing websocket');
+		const socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
+		socket.onclose = () => {
+			setTimeout(reload, 1000);
+		};
+		socket.addEventListener('message', ({ data }) => {
+			let parse = JSON.parse(data);
+			for (const [key, value] of Object.entries(parse)) {
+				$eventEmitter.emit(key, value);
+			}
+		});
+		initGlobalEventListeners();
+	}
+
+	function initGlobalEventListeners() {
+		console.log('Initializing listeners');
+		$eventEmitter.on('currentPlayer_rank_stats', (rankStats: any) => {
+			console.log({ rankStats });
+			currentPlayerRankStats.set(rankStats);
+		});
+		$eventEmitter.on('currentPlayers_rank_stats', (playersRankStats: any) => {
+			console.log({ playersRankStats });
+			currentPlayersRankStats.set(playersRankStats);
+		});
+		$eventEmitter.on('game_settings', (settings: any) => {
+			console.log({ settings });
+			gameSettings.set(settings);
+		});
+		$eventEmitter.on('game_score', (score: any) => {
+			console.log({ score });
+			gameScore.set(score);
+		});
+		$eventEmitter.on('game_stats', (stats: any) => {
+			console.log({ stats });
+			gameStats.set(stats);
+		});
+		$eventEmitter.on('recent_ranked_sets', (recentSets: any) => {
+			console.log({ recentSets });
+			recentRankedSets.set(recentSets);
+		});
+		$eventEmitter.on('session_stats', (session: any) => {
+			console.log({ session });
+			sessionStats.set(session);
+		});
+		$eventEmitter.on('live_stats_scene', (scene: any) => {
+			console.log({ scene });
+			statsScene.set(scene);
+		});
+		$eventEmitter.on('urls', (url: any) => {
+			console.log(url);
+			urls.set(url);
+		});
+	}
+
+	const reload = () => {
+		window.location.reload();
+	};
+
 	onMount(() => {
+		initDevices();
 		ready = true;
 	});
 </script>

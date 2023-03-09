@@ -44,7 +44,6 @@ class MessageHandler {
 
 	initWebSocket() {
 		try {
-			// On connection send saved data from db
 			this.webSocketServer.on('connection', (socket) => {
 				this.webSockets.push(socket);
 				socket.on('close', () => {
@@ -74,6 +73,10 @@ class MessageHandler {
 	}
 
 	sendInitMessage(socket, topic, payload) {
+		if (!socket) {
+			this.sendMessage(topic, payload);
+			return;
+		}
 		socket.send(
 			JSON.stringify({
 				[topic]: payload,
@@ -103,7 +106,7 @@ class MessageHandler {
 			'dolphin_connection_status',
 			this.store.getDolphinConnectionStatus(),
 		);
-		this.sendInitMessage(socket, 'stats_scene', this.store.getStatsScene());
+		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
 	}
 }
 
