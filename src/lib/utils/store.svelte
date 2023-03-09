@@ -5,10 +5,14 @@
 	import Device from 'svelte-device-info';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
-	const isElectron = writable<boolean>(window.electron);
+
 	const isBrowser = writable<boolean>(!window.electron && browser);
+	const isDesktop = writable<boolean>(
+		!window.electron && browser && !Device.isMobile && !Device.isTablet,
+	);
+	const isElectron = writable<boolean>(window.electron);
 	const isMobile = writable<boolean>(!window.electron && Device.isMobile);
-	const isTablet = writable<boolean>(!window.electron && Device.isMobile);
+	const isTablet = writable<boolean>(!window.electron && Device.isTablet);
 
 	const currentPlayerRankStats = writable<any>();
 	const currentPlayersRankStats = writable<any>();
@@ -23,6 +27,7 @@
 	export {
 		eventEmitter,
 		isBrowser,
+		isDesktop,
 		isElectron,
 		isMobile,
 		isTablet,

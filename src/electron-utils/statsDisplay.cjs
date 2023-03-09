@@ -43,7 +43,7 @@ class StatsDisplay {
 				frameEntry,
 				this.parser.getLatestFrame(),
 				this.parser.getSettings(),
-				this.getRecentGameStats(),
+				//this.getRecentGameStats(),
 			);
 		});
 
@@ -55,7 +55,7 @@ class StatsDisplay {
 	// GAME START
 	messageGameStart(settings) {
 		if (!settings.players.some((p) => !p.connectCode)) this.messageOfflineData();
-		this.messageRankData();
+		//this.messageRankData(settings);
 	}
 
 	messageRankData() {

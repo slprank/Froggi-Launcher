@@ -40,29 +40,34 @@
 				currentPlayerRankStats.set(rankStats);
 			});
 			emitter.on('currentPlayers_rank_stats', (playersRankStats: any) => {
-				console.log(playersRankStats);
+				console.log({ playersRankStats });
 				currentPlayersRankStats.set(playersRankStats);
 			});
 			emitter.on('game_settings', (settings: any) => {
+				console.log({ settings });
 				gameSettings.set(settings);
 			});
 			emitter.on('game_score', (score: any) => {
+				console.log({ score });
 				gameScore.set(score);
 			});
 			emitter.on('game_stats', (stats: any) => {
+				console.log({ stats });
 				gameStats.set(stats);
 			});
 			emitter.on('recent_ranked_sets', (recentSets: any) => {
+				console.log({ recentSets });
 				recentRankedSets.set(recentSets);
 			});
 			emitter.on('session_stats', (session: any) => {
+				console.log({ session });
 				sessionStats.set(session);
 			});
 			emitter.on('stats_scene', (scene: any) => {
+				console.log({ scene });
 				statsScene.set(scene);
 			});
 			emitter.on('urls', (url: any) => {
-				console.log('url');
 				console.log(url);
 				urls.set(url);
 			});

@@ -17,7 +17,7 @@
 </script>
 
 <main
-	class="grid h-screen w-screen place-items-center bg-cover bg-center"
+	class="h-screen w-screen place-items-center bg-cover bg-center"
 	style="background-image: url('./background/MeleeWallpaper.png')"
 >
 	<div class="fixed place-items-center grid h-screen w-screen bg-gradient-to-t from-black z-40">
@@ -56,10 +56,8 @@
 	}
 
 	main {
-		padding: 2em 1em 1em 1em;
 		text-align: center;
 		animation: fade 1s;
-		margin: 0 auto;
 	}
 
 	@keyframes fade {
