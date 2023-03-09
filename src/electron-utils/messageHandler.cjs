@@ -50,23 +50,39 @@ class MessageHandler {
 				socket.on('close', () => {
 					this.webContents = this.webSockets.filter((s) => s != socket);
 				});
-				this.initData();
+				this.initData(socket);
 			});
 		} catch (err) {
 			console.log(err);
 		}
 	}
 
-	initData() {
-		this.sendMessage('urls', this.store.getLocalUrl());
-		this.sendMessage('currentPlayer_rank_stats', this.store.getCurrentPlayerRankStats());
-		this.sendMessage('currentPlayers_rank_stats', this.store.getCurrentPlayersRankStats());
-		this.sendMessage('game_settings', this.store.getGameSettings());
-		this.sendMessage('game_stats', this.store.getGameStats());
-		this.sendMessage('game_score', this.store.getGameScore());
-		this.sendMessage('session_stats', this.store.getSessionStats());
-		this.sendMessage('recent_ranked_sets', this.store.getRecentRankedSets());
-		this.sendMessage('stats_scene', this.store.getStatsScene());
+	initData(socket) {
+		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
+		this.sendInitMessage(
+			socket,
+			'currentPlayer_rank_stats',
+			this.store.getCurrentPlayerRankStats(),
+		);
+		this.sendInitMessage(
+			socket,
+			'currentPlayers_rank_stats',
+			this.store.getCurrentPlayersRankStats(),
+		);
+		this.sendInitMessage(socket, 'game_settings', this.store.getGameSettings());
+		this.sendInitMessage(socket, 'game_stats', this.store.getGameStats());
+		this.sendInitMessage(socket, 'game_score', this.store.getGameScore());
+		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
+		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
+		this.sendInitMessage(socket, 'stats_scene', this.store.getStatsScene());
+	}
+
+	sendInitMessage(socket, topic, payload) {
+		socket.send(
+			JSON.stringify({
+				[topic]: payload,
+			}),
+		);
 	}
 
 	sendMessage(topic, payload) {
