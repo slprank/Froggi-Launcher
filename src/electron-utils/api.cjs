@@ -4,7 +4,7 @@ class Api {
 		this.axios = require('axios');
 	}
 
-	async getPlayerRank(connectCode) {
+	async getPlayerRankStats(connectCode) {
 		if (!connectCode) return;
 
 		try {

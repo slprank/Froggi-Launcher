@@ -30,21 +30,16 @@ class StatsDisplay {
 	}
 
 	initStatDisplay() {
-		this.slpStream.on(SlpStreamEvent.COMMAND, (event) => {
+		this.slpStream.on(SlpStreamEvent.COMMAND, async (event) => {
 			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
 			this.parser.handleCommand(event.command, event.payload);
 			if (event.command == 54) {
-				this.messageGameStart(this.parser.getSettings());
+				await this.messageGameStart(this.parser.getSettings());
 			}
 		});
 
-		this.parser.on(SlpParserEvent.END, (frameEntry) => {
-			this.messageGameEnd(
-				frameEntry,
-				this.parser.getLatestFrame(),
-				this.parser.getSettings(),
-				//this.getRecentGameStats(),
-			);
+		this.parser.on(SlpParserEvent.END, async (frameEntry) => {
+			await this.messageGameEnd(frameEntry, this.parser.getSettings());
 		});
 
 		this.parser.on(SlpParserEvent.FRAME, (frameEntry) => {
@@ -53,75 +48,98 @@ class StatsDisplay {
 	}
 
 	// GAME START
-	messageGameStart(settings) {
-		if (!settings.players.some((p) => !p.connectCode)) this.messageOfflineData();
-		//this.messageRankData(settings);
+	async messageGameStart(settings) {
+		if (!settings.players.some((p) => !p.connectCode)) this.messageOfflineData(settings);
+		await this.messageOnlineData(settings);
+		// Save and emit scene
 	}
 
-	messageRankData() {
-		let [player1, player2] = [
-			this.api.getPlayerRank(settings.players[0].connectCode),
-			this.api.getPlayerRank(settings.players[1].connectCode),
+	async messageOnlineData(settings) {
+		let currentPlayersRankStats = [
+			await this.api.getPlayerRankStats(settings.players[0].connectCode),
+			await this.api.getPlayerRankStats(settings.players[1].connectCode),
 		];
 
-		// Player {
-		//	 connectCode,
-		// 	 displayName,
-		//   character {
-		//		characterId
-		//		characterColor
-		//		characterName
-		//	 },
-		// 	 rankedNetplayProfile {
-		//	 	...
-		//   },
-		//}
+		let currentPlayerRankStats = currentPlayersRankStats[0]; // TODO: Return player with current player connectCode
 
-		// CharacterId, Color, Name
+		if (settings.matchInfo.gameNumber === 0) {
+			this.store.setGameScore([0, 0]);
+		}
 
-		// Game mode - `mode.unranked-2022-12-20T06:52:39.18-0`
+		this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
+		this.store.setCurrentPlayersRankStats(currentPlayersRankStats);
+		this.store.setGameSettings(settings);
 
-		// Check if gameNumber is 1 - reset score
-
-		// Update data in DB
-		this.messageHandler.sendMessage('game_start', settings);
+		this.messageHandler.sendMessage('currentPlayer_rank_stats', currentPlayerRankStats);
+		this.messageHandler.sendMessage('currentPlayers_rank_stats', currentPlayersRankStats);
+		this.messageHandler.sendMessage('game_settings', settings);
 	}
 
-	messageOfflineData() {
-		// Get players from json db
+	messageOfflineData(settings) {
+		const currentPlayersRankStats = this.store.getCurrentPlayersRankStats();
 
-		// Handle score manually?
+		this.store.setGameSettings(settings);
 
-		this.messageHandler.sendMessage('game_start', settings);
+		this.messageHandler.sendMessage('currentPlayers_rank_stats', currentPlayersRankStats ?? []);
+		this.messageHandler.sendMessage('game_settings', settings);
 	}
 
 	// GAME END
-	messageGameEnd(frameEntry, latestFrame, settings, stats) {
-		console.log(frameEntry, latestFrame, settings, stats);
-		// Get game from db
-		// Update score
-		// Save game in db
+	async messageGameEnd(frameEntry, settings) {
+		console.log(frameEntry, settings);
 
-		// Get players rank
-		// Set current player rank in db
+		this.handleScore(frameEntry);
 
-		// If win/loss number changed - Message rank up/down - 10 sec
+		let currentPlayersRankStats = [
+			await this.api.getPlayerRankStats(settings.players[0].connectCode),
+			await this.api.getPlayerRankStats(settings.players[1].connectCode),
+		];
 
-		// Message - post game stats
+		let currentPlayerRankStats = currentPlayersRankStats[0]; // TODO: Return player with current player connectCode
+
+		this.store.setCurrentPlayerActualRankStats(currentPlayerRankStats);
+
+		const currentPlayerRank = this.store.getCurrentPlayerRankStats();
+
+		// Not tested
+		if (currentPlayerRank && currentPlayerRank?.current != currentPlayerRank?.new) {
+			await this.handleRankChange();
+			this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
+		}
+
+		let recentGameStats = this.getRecentGameStats();
+		this.messageHandler.sendMessage('game_stats', recentGameStats);
+		// Change scene
 	}
 
-	messageRankChange() {
-		//
+	handleScore(frameEntry) {
+		this.store.setGameScore([0, 0]);
+		let score = this.store.getGameScore() ?? [0, 0];
+		const winnerIndex = frameEntry.placements
+			.filter((p) => p.position >= 0)
+			.sort((a, b) => a.position - b.position)[0].playerIndex;
+		score[winnerIndex] += 1;
+		this.messageHandler.sendMessage('game_score', score);
+		this.store.setGameScore(score);
+	}
+
+	async handleRankChange() {
+		this.log.info('Rank change');
+		// Handle rank up animation
+		await new Promise((resolve) => {
+			setTimeout(resolve, 10000);
+		});
 	}
 
 	// OTHER
-
 	getGameFiles() {
 		const fs = require('fs');
 		const re = new RegExp('^Game_.*.slp$');
 		const path = require('path');
 
 		const slippiDir = this.store.getSlippiRootDirectory();
+
+		if (!slippiDir) return null;
 
 		let files = fs.readdirSync(slippiDir).map((filename) => `${path.parse(filename).name}.slp`);
 
@@ -131,9 +149,10 @@ class StatsDisplay {
 
 	getRecentGameStats() {
 		const files = this.getGameFiles();
+		if (!files) return null;
 		const game = new SlippiGame(files[files.length - 1]);
 
-		return game.getStats();
+		return game?.getStats();
 	}
 }
 

@@ -18,7 +18,7 @@
 
 	if ($isBrowser) {
 		initNoSleep();
-		initWebSocket();
+		initWebSocket(); // TODO: Do not reinitialize on route
 		initServiceWorker();
 		paramRedirect();
 	}

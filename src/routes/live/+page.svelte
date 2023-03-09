@@ -12,24 +12,12 @@
 		StockType,
 	} from '@slippi/slippi-js';
 
-	$eventEmitter.on('game_start', (data: GameStartType) => {
-		console.log(data);
-		player1CharacterId = data?.players[0].characterId ?? 0;
-		player1CharacterColor = data?.players[0].characterColor ?? 0;
-		gameStatus = 'start';
-	});
-
 	$eventEmitter.on('game_frame', (data: FrameEntryType) => {
-		console.log(data);
+		//console.log(data);
 		gameFrame = data?.start?.frame ?? 0;
 		player1Percent = data?.players[0]?.post.percent ?? 0;
 		player1ShieldSize = data?.players[0]?.post.shieldSize ?? 0;
 		player1PositionX = data?.players[0]?.post.positionX ?? 0;
-	});
-
-	$eventEmitter.on('game_end', (data: GameEndType) => {
-		console.log(data);
-		gameStatus = 'End';
 	});
 
 	$: gameStatus = '';

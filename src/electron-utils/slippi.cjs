@@ -19,10 +19,11 @@ const {
 } = require('@slippi/slippi-js');
 
 class SlippiJs {
-	constructor(messageHandler, ipcMain, log) {
+	constructor(messageHandler, ipcMain, log, store) {
 		this.messageHandler = messageHandler;
 		this.ipcMain = ipcMain;
 		this.log = log;
+		this.store = store;
 		this.dolphinConnection = new DolphinConnection();
 		this.parser = new SlpParser();
 		this.slpStream = new SlpStream();
@@ -35,9 +36,9 @@ class SlippiJs {
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
-			this.log.info('status', status);
-			this.messageHandler.sendMessage('dolphin_connection_status', status);
+			this.log.info('dolphin connection state', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin
+			this.store.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {
 				this.messageHandler.sendMessage('dolphin_connection_status', 'disconnected');
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);

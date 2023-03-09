@@ -10,7 +10,7 @@ class ElectronStore {
 
 	dateTimeNow() {
 		var utcSeconds = Date.now() / 1000;
-		var d = new Date(0).setUTCSeconds(utcSeconds); // The 0 there is the key, which sets the date to the epoch
+		var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
 		d.setUTCSeconds(utcSeconds);
 		return d;
 	}
@@ -39,6 +39,15 @@ class ElectronStore {
 		return urls;
 	}
 
+	// STATUS
+	getDolphinConnectionStatus() {
+		return this.store.get('status.dolphin');
+	}
+
+	setDolphinConnectionStatus(status) {
+		return this.store.set('status.dolphin', status);
+	}
+
 	// LIVE STATS
 	getStatsScene() {
 		return this.store.get('stats.scene');
@@ -46,14 +55,6 @@ class ElectronStore {
 
 	setStatsScene(scene) {
 		this.store.set('stats.scene', scene);
-	}
-
-	getCurrentPlayerRankStats() {
-		return this.store.get('stats.currentPlayerRankStats');
-	}
-
-	setCurrentPlayerRankStats(playerRankStats) {
-		this.store.set('stats.currentPlayerRankStats', playerRankStats);
 	}
 
 	getCurrentPlayersRankStats() {
@@ -155,21 +156,31 @@ class ElectronStore {
 	}
 
 	// Rank
-	getPlayerCurrentRank() {
-		this.store.get(`player.${this.getCurrentPlayer()}.rank.current`);
+	getCurrentPlayerRankStats() {
+		this.store.get(`player.${this.getCurrentPlayer()}.rank`);
 	}
 
-	setPlayerCurrentRank(rankStats) {
-		if (this.getPlayerCurrentRank() == rankStats) return; // TODO: Check if number of ranked games are changed
+	setCurrentPlayerCurrentRankStats(rankStats) {
+		if (!rankStats) return;
+		// TODO: Check if number of ranked games are changed
+		// If true, fill gap with empty games
 		this.store.set(`player.${this.getCurrentPlayer()}.rank.current`, rankStats);
-		this.updatePlayerRank(rankStats);
+	}
+
+	setCurrentPlayerActualRankStats(rankStats) {
+		if (!rankStats) return;
+		this.store.set(`player.${this.getCurrentPlayer()}.rank.new`, rankStats);
+		const currentRank = this.getCurrentPlayerRankStats();
+		if (currentRank == rankStats) return; // Not tested
+		this.updateCurrentPlayerRankHistory(rankStats);
 	}
 
 	getPlayerRankHistory() {
 		this.store.get(`player.${this.getCurrentPlayer()}.rank.history`);
 	}
 
-	updatePlayerRankHistory(rankStats) {
+	updateCurrentPlayerRankHistory(rankStats) {
+		if (!rankStats) return;
 		this.store.set(
 			`player.${this.getCurrentPlayer()}.rank.history.${this.dateTimeNow()}`,
 			rankStats,

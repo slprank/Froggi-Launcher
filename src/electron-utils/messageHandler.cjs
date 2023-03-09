@@ -57,6 +57,30 @@ class MessageHandler {
 		}
 	}
 
+	sendMessage(topic, payload) {
+		this.mainWindow.webContents.send(
+			'message',
+			JSON.stringify({
+				[topic]: payload,
+			}),
+		);
+		this.webSockets.forEach((socket) => {
+			socket.send(
+				JSON.stringify({
+					[topic]: payload,
+				}),
+			);
+		});
+	}
+
+	sendInitMessage(socket, topic, payload) {
+		socket.send(
+			JSON.stringify({
+				[topic]: payload,
+			}),
+		);
+	}
+
 	initData(socket) {
 		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(
@@ -74,31 +98,12 @@ class MessageHandler {
 		this.sendInitMessage(socket, 'game_score', this.store.getGameScore());
 		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
 		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
+		this.sendInitMessage(
+			socket,
+			'dolphin_connection_status',
+			this.store.getDolphinConnectionStatus(),
+		);
 		this.sendInitMessage(socket, 'stats_scene', this.store.getStatsScene());
-	}
-
-	sendInitMessage(socket, topic, payload) {
-		socket.send(
-			JSON.stringify({
-				[topic]: payload,
-			}),
-		);
-	}
-
-	sendMessage(topic, payload) {
-		this.mainWindow.webContents.send(
-			'message',
-			JSON.stringify({
-				[topic]: payload,
-			}),
-		);
-		this.webSockets.forEach((socket) => {
-			socket.send(
-				JSON.stringify({
-					[topic]: payload,
-				}),
-			);
-		});
 	}
 }
 
