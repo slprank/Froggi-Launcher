@@ -41,13 +41,13 @@ class Test {
 		if (rating) {
 			await new Promise((resolve) => {
 				this.messageHandler.sendMessage('live_stats_scene', 8);
-				setTimeout(resolve, 1500);
+				setTimeout(resolve, 10000);
 			});
 		}
 		// Post game stats
 		await new Promise((resolve) => {
 			this.messageHandler.sendMessage('live_stats_scene', 6);
-			setTimeout(resolve, 10000);
+			setTimeout(resolve, 15000);
 		});
 
 		// Return to original value

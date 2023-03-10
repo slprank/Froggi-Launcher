@@ -14,7 +14,7 @@
 	} from '@slippi/slippi-js';
 
 	function testStats() {
-		$eventEmitter.emit('send-message', 'test-live-stats', null);
+		$eventEmitter.emit('send-message', 'test-live-stats', 10);
 	}
 
 	$eventEmitter.on('game_frame', (data: FrameEntryType) => {
