@@ -14,7 +14,7 @@ class Test {
 
 	async initIpcListeners() {
 		this.ipcMain.on('test-live-stats', async (_, rating) => {
-			await this.testLiveStats(rating);
+			setTimeout(async () => await this.testLiveStats(rating), 5000);
 		});
 	}
 

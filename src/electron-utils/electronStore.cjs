@@ -50,11 +50,11 @@ class ElectronStore {
 
 	// LIVE STATS
 	getStatsScene() {
-		return this.store.get('stats.scene');
+		return this.store.get('stats.scene') ?? 0;
 	}
 
 	setStatsScene(scene) {
-		this.store.set('stats.scene', scene);
+		this.store.set('stats.scene', scene ?? 0);
 	}
 
 	getCurrentPlayersRankStats() {
@@ -186,6 +186,8 @@ class ElectronStore {
 			rankStats,
 		);
 	}
+
+	// Get recent game - statDisplay
 }
 
 module.exports = { ElectronStore };

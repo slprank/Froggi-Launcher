@@ -129,7 +129,7 @@ try {
 		if (dev) loadVite(port);
 		if (!dev) serveURL(mainWindow);
 
-		mainWindow.webContents.once('dom-ready', () => {
+		mainWindow.webContents.once('dom-ready', async () => {
 			const api = new Api(log);
 			const electronStore = new ElectronStore(log);
 			const messageHandler = new MessageHandler(rootDir, mainWindow, log, electronStore);
@@ -146,9 +146,7 @@ try {
 			const obsWebSocket = new ObsWebSocket(messageHandler, ipcMain, log);
 			const achievements = new Achievements(messageHandler, ipcMain, log);
 
-			const test = new Test(messageHandler, ipcMain, log, electronStore, api, statsDisplay);
-
-			test.testLiveStats();
+			const test = new Test(messageHandler, ipcMain, log, electronStore, api);
 
 			messageHandler.initHtml();
 			messageHandler.initWebSocket();

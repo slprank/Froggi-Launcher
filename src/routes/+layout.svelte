@@ -32,6 +32,7 @@
 
 		if ($isElectron) {
 			initElectronEvents();
+			initGlobalEventListeners();
 		}
 	}
 
@@ -69,6 +70,7 @@
 
 	function initGlobalEventListeners() {
 		console.log('Initializing listeners');
+		console.log($eventEmitter);
 		$eventEmitter.on('currentPlayer_rank_stats', (rankStats: any) => {
 			console.log({ rankStats });
 			currentPlayerRankStats.set(rankStats);
