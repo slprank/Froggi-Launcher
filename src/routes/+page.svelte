@@ -3,16 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { isElectron } from '$lib/utils/store.svelte';
 
-	let desktop: string;
-
-	if ($isElectron) {
-		window.electron.receive('from-main', (data: any) => {
-			desktop = `Received Message "${data}" from Electron`;
-			console.log(desktop);
-		});
-	}
-
-	const agent = window.electron ? 'Electron' : 'Browser';
+	const agent = $isElectron ? 'Electron' : 'Browser';
 </script>
 
 <main
@@ -31,12 +22,6 @@
 		>
 			Hello tailwind!
 		</h1>
-
-		{#if desktop}
-			<br />
-			<br />
-			{desktop}
-		{/if}
 	</div>
 </main>
 

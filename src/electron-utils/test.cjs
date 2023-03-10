@@ -15,7 +15,7 @@ class Test {
 	async initIpcListeners() {
 		this.eventEmitter.on('test-live-stats', async (rating) => {
 			console.log('rating', rating);
-			setTimeout(async () => await this.testLiveStats(rating), 5000);
+			await this.testLiveStats(rating);
 		});
 	}
 
