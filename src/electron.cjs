@@ -132,7 +132,13 @@ try {
 		mainWindow.webContents.once('dom-ready', async () => {
 			const api = new Api(log);
 			const electronStore = new ElectronStore(log);
-			const messageHandler = new MessageHandler(rootDir, mainWindow, log, electronStore);
+			const messageHandler = new MessageHandler(
+				rootDir,
+				mainWindow,
+				ipcMain,
+				log,
+				electronStore,
+			);
 			const slippiJs = new SlippiJs(messageHandler, ipcMain, log, electronStore);
 			const statsDisplay = new StatsDisplay(
 				messageHandler,

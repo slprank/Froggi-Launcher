@@ -1,5 +1,5 @@
 class MessageHandler {
-	constructor(dir, mainWindow, log, store) {
+	constructor(dir, mainWindow, ipcMain, log, store) {
 		log.info('Creating message handler..');
 		const path = require('path');
 		const express = require('express');
@@ -17,6 +17,11 @@ class MessageHandler {
 		this.store = store;
 
 		this.mainWindow = mainWindow;
+		this.ipcMain = ipcMain;
+
+		this.ipcMain.on('init-data-electron', () => {
+			this.initData();
+		});
 	}
 
 	initHtml() {

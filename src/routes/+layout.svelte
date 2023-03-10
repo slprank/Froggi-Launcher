@@ -20,8 +20,6 @@
 		urls,
 	} from '$lib/utils/store.svelte';
 
-	let ready: boolean = false;
-
 	function initDevices() {
 		if ($isBrowser) {
 			initNoSleep();
@@ -33,24 +31,18 @@
 		if ($isElectron) {
 			initElectronEvents();
 			initGlobalEventListeners();
+			window.electron.send('init-data-electron');
 		}
 	}
 
 	function initElectronEvents() {
+		console.log('Initializing electron');
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
 				$eventEmitter.emit(key, value);
 			}
 		});
-	}
-
-	function initServiceWorker() {
-		if ('serviceWorker' in navigator) {
-			addEventListener('load', function () {
-				navigator.serviceWorker.register('./../service-worker.js');
-			});
-		}
 	}
 
 	function initWebSocket() {
@@ -70,7 +62,6 @@
 
 	function initGlobalEventListeners() {
 		console.log('Initializing listeners');
-		console.log($eventEmitter);
 		$eventEmitter.on('currentPlayer_rank_stats', (rankStats: any) => {
 			console.log({ rankStats });
 			currentPlayerRankStats.set(rankStats);
@@ -109,9 +100,19 @@
 		});
 	}
 
+	function initServiceWorker() {
+		if ('serviceWorker' in navigator) {
+			addEventListener('load', function () {
+				navigator.serviceWorker.register('./../service-worker.js');
+			});
+		}
+	}
+
 	const reload = () => {
 		window.location.reload();
 	};
+
+	let ready: boolean = false;
 
 	onMount(() => {
 		initDevices();
