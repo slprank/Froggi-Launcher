@@ -1,5 +1,5 @@
 class MessageHandler {
-	constructor(dir, mainWindow, ipcMain, log, store) {
+	constructor(dir, mainWindow, ipcMain, log, store, eventEmitter) {
 		log.info('Creating message handler..');
 		const path = require('path');
 		const express = require('express');
@@ -18,10 +18,9 @@ class MessageHandler {
 
 		this.mainWindow = mainWindow;
 		this.ipcMain = ipcMain;
+		this.eventEmitter = eventEmitter;
 
-		this.ipcMain.on('init-data-electron', () => {
-			this.initData();
-		});
+		this.initElectronMessageHandler();
 	}
 
 	initHtml() {
@@ -47,10 +46,30 @@ class MessageHandler {
 		}
 	}
 
+	initElectronMessageHandler() {
+		this.ipcMain.on('message', (_, data) => {
+			let parse = JSON.parse(data);
+			console.log(parse);
+			for (const [key, value] of Object.entries(parse)) {
+				this.eventEmitter.emit(key, value);
+			}
+		});
+		this.eventEmitter.on('init-data-electron', () => {
+			this.initData();
+		});
+	}
+
 	initWebSocket() {
 		try {
 			this.webSocketServer.on('connection', (socket) => {
 				this.webSockets.push(socket);
+				socket.addEventListener('message', ({ data }) => {
+					let parse = JSON.parse(data);
+					console.log(parse);
+					for (const [key, value] of Object.entries(parse)) {
+						this.eventEmitter.emit(key, value);
+					}
+				});
 				socket.on('close', () => {
 					this.webContents = this.webSockets.filter((s) => s != socket);
 				});

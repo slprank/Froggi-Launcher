@@ -1,9 +1,9 @@
 const { SlpParserEvent } = require('@slippi/slippi-js');
 
 class Achievements {
-	constructor(messageHandler, ipcMain, log) {
+	constructor(messageHandler, eventEmitter, log) {
 		this.messageHandler = messageHandler;
-		this.ipcMain = ipcMain;
+		this.eventEmitter = eventEmitter;
 		this.log = log;
 
 		this.initAchievements();

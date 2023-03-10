@@ -1,9 +1,9 @@
 // https://github.com/obs-websocket-community-projects/obs-websocket-js
 
 class ObsWebSocket {
-	constructor(handleMessage, ipcMain, log) {
+	constructor(handleMessage, eventEmitter, log) {
 		this.handleMessage = handleMessage;
-		this.ipcMain = ipcMain;
+		this.eventEmitter = eventEmitter;
 		this.log = log;
 
 		this.initObsWebSocket();
@@ -14,8 +14,8 @@ class ObsWebSocket {
 			this.log.info('Init OBS');
 
 			// Inits scene change from svelte
-			this.ipcMain.handle('obs_switch', async (_, scene) => {
-				changeObsScene(scene);
+			this.eventEmitter.on('obs_switch', async (scene) => {
+				this.changeObsScene(scene);
 			});
 		} catch (err) {
 			this.log.error(err);

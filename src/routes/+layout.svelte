@@ -31,12 +31,16 @@
 		if ($isElectron) {
 			initElectronEvents();
 			initGlobalEventListeners();
-			window.electron.send('init-data-electron');
+			$eventEmitter.emit('send-message', 'init-data-electron');
 		}
 	}
 
 	function initElectronEvents() {
 		console.log('Initializing electron');
+		$eventEmitter.on('send-message', (topic, payload) => {
+			console.log('Sending message..', topic, payload);
+			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
+		});
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
@@ -48,6 +52,12 @@
 	function initWebSocket() {
 		console.log('Initializing websocket');
 		const socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
+		socket.onopen = () => {
+			$eventEmitter.on('send-message', (topic, payload) => {
+				console.log('Sending message..', topic, payload);
+				socket.send(JSON.stringify({ [topic]: payload ?? '' }));
+			});
+		};
 		socket.onclose = () => {
 			setTimeout(reload, 1000);
 		};

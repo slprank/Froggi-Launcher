@@ -15,6 +15,7 @@ try {
 	const { Achievements } = require('./electron-utils/achievements.cjs');
 	const { Api } = require('./electron-utils/api.cjs');
 	const { ElectronStore } = require('./electron-utils/electronStore.cjs');
+	const { EventEmitter } = require('events');
 	const { MessageHandler } = require('./electron-utils/messageHandler.cjs');
 	const { ObsWebSocket } = require('./electron-utils/obs.cjs');
 	const { SlippiJs } = require('./electron-utils/slippi.cjs');
@@ -27,6 +28,8 @@ try {
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
+
+	const eventEmitter = new EventEmitter();
 
 	if (isWindows) {
 		if (!fs.existsSync(path.join(`C:/slpRank-client-logs`)))
@@ -138,21 +141,23 @@ try {
 				ipcMain,
 				log,
 				electronStore,
+				eventEmitter,
 			);
 			const slippiJs = new SlippiJs(messageHandler, ipcMain, log, electronStore);
 			const statsDisplay = new StatsDisplay(
 				messageHandler,
-				ipcMain,
+				eventEmitter,
 				log,
 				slippiJs.slpStream,
 				slippiJs.parser,
 				electronStore,
 				api,
 			);
-			const obsWebSocket = new ObsWebSocket(messageHandler, ipcMain, log);
-			const achievements = new Achievements(messageHandler, ipcMain, log);
 
-			const test = new Test(messageHandler, ipcMain, log, electronStore, api);
+			const obsWebSocket = new ObsWebSocket(messageHandler, eventEmitter, log);
+			const achievements = new Achievements(messageHandler, eventEmitter, log);
+
+			const test = new Test(messageHandler, eventEmitter, log, electronStore, api);
 
 			messageHandler.initHtml();
 			messageHandler.initWebSocket();
@@ -161,7 +166,7 @@ try {
 		// Find a better solution to init autoUpdate
 		mainWindow.webContents.once('focus', () => {
 			if (dev) return;
-			autoUpdater.initAutoUpdater(mainWindow, ipcMain, log);
+			autoUpdater.initAutoUpdater(mainWindow, eventEmitter, log);
 		});
 	}
 
@@ -175,11 +180,9 @@ try {
 		if (process.platform !== 'darwin') app.quit();
 	});
 
-	ipcMain.on('to-main', (event, count) => {
-		return mainWindow.webContents.send('from-main', `next count is ${count + 1}`);
+	eventEmitter.on('test-message', (data) => {
+		console.log(data);
 	});
-
-	ipcMain.on('test-live-stats', (_, rating) => {});
 } catch (err) {
 	log.error(err);
 }

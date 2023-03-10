@@ -1,4 +1,4 @@
-const initAutoUpdater = (mainWindow, ipcMain, log) => {
+const initAutoUpdater = (mainWindow, eventEmitter, log) => {
 	// TODO: Convert to a class
 	try {
 		log.info('autoUpdater');
@@ -45,7 +45,7 @@ const initAutoUpdater = (mainWindow, ipcMain, log) => {
 			autoUpdater.quitAndInstall(); // Should be handled manually?
 		});
 
-		ipcMain.handle('update-install', async () => {
+		eventEmitter.on('update-install', async () => {
 			autoUpdater.quitAndInstall();
 		});
 	} catch (err) {

@@ -10,5 +10,5 @@ contextBridge.exposeInMainWorld('electron', {
 	receive: (channel, func) => {
 		ipcRenderer.on(channel, (event, ...args) => func(...args));
 	},
-	testOverlay: (rating) => ipcRenderer.invoke('test-live-stats', rating),
+	message: (topic, payload) => ipcRenderer.invoke('message', topic, payload),
 });

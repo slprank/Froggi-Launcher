@@ -1,9 +1,9 @@
 const { SlpParserEvent } = require('@slippi/slippi-js');
 
 class Test {
-	constructor(messageHandler, ipcMain, log, store, api, statsDisplay) {
+	constructor(messageHandler, eventEmitter, log, store, api, statsDisplay) {
 		this.messageHandler = messageHandler;
-		this.ipcMain = ipcMain;
+		this.eventEmitter = eventEmitter;
 		this.log = log;
 		this.store = store;
 		this.api = api;
@@ -13,7 +13,8 @@ class Test {
 	}
 
 	async initIpcListeners() {
-		this.ipcMain.on('test-live-stats', async (_, rating) => {
+		this.eventEmitter.on('test-live-stats', async (rating) => {
+			console.log('rating', rating);
 			setTimeout(async () => await this.testLiveStats(rating), 5000);
 		});
 	}

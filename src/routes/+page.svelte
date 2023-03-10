@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Counter from '$lib/Counter.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import { goto } from '$app/navigation';
 	import { isElectron } from '$lib/utils/store.svelte';
@@ -32,8 +31,6 @@
 		>
 			Hello tailwind!
 		</h1>
-
-		<Counter id="0" {agent} />
 
 		{#if desktop}
 			<br />

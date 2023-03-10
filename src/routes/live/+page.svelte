@@ -13,6 +13,10 @@
 		StockType,
 	} from '@slippi/slippi-js';
 
+	function testStats() {
+		$eventEmitter.emit('send-message', 'test-live-stats', null);
+	}
+
 	$eventEmitter.on('game_frame', (data: FrameEntryType) => {
 		gameFrame = data?.start?.frame ?? 0;
 		player1Percent = data?.players[0]?.post.percent ?? 0;
@@ -68,6 +72,7 @@
 		<h1 class="text-white">Poggers</h1>
 		<h1 class="text-white">Nice</h1>
 	{/if}
+	<button on:click={testStats}>Test Stats</button>
 </div>
 
 <style>

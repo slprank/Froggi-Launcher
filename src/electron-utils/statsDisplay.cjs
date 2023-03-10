@@ -17,9 +17,9 @@ const {
 } = require('@slippi/slippi-js');
 
 class StatsDisplay {
-	constructor(messageHandler, ipcMain, log, slpStream, slpParser, store, api) {
+	constructor(messageHandler, eventEmitter, log, slpStream, slpParser, store, api) {
 		this.messageHandler = messageHandler;
-		this.ipcMain = ipcMain;
+		this.eventEmitter = eventEmitter;
 		this.log = log;
 		this.slpStream = slpStream;
 		this.parser = slpParser;
