@@ -2,6 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { EventEmitter } from 'events';
+	import { LiveStatsScene } from '$lib/types/enum';
 	import Device from 'svelte-device-info';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
@@ -21,7 +22,7 @@
 	const gameStats = writable<any>();
 	const recentRankedSets = writable<any>();
 	const sessionStats = writable<any>();
-	const statsScene = writable<any>();
+	const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 	const urls = writable<any>();
 
 	export {

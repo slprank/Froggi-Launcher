@@ -13,7 +13,7 @@ class Achievements {
 	}
 
 	updateAchievements = () => {
-		log.info('Updating achievements');
+		this.log.info('Updating achievements');
 	};
 }
 

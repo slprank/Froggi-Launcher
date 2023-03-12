@@ -130,6 +130,10 @@
 	});
 </script>
 
+<svelte:head>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+</svelte:head>
+
 <div class="dragbar" />
 
 {#if ready}

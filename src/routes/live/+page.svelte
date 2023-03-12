@@ -1,4 +1,9 @@
 <script lang="ts">
+	import OngoingGame from '$lib/components/live/OngoingGame.svelte';
+	import PlayerRankStats from '$lib/components/live/PlayerRankStats.svelte';
+	import PostGameStats from '$lib/components/live/PostGameStats.svelte';
+	import RankChange from '$lib/components/live/RankChange.svelte';
+	import WaitingDolphin from '$lib/components/live/WaitingDolphin.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 	import type {
@@ -12,6 +17,7 @@
 		StatsType,
 		StockType,
 	} from '@slippi/slippi-js';
+	import { fly } from 'svelte/transition';
 
 	function testStats() {
 		$eventEmitter.emit('send-message', 'test-live-stats', 10);
@@ -31,46 +37,40 @@
 	$: player1Percent = 0;
 	$: player1ShieldSize = 0;
 	$: player1PositionX = 0;
+
+	setTimeout(() => {
+		$statsScene = 4;
+	}, 2000);
 </script>
 
 <div
-	class="h-screen w-screen bg-cover bg-center pl-20"
+	class="h-screen w-screen bg-cover bg-center"
 	style="background-image: url('./background/MeleeMenuAll.png')"
 >
 	{#if $statsScene == LiveStatsScene.WaitingForDolphin}
-		<h1>Waiting for dolphin</h1>
-		<h1 class="text-white">Game status: {gameStatus}</h1>
-		<h1 class="text-white">Game frame: {gameFrame}</h1>
-		<h1 class="text-white">Player 1 CharacterId: {player1CharacterId}</h1>
-		<h1 class="text-white">Player 1 CharacterColor: {player1CharacterColor}</h1>
-		<h1 class="text-white">Player 1 Percent: {player1Percent}</h1>
-		<h1 class="text-white">Player 1 Shield Size: {player1ShieldSize}</h1>
-		<h1 class="text-white">Player 1 Position X: {player1PositionX}</h1>
+		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+			<WaitingDolphin />
+		</div>
 	{/if}
-	{#if $statsScene == LiveStatsScene.PlayerRankedStats}
-		<h1 class="text-white">Player rank</h1>
-		<h1 class="text-white">GM</h1>
-		<h1 class="text-white">Yadda</h1>
+	{#if $statsScene == LiveStatsScene.PlayerRankStats}
+		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+			<PlayerRankStats />
+		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.OngoingGame}
-		<h1 class="text-white">Player</h1>
-		<h1 class="text-white">Score</h1>
-		<h1 class="text-white">Bleh</h1>
+		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+			<OngoingGame />
+		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.PostGameStats}
-		<h1 class="text-white">Player</h1>
-		<h1 class="text-white">Total damage</h1>
-		<h1 class="text-white">Stocks</h1>
-	{/if}
-	{#if $statsScene == LiveStatsScene.PostGameStats}
-		<h1 class="text-white">Player</h1>
-		<h1 class="text-white">Total damage</h1>
-		<h1 class="text-white">Stocks</h1>
+		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+			<PostGameStats />
+		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.RankChange}
-		<h1 class="text-white">RANKING UP!?!</h1>
-		<h1 class="text-white">Poggers</h1>
-		<h1 class="text-white">Nice</h1>
+		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+			<RankChange />
+		</div>
 	{/if}
 	<button on:click={testStats}>Test Stats</button>
 </div>

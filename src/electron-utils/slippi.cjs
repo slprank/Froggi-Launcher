@@ -54,7 +54,7 @@ class SlippiJs {
 		this.dolphinConnection.on(ConnectionEvent.MESSAGE, (message) => {
 			switch (message.type) {
 				case DolphinMessageType.CONNECT_REPLY:
-					console.log('Connected: ' + message);
+					this.log.info('Connected: ' + message);
 					break;
 				case DolphinMessageType.GAME_EVENT:
 					var decoded = Buffer.from(message.payload, 'base64');
