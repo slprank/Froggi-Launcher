@@ -12,21 +12,27 @@
 				text={'FluentCoding'}
 				divClass="grid justify-items-end col-span-5 md:col-span-4"
 				textClass={`text-white font-black text-shadow ${
-					$isMobile ? 'text-xl sm:text-2xl' : 'text-4xl md:text-5xl lg:md:text-6xl'
+					$isMobile
+						? 'text-[2rem] sm:text-[2.5rem]'
+						: 'text-4xl md:text-5xl lg:md:text-6xl'
 				}`}
 			/>
 			<TextFitMulti
 				text={'1 - 0'}
 				divClass="grid justify-items-center col-span-2 md:col-span-4"
 				textClass={`text-white font-black text-shadow ${
-					$isMobile ? 'text-xl sm:text-2xl' : 'text-4xl md:text-5xl lg:md:text-6xl'
+					$isMobile
+						? 'text-[2rem] sm:text-[2.5rem]'
+						: 'text-4xl md:text-5xl lg:md:text-6xl'
 				}`}
 			/>
 			<TextFitMulti
 				text={'Ginger'}
 				divClass="grid justify-items-start col-span-5 md:col-span-4"
 				textClass={`text-white font-black text-shadow ${
-					$isMobile ? 'text-xl sm:text-2xl' : 'text-4xl md:text-5xl lg:md:text-6xl'
+					$isMobile
+						? 'text-[2rem] sm:text-[2.5rem]'
+						: 'text-4xl md:text-5xl lg:md:text-6xl'
 				}`}
 			/>
 		</div>
