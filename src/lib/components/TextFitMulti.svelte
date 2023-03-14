@@ -16,7 +16,7 @@
 {#key resizeWidth || resizeHeight}
 	<div class={`${divClass} w-full max-w-full`} bind:this={parent}>
 		<h1
-			class={`${textClass} whitespace-nowrap`}
+			class={`${textClass} whitespace-nowrap  m-0`}
 			use:textfit={{
 				parent,
 				mode: 'multi',

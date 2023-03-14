@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import OngoingGame from '$lib/components/live/OngoingGame.svelte';
 	import PlayerRankStats from '$lib/components/live/PlayerRankStats.svelte';
 	import PostGameStats from '$lib/components/live/PostGameStats.svelte';
@@ -32,9 +33,11 @@
 	}, 2000);
 </script>
 
-<div
+<main
 	class="fixed h-screen w-screen bg-cover bg-center"
 	style="background-image: url('./background/MeleeMenuAll.png')"
+	in:fade={{ delay: 150, duration: 150 }}
+	out:fade={{ duration: 150 }}
 >
 	{#if $statsScene == LiveStatsScene.WaitingForDolphin}
 		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
@@ -61,7 +64,7 @@
 			<RankChange />
 		</div>
 	{/if}
-</div>
+</main>
 
 <style>
 </style>

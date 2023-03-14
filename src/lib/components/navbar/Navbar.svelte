@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import NavButton from '$lib/components/navbar/SideNavButton.svelte';
-	import { isBrowser, isDesktop, isElectron, isTablet } from '$lib/utils/store.svelte';
+	import { isBrowser, isDesktop, isElectron, isMobile, isTablet } from '$lib/utils/store.svelte';
 	import BottomNavButton from './BottomNavButton.svelte';
 
 	let width: number;
@@ -43,7 +43,9 @@
 		/>
 	{:else}
 		<div
-			class="fixed grid grid-cols-5 gap-1 bottom-0 w-screen h-16 m-0 bg-black bg-opacity-50 border-t-1 border-opacity-25 border-white z-50"
+			class={`fixed grid grid-cols-5 divide-x divide-zinc-800 bottom-0 w-screen h-16 m-0 bg-black bg-opacity-50 border-t-1 border-opacity-25 border-white z-50 ${
+				$isMobile ? 'pb-4' : ''
+			}`}
 		>
 			<BottomNavButton src="/">Home</BottomNavButton>
 			<BottomNavButton src="live">Live</BottomNavButton>
