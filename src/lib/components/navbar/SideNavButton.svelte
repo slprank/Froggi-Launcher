@@ -8,4 +8,6 @@
 <div
 	class="h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl"
 	on:click={() => goto(src)}
-/>
+>
+	<slot />
+</div>

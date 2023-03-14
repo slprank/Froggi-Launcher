@@ -150,6 +150,10 @@
 		width: 100%;
 	}
 
+	*::-webkit-scrollbar {
+		display: none;
+	}
+
 	* {
 		-webkit-user-select: none; /* Safari */
 		-ms-user-select: none; /* IE 10 and IE 11 */

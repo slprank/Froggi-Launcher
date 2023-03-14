@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="fixed place-items-center h-screen w-screen grid gap-y-0">
+<div class="fixed place-items-center h-screen w-screen grid gap-y-0 z-2">
 	<div class="w-3/4 max-h-full max-w-md grid gap-y-2">
 		<div class="grid place-items-center w-full">
 			<h1 class="text-white text-5xl font-medium">FluentCodingLines</h1>

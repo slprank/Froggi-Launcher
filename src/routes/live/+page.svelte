@@ -24,19 +24,8 @@
 	}
 
 	$eventEmitter.on('game_frame', (data: FrameEntryType) => {
-		gameFrame = data?.start?.frame ?? 0;
-		player1Percent = data?.players[0]?.post.percent ?? 0;
-		player1ShieldSize = data?.players[0]?.post.shieldSize ?? 0;
-		player1PositionX = data?.players[0]?.post.positionX ?? 0;
+		console.log(data);
 	});
-
-	$: gameStatus = '';
-	$: gameFrame = 0;
-	$: player1CharacterId = 0;
-	$: player1CharacterColor = 0;
-	$: player1Percent = 0;
-	$: player1ShieldSize = 0;
-	$: player1PositionX = 0;
 
 	setTimeout(() => {
 		$statsScene = 4;
@@ -44,7 +33,7 @@
 </script>
 
 <div
-	class="h-screen w-screen bg-cover bg-center"
+	class="fixed h-screen w-screen bg-cover bg-center"
 	style="background-image: url('./background/MeleeMenuAll.png')"
 >
 	{#if $statsScene == LiveStatsScene.WaitingForDolphin}
@@ -72,7 +61,6 @@
 			<RankChange />
 		</div>
 	{/if}
-	<button on:click={testStats}>Test Stats</button>
 </div>
 
 <style>

@@ -1,0 +1,34 @@
+<script lang="ts">
+	import { stringify } from 'postcss';
+	import { textfit } from 'svelte-textfit';
+
+	export let text: string;
+	export let divClass: string;
+	export let textClass: string;
+
+	let parent: Node;
+	let resizeWidth: number;
+	let resizeHeight: number;
+</script>
+
+<svelte:window bind:innerWidth={resizeWidth} bind:innerHeight={resizeHeight} />
+
+{#key resizeWidth || resizeHeight}
+	<div class={`${divClass} w-full max-w-full`} bind:this={parent}>
+		<h1
+			class={`${textClass} whitespace-nowrap`}
+			use:textfit={{
+				parent,
+				mode: 'multi',
+			}}
+		>
+			{text}
+		</h1>
+	</div>
+{/key}
+
+<style>
+	*::-webkit-scrollbar {
+		display: none;
+	}
+</style>

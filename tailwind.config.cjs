@@ -2,7 +2,18 @@
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		extend: {},
+		extend: {
+			zIndex: {
+				2: '2',
+				3: '3',
+				4: '4',
+				5: '5',
+				6: '6',
+				7: '7',
+				8: '8',
+				9: '9',
+			},
+		},
 		borderWidth: {
 			DEFAULT: '1px',
 			0: '0',
