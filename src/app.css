@@ -13,5 +13,9 @@
 }
 
 .text-shadow {
-	text-shadow: 3px 3px 4px black;
+	text-shadow: 3px 3px 5px black, 3px 3px 5px black;
+}
+
+.box-shadow {
+	box-shadow: 3px 3px 5px black;
 }
