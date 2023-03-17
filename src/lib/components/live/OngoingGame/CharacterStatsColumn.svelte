@@ -18,14 +18,15 @@
 		{/each}
 	</div>
 	<TextFitMulti
-		text={textCenter}
 		divClass="grid justify-items-center col-span-2"
 		textClass={`text-white ${
 			$isMobile
 				? 'text-[1.5rem] sm:text-[2rem]'
 				: 'text-2xl sm:text-3xl md:text-4xl lg:md:text-5xl'
 		} text-shadow`}
-	/>
+	>
+		{textCenter}
+	</TextFitMulti>
 	<div class="flex justify-start col-span-4 gap-2 h-full w-full">
 		{#each charactersRight as character}
 			<CharacterIcon {character} imgClass="w-7 sm:8 sm:w-10 lg:w-12" divClass="mr-2" />

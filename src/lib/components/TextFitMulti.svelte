@@ -2,7 +2,6 @@
 	import { stringify } from 'postcss';
 	import { textfit } from 'svelte-textfit';
 
-	export let text: string;
 	export let divClass: string;
 	export let textClass: string;
 
@@ -27,7 +26,7 @@
 				mode: 'multi',
 			}}
 		>
-			{text}
+			<slot />
 		</h1>
 	</div>
 {/key}
