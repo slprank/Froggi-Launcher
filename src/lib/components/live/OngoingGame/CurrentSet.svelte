@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { isMobile } from '$lib/utils/store.svelte';
-	import TextFitMulti from './TextFitMulti.svelte';
+	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 </script>
 
 <div
-	class="h-20 sm:h-24 md:h-26 lg:h-28 w-full grid grid-cols-10 gap-2 lg:gap-1 place-items-center justify-items-stretch z-20"
+	class="h-20 sm:h-24 md:h-26 lg:h-28 w-full grid grid-cols-10 gap-4 lg:gap-1 place-items-center justify-items-stretch z-20"
 >
 	<TextFitMulti
 		text={'FluentCoding'}

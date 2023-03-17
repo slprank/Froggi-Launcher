@@ -11,7 +11,12 @@
 	let resizeHeight: number;
 </script>
 
-<svelte:window bind:innerWidth={resizeWidth} bind:innerHeight={resizeHeight} />
+<svelte:window
+	bind:innerWidth={resizeWidth}
+	bind:innerHeight={resizeHeight}
+	bind:outerWidth={resizeWidth}
+	bind:outerHeight={resizeHeight}
+/>
 
 {#key resizeWidth || resizeHeight}
 	<div class={`${divClass} w-full max-w-full`} bind:this={parent}>
