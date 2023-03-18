@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import OngoingGame from '$lib/components/live/OngoingGame/OngoingGame.svelte';
 	import PlayerRankStats from '$lib/components/live/PlayerRankStats/PlayerRankStats.svelte';
-	import PostGameStats from '$lib/components/live/PostGameStats.svelte';
+	import PostGameStats from '$lib/components/live/PostGameStats/PostGameStats.svelte';
 	import RankChange from '$lib/components/live/RankChange.svelte';
 	import WaitingDolphin from '$lib/components/live/WaitingDolphin.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
@@ -29,7 +29,7 @@
 	});
 
 	setTimeout(() => {
-		$statsScene = 2;
+		$statsScene = 6;
 	}, 2000);
 </script>
 

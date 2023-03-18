@@ -1,9 +1,6 @@
 <script lang="ts">
-	import { isMobile } from '$lib/utils/store.svelte';
 	import CurrentSet from '$lib/components/live/OngoingGame/CurrentSet.svelte';
-	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import PlayerRank from '$lib/components/live/OngoingGame/PlayerRank.svelte';
-	import CharacterIcon from '$lib/components/live/OngoingGame/CharacterIcon.svelte';
 	import StatColumn from '$lib/components/live/OngoingGame/StatColumn.svelte';
 	import CharacterStatsColumn from '$lib/components/live/OngoingGame/CharacterStatsColumn.svelte';
 </script>
