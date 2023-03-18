@@ -2,8 +2,8 @@
 	import { stringify } from 'postcss';
 	import { textfit } from 'svelte-textfit';
 
-	export let divClass: string;
-	export let textClass: string;
+	export let divClass: string = '';
+	export let textClass: string = '';
 
 	let parent: Node;
 	let resizeWidth: number;
@@ -18,9 +18,9 @@
 />
 
 {#key resizeWidth || resizeHeight}
-	<div class={`${divClass} w-full max-w-full`} bind:this={parent}>
+	<div class={`w-full max-w-full ${divClass}`} bind:this={parent}>
 		<h1
-			class={`${textClass} whitespace-nowrap  m-0`}
+			class={`whitespace-nowrap m-0 font-medium ${textClass} `}
 			use:textfit={{
 				parent,
 				mode: 'multi',
