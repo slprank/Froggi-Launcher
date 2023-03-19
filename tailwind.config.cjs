@@ -13,6 +13,10 @@ module.exports = {
 				8: '8',
 				9: '9',
 			},
+
+			opacity: {
+				60: '.60',
+			},
 		},
 		borderWidth: {
 			DEFAULT: '1px',

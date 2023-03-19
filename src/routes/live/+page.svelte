@@ -3,8 +3,8 @@
 	import OngoingGame from '$lib/components/live/OngoingGame/OngoingGame.svelte';
 	import PlayerRankStats from '$lib/components/live/PlayerRankStats/PlayerRankStats.svelte';
 	import PostGameStats from '$lib/components/live/PostGameStats/PostGameStats.svelte';
-	import RankChange from '$lib/components/live/RankChange.svelte';
-	import WaitingDolphin from '$lib/components/live/WaitingDolphin.svelte';
+	import RankChange from '$lib/components/live/RankChange/RankChange.svelte';
+	import WaitingDolphin from '$lib/components/live/WaitingDolphin/WaitingDolphin.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 	import type {
@@ -29,7 +29,7 @@
 	});
 
 	setTimeout(() => {
-		$statsScene = 6;
+		$statsScene = 8;
 	}, 2000);
 </script>
 
