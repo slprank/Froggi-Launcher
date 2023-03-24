@@ -29,8 +29,21 @@
 	});
 
 	setTimeout(() => {
-		$statsScene = 8;
+		$statsScene = 2;
 	}, 2000);
+
+	setTimeout(() => {
+		$statsScene = 4;
+	}, 5000);
+	setTimeout(() => {
+		$statsScene = 8;
+	}, 8000);
+	setTimeout(() => {
+		$statsScene = 6;
+	}, 18000);
+	setTimeout(() => {
+		$statsScene = 2;
+	}, 24000);
 </script>
 
 <main
@@ -55,7 +68,10 @@
 		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.PostGameStats}
-		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+		<div
+			in:fly={{ y: -200, duration: 300, delay: 1000 }}
+			out:fly={{ y: -200, duration: 300, delay: 300 }}
+		>
 			<PostGameStats />
 		</div>
 	{/if}

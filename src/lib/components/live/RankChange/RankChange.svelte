@@ -1,4 +1,5 @@
 <script lang="ts">
+	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { fly } from 'svelte/transition';
 
 	// TODO: Use actual player rank data
@@ -28,7 +29,7 @@
 	<div
 		class="flex flex-col w-80 h-80 place-items-center justify-center space-y-0 rounded-lg bg-zinc-900 bg-opacity-60 border border-zinc-800"
 	>
-		<div class="flex flex-col space-y-2">
+		<div class="flex flex-col space-y-4">
 			{#key rankDisplay.rank}
 				<div
 					class="w-full h-44 place-items-center justify-center max-h-full max-w-md grid px-16 opacity-100"
@@ -41,23 +42,25 @@
 				<div class="grid col-span-4 place-items-center justify-center" />
 				<div class="grid col-span-4 place-items-center justify-center">
 					{#key rankDisplay}
-						<h1
-							class="text-white text-4xl font-medium whitespace-nowrap"
-							in:fly={{ y: -25, duration: 350 }}
-						>
-							{rankDisplay.rating}
-						</h1>
+						<div in:fly={{ y: -25, duration: 350 }}>
+							<TextFitMulti
+								divClass="text-white text-4xl font-medium whitespace-nowrap"
+							>
+								{rankDisplay.rating}
+							</TextFitMulti>
+						</div>
 					{/key}
 				</div>
 				<div class="grid col-span-4 place-items-center justify-center">
 					{#key rankDifference}
 						{#if rankDifference}
-							<h1
-								class="text-white text-3xl font-medium whitespace-nowrap"
-								in:fly={{ x: 25, duration: 350 }}
-							>
-								{rankDifference >= 0 ? '+' : '-'}{rankDifference}
-							</h1>
+							<div in:fly={{ x: 25, duration: 200 }}>
+								<TextFitMulti
+									divClass="text-white text-3xl font-medium whitespace-nowrap"
+								>
+									{rankDifference >= 0 ? '+' : '-'}{rankDifference}
+								</TextFitMulti>
+							</div>
 						{/if}
 					{/key}
 				</div>

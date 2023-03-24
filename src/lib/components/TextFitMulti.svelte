@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { stringify } from 'postcss';
 	import { textfit } from 'svelte-textfit';
 
 	export let divClass: string = '';

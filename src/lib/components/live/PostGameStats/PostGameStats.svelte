@@ -34,6 +34,7 @@
 	<PlayerRank player1Rank="DIAMOND 2" player2Rank="DIAMOND 3" />
 	<div
 		in:fade={{ delay: 1300 }}
+		out:fade={{ duration: 300 }}
 		class="fixed h-screen w-screen bg-cover bg-center opacity-50"
 		style={`background-image: url('./stages/${stageId}.png')`}
 	/>
