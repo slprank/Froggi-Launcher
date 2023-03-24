@@ -1,5 +1,5 @@
 <script lang="ts">
-	import NavButton from '$lib/components/navbar/SideNavButton.svelte';
+	import SideNavButton from '$lib/components/navbar/SideNavButton.svelte';
 	import { fly } from 'svelte/transition';
 	import { isBrowser, isDesktop, isElectron, isMobile, isTablet } from '$lib/utils/store.svelte';
 	import BottomNavButton from './BottomNavButton.svelte';
@@ -17,7 +17,7 @@
 	}
 
 	let visibilityTimer: NodeJS.Timeout;
-	$: isVisible = true;
+	$: isVisible = false;
 	startVisibilityTimer();
 
 	let width: number;
@@ -42,23 +42,29 @@
 			<div
 				class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1"
 			>
-				<NavButton src={'live'} icon={''} />
+				<SideNavButton src={'live'}>
+					<img
+						src="https://img.icons8.com/material-outlined/256/youtube-live.png"
+						alt="live"
+					/>
+				</SideNavButton>
 			</div>
 
 			<div
 				class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
 			>
-				<NavButton src={'/'} icon={''} />
+				<SideNavButton src={'/'} />
 			</div>
 
 			<div
 				class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 			>
-				<NavButton src={'replays'} icon={''} />
-				<NavButton src={'stats'} icon={''} />
-				<NavButton src={'achievements'} icon={''} />
-				<NavButton src={'profile'} icon={''} />
-				<NavButton src={'settings'} icon={''} />
+				<SideNavButton src={'leaderboard'} />
+				<SideNavButton src={'replays'} />
+				<SideNavButton src={'stats'} />
+				<SideNavButton src={'achievements'} />
+				<SideNavButton src={'profile'} />
+				<SideNavButton src={'settings'} />
 			</div>
 		</div>
 
@@ -77,7 +83,7 @@
 		>
 			<BottomNavButton src="/">Home</BottomNavButton>
 			<BottomNavButton src="live">Live</BottomNavButton>
-			<BottomNavButton src="achievements">Trophy</BottomNavButton>
+			<BottomNavButton src="leaderboard">Leaderboard</BottomNavButton>
 			<BottomNavButton src="profile">Profile</BottomNavButton>
 			<BottomNavButton src="settings">Settings</BottomNavButton>
 		</div>

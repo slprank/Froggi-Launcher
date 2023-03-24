@@ -9,7 +9,7 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<h6>Stats</h6>
+	<h6>Leaderboard</h6>
 </main>
 
 <style>

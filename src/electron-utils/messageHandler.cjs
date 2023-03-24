@@ -108,6 +108,8 @@ class MessageHandler {
 		);
 	}
 
+	// Any data sent to frontend should be saved and initialized
+	// Leaderboard data should be stored as well
 	initData(socket) {
 		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(

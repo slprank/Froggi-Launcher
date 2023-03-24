@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { eventEmitter } from '$lib/utils/store.svelte';
+	import { fade } from 'svelte/transition';
 </script>
 
-<div class="h-screen w-screen m-0 flex justify-center">
+<main
+	class="fixed h-screen w-screen bg-cover bg-center"
+	style="background-image: url('./background/MeleeMenuGreen.png')"
+	in:fade={{ delay: 50, duration: 150 }}
+	out:fade={{ duration: 300 }}
+>
 	<h6>Settings</h6>
-</div>
+</main>
 
 <style>
 </style>

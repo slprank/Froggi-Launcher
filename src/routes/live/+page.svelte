@@ -6,7 +6,7 @@
 	import RankChange from '$lib/components/live/RankChange/RankChange.svelte';
 	import WaitingDolphin from '$lib/components/live/WaitingDolphin/WaitingDolphin.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, isBrowser, isMobile, statsScene } from '$lib/utils/store.svelte';
 	import type {
 		ActionCountsType,
 		ComboType,
@@ -21,7 +21,7 @@
 	import { fly } from 'svelte/transition';
 
 	function testStats() {
-		$eventEmitter.emit('send-message', 'test-live-stats', 10);
+		$eventEmitter.emit('electron', 'test-live-stats', 10);
 	}
 
 	$eventEmitter.on('game_frame', (data: FrameEntryType) => {
@@ -29,28 +29,15 @@
 	});
 
 	setTimeout(() => {
-		$statsScene = 2;
+		testStats();
 	}, 2000);
-
-	setTimeout(() => {
-		$statsScene = 4;
-	}, 5000);
-	setTimeout(() => {
-		$statsScene = 8;
-	}, 8000);
-	setTimeout(() => {
-		$statsScene = 6;
-	}, 18000);
-	setTimeout(() => {
-		$statsScene = 2;
-	}, 24000);
 </script>
 
 <main
 	class="fixed h-screen w-screen bg-cover bg-center"
 	style="background-image: url('./background/MeleeMenuAll.png')"
-	in:fade={{ delay: 150, duration: 150 }}
-	out:fade={{ duration: 150 }}
+	in:fade={{ delay: 50, duration: 150 }}
+	out:fade={{ duration: 300 }}
 >
 	{#if $statsScene == LiveStatsScene.WaitingForDolphin}
 		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>

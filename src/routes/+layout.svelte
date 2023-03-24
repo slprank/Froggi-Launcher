@@ -31,13 +31,13 @@
 		if ($isElectron) {
 			initElectronEvents();
 			initGlobalEventListeners();
-			$eventEmitter.emit('send-message', 'init-data-electron');
+			$eventEmitter.emit('electron', 'init-data-electron');
 		}
 	}
 
 	function initElectronEvents() {
 		console.log('Initializing electron');
-		$eventEmitter.on('send-message', (topic, payload) => {
+		$eventEmitter.on('electron', (topic, payload) => {
 			console.log('Sending message..', topic, payload);
 			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
 		});
@@ -53,7 +53,7 @@
 		console.log('Initializing websocket');
 		const socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
 		socket.onopen = () => {
-			$eventEmitter.on('send-message', (topic, payload) => {
+			$eventEmitter.on('electron', (topic, payload) => {
 				console.log('Sending message..', topic, payload);
 				socket.send(JSON.stringify({ [topic]: payload ?? '' }));
 			});
@@ -144,6 +144,17 @@
 		z-index: 100;
 		height: 40px;
 		width: 100%;
+	}
+
+	:global(body) {
+		margin: 0;
+		padding: 0;
+		background-color: black;
+	}
+
+	:root {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	}
 
 	*::-webkit-scrollbar {
