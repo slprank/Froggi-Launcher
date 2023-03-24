@@ -40,13 +40,13 @@
 			class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-r-1 border-opacity-25 border-white justify-center items-center space-y-4 z-50"
 		>
 			<div
-				class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1 "
+				class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1"
 			>
 				<NavButton src={'live'} icon={''} />
 			</div>
 
 			<div
-				class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
+				class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
 			>
 				<NavButton src={'/'} icon={''} />
 			</div>
