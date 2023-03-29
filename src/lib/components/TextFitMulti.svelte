@@ -5,18 +5,17 @@
 	export let textClass: string = '';
 
 	let parent: Node;
-	let resizeWidth: number;
-	let resizeHeight: number;
+	let resize: number;
 </script>
 
 <svelte:window
-	bind:innerWidth={resizeWidth}
-	bind:innerHeight={resizeHeight}
-	bind:outerWidth={resizeWidth}
-	bind:outerHeight={resizeHeight}
+	bind:innerWidth={resize}
+	bind:innerHeight={resize}
+	bind:outerWidth={resize}
+	bind:outerHeight={resize}
 />
 
-{#key resizeWidth || resizeHeight}
+{#key resize}
 	<div class={`w-full max-w-full ${divClass}`} bind:this={parent}>
 		<h1
 			class={`whitespace-nowrap m-0 font-medium ${textClass} `}

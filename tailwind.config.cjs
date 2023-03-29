@@ -3,6 +3,12 @@ module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
+			minWidth: {
+				'2xl': '672px',
+			},
+			opacity: {
+				60: '.60',
+			},
 			zIndex: {
 				2: '2',
 				3: '3',
@@ -12,10 +18,6 @@ module.exports = {
 				7: '7',
 				8: '8',
 				9: '9',
-			},
-
-			opacity: {
-				60: '.60',
 			},
 		},
 		borderWidth: {
