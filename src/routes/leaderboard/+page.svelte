@@ -1,10 +1,16 @@
 <script lang="ts">
 	import LeaderboardRow from '$lib/components/leaderboard/LeaderboardRow.svelte';
+	import MultiSelect from '$lib/components/leaderboard/MultiSelect.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { eventEmitter, isMobile } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
 
-	// TODO add filter dropdowns
+	$: selectedRegions = [];
+	$: selectedCharacters = [];
+	$: console.log(selectedCharacters);
+
+	// TODO: create multi select dropdown
+	// TODO: add filter dropdowns
 	// Add and generate 500 lines of dummy data
 </script>
 
@@ -23,9 +29,24 @@
 			<h1 class="text-white text-md md:text-xl">Leaderboard</h1>
 		</div>
 		<div class="w-full h-16 flex" in:fly={{ y: 100, duration: 1500, delay: 150 }}>
-			<div class="w-16 h-full border">Region</div>
-			<div class="w-16 h-full border">Character</div>
-			<div class="w-16 h-full border">Something</div>
+			<div class="w-32 mr-2">
+				<MultiSelect bind:value={selectedRegions} placeholder="Regions">
+					<option value={'NA'}>North America</option>
+					<option value={'EU'}>Europe</option>
+					<option value={'Other'}>Other</option>
+					<option value={'Friends'}>Favorites</option>
+				</MultiSelect>
+			</div>
+			<div class="w-32 mr-2">
+				<MultiSelect
+					bind:value={selectedCharacters}
+					placeholder="Characters"
+					isCharacter={true}
+				>
+					<option value={20}>Falco</option>
+					<option value={4}>Kirby</option>
+				</MultiSelect>
+			</div>
 		</div>
 		<div class="max-h-full overflow-scroll" in:fly={{ y: 100, duration: 1500, delay: 300 }}>
 			<div class="w-full h-12 grid grid-cols-12 col-span-12 min-w-2xl max-w-6xl">

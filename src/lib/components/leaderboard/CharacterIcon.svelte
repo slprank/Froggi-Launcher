@@ -3,7 +3,6 @@
 	export let imgClass: string = '';
 	export let divClass: string = '';
 	// TODO: Use actual character data
-	console.log(characterId);
 </script>
 
 <div class={`flex justify-center items-center ${divClass}`}>
