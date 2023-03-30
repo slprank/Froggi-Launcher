@@ -153,9 +153,19 @@
 					data-value={option.value}
 				>
 					{#if isCharacter}
-						<CharacterIcon imgClass="w-7 h-7" characterId={option.value} />
+						<div
+							class={`flex justify-center items-center w-7 h-7`}
+							data-value={option.value}
+						>
+							<img
+								class={`aspect-square`}
+								alt="character icon"
+								src={`./characters/${option.value}/0/stock.png`}
+								data-value={option.value}
+							/>
+						</div>
 					{/if}
-					<h1>
+					<h1 data-value={option.value}>
 						{option.name}
 					</h1>
 				</li>
