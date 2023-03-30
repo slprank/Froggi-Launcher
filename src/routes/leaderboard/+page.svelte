@@ -26,7 +26,9 @@
 		} w-full h-full max-h-full max-w-full pb-12 overflow-hidden`}
 	>
 		<div class="w-full h-12 grid content-center" in:fly={{ y: 100, duration: 1500 }}>
-			<h1 class="text-white text-md md:text-xl">Leaderboard</h1>
+			<h1 class="text-white text-md md:text-xl whitespace-nowrap m-0 font-medium text-shadow">
+				Leaderboard
+			</h1>
 		</div>
 		<div class="w-full h-16 flex" in:fly={{ y: 100, duration: 1500, delay: 150 }}>
 			<div class="w-32 mr-2">
@@ -54,19 +56,39 @@
 					class="w-full h-full grid grid-cols-12 col-span-12 border-b-1 border-gray-500 rounded-t-md bg-black bg-opacity-50"
 				>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
-						<TextFitMulti textClass="text-white text-xl">RANK</TextFitMulti>
+						<TextFitMulti
+							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+						>
+							RANK
+						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-3 grid content-center justify-start">
-						<TextFitMulti textClass="text-white text-xl">PLAYER</TextFitMulti>
+						<TextFitMulti
+							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+						>
+							PLAYER
+						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-3 grid content-center justify-start">
-						<TextFitMulti textClass="text-white text-xl">CHARACTERS</TextFitMulti>
+						<TextFitMulti
+							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+						>
+							CHARACTERS
+						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
-						<TextFitMulti textClass="text-white text-xl">RATING</TextFitMulti>
+						<TextFitMulti
+							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+						>
+							RATING
+						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
-						<TextFitMulti textClass="text-white text-xl">W/L</TextFitMulti>
+						<TextFitMulti
+							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+						>
+							W/L
+						</TextFitMulti>
 					</div>
 				</div>
 			</div>
