@@ -1,28 +1,31 @@
 <script>
-	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	// TODO: Implement player type
 	export let player;
 </script>
 
-<div class="w-full h-12 grid grid-cols-12 col-span-12 border-b-1 border-gray-500">
+<div class="w-full h-12 grid grid-cols-12 gap-1 col-span-12 border-b-1 border-gray-500">
 	<div class="w-full h-12 col-span-2 grid content-center justify-center">
-		<TextFitMulti textClass="text-white text-xl">{player.rank}</TextFitMulti>
+		<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl">{player.rank}</h1>
 	</div>
-	<div class="w-full h-12 col-span-3 grid grid-rows-5 content-center">
-		<TextFitMulti divClass="w-full max-w-full row-span-3 text-white text-[36px]">
-			{player.nickname}
-		</TextFitMulti>
-		<TextFitMulti divClass="w-full max-w-full row-span-2 text-gray-500 text-[12px]">
-			{player.connectCode}
-		</TextFitMulti>
+	<div class="w-full h-12 col-span-3 grid grid-rows-6 content-center">
+		<div class="w-full h-full max-w-full row-span-3">
+			<h1 class="w-full max-w-full text-white text-xl">
+				{player.nickname}
+			</h1>
+		</div>
+		<div class="w-full h-full max-w-full row-span-2">
+			<h1 class="w-full max-w-full text-gray-500 text-md">
+				{player.connectCode}
+			</h1>
+		</div>
 	</div>
 	<div class="w-full h-12 col-span-3 grid content-center justify-start">
-		<TextFitMulti textClass="text-white text-xl">ICO</TextFitMulti>
+		<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl">ICO</h1>
 	</div>
 	<div class="w-full h-12 col-span-2 grid content-center justify-center">
-		<TextFitMulti textClass="text-white text-xl">{player.rating}</TextFitMulti>
+		<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl">{player.rating}</h1>
 	</div>
 	<div class="w-full h-12 col-span-2 grid content-center justify-center">
-		<TextFitMulti textClass="text-white text-xl">{player.winLoss}</TextFitMulti>
+		<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl">{player.winLoss}</h1>
 	</div>
 </div>
