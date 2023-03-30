@@ -33,7 +33,7 @@
 />
 
 <div>
-	{#if isVisible && width > 768}
+	{#if isVisible && width > 768 && !$isMobile}
 		<div
 			in:fly={{ x: -100, duration: 150 }}
 			out:fly={{ x: -100, duration: 400 }}
@@ -77,7 +77,7 @@
 		<div
 			in:fly={{ y: 100, duration: 150 }}
 			out:fly={{ y: 100, duration: 400 }}
-			class={`fixed grid grid-cols-5 divide-x divide-zinc-800 bottom-0 w-screen h-16 m-0 bg-black bg-opacity-50 border-t-1 border-opacity-25 border-white z-50 ${
+			class={`fixed grid grid-cols-5 divide-x divide-zinc-800 bottom-0 w-screen h-16 m-0 bg-black bg-opacity-80 border-t-1 border-opacity-25 border-white z-50 ${
 				$isMobile ? 'pb-4' : ''
 			}`}
 		>

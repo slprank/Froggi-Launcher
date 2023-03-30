@@ -29,6 +29,7 @@
 		"Chrome 89"
 	],
 	"dependencies": {
+		"@dimfeld/svelte-lazyload": "^0.0.4",
 		"@leveluptuts/svelte-fit": "^1.0.3",
 		"@slippi/slippi-js": "^6.6.0",
 		"axios": "^1.3.4",
