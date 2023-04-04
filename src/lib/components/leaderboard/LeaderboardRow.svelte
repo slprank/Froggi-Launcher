@@ -1,15 +1,20 @@
 <script>
 	import CharacterIcon from '$lib/components/leaderboard/CharacterIcon.svelte';
+	import { isMobile } from '$lib/utils/store.svelte';
 	import LazyLoad from '@dimfeld/svelte-lazyload';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 
 	// TODO: Click on name directs to profile page
 	// TODO: Implement player type
+
+	const animate = (node) =>
+		$isMobile ? fly(node, { duration: 150, x: 50 }) : fade(node, { duration: 150 });
+
 	export let player;
 </script>
 
 <LazyLoad class="w-full h-12 col-span-12 border-b-1 border-gray-500">
-	<div class="w-full h-12 grid grid-cols-12 gap-1" in:fade={{ duration: 100 }}>
+	<div class="w-full h-12 grid grid-cols-12 gap-1" in:animate>
 		<div class="w-full h-12 col-span-2 grid content-center justify-center">
 			<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl text-shadow">
 				{player.rank}
