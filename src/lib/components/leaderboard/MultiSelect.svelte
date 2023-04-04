@@ -8,6 +8,8 @@
 	export let placeholder = '';
 	export let isCharacter = false;
 
+	// TODO: Display selected content in dropdown - https://svelte.dev/repl/c7094fb1004b440482d2a88f4d1d7ef5?version=3.14.0
+
 	let input,
 		inputValue,
 		options = [],

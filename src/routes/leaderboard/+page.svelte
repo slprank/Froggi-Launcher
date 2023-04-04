@@ -12,6 +12,7 @@
 	// TODO: create multi select dropdown
 	// TODO: add filter dropdowns
 	// Add and generate 500 lines of dummy data
+	// Add horizontal scroll bar on PC
 </script>
 
 <main
@@ -23,7 +24,7 @@
 	<div
 		class={`place-items-start px-2 ${
 			!$isMobile ? 'md:px-20' : ''
-		} w-full h-full max-h-full max-w-full pb-12 overflow-hidden`}
+		} w-full h-full max-h-full max-w-6xl pb-12 overflow-hidden`}
 	>
 		<div class="w-full h-12 grid content-center" in:fly={{ y: 100, duration: 1500 }}>
 			<h1 class="text-white text-md md:text-xl whitespace-nowrap m-0 font-medium text-shadow">

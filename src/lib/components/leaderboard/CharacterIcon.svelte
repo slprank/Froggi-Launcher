@@ -3,6 +3,7 @@
 	export let imgClass: string = '';
 	export let divClass: string = '';
 	// TODO: Use actual character data
+	// TODO: Add usage percentage
 </script>
 
 <div class={`flex justify-center items-center ${divClass}`}>

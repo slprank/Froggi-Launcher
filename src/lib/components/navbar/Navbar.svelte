@@ -17,7 +17,7 @@
 	}
 
 	let visibilityTimer: NodeJS.Timeout;
-	$: isVisible = false;
+	$: isVisible = $isMobile ? true : false;
 	startVisibilityTimer();
 
 	let width: number;
