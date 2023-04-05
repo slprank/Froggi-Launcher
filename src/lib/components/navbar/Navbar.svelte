@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SideNavButton from '$lib/components/navbar/SideNavButton.svelte';
+	import NavButton from '$lib/components/navbar/NavButton.svelte';
 	import { fly } from 'svelte/transition';
 	import { isBrowser, isDesktop, isElectron, isMobile, isTablet } from '$lib/utils/store.svelte';
 	import BottomNavButton from './BottomNavButton.svelte';
@@ -51,27 +51,33 @@
 				<div
 					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1"
 				>
-					<SideNavButton click={() => goto('live')}>
-						<img
-							src="https://img.icons8.com/material-outlined/256/youtube-live.png"
-							alt="live"
-						/>
-					</SideNavButton>
+					<NavButton click={() => goto('live')}>
+						<img src="/icons/live.png" alt="live" />
+					</NavButton>
 				</div>
 
 				<div
 					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
 				>
-					<SideNavButton click={() => goto('/')} />
+					<NavButton click={() => goto('/')}>
+						<img src="./icons/home.png" alt="home" />
+					</NavButton>
 				</div>
 				<div
 					class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 				>
-					<SideNavButton click={() => goto('leaderboard')} />
-					<SideNavButton click={() => goto('replays')} />
-					<SideNavButton click={() => goto('stats')} />
-					<SideNavButton click={() => goto('achievements')} />
-					<SideNavButton click={() => goto('profile')} />
+					<NavButton click={() => goto('leaderboard')}>
+						<img src="./icons/leaderboard.png" alt="leaderboard" />
+					</NavButton>
+					<NavButton click={() => goto('replays')}>
+						<img src="./icons/replay.png" alt="replays" />
+					</NavButton>
+					<NavButton click={() => goto('achievements')}>
+						<img src="./icons/trophy.png" alt="achievements" />
+					</NavButton>
+					<NavButton click={() => goto('profile')}>
+						<img src="./icons/profile.png" alt="profile" />
+					</NavButton>
 				</div>
 			</div>
 
@@ -84,24 +90,15 @@
 					<div
 						class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 					>
-						<SideNavButton click={() => goto('obs')}>
-							<img
-								src="https://img.icons8.com/ios-filled/512/obs-studio.png"
-								alt="obs"
-							/>
-						</SideNavButton>
-						<SideNavButton click={() => (isMobileOpen = true)}>
-							<img
-								src="https://cdn-icons-png.flaticon.com/512/0/191.png"
-								alt="mobile"
-							/>
-						</SideNavButton>
-						<SideNavButton click={() => goto('settings')}>
-							<img
-								src="https://cdn-icons-png.flaticon.com/512/126/126472.png"
-								alt="settings"
-							/>
-						</SideNavButton>
+						<NavButton click={() => goto('obs')}>
+							<img src="./icons/obs.png" alt="obs" />
+						</NavButton>
+						<NavButton click={() => (isMobileOpen = true)}>
+							<img src="./icons/mobile.png" alt="mobile" />
+						</NavButton>
+						<NavButton click={() => goto('settings')}>
+							<img src="./icons/settings.png" alt="settings" />
+						</NavButton>
 					</div>
 				{/if}
 			</div>
@@ -109,14 +106,31 @@
 			<div
 				in:fly={{ y: 100, duration: 150 }}
 				out:fly={{ y: 100, duration: 400 }}
-				class={`fixed grid grid-cols-4 divide-x divide-zinc-800 bottom-0 w-screen h-16 m-0 bg-black bg-opacity-80 border-t-1 border-opacity-25 border-white z-50 ${
-					$isMobile ? 'pb-4' : ''
+				class={`fixed grid justify-center w-screen h-16 m-0 bg-black bg-opacity-60 border-t-1 border-opacity-25 bottom-0 border-white z-50 ${
+					$isMobile ? 'pb-4 h-20' : ''
 				}`}
 			>
-				<BottomNavButton click={() => goto('/')}>Home</BottomNavButton>
-				<BottomNavButton click={() => goto('live')}>Live</BottomNavButton>
-				<BottomNavButton click={() => goto('leaderboard')}>Leaderboard</BottomNavButton>
-				<BottomNavButton click={() => goto('profile')}>Profile</BottomNavButton>
+				<div
+					class={`grid grid-cols-5 justify-center content-center place-items-center divide-x divide-zinc-800 w-screen ${
+						$isMobile ? 'max-w-lg' : 'max-w-xl'
+					}`}
+				>
+					<NavButton click={() => goto('live')}>
+						<img src="/icons/live.png" alt="live" />
+					</NavButton>
+					<NavButton click={() => goto('/')}>
+						<img src="./icons/home.png" alt="home" />
+					</NavButton>
+					<NavButton click={() => goto('leaderboard')}>
+						<img src="./icons/leaderboard.png" alt="leaderboard" />
+					</NavButton>
+					<NavButton click={() => goto('achievements')}>
+						<img src="./icons/trophy.png" alt="achievements" />
+					</NavButton>
+					<NavButton click={() => goto('profile')}>
+						<img src="./icons/profile.png" alt="profile" />
+					</NavButton>
+				</div>
 			</div>
 		{/if}
 	{/if}
