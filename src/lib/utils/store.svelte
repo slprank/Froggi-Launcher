@@ -4,6 +4,7 @@
 	import { EventEmitter } from 'events';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import Device from 'svelte-device-info';
+	import type { Url } from '$lib/types/types';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
 
@@ -14,6 +15,15 @@
 	const isElectron = writable<boolean>(window.electron);
 	const isMobile = writable<boolean>(!window.electron && Device.isMobile);
 	const isTablet = writable<boolean>(!window.electron && Device.isTablet);
+	const isPWA = writable<boolean>(
+		window.electron ||
+			(!window.electron && browser && !Device.isMobile && !Device.isTablet) ||
+			!!(
+				(window.matchMedia?.('(display-mode: standalone)').matches ||
+					(window.navigator as any).standalone) &&
+				(Device.isMobile || Device.isTablet)
+			),
+	);
 
 	const currentPlayerRankStats = writable<any>();
 	const currentPlayersRankStats = writable<any>();
@@ -23,7 +33,7 @@
 	const recentRankedSets = writable<any>();
 	const sessionStats = writable<any>();
 	const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
-	const urls = writable<any>();
+	const urls = writable<Url>();
 
 	export {
 		eventEmitter,
@@ -32,6 +42,7 @@
 		isElectron,
 		isMobile,
 		isTablet,
+		isPWA,
 		currentPlayerRankStats,
 		currentPlayersRankStats,
 		gameScore,

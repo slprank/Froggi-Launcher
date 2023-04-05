@@ -15,8 +15,6 @@
 >
 	<div class="fixed place-items-center grid h-screen w-screen bg-gradient-to-t from-black z-40">
 		<Logo />
-
-		<h1>Hello {agent}!</h1>
 	</div>
 </main>
 

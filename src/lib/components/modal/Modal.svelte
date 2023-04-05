@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { stringify } from 'postcss';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	export let open = false;
+	export { _class as class };
+	let _class: string;
 	const dispatch = createEventDispatcher();
 
 	function handleCloseClick() {
@@ -31,13 +34,14 @@
 </script>
 
 {#if open}
-	<div use:modalAction transition:fade={{ duration: 200 }} class="z-50">
-		<section>
+	<div use:modalAction transition:fade={{ duration: 200 }} class="w-screen h-screen z-50">
+		<section class="w-full h-full">
 			<aside
 				in:fly={{ duration: 200, y: 100 }}
 				out:fade={{ duration: 200 }}
 				use:clickOutside
 				on:click_outside={handleCloseClick}
+				class={`${_class}`}
 			>
 				<slot />
 			</aside>
@@ -56,7 +60,7 @@
 	}
 	div {
 		position: absolute;
-		background-color: rgba(0, 0, 0, 0.2);
+		background-color: rgba(0, 0, 0, 0.5);
 		top: 0;
 		left: 0;
 		height: 100%;

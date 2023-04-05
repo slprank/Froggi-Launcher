@@ -10,6 +10,11 @@ import type {
 	StockType,
 } from '@slippi/slippi-js';
 
+export interface Url {
+	external: string;
+	local: string;
+}
+
 // Old types
 export interface Player {
 	connectCode: string;
