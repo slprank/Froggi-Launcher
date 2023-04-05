@@ -6,8 +6,8 @@
 	style="background-image: url('./background/MeleeMenuAll.png')"
 >
 	<div class="h-full w-full grid place-items-center p-4">
-		<h1 class="text-white text-4xl font-medium text-shadow">
-			Add page to homescreen to get the best app experience
+		<h1 class="text-white text-xl font-medium text-shadow">
+			Add page to home screen for the best experience
 		</h1>
 	</div>
 </div>

@@ -9,15 +9,21 @@
 >
 	<div class="h-full w-full grid grid-cols-2">
 		<div class="col-span-1 place-items-center grid">
-			<div class="grid place-items-center w-full h-36 px-4">
-				<h1 class="text-white text-2xl font-medium">
-					Add page to homescreen to get the best app experience
+			<div class="grid w-full h-48 px-4">
+				<h1 class="text-white text-xl font-medium text-shadow">
+					Add page to home screen to get the best app experience
+				</h1>
+				<h1 class="text-gray-500 text-md font-medium text-shadow">
+					App might require a new scan from time to time
 				</h1>
 			</div>
 		</div>
 		<div class="col-span-1 place-items-center grid rounded-md">
 			<div class="w-48 h-48 border-4 border-zinc-700">
 				<QrCode value={$urls.external} size="192" />
+				<h1 class="text-gray-500 text-md font-medium text-shadow mt-2">
+					{$urls.external}
+				</h1>
 			</div>
 		</div>
 	</div>

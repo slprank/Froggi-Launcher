@@ -14,9 +14,12 @@
 	}
 
 	function startVisibilityTimer() {
-		visibilityTimer = setTimeout(() => {
-			isVisible = false;
-		}, 5000);
+		visibilityTimer = setTimeout(
+			() => {
+				isVisible = false;
+			},
+			$isMobile ? 5000 : 10000,
+		);
 	}
 
 	let visibilityTimer: NodeJS.Timeout;
