@@ -7,11 +7,10 @@
 
 	$: selectedRegions = [];
 	$: selectedCharacters = [];
-	$: console.log(selectedCharacters);
 
-	// TODO: create multi select dropdown
-	// TODO: add filter dropdowns
-	// Add and generate 500 lines of dummy data
+	// TODO: add filter dropdown
+	// TODO: fill dropdown options
+	// TODO: use array of filters to filter
 	// Add horizontal scroll bar on PC
 </script>
 
@@ -98,7 +97,7 @@
 			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25 
 			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50"
 			>
-				{#each Array.from(Array(5000)) as _, i}
+				{#each Array.from(Array(200)) as _, i}
 					<LeaderboardRow
 						player={{
 							rank: i + 1,

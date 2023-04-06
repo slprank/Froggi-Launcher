@@ -22,6 +22,7 @@
 	} from '$lib/utils/store.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
+	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 
 	let isPwaOpen = !$isPWA;
 
@@ -75,6 +76,7 @@
 		initGlobalEventListeners();
 	}
 
+	// Set all global variables here
 	function initGlobalEventListeners() {
 		console.log('Initializing listeners');
 		$eventEmitter.on('currentPlayer_rank_stats', (rankStats: any) => {
@@ -139,13 +141,7 @@
 
 {#if ready}
 	<Navbar />
-	<Modal
-		bind:open={isPwaOpen}
-		on:close={() => (isPwaOpen = false)}
-		class="w-[90%] h-72 min-w-72 max-w-[612px] rounded-lg"
-	>
-		<Pwa />
-	</Modal>
+	<GlobalModal />
 	<slot />
 {/if}
 

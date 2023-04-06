@@ -15,6 +15,7 @@
 	const isElectron = writable<boolean>(window.electron);
 	const isMobile = writable<boolean>(!window.electron && Device.isMobile);
 	const isTablet = writable<boolean>(!window.electron && Device.isTablet);
+
 	const isPWA = writable<boolean>(
 		window.electron ||
 			(!window.electron && browser && !Device.isMobile && !Device.isTablet) ||

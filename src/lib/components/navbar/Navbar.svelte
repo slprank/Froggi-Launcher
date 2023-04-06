@@ -2,10 +2,9 @@
 	import NavButton from '$lib/components/navbar/NavButton.svelte';
 	import { fly } from 'svelte/transition';
 	import { isBrowser, isDesktop, isElectron, isMobile, isTablet } from '$lib/utils/store.svelte';
-	import BottomNavButton from './BottomNavButton.svelte';
 	import { goto } from '$app/navigation';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import Mobile from '$lib/components/modal/mobile/Mobile.svelte';
+	import Mobile from '$lib/components/modal/electron/Mobile.svelte';
 
 	function resetVisibilityTimer() {
 		isVisible = true;
@@ -42,7 +41,7 @@
 
 <div>
 	{#if isVisible}
-		{#if $isElectron || (width > 768 && !$isMobile)}
+		{#if !$isMobile && width > 768}
 			<div
 				in:fly={{ x: -100, duration: 150 }}
 				out:fly={{ x: -100, duration: 400 }}
