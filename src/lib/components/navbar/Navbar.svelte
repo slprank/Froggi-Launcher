@@ -51,7 +51,7 @@
 					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1"
 				>
 					<NavButton click={() => goto('live')}>
-						<img src="/icons/live.png" alt="live" />
+						<img src="./image/button-icons/live.png" alt="live" />
 					</NavButton>
 				</div>
 
@@ -59,23 +59,23 @@
 					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
 				>
 					<NavButton click={() => goto('/')}>
-						<img src="./icons/home.png" alt="home" />
+						<img src="./image/button-icons/home.png" alt="home" />
 					</NavButton>
 				</div>
 				<div
 					class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 				>
 					<NavButton click={() => goto('leaderboard')}>
-						<img src="./icons/leaderboard.png" alt="leaderboard" />
+						<img src="./image/button-icons/leaderboard.png" alt="leaderboard" />
 					</NavButton>
 					<NavButton click={() => goto('replays')}>
-						<img src="./icons/replay.png" alt="replays" />
+						<img src="./image/button-icons/replay.png" alt="replays" />
 					</NavButton>
 					<NavButton click={() => goto('achievements')}>
-						<img src="./icons/trophy.png" alt="achievements" />
+						<img src="./image/button-icons/trophy.png" alt="achievements" />
 					</NavButton>
 					<NavButton click={() => goto('profile')}>
-						<img src="./icons/profile.png" alt="profile" />
+						<img src="./image/button-icons/profile.png" alt="profile" />
 					</NavButton>
 				</div>
 			</div>
@@ -90,13 +90,13 @@
 						class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 					>
 						<NavButton click={() => goto('obs')}>
-							<img src="./icons/obs.png" alt="obs" />
+							<img src="./image/button-icons/obs.png" alt="obs" />
 						</NavButton>
 						<NavButton click={() => (isMobileOpen = true)}>
-							<img src="./icons/mobile.png" alt="mobile" />
+							<img src="./image/button-icons/mobile.png" alt="mobile" />
 						</NavButton>
 						<NavButton click={() => goto('settings')}>
-							<img src="./icons/settings.png" alt="settings" />
+							<img src="./image/button-icons/settings.png" alt="settings" />
 						</NavButton>
 					</div>
 				{/if}
@@ -115,19 +115,19 @@
 					}`}
 				>
 					<NavButton click={() => goto('live')}>
-						<img src="/icons/live.png" alt="live" />
+						<img src="./image/button-icons/live.png" alt="live" />
 					</NavButton>
 					<NavButton click={() => goto('/')}>
-						<img src="./icons/home.png" alt="home" />
+						<img src="./image/button-icons/home.png" alt="home" />
 					</NavButton>
 					<NavButton click={() => goto('leaderboard')}>
-						<img src="./icons/leaderboard.png" alt="leaderboard" />
+						<img src="./image/button-icons/leaderboard.png" alt="leaderboard" />
 					</NavButton>
 					<NavButton click={() => goto('achievements')}>
-						<img src="./icons/trophy.png" alt="achievements" />
+						<img src="./image/button-icons/trophy.png" alt="achievements" />
 					</NavButton>
 					<NavButton click={() => goto('profile')}>
-						<img src="./icons/profile.png" alt="profile" />
+						<img src="./image/button-icons/profile.png" alt="profile" />
 					</NavButton>
 				</div>
 			</div>
