@@ -4,6 +4,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { eventEmitter, isMobile } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
+	import LazyLoad from '@dimfeld/svelte-lazyload';
 
 	$: selectedRegions = [];
 	$: selectedCharacters = [];
@@ -93,7 +94,7 @@
 				</div>
 			</div>
 			<div
-				class="w-full grid grid-cols-12 min-w-2xl max-w-6xl h-full pb-16 md:pd-0
+				class="w-full grid grid-cols-12 min-w-2xl max-w-6xl h-full 
 			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25 
 			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50"
 			>
@@ -114,6 +115,19 @@
 					/>
 				{/each}
 			</div>
+			<!-- TODO: Replace "true" with leaderboard array -->
+			<!-- Updating the leaderboard array will then re-render the elements and cause a new trigger -->
+			{#key true}
+				<!-- TODO: Render if not end of database* -->
+				{#if true}
+					<LazyLoad
+						class="w-full h-36 md:h-16 grid justify-center content-center mb-36 md:mb-16"
+						on:visible={() => console.log('trigger request')}
+					>
+						<h1 class="text-white text-shadow text-md">Loading..</h1>
+					</LazyLoad>
+				{/if}
+			{/key}
 		</div>
 	</div>
 </main>
