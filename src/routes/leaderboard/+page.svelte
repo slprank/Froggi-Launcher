@@ -17,7 +17,7 @@
 
 <main
 	class="fixed h-screen w-screen max-h-full max-w-full bg-cover bg-center lg:flex justify-center"
-	style="background-image: url('./image/backgrounds/MeleeMenuGreen.png')"
+	style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >

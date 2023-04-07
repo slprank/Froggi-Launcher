@@ -16,7 +16,7 @@
 		</div>
 		<div class="grid place-items-center my-2 w-full">
 			<img
-				src="./image/rank-icons/DIAMOND 2.svg"
+				src="/image/rank-icons/DIAMOND 2.svg"
 				alt="rank"
 				class="h-4/12 w-4/12 max-h-full max-w-full"
 			/>

@@ -35,7 +35,7 @@
 					class="w-full h-44 place-items-center justify-center max-h-full max-w-md grid px-16 opacity-100"
 					in:fly={{ y: -25, duration: 350 }}
 				>
-					<img src={`./image/rank-icons/${rankDisplay.rank}.svg`} alt="rank icon" />
+					<img src={`/image/rank-icons/${rankDisplay.rank}.svg`} alt="rank icon" />
 				</div>
 			{/key}
 			<div class="grid grid-cols-12 w-full h-16 max-h-full max-w-md">

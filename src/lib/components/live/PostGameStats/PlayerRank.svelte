@@ -9,14 +9,14 @@
 	>
 		<div class="grid justify-start col-span-1 w-full h-28">
 			<img
-				src={`./image/rank-icons/${player1Rank}.svg`}
+				src={`/image/rank-icons/${player1Rank}.svg`}
 				alt="rank"
 				class="aspect-square w-20 sm:w-24 md:w-26 lg:w-28 ml-2 md:ml-8 lg:ml-6"
 			/>
 		</div>
 		<div class="grid justify-end col-span-1 w-full h-28">
 			<img
-				src={`./image/rank-icons/${player2Rank}.svg`}
+				src={`/image/rank-icons/${player2Rank}.svg`}
 				alt="rank"
 				class="aspect-square w-20 sm:w-24 md:w-26 lg:w-28 mr-2 md:mr-8 lg:mr-6"
 			/>

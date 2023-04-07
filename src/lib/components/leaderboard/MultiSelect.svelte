@@ -162,7 +162,7 @@
 							<img
 								class={`aspect-square`}
 								alt="character icon"
-								src={`./image/characters/${option.value}/0/stock.png`}
+								src={`/image/characters/${option.value}/0/stock.png`}
 								data-value={option.value}
 							/>
 						</div>

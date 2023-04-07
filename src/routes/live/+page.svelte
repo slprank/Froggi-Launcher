@@ -35,7 +35,7 @@
 
 <main
 	class="fixed h-screen w-screen bg-cover bg-center"
-	style="background-image: url('./image/backgrounds/MeleeMenuAll.png')"
+	style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
