@@ -9,7 +9,7 @@
 
 <main
 	class="fixed h-screen w-screen place-items-center bg-cover bg-center"
-	style="background-image: url('./backgrounds/MeleeWallpaper.png')"
+	style="background-image: url('./image/backgrounds/MeleeWallpaper.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
