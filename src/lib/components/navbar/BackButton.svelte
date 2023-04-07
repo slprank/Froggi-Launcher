@@ -9,8 +9,6 @@
 	$: routeDepthArray = route?.split('/').slice(1) ?? [];
 	$: routeDepth = routeDepthArray.length;
 	$: prevRoute = `/${routeDepthArray.slice(0, -1).join('/')}`;
-	$: console.log(route);
-	$: console.log(prevRoute);
 </script>
 
 {#if routeDepth > 1}
