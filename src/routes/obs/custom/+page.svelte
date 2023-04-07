@@ -2,7 +2,6 @@
 	import { eventEmitter } from '$lib/utils/store.svelte';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import BackButton from '$lib/components/navbar/BackButton.svelte';
 	const scene = $page.params.scene;
 
 	// TODO: List all custom made components
