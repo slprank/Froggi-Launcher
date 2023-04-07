@@ -19,6 +19,7 @@
 		sessionStats,
 		statsScene,
 		urls,
+		isMobile,
 	} from '$lib/utils/store.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
@@ -137,7 +138,11 @@
 	});
 </script>
 
-<div class="dragbar" />
+{#if $isElectron}
+	<div class="w-screen px-16">
+		<div class="dragbar" />
+	</div>
+{/if}
 
 {#if ready}
 	<Navbar />
@@ -148,8 +153,8 @@
 <style>
 	.dragbar {
 		-webkit-app-region: drag;
-		position: absolute;
-		z-index: 100;
+		position: fixed;
+		z-index: 35;
 		height: 40px;
 		width: 100%;
 	}

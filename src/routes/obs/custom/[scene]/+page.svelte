@@ -2,8 +2,10 @@
 	import { eventEmitter } from '$lib/utils/store.svelte';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
+	const scene = $page.params.scene;
 
-	console.log($page.params);
+	// TODO: List all custom made components
+	// Clicking on an element should direct to a preview
 </script>
 
 <main
@@ -12,7 +14,7 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<h6>Scene</h6>
+	<h6 class="text-white text-6xl">List of custom scenes</h6>
 </main>
 
 <style>

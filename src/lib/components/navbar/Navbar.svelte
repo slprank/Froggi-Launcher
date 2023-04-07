@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Mobile from '$lib/components/modal/electron/Mobile.svelte';
+	import BackButton from '$lib/components/navbar/BackButton.svelte';
 
 	function resetVisibilityTimer() {
 		isVisible = true;
@@ -47,6 +48,8 @@
 				out:fly={{ x: -100, duration: 400 }}
 				class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-r-1 border-opacity-25 border-white justify-center items-center space-y-4 z-50"
 			>
+				<BackButton />
+
 				<div
 					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1"
 				>
@@ -65,16 +68,16 @@
 				<div
 					class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 				>
-					<NavButton click={() => goto('leaderboard')}>
+					<NavButton click={() => goto('/leaderboard')}>
 						<img src="/image/button-icons/leaderboard.png" alt="leaderboard" />
 					</NavButton>
-					<NavButton click={() => goto('replays')}>
+					<NavButton click={() => goto('/replays')}>
 						<img src="/image/button-icons/replay.png" alt="replays" />
 					</NavButton>
-					<NavButton click={() => goto('achievements')}>
+					<NavButton click={() => goto('/achievements')}>
 						<img src="/image/button-icons/trophy.png" alt="achievements" />
 					</NavButton>
-					<NavButton click={() => goto('profile')}>
+					<NavButton click={() => goto('/profile')}>
 						<img src="/image/button-icons/profile.png" alt="profile" />
 					</NavButton>
 				</div>
@@ -89,13 +92,13 @@
 					<div
 						class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 					>
-						<NavButton click={() => goto('obs')}>
+						<NavButton click={() => goto('/obs')}>
 							<img src="/image/button-icons/obs.png" alt="obs" />
 						</NavButton>
 						<NavButton click={() => (isMobileOpen = true)}>
 							<img src="/image/button-icons/mobile.png" alt="mobile" />
 						</NavButton>
-						<NavButton click={() => goto('settings')}>
+						<NavButton click={() => goto('/settings')}>
 							<img src="/image/button-icons/settings.png" alt="settings" />
 						</NavButton>
 					</div>
@@ -114,19 +117,19 @@
 						$isMobile ? 'max-w-lg' : 'max-w-xl'
 					}`}
 				>
-					<NavButton click={() => goto('live')}>
+					<NavButton click={() => goto('/live')}>
 						<img src="/image/button-icons/live.png" alt="live" />
 					</NavButton>
 					<NavButton click={() => goto('/')}>
 						<img src="/image/button-icons/home.png" alt="home" />
 					</NavButton>
-					<NavButton click={() => goto('leaderboard')}>
+					<NavButton click={() => goto('/leaderboard')}>
 						<img src="/image/button-icons/leaderboard.png" alt="leaderboard" />
 					</NavButton>
-					<NavButton click={() => goto('achievements')}>
+					<NavButton click={() => goto('/achievements')}>
 						<img src="/image/button-icons/trophy.png" alt="achievements" />
 					</NavButton>
-					<NavButton click={() => goto('profile')}>
+					<NavButton click={() => goto('/profile')}>
 						<img src="/image/button-icons/profile.png" alt="profile" />
 					</NavButton>
 				</div>

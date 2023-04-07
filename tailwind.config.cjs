@@ -19,6 +19,9 @@ module.exports = {
 				8: '8',
 				9: '9',
 			},
+			spacing: {
+				18: '4.5em',
+			},
 		},
 		borderWidth: {
 			DEFAULT: '1px',
