@@ -9,10 +9,34 @@ import type {
 	StatsType,
 	StockType,
 } from '@slippi/slippi-js';
+import type { LiveStatsScene } from './enum';
 
 export interface Url {
 	external: string;
 	local: string;
+}
+
+export interface Obs {
+	scenes: Scene[];
+}
+
+export interface Scene {
+	id: number;
+	title: string;
+	description: string;
+	default: LiveStatsScene;
+	preGame: Content;
+	inGame: Content;
+	postGame: Content;
+	rankChange: Content;
+}
+
+export interface Content {
+	backgroundColor: string;
+	backgroundImage: string;
+	layer1: any;
+	layer2: any;
+	layer3: any;
 }
 
 // Old types

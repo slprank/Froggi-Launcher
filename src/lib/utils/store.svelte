@@ -4,7 +4,7 @@
 	import { EventEmitter } from 'events';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import Device from 'svelte-device-info';
-	import type { Url } from '$lib/types/types';
+	import type { Obs, Url } from '$lib/types/types';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
 
@@ -34,6 +34,7 @@
 	const recentRankedSets = writable<any>();
 	const sessionStats = writable<any>();
 	const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
+	const obs = writable<Obs>();
 	const urls = writable<Url>();
 
 	export {
@@ -52,6 +53,7 @@
 		recentRankedSets,
 		sessionStats,
 		statsScene,
+		obs,
 		urls,
 	};
 </script>

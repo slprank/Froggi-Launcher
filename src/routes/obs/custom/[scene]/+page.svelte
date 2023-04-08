@@ -1,20 +1,24 @@
 <script lang="ts">
-	import { eventEmitter } from '$lib/utils/store.svelte';
-	import { page } from '$app/stores';
+	import { eventEmitter, isElectron } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
-	const scene = $page.params.scene;
+	import Edit from '$lib/components/custom/Edit.svelte';
+	import Preview from '$lib/components/custom/Preview.svelte';
 
-	// TODO: List all custom made components
-	// Clicking on an element should direct to a preview
+	// TODO: Use the scene Id to display custom scene component
+	// Electron should display a preview with URL to OBS
+	// Everything else should fullscreen the component
 </script>
 
 <main
-	class="fixed h-screen w-screen bg-cover bg-center"
-	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
+	class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<h6 class="text-white text-6xl">List of custom scenes</h6>
+	{#if $isElectron}
+		<Edit />
+	{:else}
+		<Preview />
+	{/if}
 </main>
 
 <style>
