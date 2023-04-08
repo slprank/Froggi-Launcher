@@ -13,8 +13,8 @@
 			32: gridHelp.item({
 				x: 0,
 				y: 0,
-				w: 2,
-				h: 2,
+				w: 4,
+				h: 4,
 				max: { y: 32 },
 			}),
 			id: id(),
@@ -22,9 +22,9 @@
 
 		{
 			32: gridHelp.item({
-				x: 2,
-				y: 0,
-				w: 2,
+				x: 12,
+				y: 12,
+				w: 4,
 				h: 4,
 				max: { y: 32 },
 			}),
@@ -51,7 +51,7 @@
 <svelte:window bind:innerHeight />
 
 {#key height}
-	<div class={`'w-full h-full' overflow-hidden`}>
+	<div class="w-full h-full overflow-hidden">
 		<Grid
 			bind:items
 			rowHeight={(height ?? innerHeight) / (COL + 2)}

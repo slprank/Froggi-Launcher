@@ -7,7 +7,10 @@
 	// TODO: Use the scene Id to display custom scene component
 	// Electron should display a preview with URL to OBS
 	// Everything else should fullscreen the component
+	let innerHeight: number;
 </script>
+
+<svelte:window bind:innerHeight />
 
 <main
 	class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
@@ -17,7 +20,7 @@
 	{#if $isElectron}
 		<Edit />
 	{:else}
-		<Preview />
+		<Preview bind:height={innerHeight} />
 	{/if}
 </main>
 
