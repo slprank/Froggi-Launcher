@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { obs } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
+	import GridContent from './GridContent.svelte';
 
 	const COL = 32;
 
-	export let editable = false;
 	export let height: number | undefined = undefined;
 	export let sceneId: number | undefined;
 
@@ -17,19 +17,17 @@
 	$: layer3 = curScene?.preGame.layer3 ?? [];
 
 	layer1?.forEach((item) => {
-		item[COL].draggable = editable;
-		item[COL].resizable = editable;
+		item[COL].draggable = false;
+		item[COL].resizable = false;
 	});
 	layer2?.forEach((item) => {
-		item[COL].draggable = editable;
-		item[COL].resizable = editable;
+		item[COL].draggable = false;
+		item[COL].resizable = false;
 	});
 	layer3?.forEach((item) => {
-		item[COL].draggable = editable;
-		item[COL].resizable = editable;
+		item[COL].draggable = false;
+		item[COL].resizable = false;
 	});
-
-	const cols = [[32, 32]];
 
 	let innerHeight: number;
 </script>
@@ -40,22 +38,29 @@
 	<!-- TODO: Add conditional layers -->
 	<!-- TODO: Render window based on global store -->
 	<div class="w-full h-full overflow-hidden">
-		<Grid
-			bind:items={layer1}
-			rowHeight={(height ?? innerHeight) / (COL + 2)}
-			gap={[0, 0]}
-			let:item
-			let:dataItem
-			{cols}
-			fastStart={true}
-		>
-			<div
-				class={`h-full w-full flex justify-center items-center ${
-					editable ? 'bg-white' : 'text-white'
-				}`}
+		<div class="w-full h-full z-2">
+			<Grid
+				bind:items={layer1}
+				rowHeight={(height ?? innerHeight) / (COL + 2)}
+				gap={[0, 0]}
+				let:item
+				cols={[[32, 32]]}
+				fastStart={true}
 			>
-				{dataItem?.data ?? 'hmm'}
-			</div>
-		</Grid>
+				<GridContent {item} />
+			</Grid>
+		</div>
+		<div class="w-full h-full z-4">
+			<Grid
+				bind:items={layer2}
+				rowHeight={(height ?? innerHeight) / (COL + 2)}
+				gap={[0, 0]}
+				let:item
+				cols={[[32, 32]]}
+				fastStart={true}
+			>
+				<GridContent {item} />
+			</Grid>
+		</div>
 	</div>
 {/key}

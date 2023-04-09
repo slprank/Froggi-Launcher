@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { Scene } from '$lib/types/types';
 	import { obs } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
-	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import GridContent from './GridContent.svelte';
 
 	const COL = 32;
@@ -15,23 +13,35 @@
 	export let layer: string = 'layer1'; // TODO: Update in parent
 
 	let curScene = $obs.scenes.find((scene) => scene.id === sceneId);
-
-	$: console.log('edit', curScene[window]);
-
 	let items = curScene[window][layer] ?? [];
+	let tempItems: any;
 
 	items?.forEach((item: any) => {
 		item[COL].draggable = true;
 		item[COL].resizable = true;
 	});
 
+	$: console.log('edit', curScene[window]);
+
 	function updateScene() {
-		curScene[window][layer] = items;
-		$obs.scenes[0] = curScene;
-		// TODO: Update `$obs` in electron-store
+		items
+			.map((item: any) => item[COL])
+			.filter((item: any) => item.y + item.h > COL + 1)
+			.forEach((item: any) => {
+				item.h = COL + 1 - item.y;
+			});
+		tempItems = items;
 	}
 
-	const cols = [[32, 32]];
+	setInterval(() => {
+		if (curScene[window][layer] == tempItems) return;
+		curScene[window][layer] = tempItems;
+
+		// TODO: Update $Obs object in electron store
+		$obs.scenes[0] = curScene;
+	}, 200);
+
+	updateScene();
 
 	let innerHeight: number;
 </script>
@@ -45,11 +55,11 @@
 			rowHeight={(height ?? innerHeight) / (COL + 2)}
 			gap={[0, 0]}
 			let:item
-			{cols}
+			cols={[[32, 32]]}
 			fastStart={true}
 			on:change={updateScene}
 		>
-			<GridContent {item} />
+			<GridContent edit={true} {item} />
 		</Grid>
 	</div>
 {/key}
