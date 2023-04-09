@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import Preview from './Preview.svelte';
 	import { obs } from '$lib/utils/store.svelte';
 	import type { Scene } from '$lib/types/types';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import BoardEdit from '$lib/components/custom/BoardEdit.svelte';
+	import Board from './Board.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 
@@ -90,7 +90,7 @@
 			<div
 				class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
 			>
-				<Preview bind:height={boardHeight} />
+				<Board bind:height={boardHeight} />
 			</div>
 		</div>
 		<div

@@ -1,8 +1,10 @@
 <script lang="ts">
-	export const item: any = {};
+	export let dataItem: any;
 	export let edit: boolean = false;
 </script>
 
-<div class={`h-full w-full flex justify-center items-center ${edit ? 'bg-white' : 'text-white'}`}>
-	{item?.data ?? 'hmm'}
+<div class={`h-full w-full overflow-hidden  ${edit ? 'bg-white' : 'text-white'}`}>
+	<h1>
+		{dataItem?.data ?? 'hmmmmmmmm'}
+	</h1>
 </div>

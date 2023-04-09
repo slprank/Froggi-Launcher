@@ -2,7 +2,7 @@
 	import { eventEmitter, isElectron } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 	import Edit from '$lib/components/custom/Edit.svelte';
-	import Preview from '$lib/components/custom/Preview.svelte';
+	import Board from '$lib/components/custom/Board.svelte';
 
 	// TODO: Use the scene Id to display custom scene component
 	// Electron should display a preview with URL to OBS
@@ -20,7 +20,7 @@
 	{#if $isElectron}
 		<Edit />
 	{:else}
-		<Preview bind:height={innerHeight} scene={undefined} />
+		<Board bind:height={innerHeight} />
 	{/if}
 </main>
 
