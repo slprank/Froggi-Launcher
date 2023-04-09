@@ -1,47 +1,33 @@
 <script lang="ts">
+	import { obs } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
-	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 
 	const COL = 32;
 
 	export let editable = false;
 	export let height: number | undefined = undefined;
+	export let sceneId: number | undefined;
 
-	const id = () => '_' + Math.random().toString(36).substr(2, 9);
-	export let items = [
-		{
-			32: gridHelp.item({
-				x: 0,
-				y: 0,
-				w: 4,
-				h: 4,
-				max: { y: 32 },
-			}),
-			id: id(),
-		},
+	$: curScene = $obs.scenes.find((scene) => scene.id === sceneId);
 
-		{
-			32: gridHelp.item({
-				x: 12,
-				y: 12,
-				w: 4,
-				h: 4,
-				max: { y: 32 },
-			}),
-			id: id(),
-			data: 'damn',
-		},
-	];
+	$: console.log('board', curScene);
 
-	items.forEach((item) => {
+	$: layer1 = curScene?.preGame.layer1 ?? [];
+	$: layer2 = curScene?.preGame.layer2 ?? [];
+	$: layer3 = curScene?.preGame.layer3 ?? [];
+
+	layer1?.forEach((item) => {
 		item[COL].draggable = editable;
 		item[COL].resizable = editable;
 	});
-
-	function updateScene() {
-		// TODO: Store in electron-store
-		console.log(items);
-	}
+	layer2?.forEach((item) => {
+		item[COL].draggable = editable;
+		item[COL].resizable = editable;
+	});
+	layer3?.forEach((item) => {
+		item[COL].draggable = editable;
+		item[COL].resizable = editable;
+	});
 
 	const cols = [[32, 32]];
 
@@ -51,16 +37,17 @@
 <svelte:window bind:innerHeight />
 
 {#key height}
+	<!-- TODO: Add conditional layers -->
+	<!-- TODO: Render window based on global store -->
 	<div class="w-full h-full overflow-hidden">
 		<Grid
-			bind:items
+			bind:items={layer1}
 			rowHeight={(height ?? innerHeight) / (COL + 2)}
 			gap={[0, 0]}
 			let:item
 			let:dataItem
 			{cols}
 			fastStart={true}
-			on:change={updateScene}
 		>
 			<div
 				class={`h-full w-full flex justify-center items-center ${

@@ -32,11 +32,11 @@ export interface Scene {
 }
 
 export interface Content {
-	backgroundColor: string;
-	backgroundImage: string;
-	layer1: any;
-	layer2: any;
-	layer3: any;
+	backgroundColor: string | undefined;
+	backgroundImage: string | undefined;
+	layer1: any[];
+	layer2: any[];
+	layer3: any[];
 }
 
 // Old types

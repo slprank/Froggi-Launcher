@@ -20,7 +20,7 @@
 	{#if $isElectron}
 		<Edit />
 	{:else}
-		<Preview bind:height={innerHeight} />
+		<Preview bind:height={innerHeight} scene={undefined} />
 	{/if}
 </main>
 
