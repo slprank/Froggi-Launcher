@@ -10,9 +10,7 @@
 	const sceneId = parseInt($page.params.scene);
 
 	console.log('sceneId', sceneId);
-	// TODO: use sceneId to display given scene
 
-	// TODO: If scene does not exist: create new
 	let boardHeight: number;
 	let innerWidth: number;
 
@@ -25,10 +23,11 @@
 		if (value > 2200) boardHeight = 505;
 	}
 
-	function getCurrentScene() {
+	function createNewScene() {
 		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
-		if (scene) return scene;
+		if (scene) return;
 		const newId = Math.max(...$obs.scenes.map((s) => s.id)) ?? 1;
+		// TODO: Create default scene items in sperate file
 		$obs.scenes.push({
 			id: newId,
 			title: 'New Title',
@@ -63,16 +62,17 @@
 				layer3: {},
 			},
 		} as Scene);
-		// TODO: save to electron-store
 		return $obs.scenes.find((scene) => scene.id === newId);
 	}
 
-	let scene = getCurrentScene();
-
-	$: console.log('scene', $obs);
+	createNewScene();
 
 	$: calculateBoardHeight(innerWidth);
-	//$: console.log(boardWidth, boardHeight);
+
+	// TODO: Create element dropdown list
+	// TODO: Create selected element preview and input fields (if customizable)
+	// TODO: Create HEX Color editor with transparency
+	// TODO: Image selector and uploader (base64)
 </script>
 
 <svelte:window bind:innerWidth />

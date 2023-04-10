@@ -1,28 +1,28 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { obs } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import { fade } from 'svelte/transition';
+	import type { Scene } from '$lib/types/types';
+
+	// TODO: Handle refresh on electron
 
 	const COL = 32;
-
 	const sceneId = parseInt($page.params.scene);
 
 	export let height: number | undefined = undefined;
 	export let window: string = 'preGame'; // TODO: Update in parent - use global store
 	export let layer: string = 'layer1'; // TODO: Update in parent
 
-	let curScene = $obs.scenes.find((scene) => scene.id === sceneId);
+	let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 	let items = curScene[window][layer] ?? [];
-	let tempItems: any;
+	let tempItems: any = undefined;
 
 	$: items?.forEach((item: any) => {
 		item[COL].draggable = true;
 		item[COL].resizable = true;
 	});
-
-	$: console.log('edit', curScene[window]);
 
 	function updateScene() {
 		items
@@ -35,11 +35,17 @@
 	}
 
 	setInterval(() => {
-		if (curScene[window][layer] == tempItems) return;
+		if (!tempItems || curScene[window][layer] == tempItems) return;
 		curScene[window][layer] = tempItems;
 
 		// TODO: Update $Obs object in electron store
-		$obs.scenes[0] = curScene; // Replace this
+		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
+		const index = $obs.scenes.indexOf(scene);
+		$obs.scenes[index] = curScene;
+		console.log('update obs', $obs);
+		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+
+		tempItems = undefined;
 	}, 200);
 
 	updateScene();

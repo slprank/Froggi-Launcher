@@ -39,6 +39,16 @@ class ElectronStore {
 		return urls;
 	}
 
+	// CUSTOM COMPONENTS
+	getCustomComponents() {
+		return this.store.get('obs.custom');
+	}
+
+	setCustomComponents(value) {
+		if (!value) return;
+		this.store.set('obs.custom', value);
+	}
+
 	// STATUS
 	getDolphinConnectionStatus() {
 		return this.store.get('status.dolphin');

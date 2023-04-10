@@ -159,6 +159,15 @@ try {
 
 			const test = new Test(messageHandler, eventEmitter, log, electronStore, api);
 
+			// TODO: Remove this:
+			eventEmitter.on('update-custom-components', async (value) => {
+				electronStore.setCustomComponents(value);
+				messageHandler.sendMessage(
+					'obs_custom_components',
+					electronStore.getCustomComponents(),
+				);
+			});
+
 			messageHandler.initHtml();
 			messageHandler.initWebSocket();
 		});
@@ -166,7 +175,7 @@ try {
 		// Find a better solution to init autoUpdate
 		mainWindow.webContents.once('focus', () => {
 			if (dev) return;
-			autoUpdater.initAutoUpdater(mainWindow, eventEmitter, log);
+			//autoUpdater.initAutoUpdater(mainWindow, eventEmitter, log);
 		});
 	}
 

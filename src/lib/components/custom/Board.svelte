@@ -4,16 +4,18 @@
 	import GridContent from './GridContent.svelte';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
+	import type { Scene } from '$lib/types/types';
 
 	export let height: number | undefined = undefined;
 
 	const COL = 32;
 	const sceneId = parseInt($page.params.scene);
 
-	$: curScene = $obs.scenes.find((scene) => scene.id === sceneId);
+	$: curScene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 
 	$: console.log('board', curScene);
 
+	// TODO: Get gamePage rather than every sub element
 	$: backgroundImage = curScene?.preGame.backgroundImage;
 	$: backgroundColor = curScene?.preGame.backgroundColor;
 	$: layer1 = curScene?.preGame.layer1 ?? [];

@@ -20,6 +20,7 @@
 		statsScene,
 		urls,
 		isMobile,
+		obs,
 	} from '$lib/utils/store.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
@@ -115,6 +116,10 @@
 		$eventEmitter.on('urls', (url: any) => {
 			console.log(url);
 			urls.set(url);
+		});
+		$eventEmitter.on('obs_custom_components', (value: any) => {
+			console.log('obs', value);
+			obs.set(value);
 		});
 	}
 
