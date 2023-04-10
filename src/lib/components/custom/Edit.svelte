@@ -73,6 +73,8 @@
 	// TODO: Create selected element preview and input fields (if customizable)
 	// TODO: Create HEX Color editor with transparency
 	// TODO: Image selector and uploader (base64)
+	// TODO: Add/Remove elements
+	// TODO: Resize elements on both corners
 </script>
 
 <svelte:window bind:innerWidth />
