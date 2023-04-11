@@ -9,7 +9,7 @@
 
 	export let height: number | undefined = undefined;
 
-	const COL = 32;
+	const COL = 256;
 	const sceneId = parseInt($page.params.scene);
 	$: liveScene = '';
 
@@ -19,6 +19,7 @@
 	$: console.log('board', curScene);
 	$: console.log('page', curPage);
 	$: console.log('scene', $statsScene);
+	$: console.log('live', liveScene);
 
 	$: backgroundImage = curPage?.backgroundImage ?? '';
 	$: backgroundColor = curPage?.backgroundColor ?? '';
@@ -44,6 +45,7 @@
 		if ($statsScene === LiveStatsScene.InGame) liveScene = 'inGame';
 		if ($statsScene === LiveStatsScene.PostGame) liveScene = 'postGame';
 		if ($statsScene === LiveStatsScene.RankChange) liveScene = 'rankChange';
+		if (!liveScene) return;
 		curPage = curScene[liveScene];
 		backgroundImage = curPage?.backgroundImage ?? '';
 		backgroundColor = curPage?.backgroundColor ?? '';
@@ -96,7 +98,7 @@
 				rowHeight={(height ?? innerHeight) / (COL + 2)}
 				gap={[0, 0]}
 				let:dataItem
-				cols={[[32, 32]]}
+				cols={[[COL, COL]]}
 				fastStart={true}
 			>
 				<GridContent {dataItem} />
@@ -108,7 +110,7 @@
 				rowHeight={(height ?? innerHeight) / (COL + 2)}
 				gap={[0, 0]}
 				let:dataItem
-				cols={[[32, 32]]}
+				cols={[[COL, COL]]}
 				fastStart={true}
 			>
 				<GridContent {dataItem} />
@@ -120,7 +122,7 @@
 				rowHeight={(height ?? innerHeight) / (COL + 2)}
 				gap={[0, 0]}
 				let:dataItem
-				cols={[[32, 32]]}
+				cols={[[COL, COL]]}
 				fastStart={true}
 			>
 				<GridContent {dataItem} />

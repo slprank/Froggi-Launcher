@@ -7,13 +7,11 @@
 	import type { Scene } from '$lib/types/types';
 	import { LiveStatsScene } from '$lib/types/enum';
 
-	// TODO: Handle refresh on electron
-
-	const COL = 32;
+	const COL = 256;
 	const sceneId = parseInt($page.params.scene);
 
 	export let height: number | undefined = undefined;
-	export let layer: string = ''; // TODO: Update in parent
+	export let layer: string = '';
 	let liveScene: string = '';
 
 	let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
@@ -30,8 +28,9 @@
 			.map((item: any) => item[COL])
 			.filter((item: any) => item.y + item.h > COL + 1)
 			.forEach((item: any) => {
-				item.h = COL + 1 - item.y;
+				item.h = COL - item.y;
 			});
+		items = items.filter((item: any) => item[COL].y < COL + 1);
 		tempItems = items;
 	}
 
@@ -54,7 +53,6 @@
 		if (!tempItems || !layer || !liveScene || curScene[liveScene][layer] == tempItems) return;
 		curScene[liveScene][layer] = tempItems;
 
-		// TODO: Update $Obs object in electron store
 		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
 		const index = $obs.scenes.indexOf(scene);
 		$obs.scenes[index] = curScene;
@@ -65,7 +63,9 @@
 	}, 200);
 
 	let innerHeight: number;
+
 	// TODO: Include color, image and opacity
+	// TODO: Save and update history on mouseUp to undo actions
 </script>
 
 <svelte:window bind:innerHeight />
@@ -90,7 +90,7 @@
 				rowHeight={(height ?? innerHeight) / (COL + 2)}
 				gap={[0, 0]}
 				let:dataItem
-				cols={[[32, 32]]}
+				cols={[[COL, COL]]}
 				fastStart={true}
 				on:change={updateScene}
 			>
