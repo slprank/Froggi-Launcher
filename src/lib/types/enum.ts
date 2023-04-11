@@ -1,7 +1,7 @@
 export enum LiveStatsScene {
 	WaitingForDolphin = 0,
-	PlayerRankStats = 2,
-	OngoingGame = 4,
-	PostGameStats = 6,
+	PreGame = 2,
+	InGame = 4,
+	PostGame = 6,
 	RankChange = 8,
 }

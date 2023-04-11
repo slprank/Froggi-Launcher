@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { eventEmitter, obs } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import { fade } from 'svelte/transition';
 	import type { Scene } from '$lib/types/types';
+	import { LiveStatsScene } from '$lib/types/enum';
 
 	// TODO: Handle refresh on electron
 
@@ -12,11 +13,11 @@
 	const sceneId = parseInt($page.params.scene);
 
 	export let height: number | undefined = undefined;
-	export let window: string = 'preGame'; // TODO: Update in parent - use global store
-	export let layer: string = 'layer1'; // TODO: Update in parent
+	export let layer: string = ''; // TODO: Update in parent
+	let liveScene: string = '';
 
 	let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
-	let items = curScene[window][layer] ?? [];
+	let items: any[] = [];
 	let tempItems: any = undefined;
 
 	$: items?.forEach((item: any) => {
@@ -34,9 +35,24 @@
 		tempItems = items;
 	}
 
+	function getLiveScene() {
+		if ($statsScene === LiveStatsScene.PreGame) liveScene = 'preGame';
+		if ($statsScene === LiveStatsScene.InGame) liveScene = 'inGame';
+		if ($statsScene === LiveStatsScene.PostGame) liveScene = 'postGame';
+		if ($statsScene === LiveStatsScene.RankChange) liveScene = 'rankChange';
+		if (!layer || !liveScene) return;
+		curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+		items = curScene[liveScene][layer] ?? [];
+		items?.forEach((item: any) => {
+			item[COL].draggable = true;
+			item[COL].resizable = true;
+		});
+	}
+	$: $statsScene || layer, getLiveScene();
+
 	setInterval(() => {
-		if (!tempItems || curScene[window][layer] == tempItems) return;
-		curScene[window][layer] = tempItems;
+		if (!tempItems || !layer || !liveScene || curScene[liveScene][layer] == tempItems) return;
+		curScene[liveScene][layer] = tempItems;
 
 		// TODO: Update $Obs object in electron store
 		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
@@ -48,10 +64,7 @@
 		tempItems = undefined;
 	}, 200);
 
-	updateScene();
-
 	let innerHeight: number;
-
 	// TODO: Include color, image and opacity
 </script>
 
@@ -65,7 +78,12 @@
 			in:fade={{ delay: 50, duration: 150 }}
 			out:fade={{ duration: 300 }}
 		/>
-		<div class="w-full h-full z-1 absolute" style="background: #FF00040C" />
+		<div
+			class="w-full h-full z-1 absolute"
+			style="background: #FF00040C"
+			in:fade={{ delay: 50, duration: 150 }}
+			out:fade={{ duration: 300 }}
+		/>
 		<div class="w-full h-full z-2 absolute">
 			<Grid
 				bind:items

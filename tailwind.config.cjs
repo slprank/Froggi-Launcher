@@ -3,6 +3,10 @@ module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
+			gridTemplateRows: {
+				// Simple 8 row grid
+				8: 'repeat(8, minmax(0, 1fr))',
+			},
 			minWidth: {
 				'2xl': '672px',
 			},

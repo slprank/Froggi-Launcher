@@ -167,6 +167,11 @@ try {
 					electronStore.getCustomComponents(),
 				);
 			});
+			eventEmitter.on('update-live-scene', async (value) => {
+				electronStore.setStatsScene(value);
+				messageHandler.sendMessage('live_stats_scene', electronStore.getStatsScene());
+			});
+			// HERE
 
 			messageHandler.initHtml();
 			messageHandler.initWebSocket();

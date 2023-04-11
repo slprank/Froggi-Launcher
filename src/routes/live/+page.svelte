@@ -44,17 +44,17 @@
 			<WaitingDolphin />
 		</div>
 	{/if}
-	{#if $statsScene == LiveStatsScene.PlayerRankStats}
+	{#if $statsScene == LiveStatsScene.PreGame}
 		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
 			<PlayerRankStats />
 		</div>
 	{/if}
-	{#if $statsScene == LiveStatsScene.OngoingGame}
+	{#if $statsScene == LiveStatsScene.InGame}
 		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
 			<OngoingGame />
 		</div>
 	{/if}
-	{#if $statsScene == LiveStatsScene.PostGameStats}
+	{#if $statsScene == LiveStatsScene.PostGame}
 		<div
 			in:fly={{ y: -200, duration: 300, delay: 1000 }}
 			out:fly={{ y: -200, duration: 300, delay: 300 }}

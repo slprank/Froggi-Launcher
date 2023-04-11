@@ -1,43 +1,76 @@
 <script lang="ts">
-	import { obs } from '$lib/utils/store.svelte';
+	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import type { Scene } from '$lib/types/types';
+	import { LiveStatsScene } from '$lib/types/enum';
 
 	export let height: number | undefined = undefined;
 
 	const COL = 32;
 	const sceneId = parseInt($page.params.scene);
+	$: liveScene = '';
 
 	$: curScene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+	$: curPage = curScene[liveScene];
 
 	$: console.log('board', curScene);
+	$: console.log('page', curPage);
+	$: console.log('scene', $statsScene);
 
-	// TODO: Get gamePage rather than every sub element
-	$: backgroundImage = curScene?.preGame.backgroundImage;
-	$: backgroundColor = curScene?.preGame.backgroundColor;
-	$: layer1 = curScene?.preGame.layer1 ?? [];
-	$: layer2 = curScene?.preGame.layer2 ?? [];
-	$: layer3 = curScene?.preGame.layer3 ?? [];
+	$: backgroundImage = curPage?.backgroundImage ?? '';
+	$: backgroundColor = curPage?.backgroundColor ?? '';
+	$: layer1 = curPage?.layer1 ?? [];
+	$: layer2 = curPage?.layer2 ?? [];
+	$: layer3 = curPage?.layer3 ?? [];
 
-	$: layer1?.forEach((item) => {
+	$: layer1?.forEach((item: any) => {
 		item[COL].draggable = false;
 		item[COL].resizable = false;
 	});
-	$: layer2?.forEach((item) => {
+	$: layer2?.forEach((item: any) => {
 		item[COL].draggable = false;
 		item[COL].resizable = false;
 	});
-	$: layer3?.forEach((item) => {
+	$: layer3?.forEach((item: any) => {
 		item[COL].draggable = false;
 		item[COL].resizable = false;
 	});
+
+	function getLiveScene() {
+		if ($statsScene === LiveStatsScene.PreGame) liveScene = 'preGame';
+		if ($statsScene === LiveStatsScene.InGame) liveScene = 'inGame';
+		if ($statsScene === LiveStatsScene.PostGame) liveScene = 'postGame';
+		if ($statsScene === LiveStatsScene.RankChange) liveScene = 'rankChange';
+		curPage = curScene[liveScene];
+		backgroundImage = curPage?.backgroundImage ?? '';
+		backgroundColor = curPage?.backgroundColor ?? '';
+		layer1 = curPage?.layer1 ?? [];
+		layer2 = curPage?.layer2 ?? [];
+		layer3 = curPage?.layer3 ?? [];
+
+		layer1?.forEach((item: any) => {
+			item[COL].draggable = false;
+			item[COL].resizable = false;
+		});
+		layer2?.forEach((item: any) => {
+			item[COL].draggable = false;
+			item[COL].resizable = false;
+		});
+		layer3?.forEach((item: any) => {
+			item[COL].draggable = false;
+			item[COL].resizable = false;
+		});
+	}
+
+	$: $statsScene, getLiveScene();
 
 	let innerHeight: number;
 
-	// TODO: Include color and Image
+	// TODO: Include color, image and opacity
+	// TODO: Display waiting dolphin component
 </script>
 
 <svelte:window bind:innerHeight />
@@ -46,12 +79,17 @@
 	<!-- TODO: Render window based on LiveStatScene global store -->
 	<div class="w-full h-full overflow-hidden relative">
 		<div
-			class="w-full h-full bg-cover bg-center z-1 absolute"
+			class="w-full h-full bg-cover bg-center absolute z-0"
 			style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 			in:fade={{ delay: 50, duration: 150 }}
 			out:fade={{ duration: 300 }}
 		/>
-		<div class="w-full h-full z-1 absolute" style="background: #FF00040C" />
+		<div
+			class="w-full h-full z-1 absolute"
+			style="background: #FF00040C"
+			in:fade={{ delay: 50, duration: 150 }}
+			out:fade={{ duration: 300 }}
+		/>
 		<div class="w-full h-full z-2 absolute">
 			<Grid
 				bind:items={layer1}
