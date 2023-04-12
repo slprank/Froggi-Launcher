@@ -44,18 +44,34 @@
 	}
 	$: $statsScene || layer || $obs, updateLiveScene();
 
-	setInterval(() => {
+	function updateObs() {
 		if (!tempItems || layer === undefined || curScene[$statsScene].layers[layer] == tempItems)
 			return;
 		curScene[$statsScene].layers[layer] = tempItems;
 
-		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
+		let scene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 		const index = $obs.scenes.indexOf(scene);
 		$obs.scenes[index] = curScene;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 		tempItems = undefined;
-	}, 200);
+		floatElements();
+	}
+
+	function fixElements() {
+		console.log('fix');
+		items.forEach((item) => {
+			item[COL].fixed = true;
+		});
+		console.log(items);
+	}
+
+	function floatElements() {
+		console.log('float');
+		items.forEach((item) => {
+			item[COL].fixed = false;
+		});
+	}
 
 	let innerHeight: number;
 
@@ -63,7 +79,7 @@
 	// TODO: Save and update history on mouseUp to undo actions
 </script>
 
-<svelte:window bind:innerHeight />
+<svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateObs} />
 
 {#key height}
 	<div class="w-full h-full overflow-hidden relative">

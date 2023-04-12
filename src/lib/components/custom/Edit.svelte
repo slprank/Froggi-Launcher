@@ -19,11 +19,13 @@
 	let innerWidth: number;
 
 	function createNewScene() {
+		/*
 		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
 		if (scene) return;
 		const newId = Math.max(...$obs.scenes.map((s) => s.id)) ?? 1;
 		$obs.scenes.push(getNewScene(newId));
-		//$obs.scenes[0] = getNewScene(1); // Remove this
+		*/
+		$obs.scenes[0] = getNewScene(1); // Remove this
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
 

@@ -30,9 +30,7 @@
 
 		items = [...items, ...[newItem]];
 
-		console.log(items);
-
-		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
+		let scene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 		const index = $obs.scenes.indexOf(scene);
 		$obs.scenes[index][$statsScene].layers[layer] = items;
 
