@@ -11,8 +11,7 @@
 	class="h-12 md:h-16 lg:h-20 w-full grid grid-cols-12 gap-4 lg:gap-1 place-items-center justify-items-stretch"
 >
 	<TextFitMulti
-		divClass="grid justify-items-start col-span-3 pl-4 md:pl-0"
-		textClass={`text-white ${
+		class={`grid justify-items-start col-span-3 pl-4 md:pl-0 text-white ${
 			$isMobile
 				? 'text-[1.5rem] sm:text-[2rem]'
 				: 'text-2xl sm:text-3xl md:text-4xl lg:md:text-5xl'
@@ -21,8 +20,7 @@
 		{textLeft}
 	</TextFitMulti>
 	<TextFitMulti
-		divClass="grid justify-items-center col-span-6"
-		textClass={`text-white ${
+		class={`grid justify-items-center col-span-6 text-white ${
 			$isMobile
 				? 'text-[1.5rem] sm:text-[2rem]'
 				: 'text-2xl sm:text-3xl md:text-4xl lg:md:text-5xl'
@@ -31,8 +29,7 @@
 		{textCenter}
 	</TextFitMulti>
 	<TextFitMulti
-		divClass="grid justify-items-end col-span-3 pr-4 md:pr-0"
-		textClass={`text-white ${
+		class={`grid justify-items-end col-span-3 pr-4 md:pr-0 text-white ${
 			$isMobile
 				? 'text-[1.5rem] sm:text-[2rem]'
 				: 'text-2xl sm:text-3xl md:text-4xl lg:md:text-5xl'

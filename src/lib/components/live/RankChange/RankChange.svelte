@@ -44,7 +44,7 @@
 					{#key rankDisplay}
 						<div in:fly={{ y: -25, duration: 350 }}>
 							<TextFitMulti
-								divClass="text-white text-4xl font-medium whitespace-nowrap text-shadow"
+								class="text-white text-4xl font-medium whitespace-nowrap text-shadow"
 							>
 								{rankDisplay.rating}
 							</TextFitMulti>
@@ -56,7 +56,7 @@
 						{#if rankDifference}
 							<div in:fly={{ x: 25, duration: 200 }}>
 								<TextFitMulti
-									divClass="text-white text-3xl font-medium whitespace-nowrap text-shadow"
+									class="text-white text-3xl font-medium whitespace-nowrap text-shadow"
 								>
 									{rankDifference >= 0 ? '+' : '-'}{rankDifference}
 								</TextFitMulti>

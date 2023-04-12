@@ -18,8 +18,7 @@
 		{/each}
 	</div>
 	<TextFitMulti
-		divClass="grid justify-items-center col-span-2"
-		textClass={`text-white ${
+		class={`grid justify-items-center col-span-2 text-white ${
 			$isMobile
 				? 'text-[1.5rem] sm:text-[2rem]'
 				: 'text-2xl sm:text-3xl md:text-4xl lg:md:text-5xl'

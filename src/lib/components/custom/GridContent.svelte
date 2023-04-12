@@ -22,7 +22,7 @@
 		} bg-opacity-50`}
 		style={`font-family: ${font}`}
 	>
-		<TextFitMulti divClass="w-full h-full flex justify-center items-center text-6xl">
+		<TextFitMulti class="w-full h-full flex justify-center items-center text-6xl">
 			{dataItem?.data ?? 'Snider'}
 		</TextFitMulti>
 	</div>

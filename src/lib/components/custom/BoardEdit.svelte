@@ -59,15 +59,12 @@
 	}
 
 	function fixElements() {
-		console.log('fix');
 		items.forEach((item) => {
 			item[COL].fixed = true;
 		});
-		console.log(items);
 	}
 
 	function floatElements() {
-		console.log('float');
 		items.forEach((item) => {
 			item[COL].fixed = false;
 		});

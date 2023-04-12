@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { textfit } from 'svelte-textfit';
 
-	export let divClass: string = '';
-	export let textClass: string = '';
+	export { _class as class };
+	let _class: string;
 
 	let parent: Node;
 	let innerWidth: number;
@@ -14,9 +14,8 @@
 <svelte:window bind:innerWidth bind:innerHeight bind:outerWidth bind:outerHeight />
 
 {#key innerWidth || innerHeight || outerWidth || outerHeight}
-	<div class={`w-full max-w-full ${divClass}`} bind:this={parent}>
+	<div class={`w-full max-w-full whitespace-nowrap m-0 font-medium ${_class}`} bind:this={parent}>
 		<h1
-			class={`whitespace-nowrap m-0 font-medium ${textClass} `}
 			use:textfit={{
 				parent,
 				mode: 'multi',
