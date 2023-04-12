@@ -5,10 +5,9 @@
 	import { LiveStatsScene } from '$lib/types/enum';
 	import BoardEdit from '$lib/components/custom/BoardEdit.svelte';
 	import Select from '$lib/components/Select.svelte';
-	import Board from './Board.svelte';
 	import { getNewScene } from './DefaultScene.svelte';
 	import Preview from './Preview.svelte';
-	import ElementModal from './ElementModal.svelte';
+	import ElementModal from '$lib/components/custom/ElementModal.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 

@@ -102,8 +102,8 @@
 
 						{
 							[COL]: gridHelp.item({
-								x: 12,
-								y: 12,
+								x: 24,
+								y: 24,
 								w: 16,
 								h: 16,
 								min: { w: MIN, h: MIN },
