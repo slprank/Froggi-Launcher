@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
-	import { LiveStatsScene } from '$lib/types/enum';
+	import { CustomElement, LiveStatsScene } from '$lib/types/enum';
 	import type { Obs, Scene } from '$lib/types/types';
-	import { obs } from '$lib/utils/store.svelte';
 
 	const COL = 256;
 	const MIN = 8;
@@ -158,5 +157,19 @@
 				layers: [],
 			},
 		} as Scene;
+	}
+
+	export function generateNewItem(elementId: CustomElement, data: any) {
+		return {
+			[COL]: gridHelp.item({
+				w: 24,
+				h: 24,
+				x: 0,
+				y: 0,
+			}),
+			id: id(),
+			elementId: elementId,
+			data: data,
+		};
 	}
 </script>

@@ -5,3 +5,14 @@ export enum LiveStatsScene {
 	PostGame = 6,
 	RankChange = 8,
 }
+
+export enum CustomElementData {
+	CustomString = 1,
+	CustomColor = 2,
+	CustomImage = 3,
+}
+
+export enum CustomElement {
+	Player1Tag = 1,
+	Player2Tag = 2,
+}

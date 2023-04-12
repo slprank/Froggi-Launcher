@@ -8,13 +8,32 @@
 	import Board from './Board.svelte';
 	import { getNewScene } from './DefaultScene.svelte';
 	import Preview from './Preview.svelte';
+	import ElementModal from './ElementModal.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 
 	let selectedLayer = 0;
+	let isElementModalOpen = false;
 
 	let boardHeight: number;
 	let innerWidth: number;
+
+	function createNewScene() {
+		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
+		if (scene) return;
+		const newId = Math.max(...$obs.scenes.map((s) => s.id)) ?? 1;
+		$obs.scenes.push(getNewScene(newId));
+		//$obs.scenes[0] = getNewScene(1); // Remove this
+		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+	}
+
+	createNewScene();
+
+	$: calculateBoardHeight(innerWidth);
+
+	function updateLiveScene(scene: LiveStatsScene) {
+		$eventEmitter.emit('electron', 'update-live-scene', scene);
+	}
 
 	function calculateBoardHeight(value: number) {
 		boardHeight = 225;
@@ -25,20 +44,6 @@
 		if (value > 2200) boardHeight = 505;
 	}
 
-	function createNewScene() {
-		/*let scene = $obs.scenes.find((scene) => scene.id === sceneId);
-		if (scene) return;
-		const newId = Math.max(...$obs.scenes.map((s) => s.id)) ?? 1;
-		$obs.scenes.push(getNewScene(newId));*/
-		$obs.scenes[0] = getNewScene(1); // Remove this
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
-	}
-
-	createNewScene();
-
-	$: calculateBoardHeight(innerWidth);
-
-	// TODO: Rewrite layers to array
 	// TODO: Display size and position of selected element in an editable window
 	// TODO: Create element dropdown list
 	// TODO: Create selected element preview and input fields (if customizable)
@@ -61,71 +66,72 @@
 			<Preview bind:boardHeight />
 		</div>
 
-		<div class="w-full h-full col-span-1 grid justify-center content-center">
-			<div class="w-full h-full grid grid-flow-row grid-rows-8 gap-1">
-				<div class="row-span-2">
+		<div class="w-[400px] xl:w-full h-full grid justify-center content-center">
+			<div class="flex gap-2 mb-4">
+				<div>
 					<Select bind:selected={selectedLayer}>
 						<option selected value={0}>Layer 1</option>
 						<option value={1}>Layer 2</option>
 						<option value={2}>Layer 3</option>
 					</Select>
 				</div>
-				<div
-					class={`row-span-5 w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					on:click={() => {
+						isElementModalOpen = true;
+					}}
 				>
-					<BoardEdit bind:height={boardHeight} bind:layer={selectedLayer} />
-				</div>
-				<div class="row-span-1 flex gap-2">
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded  my-4"
-						on:click={() => {
-							$eventEmitter.emit(
-								'electron',
-								'update-live-scene',
-								LiveStatsScene.PreGame,
-							);
-						}}
-					>
-						Pre Game
-					</button>
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded my-4"
-						on:click={() => {
-							$eventEmitter.emit(
-								'electron',
-								'update-live-scene',
-								LiveStatsScene.InGame,
-							);
-						}}
-					>
-						In Game
-					</button>
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded my-4"
-						on:click={() => {
-							$eventEmitter.emit(
-								'electron',
-								'update-live-scene',
-								LiveStatsScene.PostGame,
-							);
-						}}
-					>
-						Post Game
-					</button>
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded my-4"
-						on:click={() => {
-							$eventEmitter.emit(
-								'electron',
-								'update-live-scene',
-								LiveStatsScene.RankChange,
-							);
-						}}
-					>
-						Rank Change
-					</button>
-				</div>
+					Add New
+				</button>
+			</div>
+			<div
+				class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
+			>
+				<BoardEdit bind:height={boardHeight} bind:layer={selectedLayer} />
+			</div>
+			<div class="w-lg 3xl:w-full flex flex-wrap gap-2">
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded  mt-4"
+					on:click={() => {
+						updateLiveScene(LiveStatsScene.WaitingForDolphin);
+					}}
+				>
+					Waiting
+				</button>
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded  mt-4"
+					on:click={() => {
+						updateLiveScene(LiveStatsScene.PreGame);
+					}}
+				>
+					Pre Game
+				</button>
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded mt-4"
+					on:click={() => {
+						updateLiveScene(LiveStatsScene.InGame);
+					}}
+				>
+					In Game
+				</button>
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded mt-4"
+					on:click={() => {
+						updateLiveScene(LiveStatsScene.PostGame);
+					}}
+				>
+					Post Game
+				</button>
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded mt-4"
+					on:click={() => {
+						updateLiveScene(LiveStatsScene.RankChange);
+					}}
+				>
+					Rank Change
+				</button>
 			</div>
 		</div>
 	</div>
+	<ElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />
 </main>

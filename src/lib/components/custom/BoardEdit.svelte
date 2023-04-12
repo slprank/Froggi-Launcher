@@ -33,17 +33,16 @@
 		tempItems = items;
 	}
 
-	function getLiveScene() {
+	function updateLiveScene() {
 		if (layer === undefined) return;
 		curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 		items = curScene[$statsScene].layers[layer] ?? [];
-		console.log('items', items);
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
 			item[COL].resizable = true;
 		});
 	}
-	$: $statsScene || layer, getLiveScene();
+	$: $statsScene || layer || $obs, updateLiveScene();
 
 	setInterval(() => {
 		if (!tempItems || layer === undefined || curScene[$statsScene].layers[layer] == tempItems)
