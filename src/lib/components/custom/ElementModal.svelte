@@ -6,7 +6,7 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/DefaultScene.svelte';
-	import type { CustomElement } from '$lib/types/enum';
+	import { CustomElement } from '$lib/types/enum';
 
 	const sceneId = parseInt($page.params.scene);
 	const COL = 256;
@@ -53,11 +53,18 @@
 			<div class="w-full h-full p-2">
 				<div class="w-40 h-12">
 					<Select bind:selected={selectedElement}>
-						<option selected value={0}>Layer 1</option>
-						<option value={1}>Layer 2</option>
-						<option value={2}>Layer 3</option>
+						<option selected value={CustomElement.Player1Tag}>Player1Tag</option>
+						<option value={CustomElement.Player1Tag}>Player2Tag</option>
 					</Select>
 				</div>
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					on:click={() => {
+						add(selectedElement, {});
+					}}
+				>
+					Add
+				</button>
 			</div>
 		</div>
 	</Modal>
