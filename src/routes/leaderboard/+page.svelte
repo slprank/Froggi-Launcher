@@ -58,35 +58,35 @@
 				>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
 						<TextFitMulti
-							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							RANK
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-3 grid content-center justify-start">
 						<TextFitMulti
-							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							PLAYER
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-3 grid content-center justify-start">
 						<TextFitMulti
-							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							CHARACTERS
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
 						<TextFitMulti
-							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							RATING
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
 						<TextFitMulti
-							textClass="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							W/L
 						</TextFitMulti>
