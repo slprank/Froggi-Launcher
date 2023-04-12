@@ -25,18 +25,17 @@ export interface Scene {
 	title: string;
 	description: string;
 	default: LiveStatsScene;
-	preGame: Content;
-	inGame: Content;
-	postGame: Content;
-	rankChange: Content;
+	[LiveStatsScene.WaitingForDolphin]: Content;
+	[LiveStatsScene.PreGame]: Content;
+	[LiveStatsScene.InGame]: Content;
+	[LiveStatsScene.PostGame]: Content;
+	[LiveStatsScene.RankChange]: Content;
 }
 
 export interface Content {
 	backgroundColor: string | undefined;
 	backgroundImage: string | undefined;
-	layer1: any[];
-	layer2: any[];
-	layer3: any[];
+	layers: any[][];
 }
 
 // Old types

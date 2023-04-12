@@ -17,10 +17,15 @@
 					title: 'main',
 					description: 'main description',
 					default: LiveStatsScene.PreGame,
-					preGame: {
+					[LiveStatsScene.WaitingForDolphin]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layer1: [
+						layers: [],
+					},
+					[LiveStatsScene.PreGame]: {
+						backgroundColor: 'white',
+						backgroundImage: undefined,
+						layers: [
 							{
 								[COL]: gridHelp.item({
 									x: 0,
@@ -46,29 +51,22 @@
 								data: 'damn',
 							},
 						],
-						layer2: [],
-						layer3: [],
 					},
-					inGame: {
+
+					[LiveStatsScene.InGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layer1: [],
-						layer2: [],
-						layer3: [],
+						layers: [],
 					},
-					postGame: {
+					[LiveStatsScene.PostGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layer1: [],
-						layer2: [],
-						layer3: [],
+						layers: [],
 					},
-					rankChange: {
+					[LiveStatsScene.RankChange]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layer1: [],
-						layer2: [],
-						layer3: [],
+						layers: [],
 					},
 				},
 			],
@@ -81,83 +79,83 @@
 			title: 'New Title',
 			description: 'Scene Description',
 			default: LiveStatsScene.PreGame,
-			preGame: {
+			[LiveStatsScene.WaitingForDolphin]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layer1: [
-					{
-						[COL]: gridHelp.item({
-							x: 0,
-							y: 0,
-							w: 16,
-							h: 16,
-							min: { w: MIN, h: MIN },
-							max: { y: COL - MIN, h: COL + 1 },
-						}),
-						id: id(),
-					},
+				layers: [],
+			},
+			[LiveStatsScene.PreGame]: {
+				backgroundColor: 'white',
+				backgroundImage: undefined,
+				layers: [
+					[
+						{
+							[COL]: gridHelp.item({
+								x: 0,
+								y: 0,
+								w: 16,
+								h: 16,
+								min: { w: MIN, h: MIN },
+								max: { y: COL - MIN, h: COL + 1 },
+							}),
+							id: id(),
+						},
 
-					{
-						[COL]: gridHelp.item({
-							x: 12,
-							y: 12,
-							w: 16,
-							h: 16,
-							min: { w: MIN, h: MIN },
-							max: { y: COL - MIN, h: COL + 1 },
-						}),
-						id: id(),
-						data: 'damn',
-					},
-				],
-				layer2: [
-					{
-						[COL]: gridHelp.item({
-							x: 56,
-							y: 128,
-							w: 16,
-							h: 16,
-							min: { w: MIN, h: MIN },
-							max: { y: COL - MIN, h: COL + 1 },
-						}),
-						id: id(),
-					},
+						{
+							[COL]: gridHelp.item({
+								x: 12,
+								y: 12,
+								w: 16,
+								h: 16,
+								min: { w: MIN, h: MIN },
+								max: { y: COL - MIN, h: COL + 1 },
+							}),
+							id: id(),
+							data: 'damn',
+						},
+					],
+					[
+						{
+							[COL]: gridHelp.item({
+								x: 56,
+								y: 128,
+								w: 16,
+								h: 16,
+								min: { w: MIN, h: MIN },
+								max: { y: COL - MIN, h: COL + 1 },
+							}),
+							id: id(),
+						},
 
-					{
-						[COL]: gridHelp.item({
-							x: 200,
-							y: 200,
-							w: 16,
-							h: 16,
-							min: { w: MIN, h: MIN },
-							max: { y: COL - MIN, h: COL + 1 },
-						}),
-						id: id(),
-						data: 'damn',
-					},
+						{
+							[COL]: gridHelp.item({
+								x: 200,
+								y: 200,
+								w: 16,
+								h: 16,
+								min: { w: MIN, h: MIN },
+								max: { y: COL - MIN, h: COL + 1 },
+							}),
+							id: id(),
+							data: 'damn',
+						},
+					],
 				],
-				layer3: [],
 			},
-			inGame: {
+			[LiveStatsScene.InGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layer1: [],
-				layer2: [],
-				layer3: [],
+				layers: [],
 			},
-			postGame: {
+			[LiveStatsScene.PostGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layer1: [],
-				layer2: [],
-				layer3: [],
+				layers: [],
 			},
-			rankChange: {
+			[LiveStatsScene.RankChange]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layer1: [],
-				layer2: [],
-				layer3: [],
+				layers: [],
 			},
 		} as Scene;
 	}

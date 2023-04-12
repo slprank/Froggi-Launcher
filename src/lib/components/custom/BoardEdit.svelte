@@ -11,8 +11,7 @@
 	const sceneId = parseInt($page.params.scene);
 
 	export let height: number | undefined = undefined;
-	export let layer: string = '';
-	let liveScene: string = '';
+	export let layer: number | undefined = undefined;
 
 	let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 	let items: any[] = [];
@@ -35,13 +34,10 @@
 	}
 
 	function getLiveScene() {
-		if ($statsScene === LiveStatsScene.PreGame) liveScene = 'preGame';
-		if ($statsScene === LiveStatsScene.InGame) liveScene = 'inGame';
-		if ($statsScene === LiveStatsScene.PostGame) liveScene = 'postGame';
-		if ($statsScene === LiveStatsScene.RankChange) liveScene = 'rankChange';
-		if (!layer || !liveScene) return;
+		if (layer === undefined) return;
 		curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
-		items = curScene[liveScene][layer] ?? [];
+		items = curScene[$statsScene].layers[layer] ?? [];
+		console.log('items', items);
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
 			item[COL].resizable = true;
@@ -50,15 +46,15 @@
 	$: $statsScene || layer, getLiveScene();
 
 	setInterval(() => {
-		if (!tempItems || !layer || !liveScene || curScene[liveScene][layer] == tempItems) return;
-		curScene[liveScene][layer] = tempItems;
+		if (!tempItems || layer === undefined || curScene[$statsScene].layers[layer] == tempItems)
+			return;
+		curScene[$statsScene].layers[layer] = tempItems;
 
 		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
 		const index = $obs.scenes.indexOf(scene);
 		$obs.scenes[index] = curScene;
-		console.log('update obs', $obs);
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 
+		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 		tempItems = undefined;
 	}, 200);
 

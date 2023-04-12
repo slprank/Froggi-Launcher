@@ -11,7 +11,7 @@
 
 	const sceneId = parseInt($page.params.scene);
 
-	let selectedLayer = 'layer1';
+	let selectedLayer = 0;
 
 	let boardHeight: number;
 	let innerWidth: number;
@@ -30,7 +30,7 @@
 		if (scene) return;
 		const newId = Math.max(...$obs.scenes.map((s) => s.id)) ?? 1;
 		$obs.scenes.push(getNewScene(newId));*/
-		$obs.scenes[0] = getNewScene(1);
+		$obs.scenes[0] = getNewScene(1); // Remove this
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
 
@@ -38,6 +38,7 @@
 
 	$: calculateBoardHeight(innerWidth);
 
+	// TODO: Rewrite layers to array
 	// TODO: Display size and position of selected element in an editable window
 	// TODO: Create element dropdown list
 	// TODO: Create selected element preview and input fields (if customizable)
@@ -64,9 +65,9 @@
 			<div class="w-full h-full grid grid-flow-row grid-rows-8 gap-1">
 				<div class="row-span-2">
 					<Select bind:selected={selectedLayer}>
-						<option selected value="layer1">Layer 1</option>
-						<option value="layer2">Layer 2</option>
-						<option value="layer3">Layer 3</option>
+						<option selected value={0}>Layer 1</option>
+						<option value={1}>Layer 2</option>
+						<option value={2}>Layer 3</option>
 					</Select>
 				</div>
 				<div
