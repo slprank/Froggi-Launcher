@@ -9,7 +9,7 @@ import type {
 	StatsType,
 	StockType,
 } from '@slippi/slippi-js';
-import type { LiveStatsScene } from './enum';
+import type { CustomElement, LiveStatsScene } from './enum';
 
 export interface Url {
 	external: string;
@@ -36,6 +36,26 @@ export interface Content {
 	backgroundColor: string | undefined;
 	backgroundImage: string | undefined;
 	layers: any[][];
+}
+
+export interface GridContentItem {
+	elementId: number;
+	data: ElementPayload;
+	id: string;
+}
+
+export interface ElementPayload {
+	string: string | undefined;
+	image: string | undefined;
+	css: string;
+}
+
+export interface CustomOptions {
+	element: CustomElement;
+	stringSettings: boolean;
+	imageSettings: boolean;
+	isCustomString: boolean;
+	isCustomImage: boolean;
 }
 
 // Old types
