@@ -5,9 +5,9 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/DefaultScene.svelte';
-	import ElementSelect from './ElementSelect.svelte';
+	import ElementSelect from '$lib/components/custom/ElementSelect.svelte';
 	import Select from '$lib/components/Select.svelte';
-	import StylingSelect from './StylingSelect.svelte';
+	import StylingSelect from '$lib/components/custom/StylingSelect.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 	const COL = 256;
@@ -23,10 +23,8 @@
 
 	function add(elementId: number, data: any) {
 		let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
-		let items = curScene[$statsScene].layers[layer];
-		console.log(curScene);
+		let items = curScene[$statsScene].layers[layer] ?? [];
 		let newItem = generateNewItem(elementId, data);
-
 		let findOutPosition = gridHelp.findSpace(newItem, items, COL);
 
 		newItem = {

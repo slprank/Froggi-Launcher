@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { textfit } from 'svelte-textfit';
 
+	export let maxFont = 100;
 	export { _class as class };
 	let _class: string;
 
@@ -14,11 +15,15 @@
 <svelte:window bind:innerWidth bind:innerHeight bind:outerWidth bind:outerHeight />
 
 {#key innerWidth || innerHeight || outerWidth || outerHeight}
-	<div class={`w-full max-w-full whitespace-nowrap m-0 font-medium ${_class}`} bind:this={parent}>
+	<div
+		class={`w-full max-w-full whitespace-nowrap m-0 font-medium flex items-center ${_class}`}
+		bind:this={parent}
+	>
 		<h1
 			use:textfit={{
 				parent,
 				mode: 'multi',
+				max: maxFont,
 			}}
 		>
 			<slot />

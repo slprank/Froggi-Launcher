@@ -30,7 +30,7 @@
 		style={`font-family: ${font}`}
 	>
 		{#if dataItem?.elementId == CustomElement.CustomString}
-			<TextFitMulti class={`w-full h-full flex text-6xl ${dataItem.data.css}`}>
+			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
 				{dataItem?.data.string}
 			</TextFitMulti>
 		{/if}
@@ -38,22 +38,22 @@
 			<div class={`${dataItem?.data.css}`} />
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Tag}
-			<TextFitMulti class={`w-full h-full flex text-6xl ${dataItem.data.css}`}>
+			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
 				{`Player1`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2Tag}
-			<TextFitMulti class={`w-full h-full flex text-6xl ${dataItem.data.css}`}>
+			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
 				{`Player2`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Score}
-			<TextFitMulti class={`w-full h-full flex text-6xl ${dataItem.data.css}`}>
+			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
 				{`1`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2Score}
-			<TextFitMulti class={`w-full h-full flex text-6xl ${dataItem.data.css}`}>
+			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
 				{`0`}
 			</TextFitMulti>
 		{/if}

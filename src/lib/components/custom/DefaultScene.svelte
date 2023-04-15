@@ -166,6 +166,8 @@
 				h: 24,
 				x: 0,
 				y: 0,
+				min: { w: MIN, h: MIN },
+				max: { y: COL - MIN, h: COL + 1 },
 			}),
 			id: id(),
 			elementId: elementId,

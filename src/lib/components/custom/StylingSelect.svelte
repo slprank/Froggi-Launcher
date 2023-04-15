@@ -26,14 +26,6 @@
 					<option value="justify-end">Right</option>
 				</Select>
 			</div>
-			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Vertical</h1>
-				<Select bind:selected={stylesArray[1]}>
-					<option value="items-start">Top</option>
-					<option selected value="items-center">Center</option>
-					<option value="items-end">Bottom</option>
-				</Select>
-			</div>
 		</div>
 	{/if}
 	{#if selectedElement?.stringSettings}
