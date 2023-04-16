@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Select from '$lib/components/Select.svelte';
 	import type { CustomOptions, ElementPayload } from '$lib/types/types';
+	import CssInputValue from '../CssInput.svelte';
 
 	export let selectedElement: CustomOptions;
 	export let payload: ElementPayload;
@@ -101,15 +102,7 @@
 		<h1 class="text-white text-lg font-medium mb-2 mt-4">Colors</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<input
-					class="w-full h-full rounded-md"
-					type="color"
-					id="head"
-					name="head"
-					on:input={(e) => {
-						cssArray[10] = `color: ${e.target.value}`;
-					}}
-				/>
+				<CssInputValue key="color" bind:value={cssArray[10]} type="color" />
 			</div>
 		</div>
 	{/if}
@@ -117,29 +110,13 @@
 		<h1 class="text-white text-lg font-medium mb-2 mt-4">Background color</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<input
-					class="w-full h-full rounded-md"
-					type="color"
-					id="head"
-					name="head"
-					on:change={(e) => {
-						cssArray[11] = `background: ${e.target.value}`;
-					}}
-				/>
+				<CssInputValue key="background" bind:value={cssArray[11]} type="color" />
 			</div>
 		</div>
 		<h1 class="text-white text-lg font-medium mb-2 mt-4">Border color</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<input
-					class="w-full h-full rounded-md"
-					type="color"
-					id="head"
-					name="head"
-					on:change={(e) => {
-						cssArray[12] = `border-color: ${e.target.value}`;
-					}}
-				/>
+				<CssInputValue key="border-color" bind:value={cssArray[12]} type="color" />
 			</div>
 		</div>
 	{/if}
