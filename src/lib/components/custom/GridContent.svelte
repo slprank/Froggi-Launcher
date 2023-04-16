@@ -8,11 +8,10 @@
 	export let edit: boolean = false;
 	export let font = '';
 
-	$: console.log('hmmmm', dataItem);
-
+	// TODO: Add remaining components
+	// TODO: Use live data
 	// TODO: Add custom font support
-
-	// TODO: Add components as seperete components
+	// TODO: Add components as separate components
 	// TODO: Use game data to display
 </script>
 
@@ -30,35 +29,58 @@
 		style={`font-family: ${font}`}
 	>
 		{#if dataItem?.elementId == CustomElement.CustomString}
-			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
+			<TextFitMulti
+				class={`h-full flex ${dataItem.data.class}`}
+				style={`${dataItem?.data.css}`}
+				maxFont={1000}
+			>
 				{dataItem?.data.string}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.CustomBox}
-			<div class={`${dataItem?.data.css}`} />
+			<div class={`w-full h-full ${dataItem?.data.class}`} style={`${dataItem?.data.css}`} />
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Tag}
-			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
+			<TextFitMulti
+				class={`h-full flex ${dataItem.data.class}`}
+				style={`${dataItem?.data.css}`}
+				maxFont={1000}
+			>
 				{`Player1`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2Tag}
-			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
+			<TextFitMulti
+				class={`h-full flex ${dataItem.data.class}`}
+				style={`${dataItem?.data.css}`}
+				maxFont={1000}
+			>
 				{`Player2`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Score}
-			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
+			<TextFitMulti
+				class={`h-full flex ${dataItem.data.class}`}
+				style={`${dataItem?.data.css}`}
+				maxFont={1000}
+			>
 				{`1`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2Score}
-			<TextFitMulti class={`h-full flex ${dataItem.data.css}`} maxFont={1000}>
+			<TextFitMulti
+				class={`h-full flex ${dataItem.data.class}`}
+				style={`${dataItem?.data.css}`}
+				maxFont={1000}
+			>
 				{`0`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1RankIcon}
-			<div class={`w-full h-full flex justify-center items-center ${dataItem.data.css}`}>
+			<div
+				class={`w-full h-full flex justify-center items-center ${dataItem.data.class}`}
+				style={`${dataItem?.data.css}`}
+			>
 				<img
 					class="w-full h-full object-contain aspect-square"
 					src="/image/rank-icons/GOLD 3.svg"
@@ -67,7 +89,10 @@
 			</div>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2RankIcon}
-			<div class={`w-full h-full flex justify-center items-center ${dataItem.data.css}`}>
+			<div
+				class={`w-full h-full flex justify-center items-center ${dataItem.data.class}`}
+				style={`${dataItem?.data.css}`}
+			>
 				<img
 					class="w-full h-full object-contain aspect-square"
 					src="/image/rank-icons/SILVER 3.svg"

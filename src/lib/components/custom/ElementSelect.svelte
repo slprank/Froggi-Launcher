@@ -5,10 +5,22 @@
 
 	export let selectedElement: CustomOptions;
 
+	// TODO: Add remaining components
 	let options = [
 		{
 			name: 'Custom String',
-			value: { element: CustomElement.CustomString, stringSettings: true },
+			value: {
+				element: CustomElement.CustomString,
+				stringSettings: true,
+				isCustomString: true,
+			},
+		},
+		{
+			name: 'Custom Box',
+			value: {
+				element: CustomElement.CustomBox,
+				boxSettings: true,
+			},
 		},
 		{
 			name: 'Player1 Tag',

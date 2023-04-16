@@ -3,6 +3,7 @@
 
 	export let maxFont = 100;
 	export { _class as class };
+	export let style = '';
 	let _class: string;
 
 	let parent: Node;
@@ -17,6 +18,7 @@
 {#key innerWidth || innerHeight || outerWidth || outerHeight}
 	<div
 		class={`w-full max-w-full whitespace-nowrap m-0 font-medium flex items-center ${_class}`}
+		style={`${style}`}
 		bind:this={parent}
 	>
 		<h1

@@ -47,6 +47,7 @@ export interface GridContentItem {
 export interface ElementPayload {
 	string: string | undefined;
 	image: string | undefined;
+	class: string;
 	css: string;
 }
 
@@ -54,6 +55,7 @@ export interface CustomOptions {
 	element: CustomElement;
 	stringSettings: boolean;
 	imageSettings: boolean;
+	boxSettings: boolean;
 	isCustomString: boolean;
 	isCustomImage: boolean;
 }
