@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/types/enum';
 	import type { GridContentItem } from '$lib/types/types';
-	import { obs } from '$lib/utils/store.svelte';
+	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
 	export let font = '';
 
+	// TODO: Transition based on x/y position
 	// TODO: Add remaining components
 	// TODO: Use live data
 	// TODO: Add custom font support
-	// TODO: Add components as separate components
-	// TODO: Use game data to display
 </script>
 
 <svelte:head>
@@ -21,7 +20,7 @@
 	-->
 </svelte:head>
 
-{#key $obs}
+{#key $obs || $statsScene}
 	<div
 		class={`custom-font h-full w-full overflow-hidden  ${
 			edit ? 'bg-white' : 'text-white'

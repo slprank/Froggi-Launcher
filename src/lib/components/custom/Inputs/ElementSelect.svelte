@@ -5,7 +5,7 @@
 
 	export let selectedElement: CustomOptions;
 
-	// TODO: Add remaining components
+	// TODO: Add remaining components - stats/rank-up/session etc..
 	let options = [
 		{
 			name: 'Custom String',

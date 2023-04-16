@@ -44,14 +44,13 @@
 		if (value > 2000) boardHeight = 450;
 		if (value > 2200) boardHeight = 505;
 	}
-
+	// TODO: Change scene name
+	// TODO: Change scene background color/image and opacity
+	// TODO: Select default scene, enable/disable different scenes
+	// TODO: Font dropdown
 	// TODO: Display size and position of selected element in an editable window
-	// TODO: Create element dropdown list
-	// TODO: Create selected element preview and input fields (if customizable)
-	// TODO: Create HEX Color editor with transparency
+	// TODO: Selected element delete button
 	// TODO: Image selector and uploader (base64)
-	// TODO: Add/Remove elements
-	// TODO: Resize elements on both corners
 </script>
 
 <svelte:window bind:innerWidth />

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Select from '$lib/components/Select.svelte';
 	import type { CustomOptions, ElementPayload } from '$lib/types/types';
-	import CssInputValue from '../CssInput.svelte';
+	import ColorInput from '$lib/components/custom/Inputs/ColorInput.svelte';
+	import SliderInput from '$lib/components/custom/Inputs/SliderInput.svelte';
 
 	export let selectedElement: CustomOptions;
 	export let payload: ElementPayload;
@@ -15,6 +16,8 @@
 	}
 
 	$: classArray, cssArray, updateCustomStyle();
+
+	// TODO: Add opacity select -htd text, border, background
 </script>
 
 <div class="w-full mb-2">
@@ -25,8 +28,9 @@
 				<input
 					type="text"
 					id="default-input"
+					placeholder="Text"
 					bind:value={payload.string}
-					class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5"
 				/>
 			</div>
 		</div>
@@ -102,7 +106,7 @@
 		<h1 class="text-white text-lg font-medium mb-2 mt-4">Colors</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<CssInputValue key="color" bind:value={cssArray[10]} type="color" />
+				<ColorInput key="color" bind:value={cssArray[10]} />
 			</div>
 		</div>
 	{/if}
@@ -110,13 +114,13 @@
 		<h1 class="text-white text-lg font-medium mb-2 mt-4">Background color</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<CssInputValue key="background" bind:value={cssArray[11]} type="color" />
+				<ColorInput key="background" bind:value={cssArray[11]} />
 			</div>
 		</div>
 		<h1 class="text-white text-lg font-medium mb-2 mt-4">Border color</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<CssInputValue key="border-color" bind:value={cssArray[12]} type="color" />
+				<ColorInput key="border-color" bind:value={cssArray[12]} />
 			</div>
 		</div>
 	{/if}
@@ -142,6 +146,11 @@
 			</div>
 		</div>
 	{/if}
-
-	<!-- Opacity-->
+	<h1 class="text-white text-lg font-medium mt-4">Transparency</h1>
+	<div class="w-full h-fit flex flex-wrap gap-2">
+		<div class="w-36 h-24">
+			<SliderInput bind:value={cssArray[13]} key={'opacity'} />
+		</div>
+		<h1 class="text-white text-center capitalize">{cssArray[13]}%</h1>
+	</div>
 </div>

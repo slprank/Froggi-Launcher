@@ -5,8 +5,7 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/DefaultScene.svelte';
-	import ElementSelect from '$lib/components/custom/ElementSelect.svelte';
-	import Select from '$lib/components/Select.svelte';
+	import ElementSelect from '$lib/components/custom/Inputs/ElementSelect.svelte';
 	import StylingSelect from '$lib/components/custom/StylingSelect.svelte';
 
 	const sceneId = parseInt($page.params.scene);
