@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Board from './Board.svelte';
+	import Board from '$lib/components/custom/Board.svelte';
 
 	export let boardHeight: number;
 </script>

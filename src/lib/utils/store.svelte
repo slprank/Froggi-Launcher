@@ -5,7 +5,7 @@
 	import { LiveStatsScene } from '$lib/types/enum';
 	import Device from 'svelte-device-info';
 	import type { Obs, Url } from '$lib/types/types';
-	import { getDefaultScenes } from '$lib/components/custom/DefaultScene.svelte';
+	import { getDefaultScenes } from '$lib/components/custom/edit/CreateScene.svelte';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
 

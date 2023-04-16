@@ -24,32 +24,7 @@
 					[LiveStatsScene.PreGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layers: [
-							{
-								[COL]: gridHelp.item({
-									x: 0,
-									y: 0,
-									w: 16,
-									h: 16,
-									min: { w: MIN, h: MIN },
-									max: { y: COL - MIN, h: COL + 1 },
-								}),
-								id: id(),
-							},
-
-							{
-								[COL]: gridHelp.item({
-									x: 12,
-									y: 12,
-									w: 4,
-									h: 4,
-									min: { w: MIN, h: MIN },
-									max: { y: COL - MIN, h: COL + 1 },
-								}),
-								id: id(),
-								data: 'damn',
-							},
-						],
+						layers: [],
 					},
 
 					[LiveStatsScene.InGame]: {
@@ -86,60 +61,7 @@
 			[LiveStatsScene.PreGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layers: [
-					[
-						{
-							[COL]: gridHelp.item({
-								x: 0,
-								y: 0,
-								w: 16,
-								h: 16,
-								min: { w: MIN, h: MIN },
-								max: { y: COL - MIN, h: COL + 1 },
-							}),
-							id: id(),
-						},
-
-						{
-							[COL]: gridHelp.item({
-								x: 24,
-								y: 24,
-								w: 16,
-								h: 16,
-								min: { w: MIN, h: MIN },
-								max: { y: COL - MIN, h: COL + 1 },
-							}),
-							id: id(),
-							data: 'damn',
-						},
-					],
-					[
-						{
-							[COL]: gridHelp.item({
-								x: 56,
-								y: 128,
-								w: 16,
-								h: 16,
-								min: { w: MIN, h: MIN },
-								max: { y: COL - MIN, h: COL + 1 },
-							}),
-							id: id(),
-						},
-
-						{
-							[COL]: gridHelp.item({
-								x: 200,
-								y: 200,
-								w: 16,
-								h: 16,
-								min: { w: MIN, h: MIN },
-								max: { y: COL - MIN, h: COL + 1 },
-							}),
-							id: id(),
-							data: 'damn',
-						},
-					],
-				],
+				layers: [],
 			},
 			[LiveStatsScene.InGame]: {
 				backgroundColor: 'white',

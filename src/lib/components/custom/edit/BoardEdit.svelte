@@ -5,7 +5,6 @@
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import { fade } from 'svelte/transition';
 	import type { Scene } from '$lib/types/types';
-	import { LiveStatsScene } from '$lib/types/enum';
 
 	const COL = 256;
 	const sceneId = parseInt($page.params.scene);

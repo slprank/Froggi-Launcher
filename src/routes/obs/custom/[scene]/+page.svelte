@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { eventEmitter, isElectron } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
-	import Edit from '$lib/components/custom/Edit.svelte';
+	import Edit from '$lib/components/custom/edit/Edit.svelte';
 	import Board from '$lib/components/custom/Board.svelte';
 
 	// TODO: Use the scene Id to display custom scene component

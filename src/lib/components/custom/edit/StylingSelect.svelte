@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Select from '$lib/components/Select.svelte';
 	import type { CustomOptions, ElementPayload } from '$lib/types/types';
-	import ColorInput from '$lib/components/custom/Inputs/ColorInput.svelte';
-	import SliderInput from '$lib/components/custom/Inputs/SliderInput.svelte';
+	import ColorInput from '$lib/components/custom/input/ColorInput.svelte';
+	import SliderInput from '$lib/components/custom/input/SliderInput.svelte';
 
 	export let selectedElement: CustomOptions;
 	export let payload: ElementPayload;
@@ -17,7 +17,7 @@
 
 	$: classArray, cssArray, updateCustomStyle();
 
-	// TODO: Add opacity select -htd text, border, background
+	// TODO: Add text/box shadow
 </script>
 
 <div class="w-full mb-2">

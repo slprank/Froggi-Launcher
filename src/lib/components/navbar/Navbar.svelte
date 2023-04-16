@@ -53,7 +53,7 @@
 				<div
 					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1"
 				>
-					<NavButton click={() => goto('live')}>
+					<NavButton click={() => goto('/live')}>
 						<img src="/image/button-icons/live.png" alt="live" />
 					</NavButton>
 				</div>

@@ -4,9 +4,9 @@
 	import type { CustomOptions, ElementPayload, Scene } from '$lib/types/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { generateNewItem } from '$lib/components/custom/DefaultScene.svelte';
-	import ElementSelect from '$lib/components/custom/Inputs/ElementSelect.svelte';
-	import StylingSelect from '$lib/components/custom/StylingSelect.svelte';
+	import { generateNewItem } from '$lib/components/custom/edit/CreateScene.svelte';
+	import ElementSelect from '$lib/components/custom/input/ElementSelect.svelte';
+	import StylingSelect from '$lib/components/custom/edit/StylingSelect.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 	const COL = 256;

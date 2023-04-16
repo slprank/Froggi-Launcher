@@ -3,11 +3,11 @@
 	import { fade } from 'svelte/transition';
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
-	import BoardEdit from '$lib/components/custom/BoardEdit.svelte';
+	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import Select from '$lib/components/Select.svelte';
-	import { getNewScene } from './DefaultScene.svelte';
+	import { getNewScene } from './CreateScene.svelte';
 	import Preview from './Preview.svelte';
-	import ElementModal from '$lib/components/custom/ElementModal.svelte';
+	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 
@@ -133,5 +133,5 @@
 			</div>
 		</div>
 	</div>
-	<ElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />
+	<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />
 </main>
