@@ -39,7 +39,7 @@ export interface Content {
 }
 
 export interface GridContentItem {
-	elementId: number;
+	elementId: CustomElement;
 	data: ElementPayload;
 	id: string;
 }
@@ -52,7 +52,7 @@ export interface ElementPayload {
 }
 
 export interface CustomOptions {
-	element: CustomElement;
+	elementId: CustomElement;
 	stringSettings: boolean;
 	imageSettings: boolean;
 	boxSettings: boolean;

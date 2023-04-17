@@ -4,7 +4,7 @@
 
 	let tempValue: number = 100;
 
-	$: value = `${key}: ${tempValue}`;
+	$: value = `${key}: ${tempValue / 100}`;
 </script>
 
 <input

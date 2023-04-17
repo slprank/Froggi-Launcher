@@ -1,17 +1,38 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Board from '$lib/components/custom/Board.svelte';
+	import { urls } from '$lib/utils/store.svelte';
+	import Clipboard from 'svelte-clipboard';
+
+	const sceneId = parseInt($page.params.scene);
+
+	$: sceneUrl = `${$urls?.local}/obs/custom/${sceneId}`;
 
 	export let boardHeight: number;
+
+	// TODO: Add alert component
 </script>
 
-<div class="w-full h-full grid grid-flow-row grid-rows-8">
-	<div class="row-span-2" />
+<div class="w-full h-full">
 	<div
-		class={`row-span-5 w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
+		class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
 	>
 		<Board bind:height={boardHeight} />
 	</div>
-	<div class="row-span-1">
-		<h1 class="text-white">OBS url</h1>
+	<div class="flex items-center gap-2">
+		<h1 class="text-gray-500 text-md font-medium text-shadow">
+			{sceneUrl}
+		</h1>
+		<Clipboard
+			text={sceneUrl}
+			let:copy
+			on:copy={() => {
+				console.log('Has Copied');
+			}}
+		>
+			<button on:click={copy} class="w-5 h-5 invert transition hover:scale-110">
+				<img src="/image/button-icons/copy.png" alt="copy" />
+			</button>
+		</Clipboard>
 	</div>
 </div>

@@ -4,9 +4,15 @@
 	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
 
-	export let dataItem: GridContentItem;
+	export let dataItem: GridContentItem | undefined = undefined;
 	export let edit: boolean = false;
 	export let font = '';
+	export let testItem: GridContentItem | undefined = undefined;
+
+	function updateTestData() {
+		if (testItem) dataItem = testItem;
+	}
+	$: testItem, updateTestData();
 
 	// TODO: Transition based on x/y position
 	// TODO: Add remaining components
@@ -20,7 +26,7 @@
 	-->
 </svelte:head>
 
-{#key $obs || $statsScene}
+{#key $obs || $statsScene || dataItem}
 	<div
 		class={`custom-font h-full w-full overflow-hidden  ${
 			edit ? 'bg-white' : 'text-white'
@@ -30,7 +36,7 @@
 		{#if dataItem?.elementId == CustomElement.CustomString}
 			<TextFitMulti
 				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css}`}
+				style={`${dataItem?.data.css} ${edit ? 'color: black;' : ''}`}
 				maxFont={1000}
 			>
 				{dataItem?.data.string}
@@ -42,7 +48,7 @@
 		{#if dataItem?.elementId == CustomElement.Player1Tag}
 			<TextFitMulti
 				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css}`}
+				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`Player1`}
@@ -51,7 +57,7 @@
 		{#if dataItem?.elementId == CustomElement.Player2Tag}
 			<TextFitMulti
 				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css}`}
+				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`Player2`}
@@ -60,7 +66,7 @@
 		{#if dataItem?.elementId == CustomElement.Player1Score}
 			<TextFitMulti
 				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css}`}
+				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`1`}
@@ -69,7 +75,7 @@
 		{#if dataItem?.elementId == CustomElement.Player2Score}
 			<TextFitMulti
 				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css}`}
+				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`0`}

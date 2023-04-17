@@ -10,7 +10,7 @@
 		{
 			name: 'Custom String',
 			value: {
-				element: CustomElement.CustomString,
+				elementId: CustomElement.CustomString,
 				stringSettings: true,
 				isCustomString: true,
 			},
@@ -18,33 +18,33 @@
 		{
 			name: 'Custom Box',
 			value: {
-				element: CustomElement.CustomBox,
+				elementId: CustomElement.CustomBox,
 				boxSettings: true,
 			},
 		},
 		{
 			name: 'Player1 Tag',
-			value: { element: CustomElement.Player1Tag, stringSettings: true },
+			value: { elementId: CustomElement.Player1Tag, stringSettings: true },
 		},
 		{
 			name: 'Player2 Tag',
-			value: { element: CustomElement.Player2Tag, stringSettings: true },
+			value: { elementId: CustomElement.Player2Tag, stringSettings: true },
 		},
 		{
 			name: 'Player1 Score',
-			value: { element: CustomElement.Player1Score, stringSettings: true },
+			value: { elementId: CustomElement.Player1Score, stringSettings: true },
 		},
 		{
 			name: 'Player2 Score',
-			value: { element: CustomElement.Player2Score, stringSettings: true },
+			value: { elementId: CustomElement.Player2Score, stringSettings: true },
 		},
 		{
 			name: 'Player1 Rank Icon',
-			value: { element: CustomElement.Player1RankIcon, imageSettings: true },
+			value: { elementId: CustomElement.Player1RankIcon, imageSettings: true },
 		},
 		{
 			name: 'Player2 Rank Icon',
-			value: { element: CustomElement.Player2RankIcon, imageSettings: true },
+			value: { elementId: CustomElement.Player2RankIcon, imageSettings: true },
 		},
 	];
 </script>
