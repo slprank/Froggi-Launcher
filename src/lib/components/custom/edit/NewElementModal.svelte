@@ -97,6 +97,11 @@
 								<GridContent bind:testItem edit={!i} />
 							</div>
 						{/if}
+						{#if selectedElement?.imageSettings}
+							<div class="w-40 h-35 ">
+								<GridContent bind:testItem edit={!i} />
+							</div>
+						{/if}
 					</div>
 				{/each}
 			</div>

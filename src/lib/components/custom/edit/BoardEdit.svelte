@@ -11,6 +11,7 @@
 
 	export let height: number | undefined = undefined;
 	export let layer: number | undefined = undefined;
+	export let selectedId: number | undefined = undefined;
 
 	let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 	let items: any[] = [];
@@ -71,7 +72,6 @@
 
 	let innerHeight: number;
 
-	// TODO: Include color, image and opacity
 	// TODO: Save and update history on mouseUp to undo actions
 </script>
 
@@ -100,6 +100,7 @@
 				cols={[[COL, COL]]}
 				fastStart={true}
 				on:change={updateScene}
+				on:pointerup={(e) => (selectedId = e.detail.id)}
 			>
 				<GridContent edit={true} {dataItem} />
 			</Grid>

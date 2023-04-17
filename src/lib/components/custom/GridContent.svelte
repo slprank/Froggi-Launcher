@@ -7,6 +7,7 @@
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let edit: boolean = false;
 	export let font = '';
+
 	export let testItem: GridContentItem | undefined = undefined;
 
 	function updateTestData() {

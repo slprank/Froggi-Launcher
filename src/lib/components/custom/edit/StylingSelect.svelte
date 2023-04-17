@@ -43,7 +43,7 @@
 			</div>
 		{/if}
 		{#if selectedElement?.boxSettings}
-			<h1 class="text-white text-lg font-medium mb-2 mt-4">Custom box</h1>
+			<h1 class="text-white text-lg font-medium mb-2">Custom box</h1>
 			<div class="w-full h-fit flex flex-wrap gap-2">
 				<div class="w-36 h-24">
 					<h1 class="text-white text-md font-medium">Border</h1>
@@ -97,7 +97,7 @@
 		{/if}
 
 		{#if selectedElement?.stringSettings}
-			<h1 class="text-white text-lg font-medium mb-2 mt-4">Alignment</h1>
+			<h1 class="text-white text-lg font-medium mb-2">Alignment</h1>
 			<div class="w-full h-fit flex flex-wrap gap-2">
 				<div class="w-36 h-24">
 					<h1 class="text-white text-md font-medium">Horizontal</h1>
@@ -110,7 +110,7 @@
 			</div>
 		{/if}
 		{#if selectedElement?.stringSettings}
-			<h1 class="text-white text-lg font-medium mb-2 mt-4">Colors</h1>
+			<h1 class="text-white text-lg font-medium mb-2">Colors</h1>
 			<div class="w-full h-fit flex flex-wrap gap-2 ">
 				<div class="w-36 h-12">
 					<ColorInput key="color" bind:value={cssArray[10]} />
@@ -118,13 +118,13 @@
 			</div>
 		{/if}
 		{#if selectedElement?.boxSettings}
-			<h1 class="text-white text-lg font-medium mb-2 mt-4">Background color</h1>
+			<h1 class="text-white text-lg font-medium mb-2">Background color</h1>
 			<div class="w-full h-fit flex flex-wrap gap-2 ">
 				<div class="w-36 h-12">
 					<ColorInput key="background" bind:value={cssArray[11]} />
 				</div>
 			</div>
-			<h1 class="text-white text-lg font-medium mb-2 mt-4">Border color</h1>
+			<h1 class="text-white text-lg font-medium mb-2">Border color</h1>
 			<div class="w-full h-fit flex flex-wrap gap-2 ">
 				<div class="w-36 h-12">
 					<ColorInput key="border-color" bind:value={cssArray[12]} />
@@ -153,7 +153,7 @@
 				</div>
 			</div>
 		{/if}
-		<h1 class="text-white text-lg font-medium mt-4">Transparency</h1>
+		<h1 class="text-white text-lg font-medium">Transparency</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<SliderInput bind:value={cssArray[13]} key={'opacity'} />

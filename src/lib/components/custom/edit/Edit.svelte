@@ -8,10 +8,12 @@
 	import { getNewScene } from './CreateScene.svelte';
 	import Preview from './Preview.svelte';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
+	import SelectedEditor from './SelectedEditor.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 
-	let selectedLayer = 0;
+	let selectedLayer: number | undefined = undefined;
+	let selectedId: number | undefined = undefined;
 	let isElementModalOpen = false;
 
 	let boardHeight: number;
@@ -68,13 +70,15 @@
 
 		<div class="w-[400px] xl:w-full h-full grid justify-center content-center">
 			<div class="flex gap-2 mb-4">
-				<div>
+				<div class="w-full">
 					<Select bind:selected={selectedLayer}>
 						<option selected value={0}>Layer 1</option>
 						<option value={1}>Layer 2</option>
 						<option value={2}>Layer 3</option>
 					</Select>
 				</div>
+				<SelectedEditor bind:selectedId bind:selectedLayer />
+
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => {
@@ -87,7 +91,7 @@
 			<div
 				class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
 			>
-				<BoardEdit bind:height={boardHeight} bind:layer={selectedLayer} />
+				<BoardEdit bind:height={boardHeight} bind:layer={selectedLayer} bind:selectedId />
 			</div>
 			<div class="w-lg 3xl:w-full flex flex-wrap gap-2">
 				<button
