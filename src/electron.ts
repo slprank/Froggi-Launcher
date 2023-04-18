@@ -1,3 +1,4 @@
+import app from 'electron';
 const windowStateManager = require('electron-window-state');
 const contextMenu = require('electron-context-menu');
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');

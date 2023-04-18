@@ -27,7 +27,7 @@
 	"files": [
 		"build/index.html",
 		"build/**/*",
-		"src/electron.cjs",
+		"src/electron.ts",
 		"src/electron-utils/**/*",
 		"src/electron-utils/achievements.cjs",
 		"src/electron-utils/api.cjs",
