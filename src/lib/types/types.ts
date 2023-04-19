@@ -51,15 +51,6 @@ export interface ElementPayload {
 	css: string;
 }
 
-export interface CustomOptions {
-	elementId: CustomElement;
-	stringSettings: boolean;
-	imageSettings: boolean;
-	boxSettings: boolean;
-	isCustomString: boolean;
-	isCustomImage: boolean;
-}
-
 // Old types
 export interface Player {
 	connectCode: string;

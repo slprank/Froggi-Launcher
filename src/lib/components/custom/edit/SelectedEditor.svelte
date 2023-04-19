@@ -4,6 +4,7 @@
 	import type { Scene } from '$lib/types/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
+	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 
 	const sceneId = parseInt($page.params.scene);
 
@@ -11,6 +12,8 @@
 	export let selectedLayer: number | undefined;
 	let selectedItem: any;
 	let selectedItemIndex: number;
+
+	let isElementModalOpen = false;
 
 	$: curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? undefined;
 
@@ -23,7 +26,7 @@
 	}
 	$: selectedId, getItemById();
 
-	function fixOverflow() {
+	function handleOverflow() {
 		if (selectedItem[COL].x < 0) selectedItem[COL].x = 0;
 		if (selectedItem[COL].y < 0) selectedItem[COL].y = 0;
 		if (selectedItem[COL].x >= COL) selectedItem[COL].x = COL - MIN;
@@ -36,7 +39,7 @@
 
 	function updateObs() {
 		if (!curScene || selectedLayer === undefined || selectedId === undefined) return;
-		fixOverflow();
+		handleOverflow();
 
 		curScene[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
 
@@ -117,5 +120,28 @@
 				W
 			</label>
 		</div>
+		<div class="w-24" in:fly={{ duration: 250, y: 50, delay: 200 }}>
+			<button
+				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				on:click={() => (isElementModalOpen = true)}
+			>
+				Edit
+			</button>
+		</div>
+		<div class="w-24" in:fly={{ duration: 250, y: 50, delay: 250 }}>
+			<button
+				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				on:click={() => {}}
+			>
+				Delete
+			</button>
+		</div>
 	</div>
+	{#key isElementModalOpen || selectedId}
+		<NewElementModal
+			bind:open={isElementModalOpen}
+			bind:layer={selectedLayer}
+			bind:selectedId
+		/>
+	{/key}
 {/if}

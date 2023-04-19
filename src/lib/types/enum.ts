@@ -8,12 +8,19 @@ export enum LiveStatsScene {
 
 export enum CustomElement {
 	CustomString = 1,
-	CustomImage = 2,
-	CustomBox = 3,
-	Player1Tag = 5,
-	Player2Tag = 6,
-	Player1Score = 7,
-	Player2Score = 8,
-	Player1RankIcon = 9,
-	Player2RankIcon = 10,
+	CustomBox = 2,
+	CustomImage = 3,
+
+	// String
+	Player1Tag = 100,
+	Player2Tag = 101,
+	Player1Score = 102,
+	Player2Score = 103,
+
+	// Box
+	// Potential Box Settings
+
+	// Image
+	Player1RankIcon = 300,
+	Player2RankIcon = 301,
 }

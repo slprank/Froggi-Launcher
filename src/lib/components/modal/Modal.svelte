@@ -31,7 +31,13 @@
 			destroy: () => fns.map((fn) => fn()),
 		};
 	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape') handleCloseClick();
+	}
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 {#if open}
 	<div use:modalAction transition:fade={{ duration: 200 }} class="w-screen h-screen z-50">

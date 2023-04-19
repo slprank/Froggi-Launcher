@@ -1,56 +1,48 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/types/enum';
-	import type { CustomOptions } from '$lib/types/types';
 	import Select from '$lib/components/Select.svelte';
 
-	export let selectedElement: CustomOptions;
+	export let selectedElementId: number;
 
 	// TODO: Add remaining components - stats/rank-up/session etc..
 	let options = [
 		{
 			name: 'Custom String',
-			value: {
-				elementId: CustomElement.CustomString,
-				stringSettings: true,
-				isCustomString: true,
-			},
+			value: CustomElement.CustomString,
 		},
 		{
 			name: 'Custom Box',
-			value: {
-				elementId: CustomElement.CustomBox,
-				boxSettings: true,
-			},
+			value: CustomElement.CustomBox,
 		},
 		{
 			name: 'Player1 Tag',
-			value: { elementId: CustomElement.Player1Tag, stringSettings: true },
+			value: CustomElement.Player1Tag,
 		},
 		{
 			name: 'Player2 Tag',
-			value: { elementId: CustomElement.Player2Tag, stringSettings: true },
+			value: CustomElement.Player2Tag,
 		},
 		{
 			name: 'Player1 Score',
-			value: { elementId: CustomElement.Player1Score, stringSettings: true },
+			value: CustomElement.Player1Score,
 		},
 		{
 			name: 'Player2 Score',
-			value: { elementId: CustomElement.Player2Score, stringSettings: true },
+			value: CustomElement.Player2Score,
 		},
 		{
 			name: 'Player1 Rank Icon',
-			value: { elementId: CustomElement.Player1RankIcon, imageSettings: true },
+			value: CustomElement.Player1RankIcon,
 		},
 		{
 			name: 'Player2 Rank Icon',
-			value: { elementId: CustomElement.Player2RankIcon, imageSettings: true },
+			value: CustomElement.Player2RankIcon,
 		},
 	];
 </script>
 
 <div class="w-40 h-12">
-	<Select bind:selected={selectedElement}>
+	<Select bind:selected={selectedElementId}>
 		{#each options as option, i}
 			<option selected={i === 0} value={option.value}>
 				{option.name}
