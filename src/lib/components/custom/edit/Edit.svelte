@@ -13,7 +13,7 @@
 	const sceneId = parseInt($page.params.scene);
 
 	let selectedLayer: number | undefined = undefined;
-	let selectedId: number | undefined = undefined;
+	let selectedId: string | undefined = undefined;
 	let isElementModalOpen = false;
 
 	let boardHeight: number;
@@ -46,6 +46,15 @@
 		if (value > 2000) boardHeight = 450;
 		if (value > 2200) boardHeight = 505;
 	}
+
+	function newBackgroundLayer() {
+		// TODO: Insert empty element start of layer array
+	}
+
+	function newLayer() {
+		// TODO: Push empty element end of layer array
+	}
+
 	// TODO: Change scene name
 	// TODO: Change scene background color/image and opacity
 	// TODO: Select default scene, enable/disable different scenes
@@ -53,6 +62,7 @@
 	// TODO: Display size and position of selected element in an editable window
 	// TODO: Selected element delete button
 	// TODO: Image selector and uploader (base64)
+	// TODO: If scene doesn't exist - electron generate new, other - display error?
 </script>
 
 <svelte:window bind:innerWidth />
@@ -68,17 +78,42 @@
 			<Preview bind:boardHeight />
 		</div>
 
-		<div class="w-[400px] xl:w-full h-full grid justify-center content-center">
-			<div class="flex gap-2 mb-4">
-				<div class="w-full">
-					<Select bind:selected={selectedLayer}>
-						<option selected value={0}>Layer 1</option>
-						<option value={1}>Layer 2</option>
-						<option value={2}>Layer 3</option>
-					</Select>
+		<div class="w-[400px] xl:w-[500px] 2xl:w-full h-full grid justify-center content-center">
+			<div class="grid gap-2 mb-4">
+				<div class="w-full flex gap-2">
+					<div class="w-42">
+						<Select bind:selected={selectedLayer}>
+							<option selected value={0}>Layer 1</option>
+							<option value={1}>Layer 2</option>
+							<option value={2}>Layer 3</option>
+						</Select>
+					</div>
+					<div class="w-42">
+						<button
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+							on:click={newBackgroundLayer}
+						>
+							New bot layer
+						</button>
+					</div>
+					<div class="w-42">
+						<button
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+							on:click={newLayer}
+						>
+							New top layer
+						</button>
+					</div>
+					<div class="w-42">
+						<button
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+							on:click={newLayer}
+						>
+							Remove layer
+						</button>
+					</div>
 				</div>
 				<SelectedEditor bind:selectedId bind:selectedLayer />
-
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => {

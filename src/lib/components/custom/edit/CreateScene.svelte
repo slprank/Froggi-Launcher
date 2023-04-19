@@ -2,8 +2,7 @@
 	import { CustomElement, LiveStatsScene } from '$lib/types/enum';
 	import type { Obs, Scene } from '$lib/types/types';
 
-	const COL = 256;
-	const MIN = 8;
+	import { COL, MIN } from '$lib/types/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	const id = () => '_' + Math.random().toString(36).substr(2, 9);

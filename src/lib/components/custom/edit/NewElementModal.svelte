@@ -9,12 +9,12 @@
 	import StylingSelect from '$lib/components/custom/edit/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
+	import { COL } from '$lib/types/const';
 
 	const sceneId = parseInt($page.params.scene);
-	const COL = 256;
 
 	export let open: boolean;
-	export let layer: number;
+	export let layer: number | undefined;
 
 	let selectedElement: CustomOptions;
 	let payload: ElementPayload = {
@@ -33,7 +33,7 @@
 
 	function add(elementId: number, data: any) {
 		let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
-		let items = curScene[$statsScene].layers[layer] ?? [];
+		let items = curScene[$statsScene].layers[layer ?? 0] ?? [];
 		let newItem = generateNewItem(elementId, data);
 		let findOutPosition = gridHelp.findSpace(newItem, items, COL);
 
@@ -49,7 +49,7 @@
 
 		let scene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 		const index = $obs.scenes.indexOf(scene);
-		$obs.scenes[index][$statsScene].layers[layer] = items;
+		$obs.scenes[index][$statsScene].layers[layer ?? 0] = items;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 
@@ -64,7 +64,7 @@
 		class=" w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		<div class="w-full h-full p-2 grid grid-cols-2 overflow-scroll scroll">
+		<div class="w-full h-full p-4 px-8 grid grid-cols-2 overflow-scroll scroll">
 			<div class="w-full h-full col-span-1 overflow-auto">
 				<ElementSelect bind:selectedElement />
 				<div class="w-full">

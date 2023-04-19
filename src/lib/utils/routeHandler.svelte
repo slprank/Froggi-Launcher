@@ -6,7 +6,6 @@
 	// TODO: Include searchParam which does not include `route`
 	// TODO: Handle /user route when implementing user page
 	function paramRedirect() {
-		console.log('Here');
 		const availableRoutes = getAvailableRoutes();
 		console.log(availableRoutes);
 		page.subscribe((page) => {
@@ -32,7 +31,6 @@
 			const routeElements = route.split('/');
 			if (curRouteElements.length != routeElements.length) return;
 			var zipped = curRouteElements.map((e, i) => [e, routeElements[i]]);
-			console.log(zipped);
 			zipped.forEach((zip) => {
 				if (zip[0] != zip[1] && !zip.some((z) => isWrapped(z))) return;
 			});

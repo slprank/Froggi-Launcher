@@ -5,10 +5,10 @@
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import type { Scene } from '$lib/types/types';
+	import { COL, ROW } from '$lib/types/const';
 
 	export let height: number | undefined = undefined;
 
-	const COL = 256;
 	const sceneId = parseInt($page.params.scene);
 
 	$: curScene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
@@ -60,7 +60,7 @@
 			<div class="w-full h-full z-2 absolute">
 				<Grid
 					bind:items={layer}
-					rowHeight={(height ?? innerHeight) / (COL + 2)}
+					rowHeight={(height ?? innerHeight) / ROW}
 					gap={[0, 0]}
 					let:dataItem
 					cols={[[COL, COL]]}

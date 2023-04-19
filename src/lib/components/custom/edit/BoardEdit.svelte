@@ -5,13 +5,13 @@
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import { fade } from 'svelte/transition';
 	import type { Scene } from '$lib/types/types';
+	import { COL, ROW } from '$lib/types/const';
 
-	const COL = 256;
 	const sceneId = parseInt($page.params.scene);
 
 	export let height: number | undefined = undefined;
 	export let layer: number | undefined = undefined;
-	export let selectedId: number | undefined = undefined;
+	export let selectedId: string | undefined = undefined;
 
 	let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 	let items: any[] = [];
@@ -25,11 +25,11 @@
 	function updateScene() {
 		items
 			.map((item: any) => item[COL])
-			.filter((item: any) => item.y + item.h > COL + 1)
+			.filter((item: any) => item.y + item.h > ROW + 1)
 			.forEach((item: any) => {
-				item.h = COL - item.y;
+				item.h = ROW - item.y;
 			});
-		items = items.filter((item: any) => item[COL].y < COL + 1);
+		items = items.filter((item: any) => item[COL].y < ROW + 1);
 		tempItems = items;
 	}
 
@@ -94,15 +94,18 @@
 		<div class="w-full h-full z-2 absolute">
 			<Grid
 				bind:items
-				rowHeight={(height ?? innerHeight) / (COL + 2)}
+				rowHeight={(height ?? innerHeight) / ROW}
 				gap={[0, 0]}
 				let:dataItem
 				cols={[[COL, COL]]}
 				fastStart={true}
 				on:change={updateScene}
-				on:pointerup={(e) => (selectedId = e.detail.id)}
+				on:pointerup={(e) => {
+					selectedId = undefined;
+					setTimeout(() => (selectedId = e.detail.id), 20);
+				}}
 			>
-				<GridContent edit={true} {dataItem} />
+				<GridContent edit={true} {dataItem} bind:selectedId />
 			</Grid>
 		</div>
 	</div>

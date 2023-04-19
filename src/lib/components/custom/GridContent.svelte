@@ -6,6 +6,7 @@
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let edit: boolean = false;
+	export let selectedId: string | undefined = undefined;
 	export let font = '';
 
 	export let testItem: GridContentItem | undefined = undefined;
@@ -29,8 +30,8 @@
 
 {#key $obs || $statsScene || dataItem}
 	<div
-		class={`custom-font h-full w-full overflow-hidden  ${
-			edit ? 'bg-white' : 'text-white'
+		class={`custom-font h-full w-full overflow-hidden  ${edit ? 'bg-white' : 'text-white'} ${
+			selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 		} bg-opacity-50`}
 		style={`font-family: ${font}`}
 	>
