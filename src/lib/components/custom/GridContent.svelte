@@ -16,6 +16,18 @@
 	}
 	$: testItem, updateTestData();
 
+	$: classValue = Object.entries(dataItem?.data.class ?? {})
+		.map(([_, value]) => `${value}`)
+		.join(' ');
+
+	$: cssValue = Object.entries(dataItem?.data.css ?? {})
+		.map(([key, value]) => `${toKebabCase(key)}: ${value}`)
+		.join('; ');
+
+	function toKebabCase(str: string) {
+		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+	}
+
 	// TODO: Transition based on x/y position
 	// TODO: Add remaining components
 	// TODO: Use live data
@@ -37,20 +49,20 @@
 	>
 		{#if dataItem?.elementId == CustomElement.CustomString}
 			<TextFitMulti
-				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css} ${edit ? 'color: black;' : ''}`}
+				class={`h-full flex ${classValue}`}
+				style={`${cssValue} ${edit ? 'color: black;' : ''}`}
 				maxFont={1000}
 			>
 				{dataItem?.data.string}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.CustomBox}
-			<div class={`w-full h-full ${dataItem?.data.class}`} style={`${dataItem?.data.css}`} />
+			<div class={`w-full h-full ${classValue}`} style={`${cssValue}`} />
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Tag}
 			<TextFitMulti
-				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
+				class={`h-full flex ${classValue}`}
+				style={`${cssValue} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`Player1`}
@@ -58,8 +70,8 @@
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2Tag}
 			<TextFitMulti
-				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
+				class={`h-full flex ${classValue}`}
+				style={`${cssValue} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`Player2`}
@@ -67,8 +79,8 @@
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Score}
 			<TextFitMulti
-				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
+				class={`h-full flex ${classValue}`}
+				style={`${cssValue} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`1`}
@@ -76,8 +88,8 @@
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2Score}
 			<TextFitMulti
-				class={`h-full flex ${dataItem.data.class}`}
-				style={`${dataItem?.data.css} ${edit ? 'color: black' : ''}`}
+				class={`h-full flex ${classValue}`}
+				style={`${cssValue} ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`0`}
@@ -85,8 +97,8 @@
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1RankIcon}
 			<div
-				class={`w-full h-full flex justify-center items-center ${dataItem.data.class}`}
-				style={`${dataItem?.data.css}`}
+				class={`w-full h-full flex justify-center items-center ${classValue}`}
+				style={`${cssValue}`}
 			>
 				<img
 					class="w-full h-full object-contain aspect-square"
@@ -97,8 +109,8 @@
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2RankIcon}
 			<div
-				class={`w-full h-full flex justify-center items-center ${dataItem.data.class}`}
-				style={`${dataItem?.data.css}`}
+				class={`w-full h-full flex justify-center items-center ${classValue}`}
+				style={`${cssValue}`}
 			>
 				<img
 					class="w-full h-full object-contain aspect-square"

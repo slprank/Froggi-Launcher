@@ -1,30 +1,23 @@
 <script lang="ts">
 	import Select from '$lib/components/Select.svelte';
-	import type { ElementPayload } from '$lib/types/types';
+	import type { Class, Css, ElementPayload } from '$lib/types/types';
 	import ColorInput from '$lib/components/custom/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/custom/input/SliderInput.svelte';
 	import { CustomElement } from '$lib/types/enum';
 
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
-
-	let classArray: string[] = [];
-	let cssArray: string[] = [];
-
-	classArray = payload.class.split(' ');
-
-	console.log('child', payload);
-
-	function updateCustomStyle() {
-		payload.class = classArray.filter((style) => style !== undefined).join(' ');
-		payload.css = `${cssArray.filter((style) => style !== undefined).join('; ')};`;
-	}
-	$: classArray, cssArray, updateCustomStyle();
+	const startElement = selectedElementId;
 
 	function clearStyle() {
-		console.log('here');
-		classArray = [];
-		cssArray = [];
+		if (selectedElementId === startElement) return;
+		payload.class = {} as Class;
+		payload.css = {
+			background: '',
+			borderColor: '#000000',
+			color: '#000000',
+			opacity: '',
+		} as Css;
 	}
 	$: selectedElementId, clearStyle();
 
@@ -64,7 +57,7 @@
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<h1 class="text-white text-md font-medium">Border</h1>
-				<Select bind:selected={classArray[10]}>
+				<Select bind:selected={payload.class.border}>
 					<option value="" selected>None</option>
 					<option value="border border-2">Full 2px</option>
 					<option value="border border-4">Full 4px</option>
@@ -102,7 +95,7 @@
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<h1 class="text-white text-md font-medium">Rounded corner</h1>
-				<Select bind:selected={classArray[12]}>
+				<Select bind:selected={payload.class.rounded}>
 					<option value="" selected>None</option>
 					<option value="rounded-sm">Small</option>
 					<option value="rounded-md">Medium</option>
@@ -118,7 +111,7 @@
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<h1 class="text-white text-md font-medium">Horizontal</h1>
-				<Select bind:selected={classArray[10]}>
+				<Select bind:selected={payload.class.alignment}>
 					<option value="justify-start">Left</option>
 					<option selected value="justify-center">Center</option>
 					<option value="justify-end">Right</option>
@@ -130,7 +123,7 @@
 		<h1 class="text-white text-lg font-medium mb-2">Colors</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<ColorInput key="color" bind:value={cssArray[10]} />
+				<ColorInput bind:value={payload.css.color} />
 			</div>
 		</div>
 	{/if}
@@ -138,13 +131,13 @@
 		<h1 class="text-white text-lg font-medium mb-2">Background color</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<ColorInput key="background" bind:value={cssArray[11]} />
+				<ColorInput bind:value={payload.css.background} />
 			</div>
 		</div>
 		<h1 class="text-white text-lg font-medium mb-2">Border color</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">
-				<ColorInput key="border-color" bind:value={cssArray[12]} />
+				<ColorInput bind:value={payload.css.borderColor} />
 			</div>
 		</div>
 	{/if}
@@ -153,7 +146,7 @@
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<h1 class="text-white text-md font-medium">Image</h1>
-				<Select bind:selected={classArray[20]}>
+				<Select bind:selected={payload.image.imageName}>
 					<option selected value="image1.png">Image 1</option>
 					<option value="image2.png">Image 2</option>
 				</Select>
@@ -163,7 +156,7 @@
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<h1 class="text-white text-md font-medium">Fit</h1>
-				<Select bind:selected={classArray[21]}>
+				<Select bind:selected={payload.image.objectFit}>
 					<option selected value="bg-cover">Cover</option>
 					<option value="bg-contain">Contain</option>
 				</Select>
@@ -173,8 +166,8 @@
 	<h1 class="text-white text-lg font-medium">Transparency</h1>
 	<div class="w-full h-fit flex flex-wrap gap-2">
 		<div class="w-36 h-24">
-			<SliderInput bind:value={cssArray[13]} key={'opacity'} />
+			<SliderInput bind:value={payload.css.opacity} />
 		</div>
-		<h1 class="text-white text-center capitalize">{cssArray[13]}</h1>
+		<h1 class="text-white text-center capitalize">{payload.css.opacity}</h1>
 	</div>
 </div>

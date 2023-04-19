@@ -46,9 +46,29 @@ export interface GridContentItem {
 
 export interface ElementPayload {
 	string: string | undefined;
-	image: string | undefined;
-	class: string;
-	css: string;
+	image: Image;
+	class: Class;
+	css: Css;
+}
+
+export interface Image {
+	imageName: string | undefined;
+	imageSrc: string | undefined;
+	base64: string | undefined;
+	objectFit: string;
+}
+
+export interface Class {
+	border: string;
+	rounded: string;
+	alignment: string;
+}
+
+export interface Css {
+	background: string;
+	borderColor: string;
+	color: string;
+	opacity: string;
 }
 
 // Old types

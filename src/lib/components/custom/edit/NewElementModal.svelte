@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { ElementPayload, GridContentItem, Scene } from '$lib/types/types';
+	import type {
+		Image,
+		Class,
+		ElementPayload,
+		GridContentItem,
+		Scene,
+		Css,
+	} from '$lib/types/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/edit/CreateScene.svelte';
@@ -20,9 +27,9 @@
 	let selectedElementId: number;
 	let payload: ElementPayload = {
 		string: '',
-		image: '',
-		class: '',
-		css: '',
+		image: {} as Image,
+		class: {} as Class,
+		css: {} as Css,
 	};
 
 	let testItem: GridContentItem;
@@ -101,9 +108,10 @@
 		if (!selectedId) return;
 		let items = getCurrentItems();
 		let item = items.find((item) => item.id === selectedId);
-		payload = item.data;
+		console.log('item', item.data);
+		payload = { ...payload, ...item.data };
 		selectedElementId = item.elementId;
-		console.log('payload parent', payload);
+		console.log('payload', payload);
 	}
 	updatePayload();
 	// TODO: Display scroll

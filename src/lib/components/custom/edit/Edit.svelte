@@ -63,6 +63,9 @@
 	// TODO: Selected element delete button
 	// TODO: Image selector and uploader (base64)
 	// TODO: If scene doesn't exist - electron generate new, other - display error?
+	// TODO: Remove layer only visible if multiple layers
+	// TODO: Add confirm on remove
+	// TODO: Add layers functionality
 </script>
 
 <svelte:window bind:innerWidth />
@@ -93,7 +96,7 @@
 							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 							on:click={newBackgroundLayer}
 						>
-							New bot layer
+							Add bottom layer
 						</button>
 					</div>
 					<div class="w-42">
@@ -101,7 +104,7 @@
 							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 							on:click={newLayer}
 						>
-							New top layer
+							Add top layer
 						</button>
 					</div>
 					<div class="w-42">
