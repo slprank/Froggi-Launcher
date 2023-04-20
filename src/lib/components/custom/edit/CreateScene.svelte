@@ -5,7 +5,7 @@
 	import { COL, MIN } from '$lib/types/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	const id = () => '_' + Math.random().toString(36).substr(2, 9);
+	const id = () => '_' + Math.random().toString(36);
 
 	export function getDefaultScenes(): Obs {
 		return {
@@ -18,28 +18,28 @@
 					[LiveStatsScene.WaitingForDolphin]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layers: [],
+						layers: [[]],
 					},
 					[LiveStatsScene.PreGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layers: [],
+						layers: [[]],
 					},
 
 					[LiveStatsScene.InGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layers: [],
+						layers: [[]],
 					},
 					[LiveStatsScene.PostGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layers: [],
+						layers: [[]],
 					},
 					[LiveStatsScene.RankChange]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
-						layers: [],
+						layers: [[]],
 					},
 				},
 			],
@@ -55,27 +55,27 @@
 			[LiveStatsScene.WaitingForDolphin]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layers: [],
+				layers: [[]],
 			},
 			[LiveStatsScene.PreGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layers: [],
+				layers: [[]],
 			},
 			[LiveStatsScene.InGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layers: [],
+				layers: [[]],
 			},
 			[LiveStatsScene.PostGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layers: [],
+				layers: [[]],
 			},
 			[LiveStatsScene.RankChange]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
-				layers: [],
+				layers: [[]],
 			},
 		} as Scene;
 	}

@@ -12,10 +12,22 @@
 	user-select: none; /* Standard syntax */
 }
 
+.text-shadow-sm {
+	text-shadow: 1px 1px 5px black;
+}
 .text-shadow {
-	text-shadow: 3px 3px 5px black, 3px 3px 5px black;
+	text-shadow: 3px 3px 5px black;
+}
+.text-shadow-lg {
+	text-shadow: 5px 5px 5px black;
 }
 
+.box-shadow-sm {
+	box-shadow: 1px 1px 5px black;
+}
 .box-shadow {
 	box-shadow: 3px 3px 5px black;
+}
+.box-shadow-lg {
+	box-shadow: 5px 5px 5px black;
 }

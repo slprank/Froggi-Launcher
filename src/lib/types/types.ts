@@ -62,6 +62,8 @@ export interface Class {
 	border: string;
 	rounded: string;
 	alignment: string;
+	textShadow: string;
+	boxShadow: string;
 }
 
 export interface Css {

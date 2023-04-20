@@ -26,6 +26,12 @@
 	}
 	$: selectedId, getItemById();
 
+	function clearItem() {
+		selectedId = undefined;
+		selectedItem = undefined;
+	}
+	$: selectedLayer, clearItem();
+
 	function handleOverflow() {
 		if (selectedItem[COL].x < 0) selectedItem[COL].x = 0;
 		if (selectedItem[COL].y < 0) selectedItem[COL].y = 0;
@@ -37,20 +43,82 @@
 			selectedItem[COL].h = ROW - selectedItem[COL].y;
 	}
 
+	function getCurrentScene(): Scene {
+		return $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+	}
+
+	function getCurrentSceneIndex(): number {
+		let curScene = getCurrentScene();
+		return $obs.scenes.indexOf(curScene);
+	}
+
+	function deleteElement() {
+		console.log(selectedLayer, curScene);
+		if (!curScene || selectedLayer === undefined) return;
+		curScene[$statsScene]?.layers[selectedLayer].splice(selectedItemIndex, 1);
+		selectedId = undefined;
+		selectedItem = undefined;
+		selectedItemIndex = 0;
+
+		updateObs();
+	}
+
 	function updateObs() {
-		if (!curScene || selectedLayer === undefined || selectedId === undefined) return;
-		handleOverflow();
-
-		curScene[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
-
-		let scene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
-		const index = $obs.scenes.indexOf(scene);
+		if (!curScene) return;
+		const index = getCurrentSceneIndex();
 		$obs.scenes[index] = curScene;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
-	$: selectedItem, updateObs();
+
+	function updateSelectItem() {
+		if (!curScene || selectedLayer === undefined || selectedId === undefined) return;
+
+		handleOverflow();
+
+		curScene[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
+		updateObs();
+	}
+	$: selectedItem, updateSelectItem();
+
+	let lockOut = false;
+
+	setInterval(() => (lockOut = false), 100);
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (lockOut || !selectedId) return;
+		if (e.shiftKey) {
+			if (e.key === 'ArrowDown') {
+				selectedItem[COL].h += 1;
+			}
+			if (e.key === 'ArrowUp') {
+				selectedItem[COL].h -= 1;
+			}
+			if (e.key === 'ArrowLeft') {
+				selectedItem[COL].w -= 1;
+			}
+			if (e.key === 'ArrowRight') {
+				selectedItem[COL].w += 1;
+			}
+			return;
+		}
+		if (e.key === 'ArrowDown') {
+			selectedItem[COL].y += 1;
+		}
+		if (e.key === 'ArrowUp') {
+			selectedItem[COL].y -= 1;
+		}
+		if (e.key === 'ArrowLeft') {
+			selectedItem[COL].x -= 1;
+		}
+		if (e.key === 'ArrowRight') {
+			selectedItem[COL].x += 1;
+		}
+		lockOut = true;
+	}
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 {#if selectedItem !== undefined}
 	<div class="w-full flex gap-2">
@@ -131,7 +199,7 @@
 		<div class="w-24" in:fly={{ duration: 250, y: 50, delay: 250 }}>
 			<button
 				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-				on:click={() => {}}
+				on:click={deleteElement}
 			>
 				Delete
 			</button>

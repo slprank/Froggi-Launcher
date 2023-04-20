@@ -42,7 +42,7 @@
 
 {#key $obs || $statsScene || dataItem}
 	<div
-		class={`custom-font h-full w-full overflow-hidden  ${edit ? 'bg-white' : 'text-white'} ${
+		class={`custom-font h-full w-full  ${edit ? 'bg-white' : 'text-white'} ${
 			selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 		} bg-opacity-50`}
 		style={`font-family: ${font}`}

@@ -7,17 +7,21 @@
 
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
-	const startElement = selectedElementId;
+	let isFirstVisit = selectedElementId !== undefined;
+	let prevSelectedElementId = selectedElementId;
 
 	function clearStyle() {
-		if (selectedElementId === startElement) return;
+		if (isFirstVisit) return;
+		if (selectedElementId === prevSelectedElementId) return;
+
 		payload.class = {} as Class;
 		payload.css = {
-			background: '',
-			borderColor: '#000000',
-			color: '#000000',
-			opacity: '',
+			background: boxSettings ? '#000000' : '',
+			borderColor: boxSettings ? '#000000' : '',
+			color: stringSettings ? '#000000' : '',
+			opacity: '1',
 		} as Css;
+		prevSelectedElementId = selectedElementId;
 	}
 	$: selectedElementId, clearStyle();
 
@@ -34,6 +38,7 @@
 		selectedElementId === CustomElement.CustomImage ||
 		(selectedElementId >= 300 && selectedElementId < 400);
 
+	isFirstVisit = false;
 	// TODO: Add text/box shadow
 </script>
 
@@ -52,8 +57,39 @@
 			</div>
 		</div>
 	{/if}
-	{#if customBoxSettings}
-		<h1 class="text-white text-lg font-medium mb-2">Custom box</h1>
+
+	{#if stringSettings}
+		<h1 class="text-white text-lg font-medium mb-2">Alignment</h1>
+		<div class="w-full h-fit flex flex-wrap gap-2">
+			<div class="w-36 h-24">
+				<h1 class="text-white text-md font-medium">Horizontal</h1>
+				<Select bind:selected={payload.class.alignment}>
+					<option value="justify-start">Left</option>
+					<option selected value="justify-center">Center</option>
+					<option value="justify-end">Right</option>
+				</Select>
+			</div>
+		</div>
+		<h1 class="text-white text-lg font-medium mb-2">Shadow</h1>
+		<div class="w-full h-fit flex flex-wrap gap-2">
+			<div class="w-36 h-24">
+				<h1 class="text-white text-md font-medium">Text shadow</h1>
+				<Select bind:selected={payload.class.textShadow}>
+					<option selected value="">None</option>
+					<option value="text-shadow-sm">Light</option>
+					<option value="text-shadow">Medium</option>
+					<option value="text-shadow-lg">Dark</option>
+				</Select>
+			</div>
+		</div>
+		<h1 class="text-white text-lg font-medium mb-2">Colors</h1>
+		<div class="w-full h-fit flex flex-wrap gap-2 ">
+			<div class="w-36 h-12">
+				<ColorInput bind:value={payload.css.color} />
+			</div>
+		</div>
+	{/if}
+	{#if boxSettings}
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<h1 class="text-white text-md font-medium">Border</h1>
@@ -90,8 +126,6 @@
 				</Select>
 			</div>
 		</div>
-	{/if}
-	{#if boxSettings}
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
 				<h1 class="text-white text-md font-medium">Rounded corner</h1>
@@ -104,30 +138,18 @@
 				</Select>
 			</div>
 		</div>
-	{/if}
-
-	{#if stringSettings}
-		<h1 class="text-white text-lg font-medium mb-2">Alignment</h1>
+		<h1 class="text-white text-lg font-medium mb-2">Shadow</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Horizontal</h1>
-				<Select bind:selected={payload.class.alignment}>
-					<option value="justify-start">Left</option>
-					<option selected value="justify-center">Center</option>
-					<option value="justify-end">Right</option>
+				<h1 class="text-white text-md font-medium">Box shadow</h1>
+				<Select bind:selected={payload.class.boxShadow}>
+					<option selected value="">None</option>
+					<option value="box-shadow-sm">Light</option>
+					<option value="box-shadow">Medium</option>
+					<option value="box-shadow-lg">Dark</option>
 				</Select>
 			</div>
 		</div>
-	{/if}
-	{#if stringSettings}
-		<h1 class="text-white text-lg font-medium mb-2">Colors</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2 ">
-			<div class="w-36 h-12">
-				<ColorInput bind:value={payload.css.color} />
-			</div>
-		</div>
-	{/if}
-	{#if boxSettings}
 		<h1 class="text-white text-lg font-medium mb-2">Background color</h1>
 		<div class="w-full h-fit flex flex-wrap gap-2 ">
 			<div class="w-36 h-12">

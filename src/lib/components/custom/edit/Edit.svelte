@@ -1,35 +1,35 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { fade } from 'svelte/transition';
-	import { eventEmitter, obs } from '$lib/utils/store.svelte';
+	import { fade, fly } from 'svelte/transition';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import Select from '$lib/components/Select.svelte';
-	import { getNewScene } from './CreateScene.svelte';
+	import { generateNewItem, getNewScene } from './CreateScene.svelte';
 	import Preview from './Preview.svelte';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';
+	import type { Scene } from '$lib/types/types';
 
 	const sceneId = parseInt($page.params.scene);
 
-	let selectedLayer: number | undefined = undefined;
+	let selectedLayer: number | undefined = 0;
 	let selectedId: string | undefined = undefined;
 	let isElementModalOpen = false;
+	let scene: Scene = getCurrentScene();
 
 	let boardHeight: number;
 	let innerWidth: number;
 
+	$: console.log('layers', getCurrentScene()[$statsScene].layers);
+
 	function createNewScene() {
-		/*
-		let scene = $obs.scenes.find((scene) => scene.id === sceneId);
 		if (scene) return;
 		const newId = Math.max(...$obs.scenes.map((s) => s.id)) ?? 1;
 		$obs.scenes.push(getNewScene(newId));
-		*/
-		$obs.scenes[0] = getNewScene(1); // Remove this
+		//$obs.scenes[0] = getNewScene(1); // Remove this
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
-
 	createNewScene();
 
 	$: calculateBoardHeight(innerWidth);
@@ -38,21 +38,76 @@
 		$eventEmitter.emit('electron', 'update-live-scene', scene);
 	}
 
-	function calculateBoardHeight(value: number) {
-		boardHeight = 225;
-		if (value > 1280) boardHeight = 280;
-		if (value > 1536) boardHeight = 340;
-		if (value > 1800) boardHeight = 390;
-		if (value > 2000) boardHeight = 450;
-		if (value > 2200) boardHeight = 505;
+	function getCurrentScene(): Scene {
+		return $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
 	}
 
-	function newBackgroundLayer() {
-		// TODO: Insert empty element start of layer array
+	function getCurrentSceneIndex(): number {
+		let curScene = getCurrentScene();
+		return $obs.scenes.indexOf(curScene);
+	}
+
+	function updateScene() {
+		scene = getCurrentScene();
+	}
+	$: $obs, updateScene();
+
+	function updateObs() {
+		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
 
 	function newLayer() {
-		// TODO: Push empty element end of layer array
+		let tempScene = getCurrentScene();
+		if (!tempScene) return;
+		tempScene[$statsScene].layers.push([]);
+		const index = getCurrentSceneIndex();
+		$obs.scenes[index] = tempScene;
+		updateObs();
+	}
+	function moveLayerUp() {
+		let tempScene = getCurrentScene();
+		if (
+			selectedLayer === undefined ||
+			selectedLayer === tempScene[$statsScene].layers.length - 1
+		)
+			return;
+		[
+			tempScene[$statsScene].layers[selectedLayer],
+			tempScene[$statsScene].layers[selectedLayer + 1],
+		] = [
+			tempScene[$statsScene].layers[selectedLayer + 1],
+			tempScene[$statsScene].layers[selectedLayer],
+		];
+		const index = getCurrentSceneIndex();
+		$obs.scenes[index] = tempScene;
+		selectedLayer += 1;
+		updateObs();
+	}
+
+	function moveLayerDown() {
+		let tempScene = getCurrentScene();
+		if (selectedLayer === undefined || selectedLayer === 0) return;
+		[
+			tempScene[$statsScene].layers[selectedLayer],
+			tempScene[$statsScene].layers[selectedLayer - 1],
+		] = [
+			tempScene[$statsScene].layers[selectedLayer - 1],
+			tempScene[$statsScene].layers[selectedLayer],
+		];
+		const index = getCurrentSceneIndex();
+		$obs.scenes[index] = tempScene;
+		selectedLayer -= 1;
+		updateObs();
+	}
+
+	function removeLayer() {
+		let tempScene = getCurrentScene();
+		if (!tempScene || selectedLayer === undefined) return;
+		tempScene[$statsScene].layers.splice(selectedLayer, 1);
+		const index = getCurrentSceneIndex();
+		$obs.scenes[index] = tempScene;
+		selectedLayer = 0;
+		updateObs();
 	}
 
 	// TODO: Change scene name
@@ -66,6 +121,15 @@
 	// TODO: Remove layer only visible if multiple layers
 	// TODO: Add confirm on remove
 	// TODO: Add layers functionality
+
+	function calculateBoardHeight(value: number) {
+		boardHeight = 225;
+		if (value > 1280) boardHeight = 280;
+		if (value > 1536) boardHeight = 340;
+		if (value > 1800) boardHeight = 390;
+		if (value > 2000) boardHeight = 450;
+		if (value > 2200) boardHeight = 505;
+	}
 </script>
 
 <svelte:window bind:innerWidth />
@@ -85,36 +149,48 @@
 			<div class="grid gap-2 mb-4">
 				<div class="w-full flex gap-2">
 					<div class="w-42">
-						<Select bind:selected={selectedLayer}>
-							<option selected value={0}>Layer 1</option>
-							<option value={1}>Layer 2</option>
-							<option value={2}>Layer 3</option>
-						</Select>
-					</div>
-					<div class="w-42">
-						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-							on:click={newBackgroundLayer}
-						>
-							Add bottom layer
-						</button>
+						{#if scene}
+							<Select bind:selected={selectedLayer}>
+								{#each scene[$statsScene].layers as _, i}
+									<option selected={i === 0} value={i}>Layer {i + 1}</option>
+								{/each}
+							</Select>
+						{/if}
 					</div>
 					<div class="w-42">
 						<button
 							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 							on:click={newLayer}
 						>
-							Add top layer
+							New layer
 						</button>
 					</div>
 					<div class="w-42">
 						<button
 							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-							on:click={newLayer}
+							on:click={moveLayerUp}
 						>
-							Remove layer
+							Move up
 						</button>
 					</div>
+					<div class="w-42">
+						<button
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+							on:click={moveLayerDown}
+						>
+							Move down
+						</button>
+					</div>
+					{#if scene[$statsScene].layers.length > 1}
+						<div class="w-42" transition:fly={{ duration: 250, y: -25 }}>
+							<button
+								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+								on:click={removeLayer}
+							>
+								Remove layer
+							</button>
+						</div>
+					{/if}
 				</div>
 				<SelectedEditor bind:selectedId bind:selectedLayer />
 				<button
