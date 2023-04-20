@@ -10,6 +10,12 @@
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';
 	import type { Scene } from '$lib/types/types';
+	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
+	import { setContext } from 'svelte';
+	import SceneEdit from './SceneEdit.svelte';
+	import SceneSelect from './SceneSelect.svelte';
+
+	setContext('layer', { newLayer, moveLayerDown, moveLayerUp, deleteLayer });
 
 	const sceneId = parseInt($page.params.scene);
 
@@ -33,10 +39,6 @@
 	createNewScene();
 
 	$: calculateBoardHeight(innerWidth);
-
-	function updateLiveScene(scene: LiveStatsScene) {
-		$eventEmitter.emit('electron', 'update-live-scene', scene);
-	}
 
 	function getCurrentScene(): Scene {
 		return $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
@@ -100,7 +102,7 @@
 		updateObs();
 	}
 
-	function removeLayer() {
+	function deleteLayer() {
 		let tempScene = getCurrentScene();
 		if (!tempScene || selectedLayer === undefined) return;
 		tempScene[$statsScene].layers.splice(selectedLayer, 1);
@@ -110,17 +112,8 @@
 		updateObs();
 	}
 
-	// TODO: Change scene name
-	// TODO: Change scene background color/image and opacity
-	// TODO: Select default scene, enable/disable different scenes
-	// TODO: Font dropdown
-	// TODO: Display size and position of selected element in an editable window
-	// TODO: Selected element delete button
-	// TODO: Image selector and uploader (base64)
-	// TODO: If scene doesn't exist - electron generate new, other - display error?
-	// TODO: Remove layer only visible if multiple layers
-	// TODO: Add confirm on remove
-	// TODO: Add layers functionality
+	// TODO: Display scene name
+	// TODO: If scene doesn't exist - redirect
 
 	function calculateBoardHeight(value: number) {
 		boardHeight = 225;
@@ -147,51 +140,8 @@
 
 		<div class="w-[400px] xl:w-[500px] 2xl:w-full h-full grid justify-center content-center">
 			<div class="grid gap-2 mb-4">
-				<div class="w-full flex gap-2">
-					<div class="w-42">
-						{#if scene}
-							<Select bind:selected={selectedLayer}>
-								{#each scene[$statsScene].layers as _, i}
-									<option selected={i === 0} value={i}>Layer {i + 1}</option>
-								{/each}
-							</Select>
-						{/if}
-					</div>
-					<div class="w-42">
-						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-							on:click={newLayer}
-						>
-							New layer
-						</button>
-					</div>
-					<div class="w-42">
-						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-							on:click={moveLayerUp}
-						>
-							Move up
-						</button>
-					</div>
-					<div class="w-42">
-						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-							on:click={moveLayerDown}
-						>
-							Move down
-						</button>
-					</div>
-					{#if scene[$statsScene].layers.length > 1}
-						<div class="w-42" transition:fly={{ duration: 250, y: -25 }}>
-							<button
-								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-								on:click={removeLayer}
-							>
-								Remove layer
-							</button>
-						</div>
-					{/if}
-				</div>
+				<SceneEdit />
+				<LayerEdit bind:scene bind:selectedLayer />
 				<SelectedEditor bind:selectedId bind:selectedLayer />
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
@@ -199,7 +149,7 @@
 						isElementModalOpen = true;
 					}}
 				>
-					Add New
+					Add new element
 				</button>
 			</div>
 			<div
@@ -207,48 +157,7 @@
 			>
 				<BoardEdit bind:height={boardHeight} bind:layer={selectedLayer} bind:selectedId />
 			</div>
-			<div class="w-lg 3xl:w-full flex flex-wrap gap-2">
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded  mt-4"
-					on:click={() => {
-						updateLiveScene(LiveStatsScene.WaitingForDolphin);
-					}}
-				>
-					Waiting
-				</button>
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded  mt-4"
-					on:click={() => {
-						updateLiveScene(LiveStatsScene.PreGame);
-					}}
-				>
-					Pre Game
-				</button>
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded mt-4"
-					on:click={() => {
-						updateLiveScene(LiveStatsScene.InGame);
-					}}
-				>
-					In Game
-				</button>
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded mt-4"
-					on:click={() => {
-						updateLiveScene(LiveStatsScene.PostGame);
-					}}
-				>
-					Post Game
-				</button>
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded mt-4"
-					on:click={() => {
-						updateLiveScene(LiveStatsScene.RankChange);
-					}}
-				>
-					Rank Change
-				</button>
-			</div>
+			<SceneSelect />
 		</div>
 	</div>
 	<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />

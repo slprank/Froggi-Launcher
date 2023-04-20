@@ -7,6 +7,9 @@
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	const id = () => '_' + Math.random().toString(36);
 
+	// TODO: Add complete overlays
+	// TODO: Add complete scenes
+
 	export function getDefaultScenes(): Obs {
 		return {
 			scenes: [

@@ -134,7 +134,7 @@
 				for="exampleFormControlInputNumber"
 				class="absolute left-3 top-0 mb-0 max-w-[90%] w-8 origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white text-shadow transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] text-primary motion-reduce:transition-none"
 			>
-				X
+				X - {COL}
 			</label>
 		</div>
 		<div class="relative w-16 bg-white rounded-md" in:fly={{ duration: 250, y: 50, delay: 50 }}>
@@ -149,7 +149,7 @@
 				for="exampleFormControlInputNumber"
 				class="absolute left-3 top-0 mb-0 max-w-[90%] w-8 origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white text-shadow transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] text-primary motion-reduce:transition-none"
 			>
-				Y
+				Y - {ROW}
 			</label>
 		</div>
 		<div
