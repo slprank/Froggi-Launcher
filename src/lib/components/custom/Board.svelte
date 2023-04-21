@@ -2,7 +2,7 @@
 	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import type { Scene } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
@@ -57,7 +57,7 @@
 			out:fade={{ duration: 300 }}
 		/>
 		{#each curPage?.layers ?? [] as layer}
-			<div class="w-full h-full z-2 absolute">
+			<div class="w-full h-full z-2 absolute" in:fly={{ delay: 50 }}>
 				<Grid
 					bind:items={layer}
 					rowHeight={(height ?? innerHeight) / ROW}

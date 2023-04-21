@@ -9,7 +9,8 @@ import type {
 	StatsType,
 	StockType,
 } from '@slippi/slippi-js';
-import type { CustomElement, LiveStatsScene } from './enum';
+import type { CustomElement, LiveStatsScene, Transition } from './enum';
+import type { COL } from './const';
 
 export interface Url {
 	external: string;
@@ -39,16 +40,25 @@ export interface Content {
 }
 
 export interface GridContentItem {
+	[COL]: any;
 	elementId: CustomElement;
 	data: ElementPayload;
 	id: string;
 }
 
 export interface ElementPayload {
-	string: string | undefined;
-	image: Image;
 	class: Class;
 	css: Css;
+	image: Image;
+	string: string | undefined;
+	transition: TransitionStyle;
+}
+
+interface TransitionStyle {
+	duration: number;
+	type: Transition;
+	x: number;
+	y: number;
 }
 
 export interface Image {

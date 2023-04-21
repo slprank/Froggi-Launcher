@@ -24,3 +24,10 @@ export enum CustomElement {
 	Player1RankIcon = 300,
 	Player2RankIcon = 301,
 }
+
+export enum Transition {
+	None = 0,
+	Fade = 1,
+	Scale = 2,
+	Fly = 3,
+}

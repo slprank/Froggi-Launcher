@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { CustomElement } from '$lib/types/enum';
+	import { CustomElement, Transition } from '$lib/types/enum';
 	import type { GridContentItem } from '$lib/types/types';
 	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { fade, fly, scale } from 'svelte/transition';
 	import TextFitMulti from '../TextFitMulti.svelte';
+	import { COL, ROW } from '$lib/types/const';
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let edit: boolean = false;
@@ -28,6 +30,33 @@
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
 
+	const animate = (node: Element) => {
+		if (edit || !dataItem) return;
+		const transition = dataItem?.data?.transition?.type ?? Transition.Fly;
+		const duration = dataItem?.data?.transition?.duration ?? 250;
+		const delay =
+			dataItem[COL]?.y + Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) ?? 0;
+		const y = ((dataItem[COL]?.y - ROW / 2) / ROW) * 50;
+		const x = ((dataItem[COL]?.x - COL / 2) / COL) * 50;
+		console.log(dataItem[COL]?.x, dataItem[COL]?.y, delay);
+		switch (transition) {
+			case Transition.None:
+				return;
+			case Transition.Fade:
+				return fade(node, { duration: duration, delay: delay });
+			case Transition.Fly:
+				return fly(node, { duration: duration, x: x, y: y, delay: delay });
+			case Transition.Scale:
+				return scale(node, { duration: duration, delay: delay });
+		}
+	};
+
+	let test = 'whoa';
+
+	setTimeout(() => (test = undefined), 5000);
+
+	console.log(dataItem);
+
 	// TODO: Transition based on x/y position
 	// TODO: Add remaining components
 	// TODO: Use live data
@@ -46,6 +75,7 @@
 			selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 		} bg-opacity-50`}
 		style={`font-family: ${font}`}
+		in:animate
 	>
 		{#if dataItem?.elementId == CustomElement.CustomString}
 			<TextFitMulti
@@ -53,7 +83,7 @@
 				style={`${cssValue} ${edit ? 'color: black;' : ''}`}
 				maxFont={1000}
 			>
-				{dataItem?.data.string}
+				{test ?? dataItem?.data.string}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.CustomBox}
