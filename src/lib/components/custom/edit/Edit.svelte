@@ -5,11 +5,11 @@
 	import { LiveStatsScene } from '$lib/types/enum';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import Select from '$lib/components/Select.svelte';
-	import { generateNewItem, getNewScene } from './CreateScene.svelte';
+	import { generateNewItem, getNewOverlay } from './CreateOverlay.svelte';
 	import Preview from './Preview.svelte';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';
-	import type { Scene } from '$lib/types/types';
+	import type { Overlay } from '$lib/types/types';
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
 	import { setContext } from 'svelte';
 	import SceneEdit from './SceneEdit.svelte';
@@ -17,103 +17,101 @@
 
 	setContext('layer', { newLayer, moveLayerDown, moveLayerUp, deleteLayer });
 
-	const sceneId = parseInt($page.params.scene);
+	const overlayId = parseInt($page.params.overlay);
 
 	let selectedLayer: number | undefined = 0;
 	let selectedId: string | undefined = undefined;
 	let isElementModalOpen = false;
-	let scene: Scene = getCurrentScene();
+	let overlay: Overlay = getCurrentOverlay();
 
 	let boardHeight: number;
 	let innerWidth: number;
 
-	$: console.log('layers', getCurrentScene()[$statsScene].layers);
-
-	function createNewScene() {
-		if (scene) return;
-		const newId = Math.max(...$obs.scenes.map((s) => s.id)) ?? 1;
-		$obs.scenes.push(getNewScene(newId));
-		//$obs.scenes[0] = getNewScene(1); // Remove this
+	function createNewOverlay() {
+		if (overlay) return;
+		const newId = Math.max(...$obs.overlays.map((s) => s.id)) ?? 1;
+		$obs.overlays.push(getNewOverlay(newId));
+		// $obs.overlays[0] = getNewOverlay(1); // Remove this
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
-	createNewScene();
+	createNewOverlay();
 
 	$: calculateBoardHeight(innerWidth);
 
-	function getCurrentScene(): Scene {
-		return $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+	function getCurrentOverlay(): Overlay {
+		return $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	}
 
-	function getCurrentSceneIndex(): number {
-		let curScene = getCurrentScene();
-		return $obs.scenes.indexOf(curScene);
+	function getCurrentOverlayIndex(): number {
+		let curOverlay = getCurrentOverlay();
+		return $obs.overlays.indexOf(curOverlay);
 	}
 
-	function updateScene() {
-		scene = getCurrentScene();
+	function updateOverlay() {
+		overlay = getCurrentOverlay();
 	}
-	$: $obs, updateScene();
+	$: $obs, updateOverlay();
 
 	function updateObs() {
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
 
 	function newLayer() {
-		let tempScene = getCurrentScene();
-		if (!tempScene) return;
-		tempScene[$statsScene].layers.push([]);
-		const index = getCurrentSceneIndex();
-		$obs.scenes[index] = tempScene;
+		let tempOverlay = getCurrentOverlay();
+		if (!tempOverlay) return;
+		tempOverlay[$statsScene].layers.push([]);
+		const index = getCurrentOverlayIndex();
+		$obs.overlays[index] = tempOverlay;
 		updateObs();
 	}
 	function moveLayerUp() {
-		let tempScene = getCurrentScene();
+		let tempOverlay = getCurrentOverlay();
 		if (
 			selectedLayer === undefined ||
-			selectedLayer === tempScene[$statsScene].layers.length - 1
+			selectedLayer === tempOverlay[$statsScene].layers.length - 1
 		)
 			return;
 		[
-			tempScene[$statsScene].layers[selectedLayer],
-			tempScene[$statsScene].layers[selectedLayer + 1],
+			tempOverlay[$statsScene].layers[selectedLayer],
+			tempOverlay[$statsScene].layers[selectedLayer + 1],
 		] = [
-			tempScene[$statsScene].layers[selectedLayer + 1],
-			tempScene[$statsScene].layers[selectedLayer],
+			tempOverlay[$statsScene].layers[selectedLayer + 1],
+			tempOverlay[$statsScene].layers[selectedLayer],
 		];
-		const index = getCurrentSceneIndex();
-		$obs.scenes[index] = tempScene;
+		const index = getCurrentOverlayIndex();
+		$obs.overlays[index] = tempOverlay;
 		selectedLayer += 1;
 		updateObs();
 	}
 
 	function moveLayerDown() {
-		let tempScene = getCurrentScene();
+		let tempOverlay = getCurrentOverlay();
 		if (selectedLayer === undefined || selectedLayer === 0) return;
 		[
-			tempScene[$statsScene].layers[selectedLayer],
-			tempScene[$statsScene].layers[selectedLayer - 1],
+			tempOverlay[$statsScene].layers[selectedLayer],
+			tempOverlay[$statsScene].layers[selectedLayer - 1],
 		] = [
-			tempScene[$statsScene].layers[selectedLayer - 1],
-			tempScene[$statsScene].layers[selectedLayer],
+			tempOverlay[$statsScene].layers[selectedLayer - 1],
+			tempOverlay[$statsScene].layers[selectedLayer],
 		];
-		const index = getCurrentSceneIndex();
-		$obs.scenes[index] = tempScene;
+		const index = getCurrentOverlayIndex();
+		$obs.overlays[index] = tempOverlay;
 		selectedLayer -= 1;
 		updateObs();
 	}
 
 	function deleteLayer() {
-		let tempScene = getCurrentScene();
-		if (!tempScene || selectedLayer === undefined) return;
-		tempScene[$statsScene].layers.splice(selectedLayer, 1);
-		const index = getCurrentSceneIndex();
-		$obs.scenes[index] = tempScene;
+		let tempOverlay = getCurrentOverlay();
+		if (!tempOverlay || selectedLayer === undefined) return;
+		tempOverlay[$statsScene].layers.splice(selectedLayer, 1);
+		const index = getCurrentOverlayIndex();
+		$obs.overlays[index] = tempOverlay;
 		selectedLayer = 0;
 		updateObs();
 	}
 
-	// TODO: Display scene name
-	// TODO: If scene doesn't exist - redirect
+	// TODO: Display overlay name
+	// TODO: If overlay doesn't exist - redirect
 
 	function calculateBoardHeight(value: number) {
 		boardHeight = 225;
@@ -141,7 +139,7 @@
 		<div class="w-[400px] xl:w-[500px] 2xl:w-full h-full grid justify-center content-center">
 			<div class="grid gap-2 mb-4">
 				<SceneEdit />
-				<LayerEdit bind:scene bind:selectedLayer />
+				<LayerEdit bind:overlay bind:selectedLayer />
 				<SelectedEditor bind:selectedId bind:selectedLayer />
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"

@@ -4,16 +4,16 @@
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import { fade } from 'svelte/transition';
-	import type { Scene } from '$lib/types/types';
+	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
 
-	const sceneId = parseInt($page.params.scene);
+	const overlayId = parseInt($page.params.overlay);
 
 	export let height: number | undefined = undefined;
 	export let layer: number | undefined = undefined;
 	export let selectedId: string | undefined = undefined;
 
-	let curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+	let curOverlay = $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let items: any[] = [];
 	let tempItems: any = undefined;
 
@@ -35,8 +35,8 @@
 
 	function updateLiveScene() {
 		if (layer === undefined) return;
-		curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
-		items = curScene[$statsScene].layers[layer] ?? [];
+		curOverlay = $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+		items = curOverlay[$statsScene].layers[layer] ?? [];
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
 			item[COL].resizable = true;
@@ -45,13 +45,13 @@
 	$: $statsScene || layer || $obs, updateLiveScene();
 
 	function updateObs() {
-		if (!tempItems || layer === undefined || curScene[$statsScene].layers[layer] == tempItems)
+		if (!tempItems || layer === undefined || curOverlay[$statsScene].layers[layer] == tempItems)
 			return;
-		curScene[$statsScene].layers[layer] = tempItems;
+		curOverlay[$statsScene].layers[layer] = tempItems;
 
-		let scene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
-		const index = $obs.scenes.indexOf(scene);
-		$obs.scenes[index] = curScene;
+		let overlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+		const index = $obs.overlays.indexOf(overlay);
+		$obs.overlays[index] = curOverlay;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 		tempItems = undefined;

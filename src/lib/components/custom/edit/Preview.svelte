@@ -4,10 +4,10 @@
 	import { urls } from '$lib/utils/store.svelte';
 	import Clipboard from 'svelte-clipboard';
 
-	const sceneId = parseInt($page.params.scene);
+	const overlayId = parseInt($page.params.overlay);
 	export let boardHeight: number;
 
-	$: sceneUrl = `${$urls?.local}/obs/custom/${sceneId}`;
+	$: overlayUrl = `${$urls?.local}/obs/custom/${overlayId}`;
 
 	$: preview = false;
 
@@ -27,10 +27,10 @@
 	</div>
 	<div class="flex items-center gap-2">
 		<h1 class="text-gray-500 text-md font-medium text-shadow">
-			{sceneUrl}
+			{overlayUrl}
 		</h1>
 		<Clipboard
-			text={sceneUrl}
+			text={overlayUrl}
 			let:copy
 			on:copy={() => {
 				console.log('Has Copied');

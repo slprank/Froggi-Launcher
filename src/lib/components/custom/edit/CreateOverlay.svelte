@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
-	import { CustomElement, LiveStatsScene } from '$lib/types/enum';
-	import type { Obs, Scene } from '$lib/types/types';
+	import { CustomElement, LiveStatsScene, Transition } from '$lib/types/enum';
+	import type { Obs, Overlay } from '$lib/types/types';
 
 	import { COL, MIN } from '$lib/types/const';
 
@@ -10,9 +10,9 @@
 	// TODO: Add complete overlays
 	// TODO: Add complete scenes
 
-	export function getDefaultScenes(): Obs {
+	export function getDefaultOverlays(): Obs {
 		return {
-			scenes: [
+			overlays: [
 				{
 					id: 1,
 					title: 'main',
@@ -22,34 +22,44 @@
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
+						opacity: 1,
+						transition: Transition.None,
 					},
 					[LiveStatsScene.PreGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
+						opacity: 1,
+						transition: Transition.None,
 					},
 
 					[LiveStatsScene.InGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
+						opacity: 1,
+						transition: Transition.None,
 					},
 					[LiveStatsScene.PostGame]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
+						opacity: 1,
+						transition: Transition.None,
 					},
 					[LiveStatsScene.RankChange]: {
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
+						opacity: 1,
+						transition: Transition.None,
 					},
 				},
 			],
 		};
 	}
 
-	export function getNewScene(newId: number): Scene {
+	export function getNewOverlay(newId: number): Overlay {
 		return {
 			id: newId,
 			title: 'New Title',
@@ -59,28 +69,38 @@
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
+				opacity: 1,
+				transition: Transition.None,
 			},
 			[LiveStatsScene.PreGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
+				opacity: 1,
+				transition: Transition.None,
 			},
 			[LiveStatsScene.InGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
+				opacity: 1,
+				transition: Transition.None,
 			},
 			[LiveStatsScene.PostGame]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
+				opacity: 1,
+				transition: Transition.None,
 			},
 			[LiveStatsScene.RankChange]: {
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
+				opacity: 1,
+				transition: Transition.None,
 			},
-		} as Scene;
+		} as Overlay;
 	}
 
 	export function generateNewItem(elementId: CustomElement, data: any) {

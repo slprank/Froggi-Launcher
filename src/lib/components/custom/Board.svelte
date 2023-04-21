@@ -4,16 +4,15 @@
 	import GridContent from './GridContent.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import type { Scene } from '$lib/types/types';
+	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
-	import { Transition } from '$lib/types/enum';
 
 	export let height: number | undefined = undefined;
 	export let preview: boolean = false;
 
-	const sceneId = parseInt($page.params.scene);
+	const overlayId = parseInt($page.params.overlay);
 
-	$: curScene = $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+	$: curScene = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	$: curPage = curScene[$statsScene];
 
 	$: curPage.layers.forEach((layer: any) => {
@@ -68,7 +67,7 @@
 					cols={[[COL, COL]]}
 					fastStart={true}
 				>
-					<GridContent bind:preview {dataItem} transition={Transition.Fly} />
+					<GridContent bind:preview {dataItem} transition={curPage.transition} />
 				</Grid>
 			</div>
 		{/each}

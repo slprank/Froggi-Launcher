@@ -5,7 +5,7 @@
 	import { LiveStatsScene } from '$lib/types/enum';
 	import Device from 'svelte-device-info';
 	import type { Obs, Url } from '$lib/types/types';
-	import { getDefaultScenes } from '$lib/components/custom/edit/CreateScene.svelte';
+	import { getDefaultOverlays } from '$lib/components/custom/edit/CreateOverlay.svelte';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
 
@@ -37,7 +37,7 @@
 	const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 
 	// TODO: Remove object and init it from electron instead
-	const obs = writable<Obs>(getDefaultScenes());
+	const obs = writable<Obs>(getDefaultOverlays());
 	const urls = writable<Url>();
 
 	export {

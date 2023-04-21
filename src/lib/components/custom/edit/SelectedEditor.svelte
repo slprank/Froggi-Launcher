@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/types/const';
-	import type { Scene } from '$lib/types/types';
+	import type { Overlay } from '$lib/types/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 
-	const sceneId = parseInt($page.params.scene);
+	const overlayId = parseInt($page.params.overlay);
 
 	export let selectedId: string | undefined;
 	export let selectedLayer: number | undefined;
@@ -15,14 +15,14 @@
 
 	let isElementModalOpen = false;
 
-	$: curScene = $obs?.scenes?.find((scene) => scene.id === sceneId) ?? undefined;
+	$: curOverlay = $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? undefined;
 
 	function getItemById() {
-		if (!curScene || selectedLayer === undefined || selectedId === undefined) return;
-		selectedItemIndex = curScene[$statsScene]?.layers[selectedLayer]
+		if (!curOverlay || selectedLayer === undefined || selectedId === undefined) return;
+		selectedItemIndex = curOverlay[$statsScene]?.layers[selectedLayer]
 			.map((i) => i.id)
 			.indexOf(selectedId);
-		selectedItem = curScene[$statsScene]?.layers[selectedLayer][selectedItemIndex];
+		selectedItem = curOverlay[$statsScene]?.layers[selectedLayer][selectedItemIndex];
 	}
 	$: selectedId, getItemById();
 
@@ -43,19 +43,19 @@
 			selectedItem[COL].h = ROW - selectedItem[COL].y;
 	}
 
-	function getCurrentScene(): Scene {
-		return $obs.scenes.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+	function getCurrentOverlay(): Overlay {
+		return $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	}
 
-	function getCurrentSceneIndex(): number {
-		let curScene = getCurrentScene();
-		return $obs.scenes.indexOf(curScene);
+	function getCurrentOverlayIndex(): number {
+		let curOverlay = getCurrentOverlay();
+		return $obs.overlays.indexOf(curOverlay);
 	}
 
 	function deleteElement() {
-		console.log(selectedLayer, curScene);
-		if (!curScene || selectedLayer === undefined) return;
-		curScene[$statsScene]?.layers[selectedLayer].splice(selectedItemIndex, 1);
+		console.log(selectedLayer, curOverlay);
+		if (!curOverlay || selectedLayer === undefined) return;
+		curOverlay[$statsScene]?.layers[selectedLayer].splice(selectedItemIndex, 1);
 		selectedId = undefined;
 		selectedItem = undefined;
 		selectedItemIndex = 0;
@@ -64,19 +64,19 @@
 	}
 
 	function updateObs() {
-		if (!curScene) return;
-		const index = getCurrentSceneIndex();
-		$obs.scenes[index] = curScene;
+		if (!curOverlay) return;
+		const index = getCurrentOverlayIndex();
+		$obs.overlays[index] = curOverlay;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 	}
 
 	function updateSelectItem() {
-		if (!curScene || selectedLayer === undefined || selectedId === undefined) return;
+		if (!curOverlay || selectedLayer === undefined || selectedId === undefined) return;
 
 		handleOverflow();
 
-		curScene[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
+		curOverlay[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
 		updateObs();
 	}
 	$: selectedItem, updateSelectItem();

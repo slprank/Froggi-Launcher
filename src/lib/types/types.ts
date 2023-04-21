@@ -18,10 +18,10 @@ export interface Url {
 }
 
 export interface Obs {
-	scenes: Scene[];
+	overlays: Overlay[];
 }
 
-export interface Scene {
+export interface Overlay {
 	id: number;
 	title: string;
 	description: string;
@@ -36,7 +36,9 @@ export interface Scene {
 export interface Content {
 	backgroundColor: string | undefined;
 	backgroundImage: string | undefined;
-	layers: any[][];
+	layers: GridContentItem[][];
+	opacity: number;
+	transition: Transition;
 }
 
 export interface GridContentItem {
@@ -51,14 +53,6 @@ export interface ElementPayload {
 	css: Css;
 	image: Image;
 	string: string | undefined;
-	transition: TransitionStyle;
-}
-
-interface TransitionStyle {
-	duration: number;
-	type: Transition;
-	x: number;
-	y: number;
 }
 
 export interface Image {

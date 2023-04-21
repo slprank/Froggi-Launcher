@@ -6,19 +6,19 @@
 		Class,
 		ElementPayload,
 		GridContentItem,
-		Scene,
+		Overlay,
 		Css,
 	} from '$lib/types/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { generateNewItem } from '$lib/components/custom/edit/CreateScene.svelte';
+	import { generateNewItem } from '$lib/components/custom/edit/CreateOverlay.svelte';
 	import ElementSelect from '$lib/components/custom/input/ElementSelect.svelte';
 	import StylingSelect from '$lib/components/custom/edit/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/types/const';
 
-	const sceneId = parseInt($page.params.scene);
+	const overlayId = parseInt($page.params.overlay);
 
 	export let open: boolean;
 	export let layer: number | undefined;
@@ -34,6 +34,7 @@
 
 	let testItem: GridContentItem;
 	$: testItem = {
+		[COL]: {},
 		elementId: selectedElementId,
 		data: payload,
 		id: 'test',
@@ -44,18 +45,18 @@
 		if (!selectedId) add();
 	}
 
-	function getCurrentScene() {
-		return $obs?.scenes?.find((scene) => scene.id === sceneId) ?? ({} as Scene);
+	function getCurrentOverlay() {
+		return $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	}
 
 	function getCurrentSceneIndex() {
-		const scene = getCurrentScene();
-		return $obs.scenes.indexOf(scene);
+		const overlay = getCurrentOverlay();
+		return $obs.overlays.indexOf(overlay);
 	}
 
 	function getCurrentItems() {
-		let curScene = getCurrentScene();
-		return curScene[$statsScene].layers[layer ?? 0] ?? [];
+		let curOverlay = getCurrentOverlay();
+		return curOverlay[$statsScene].layers[layer ?? 0] ?? [];
 	}
 
 	function add() {
@@ -74,7 +75,7 @@
 		items = [...items, ...[newItem]];
 
 		const index = getCurrentSceneIndex();
-		$obs.scenes[index][$statsScene].layers[layer ?? 0] = items;
+		$obs.overlays[index][$statsScene].layers[layer ?? 0] = items;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 
@@ -98,7 +99,7 @@
 		items = [...items, ...[newItem]];
 
 		const index = getCurrentSceneIndex();
-		$obs.scenes[index][$statsScene].layers[layer ?? 0] = items;
+		$obs.overlays[index][$statsScene].layers[layer ?? 0] = items;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 		open = false;
@@ -108,10 +109,9 @@
 		if (!selectedId) return;
 		let items = getCurrentItems();
 		let item = items.find((item) => item.id === selectedId);
-		console.log('item', item.data);
+		if (!item) return;
 		payload = { ...payload, ...item.data };
 		selectedElementId = item.elementId;
-		console.log('payload', payload);
 	}
 	updatePayload();
 	// TODO: Display scroll
