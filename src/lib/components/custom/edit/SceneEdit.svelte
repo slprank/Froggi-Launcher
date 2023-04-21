@@ -1,4 +1,9 @@
 <script lang="ts">
+	import type { Overlay } from '$lib/types/types';
+	import { getContext } from 'svelte';
+
+	export let overlay: Overlay;
+
 	// TODO: Change scene name
 	// TODO: Change scene background color/image and opacity
 	// TODO: Select default scene, enable/disable different scenes

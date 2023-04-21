@@ -25,6 +25,12 @@ export enum CustomElement {
 	Player2RankIcon = 301,
 }
 
+export enum SceneBackground {
+	None = 0,
+	Color = 1,
+	Image = 2,
+}
+
 export enum Transition {
 	None = 0,
 	Fade = 1,

@@ -9,7 +9,7 @@ import type {
 	StatsType,
 	StockType,
 } from '@slippi/slippi-js';
-import type { CustomElement, LiveStatsScene, Transition } from './enum';
+import type { CustomElement, LiveStatsScene, SceneBackground, Transition } from './enum';
 import type { COL } from './const';
 
 export interface Url {
@@ -26,14 +26,15 @@ export interface Overlay {
 	title: string;
 	description: string;
 	default: LiveStatsScene;
-	[LiveStatsScene.WaitingForDolphin]: Content;
-	[LiveStatsScene.PreGame]: Content;
-	[LiveStatsScene.InGame]: Content;
-	[LiveStatsScene.PostGame]: Content;
-	[LiveStatsScene.RankChange]: Content;
+	[LiveStatsScene.WaitingForDolphin]: Scene;
+	[LiveStatsScene.PreGame]: Scene;
+	[LiveStatsScene.InGame]: Scene;
+	[LiveStatsScene.PostGame]: Scene;
+	[LiveStatsScene.RankChange]: Scene;
 }
 
-export interface Content {
+export interface Scene {
+	background: SceneBackground;
 	backgroundColor: string | undefined;
 	backgroundImage: string | undefined;
 	layers: GridContentItem[][];
