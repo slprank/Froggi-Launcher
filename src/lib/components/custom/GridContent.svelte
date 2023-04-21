@@ -32,16 +32,13 @@
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
 
-	$: console.log(preview);
-
 	const animate = (node: Element) => {
 		if (!preview || edit || !dataItem) return;
-		const duration = dataItem?.data?.transition?.duration ?? 250;
+		const duration = 250;
 		const delay =
 			dataItem[COL]?.y + Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) ?? 0;
 		const y = ((dataItem[COL]?.y - ROW / 2) / ROW) * 50;
 		const x = ((dataItem[COL]?.x - COL / 2) / COL) * 50;
-		console.log(dataItem[COL]?.x, dataItem[COL]?.y, delay);
 		switch (transition) {
 			case Transition.None:
 				return;

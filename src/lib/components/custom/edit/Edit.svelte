@@ -17,10 +17,6 @@
 
 	setContext('layer', { newLayer, moveLayerDown, moveLayerUp, deleteLayer });
 
-	setContext('overlay', {
-		updateOverlay,
-	});
-
 	const overlayId = parseInt($page.params.overlay);
 
 	let selectedLayer: number | undefined = 0;
@@ -51,10 +47,10 @@
 		return $obs.overlays.indexOf(curOverlay);
 	}
 
-	function updateOverlay() {
+	function refreshOverlay() {
 		overlay = getCurrentOverlay();
 	}
-	$: $obs, updateOverlay();
+	$: $obs, refreshOverlay();
 
 	function updateObs() {
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
@@ -73,7 +69,7 @@
 		let tempOverlay = getCurrentOverlay();
 		if (
 			selectedLayer === undefined ||
-			selectedLayer === tempOverlay[$statsScene].layers.length - 1
+			selectedLayer >= tempOverlay[$statsScene].layers.length - 1
 		)
 			return;
 		[
@@ -143,7 +139,7 @@
 
 		<div class="w-[400px] xl:w-[500px] 2xl:w-full h-full grid justify-center content-center">
 			<div class="grid gap-2 mb-4">
-				<SceneEdit bind:overlay />
+				<SceneEdit bind:scene={overlay[$statsScene]} />
 				<LayerEdit bind:overlay bind:selectedLayer />
 				<SelectedEditor bind:selectedId bind:selectedLayer />
 				<button

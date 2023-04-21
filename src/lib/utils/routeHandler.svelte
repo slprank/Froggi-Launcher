@@ -20,7 +20,7 @@
 				goto(route);
 				return;
 			}
-			goto('/');
+			setTimeout(() => goto('/'), 5000);
 		});
 	}
 

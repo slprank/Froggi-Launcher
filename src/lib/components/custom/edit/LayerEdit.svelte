@@ -13,8 +13,9 @@
 	const { newLayer, moveLayerDown, moveLayerUp, deleteLayer } = getContext('layer');
 </script>
 
+<h1 class="text-gray-500 text-lg font-medium text-shadow">Layers</h1>
 <div class="w-full flex gap-2">
-	<div class="w-42">
+	<div class="w-24">
 		{#if overlay}
 			<Select bind:selected={selectedLayer}>
 				{#each overlay[$statsScene].layers as _, i}
@@ -23,7 +24,7 @@
 			</Select>
 		{/if}
 	</div>
-	<div class="w-42">
+	<div>
 		<button
 			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 			on:click={newLayer}
@@ -31,7 +32,7 @@
 			New layer
 		</button>
 	</div>
-	<div class="w-42">
+	<div>
 		<button
 			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 			on:click={moveLayerUp}
@@ -39,7 +40,7 @@
 			Move up
 		</button>
 	</div>
-	<div class="w-42">
+	<div>
 		<button
 			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 			on:click={moveLayerDown}
@@ -48,7 +49,7 @@
 		</button>
 	</div>
 	{#if overlay[$statsScene].layers.length > 1}
-		<div class="w-42" transition:fly={{ duration: 250, y: -25 }}>
+		<div transition:fly={{ duration: 250, y: -25 }}>
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				on:click={deleteLayer}

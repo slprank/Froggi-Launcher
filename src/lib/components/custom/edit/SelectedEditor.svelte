@@ -5,6 +5,7 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
+	import NumberInput from '../input/NumberInput.svelte';
 
 	const overlayId = parseInt($page.params.overlay);
 
@@ -30,7 +31,7 @@
 		selectedId = undefined;
 		selectedItem = undefined;
 	}
-	$: selectedLayer, clearItem();
+	$: selectedLayer, $statsScene, clearItem();
 
 	function handleOverflow() {
 		if (selectedItem[COL].x < 0) selectedItem[COL].x = 0;
@@ -116,77 +117,34 @@
 		}
 		lockOut = true;
 	}
+
+	// TODO: Add horizontal center button
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
 {#if selectedItem !== undefined}
+	<h1 class="text-gray-500 text-lg font-medium text-shadow" in:fly={{ duration: 250, y: 50 }}>
+		Selected element
+	</h1>
 	<div class="w-full flex gap-2">
-		<div class="relative w-16 bg-white rounded-md" in:fly={{ duration: 250, y: 50 }}>
-			<input
-				type="number"
-				class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-				id="exampleFormControlInputNumber"
-				placeholder="Example label"
-				bind:value={selectedItem[COL].x}
-			/>
-			<label
-				for="exampleFormControlInputNumber"
-				class="absolute left-3 top-0 mb-0 max-w-[90%] w-8 origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white text-shadow transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] text-primary motion-reduce:transition-none"
-			>
-				X - {COL}
-			</label>
+		<div class="relative w-20 bg-white rounded-md" in:fly={{ duration: 250, y: 50 }}>
+			<NumberInput bind:value={selectedItem[COL].x} label={`X - ${COL}`} />
 		</div>
-		<div class="relative w-16 bg-white rounded-md" in:fly={{ duration: 250, y: 50, delay: 50 }}>
-			<input
-				type="number"
-				class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-				id="exampleFormControlInputNumber"
-				placeholder="Example label"
-				bind:value={selectedItem[COL].y}
-			/>
-			<label
-				for="exampleFormControlInputNumber"
-				class="absolute left-3 top-0 mb-0 max-w-[90%] w-8 origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white text-shadow transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] text-primary motion-reduce:transition-none"
-			>
-				Y - {ROW}
-			</label>
+		<div class="relative w-20 bg-white rounded-md" in:fly={{ duration: 250, y: 50, delay: 50 }}>
+			<NumberInput bind:value={selectedItem[COL].y} label={`Y - ${ROW}`} />
 		</div>
 		<div
 			class="relative w-16 bg-white rounded-md"
 			in:fly={{ duration: 250, y: 50, delay: 100 }}
 		>
-			<input
-				type="number"
-				class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-				id="exampleFormControlInputNumber"
-				placeholder="Example label"
-				bind:value={selectedItem[COL].h}
-			/>
-			<label
-				for="exampleFormControlInputNumber"
-				class="absolute left-3 top-0 mb-0 max-w-[90%] w-8 origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white text-shadow transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] text-primary motion-reduce:transition-none"
-			>
-				H
-			</label>
+			<NumberInput bind:value={selectedItem[COL].h} label={`H`} />
 		</div>
 		<div
 			class="relative w-16 bg-white rounded-md"
 			in:fly={{ duration: 250, y: 50, delay: 150 }}
 		>
-			<input
-				type="number"
-				class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-				id="exampleFormControlInputNumber"
-				placeholder="Example label"
-				bind:value={selectedItem[COL].w}
-			/>
-			<label
-				for="exampleFormControlInputNumber"
-				class="absolute left-3 top-0 mb-0 max-w-[90%] w-8 origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white text-shadow transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] text-primary motion-reduce:transition-none"
-			>
-				W
-			</label>
+			<NumberInput bind:value={selectedItem[COL].w} label={`W`} />
 		</div>
 		<div class="w-24" in:fly={{ duration: 250, y: 50, delay: 200 }}>
 			<button

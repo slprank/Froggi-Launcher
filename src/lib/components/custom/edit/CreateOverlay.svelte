@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { CustomElement, LiveStatsScene, Transition } from '$lib/types/enum';
+	import { CustomElement, LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import type { Obs, Overlay } from '$lib/types/types';
 
 	import { COL, MIN } from '$lib/types/const';
@@ -19,6 +19,7 @@
 					description: 'main description',
 					default: LiveStatsScene.PreGame,
 					[LiveStatsScene.WaitingForDolphin]: {
+						background: SceneBackground.None,
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
@@ -26,6 +27,7 @@
 						transition: Transition.None,
 					},
 					[LiveStatsScene.PreGame]: {
+						background: SceneBackground.None,
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
@@ -34,6 +36,7 @@
 					},
 
 					[LiveStatsScene.InGame]: {
+						background: SceneBackground.None,
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
@@ -41,6 +44,7 @@
 						transition: Transition.None,
 					},
 					[LiveStatsScene.PostGame]: {
+						background: SceneBackground.None,
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
@@ -48,6 +52,7 @@
 						transition: Transition.None,
 					},
 					[LiveStatsScene.RankChange]: {
+						background: SceneBackground.None,
 						backgroundColor: 'white',
 						backgroundImage: undefined,
 						layers: [[]],
@@ -66,6 +71,7 @@
 			description: 'Scene Description',
 			default: LiveStatsScene.PreGame,
 			[LiveStatsScene.WaitingForDolphin]: {
+				background: SceneBackground.None,
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
@@ -73,6 +79,7 @@
 				transition: Transition.None,
 			},
 			[LiveStatsScene.PreGame]: {
+				background: SceneBackground.None,
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
@@ -80,6 +87,7 @@
 				transition: Transition.None,
 			},
 			[LiveStatsScene.InGame]: {
+				background: SceneBackground.None,
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
@@ -87,6 +95,7 @@
 				transition: Transition.None,
 			},
 			[LiveStatsScene.PostGame]: {
+				background: SceneBackground.None,
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],
@@ -94,6 +103,7 @@
 				transition: Transition.None,
 			},
 			[LiveStatsScene.RankChange]: {
+				background: SceneBackground.None,
 				backgroundColor: 'white',
 				backgroundImage: undefined,
 				layers: [[]],

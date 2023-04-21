@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 
-	const scene = $page.params.scene;
+	const overlayId = $page.params.overlay;
 
 	// TODO: List all custom made components
 	// Clicking on an element should direct to a preview
@@ -18,12 +18,12 @@
 	out:fade={{ duration: 300 }}
 >
 	<div class="w-full h-full pt-8 px-2 md:px-18 grid justify-center content-center">
-		{#each $obs?.scenes ?? [] as scene}
+		{#each $obs?.overlays ?? [] as overlay}
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
-				on:click={() => goto(`/obs/custom/${scene.id}`)}
+				on:click={() => goto(`/obs/custom/${overlay.id}`)}
 			>
-				{scene.title}
+				{overlay.title}
 			</button>
 		{/each}
 	</div>
