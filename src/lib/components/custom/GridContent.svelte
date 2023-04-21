@@ -8,7 +8,9 @@
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let edit: boolean = false;
+	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
+	export let transition: Transition = Transition.None;
 	export let font = '';
 
 	export let testItem: GridContentItem | undefined = undefined;
@@ -30,9 +32,10 @@
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
 
+	$: console.log(preview);
+
 	const animate = (node: Element) => {
-		if (edit || !dataItem) return;
-		const transition = dataItem?.data?.transition?.type ?? Transition.Fly;
+		if (!preview || edit || !dataItem) return;
 		const duration = dataItem?.data?.transition?.duration ?? 250;
 		const delay =
 			dataItem[COL]?.y + Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) ?? 0;
@@ -51,13 +54,6 @@
 		}
 	};
 
-	let test = 'whoa';
-
-	setTimeout(() => (test = undefined), 5000);
-
-	console.log(dataItem);
-
-	// TODO: Transition based on x/y position
 	// TODO: Add remaining components
 	// TODO: Use live data
 	// TODO: Add custom font support
@@ -83,7 +79,7 @@
 				style={`${cssValue} ${edit ? 'color: black;' : ''}`}
 				maxFont={1000}
 			>
-				{test ?? dataItem?.data.string}
+				{dataItem?.data.string}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.CustomBox}

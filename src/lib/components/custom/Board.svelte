@@ -6,8 +6,10 @@
 	import { page } from '$app/stores';
 	import type { Scene } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
+	import { Transition } from '$lib/types/enum';
 
 	export let height: number | undefined = undefined;
+	export let preview: boolean = false;
 
 	const sceneId = parseInt($page.params.scene);
 
@@ -66,7 +68,7 @@
 					cols={[[COL, COL]]}
 					fastStart={true}
 				>
-					<GridContent {dataItem} />
+					<GridContent bind:preview {dataItem} transition={Transition.Fly} />
 				</Grid>
 			</div>
 		{/each}

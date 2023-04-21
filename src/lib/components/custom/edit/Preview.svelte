@@ -5,19 +5,25 @@
 	import Clipboard from 'svelte-clipboard';
 
 	const sceneId = parseInt($page.params.scene);
+	export let boardHeight: number;
 
 	$: sceneUrl = `${$urls?.local}/obs/custom/${sceneId}`;
 
-	export let boardHeight: number;
+	$: preview = false;
 
+	$: console.log(preview);
 	// TODO: Add alert component
 </script>
 
 <div class="w-full h-full">
+	<div class="flex items-center gap-2">
+		<h1 class="text-gray-500 text-md font-medium text-shadow">Preview with transitions</h1>
+		<input type="checkbox" bind:checked={preview} />
+	</div>
 	<div
 		class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
 	>
-		<Board bind:height={boardHeight} />
+		<Board bind:height={boardHeight} bind:preview />
 	</div>
 	<div class="flex items-center gap-2">
 		<h1 class="text-gray-500 text-md font-medium text-shadow">
