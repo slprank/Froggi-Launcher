@@ -3,6 +3,7 @@
 	import Select from '$lib/components/Select.svelte';
 
 	export let selectedElementId: number;
+	export let label: string | undefined = undefined;
 
 	// TODO: Add remaining components - stats/rank-up/session etc..
 	let options = [
@@ -42,7 +43,7 @@
 </script>
 
 <div class="w-40 h-12">
-	<Select bind:selected={selectedElementId}>
+	<Select bind:selected={selectedElementId} {label}>
 		{#each options as option, i}
 			<option selected={i === 0} value={option.value}>
 				{option.name}

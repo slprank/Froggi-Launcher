@@ -75,7 +75,7 @@ export interface Css {
 	background: string;
 	borderColor: string;
 	color: string;
-	opacity: string;
+	opacity: number;
 }
 
 // Old types

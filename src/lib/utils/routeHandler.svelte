@@ -21,6 +21,7 @@
 				return;
 			}
 			setTimeout(() => goto('/'), 5000);
+			// TODO: Redirect home on missing route
 		});
 	}
 

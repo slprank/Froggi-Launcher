@@ -15,7 +15,7 @@
 	$: curScene = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	$: curPage = curScene[$statsScene];
 
-	$: curPage.layers.forEach((layer: any) => {
+	$: curPage?.layers.forEach((layer: any) => {
 		layer.forEach((item: any) => {
 			item[COL].draggable = false;
 			item[COL].resizable = false;

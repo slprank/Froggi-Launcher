@@ -71,8 +71,6 @@
 	}
 
 	let innerHeight: number;
-
-	// TODO: Save and update history on mouseUp to undo actions
 </script>
 
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateObs} />

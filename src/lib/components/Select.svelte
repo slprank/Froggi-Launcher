@@ -1,7 +1,11 @@
 <script lang="ts">
 	export let selected: any;
+	export let label: string | undefined = undefined;
 </script>
 
+{#if label}
+	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
+{/if}
 <div class="w-full flex justify-center items-center">
 	<select
 		id="dropdown"

@@ -12,17 +12,20 @@
 	import type { Overlay } from '$lib/types/types';
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
 	import { setContext } from 'svelte';
-	import SceneEdit from './SceneEdit.svelte';
 	import SceneSelect from './SceneSelect.svelte';
+	import SceneEditModal from './SceneEditModal.svelte';
 
 	setContext('layer', { newLayer, moveLayerDown, moveLayerUp, deleteLayer });
+	setContext('custom-obs', { updateObs, refreshOverlay });
 
 	const overlayId = parseInt($page.params.overlay);
 
 	let selectedLayer: number | undefined = 0;
 	let selectedId: string | undefined = undefined;
-	let isElementModalOpen = false;
 	let overlay: Overlay = getCurrentOverlay();
+
+	let isElementModalOpen = false;
+	let isSceneModalOpen = false;
 
 	let boardHeight: number;
 	let innerWidth: number;
@@ -137,27 +140,38 @@
 			<Preview bind:boardHeight />
 		</div>
 
-		<div class="w-[400px] xl:w-[500px] 2xl:w-full h-full grid justify-center content-center">
-			<div class="grid gap-2 mb-4">
-				<SceneEdit bind:scene={overlay[$statsScene]} />
-				<LayerEdit bind:overlay bind:selectedLayer />
-				<SelectedEditor bind:selectedId bind:selectedLayer />
+		<div
+			class="w-[400px] xl:w-[500px] 2xl:w-full h-full grid gap-2 justify-center content-center"
+		>
+			<div class="grid gap-2">
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => {
-						isElementModalOpen = true;
+						isSceneModalOpen = true;
 					}}
 				>
-					Add new element
+					Edit
 				</button>
+				<LayerEdit bind:overlay bind:selectedLayer />
+				<SelectedEditor bind:selectedId bind:selectedLayer />
 			</div>
 			<div
 				class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
 			>
 				<BoardEdit bind:height={boardHeight} bind:layer={selectedLayer} bind:selectedId />
 			</div>
+			<button
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				on:click={() => {
+					isElementModalOpen = true;
+				}}
+			>
+				Add new element
+			</button>
 			<SceneSelect />
 		</div>
 	</div>
 	<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />
+	<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 </main>

@@ -91,7 +91,7 @@
 			id: selectedId,
 			data: payload,
 			[COL]: {
-				...prevItem[COL],
+				...prevItem![COL],
 			},
 		};
 
@@ -122,8 +122,8 @@
 		class=" w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		<div class="w-full h-full p-4 px-8 grid grid-cols-2 overflow-scroll scroll">
-			<div class="w-full h-full col-span-1">
+		<div class="w-full h-full p-4 px-8 grid grid-cols-2">
+			<div class="w-full h-full col-span-1 overflow-scroll scroll">
 				<ElementSelect bind:selectedElementId />
 				<div class="w-full">
 					<StylingSelect bind:selectedElementId bind:payload />

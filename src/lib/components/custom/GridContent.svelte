@@ -39,6 +39,7 @@
 			dataItem[COL]?.y + Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) ?? 0;
 		const y = ((dataItem[COL]?.y - ROW / 2) / ROW) * 50;
 		const x = ((dataItem[COL]?.x - COL / 2) / COL) * 50;
+		console.log('transition', transition);
 		switch (transition) {
 			case Transition.None:
 				return;

@@ -5,7 +5,7 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
-	import NumberInput from '../input/NumberInput.svelte';
+	import NumberInput from '$lib/components/input/NumberInput.svelte';
 
 	const overlayId = parseInt($page.params.overlay);
 
@@ -128,25 +128,19 @@
 		Selected element
 	</h1>
 	<div class="w-full flex gap-2">
-		<div class="relative w-20 bg-white rounded-md" in:fly={{ duration: 250, y: 50 }}>
+		<div in:fly={{ duration: 250, y: 50 }}>
 			<NumberInput bind:value={selectedItem[COL].x} label={`X - ${COL}`} />
 		</div>
-		<div class="relative w-20 bg-white rounded-md" in:fly={{ duration: 250, y: 50, delay: 50 }}>
+		<div in:fly={{ duration: 250, y: 50, delay: 50 }}>
 			<NumberInput bind:value={selectedItem[COL].y} label={`Y - ${ROW}`} />
 		</div>
-		<div
-			class="relative w-16 bg-white rounded-md"
-			in:fly={{ duration: 250, y: 50, delay: 100 }}
-		>
+		<div in:fly={{ duration: 250, y: 50, delay: 100 }}>
 			<NumberInput bind:value={selectedItem[COL].h} label={`H`} />
 		</div>
-		<div
-			class="relative w-16 bg-white rounded-md"
-			in:fly={{ duration: 250, y: 50, delay: 150 }}
-		>
+		<div in:fly={{ duration: 250, y: 50, delay: 150 }}>
 			<NumberInput bind:value={selectedItem[COL].w} label={`W`} />
 		</div>
-		<div class="w-24" in:fly={{ duration: 250, y: 50, delay: 200 }}>
+		<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 200 }}>
 			<button
 				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				on:click={() => (isElementModalOpen = true)}
@@ -154,7 +148,7 @@
 				Edit
 			</button>
 		</div>
-		<div class="w-24" in:fly={{ duration: 250, y: 50, delay: 250 }}>
+		<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 250 }}>
 			<button
 				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				on:click={deleteElement}
