@@ -2,7 +2,7 @@
 	import { CustomElement, Transition } from '$lib/types/enum';
 	import type { GridContentItem } from '$lib/types/types';
 	import { obs, statsScene } from '$lib/utils/store.svelte';
-	import { fade, fly, scale } from 'svelte/transition';
+	import { fade, fly, scale, slide, blur, draw, crossfade } from 'svelte/transition';
 	import TextFitMulti from '../TextFitMulti.svelte';
 	import { COL, ROW } from '$lib/types/const';
 
@@ -11,6 +11,7 @@
 	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
 	export let transition: Transition = Transition.None;
+	export let duration: number = 250;
 	export let font = '';
 
 	export let testItem: GridContentItem | undefined = undefined;
@@ -34,7 +35,6 @@
 
 	const animate = (node: Element) => {
 		if (!preview || edit || !dataItem) return;
-		const duration = 250;
 		const delay =
 			dataItem[COL]?.y + Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) ?? 0;
 		const y = ((dataItem[COL]?.y - ROW / 2) / ROW) * 50;
@@ -49,6 +49,10 @@
 				return fly(node, { duration: duration, x: x, y: y, delay: delay });
 			case Transition.Scale:
 				return scale(node, { duration: duration, delay: delay });
+			case Transition.Slide:
+				return slide(node, { duration: duration, delay: delay });
+			case Transition.Blur:
+				return blur(node, { duration: duration, delay: delay });
 		}
 	};
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { SceneBackground, Transition } from '$lib/types/enum';
+	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import type { Overlay } from '$lib/types/types';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { getContext } from 'svelte';
@@ -8,6 +8,9 @@
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import TextInput from '$lib/components/input/TextInput.svelte';
+	import SceneSelect from './SceneSelect.svelte';
+	import { fly } from 'svelte/transition';
+	import ImageInput from '$lib/components/input/ImageInput.svelte';
 
 	const { updateObs, refreshOverlay } = getContext('custom-obs');
 
@@ -31,6 +34,9 @@
 		updateObs();
 		open = false;
 	}
+
+	// TODO: Add image upload
+	// TODO: Add preview
 </script>
 
 <Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={clear}>
@@ -40,7 +46,7 @@
 	>
 		{#key overlay[$statsScene]}
 			<div class="w-full h-full grid grid-cols-2">
-				<div class="w-ful p-4 px-8 col-span-1">
+				<div class="w-ful p-4 px-8 col-span-1 overflow-scroll">
 					<div class="w-full grid gap-4">
 						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
 						<div class="w-full flex gap-2">
@@ -53,6 +59,8 @@
 							</div>
 						</div>
 						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">Change scene</h1>
+						<SceneSelect />
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
@@ -61,8 +69,14 @@
 									label="Type"
 								>
 									<option value={SceneBackground.None}>None</option>
-									<option value={SceneBackground.Image}>Image</option>
 									<option value={SceneBackground.Color}>Color</option>
+									<option value={SceneBackground.Image}>Image</option>
+									<option value={SceneBackground.ImageCustom}>
+										Custom Image
+									</option>
+									{#if $statsScene === LiveStatsScene.InGame || $statsScene === LiveStatsScene.PostGame}
+										<option value={SceneBackground.ImageStage}>Stage</option>
+									{/if}
 								</Select>
 							</div>
 							{#if overlay[$statsScene].background === SceneBackground.Image}
@@ -77,6 +91,9 @@
 										<option value={SceneBackground.Image}>Melee Green</option>
 										<option value={SceneBackground.Color}>Melee Red</option>
 									</Select>
+								</div>
+								<div class="w-24">
+									<ImageInput bind:image={overlay[$statsScene].backgroundImage} />
 								</div>
 							{/if}
 							{#if overlay[$statsScene].background === SceneBackground.Color}
@@ -106,11 +123,24 @@
 									label="Type"
 								>
 									<option value={Transition.None}>None</option>
-									<option value={Transition.Fly}>Fly</option>
+									<option value={Transition.Blur}>Blur</option>
 									<option value={Transition.Fade}>Fade</option>
+									<option value={Transition.Fly}>Fly</option>
 									<option value={Transition.Scale}>Scale</option>
+									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
+							{#if overlay[$statsScene].transition !== Transition.None}
+								<div class="w-24">
+									<NumberInput
+										bind:value={overlay[$statsScene].duration}
+										label="Duration - ms"
+										max={1500}
+										min={0}
+										bind:autofocus
+									/>
+								</div>
+							{/if}
 						</div>
 
 						<div class="w-24 flex items-end">

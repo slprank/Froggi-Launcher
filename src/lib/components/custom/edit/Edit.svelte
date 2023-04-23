@@ -65,6 +65,7 @@
 		tempOverlay[$statsScene].layers.push([]);
 		const index = getCurrentOverlayIndex();
 		$obs.overlays[index] = tempOverlay;
+		selectedLayer = tempOverlay[$statsScene].layers.length - 1;
 		updateObs();
 	}
 

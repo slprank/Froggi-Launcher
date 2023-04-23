@@ -37,6 +37,7 @@ export interface Scene {
 	background: SceneBackground;
 	backgroundColor: string | undefined;
 	backgroundImage: string | undefined;
+	duration: number;
 	layers: GridContentItem[][];
 	opacity: number;
 	transition: Transition;

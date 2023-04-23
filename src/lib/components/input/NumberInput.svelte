@@ -4,14 +4,12 @@
 	export let min: number = 0;
 	export let max: number = 100;
 	export let autofocus: number | undefined = undefined;
-
-	$: value = value ?? 0;
 </script>
 
 {#if label}
 	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
 {/if}
-<div class="relative w-20 bg-white rounded-md" on:click={() => (autofocus = 1)}>
+<div class="relative w-20 h-11 bg-white rounded-md" on:click={() => (autofocus = 1)}>
 	<input
 		autofocus={autofocus === 1}
 		type="number"

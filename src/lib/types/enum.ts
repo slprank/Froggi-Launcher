@@ -29,6 +29,8 @@ export enum SceneBackground {
 	None = 0,
 	Color = 1,
 	Image = 2,
+	ImageCustom = 3,
+	ImageStage = 4,
 }
 
 export enum Transition {
@@ -36,4 +38,8 @@ export enum Transition {
 	Fade = 1,
 	Scale = 2,
 	Fly = 3,
+	Slide = 4,
+	Blur = 5,
+	Draw = 6,
+	CrossFade = 7,
 }

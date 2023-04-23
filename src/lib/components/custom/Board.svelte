@@ -67,7 +67,12 @@
 					cols={[[COL, COL]]}
 					fastStart={true}
 				>
-					<GridContent bind:preview {dataItem} transition={curPage.transition} />
+					<GridContent
+						bind:preview
+						{dataItem}
+						transition={curPage.transition}
+						duration={curPage.duration ?? 250}
+					/>
 				</Grid>
 			</div>
 		{/each}
