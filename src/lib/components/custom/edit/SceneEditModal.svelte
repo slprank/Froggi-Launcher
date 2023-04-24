@@ -8,7 +8,7 @@
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import TextInput from '$lib/components/input/TextInput.svelte';
-	import SceneSelect from './SceneSelect.svelte';
+	import SceneSelect from '../selector/SceneSelect.svelte';
 	import { fly } from 'svelte/transition';
 	import ImageInput from '$lib/components/input/ImageInput.svelte';
 
@@ -16,6 +16,24 @@
 
 	export let open: boolean;
 	export let overlay: Overlay;
+
+	$: previewBackgroundType = overlay[$statsScene].background;
+
+	let imageOptions: string[] = [];
+
+	function getImageOptions() {
+		const modules = import.meta.glob('../../../../../static/image/backgrounds/**/**.png');
+		for (let image in modules) {
+			imageOptions.push(image);
+		}
+
+		imageOptions = imageOptions
+			.map((imageString) => imageString.split('/').slice(-1).pop())
+			.filter((image) => image !== undefined);
+		console.log(imageOptions);
+	}
+
+	getImageOptions();
 
 	// TODO: Update scene name
 	// TODO: Update scene background
@@ -55,6 +73,7 @@
 									bind:value={overlay.title}
 									label="Title"
 									bind:autofocus
+									autoFocusValue={1}
 								/>
 							</div>
 						</div>
@@ -85,15 +104,19 @@
 										bind:selected={overlay[$statsScene].backgroundImage}
 										label="Image"
 									>
-										<option selected value={SceneBackground.None}>
-											Melee All
-										</option>
-										<option value={SceneBackground.Image}>Melee Green</option>
-										<option value={SceneBackground.Color}>Melee Red</option>
+										{#each imageOptions as image, i}
+											<option selected={i === 0} value={image}>
+												{image.split('.')[0]}
+											</option>
+										{/each}
 									</Select>
 								</div>
+							{/if}
+							{#if overlay[$statsScene].background === SceneBackground.ImageCustom}
 								<div class="w-24">
-									<ImageInput bind:image={overlay[$statsScene].backgroundImage} />
+									<ImageInput
+										bind:image={overlay[$statsScene].backgroundCustomImage}
+									/>
 								</div>
 							{/if}
 							{#if overlay[$statsScene].background === SceneBackground.Color}
@@ -111,11 +134,14 @@
 										label="Opacity"
 										max={1}
 										bind:autofocus
+										autoFocusValue={2}
 									/>
 								</div>
 							{/if}
 						</div>
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">Transition</h1>
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Transition elements
+						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
@@ -138,6 +164,37 @@
 										max={1500}
 										min={0}
 										bind:autofocus
+										autoFocusValue={3}
+									/>
+								</div>
+							{/if}
+						</div>
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Transition Background
+						</h1>
+						<div class="w-full flex gap-2">
+							<div class="w-24">
+								<Select
+									bind:selected={overlay[$statsScene].transitionBackground}
+									label="Type"
+								>
+									<option value={Transition.None}>None</option>
+									<option value={Transition.Blur}>Blur</option>
+									<option value={Transition.Fade}>Fade</option>
+									<option value={Transition.Fly}>Fly</option>
+									<option value={Transition.Scale}>Scale</option>
+									<option value={Transition.Slide}>Slide</option>
+								</Select>
+							</div>
+							{#if overlay[$statsScene].transition !== Transition.None}
+								<div class="w-24">
+									<NumberInput
+										bind:value={overlay[$statsScene].durationBackground}
+										label="Duration - ms"
+										max={1500}
+										min={0}
+										bind:autofocus
+										autoFocusValue={4}
 									/>
 								</div>
 							{/if}
@@ -153,8 +210,32 @@
 						</div>
 					</div>
 				</div>
-				<div class="w-full h-full col-span-1">
-					<h1 class="text-white">preview</h1>
+				<div class="w-full h-full col-span-1 flex justify-center items-center">
+					<div
+						class="bg-cover bg-center aspect-video w-[80%] border"
+						style={`
+						${
+							previewBackgroundType === SceneBackground.Color
+								? `background: ${overlay[$statsScene].backgroundColor};`
+								: ''
+						}
+						${
+							previewBackgroundType === SceneBackground.Image
+								? `background-image: url('/image/backgrounds/${overlay[$statsScene].backgroundImage}');`
+								: ''
+						}
+						${
+							previewBackgroundType === SceneBackground.ImageCustom
+								? `background-image: url('${overlay[$statsScene].backgroundCustomImage}');`
+								: ''
+						}
+						${
+							previewBackgroundType === SceneBackground.ImageStage
+								? `background-image: url('/image/stages/8.png');`
+								: ''
+						}
+						${overlay[$statsScene].opacity !== undefined ? `opacity: ${overlay[$statsScene].opacity};` : ''}`}
+					/>
 				</div>
 			</div>
 		{/key}

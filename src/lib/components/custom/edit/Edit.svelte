@@ -12,7 +12,7 @@
 	import type { Overlay } from '$lib/types/types';
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
 	import { setContext } from 'svelte';
-	import SceneSelect from './SceneSelect.svelte';
+	import SceneSelect from '../selector/SceneSelect.svelte';
 	import SceneEditModal from './SceneEditModal.svelte';
 
 	setContext('layer', { newLayer, moveLayerDown, moveLayerUp, deleteLayer });
@@ -158,7 +158,7 @@
 				<SelectedEditor bind:selectedId bind:selectedLayer />
 			</div>
 			<div
-				class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] border-4 border-zinc-700 overflow-hidden`}
+				class={`w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] outline outline-4 outline-zinc-700 overflow-hidden shadow-md`}
 			>
 				<BoardEdit bind:height={boardHeight} bind:layer={selectedLayer} bind:selectedId />
 			</div>

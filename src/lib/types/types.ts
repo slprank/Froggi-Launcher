@@ -37,10 +37,13 @@ export interface Scene {
 	background: SceneBackground;
 	backgroundColor: string | undefined;
 	backgroundImage: string | undefined;
+	backgroundCustomImage: string | undefined;
 	duration: number;
+	durationBackground: number;
 	layers: GridContentItem[][];
 	opacity: number;
 	transition: Transition;
+	transitionBackground: Transition;
 }
 
 export interface GridContentItem {

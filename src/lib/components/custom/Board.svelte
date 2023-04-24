@@ -2,20 +2,22 @@
 	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
+	import { SceneBackground, Transition } from '$lib/types/enum';
+	import BoardContainer from './edit/BoardContainer.svelte';
 
 	export let height: number | undefined = undefined;
-	export let preview: boolean = false;
+	export let preview: boolean = true;
 
 	const overlayId = parseInt($page.params.overlay);
 
-	$: curScene = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-	$: curPage = curScene[$statsScene];
+	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+	$: curScene = curOverlay[$statsScene];
 
-	$: curPage?.layers.forEach((layer: any) => {
+	$: curScene?.layers.forEach((layer: any) => {
 		layer.forEach((item: any) => {
 			item[COL].draggable = false;
 			item[COL].resizable = false;
@@ -23,16 +25,33 @@
 	});
 
 	function updatePage() {
-		curPage = curScene[$statsScene];
-		curPage.layers.forEach((layer: any) => {
+		curScene = curOverlay[$statsScene];
+		curScene.layers.forEach((layer: any) => {
 			layer.forEach((item: any) => {
 				item[COL].draggable = false;
 				item[COL].resizable = false;
 			});
 		});
 	}
-
 	$: $statsScene, updatePage();
+
+	const animate = (node: Element) => {
+		if (!preview) return;
+		switch (curScene.transitionBackground) {
+			case Transition.None:
+				return;
+			case Transition.Fade:
+				return fade(node, { duration: curScene.durationBackground });
+			case Transition.Fly:
+				return fly(node, { duration: curScene.durationBackground, y: -50 });
+			case Transition.Scale:
+				return scale(node, { duration: curScene.durationBackground });
+			case Transition.Slide:
+				return slide(node, { duration: curScene.durationBackground });
+			case Transition.Blur:
+				return blur(node, { duration: curScene.durationBackground });
+		}
+	};
 
 	let innerHeight: number;
 
@@ -42,40 +61,32 @@
 
 <svelte:window bind:innerHeight />
 
-{#key height}
-	<!-- TODO: Render window based on LiveStatScene global store -->
-	<div class="w-full h-full overflow-hidden relative">
-		<div
-			class="w-full h-full bg-cover bg-center absolute z-0"
-			style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
-			in:fade={{ delay: 50, duration: 150 }}
-			out:fade={{ duration: 300 }}
-		/>
-		<div
-			class="w-full h-full z-1 absolute"
-			style="background: #FF00040C"
-			in:fade={{ delay: 50, duration: 150 }}
-			out:fade={{ duration: 300 }}
-		/>
-		{#each curPage?.layers ?? [] as layer}
-			<div class="w-full h-full z-2 absolute" in:fly={{ delay: 50 }}>
-				<Grid
-					bind:items={layer}
-					rowHeight={(height ?? innerHeight) / ROW}
-					gap={[0, 0]}
-					let:dataItem
-					cols={[[COL, COL]]}
-					fastStart={true}
-				>
-					<GridContent
-						bind:preview
-						{dataItem}
-						transition={curPage.transition}
-						duration={curPage.duration ?? 250}
-					/>
-				</Grid>
+{#key $statsScene}
+	{#key height}
+		<div class="w-full h-full overflow-hidden relative">
+			<div in:animate>
+				<BoardContainer bind:scene={curScene} />
 			</div>
-		{/each}
-		<div class="w-full h-full z-8 absolute" />
-	</div>
+			{#each curScene?.layers ?? [] as layer}
+				<div class="w-full h-full z-2 absolute" in:fly={{ delay: 50 }}>
+					<Grid
+						bind:items={layer}
+						rowHeight={(height ?? innerHeight) / ROW}
+						gap={[0, 0]}
+						let:dataItem
+						cols={[[COL, COL]]}
+						fastStart={true}
+					>
+						<GridContent
+							bind:preview
+							{dataItem}
+							transition={curScene.transition}
+							duration={curScene.duration ?? 250}
+						/>
+					</Grid>
+				</div>
+			{/each}
+			<div class="w-full h-full z-8 absolute" />
+		</div>
+	{/key}
 {/key}

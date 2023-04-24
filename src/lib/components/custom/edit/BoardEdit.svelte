@@ -6,6 +6,8 @@
 	import { fade } from 'svelte/transition';
 	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
+	import { SceneBackground } from '$lib/types/enum';
+	import BoardContainer from './BoardContainer.svelte';
 
 	const overlayId = parseInt($page.params.overlay);
 
@@ -76,35 +78,26 @@
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateObs} />
 
 {#key height}
-	<div class="w-full h-full overflow-hidden relative">
-		<div
-			class="w-full h-full bg-cover bg-center absolute z-0"
-			style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
-			in:fade={{ delay: 50, duration: 150 }}
-			out:fade={{ duration: 300 }}
-		/>
-		<div
-			class="w-full h-full z-1 absolute"
-			style="background: #FF00040C"
-			in:fade={{ delay: 50, duration: 150 }}
-			out:fade={{ duration: 300 }}
-		/>
-		<div class="w-full h-full z-2 absolute">
-			<Grid
-				bind:items
-				rowHeight={(height ?? innerHeight) / ROW}
-				gap={[0, 0]}
-				let:dataItem
-				cols={[[COL, COL]]}
-				fastStart={true}
-				on:change={updateScene}
-				on:pointerup={(e) => {
-					selectedId = undefined;
-					setTimeout(() => (selectedId = e.detail.id), 20);
-				}}
-			>
-				<GridContent edit={true} {dataItem} bind:selectedId />
-			</Grid>
+	{#key $statsScene}
+		<div class="w-full h-full overflow-hidden relative">
+			<BoardContainer bind:scene={curOverlay[$statsScene]} />
+			<div class="w-full h-full z-2 absolute">
+				<Grid
+					bind:items
+					rowHeight={(height ?? innerHeight) / ROW}
+					gap={[0, 0]}
+					let:dataItem
+					cols={[[COL, COL]]}
+					fastStart={true}
+					on:change={updateScene}
+					on:pointerup={(e) => {
+						selectedId = undefined;
+						setTimeout(() => (selectedId = e.detail.id), 20);
+					}}
+				>
+					<GridContent edit={true} {dataItem} bind:selectedId />
+				</Grid>
+			</div>
 		</div>
-	</div>
+	{/key}
 {/key}

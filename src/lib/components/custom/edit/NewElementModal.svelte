@@ -12,8 +12,8 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/edit/CreateOverlay.svelte';
-	import ElementSelect from '$lib/components/custom/input/ElementSelect.svelte';
-	import StylingSelect from '$lib/components/custom/edit/StylingSelect.svelte';
+	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
+	import StylingSelect from '$lib/components/custom/selector/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/types/const';
