@@ -53,7 +53,7 @@
 	function refreshOverlay() {
 		overlay = getCurrentOverlay();
 	}
-	$: $obs, refreshOverlay();
+	$: $obs, isElementModalOpen, refreshOverlay();
 
 	function updateObs() {
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);

@@ -3,6 +3,8 @@
 	import type { Scene } from '$lib/types/types';
 
 	export let scene: Scene;
+
+	// TODO: Add support for "Stage" option
 </script>
 
 <div

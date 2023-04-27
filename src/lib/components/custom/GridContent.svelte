@@ -69,28 +69,35 @@
 
 {#key $obs || $statsScene || dataItem}
 	<div
-		class={`custom-font h-full w-full  ${edit ? 'bg-white' : 'text-white'} ${
+		style={`font-family: ${font}; ${dataItem?.data.css.customParent};`}
+		class={`custom-font h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 			selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 		} bg-opacity-50`}
-		style={`font-family: ${font}`}
 		in:animate
 	>
 		{#if dataItem?.elementId == CustomElement.CustomString}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue} ${edit ? 'color: black;' : ''}`}
+				style={`${cssValue}; ${dataItem?.data.css.customText}; ${
+					edit ? 'color: black;' : ''
+				}`}
 				maxFont={1000}
 			>
 				{dataItem?.data.string}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.CustomBox}
-			<div class={`w-full h-full ${classValue}`} style={`${cssValue}`} />
+			<div
+				class={`w-full h-full ${classValue}`}
+				style={`${cssValue}; ${dataItem?.data.css.customBox}; `}
+			/>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue} ${edit ? 'color: black' : ''}`}
+				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
+					edit ? 'color: black' : ''
+				}`}
 				maxFont={1000}
 			>
 				{`Player1`}
@@ -99,7 +106,9 @@
 		{#if dataItem?.elementId == CustomElement.Player2Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue} ${edit ? 'color: black' : ''}`}
+				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
+					edit ? 'color: black' : ''
+				}`}
 				maxFont={1000}
 			>
 				{`Player2`}
@@ -108,7 +117,9 @@
 		{#if dataItem?.elementId == CustomElement.Player1Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue} ${edit ? 'color: black' : ''}`}
+				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
+					edit ? 'color: black' : ''
+				}`}
 				maxFont={1000}
 			>
 				{`1`}
@@ -117,7 +128,9 @@
 		{#if dataItem?.elementId == CustomElement.Player2Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue} ${edit ? 'color: black' : ''}`}
+				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
+					edit ? 'color: black' : ''
+				}`}
 				maxFont={1000}
 			>
 				{`0`}
@@ -125,11 +138,12 @@
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1RankIcon}
 			<div
-				class={`w-full h-full flex justify-center items-center ${classValue}`}
-				style={`${cssValue}`}
+				class={`w-full h-full ${classValue}`}
+				style={`${cssValue}; ${dataItem?.data.css.customBox}; `}
 			>
 				<img
-					class="w-full h-full object-contain aspect-square"
+					class="w-full h-full object-contain"
+					style={`${dataItem?.data.css.customImage}; `}
 					src="/image/rank-icons/GOLD 3.svg"
 					alt="rank-icon"
 				/>
@@ -137,11 +151,12 @@
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player2RankIcon}
 			<div
-				class={`w-full h-full flex justify-center items-center ${classValue}`}
-				style={`${cssValue}`}
+				class={`w-full h-full ${classValue}`}
+				style={`${cssValue}; ${dataItem?.data.css.customBox}; `}
 			>
 				<img
-					class="w-full h-full object-contain aspect-square"
+					class="w-full h-full object-contain"
+					style={`${dataItem?.data.css.customImage}; `}
 					src="/image/rank-icons/SILVER 3.svg"
 					alt="rank-icon"
 				/>

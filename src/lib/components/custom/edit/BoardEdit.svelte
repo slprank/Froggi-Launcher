@@ -3,10 +3,8 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
-	import { fade } from 'svelte/transition';
 	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
-	import { SceneBackground } from '$lib/types/enum';
 	import BoardContainer from './BoardContainer.svelte';
 
 	const overlayId = parseInt($page.params.overlay);

@@ -4,11 +4,14 @@
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
 	import { CustomElement } from '$lib/types/enum';
+	import CodeInput from '$lib/components/input/CodeInput.svelte';
+	import { fly } from 'svelte/transition';
 
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
 	let isFirstVisit = selectedElementId !== undefined;
 	let prevSelectedElementId = selectedElementId;
+	let isAdvancedStyle = false;
 
 	function clearStyle() {
 		if (isFirstVisit) return;
@@ -23,8 +26,16 @@
 			opacity: 1,
 		} as Css;
 		prevSelectedElementId = selectedElementId;
+		clearCustomCss();
 	}
 	$: stringSettings, boxSettings, imageSettings, clearStyle();
+
+	function clearCustomCss() {
+		payload.css.customText = '';
+		payload.css.customBox = '';
+		payload.css.customImage = '';
+	}
+	$: isAdvancedStyle, clearCustomCss();
 
 	$: customStringSettings = selectedElementId === CustomElement.CustomString;
 	$: customBoxSettings = selectedElementId === CustomElement.CustomBox;
@@ -40,13 +51,12 @@
 		(selectedElementId >= 300 && selectedElementId < 400);
 
 	isFirstVisit = false;
-	// TODO: Add text/box shadow
 </script>
 
-<div class="w-full mb-2">
+<div class="w-full mt-4">
 	{#if customStringSettings}
-		<h1 class="text-white text-lg font-medium mb-2">Custom text</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Custom text</h1>
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-10">
 				<input
 					type="text"
@@ -60,10 +70,10 @@
 	{/if}
 
 	{#if stringSettings}
-		<h1 class="text-white text-lg font-medium mb-2">Alignment</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Alignment</h1>
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Horizontal</h1>
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Horizontal</h1>
 				<Select bind:selected={payload.class.alignment}>
 					<option value="justify-start">Left</option>
 					<option selected value="justify-center">Center</option>
@@ -71,10 +81,10 @@
 				</Select>
 			</div>
 		</div>
-		<h1 class="text-white text-lg font-medium mb-2">Shadow</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Text shadow</h1>
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Text shadow</h1>
 				<Select bind:selected={payload.class.textShadow}>
 					<option selected value="">None</option>
 					<option value="text-shadow-sm">Light</option>
@@ -83,17 +93,17 @@
 				</Select>
 			</div>
 		</div>
-		<h1 class="text-white text-lg font-medium mb-2">Colors</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2 ">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Colors</h1>
+		<div class="w-full h-fit flex flex-wrap ">
 			<div class="w-36 h-12">
 				<ColorInput bind:value={payload.css.color} />
 			</div>
 		</div>
 	{/if}
 	{#if boxSettings}
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Border</h1>
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Border</h1>
 				<Select bind:selected={payload.class.border}>
 					<option value="" selected>None</option>
 					<option value="border-2">Full 2px</option>
@@ -127,9 +137,9 @@
 				</Select>
 			</div>
 		</div>
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Rounded corner</h1>
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Rounded corner</h1>
 				<Select bind:selected={payload.class.rounded}>
 					<option value="" selected>None</option>
 					<option value="rounded-sm">Small</option>
@@ -139,10 +149,10 @@
 				</Select>
 			</div>
 		</div>
-		<h1 class="text-white text-lg font-medium mb-2">Shadow</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Box shadow</h1>
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Box shadow</h1>
 				<Select bind:selected={payload.class.boxShadow}>
 					<option selected value="">None</option>
 					<option value="box-shadow-sm">Light</option>
@@ -151,34 +161,34 @@
 				</Select>
 			</div>
 		</div>
-		<h1 class="text-white text-lg font-medium mb-2">Background color</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2 ">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Background color</h1>
+		<div class="w-full h-fit flex flex-wrap ">
 			<div class="w-36 h-12">
 				<ColorInput bind:value={payload.css.background} />
 			</div>
 		</div>
-		<h1 class="text-white text-lg font-medium mb-2">Border color</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2 ">
+		<h1 class="text-gray-500 text-lh font-medium text-shadow">Border color</h1>
+		<div class="w-full h-fit flex flex-wrap ">
 			<div class="w-36 h-12">
 				<ColorInput bind:value={payload.css.borderColor} />
 			</div>
 		</div>
 	{/if}
 	{#if imageSettings}
-		<h1 class="text-white text-lg font-medium">Select Image</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Select Image</h1>
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Image</h1>
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Image</h1>
 				<Select bind:selected={payload.image.imageName}>
 					<option selected value="image1.png">Image 1</option>
 					<option value="image2.png">Image 2</option>
 				</Select>
 			</div>
 		</div>
-		<h1 class="text-white text-lg font-medium">Image Positioning</h1>
-		<div class="w-full h-fit flex flex-wrap gap-2">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Image Positioning</h1>
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-white text-md font-medium">Fit</h1>
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Fit</h1>
 				<Select bind:selected={payload.image.objectFit}>
 					<option selected value="bg-cover">Cover</option>
 					<option value="bg-contain">Contain</option>
@@ -186,8 +196,43 @@
 			</div>
 		</div>
 	{/if}
-	<h1 class="text-white text-lg font-medium">Transparency</h1>
-	<div class="w-full h-fit flex flex-wrap gap-2">
+	<div class="flex items-center gap-2">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow mb-2">Advanced styling</h1>
+		<input type="checkbox" bind:checked={isAdvancedStyle} />
+	</div>
+	{#if isAdvancedStyle}
+		{#if stringSettings || imageSettings}
+			<div in:fly={{ duration: 250, delay: 0 }}>
+				<CodeInput
+					bind:value={payload.css.customParent}
+					label="Custom Inline CSS Parent - Default: width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"
+				/>
+			</div>
+		{/if}
+		{#if boxSettings || imageSettings}
+			<div in:fly={{ duration: 250, delay: 50 }}>
+				<CodeInput
+					bind:value={payload.css.customBox}
+					label="Custom Inline CSS Box - Default: width: 100%; height: 100%;"
+				/>
+			</div>
+		{/if}
+		{#if stringSettings}
+			<div in:fly={{ duration: 250, delay: 100 }}>
+				<CodeInput bind:value={payload.css.customText} label="Custom Inline CSS Text" />
+			</div>
+		{/if}
+		{#if imageSettings}
+			<div in:fly={{ duration: 250, delay: 150 }}>
+				<CodeInput
+					bind:value={payload.css.customImage}
+					label="Custom Inline CSS Image - Default: width: 100%; height: 100%; object-fit: contain;"
+				/>
+			</div>
+		{/if}
+	{/if}
+	<h1 class="text-gray-500 text-lg font-medium text-shadow">Transparency</h1>
+	<div class="w-full h-fit flex flex-wrap">
 		<div class="w-36 h-24">
 			<SliderInput bind:value={payload.css.opacity} />
 		</div>

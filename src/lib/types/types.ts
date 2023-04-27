@@ -79,6 +79,10 @@ export interface Css {
 	background: string;
 	borderColor: string;
 	color: string;
+	customParent: string;
+	customBox: string;
+	customText: string;
+	customImage: string;
 	opacity: number;
 }
 

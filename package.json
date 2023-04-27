@@ -49,6 +49,7 @@
 		"obs-websocket-js": "^5.0.2",
 		"socket.io": "^4.6.1",
 		"socket.io-client": "^4.6.1",
+		"svelte-ace": "^1.0.21",
 		"svelte-clipboard": "^1.0.0",
 		"svelte-device-info": "^1.0.0",
 		"svelte-grid": "^5.1.1",
