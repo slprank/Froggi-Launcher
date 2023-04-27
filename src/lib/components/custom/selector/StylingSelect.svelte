@@ -6,6 +6,7 @@
 	import { CustomElement } from '$lib/types/enum';
 	import CodeInput from '$lib/components/input/CodeInput.svelte';
 	import { fly } from 'svelte/transition';
+	import ImageInput from '$lib/components/input/ImageInput.svelte';
 
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
@@ -26,16 +27,11 @@
 			opacity: 1,
 		} as Css;
 		prevSelectedElementId = selectedElementId;
-		clearCustomCss();
-	}
-	$: stringSettings, boxSettings, imageSettings, clearStyle();
-
-	function clearCustomCss() {
 		payload.css.customText = '';
 		payload.css.customBox = '';
 		payload.css.customImage = '';
 	}
-	$: isAdvancedStyle, clearCustomCss();
+	$: stringSettings, boxSettings, imageSettings, clearStyle();
 
 	$: customStringSettings = selectedElementId === CustomElement.CustomString;
 	$: customBoxSettings = selectedElementId === CustomElement.CustomBox;
@@ -53,7 +49,7 @@
 	isFirstVisit = false;
 </script>
 
-<div class="w-full mt-4">
+<div class="w-full my-4">
 	{#if customStringSettings}
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Custom text</h1>
 		<div class="w-full h-fit flex flex-wrap">
@@ -174,15 +170,11 @@
 			</div>
 		</div>
 	{/if}
-	{#if imageSettings}
+	{#if customImageSettings}
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Select Image</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Image</h1>
-				<Select bind:selected={payload.image.imageName}>
-					<option selected value="image1.png">Image 1</option>
-					<option value="image2.png">Image 2</option>
-				</Select>
+				<ImageInput bind:image={payload.image.src} label="upload" />
 			</div>
 		</div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Image Positioning</h1>
@@ -196,11 +188,18 @@
 			</div>
 		</div>
 	{/if}
+	<h1 class="text-gray-500 text-lg font-medium text-shadow">Transparency</h1>
+	<div class="w-full h-fit flex flex-wrap">
+		<div class="w-36 h-24">
+			<SliderInput bind:value={payload.css.opacity} />
+		</div>
+		<h1 class="text-white text-center capitalize">{payload.css.opacity}</h1>
+	</div>
 	<div class="flex items-center gap-2">
 		<h1 class="text-gray-500 text-lg font-medium text-shadow mb-2">Advanced styling</h1>
-		<input type="checkbox" bind:checked={isAdvancedStyle} />
+		<input type="checkbox" bind:checked={payload.advancedStyling} />
 	</div>
-	{#if isAdvancedStyle}
+	{#if payload.advancedStyling}
 		{#if stringSettings || imageSettings}
 			<div in:fly={{ duration: 250, delay: 0 }}>
 				<CodeInput
@@ -231,11 +230,4 @@
 			</div>
 		{/if}
 	{/if}
-	<h1 class="text-gray-500 text-lg font-medium text-shadow">Transparency</h1>
-	<div class="w-full h-fit flex flex-wrap">
-		<div class="w-36 h-24">
-			<SliderInput bind:value={payload.css.opacity} />
-		</div>
-		<h1 class="text-white text-center capitalize">{payload.css.opacity}</h1>
-	</div>
 </div>

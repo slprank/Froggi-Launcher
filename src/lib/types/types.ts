@@ -36,8 +36,8 @@ export interface Overlay {
 export interface Scene {
 	background: SceneBackground;
 	backgroundColor: string | undefined;
-	backgroundImage: string | undefined;
-	backgroundCustomImage: string | undefined;
+	backgroundImage: Image;
+	backgroundCustomImage: Image;
 	duration: number;
 	durationBackground: number;
 	layers: GridContentItem[][];
@@ -58,13 +58,13 @@ export interface ElementPayload {
 	css: Css;
 	image: Image;
 	string: string | undefined;
+	advancedStyling: boolean;
 }
 
 export interface Image {
-	imageName: string | undefined;
-	imageSrc: string | undefined;
-	base64: string | undefined;
-	objectFit: string;
+	name: string | undefined;
+	src: string | undefined;
+	objectFit: string | undefined;
 }
 
 export interface Class {

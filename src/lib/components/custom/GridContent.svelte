@@ -39,7 +39,6 @@
 			dataItem[COL]?.y + Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) ?? 0;
 		const y = ((dataItem[COL]?.y - ROW / 2) / ROW) * 50;
 		const x = ((dataItem[COL]?.x - COL / 2) / COL) * 50;
-		console.log('transition', transition);
 		switch (transition) {
 			case Transition.None:
 				return;
@@ -78,9 +77,9 @@
 		{#if dataItem?.elementId == CustomElement.CustomString}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customText}; ${
-					edit ? 'color: black;' : ''
-				}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				}; ${edit ? 'color: black;' : ''}`}
 				maxFont={1000}
 			>
 				{dataItem?.data.string}
@@ -89,15 +88,34 @@
 		{#if dataItem?.elementId == CustomElement.CustomBox}
 			<div
 				class={`w-full h-full ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customBox}; `}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+				}; `}
 			/>
+		{/if}
+		{#if dataItem?.elementId == CustomElement.CustomImage}
+			<div
+				class={`w-full h-full ${classValue}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+				}; `}
+			>
+				<img
+					class="w-full h-full object-contain"
+					style={`${
+						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
+					};`}
+					src={dataItem?.data.image.src}
+					alt="custom"
+				/>
+			</div>
 		{/if}
 		{#if dataItem?.elementId == CustomElement.Player1Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
-					edit ? 'color: black' : ''
-				}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`Player1`}
@@ -106,9 +124,9 @@
 		{#if dataItem?.elementId == CustomElement.Player2Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
-					edit ? 'color: black' : ''
-				}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`Player2`}
@@ -117,9 +135,9 @@
 		{#if dataItem?.elementId == CustomElement.Player1Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
-					edit ? 'color: black' : ''
-				}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`1`}
@@ -128,9 +146,9 @@
 		{#if dataItem?.elementId == CustomElement.Player2Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customText};  ${
-					edit ? 'color: black' : ''
-				}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
 				{`0`}
@@ -139,11 +157,15 @@
 		{#if dataItem?.elementId == CustomElement.Player1RankIcon}
 			<div
 				class={`w-full h-full ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customBox}; `}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+				}; `}
 			>
 				<img
 					class="w-full h-full object-contain"
-					style={`${dataItem?.data.css.customImage}; `}
+					style={`${
+						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
+					};`}
 					src="/image/rank-icons/GOLD 3.svg"
 					alt="rank-icon"
 				/>
@@ -152,11 +174,15 @@
 		{#if dataItem?.elementId == CustomElement.Player2RankIcon}
 			<div
 				class={`w-full h-full ${classValue}`}
-				style={`${cssValue}; ${dataItem?.data.css.customBox}; `}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+				}; `}
 			>
 				<img
 					class="w-full h-full object-contain"
-					style={`${dataItem?.data.css.customImage}; `}
+					style={`${
+						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
+					};`}
 					src="/image/rank-icons/SILVER 3.svg"
 					alt="rank-icon"
 				/>

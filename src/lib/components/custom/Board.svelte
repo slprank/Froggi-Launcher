@@ -7,7 +7,7 @@
 	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
 	import { SceneBackground, Transition } from '$lib/types/enum';
-	import BoardContainer from './edit/BoardContainer.svelte';
+	import BoardContainer from './BoardContainer.svelte';
 
 	export let height: number | undefined = undefined;
 	export let preview: boolean = true;
@@ -41,22 +41,21 @@
 			case Transition.None:
 				return;
 			case Transition.Fade:
-				return fade(node, { duration: curScene.durationBackground });
-			case Transition.Fly:
-				return fly(node, { duration: curScene.durationBackground, y: -50 });
+				return fade(node, { duration: curScene.durationBackground ?? 250 });
 			case Transition.Scale:
-				return scale(node, { duration: curScene.durationBackground });
+				return scale(node, { duration: curScene.durationBackground ?? 250 });
+			case Transition.Fly:
+				return fly(node, { duration: curScene.durationBackground ?? 250, y: -50 });
 			case Transition.Slide:
-				return slide(node, { duration: curScene.durationBackground });
+				return slide(node, { duration: curScene.durationBackground ?? 250 });
 			case Transition.Blur:
-				return blur(node, { duration: curScene.durationBackground });
+				return blur(node, { duration: curScene.durationBackground ?? 250 });
 		}
 	};
 
 	let innerHeight: number;
 
-	// TODO: Include color, image and opacity
-	// TODO: Display waiting dolphin component
+	// TODO: Fix animation on other scenes
 </script>
 
 <svelte:window bind:innerHeight />

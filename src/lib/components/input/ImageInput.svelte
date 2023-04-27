@@ -9,18 +9,22 @@
 			image = `${e.target!.result}`;
 		};
 	};
+	export let label: string | undefined;
 	export let image: string | undefined;
 </script>
 
-<div class="flex flex-col items-center my-2">
-	<img
-		class="upload w-10 h-10 m-0 cursor-pointer hover:scale-110 duration-300 invert"
-		src="https://static.thenounproject.com/png/625182-200.png"
-		alt=""
+{#if label}
+	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
+{/if}
+<div class="flex flex-col items-center">
+	<button
+		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-full px-2 xl:text-xl border  rounded`}
 		on:click={() => {
 			fileinput.click();
 		}}
-	/>
+	>
+		Upload
+	</button>
 	<input
 		style="display:none"
 		type="file"

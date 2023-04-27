@@ -8,17 +8,19 @@
 </script>
 
 <div
-	class="w-full h-full bg-cover bg-center absolute z-0"
+	class={`w-full h-full bg-center absolute z-0`}
 	style={`
 				${scene.background === SceneBackground.Color ? `background: ${scene.backgroundColor};` : ''};
 				${
 					scene.background === SceneBackground.Image
-						? `background-image: url('/image/backgrounds/${scene.backgroundImage}');`
+						? `background-image: url('/image/backgrounds/${scene.backgroundImage.src}');
+						background-size: ${scene.backgroundImage.objectFit ?? 'cover'};`
 						: ''
 				}
 				${
 					scene.background === SceneBackground.ImageCustom
-						? `background-image: url('${scene.backgroundCustomImage}');`
+						? `background-image: url('${scene.backgroundCustomImage.src}'); 
+						background-size: ${scene.backgroundCustomImage.objectFit ?? 'cover'};`
 						: ''
 				}
 				${
@@ -26,7 +28,8 @@
 						? `background-image: url('/image/backgrounds/8.png');`
 						: ''
 				}
-				${scene.opacity !== undefined ? `opacity: ${scene.opacity};` : ''}`}
+				${scene.opacity !== undefined ? `opacity: ${scene.opacity};` : ''}
+				background-repeat: no-repeat;`}
 >
 	<slot />
 </div>

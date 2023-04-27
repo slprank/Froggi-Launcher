@@ -101,7 +101,7 @@
 							{#if overlay[$statsScene].background === SceneBackground.Image}
 								<div class="w-24">
 									<Select
-										bind:selected={overlay[$statsScene].backgroundImage}
+										bind:selected={overlay[$statsScene].backgroundImage.src}
 										label="Image"
 									>
 										{#each imageOptions as image, i}
@@ -115,8 +115,19 @@
 							{#if overlay[$statsScene].background === SceneBackground.ImageCustom}
 								<div class="w-24">
 									<ImageInput
-										bind:image={overlay[$statsScene].backgroundCustomImage}
+										bind:image={overlay[$statsScene].backgroundCustomImage.src}
+										label="Upload"
 									/>
+								</div>
+								<div class="w-24">
+									<Select
+										bind:selected={overlay[$statsScene].backgroundCustomImage
+											.objectFit}
+										label={'Object fit'}
+									>
+										<option selected value="cover">Cover</option>
+										<option value="contain">Contain</option>
+									</Select>
 								</div>
 							{/if}
 							{#if overlay[$statsScene].background === SceneBackground.Color}
@@ -186,7 +197,7 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].transition !== Transition.None}
+							{#if overlay[$statsScene].transitionBackground !== Transition.None}
 								<div class="w-24">
 									<NumberInput
 										bind:value={overlay[$statsScene].durationBackground}
@@ -212,7 +223,7 @@
 				</div>
 				<div class="w-full h-full col-span-1 flex justify-center items-center">
 					<div
-						class="bg-cover bg-center aspect-video w-[80%] border"
+						class="bg-center aspect-video w-[80%] border"
 						style={`
 						${
 							previewBackgroundType === SceneBackground.Color
@@ -221,12 +232,16 @@
 						}
 						${
 							previewBackgroundType === SceneBackground.Image
-								? `background-image: url('/image/backgrounds/${overlay[$statsScene].backgroundImage}');`
+								? `background-image: url('/image/backgrounds/${
+										overlay[$statsScene].backgroundImage.src
+								  }');
+									background-size: ${overlay[$statsScene].backgroundImage.objectFit ?? 'cover'};`
 								: ''
 						}
 						${
 							previewBackgroundType === SceneBackground.ImageCustom
-								? `background-image: url('${overlay[$statsScene].backgroundCustomImage}');`
+								? `background-image: url('${overlay[$statsScene].backgroundCustomImage.src}');
+									background-size: ${overlay[$statsScene].backgroundCustomImage.objectFit};`
 								: ''
 						}
 						${
@@ -234,7 +249,8 @@
 								? `background-image: url('/image/stages/8.png');`
 								: ''
 						}
-						${overlay[$statsScene].opacity !== undefined ? `opacity: ${overlay[$statsScene].opacity};` : ''}`}
+						${overlay[$statsScene].opacity !== undefined ? `opacity: ${overlay[$statsScene].opacity};` : ''}
+						background-repeat: no-repeat;`}
 					/>
 				</div>
 			</div>

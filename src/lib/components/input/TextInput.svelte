@@ -8,8 +8,9 @@
 {#if label}
 	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
 {/if}
-<div class="h-10 flex items-center" on:click={() => (autofocus = autoFocusValue)}>
+<div class="h-10 flex items-center">
 	<input
+		on:focus={() => (autofocus = autoFocusValue)}
 		autofocus={!!autofocus && autofocus === autoFocusValue}
 		type="text"
 		class="w-full h-full pl-2 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700"

@@ -5,7 +5,7 @@
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
-	import BoardContainer from './BoardContainer.svelte';
+	import BoardContainer from '../BoardContainer.svelte';
 
 	const overlayId = parseInt($page.params.overlay);
 
