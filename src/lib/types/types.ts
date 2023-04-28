@@ -22,10 +22,11 @@ export interface Obs {
 }
 
 export interface Overlay {
+	activeScenes: LiveStatsScene[];
+	default: LiveStatsScene;
+	description: string;
 	id: number;
 	title: string;
-	description: string;
-	default: LiveStatsScene;
 	[LiveStatsScene.WaitingForDolphin]: Scene;
 	[LiveStatsScene.PreGame]: Scene;
 	[LiveStatsScene.InGame]: Scene;
@@ -34,16 +35,16 @@ export interface Overlay {
 }
 
 export interface Scene {
-	background: SceneBackground;
 	backgroundColor: string | undefined;
-	backgroundImage: Image;
 	backgroundCustomImage: Image;
-	duration: number;
-	durationBackground: number;
+	backgroundDuration: number;
+	backgroundImage: Image;
+	backgroundTransition: Transition;
+	backgroundType: SceneBackground;
+	backgroundOpacity: number;
+	elementDuration: number;
+	elementTransition: Transition;
 	layers: GridContentItem[][];
-	opacity: number;
-	transition: Transition;
-	transitionBackground: Transition;
 }
 
 export interface GridContentItem {

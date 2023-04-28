@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Select from '$lib/components/Select.svelte';
+	import Select from '$lib/components/input/Select.svelte';
 	import type { Class, Css, ElementPayload } from '$lib/types/types';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
@@ -182,8 +182,8 @@
 			<div class="w-36 h-24">
 				<h1 class="text-gray-500 text-sm font-medium text-shadow">Fit</h1>
 				<Select bind:selected={payload.image.objectFit}>
-					<option selected value="bg-cover">Cover</option>
-					<option value="bg-contain">Contain</option>
+					<option selected value="contain">Contain</option>
+					<option value="cover">Cover</option>
 				</Select>
 			</div>
 		</div>

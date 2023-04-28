@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/types/enum';
-	import Select from '$lib/components/Select.svelte';
+	import Select from '$lib/components/input/Select.svelte';
 
 	export let selectedElementId: number;
 	export let label: string | undefined = undefined;
@@ -14,6 +14,10 @@
 		{
 			name: 'Custom Box',
 			value: CustomElement.CustomBox,
+		},
+		{
+			name: 'Custom Image',
+			value: CustomElement.CustomImage,
 		},
 		{
 			name: 'Player1 Tag',

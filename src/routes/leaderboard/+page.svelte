@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LeaderboardRow from '$lib/components/leaderboard/LeaderboardRow.svelte';
-	import MultiSelect from '$lib/components/leaderboard/MultiSelect.svelte';
+	import MultiSelect from '$lib/components/input/MultiSelect.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { eventEmitter, isMobile } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -33,7 +33,7 @@
 		</div>
 		<div class="w-full h-16 flex" in:fly={{ y: 100, duration: 1500, delay: 150 }}>
 			<div class="w-32 mr-2">
-				<MultiSelect bind:value={selectedRegions} placeholder="Regions">
+				<MultiSelect bind:value={selectedRegions} label="Regions">
 					<option value={'NA'}>North America</option>
 					<option value={'EU'}>Europe</option>
 					<option value={'Other'}>Other</option>

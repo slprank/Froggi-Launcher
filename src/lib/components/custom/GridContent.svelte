@@ -101,10 +101,9 @@
 				}; `}
 			>
 				<img
-					class="w-full h-full object-contain"
-					style={`${
-						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
-					};`}
+					class="w-full h-full"
+					style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 					src={dataItem?.data.image.src}
 					alt="custom"
 				/>

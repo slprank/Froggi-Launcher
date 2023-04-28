@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import CharacterIcon from './CharacterIcon.svelte';
+	import CharacterIcon from '../leaderboard/CharacterIcon.svelte';
 	export let id = '';
-	export let value = [];
+	export let value: any[];
 	export let readonly = false;
-	export let placeholder = '';
+	export let label: string | undefined = undefined;
 	export let isCharacter = false;
 
 	// TODO: Display selected content in dropdown - https://svelte.dev/repl/c7094fb1004b440482d2a88f4d1d7ef5?version=3.14.0
@@ -112,19 +112,21 @@
 	}
 </script>
 
-<div class="multiselect h-8 w-full">
+<div class="multiselect h-10 w-full">
 	<div class="tokens" class:showOptions on:click={handleTokenClick}>
 		<div class="w-12 min-w-12 flex flex-1 items-center">
 			{#if !readonly}
 				<div class="w-full text-white">
-					<label
-						class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-						for="grid-first-name"
-					>
-						<h1 class="text-gray-500 text-shadow text-sm">
-							{placeholder}
-						</h1>
-					</label>
+					{#if label}
+						<label
+							class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							for="grid-first-name"
+						>
+							<h1 class="text-gray-500 text-shadow text-sm">
+								{label}
+							</h1>
+						</label>
+					{/if}
 					<input
 						class="bg-black bg-opacity-75 text-white text-md rounded-md border-b-0"
 						{id}

@@ -4,7 +4,7 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
-	import Select from '$lib/components/Select.svelte';
+	import Select from '$lib/components/input/Select.svelte';
 	import { generateNewItem, getNewOverlay } from './CreateOverlay.svelte';
 	import Preview from './Preview.svelte';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';

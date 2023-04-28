@@ -4,7 +4,7 @@
 	import type { Overlay } from '$lib/types/types';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { getContext } from 'svelte';
-	import Select from '$lib/components/Select.svelte';
+	import Select from '$lib/components/input/Select.svelte';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import TextInput from '$lib/components/input/TextInput.svelte';
@@ -17,7 +17,7 @@
 	export let open: boolean;
 	export let overlay: Overlay;
 
-	$: previewBackgroundType = overlay[$statsScene].background;
+	$: previewBackgroundType = overlay[$statsScene].backgroundType;
 
 	let imageOptions: string[] = [];
 
@@ -35,12 +35,6 @@
 
 	getImageOptions();
 
-	// TODO: Update scene name
-	// TODO: Update scene background
-	// TODO: Update scene background opacity
-
-	// TODO: Update
-
 	let autofocus: number = 0;
 
 	function clear() {
@@ -53,8 +47,8 @@
 		open = false;
 	}
 
-	// TODO: Add image upload
-	// TODO: Add preview
+	let test = overlay.activeScenes;
+	console.log('wha', overlay.activeScenes);
 </script>
 
 <Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={clear}>
@@ -77,14 +71,23 @@
 								/>
 							</div>
 						</div>
-						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
+						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
+						<div class="w-28">
+							<Select bind:selected={overlay.default} label="Default scene">
+								<option value={LiveStatsScene.WaitingForDolphin}>Waiting</option>
+								<option selected value={LiveStatsScene.PreGame}>Pre Game</option>
+								<option value={LiveStatsScene.InGame}>In Game</option>
+								<option value={LiveStatsScene.PostGame}>Post Game</option>
+								<option value={LiveStatsScene.RankChange}>Rank Change</option>
+							</Select>
+						</div>
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Change scene</h1>
-						<SceneSelect />
+						<SceneSelect bind:selected={test} />
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
-									bind:selected={overlay[$statsScene].background}
+									bind:selected={overlay[$statsScene].backgroundType}
 									label="Type"
 								>
 									<option value={SceneBackground.None}>None</option>
@@ -98,7 +101,7 @@
 									{/if}
 								</Select>
 							</div>
-							{#if overlay[$statsScene].background === SceneBackground.Image}
+							{#if overlay[$statsScene].backgroundType === SceneBackground.Image}
 								<div class="w-24">
 									<Select
 										bind:selected={overlay[$statsScene].backgroundImage.src}
@@ -112,7 +115,7 @@
 									</Select>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].background === SceneBackground.ImageCustom}
+							{#if overlay[$statsScene].backgroundType === SceneBackground.ImageCustom}
 								<div class="w-24">
 									<ImageInput
 										bind:image={overlay[$statsScene].backgroundCustomImage.src}
@@ -130,7 +133,7 @@
 									</Select>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].background === SceneBackground.Color}
+							{#if overlay[$statsScene].backgroundType === SceneBackground.Color}
 								<div class="w-24">
 									<ColorInput
 										bind:value={overlay[$statsScene].backgroundColor}
@@ -138,10 +141,10 @@
 									/>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].background !== SceneBackground.None}
+							{#if overlay[$statsScene].backgroundType !== SceneBackground.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].opacity}
+										bind:value={overlay[$statsScene].backgroundOpacity}
 										label="Opacity"
 										max={1}
 										bind:autofocus
@@ -156,7 +159,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
-									bind:selected={overlay[$statsScene].transition}
+									bind:selected={overlay[$statsScene].elementTransition}
 									label="Type"
 								>
 									<option value={Transition.None}>None</option>
@@ -167,10 +170,10 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].transition !== Transition.None}
+							{#if overlay[$statsScene].elementTransition !== Transition.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].duration}
+										bind:value={overlay[$statsScene].elementDuration}
 										label="Duration - ms"
 										max={1500}
 										min={0}
@@ -186,7 +189,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
-									bind:selected={overlay[$statsScene].transitionBackground}
+									bind:selected={overlay[$statsScene].backgroundTransition}
 									label="Type"
 								>
 									<option value={Transition.None}>None</option>
@@ -197,10 +200,10 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].transitionBackground !== Transition.None}
+							{#if overlay[$statsScene].backgroundTransition !== Transition.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].durationBackground}
+										bind:value={overlay[$statsScene].backgroundDuration}
 										label="Duration - ms"
 										max={1500}
 										min={0}
@@ -249,7 +252,11 @@
 								? `background-image: url('/image/stages/8.png');`
 								: ''
 						}
-						${overlay[$statsScene].opacity !== undefined ? `opacity: ${overlay[$statsScene].opacity};` : ''}
+						${
+							overlay[$statsScene].backgroundOpacity !== undefined
+								? `opacity: ${overlay[$statsScene].backgroundOpacity};`
+								: ''
+						}
 						background-repeat: no-repeat;`}
 					/>
 				</div>

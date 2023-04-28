@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Overlay } from '$lib/types/types';
-	import Select from '$lib/components/Select.svelte';
+	import Select from '$lib/components/input/Select.svelte';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import { getContext } from 'svelte';
