@@ -25,6 +25,7 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
+	import Toast from '$lib/components/notification/Toast.svelte';
 
 	let isPwaOpen = !$isPWA;
 
@@ -152,6 +153,7 @@
 {#if ready}
 	<Navbar />
 	<GlobalModal />
+	<Toast />
 	<slot />
 {/if}
 

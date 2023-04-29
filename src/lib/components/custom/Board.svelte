@@ -6,7 +6,7 @@
 	import { page } from '$app/stores';
 	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
-	import { SceneBackground, Transition } from '$lib/types/enum';
+	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import BoardContainer from './BoardContainer.svelte';
 
 	export let height: number | undefined = undefined;
@@ -15,7 +15,7 @@
 	const overlayId = parseInt($page.params.overlay);
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-	$: curScene = curOverlay[$statsScene];
+	$: curScene = getCurrentScene();
 
 	$: curScene?.layers.forEach((layer: any) => {
 		layer.forEach((item: any) => {
@@ -25,7 +25,7 @@
 	});
 
 	function updatePage() {
-		curScene = curOverlay[$statsScene];
+		curScene = getCurrentScene();
 		curScene.layers.forEach((layer: any) => {
 			layer.forEach((item: any) => {
 				item[COL].draggable = false;
@@ -34,6 +34,12 @@
 		});
 	}
 	$: $statsScene, updatePage();
+
+	function getCurrentScene() {
+		if (!curOverlay) return;
+		if (curOverlay?.activeScenes?.includes($statsScene)) return curOverlay[$statsScene];
+		return curOverlay[curOverlay?.default ?? LiveStatsScene.PreGame];
+	}
 
 	let innerHeight: number;
 

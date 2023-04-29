@@ -9,8 +9,8 @@
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import TextInput from '$lib/components/input/TextInput.svelte';
 	import SceneSelect from '../selector/SceneSelect.svelte';
-	import { fly } from 'svelte/transition';
 	import ImageInput from '$lib/components/input/ImageInput.svelte';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
 	const { updateObs, refreshOverlay } = getContext('custom-obs');
 
@@ -18,9 +18,9 @@
 	export let overlay: Overlay;
 
 	$: previewBackgroundType = overlay[$statsScene].backgroundType;
+	let tempActiveScenes = overlay.activeScenes;
 
 	let imageOptions: string[] = [];
-
 	function getImageOptions() {
 		const modules = import.meta.glob('../../../../../static/image/backgrounds/**/**.png');
 		for (let image in modules) {
@@ -28,7 +28,8 @@
 		}
 
 		imageOptions = imageOptions
-			.map((imageString) => imageString.split('/').slice(-1).pop())
+			.filter((i) => i !== undefined)
+			.map((imageString: string) => imageString.split('/').slice(-1).pop())
 			.filter((image) => image !== undefined);
 		console.log(imageOptions);
 	}
@@ -43,12 +44,23 @@
 	}
 
 	function handleUpdate() {
+		updateActiveScenes();
 		updateObs();
+		notifications.success('Overlay updated!', 3000);
 		open = false;
 	}
 
-	let test = overlay.activeScenes;
-	console.log('wha', overlay.activeScenes);
+	function updateActiveScenes() {
+		overlay.activeScenes = tempActiveScenes;
+	}
+
+	function enableDefault() {
+		console.log(overlay.default);
+		console.log(overlay.activeScenes);
+		if (overlay.activeScenes?.includes(overlay.default)) return;
+		overlay.activeScenes?.push(overlay.default);
+	}
+	$: overlay.default, enableDefault();
 </script>
 
 <Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={clear}>
@@ -72,7 +84,10 @@
 							</div>
 						</div>
 						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
-						<div class="w-28">
+						<div
+							class="w-28"
+							data-tooltip={`Selected scene will be shows instead of disabled scenes`}
+						>
 							<Select bind:selected={overlay.default} label="Default scene">
 								<option value={LiveStatsScene.WaitingForDolphin}>Waiting</option>
 								<option selected value={LiveStatsScene.PreGame}>Pre Game</option>
@@ -81,8 +96,11 @@
 								<option value={LiveStatsScene.RankChange}>Rank Change</option>
 							</Select>
 						</div>
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">Change scene</h1>
-						<SceneSelect bind:selected={test} />
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">Active scenes</h1>
+						<SceneSelect
+							bind:selected={tempActiveScenes}
+							bind:defaultValue={overlay.default}
+						/>
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
