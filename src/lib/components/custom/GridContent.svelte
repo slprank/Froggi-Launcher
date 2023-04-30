@@ -7,6 +7,7 @@
 	import { COL, ROW } from '$lib/types/const';
 
 	export let dataItem: GridContentItem | undefined = undefined;
+	export let additionalDelay: number = 0;
 	export let edit: boolean = false;
 	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
@@ -36,7 +37,9 @@
 	const animate = (node: Element) => {
 		if (!preview || edit || !dataItem) return;
 		const delay =
-			dataItem[COL]?.y + Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) ?? 0;
+			dataItem[COL]?.y +
+				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
+				additionalDelay ?? 0;
 		const y = ((dataItem[COL]?.y - ROW / 2) / ROW) * 50;
 		const x = ((dataItem[COL]?.x - COL / 2) / COL) * 50;
 		switch (transition) {

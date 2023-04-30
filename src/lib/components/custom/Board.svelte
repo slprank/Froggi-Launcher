@@ -2,7 +2,6 @@
 	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
-	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import type { Overlay, Scene } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
@@ -52,7 +51,7 @@
 		<div class="w-full h-full overflow-hidden relative">
 			<BoardContainer bind:scene={curScene} bind:preview />
 			{#each curScene?.layers ?? [] as layer, i}
-				<div class="w-full h-full z-2 absolute" in:fly={{ delay: preview ? 50 * i : 0 }}>
+				<div class="w-full h-full z-2 absolute">
 					<Grid
 						bind:items={layer}
 						rowHeight={(height ?? innerHeight) / ROW}
@@ -65,6 +64,7 @@
 							bind:preview
 							{dataItem}
 							transition={curScene?.elementTransition}
+							additionalDelay={100 * i}
 							duration={curScene?.elementDuration ?? 250}
 						/>
 					</Grid>
