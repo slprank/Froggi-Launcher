@@ -26,9 +26,10 @@
 	});
 
 	function updateScene() {
-		if (!curOverlay || !curSceneIndex) return;
+		if (!curOverlay || curSceneIndex === undefined) return;
 		curScene = curOverlay[curSceneIndex as LiveStatsScene];
 	}
+
 	$: curOverlay, updateScene();
 	function getCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
 		if (!curOverlay) return;
