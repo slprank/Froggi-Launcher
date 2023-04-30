@@ -2,6 +2,7 @@
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { notifications } from './Notifications.svelte';
+	import { isBrowser } from '$lib/utils/store.svelte';
 
 	export let themes = {
 		danger: '#E26D69',
@@ -12,24 +13,27 @@
 	};
 </script>
 
-<div class="notifications">
-	{#each $notifications as notification (notification.id)}
-		<div
-			animate:flip
-			class="toast"
-			style="background: {themes[notification.type]};"
-			transition:fly={{ y: 30 }}
-		>
-			<div class="content">{notification.message}</div>
-			{#if notification.icon}<i class={notification.icon} />{/if}
-		</div>
-	{/each}
-</div>
+{#if !$isBrowser}
+	<div class="notifications">
+		{#each $notifications as notification (notification.id)}
+			<div
+				animate:flip
+				class="toast rounded-md"
+				style="background: {themes[notification.type]};"
+				in:fly={{ y: 30 }}
+				out:fly={{ y: -30 }}
+			>
+				<div class="content">{notification.message}</div>
+				{#if notification.icon}<i class={notification.icon} />{/if}
+			</div>
+		{/each}
+	</div>
+{/if}
 
 <style>
 	.notifications {
 		position: fixed;
-		top: 10px;
+		bottom: 10px;
 		left: 0;
 		right: 0;
 		margin: 0 auto;

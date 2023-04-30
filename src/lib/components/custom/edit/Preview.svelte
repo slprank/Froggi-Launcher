@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Board from '$lib/components/custom/Board.svelte';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { urls } from '$lib/utils/store.svelte';
 	import Clipboard from 'svelte-clipboard';
 
@@ -33,7 +34,7 @@
 			text={overlayUrl}
 			let:copy
 			on:copy={() => {
-				console.log('Has Copied');
+				notifications.success('Copied to clipboard!', 2000);
 			}}
 		>
 			<button on:click={copy} class="w-5 h-5 invert transition hover:scale-110">

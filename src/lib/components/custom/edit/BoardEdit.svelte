@@ -6,6 +6,7 @@
 	import type { Overlay } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
 	import BoardContainer from '../BoardContainer.svelte';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
 	const overlayId = parseInt($page.params.overlay);
 
@@ -69,6 +70,12 @@
 			item[COL].fixed = false;
 		});
 	}
+
+	function notifyDisabledScene() {
+		if (curOverlay.activeScenes.includes($statsScene)) return;
+		notifications.warning('Selected scene is disabled', 5000);
+	}
+	$: $statsScene, notifyDisabledScene();
 
 	let innerHeight: number;
 </script>

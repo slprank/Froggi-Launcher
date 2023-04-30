@@ -37,7 +37,7 @@
 	const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 
 	// TODO: Remove object and init it from electron instead
-	const obs = writable<Obs>(getDefaultOverlays());
+	const obs = writable<Obs>();
 	const urls = writable<Url>();
 
 	export {

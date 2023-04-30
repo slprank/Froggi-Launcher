@@ -19,8 +19,6 @@
 
 	$: previewBackgroundType = overlay[$statsScene].backgroundType;
 	let tempActiveScenes = overlay.activeScenes;
-	console.log('overlay', overlay);
-	console.log('tempa', tempActiveScenes);
 
 	let imageOptions: string[] = [];
 	function getImageOptions() {
@@ -35,10 +33,7 @@
 			.filter((image) => image !== undefined);
 		console.log(imageOptions);
 	}
-
 	getImageOptions();
-
-	let autofocus: number = 0;
 
 	function clear() {
 		refreshOverlay();
@@ -61,6 +56,8 @@
 		overlay.activeScenes?.push(overlay.default);
 	}
 	$: overlay.default, enableDefault();
+
+	let autofocus: number = 0;
 </script>
 
 <Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={clear}>
@@ -86,7 +83,7 @@
 						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
 						<div
 							class="w-28"
-							data-tooltip={`Selected scene will be shows instead of disabled scenes`}
+							data-tooltip={`Selected scene will be displayed instead of disabled scenes`}
 						>
 							<Select bind:selected={overlay.default} label="Default scene">
 								<option value={LiveStatsScene.WaitingForDolphin}>Waiting</option>

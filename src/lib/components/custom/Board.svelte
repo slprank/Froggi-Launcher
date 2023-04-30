@@ -2,7 +2,7 @@
 	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
-	import { fade, fly, scale, slide, blur, draw, crossfade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import type { Overlay, Scene } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
@@ -11,12 +11,12 @@
 
 	export let height: number | undefined = undefined;
 	export let preview: boolean = true;
-	let curSceneIndex = LiveStatsScene.WaitingForDolphin;
+	let curSceneIndex: number | undefined = undefined;
 
 	const overlayId = parseInt($page.params.overlay);
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-	$: curScene = getCurrentScene($statsScene);
+	let curScene = getCurrentScene($statsScene);
 
 	$: curScene?.layers.forEach((layer: any) => {
 		layer.forEach((item: any) => {
@@ -26,22 +26,22 @@
 	});
 
 	function updateScene() {
-		curScene = curOverlay[$statsScene];
+		if (!curOverlay || !curSceneIndex) return;
+		curScene = curOverlay[curSceneIndex as LiveStatsScene];
 	}
 	$: curOverlay, updateScene();
-
 	function getCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
 		if (!curOverlay) return;
-		curSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
-			? (curSceneIndex = statsScene)
-			: (curSceneIndex = curOverlay?.default ?? LiveStatsScene.PreGame);
-		curScene = curOverlay[curSceneIndex];
+		let tempSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
+			? statsScene
+			: curOverlay?.default ?? LiveStatsScene.PreGame;
+		if (tempSceneIndex === curSceneIndex) return;
+		curSceneIndex = tempSceneIndex;
+		curScene = curOverlay[curSceneIndex as LiveStatsScene];
 	}
-	$: getCurrentScene($statsScene);
+	$: curOverlay, getCurrentScene($statsScene);
 
 	let innerHeight: number;
-
-	// TODO: Fix animation on other scenes - create below a component, render component based on value
 </script>
 
 <svelte:window bind:innerHeight />

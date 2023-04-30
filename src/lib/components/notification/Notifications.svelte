@@ -8,7 +8,7 @@
 
 		function send(message: string, type = 'default', timeout: number) {
 			_notifications.update((state) => {
-				return [...state, { id: id(), type, message, timeout }];
+				return [...state.slice(0, 0), { id: id(), type, message, timeout }];
 			});
 		}
 

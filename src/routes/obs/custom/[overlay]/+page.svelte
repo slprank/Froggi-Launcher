@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { eventEmitter, isElectron } from '$lib/utils/store.svelte';
+	import { eventEmitter, isElectron, obs } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 	import Edit from '$lib/components/custom/edit/Edit.svelte';
 	import Board from '$lib/components/custom/Board.svelte';
@@ -12,17 +12,19 @@
 
 <svelte:window bind:innerHeight />
 
-<main
-	class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
-	in:fade={{ delay: 50, duration: 150 }}
-	out:fade={{ duration: 300 }}
->
-	{#if $isElectron}
-		<Edit />
-	{:else}
-		<Board bind:height={innerHeight} />
-	{/if}
-</main>
+{#if $obs}
+	<main
+		class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
+		in:fade={{ delay: 50, duration: 150 }}
+		out:fade={{ duration: 300 }}
+	>
+		{#if $isElectron}
+			<Edit />
+		{:else}
+			<Board bind:height={innerHeight} />
+		{/if}
+	</main>
+{/if}
 
 <style>
 </style>

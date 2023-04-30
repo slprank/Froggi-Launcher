@@ -31,25 +31,25 @@
 	in:animate
 	class={`w-full h-full bg-center absolute z-0`}
 	style={`
-				${scene.backgroundType === SceneBackground.Color ? `background: ${scene.backgroundColor};` : ''};
+				${scene?.backgroundType === SceneBackground.Color ? `background: ${scene.backgroundColor};` : ''};
 				${
-					scene.backgroundType === SceneBackground.Image
+					scene?.backgroundType === SceneBackground.Image
 						? `background-image: url('/image/backgrounds/${scene.backgroundImage.src}');
 						background-size: ${scene.backgroundImage.objectFit ?? 'cover'};`
 						: ''
 				}
 				${
-					scene.backgroundType === SceneBackground.ImageCustom
+					scene?.backgroundType === SceneBackground.ImageCustom
 						? `background-image: url('${scene.backgroundCustomImage.src}'); 
 						background-size: ${scene.backgroundCustomImage.objectFit ?? 'cover'};`
 						: ''
 				}
 				${
-					scene.backgroundType === SceneBackground.ImageStage
+					scene?.backgroundType === SceneBackground.ImageStage
 						? `background-image: url('/image/backgrounds/8.png');`
 						: ''
 				}
-				${scene.backgroundOpacity !== undefined ? `opacity: ${scene.backgroundOpacity};` : ''}
+				${scene?.backgroundOpacity !== undefined ? `opacity: ${scene.backgroundOpacity};` : ''}
 				background-repeat: no-repeat;`}
 >
 	<slot />

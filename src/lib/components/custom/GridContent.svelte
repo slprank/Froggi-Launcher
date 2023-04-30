@@ -66,7 +66,7 @@
 	-->
 </svelte:head>
 
-{#key $obs || $statsScene || dataItem}
+{#key dataItem}
 	<div
 		style={`font-family: ${font}; ${dataItem?.data.css.customParent};`}
 		class={`custom-font h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
