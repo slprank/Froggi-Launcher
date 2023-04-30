@@ -54,7 +54,6 @@
 	}
 
 	function deleteElement() {
-		console.log(selectedLayer, curOverlay);
 		if (!curOverlay || selectedLayer === undefined) return;
 		curOverlay[$statsScene]?.layers[selectedLayer].splice(selectedItemIndex, 1);
 		selectedId = undefined;

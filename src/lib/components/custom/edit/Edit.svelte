@@ -24,8 +24,6 @@
 	let selectedId: string | undefined = undefined;
 	let overlay: Overlay = getCurrentOverlay();
 
-	console.log('overlay', overlay);
-
 	let isElementModalOpen = false;
 	let isSceneModalOpen = false;
 
@@ -51,6 +49,11 @@
 		let curOverlay = getCurrentOverlay();
 		return $obs.overlays.indexOf(curOverlay);
 	}
+
+	function resetSelectedLayer() {
+		selectedLayer = 0;
+	}
+	$: $statsScene, resetSelectedLayer();
 
 	function refreshOverlay() {
 		overlay = getCurrentOverlay();

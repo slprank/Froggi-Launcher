@@ -40,8 +40,8 @@
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
-		const y = ((dataItem[COL]?.y - ROW / 2) / ROW) * 50;
-		const x = ((dataItem[COL]?.x - COL / 2) / COL) * 50;
+		const y = ((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50;
+		const x = ((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50;
 		switch (transition) {
 			case Transition.None:
 				return;

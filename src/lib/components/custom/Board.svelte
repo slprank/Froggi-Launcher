@@ -28,8 +28,8 @@
 		if (!curOverlay || curSceneIndex === undefined) return;
 		curScene = curOverlay[curSceneIndex as LiveStatsScene];
 	}
-
 	$: curOverlay, updateScene();
+
 	function getCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
 		if (!curOverlay) return;
 		let tempSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
@@ -64,7 +64,7 @@
 							bind:preview
 							{dataItem}
 							transition={curScene?.elementTransition}
-							additionalDelay={100 * i}
+							additionalDelay={128 * i}
 							duration={curScene?.elementDuration ?? 250}
 						/>
 					</Grid>

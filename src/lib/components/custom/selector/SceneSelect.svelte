@@ -7,11 +7,9 @@
 	export let defaultValue: LiveStatsScene | undefined = undefined;
 
 	let tempSelected: boolean[] = [];
-	console.log('selected', selected);
 	selected?.forEach((s) => {
 		tempSelected[s] = true;
 	});
-	console.log('temp', tempSelected);
 
 	function updateSelected() {
 		if (selected === undefined) return;
