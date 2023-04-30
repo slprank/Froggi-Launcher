@@ -32,12 +32,12 @@
 		css: {} as Css,
 	};
 
-	let testItem: GridContentItem;
-	$: testItem = {
+	let demoItem: GridContentItem;
+	$: demoItem = {
 		[COL]: {},
 		elementId: selectedElementId,
 		data: payload,
-		id: 'test',
+		id: 'demo',
 	};
 
 	function handleElement() {
@@ -49,7 +49,7 @@
 		return $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	}
 
-	function getCurrentSceneIndex() {
+	function getCurrentOverlayIndex() {
 		const overlay = getCurrentOverlay();
 		return $obs.overlays.indexOf(overlay);
 	}
@@ -74,8 +74,8 @@
 
 		items = [...items, ...[newItem]];
 
-		const index = getCurrentSceneIndex();
-		$obs.overlays[index][$statsScene].layers[layer ?? 0] = items;
+		const overlayIndex = getCurrentOverlayIndex();
+		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0] = items;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 
@@ -98,8 +98,8 @@
 		items = items.filter((item) => item.id != selectedId);
 		items = [...items, ...[newItem]];
 
-		const index = getCurrentSceneIndex();
-		$obs.overlays[index][$statsScene].layers[layer ?? 0] = items;
+		const overlayIndex = getCurrentOverlayIndex();
+		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0] = items;
 
 		$eventEmitter.emit('electron', 'update-custom-components', $obs);
 		open = false;
@@ -144,7 +144,7 @@
 						out:fade={{ duration: 300 }}
 					>
 						<div class="w-full h-[50%] border">
-							<GridContent bind:testItem edit={!i} />
+							<GridContent bind:demoItem edit={!i} />
 						</div>
 					</div>
 				{/each}

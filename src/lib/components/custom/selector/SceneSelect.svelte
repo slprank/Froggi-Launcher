@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { LiveStatsScene } from '$lib/types/enum';
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 
@@ -6,9 +7,11 @@
 	export let defaultValue: LiveStatsScene | undefined = undefined;
 
 	let tempSelected: boolean[] = [];
+	console.log('selected', selected);
 	selected?.forEach((s) => {
 		tempSelected[s] = true;
 	});
+	console.log('temp', tempSelected);
 
 	function updateSelected() {
 		if (selected === undefined) return;

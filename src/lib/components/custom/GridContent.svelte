@@ -14,12 +14,12 @@
 	export let duration: number = 250;
 	export let font = '';
 
-	export let testItem: GridContentItem | undefined = undefined;
+	export let demoItem: GridContentItem | undefined = undefined;
 
-	function updateTestData() {
-		if (testItem) dataItem = testItem;
+	function updateDemoData() {
+		if (demoItem) dataItem = demoItem;
 	}
-	$: testItem, updateTestData();
+	$: demoItem, updateDemoData();
 
 	$: classValue = Object.entries(dataItem?.data.class ?? {})
 		.map(([_, value]) => `${value}`)

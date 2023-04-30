@@ -4,18 +4,19 @@
 	import GridContent from './GridContent.svelte';
 	import { fade, fly, scale, slide, blur, draw, crossfade } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import type { Overlay } from '$lib/types/types';
+	import type { Overlay, Scene } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
 	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import BoardContainer from './BoardContainer.svelte';
 
 	export let height: number | undefined = undefined;
 	export let preview: boolean = true;
+	let curSceneIndex = LiveStatsScene.WaitingForDolphin;
 
 	const overlayId = parseInt($page.params.overlay);
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-	$: curScene = getCurrentScene();
+	$: curScene = getCurrentScene($statsScene);
 
 	$: curScene?.layers.forEach((layer: any) => {
 		layer.forEach((item: any) => {
@@ -24,22 +25,19 @@
 		});
 	});
 
-	function updatePage() {
-		curScene = getCurrentScene();
-		curScene.layers.forEach((layer: any) => {
-			layer.forEach((item: any) => {
-				item[COL].draggable = false;
-				item[COL].resizable = false;
-			});
-		});
+	function updateScene() {
+		curScene = curOverlay[$statsScene];
 	}
-	$: $statsScene, updatePage();
+	$: curOverlay, updateScene();
 
-	function getCurrentScene() {
+	function getCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
 		if (!curOverlay) return;
-		if (curOverlay?.activeScenes?.includes($statsScene)) return curOverlay[$statsScene];
-		return curOverlay[curOverlay?.default ?? LiveStatsScene.PreGame];
+		curSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
+			? (curSceneIndex = statsScene)
+			: (curSceneIndex = curOverlay?.default ?? LiveStatsScene.PreGame);
+		curScene = curOverlay[curSceneIndex];
 	}
+	$: getCurrentScene($statsScene);
 
 	let innerHeight: number;
 
@@ -48,7 +46,7 @@
 
 <svelte:window bind:innerHeight />
 
-{#key $statsScene}
+{#key curSceneIndex}
 	{#key height}
 		<div class="w-full h-full overflow-hidden relative">
 			<BoardContainer bind:scene={curScene} bind:preview />
@@ -65,8 +63,8 @@
 						<GridContent
 							bind:preview
 							{dataItem}
-							transition={curScene.elementTransition}
-							duration={curScene.elementDuration ?? 250}
+							transition={curScene?.elementTransition}
+							duration={curScene?.elementDuration ?? 250}
 						/>
 					</Grid>
 				</div>

@@ -7,7 +7,7 @@
 	export let preview: boolean = false;
 
 	const animate = (node: Element) => {
-		if (!preview) return;
+		if (!preview || !scene) return;
 		switch (scene.backgroundTransition) {
 			case Transition.None:
 				return;

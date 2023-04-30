@@ -19,6 +19,8 @@
 
 	$: previewBackgroundType = overlay[$statsScene].backgroundType;
 	let tempActiveScenes = overlay.activeScenes;
+	console.log('overlay', overlay);
+	console.log('tempa', tempActiveScenes);
 
 	let imageOptions: string[] = [];
 	function getImageOptions() {
@@ -55,8 +57,6 @@
 	}
 
 	function enableDefault() {
-		console.log(overlay.default);
-		console.log(overlay.activeScenes);
 		if (overlay.activeScenes?.includes(overlay.default)) return;
 		overlay.activeScenes?.push(overlay.default);
 	}
