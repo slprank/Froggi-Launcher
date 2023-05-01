@@ -119,14 +119,18 @@
 			console.log(url);
 			urls.set(url);
 		});
+
 		$eventEmitter.on('obs_custom_overlay', (value: Overlay) => {
-			obs.update((obs) => {
-				const overlayIndex = obs.overlays.findIndex((overlay) => (overlay.id = value.id));
-				if (overlayIndex === undefined || overlayIndex === -1) return obs;
-				obs.overlays[overlayIndex] = value;
-				return obs;
-			});
+			console.log(value.id);
+			console.log($obs.overlays.map((o) => o.id));
+			const overlayIndex = $obs.overlays.findIndex((overlay) => overlay.id == value.id);
+			overlayIndex === undefined || overlayIndex === -1
+				? $obs.overlays.push(value)
+				: ($obs.overlays[overlayIndex] = value);
+
+			obs.set($obs);
 		});
+
 		$eventEmitter.on('obs_custom', (value: any) => {
 			console.log('obs', value);
 			obs.set(value);

@@ -167,20 +167,28 @@ try {
 					electronStore.getCustomOverlayById(overlay.id),
 				);
 			});
+
+			eventEmitter.on('delete-custom-overlay', async (overlayId) => {
+				electronStore.deleteCustomOverlay(overlayId);
+				messageHandler.sendMessage('obs_custom', electronStore.getCustom());
+			});
+
 			eventEmitter.on('update-live-scene', async (value) => {
 				electronStore.setStatsScene(value);
 				messageHandler.sendMessage('live_stats_scene', electronStore.getStatsScene());
 			});
+
 			eventEmitter.on('download-overlay', async (overlayId) => {
-				console.log(overlayId);
 				const overlay = electronStore.getCustomOverlayById(overlayId);
 				if (!overlay) return;
 				const { canceled, filePath } = await dialog.showSaveDialog(mainWindow, {
 					filters: [{ name: 'json', extensions: ['json'] }],
+					nameFieldLabel: overlay.title,
 				});
 				if (canceled) return;
 				fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
 			});
+
 			eventEmitter.on('upload-overlay', async () => {
 				const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
 					properties: ['openFile'],

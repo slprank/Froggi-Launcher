@@ -121,9 +121,6 @@
 	function downloadOverlay() {
 		$eventEmitter.emit('electron', 'download-overlay', overlayId);
 	}
-	function uploadOverlay() {
-		$eventEmitter.emit('electron', 'upload-overlay');
-	}
 
 	// TODO: Display overlay name
 	// TODO: If overlay doesn't exist - redirect
@@ -170,12 +167,6 @@
 						on:click={downloadOverlay}
 					>
 						Share
-					</button>
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
-						on:click={uploadOverlay}
-					>
-						Upload
 					</button>
 				</div>
 				<LayerEdit bind:overlay bind:selectedLayer />

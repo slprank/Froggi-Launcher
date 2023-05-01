@@ -50,9 +50,7 @@
 			return;
 		curOverlay[$statsScene].layers[layer] = tempItems;
 
-		let overlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-
-		$eventEmitter.emit('electron', 'update-custom-overlay', overlay);
+		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
 		tempItems = undefined;
 		floatElements();
 	}

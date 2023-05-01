@@ -8,7 +8,7 @@ class ElectronStore {
 		this.log = log;
 	}
 
-	newId = () => '_' + Math.random().toString(36).slice(-9);
+	newId = () => `${Math.random().toString(36).slice(-8)}`;
 
 	dateTimeNow() {
 		var utcSeconds = Date.now() / 1000;
@@ -58,7 +58,7 @@ class ElectronStore {
 
 	getCustomOverlayIndex(overlayId) {
 		const overlays = this.getCustom().overlays;
-		return overlays.findIndex((overlay) => (overlay.id = overlayId));
+		return overlays.findIndex((overlay) => overlay.id == overlayId);
 	}
 
 	updateCustomOverlay(overlay) {
@@ -68,7 +68,7 @@ class ElectronStore {
 		overlayIndex === undefined || overlayIndex === -1
 			? custom.overlays.push(overlay)
 			: (custom.overlays[overlayIndex] = overlay);
-		this.setCustomOverlay(custom);
+		this.setCustom(custom);
 	}
 
 	uploadCustomOverlay(overlay) {
@@ -76,7 +76,14 @@ class ElectronStore {
 		let custom = this.getCustom();
 		overlay.id = this.newId();
 		custom.overlays.push(overlay);
-		this.setCustomOverlay(custom);
+		this.setCustom(custom);
+	}
+
+	deleteCustomOverlay(overlayId) {
+		if (!overlayId) return;
+		let custom = this.getCustom();
+		custom.overlays = custom.overlays.filter((overlay) => overlay.id !== overlayId);
+		this.setCustom(custom);
 	}
 
 	// STATUS

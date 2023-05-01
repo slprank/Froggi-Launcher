@@ -4,9 +4,6 @@
 	import Edit from '$lib/components/custom/edit/Edit.svelte';
 	import Board from '$lib/components/custom/Board.svelte';
 
-	// TODO: Use the scene Id to display custom scene component
-	// Electron should display a preview with URL to OBS
-	// Everything else should fullscreen the component
 	let innerHeight: number;
 </script>
 

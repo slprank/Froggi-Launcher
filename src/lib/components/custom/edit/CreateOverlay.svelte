@@ -5,8 +5,9 @@
 	import { COL, MIN } from '$lib/types/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
+
 	function newId() {
-		return '_' + Math.random().toString(36);
+		return `${Math.random().toString(36).slice(-8)}`;
 	}
 
 	// TODO: Add complete overlays

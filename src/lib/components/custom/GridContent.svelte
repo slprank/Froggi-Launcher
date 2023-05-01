@@ -71,7 +71,9 @@
 
 {#key dataItem}
 	<div
-		style={`font-family: ${font}; ${dataItem?.data.css.customParent};`}
+		style={`font-family: ${font}; ${
+			dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''
+		};`}
 		class={`custom-font h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 			selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 		} bg-opacity-50`}
