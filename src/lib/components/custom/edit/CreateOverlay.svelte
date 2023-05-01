@@ -5,7 +5,9 @@
 	import { COL, MIN } from '$lib/types/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	const id = () => '_' + Math.random().toString(36);
+	function newId() {
+		return '_' + Math.random().toString(36);
+	}
 
 	// TODO: Add complete overlays
 	// TODO: Add complete scenes
@@ -23,7 +25,7 @@
 					],
 					default: LiveStatsScene.PreGame,
 					description: 'main description',
-					id: 1,
+					id: newId(),
 					title: 'main',
 					[LiveStatsScene.WaitingForDolphin]: {
 						backgroundColor: 'white',
@@ -111,7 +113,7 @@
 		};
 	}
 
-	export function getNewOverlay(newId: number): Overlay {
+	export function getNewOverlay(): Overlay {
 		return {
 			activeScenes: [
 				LiveStatsScene.WaitingForDolphin,
@@ -120,7 +122,7 @@
 				LiveStatsScene.PostGame,
 				LiveStatsScene.RankChange,
 			],
-			id: newId,
+			id: newId(),
 			title: 'New Title',
 			description: 'Scene Description',
 			default: LiveStatsScene.PreGame,
@@ -217,7 +219,7 @@
 				min: { w: MIN, h: MIN },
 				max: { y: COL - MIN, h: COL + 1 },
 			}),
-			id: id(),
+			id: newId(),
 			elementId: elementId,
 			data: data,
 		};

@@ -16,13 +16,15 @@
 	import SceneEditModal from './SceneEditModal.svelte';
 
 	setContext('layer', { newLayer, moveLayerDown, moveLayerUp, deleteLayer });
-	setContext('custom-obs', { updateObs, refreshOverlay });
+	setContext('custom-obs', { updateOverlay, refreshOverlay });
 
-	const overlayId = parseInt($page.params.overlay);
+	const overlayId = $page.params.overlay;
 
 	let selectedLayer: number | undefined = 0;
 	let selectedId: string | undefined = undefined;
 	let overlay: Overlay = getCurrentOverlay();
+
+	$: console.log('test', overlay);
 
 	let isElementModalOpen = false;
 	let isSceneModalOpen = false;
@@ -32,10 +34,8 @@
 
 	function createNewOverlay() {
 		if (overlay) return;
-		const newId = Math.max(...$obs.overlays.map((s) => s.id)) ?? 1;
-		$obs.overlays.push(getNewOverlay(newId));
-		// $obs.overlays[0] = getNewOverlay(1); // Remove this
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+		// $obs.overlays[0] = getNewOverlay(); // Remove this
+		$eventEmitter.emit('electron', 'update-custom-overlay', getNewOverlay());
 	}
 	createNewOverlay();
 
@@ -60,8 +60,8 @@
 	}
 	$: $obs, isElementModalOpen, refreshOverlay();
 
-	function updateObs() {
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+	function updateOverlay() {
+		$eventEmitter.emit('electron', 'update-custom-overlay', overlay);
 	}
 
 	function newLayer() {
@@ -71,7 +71,7 @@
 		const index = getCurrentOverlayIndex();
 		$obs.overlays[index] = tempOverlay;
 		selectedLayer = tempOverlay[$statsScene].layers.length - 1;
-		updateObs();
+		updateOverlay();
 	}
 
 	function moveLayerUp() {
@@ -91,7 +91,7 @@
 		const index = getCurrentOverlayIndex();
 		$obs.overlays[index] = tempOverlay;
 		selectedLayer += 1;
-		updateObs();
+		updateOverlay();
 	}
 
 	function moveLayerDown() {
@@ -107,7 +107,7 @@
 		const index = getCurrentOverlayIndex();
 		$obs.overlays[index] = tempOverlay;
 		selectedLayer -= 1;
-		updateObs();
+		updateOverlay();
 	}
 
 	function deleteLayer() {
@@ -117,7 +117,14 @@
 		const index = getCurrentOverlayIndex();
 		$obs.overlays[index] = tempOverlay;
 		selectedLayer = 0;
-		updateObs();
+		updateOverlay();
+	}
+
+	function downloadOverlay() {
+		$eventEmitter.emit('electron', 'download-overlay', overlayId);
+	}
+	function uploadOverlay() {
+		$eventEmitter.emit('electron', 'upload-overlay');
 	}
 
 	// TODO: Display overlay name
@@ -151,14 +158,28 @@
 		>
 			<div class="grid gap-2">
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
-					on:click={() => {
-						isSceneModalOpen = true;
-					}}
-				>
-					Edit
-				</button>
+				<div class="flex gap-2">
+					<button
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
+						on:click={() => {
+							isSceneModalOpen = true;
+						}}
+					>
+						Edit
+					</button>
+					<button
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
+						on:click={downloadOverlay}
+					>
+						Share
+					</button>
+					<button
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
+						on:click={uploadOverlay}
+					>
+						Upload
+					</button>
+				</div>
 				<LayerEdit bind:overlay bind:selectedLayer />
 				<SelectedEditor bind:selectedId bind:selectedLayer />
 			</div>

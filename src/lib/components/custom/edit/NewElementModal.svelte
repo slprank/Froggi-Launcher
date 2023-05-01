@@ -18,7 +18,7 @@
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/types/const';
 
-	const overlayId = parseInt($page.params.overlay);
+	const overlayId = $page.params.overlay;
 
 	export let open: boolean;
 	export let layer: number | undefined;
@@ -45,7 +45,13 @@
 		if (!selectedId) add();
 	}
 
+	function updateOverlay() {
+		$eventEmitter.emit('electron', 'update-custom-overlay', getCurrentOverlay());
+	}
+
 	function getCurrentOverlay() {
+		console.log($obs);
+		console.log($obs);
 		return $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	}
 
@@ -56,6 +62,7 @@
 
 	function getCurrentItems() {
 		let curOverlay = getCurrentOverlay();
+		console.log('cur', curOverlay);
 		return curOverlay[$statsScene].layers[layer ?? 0] ?? [];
 	}
 
@@ -77,7 +84,7 @@
 		const overlayIndex = getCurrentOverlayIndex();
 		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0] = items;
 
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+		updateOverlay();
 
 		open = false;
 	}
@@ -101,7 +108,7 @@
 		const overlayIndex = getCurrentOverlayIndex();
 		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0] = items;
 
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+		updateOverlay();
 		open = false;
 	}
 

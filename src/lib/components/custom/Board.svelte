@@ -12,7 +12,7 @@
 	export let preview: boolean = true;
 	let curSceneIndex: number | undefined = undefined;
 
-	const overlayId = parseInt($page.params.overlay);
+	const overlayId = $page.params.overlay;
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let curScene = getCurrentScene($statsScene);

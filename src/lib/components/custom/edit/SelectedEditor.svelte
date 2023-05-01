@@ -7,7 +7,7 @@
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 
-	const overlayId = parseInt($page.params.overlay);
+	const overlayId = $page.params.overlay;
 
 	export let selectedId: string | undefined;
 	export let selectedLayer: number | undefined;
@@ -60,15 +60,12 @@
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
-		updateObs();
+		updateOverlay();
 	}
 
-	function updateObs() {
+	function updateOverlay() {
 		if (!curOverlay) return;
-		const index = getCurrentOverlayIndex();
-		$obs.overlays[index] = curOverlay;
-
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
 	}
 
 	function updateSelectItem() {
@@ -77,7 +74,7 @@
 		handleOverflow();
 
 		curOverlay[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
-		updateObs();
+		updateOverlay();
 	}
 	$: selectedItem, updateSelectItem();
 

@@ -8,7 +8,7 @@
 	import BoardContainer from '../BoardContainer.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
-	const overlayId = parseInt($page.params.overlay);
+	const overlayId = $page.params.overlay;
 
 	export let height: number | undefined = undefined;
 	export let layer: number | undefined = undefined;
@@ -45,16 +45,14 @@
 	}
 	$: $statsScene || layer || $obs, updateLiveScene();
 
-	function updateObs() {
+	function updateOverlay() {
 		if (!tempItems || layer === undefined || curOverlay[$statsScene].layers[layer] == tempItems)
 			return;
 		curOverlay[$statsScene].layers[layer] = tempItems;
 
 		let overlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-		const index = $obs.overlays.indexOf(overlay);
-		$obs.overlays[index] = curOverlay;
 
-		$eventEmitter.emit('electron', 'update-custom-components', $obs);
+		$eventEmitter.emit('electron', 'update-custom-overlay', overlay);
 		tempItems = undefined;
 		floatElements();
 	}
@@ -80,7 +78,7 @@
 	let innerHeight: number;
 </script>
 
-<svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateObs} />
+<svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />
 
 {#key height}
 	{#key $statsScene}

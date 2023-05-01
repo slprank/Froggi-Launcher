@@ -12,7 +12,7 @@
 	import ImageInput from '$lib/components/input/ImageInput.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
-	const { updateObs, refreshOverlay } = getContext('custom-obs');
+	const { updateOverlay, refreshOverlay } = getContext('custom-obs');
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -42,7 +42,7 @@
 
 	function handleUpdate() {
 		updateActiveScenes();
-		updateObs();
+		updateOverlay();
 		notifications.success('Overlay updated!', 3000);
 		open = false;
 	}

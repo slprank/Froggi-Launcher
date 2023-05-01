@@ -159,19 +159,38 @@ try {
 
 			const test = new Test(messageHandler, eventEmitter, log, electronStore, api);
 
-			// TODO: Remove this:
-			eventEmitter.on('update-custom-components', async (value) => {
-				electronStore.setCustomComponents(value);
-				messageHandler.sendMessage(
-					'obs_custom_components',
-					electronStore.getCustomComponents(),
-				);
+			// TODO: Move this:
+			eventEmitter.on('update-custom-overlay', async (overlay) => {
+				console.log(overlay);
+				electronStore.updateCustomOverlay(overlay);
+				messageHandler.sendMessage('obs_custom_overlay', electronStore.getCustomOverlay());
 			});
 			eventEmitter.on('update-live-scene', async (value) => {
 				electronStore.setStatsScene(value);
 				messageHandler.sendMessage('live_stats_scene', electronStore.getStatsScene());
 			});
-			// HERE
+			eventEmitter.on('download-overlay', async (overlayId) => {
+				console.log(overlayId);
+				const overlay = electronStore.getCustomOverlayById(overlayId);
+				if (!overlay) return;
+				const { canceled, filePath } = await dialog.showSaveDialog(mainWindow, {
+					filters: [{ name: 'json', extensions: ['json'] }],
+				});
+				if (canceled) return;
+				fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
+			});
+			eventEmitter.on('upload-overlay', async () => {
+				const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+					properties: ['openFile'],
+					filters: [{ name: 'json', extensions: ['json'] }],
+				});
+				if (canceled) return;
+				const overlay = await fs.readFileSync(filePaths[0], 'utf8', (err) => {
+					console.log(err);
+				});
+				electronStore.uploadCustomOverlay(JSON.parse(overlay));
+			});
+			// TODO: To this
 
 			messageHandler.initHtml();
 			messageHandler.initWebSocket();

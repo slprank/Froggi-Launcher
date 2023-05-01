@@ -5,7 +5,7 @@
 	import { urls } from '$lib/utils/store.svelte';
 	import Clipboard from 'svelte-clipboard';
 
-	const overlayId = parseInt($page.params.overlay);
+	const overlayId = $page.params.overlay;
 	export let boardHeight: number;
 
 	$: overlayUrl = `${$urls?.local}/obs/custom/${overlayId}`;

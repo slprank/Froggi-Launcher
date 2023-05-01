@@ -118,7 +118,7 @@
 			console.log(url);
 			urls.set(url);
 		});
-		$eventEmitter.on('obs_custom_components', (value: any) => {
+		$eventEmitter.on('obs_custom_overlay', (value: any) => {
 			console.log('obs', value);
 			obs.set(value);
 		});

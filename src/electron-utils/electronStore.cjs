@@ -8,6 +8,8 @@ class ElectronStore {
 		this.log = log;
 	}
 
+	newId = () => '_' + Math.random().toString(36);
+
 	dateTimeNow() {
 		var utcSeconds = Date.now() / 1000;
 		var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
@@ -39,14 +41,42 @@ class ElectronStore {
 		return urls;
 	}
 
-	// CUSTOM COMPONENTS
-	getCustomComponents() {
+	// CUSTOM OVERLAY
+	getCustomOverlay() {
 		return this.store.get('obs.custom');
 	}
 
-	setCustomComponents(value) {
+	getCustomOverlayById(overlayId) {
+		const custom = this.getCustomOverlay();
+		return custom.overlays.find((overlay) => overlay.id === overlayId);
+	}
+
+	getCustomOverlayIndex(overlayId) {
+		const overlays = this.getCustomOverlay().overlays;
+		return overlays.findIndex((overlay) => (overlay.id = overlayId));
+	}
+
+	setCustomOverlay(value) {
 		if (!value) return;
 		this.store.set('obs.custom', value);
+	}
+
+	updateCustomOverlay(overlay) {
+		if (!overlay) return;
+		let custom = this.getCustomOverlay();
+		const overlayIndex = this.getCustomOverlayIndex(overlay.id);
+		overlayIndex === undefined || overlayIndex === -1
+			? custom.overlays.push(overlay)
+			: (custom.overlays[overlayIndex] = overlay);
+		this.setCustomOverlay(custom);
+	}
+
+	uploadCustomOverlay(overlay) {
+		if (!overlay) return;
+		let custom = this.getCustomOverlay();
+		overlay.id = this.newId();
+		custom.overlays.push(overlay);
+		this.setCustomOverlay(custom);
 	}
 
 	// STATUS

@@ -25,7 +25,7 @@ export interface Overlay {
 	activeScenes: LiveStatsScene[];
 	default: LiveStatsScene;
 	description: string;
-	id: number;
+	id: string;
 	title: string;
 	[LiveStatsScene.WaitingForDolphin]: Scene;
 	[LiveStatsScene.PreGame]: Scene;
