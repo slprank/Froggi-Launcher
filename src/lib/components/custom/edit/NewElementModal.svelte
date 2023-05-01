@@ -50,8 +50,6 @@
 	}
 
 	function getCurrentOverlay() {
-		console.log($obs);
-		console.log($obs);
 		return $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	}
 
@@ -62,7 +60,6 @@
 
 	function getCurrentItems() {
 		let curOverlay = getCurrentOverlay();
-		console.log('cur', curOverlay);
 		return curOverlay[$statsScene].layers[layer ?? 0] ?? [];
 	}
 

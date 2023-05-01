@@ -161,9 +161,11 @@ try {
 
 			// TODO: Move this:
 			eventEmitter.on('update-custom-overlay', async (overlay) => {
-				console.log(overlay);
 				electronStore.updateCustomOverlay(overlay);
-				messageHandler.sendMessage('obs_custom_overlay', electronStore.getCustomOverlay());
+				messageHandler.sendMessage(
+					'obs_custom_overlay',
+					electronStore.getCustomOverlayById(overlay.id),
+				);
 			});
 			eventEmitter.on('update-live-scene', async (value) => {
 				electronStore.setStatsScene(value);
@@ -189,6 +191,7 @@ try {
 					console.log(err);
 				});
 				electronStore.uploadCustomOverlay(JSON.parse(overlay));
+				messageHandler.sendMessage('obs_custom', electronStore.getCustom());
 			});
 			// TODO: To this
 

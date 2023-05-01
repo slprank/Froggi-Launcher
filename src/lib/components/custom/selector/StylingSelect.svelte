@@ -19,7 +19,6 @@
 		if (selectedElementId === prevSelectedElementId) return;
 
 		payload.class = {} as Class;
-		console.log(boxSettings, stringSettings, imageSettings);
 		payload.css = {
 			background: boxSettings ? '#000000' : '',
 			borderColor: boxSettings ? '#000000' : '',

@@ -132,7 +132,7 @@ class MessageHandler {
 			'dolphin_connection_status',
 			this.store.getDolphinConnectionStatus(),
 		);
-		this.sendInitMessage(socket, 'obs_custom_overlay', this.store.getCustomOverlay());
+		this.sendInitMessage(socket, 'obs_custom', this.store.getCustom());
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
 	}
 }

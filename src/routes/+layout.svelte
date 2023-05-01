@@ -26,6 +26,7 @@
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
+	import type { Overlay } from '$lib/types/types';
 
 	let isPwaOpen = !$isPWA;
 
@@ -118,7 +119,15 @@
 			console.log(url);
 			urls.set(url);
 		});
-		$eventEmitter.on('obs_custom_overlay', (value: any) => {
+		$eventEmitter.on('obs_custom_overlay', (value: Overlay) => {
+			obs.update((obs) => {
+				const overlayIndex = obs.overlays.findIndex((overlay) => (overlay.id = value.id));
+				if (overlayIndex === undefined || overlayIndex === -1) return obs;
+				obs.overlays[overlayIndex] = value;
+				return obs;
+			});
+		});
+		$eventEmitter.on('obs_custom', (value: any) => {
 			console.log('obs', value);
 			obs.set(value);
 		});

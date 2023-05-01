@@ -12,7 +12,6 @@
 
 	$: preview = false;
 
-	$: console.log(preview);
 	// TODO: Add alert component
 </script>
 

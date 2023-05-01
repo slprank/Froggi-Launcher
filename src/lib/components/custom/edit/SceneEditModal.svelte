@@ -31,7 +31,6 @@
 			.filter((i) => i !== undefined)
 			.map((imageString: string) => imageString.split('/').slice(-1).pop())
 			.filter((image) => image !== undefined);
-		console.log(imageOptions);
 	}
 	getImageOptions();
 

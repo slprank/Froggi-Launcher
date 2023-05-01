@@ -8,7 +8,7 @@ class ElectronStore {
 		this.log = log;
 	}
 
-	newId = () => '_' + Math.random().toString(36);
+	newId = () => '_' + Math.random().toString(36).slice(-9);
 
 	dateTimeNow() {
 		var utcSeconds = Date.now() / 1000;
@@ -42,28 +42,28 @@ class ElectronStore {
 	}
 
 	// CUSTOM OVERLAY
-	getCustomOverlay() {
+	getCustom() {
 		return this.store.get('obs.custom');
 	}
 
-	getCustomOverlayById(overlayId) {
-		const custom = this.getCustomOverlay();
-		return custom.overlays.find((overlay) => overlay.id === overlayId);
-	}
-
-	getCustomOverlayIndex(overlayId) {
-		const overlays = this.getCustomOverlay().overlays;
-		return overlays.findIndex((overlay) => (overlay.id = overlayId));
-	}
-
-	setCustomOverlay(value) {
+	setCustom(value) {
 		if (!value) return;
 		this.store.set('obs.custom', value);
 	}
 
+	getCustomOverlayById(overlayId) {
+		const custom = this.getCustom();
+		return custom.overlays.find((overlay) => overlay.id === overlayId);
+	}
+
+	getCustomOverlayIndex(overlayId) {
+		const overlays = this.getCustom().overlays;
+		return overlays.findIndex((overlay) => (overlay.id = overlayId));
+	}
+
 	updateCustomOverlay(overlay) {
 		if (!overlay) return;
-		let custom = this.getCustomOverlay();
+		let custom = this.getCustom();
 		const overlayIndex = this.getCustomOverlayIndex(overlay.id);
 		overlayIndex === undefined || overlayIndex === -1
 			? custom.overlays.push(overlay)
@@ -73,7 +73,7 @@ class ElectronStore {
 
 	uploadCustomOverlay(overlay) {
 		if (!overlay) return;
-		let custom = this.getCustomOverlay();
+		let custom = this.getCustom();
 		overlay.id = this.newId();
 		custom.overlays.push(overlay);
 		this.setCustomOverlay(custom);

@@ -24,8 +24,6 @@
 	let selectedId: string | undefined = undefined;
 	let overlay: Overlay = getCurrentOverlay();
 
-	$: console.log('test', overlay);
-
 	let isElementModalOpen = false;
 	let isSceneModalOpen = false;
 
