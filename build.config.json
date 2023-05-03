@@ -27,19 +27,7 @@
 	"files": [
 		"build/index.html",
 		"build/**/*",
-		"src/electron/electron.ts",
-		"src/electron/utils/**/*",
-		"src/electron/utils/achievements.cjs",
-		"src/electron/utils/api.cjs",
-		"src/electron/utils/autoUpdater.cjs",
-		"src/electron/utils/electronStore.cjs",
-		"src/electron/utils/messageHandler.cjs",
-		"src/electron/utils/obs.cjs",
-		"src/electron/utils/slippi.cjs",
-		"src/electron/utils/slippiSettings.json",
-		"src/electron/utils/statsDisplay.cjs",
-		"src/electron/utils/test.cjs",
-		"src/electron/preload.ts",
+		"src/**/*",
 		{
 			"from": "build",
 			"to": ""

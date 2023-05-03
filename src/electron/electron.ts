@@ -7,20 +7,20 @@ const log = require('electron-log');
 
 const fs = require('fs');
 try {
-	const achievements = require('./utils/achievements.cjs');
-	const autoUpdater = require('./utils/autoUpdater.cjs');
-	const obs = require('./utils/obs.cjs');
-	const slippi = require('./utils/slippi.cjs');
-	const statsDisplay = require('./utils/statsDisplay.cjs');
-	const { Achievements } = require('./utils/achievements.cjs');
-	const { Api } = require('./utils/api.cjs');
-	const { ElectronStore } = require('./utils/electronStore.cjs');
+	const achievements = require('./utils/achievements.ts');
+	const autoUpdater = require('./utils/autoUpdater.ts');
+	const obs = require('./utils/obs.ts');
+	const slippi = require('./utils/slippi.ts');
+	const statsDisplay = require('./utils/statsDisplay.ts');
+	const { Achievements } = require('./utils/achievements.ts');
+	const { Api } = require('./utils/api.ts');
+	const { ElectronStore } = require('./utils/electronStore.ts');
 	const { EventEmitter } = require('events');
-	const { MessageHandler } = require('./utils/messageHandler.cjs');
-	const { ObsWebSocket } = require('./utils/obs.cjs');
-	const { SlippiJs } = require('./utils/slippi.cjs');
-	const { StatsDisplay } = require('./utils/statsDisplay.cjs');
-	const { Test } = require('./utils/test.cjs');
+	const { MessageHandler } = require('./utils/messageHandler.ts');
+	const { ObsWebSocket } = require('./utils/obs.ts');
+	const { SlippiJs } = require('./utils/slippi.ts');
+	const { StatsDisplay } = require('./utils/statsDisplay.ts');
+	const { Test } = require('./utils/test.ts');
 	const rootDir = `${__dirname}/../../`;
 
 	const os = require('os');
