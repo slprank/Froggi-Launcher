@@ -7,21 +7,21 @@ const log = require('electron-log');
 
 const fs = require('fs');
 try {
-	const achievements = require('./electron-utils/achievements.cjs');
-	const autoUpdater = require('./electron-utils/autoUpdater.cjs');
-	const obs = require('./electron-utils/obs.cjs');
-	const slippi = require('./electron-utils/slippi.cjs');
-	const statsDisplay = require('./electron-utils/statsDisplay.cjs');
-	const { Achievements } = require('./electron-utils/achievements.cjs');
-	const { Api } = require('./electron-utils/api.cjs');
-	const { ElectronStore } = require('./electron-utils/electronStore.cjs');
+	const achievements = require('./utils/achievements.cjs');
+	const autoUpdater = require('./utils/autoUpdater.cjs');
+	const obs = require('./utils/obs.cjs');
+	const slippi = require('./utils/slippi.cjs');
+	const statsDisplay = require('./utils/statsDisplay.cjs');
+	const { Achievements } = require('./utils/achievements.cjs');
+	const { Api } = require('./utils/api.cjs');
+	const { ElectronStore } = require('./utils/electronStore.cjs');
 	const { EventEmitter } = require('events');
-	const { MessageHandler } = require('./electron-utils/messageHandler.cjs');
-	const { ObsWebSocket } = require('./electron-utils/obs.cjs');
-	const { SlippiJs } = require('./electron-utils/slippi.cjs');
-	const { StatsDisplay } = require('./electron-utils/statsDisplay.cjs');
-	const { Test } = require('./electron-utils/test.cjs');
-	const rootDir = `${__dirname}/../`;
+	const { MessageHandler } = require('./utils/messageHandler.cjs');
+	const { ObsWebSocket } = require('./utils/obs.cjs');
+	const { SlippiJs } = require('./utils/slippi.cjs');
+	const { StatsDisplay } = require('./utils/statsDisplay.cjs');
+	const { Test } = require('./utils/test.cjs');
+	const rootDir = `${__dirname}/../../`;
 
 	const os = require('os');
 
@@ -65,12 +65,11 @@ try {
 			minHeight: 540,
 			minWidth: 960,
 			webPreferences: {
-				enableRemoteModule: true,
 				contextIsolation: true,
 				nodeIntegration: true,
 				spellcheck: false,
 				devTools: dev,
-				preload: path.join(__dirname, 'preload.cjs'),
+				preload: path.join(__dirname, '/preload.ts'),
 			},
 			x: windowState.x,
 			y: windowState.y,
