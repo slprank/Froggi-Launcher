@@ -54,7 +54,7 @@ class ElectronStore {
 
 	initCustom() {
 		if (this.store.get('obs.custom.overlays') === undefined)
-			this.store.get('obs.custom.overlays');
+			this.store.set('obs.custom.overlays', []);
 	}
 
 	getCustomOverlayById(overlayId) {
