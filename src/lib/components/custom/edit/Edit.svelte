@@ -40,7 +40,9 @@
 	$: calculateBoardHeight(innerWidth);
 
 	function getCurrentOverlay(): Overlay {
-		return $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+		return (
+			$obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay)
+		);
 	}
 
 	function getCurrentOverlayIndex(): number {

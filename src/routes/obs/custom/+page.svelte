@@ -10,8 +10,6 @@
 
 	let overlayId: string | undefined = undefined;
 
-	$: console.log('yupp', $obs);
-
 	function deleteOverlay() {
 		if (!overlayId) return;
 		$eventEmitter.emit('electron', 'delete-custom-overlay', overlayId);

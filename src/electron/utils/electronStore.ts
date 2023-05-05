@@ -6,6 +6,7 @@ class ElectronStore {
 		this.ip = require('ip');
 		this.store = new Store();
 		this.log = log;
+		this.initCustom();
 	}
 
 	newId = () => `${Math.random().toString(36).slice(-8)}`;
@@ -51,20 +52,27 @@ class ElectronStore {
 		this.store.set('obs.custom', value);
 	}
 
+	initCustom() {
+		if (this.store.get('obs.custom.overlays') === undefined)
+			this.store.get('obs.custom.overlays');
+	}
+
 	getCustomOverlayById(overlayId) {
 		const custom = this.getCustom();
-		return custom.overlays.find((overlay) => overlay.id === overlayId);
+		return custom?.overlays?.find((overlay) => overlay.id === overlayId);
 	}
 
 	getCustomOverlayIndex(overlayId) {
 		const overlays = this.getCustom().overlays;
-		return overlays.findIndex((overlay) => overlay.id == overlayId);
+		return overlays?.findIndex((overlay) => overlay.id == overlayId) ?? undefined;
 	}
 
 	updateCustomOverlay(overlay) {
 		if (!overlay) return;
 		let custom = this.getCustom();
+		console.log('custom', custom);
 		const overlayIndex = this.getCustomOverlayIndex(overlay.id);
+		console.log('index', overlayIndex);
 		overlayIndex === undefined || overlayIndex === -1
 			? custom.overlays.push(overlay)
 			: (custom.overlays[overlayIndex] = overlay);

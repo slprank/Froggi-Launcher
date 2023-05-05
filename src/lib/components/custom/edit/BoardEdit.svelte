@@ -14,7 +14,8 @@
 	export let layer: number | undefined = undefined;
 	export let selectedId: string | undefined = undefined;
 
-	let curOverlay = $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+	let curOverlay =
+		$obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let items: any[] = [];
 	let tempItems: any = undefined;
 

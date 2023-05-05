@@ -22,11 +22,10 @@
 		isMobile,
 		obs,
 	} from '$lib/utils/store.svelte';
-	import Modal from '$lib/components/modal/Modal.svelte';
-	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import type { Overlay } from '$lib/types/types';
+	import { WEBSOCKET_PORT } from '$lib/types/const';
 
 	let isPwaOpen = !$isPWA;
 
@@ -61,7 +60,7 @@
 
 	function initWebSocket() {
 		console.log('Initializing websocket');
-		const socket = new WebSocket(`ws://${$page.url.hostname}:3100`);
+		const socket = new WebSocket(`ws://${$page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.onopen = () => {
 			$eventEmitter.on('electron', (topic, payload) => {
 				console.log('Sending message..', topic, payload);
