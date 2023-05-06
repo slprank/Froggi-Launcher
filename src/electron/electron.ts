@@ -21,7 +21,7 @@ try {
 	const { SlippiJs } = require('./utils/slippi.ts');
 	const { StatsDisplay } = require('./utils/statsDisplay.ts');
 	const { Test } = require('./utils/test.ts');
-	const rootDir = `${__dirname}/../`;
+	const rootDir = `${__dirname}/../../`;
 
 	const os = require('os');
 
