@@ -46,6 +46,10 @@ try {
 	const serveURL = serve({ directory: '.' });
 	const port = process.env.PORT || 5173;
 	const dev = !app.isPackaged;
+
+	console.log('no');
+	console.log('no');
+
 	let mainWindow;
 
 	function createWindow() {
