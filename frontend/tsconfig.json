@@ -26,8 +26,7 @@
 		"checkJs": false,
 		"paths": {
 			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"],
-			"$app/*": [".svelte/dev/runtime/app/*", ".svelte/build/runtime/app/electron/*"]
+			"$lib/*": ["src/lib/*"]
 		}
 	},
 	"include": ["."]

@@ -11,7 +11,7 @@
 	} from '$lib/types/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { generateNewItem } from '$lib/components/custom/edit/CreateOverlay.svelte';
+	import { generateNewItem } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
 	import StylingSelect from '$lib/components/custom/selector/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
@@ -30,6 +30,7 @@
 		image: {} as Image,
 		class: {} as Class,
 		css: {} as Css,
+		advancedStyling: false,
 	};
 
 	let demoItem: GridContentItem;

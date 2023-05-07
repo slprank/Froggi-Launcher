@@ -1,6 +1,7 @@
 // https://www.npmjs.com/package/electron-store
 import ip from 'ip';
 import Store from 'electron-store';
+import type { Player } from '../../frontend/src/lib/types/types';
 export class ElectronStore {
 	log: any;
 	store: any;
@@ -177,7 +178,8 @@ export class ElectronStore {
 	// Save players rank, set score and last frame*
 	setGame(gameStats: any) {
 		if (!gameStats?.matchId) return;
-		if (!gameStats.players.some((p: any) => p.connectCode == this.getCurrentPlayer())) return;
+		if (!gameStats.players.some((p: Player) => p.connectCode == this.getCurrentPlayer()))
+			return;
 		gameStats.timestamp = this.dateTimeNow();
 		this.store.set(
 			`player.${this.getCurrentPlayer()}.game.${gameStats.matchId}.${gameStats.gameNumber}`,
@@ -185,7 +187,7 @@ export class ElectronStore {
 		);
 	}
 
-	getGame(matchId: any, gameNumber: any) {
+	getGame(matchId: string, gameNumber: number) {
 		return this.store.get(`player.${this.getCurrentPlayer()}.game.${matchId}.${gameNumber}`);
 	}
 

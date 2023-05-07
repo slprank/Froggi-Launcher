@@ -5,7 +5,6 @@
 	import { LiveStatsScene } from '$lib/types/enum';
 	import Device from 'svelte-device-info';
 	import type { Obs, Url } from '$lib/types/types';
-	import { getDefaultOverlays } from '$lib/components/custom/edit/CreateOverlay.svelte';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
 

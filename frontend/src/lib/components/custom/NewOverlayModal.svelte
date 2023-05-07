@@ -1,10 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { eventEmitter } from '$lib/utils/store.svelte';
-	import {
-		getDefaultOverlays,
-		getNewOverlay,
-	} from '$lib/components/custom/edit/CreateOverlay.svelte';
+	import { getNewOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	function uploadOverlay() {
 		$eventEmitter.emit('electron', 'upload-overlay');

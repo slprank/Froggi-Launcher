@@ -5,6 +5,7 @@
 	import { COL, MIN } from '$lib/types/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
+	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 
 	function newId() {
 		return `${Math.random().toString(36).slice(-8)}`;
@@ -12,107 +13,6 @@
 
 	// TODO: Add complete overlays
 	// TODO: Add complete scenes
-
-	export function getDefaultOverlays(): Obs {
-		return {
-			overlays: [
-				{
-					activeScenes: [
-						LiveStatsScene.WaitingForDolphin,
-						LiveStatsScene.PreGame,
-						LiveStatsScene.InGame,
-						LiveStatsScene.PostGame,
-						LiveStatsScene.RankChange,
-					],
-					default: LiveStatsScene.PreGame,
-					description: 'main description',
-					id: newId(),
-					title: 'main',
-					[LiveStatsScene.WaitingForDolphin]: {
-						backgroundColor: 'white',
-						backgroundCustomImage: {
-							src: undefined,
-							name: undefined,
-							objectFit: undefined,
-						},
-						backgroundDuration: 250,
-						backgroundImage: { src: undefined, name: undefined, objectFit: undefined },
-						backgroundOpacity: 1,
-						backgroundTransition: Transition.None,
-						backgroundType: SceneBackground.None,
-						elementDuration: 250,
-						elementTransition: Transition.None,
-						layers: [[]],
-					},
-					[LiveStatsScene.PreGame]: {
-						backgroundColor: 'white',
-						backgroundCustomImage: {
-							src: undefined,
-							name: undefined,
-							objectFit: undefined,
-						},
-						backgroundDuration: 250,
-						backgroundImage: { src: undefined, name: undefined, objectFit: undefined },
-						backgroundOpacity: 1,
-						backgroundTransition: Transition.None,
-						backgroundType: SceneBackground.None,
-						elementDuration: 250,
-						elementTransition: Transition.None,
-						layers: [[]],
-					},
-
-					[LiveStatsScene.InGame]: {
-						backgroundColor: 'white',
-						backgroundCustomImage: {
-							src: undefined,
-							name: undefined,
-							objectFit: undefined,
-						},
-						backgroundDuration: 250,
-						backgroundImage: { src: undefined, name: undefined, objectFit: undefined },
-						backgroundOpacity: 1,
-						backgroundTransition: Transition.None,
-						backgroundType: SceneBackground.None,
-						elementDuration: 250,
-						elementTransition: Transition.None,
-						layers: [[]],
-					},
-					[LiveStatsScene.PostGame]: {
-						backgroundColor: 'white',
-						backgroundCustomImage: {
-							src: undefined,
-							name: undefined,
-							objectFit: undefined,
-						},
-						backgroundDuration: 250,
-						backgroundImage: { src: undefined, name: undefined, objectFit: undefined },
-						backgroundOpacity: 1,
-						backgroundTransition: Transition.None,
-						backgroundType: SceneBackground.None,
-						elementDuration: 250,
-						elementTransition: Transition.None,
-						layers: [[]],
-					},
-					[LiveStatsScene.RankChange]: {
-						backgroundColor: 'white',
-						backgroundCustomImage: {
-							src: undefined,
-							name: undefined,
-							objectFit: undefined,
-						},
-						backgroundDuration: 250,
-						backgroundImage: { src: undefined, name: undefined, objectFit: undefined },
-						backgroundOpacity: 1,
-						backgroundTransition: Transition.None,
-						backgroundType: SceneBackground.None,
-						elementDuration: 250,
-						elementTransition: Transition.None,
-						layers: [[]],
-					},
-				},
-			],
-		};
-	}
 
 	export function getNewOverlay(): Overlay {
 		return {
@@ -224,5 +124,31 @@
 			elementId: elementId,
 			data: data,
 		};
+	}
+
+	export async function getOverlayById(overlayId: string): Promise<Overlay> {
+		return await new Promise<Overlay>((resolve) => {
+			obs?.subscribe((obs) =>
+				resolve(
+					obs.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ??
+						({} as Overlay),
+				),
+			);
+		});
+	}
+
+	export async function getOverlayIndexById(overlayId: string): Promise<number> {
+		let curOverlay = await getOverlayById(overlayId);
+		return await new Promise<number>((resolve) =>
+			obs?.subscribe((obs) => resolve(obs.overlays.indexOf(curOverlay))),
+		);
+	}
+
+	export async function updateOverlay(overlay: Overlay) {
+		await new Promise(() =>
+			eventEmitter.subscribe((eventEmitter) =>
+				eventEmitter.emit('electron', 'update-custom-overlay', overlay),
+			),
+		);
 	}
 </script>

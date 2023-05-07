@@ -6,6 +6,7 @@
 	import { fly } from 'svelte/transition';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
+	import { updateOverlay } from './OverlayHandler.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -44,15 +45,6 @@
 			selectedItem[COL].h = ROW - selectedItem[COL].y;
 	}
 
-	function getCurrentOverlay(): Overlay {
-		return $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-	}
-
-	function getCurrentOverlayIndex(): number {
-		let curOverlay = getCurrentOverlay();
-		return $obs.overlays.indexOf(curOverlay);
-	}
-
 	function deleteElement() {
 		if (!curOverlay || selectedLayer === undefined) return;
 		curOverlay[$statsScene]?.layers[selectedLayer].splice(selectedItemIndex, 1);
@@ -60,12 +52,7 @@
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
-		updateOverlay();
-	}
-
-	function updateOverlay() {
-		if (!curOverlay) return;
-		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
+		updateOverlay(curOverlay);
 	}
 
 	function updateSelectItem() {
@@ -74,7 +61,7 @@
 		handleOverflow();
 
 		curOverlay[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
-		updateOverlay();
+		updateOverlay(curOverlay);
 	}
 	$: selectedItem, updateSelectItem();
 

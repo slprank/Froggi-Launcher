@@ -12,13 +12,11 @@
 	import ImageInput from '$lib/components/input/ImageInput.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
-	const { updateOverlay, refreshOverlay } = getContext('custom-obs');
-
 	export let open: boolean;
 	export let overlay: Overlay;
 
 	$: previewBackgroundType = overlay[$statsScene].backgroundType;
-	let tempActiveScenes = overlay.activeScenes;
+	let tempActiveScenes = overlay?.activeScenes;
 
 	let imageOptions: string[] = [];
 	function getImageOptions() {
@@ -29,19 +27,17 @@
 
 		imageOptions = imageOptions
 			.filter((i) => i !== undefined)
-			.map((imageString: string) => imageString.split('/').slice(-1).pop())
+			.map((imageString: string) => `${imageString.split('/').slice(-1).pop()}`)
 			.filter((image) => image !== undefined);
 	}
 	getImageOptions();
 
 	function clear() {
-		refreshOverlay();
 		open = false;
 	}
 
 	function handleUpdate() {
 		updateActiveScenes();
-		updateOverlay();
 		notifications.success('Overlay updated!', 3000);
 		open = false;
 	}

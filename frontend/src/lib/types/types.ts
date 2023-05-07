@@ -2,11 +2,7 @@ import type {
 	ActionCountsType,
 	ComboType,
 	ConversionType,
-	FrameEntryType,
-	GameEndType,
-	GameStartType,
 	OverallType,
-	StatsType,
 	StockType,
 } from '@slippi/slippi-js';
 import type { CustomElement, LiveStatsScene, SceneBackground, Transition } from './enum';
