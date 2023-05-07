@@ -20,8 +20,9 @@
 		"build:linux": "npm run compile && electron-builder -l --config build.config.json",
 		"build:mac": "npm run compile && electron-builder -m --config build.config.json",
 		"build:win": "npm run compile && electron-builder -w --config build.config.json",
-		"compile": "npm run build:svelte && tsc --p ./tsconfig.electron.json",
-		"i": "npm i --production && npm install --prefix ./frontend"
+		"compile": "npm run build:svelte && npm run fix && tsc --p ./tsconfig.electron.json",
+		"i": "npm i && npm install --prefix ./frontend",
+		"fix": "cd node_modules/@types rm -rf cacheable-request"
 	},
 	"engines": {
 		"npm": ">=7",
