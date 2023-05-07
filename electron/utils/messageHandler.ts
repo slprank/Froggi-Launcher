@@ -1,5 +1,22 @@
-class MessageHandler {
-	constructor(dir, mainWindow, ipcMain, log, store, eventEmitter) {
+export class MessageHandler {
+	app: any;
+	rootDir: string;
+	server: any;
+	webSocketServer: any;
+	webSockets: any;
+	store: any;
+	mainWindow: any;
+	ipcMain: any;
+	eventEmitter: any;
+
+	constructor(
+		rootDir: any,
+		mainWindow: any,
+		ipcMain: any,
+		log: any,
+		store: any,
+		eventEmitter: any,
+	) {
 		log.info('Creating message handler..');
 		const path = require('path');
 		const express = require('express');
@@ -7,9 +24,9 @@ class MessageHandler {
 		const http = require('http');
 		const { WebSocketServer } = require('ws');
 
-		this.dir = dir;
+		this.rootDir = rootDir;
 		this.app = express();
-		this.app.use(express.static(path.join(this.dir + '/build')));
+		this.app.use(express.static(path.join(this.rootDir + '/build')));
 		this.app.use(cors());
 		this.server = http.createServer(this.app);
 		this.webSocketServer = new WebSocketServer({ port: 3100 });
@@ -25,20 +42,20 @@ class MessageHandler {
 
 	initHtml() {
 		try {
-			this.app.get('/', (req, res) => {
-				res.resolve(this.dir + '/frontend/index.html');
+			this.app.get('/', (_: any, res: any) => {
+				res.resolve(this.rootDir + '/build/index.html');
 			});
 
-			this.app.get('*', (req, res) => {
+			this.app.get('*', (req: any, res: any) => {
 				const params = req.params[0]
 					.split('/')
 					.slice(1)
-					.map((route, i) => `route${i + 1}=${route}`)
+					.map((route: string, i: number) => `route${i + 1}=${route}`)
 					.join('&');
-				res.redirect(`/?${params}`);
+				res.rerootDirect(`/?${params}`);
 			});
 
-			this.server.listen(3200, (err) => {
+			this.server.listen(3200, (_: any) => {
 				console.log('listening on *:3200');
 			});
 		} catch (err) {
@@ -47,7 +64,7 @@ class MessageHandler {
 	}
 
 	initElectronMessageHandler() {
-		this.ipcMain.on('message', (_, data) => {
+		this.ipcMain.on('message', (_: any, data: any) => {
 			let parse = JSON.parse(data);
 			console.log(parse);
 			for (const [key, value] of Object.entries(parse)) {
@@ -61,17 +78,17 @@ class MessageHandler {
 
 	initWebSocket() {
 		try {
-			this.webSocketServer.on('connection', (socket) => {
+			this.webSocketServer.on('connection', (socket: any) => {
 				this.webSockets.push(socket);
-				socket.addEventListener('message', ({ data }) => {
-					let parse = JSON.parse(data);
+				socket.addEventListener('message', (value: any) => {
+					let parse = JSON.parse(value.data);
 					console.log(parse);
 					for (const [key, value] of Object.entries(parse)) {
 						this.eventEmitter.emit(key, value);
 					}
 				});
 				socket.on('close', () => {
-					this.webContents = this.webSockets.filter((s) => s != socket);
+					this.webSockets = this.webSockets.filter((s: any) => s != socket);
 				});
 				this.initData(socket);
 			});
@@ -80,14 +97,14 @@ class MessageHandler {
 		}
 	}
 
-	sendMessage(topic, payload) {
+	sendMessage(topic: string, payload: any) {
 		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
 				[topic]: payload,
 			}),
 		);
-		this.webSockets.forEach((socket) => {
+		this.webSockets.forEach((socket: any) => {
 			socket.send(
 				JSON.stringify({
 					[topic]: payload,
@@ -96,7 +113,7 @@ class MessageHandler {
 		});
 	}
 
-	sendInitMessage(socket, topic, payload) {
+	sendInitMessage(socket: any, topic: string, payload: any) {
 		if (!socket) {
 			this.sendMessage(topic, payload);
 			return;
@@ -110,7 +127,7 @@ class MessageHandler {
 
 	// Any data sent to frontend should be saved and initialized
 	// Leaderboard data should be stored as well
-	initData(socket) {
+	initData(socket = undefined) {
 		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(
 			socket,
@@ -136,5 +153,3 @@ class MessageHandler {
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
 	}
 }
-
-module.exports = { MessageHandler };

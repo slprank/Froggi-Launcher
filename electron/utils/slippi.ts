@@ -1,25 +1,24 @@
 // https://github.com/project-slippi/slippi-js
 
-const {
+import {
 	SlpParser,
 	DolphinConnection,
 	Ports,
 	ConnectionEvent,
 	DolphinMessageType,
-	Command,
 	ConnectionStatus,
-	SlpCommandEventPayload,
-	SlpParserEvent,
-	FrameEntryType,
 	SlpStream,
-	SlpStreamEvent,
-	SlippiGame,
-	GameMode,
-	Stats,
-} = require('@slippi/slippi-js');
+} from '@slippi/slippi-js';
 
-class SlippiJs {
-	constructor(messageHandler, ipcMain, log, store) {
+export class SlippiJs {
+	messageHandler: any;
+	ipcMain: any;
+	log: any;
+	store: any;
+	dolphinConnection: DolphinConnection;
+	parser: SlpParser;
+	slpStream: SlpStream;
+	constructor(messageHandler: any, ipcMain: any, log: any, store: any) {
 		this.messageHandler = messageHandler;
 		this.ipcMain = ipcMain;
 		this.log = log;
@@ -73,7 +72,7 @@ class SlippiJs {
 			this.log.error('Dolphin connection error', err);
 		});
 
-		this.ipcMain.on('ipc', (event, arg) => {
+		this.ipcMain.on('ipc', (_: any, arg: any) => {
 			// Command to connect to Dolphin
 			if (arg === 'connectDolphin') {
 				this.log.info(arg);
@@ -85,5 +84,3 @@ class SlippiJs {
 		});
 	}
 }
-
-module.exports = { SlippiJs };

@@ -1,31 +1,28 @@
 import windowStateManager from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
-import { app, BrowserWindow /*dialog, ipcMain*/ } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import serve from 'electron-serve';
 import path from 'path';
 import log from 'electron-log';
 
+/*
+import { Achievements } from './utils/achievements';
+import { Api } from './utils/api';
+*/
+import { ElectronStore } from './utils/electronStore';
+import { MessageHandler } from './utils/messageHandler';
+/*
+import { ObsWebSocket } from './utils/obs';
+import { SlippiJs } from './utils/slippi';
+import { StatsDisplay } from './utils/statsDisplay';
+*/
+import { EventEmitter } from 'events';
+
+import os = require('os');
+
 import fs from 'fs';
 try {
-	/*
-	const achievements = require('./utils/achievements.ts');
-	const autoUpdater = require('./utils/autoUpdater.ts');
-	const obs = require('./utils/obs.ts');
-	const slippi = require('./utils/slippi.ts');
-	const statsDisplay = require('./utils/statsDisplay.ts');
-	const { Achievements } = require('./utils/achievements.ts');
-	const { Api } = require('./utils/api.ts');
-	const { ElectronStore } = require('./utils/electronStore.ts');
-	const { MessageHandler } = require('./utils/messageHandler.ts');
-	const { ObsWebSocket } = require('./utils/obs.ts');
-	const { SlippiJs } = require('./utils/slippi.ts');
-	const { StatsDisplay } = require('./utils/statsDisplay.ts');
-	const { Test } = require('./utils/test.ts');
 	const rootDir = `${__dirname}/../`;
-	*/
-	const { EventEmitter } = require('events');
-
-	const os = require('os');
 
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
@@ -77,7 +74,7 @@ try {
 				nodeIntegration: true,
 				spellcheck: false,
 				devTools: dev,
-				preload: path.join(__dirname, '/preload.ts'),
+				preload: path.join(__dirname, '/preload.js'),
 			},
 			x: windowState.x,
 			y: windowState.y,
@@ -141,8 +138,7 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', async () => {
-			/*
-			const api = new Api(log);
+			//const api = new Api(log);
 			const electronStore = new ElectronStore(log);
 			const messageHandler = new MessageHandler(
 				rootDir,
@@ -152,6 +148,7 @@ try {
 				electronStore,
 				eventEmitter,
 			);
+			/*
 			const slippiJs = new SlippiJs(messageHandler, ipcMain, log, electronStore);
 			const statsDisplay = new StatsDisplay(
 				messageHandler,
@@ -165,8 +162,7 @@ try {
 
 			const obsWebSocket = new ObsWebSocket(messageHandler, eventEmitter, log);
 			const achievements = new Achievements(messageHandler, eventEmitter, log);
-
-			const test = new Test(messageHandler, eventEmitter, log, electronStore, api);
+			*/
 
 			// TODO: Move this:
 			eventEmitter.on('update-custom-overlay', async (overlay) => {
@@ -194,7 +190,7 @@ try {
 					filters: [{ name: 'json', extensions: ['json'] }],
 					nameFieldLabel: overlay.title,
 				});
-				if (canceled) return;
+				if (canceled || !filePath) return;
 				fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
 			});
 
@@ -204,9 +200,7 @@ try {
 					filters: [{ name: 'json', extensions: ['json'] }],
 				});
 				if (canceled) return;
-				const overlay = await fs.readFileSync(filePaths[0], 'utf8', (err) => {
-					console.log(err);
-				});
+				const overlay = await fs.readFileSync(filePaths[0], 'utf8');
 				electronStore.uploadCustomOverlay(JSON.parse(overlay));
 				messageHandler.sendMessage('obs_custom', electronStore.getCustom());
 			});
@@ -220,7 +214,6 @@ try {
 		mainWindow.webContents.once('focus', () => {
 			if (dev) return;
 			//autoUpdater.initAutoUpdater(mainWindow, eventEmitter, log);
-			*/
 		});
 	}
 

@@ -23,7 +23,7 @@
 		</div>
 		<div class="col-span-1 place-items-center grid rounded-md">
 			<div class="w-48 h-48 border-4 border-zinc-700 text-center grid gap-2">
-				<QrCode value={$urls.external} size="192" />
+				<QrCode value={$urls?.external} size="192" />
 				<h1 class="text-gray-500 text-md font-medium text-shadow">
 					{$urls?.external}
 				</h1>

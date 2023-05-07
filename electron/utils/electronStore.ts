@@ -1,9 +1,10 @@
 // https://www.npmjs.com/package/electron-store
-
-class ElectronStore {
-	constructor(log) {
-		const Store = require('electron-store');
-		this.ip = require('ip');
+import ip from 'ip';
+import Store from 'electron-store';
+export class ElectronStore {
+	log: any;
+	store: any;
+	constructor(log: any) {
 		this.store = new Store();
 		this.log = log;
 		this.initCustom();
@@ -23,7 +24,7 @@ class ElectronStore {
 		return this.store.get('settings.currentPlayer');
 	}
 
-	setCurrentPlayer(connectCode) {
+	setCurrentPlayer(connectCode: string) {
 		this.store.set('settings.currentPlayer', connectCode);
 	}
 
@@ -31,14 +32,14 @@ class ElectronStore {
 		return this.store.get('settings.slippiReplayDir');
 	}
 
-	setSlippiRootDirectory(dir) {
+	setSlippiRootDirectory(dir: string) {
 		this.store.set('settings.slippiReplayDir', dir);
 	}
 
 	getLocalUrl() {
-		let urls = {};
+		let urls = { local: '', external: '' };
 		urls.local = `http://localhost:3200`;
-		urls.external = `http://${this.ip.address()}:3200`;
+		urls.external = `http://${ip.address()}:3200`;
 		return urls;
 	}
 
@@ -47,7 +48,7 @@ class ElectronStore {
 		return this.store.get('obs.custom');
 	}
 
-	setCustom(value) {
+	setCustom(value: any) {
 		if (!value) return;
 		this.store.set('obs.custom', value);
 	}
@@ -57,17 +58,17 @@ class ElectronStore {
 			this.store.set('obs.custom.overlays', []);
 	}
 
-	getCustomOverlayById(overlayId) {
+	getCustomOverlayById(overlayId: string) {
 		const custom = this.getCustom();
-		return custom?.overlays?.find((overlay) => overlay.id === overlayId);
+		return custom?.overlays?.find((overlay: any) => overlay.id === overlayId);
 	}
 
-	getCustomOverlayIndex(overlayId) {
+	getCustomOverlayIndex(overlayId: string) {
 		const overlays = this.getCustom().overlays;
-		return overlays?.findIndex((overlay) => overlay.id == overlayId) ?? undefined;
+		return overlays?.findIndex((overlay: any) => overlay.id == overlayId) ?? undefined;
 	}
 
-	updateCustomOverlay(overlay) {
+	updateCustomOverlay(overlay: any) {
 		if (!overlay) return;
 		let custom = this.getCustom();
 		console.log('custom', custom);
@@ -79,7 +80,7 @@ class ElectronStore {
 		this.setCustom(custom);
 	}
 
-	uploadCustomOverlay(overlay) {
+	uploadCustomOverlay(overlay: any) {
 		if (!overlay) return;
 		let custom = this.getCustom();
 		overlay.id = this.newId();
@@ -87,10 +88,10 @@ class ElectronStore {
 		this.setCustom(custom);
 	}
 
-	deleteCustomOverlay(overlayId) {
+	deleteCustomOverlay(overlayId: string) {
 		if (!overlayId) return;
 		let custom = this.getCustom();
-		custom.overlays = custom.overlays.filter((overlay) => overlay.id !== overlayId);
+		custom.overlays = custom.overlays.filter((overlay: any) => overlay.id !== overlayId);
 		this.setCustom(custom);
 	}
 
@@ -99,7 +100,7 @@ class ElectronStore {
 		return this.store.get('status.dolphin');
 	}
 
-	setDolphinConnectionStatus(status) {
+	setDolphinConnectionStatus(status: any) {
 		return this.store.set('status.dolphin', status);
 	}
 
@@ -108,7 +109,7 @@ class ElectronStore {
 		return this.store.get('stats.scene') ?? 0;
 	}
 
-	setStatsScene(scene) {
+	setStatsScene(scene: any) {
 		this.store.set('stats.scene', scene ?? 0);
 	}
 
@@ -116,7 +117,7 @@ class ElectronStore {
 		return this.store.get('stats.currentPlayersRankStats');
 	}
 
-	setCurrentPlayersRankStats(playersRankStats) {
+	setCurrentPlayersRankStats(playersRankStats: any) {
 		this.store.set('stats.currentPlayersRankStats', playersRankStats);
 	}
 
@@ -124,7 +125,7 @@ class ElectronStore {
 		return this.store.get('stats.game.settings');
 	}
 
-	setGameSettings(settings) {
+	setGameSettings(settings: any) {
 		return this.store.set('stats.game.settings', settings);
 	}
 
@@ -132,7 +133,7 @@ class ElectronStore {
 		return this.store.get('stats.game.stats');
 	}
 
-	setGameStats(gameStats, latestFrame) {
+	setGameStats(gameStats: any, latestFrame: any) {
 		if (latestFrame) gameStats.latestFrame = latestFrame;
 		this.store.set('stats.game.stats', gameStats);
 	}
@@ -141,7 +142,7 @@ class ElectronStore {
 		return this.store.get('stats.game.score');
 	}
 
-	setGameScore(score) {
+	setGameScore(score: any) {
 		this.store.set('stats.game.score', score);
 	}
 
@@ -149,7 +150,7 @@ class ElectronStore {
 		return this.store.get(`player.${this.getCurrentPlayer()}.session`);
 	}
 
-	setSessionStats(rankStats) {
+	setSessionStats(rankStats: any) {
 		let session = {
 			startRankStats: rankStats,
 			startTime: this.dateTimeNow(),
@@ -160,8 +161,8 @@ class ElectronStore {
 		return session;
 	}
 
-	updateSessionStats(rankStats) {
-		let session = this.getSessionStats() ?? this.setSession(rankStats);
+	updateSessionStats(rankStats: any) {
+		let session = this.getSessionStats() ?? this.setSessionStats(rankStats);
 		session.latestDate = this.dateTimeNow();
 		session.currentRankStats = rankStats;
 		this.store.set(`player.${this.getCurrentPlayer()}.session`, session);
@@ -174,9 +175,9 @@ class ElectronStore {
 	// GAME
 	// Save pre and post game (In case opening app mid game)
 	// Save players rank, set score and last frame*
-	setGame(gameStats) {
+	setGame(gameStats: any) {
 		if (!gameStats?.matchId) return;
-		if (!gameStats.players.some((p) => p.connectCode == this.getCurrentPlayer())) return;
+		if (!gameStats.players.some((p: any) => p.connectCode == this.getCurrentPlayer())) return;
 		gameStats.timestamp = this.dateTimeNow();
 		this.store.set(
 			`player.${this.getCurrentPlayer()}.game.${gameStats.matchId}.${gameStats.gameNumber}`,
@@ -184,30 +185,30 @@ class ElectronStore {
 		);
 	}
 
-	getGame(matchId, gameNumber) {
+	getGame(matchId: any, gameNumber: any) {
 		return this.store.get(`player.${this.getCurrentPlayer()}.game.${matchId}.${gameNumber}`);
 	}
 
-	getSet(matchId) {
+	getSet(matchId: string) {
 		return this.store.get(`player.${this.getCurrentPlayer()}.game.${matchId}`);
 	}
 
-	getAllSets(mode) {
+	getAllSets(mode: any) {
 		if (!mode) return;
 		const sets = this.store.get(`player.${this.getCurrentPlayer()}.game`);
 		const matchIds = Object.keys(sets ?? {});
 		const regex = /mode\.(\w+)/;
-		const setIds = matchIds.filter((m) => m.match(regex)[1] == mode);
+		const setIds = matchIds.filter((m) => m.match(regex)![1] == mode);
 		return setIds?.map((id) => sets[id]);
 	}
 
 	// RECENT SETS
-	getRecentSets(mode, number = 10) {
+	getRecentSets(mode: any, number = 10) {
 		if (!mode) return;
-		const rankedSets = this.getAllSets(mode);
-		const recentSets = rankedSets.sort((a, b) => a.matchId > b.matchId).slice(0, number);
+		const rankedSets = this.getAllSets(mode) ?? [];
+		const recentSets = rankedSets.sort((a, b) => a.matchId - b.matchId).slice(0, number);
 
-		return recentSets.map((id) => sets[id]);
+		return recentSets.map((id) => recentSets[id]);
 	}
 
 	// Rank
@@ -215,14 +216,14 @@ class ElectronStore {
 		this.store.get(`player.${this.getCurrentPlayer()}.rank`);
 	}
 
-	setCurrentPlayerCurrentRankStats(rankStats) {
+	setCurrentPlayerCurrentRankStats(rankStats: any) {
 		if (!rankStats) return;
 		// TODO: Check if number of ranked games are changed
 		// If true, fill gap with empty games
 		this.store.set(`player.${this.getCurrentPlayer()}.rank.current`, rankStats);
 	}
 
-	setCurrentPlayerActualRankStats(rankStats) {
+	setCurrentPlayerActualRankStats(rankStats: any) {
 		if (!rankStats) return;
 		this.store.set(`player.${this.getCurrentPlayer()}.rank.new`, rankStats);
 		const currentRank = this.getCurrentPlayerRankStats();
@@ -234,7 +235,7 @@ class ElectronStore {
 		this.store.get(`player.${this.getCurrentPlayer()}.rank.history`);
 	}
 
-	updateCurrentPlayerRankHistory(rankStats) {
+	updateCurrentPlayerRankHistory(rankStats: any) {
 		if (!rankStats) return;
 		this.store.set(
 			`player.${this.getCurrentPlayer()}.rank.history.${this.dateTimeNow()}`,
@@ -244,5 +245,3 @@ class ElectronStore {
 
 	// Get recent game - statDisplay
 }
-
-module.exports = { ElectronStore };

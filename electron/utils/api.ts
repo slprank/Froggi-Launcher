@@ -1,10 +1,11 @@
-class Api {
-	constructor(log) {
+import axios from 'axios';
+export class Api {
+	log: any;
+	constructor(log: any) {
 		this.log = log;
-		this.axios = require('axios');
 	}
 
-	async getPlayerRankStats(connectCode) {
+	async getPlayerRankStats(connectCode: string) {
 		if (!connectCode) return;
 
 		try {
@@ -15,5 +16,3 @@ class Api {
 		}
 	}
 }
-
-module.exports = { Api };

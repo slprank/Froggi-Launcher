@@ -1,56 +1,63 @@
-const initAutoUpdater = (mainWindow, eventEmitter, log) => {
+export class initAutoUpdater {
+	mainWindow: any;
+	eventEmitter: any;
+	log: any;
+	constructor(mainWindow: any, eventEmitter: any, log: any) {
+		this.mainWindow = mainWindow;
+		this.eventEmitter = eventEmitter;
+		this.log = log;
+	}
 	// TODO: Convert to a class
-	try {
-		log.info('autoUpdater');
+	init() {
+		this.log.info('autoUpdater');
 
 		const { autoUpdater } = require('electron-updater');
 
 		autoUpdater.autoInstallOnAppQuit = true;
 
-		log.info('current version', autoUpdater.currentVersion);
+		this.log.info('current version', autoUpdater.currentVersion);
 
 		autoUpdater
 			.checkForUpdates()
-			.then((data) => log.info('update', data))
-			.catch((err) => log.error(err));
+			.then((data) => this.log.info('update', data))
+			.catch((err) => this.log.error(err));
 
 		autoUpdater.on('checking-for-update', () => {
-			log.info('Checking for update');
-			mainWindow.webContents.send('update-status', `Checking for update`);
+			this.log.info('Checking for update');
+			this.mainWindow.webContents.send('update-status', `Checking for update`);
 		});
 
 		autoUpdater.on('update-not-available', () => {
-			log.info('update not available');
-			mainWindow.webContents.send('update-status', `No update available`);
+			this.log.info('update not available');
+			this.mainWindow.webContents.send('update-status', `No update available`);
 		});
 
 		autoUpdater.on('update-available', (data) => {
-			log.info(`update available: ${data.version}`);
-			mainWindow.webContents.send('version', data.version);
-			mainWindow.webContents.send('update-status', `Download`);
+			this.log.info(`update available: ${data.version}`);
+			this.mainWindow.webContents.send('version', data.version);
+			this.mainWindow.webContents.send('update-status', `Download`);
 			autoUpdater.downloadUpdate();
 		});
 
 		autoUpdater.on('download-progress', (data) => {
-			log.info(`Downloading: ${data.percent.toFixed()}`);
-			mainWindow.webContents.send('update-status', `Downloading: ${data.percent.toFixed()}%`);
+			this.log.info(`Downloading: ${data.percent.toFixed()}`);
+			this.mainWindow.webContents.send(
+				'update-status',
+				`Downloading: ${data.percent.toFixed()}%`,
+			);
 		});
 
 		autoUpdater.on('update-downloaded', (data) => {
-			log.info(`Download complete: ${data.version}`);
-			log.info(
+			this.log.info(`Download complete: ${data.version}`);
+			this.log.info(
 				`Download url: https://github.com/slprank/slpRank-client/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
-			mainWindow.webContents.send('update-status', `Install`);
+			this.mainWindow.webContents.send('update-status', `Install`);
 			autoUpdater.quitAndInstall(); // Should be handled manually?
 		});
 
-		eventEmitter.on('update-install', async () => {
+		this.eventEmitter.on('update-install', async () => {
 			autoUpdater.quitAndInstall();
 		});
-	} catch (err) {
-		log.error(err);
 	}
-};
-
-module.exports = { initAutoUpdater };
+}

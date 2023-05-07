@@ -1,28 +1,28 @@
-const {
-	SlpParser,
-	DolphinConnection,
-	Ports,
-	ConnectionEvent,
-	DolphinMessageType,
-	Command,
-	ConnectionStatus,
-	SlpCommandEventPayload,
-	SlpParserEvent,
-	FrameEntryType,
-	SlpStream,
-	SlpStreamEvent,
-	SlippiGame,
-	GameMode,
-	Stats,
-} = require('@slippi/slippi-js');
+import { SlpParserEvent, SlpStreamEvent, SlippiGame } from '@slippi/slippi-js';
 
-class StatsDisplay {
-	constructor(messageHandler, eventEmitter, log, slpStream, slpParser, store, api) {
+export class StatsDisplay {
+	messageHandler: any;
+	eventEmitter: any;
+	log: any;
+	slpStream: any;
+	slpParser: any;
+	store: any;
+	api: any;
+
+	constructor(
+		messageHandler: any,
+		eventEmitter: any,
+		log: any,
+		slpStream: any,
+		slpParser: any,
+		store: any,
+		api: any,
+	) {
 		this.messageHandler = messageHandler;
 		this.eventEmitter = eventEmitter;
 		this.log = log;
 		this.slpStream = slpStream;
-		this.parser = slpParser;
+		this.slpParser = slpParser;
 		this.store = store;
 		this.api = api;
 
@@ -30,31 +30,31 @@ class StatsDisplay {
 	}
 
 	initStatDisplay() {
-		this.slpStream.on(SlpStreamEvent.COMMAND, async (event) => {
+		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: any) => {
 			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
-			this.parser.handleCommand(event.command, event.payload);
+			this.slpParser.handleCommand(event.command, event.payload);
 			if (event.command == 54) {
-				await this.messageGameStart(this.parser.getSettings());
+				await this.messageGameStart(this.slpParser.getSettings());
 			}
 		});
 
-		this.parser.on(SlpParserEvent.END, async (frameEntry) => {
-			await this.messageGameEnd(frameEntry, this.parser.getSettings());
+		this.slpParser.on(SlpParserEvent.END, async (frameEntry: any) => {
+			await this.messageGameEnd(frameEntry, this.slpParser.getSettings());
 		});
 
-		this.parser.on(SlpParserEvent.FRAME, (frameEntry) => {
+		this.slpParser.on(SlpParserEvent.FRAME, (frameEntry: any) => {
 			this.messageHandler.sendMessage('game_frame', frameEntry);
 		});
 	}
 
 	// GAME START
-	async messageGameStart(settings) {
-		if (!settings.players.some((p) => !p.connectCode)) this.messageOfflineData(settings);
+	async messageGameStart(settings: any) {
+		if (!settings.players.some((p: any) => !p.connectCode)) this.messageOfflineData(settings);
 		await this.messageOnlineData(settings);
 		// Save and emit scene
 	}
 
-	async messageOnlineData(settings) {
+	async messageOnlineData(settings: any) {
 		let currentPlayersRankStats = [
 			await this.api.getPlayerRankStats(settings.players[0].connectCode),
 			await this.api.getPlayerRankStats(settings.players[1].connectCode),
@@ -75,7 +75,7 @@ class StatsDisplay {
 		this.messageHandler.sendMessage('game_settings', settings);
 	}
 
-	messageOfflineData(settings) {
+	messageOfflineData(settings: any) {
 		const currentPlayersRankStats = this.store.getCurrentPlayersRankStats();
 
 		this.store.setGameSettings(settings);
@@ -85,7 +85,7 @@ class StatsDisplay {
 	}
 
 	// GAME END
-	async messageGameEnd(frameEntry, settings) {
+	async messageGameEnd(frameEntry: any, settings: any) {
 		console.log(frameEntry, settings);
 
 		this.handleScore(frameEntry);
@@ -112,12 +112,12 @@ class StatsDisplay {
 		// Change scene
 	}
 
-	handleScore(frameEntry) {
+	handleScore(frameEntry: any) {
 		this.store.setGameScore([0, 0]);
 		let score = this.store.getGameScore() ?? [0, 0];
 		const winnerIndex = frameEntry.placements
-			.filter((p) => p.position >= 0)
-			.sort((a, b) => a.position - b.position)[0].playerIndex;
+			.filter((p: any) => p.position >= 0)
+			.sort((a: any, b: any) => a.position - b.position)[0].playerIndex;
 		score[winnerIndex] += 1;
 		this.messageHandler.sendMessage('game_score', score);
 		this.store.setGameScore(score);
@@ -141,10 +141,12 @@ class StatsDisplay {
 
 		if (!slippiDir) return null;
 
-		let files = fs.readdirSync(slippiDir).map((filename) => `${path.parse(filename).name}.slp`);
+		let files = fs
+			.readdirSync(slippiDir)
+			.map((filename: string) => `${path.parse(filename).name}.slp`);
 
-		files = files.filter((f) => re.test(f)).map((f) => `${slippiDir}/${f}`);
-		return files.sort((a, b) => a.length - b.length);
+		files = files.filter((f: string) => re.test(f)).map((f: string) => `${slippiDir}/${f}`);
+		return files.sort((a: string, b: string) => a.length - b.length); // Fix
 	}
 
 	getRecentGameStats() {
@@ -155,5 +157,3 @@ class StatsDisplay {
 		return game?.getStats();
 	}
 }
-
-module.exports = { StatsDisplay };

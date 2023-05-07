@@ -52,6 +52,7 @@
 		"ws": "^8.12.0"
 	},
 	"devDependencies": {
+		"@types/ip": "^1.1.0",
 		"@typescript-eslint/eslint-plugin": "^5.48.2",
 		"@typescript-eslint/parser": "^5.48.2",
 		"autoprefixer": "^10.4.13",
