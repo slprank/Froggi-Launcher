@@ -169,14 +169,6 @@
 {/if}
 
 <style>
-	.dragbar {
-		-webkit-app-region: drag;
-		position: fixed;
-		z-index: 35;
-		height: 40px;
-		width: 100%;
-	}
-
 	:global(body) {
 		margin: 0;
 		padding: 0;
