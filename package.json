@@ -22,7 +22,7 @@
 		"build:win": "npm run compile && electron-builder -w --config build.config.json",
 		"compile": "npm run build:svelte && npm run fix && tsc --p ./tsconfig.electron.json",
 		"i": "npm i && npm install --prefix ./frontend",
-		"fix": "cd node_modules/@types rm -rf cacheable-request"
+		"fix": "rm -rf node_modules/@types/cacheable-request"
 	},
 	"engines": {
 		"npm": ">=7",
