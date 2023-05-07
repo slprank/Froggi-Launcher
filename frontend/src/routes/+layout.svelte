@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
 	import {
@@ -33,7 +34,7 @@
 			initNoSleep();
 			initWebSocket();
 			initServiceWorker();
-			//paramRedirect();
+			paramRedirect();
 		}
 
 		if ($isElectron) {
