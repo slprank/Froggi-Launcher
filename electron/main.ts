@@ -61,12 +61,7 @@ try {
 
 		const mainWindow = new BrowserWindow({
 			backgroundColor: 'whitesmoke',
-			titleBarStyle: 'hidden',
-			autoHideMenuBar: true,
-			trafficLightPosition: {
-				x: 20,
-				y: 20,
-			},
+			titleBarStyle: 'default',
 			minHeight: 540,
 			minWidth: 960,
 			webPreferences: {
