@@ -9,9 +9,9 @@
 	"author": "Sindre Vatnaland",
 	"scripts": {
 		"nodemon": "nodemon",
-		"dev": "cross-env NODE_ENV=dev && npm run nodemon",
-		"dev:quick": "cross-env NODE_ENV=dev && npm run dev:all",
-		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
+		"dev": "cross-env NODE_ENV=dev && npm run dev:all",
+		"dev:quick": "cross-env NODE_ENV=dev npm run dev:electron",
+		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run nodemon\"",
 		"dev:svelte": "cd frontend && npm run dev",
 		"dev:electron": "npm run compile && electron build_electron/main.js",
 		"build": "cross-env NODE_ENV=production npm run build && npm run build:electron",
