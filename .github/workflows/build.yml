@@ -29,7 +29,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  file: ./out/*.dmg; ./out/*.dmg.blockmap; ./out/*mac.zip; ./out/*.zip.blockmap; ./out/latest-mac.yml;
+                  file: ./dist/*.dmg; ./dist/*.dmg.blockmap; ./dist/*mac.zip; ./dist/*.zip.blockmap; ./dist/latest-mac.yml;
                   tags: false
                   draft: false
                   tag_name: v0.0.${{ github.run_number }}
@@ -58,7 +58,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  file: ./out/*.AppImage; ./out/builder-debug.yml; ./out/latest-linux.yml;
+                  file: ./dist/*.AppImage; ./dist/builder-debug.yml; ./dist/latest-linux.yml;
                   tags: false
                   draft: false
                   tag_name: v0.0.${{ github.run_number }}
@@ -87,7 +87,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  file: ./out/*.exe; ./out/*.exe.blockmap; ./out/builder-debug.yml; ./out/latest.yml;
+                  file: ./dist/*.exe; ./dist/*.exe.blockmap; ./dist/builder-debug.yml; ./dist/latest.yml;
                   tags: false
                   draft: false
                   tag_name: v0.0.${{ github.run_number }}

@@ -2,7 +2,7 @@
 	"appId": "com.slpRankClient.app",
 	"productName": "slpRank-client",
 	"directories": {
-		"output": "out"
+		"output": "dist"
 	},
 	"artifactName": "slpRank-client-${version}-${os}.${ext}",
 	"win": {
@@ -25,11 +25,12 @@
 	},
 	"executableName": "slp-rank-client",
 	"files": [
+		"frontend/build/**/*",
 		"build/index.html",
 		"build/**/*",
-		"src/**/*",
-		"src/electron/**/*",
-		"src/electron/utils/**/*",
+		"**/*",
+		"electron/**/*",
+		"electron/utils/**/*",
 		{
 			"from": "build",
 			"to": ""

@@ -3,24 +3,25 @@
 	"version": "0.0.3",
 	"private": true,
 	"description": "Slippi Client",
-	"main": "build/main.js",
+	"main": "build_electron/main.js",
 	"nodeIntegration": true,
 	"sandbox": true,
 	"author": "Sindre Vatnaland",
 	"scripts": {
 		"nodemon": "nodemon",
-		"dev": "cross-env NODE_ENV=dev && npm run dev:all",
+		"dev": "cross-env NODE_ENV=dev && npm run dev:svelte:build && npm run dev:all",
 		"dev:quick": "cross-env NODE_ENV=dev && npm run dev:electron",
 		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run nodemon\"",
 		"dev:svelte": "cd frontend && npm run dev",
-		"dev:svelte:quick": "cd frontend && npm run dev:quick",
-		"dev:electron": "tsc --p ./tsconfig.electron.json && electron build/main.js",
+		"dev:svelte:build": "cd frontend && npm run build",
+		"dev:electron": "tsc --p ./tsconfig.electron.json && electron build_electron/main.js",
 		"build": "cross-env NODE_ENV=production npm run build:svelte && npm run build:electron",
 		"build:svelte": "cd frontend && npm run build",
-		"build:electron": "electron-builder -mwl --config build.config.json",
-		"build:linux": "cross-env vite build && electron-builder -l --config build.config.json",
-		"build:mac": "cross-env vite build && electron-builder -m --config build.config.json",
-		"build:win": "cross-env vite build && electron-builder -w --config build.config.json",
+		"build:electron": "npm run compile && electron-builder -mwl --config build.config.json",
+		"build:linux": "npm run compile && electron-builder -l --config build.config.json",
+		"build:mac": "npm run compile && electron-builder -m --config build.config.json",
+		"build:win": "npm run compile && electron-builder -w --config build.config.json",
+		"compile": "npm run build:svelte && tsc --p ./tsconfig.electron.json",
 		"i": "npm i && npm install --prefix ./frontend"
 	},
 	"engines": {
@@ -72,13 +73,15 @@
 		"typescript": "^4.9.4"
 	},
 	"build": {
+		"build": {
+			"files": [
+				"build/**/*"
+			]
+		},
 		"publish": {
 			"provider": "github",
 			"owner": "slprank",
 			"repo": "slpRank-client"
 		}
-	},
-	"files": [
-		"dist/**/*"
-	]
+	}
 }

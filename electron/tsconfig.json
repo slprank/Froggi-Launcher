@@ -1,7 +1,7 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-		"outDir": "../build",
+		"outDir": "../build_electron",
 		"target": "ES2015",
 		"module": "commonjs",
 		"sourceMap": true,

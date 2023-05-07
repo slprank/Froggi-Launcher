@@ -26,7 +26,7 @@ class MessageHandler {
 	initHtml() {
 		try {
 			this.app.get('/', (req, res) => {
-				res.resolve(this.dir + '/index.html');
+				res.resolve(this.dir + '/frontend/index.html');
 			});
 
 			this.app.get('*', (req, res) => {
