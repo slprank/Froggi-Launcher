@@ -3,11 +3,8 @@
 	"version": "0.0.3",
 	"type": "module",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=dev vite build && npm run dev:svelte",
-		"dev:quick": "cross-env NODE_ENV=dev npm run dev:svelte",
-		"dev:svelte": "vite dev",
-		"build": "cross-env NODE_ENV=production npm run build:svelte",
-		"build:svelte": "vite build"
+		"dev": "cross-env NODE_ENV=dev vite dev",
+		"build": "vite build"
 	},
 	"dependencies": {
 		"@dimfeld/svelte-lazyload": "^0.0.4",
