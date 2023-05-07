@@ -20,7 +20,7 @@
 		"build:win": "npm run compile:electron && electron-builder -w --config build.config.json",
 		"compile:electron": "npm run build:svelte && npm run compile:electron:fix && tsc --p ./tsconfig.electron.json",
 		"compile:electron:fix": "rm -rf node_modules/@types/cacheable-request",
-		"install": "npm i && npm i --prefix ./frontend",
+		"i": "npm i && npm i --prefix ./frontend",
 		"nodemon": "nodemon"
 	},
 	"engines": {
