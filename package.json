@@ -21,7 +21,7 @@
 		"build:mac": "npm run compile && electron-builder -m --config build.config.json",
 		"build:win": "npm run compile && electron-builder -w --config build.config.json",
 		"compile": "npm run build:svelte && tsc --p ./tsconfig.electron.json",
-		"i": "npm i && npm install --prefix ./frontend"
+		"i": "npm i --production && npm install --prefix ./frontend"
 	},
 	"engines": {
 		"npm": ">=7",
@@ -53,6 +53,7 @@
 	},
 	"devDependencies": {
 		"@types/ip": "^1.1.0",
+		"@types/npm": "^7.19.0",
 		"@typescript-eslint/eslint-plugin": "^5.48.2",
 		"@typescript-eslint/parser": "^5.48.2",
 		"autoprefixer": "^10.4.13",
