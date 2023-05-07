@@ -25,12 +25,10 @@
 	},
 	"executableName": "slp-rank-client",
 	"files": [
-		"frontend/build/**/*",
-		"build/index.html",
+		"build",
+		"build_electron",
 		"build/**/*",
-		"**/*",
-		"electron/**/*",
-		"electron/utils/**/*",
+		"build_electron/**/*",
 		{
 			"from": "build",
 			"to": ""

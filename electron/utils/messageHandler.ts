@@ -52,7 +52,7 @@ export class MessageHandler {
 					.slice(1)
 					.map((route: string, i: number) => `route${i + 1}=${route}`)
 					.join('&');
-				res.rerootDirect(`/?${params}`);
+				res.redirect(`/?${params}`);
 			});
 
 			this.server.listen(3200, (_: any) => {
