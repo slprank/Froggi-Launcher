@@ -8,9 +8,7 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter({
-			fallback: 'index.html',
-		}),
+		adapter: adapter({ fallback: 'index.html' }),
 		prerender: { entries: [] },
 	},
 };

@@ -1,12 +1,13 @@
-const windowStateManager = require('electron-window-state');
-const contextMenu = require('electron-context-menu');
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
-const serve = require('electron-serve');
-const path = require('path');
-const log = require('electron-log');
+import windowStateManager from 'electron-window-state';
+import contextMenu from 'electron-context-menu';
+import { app, BrowserWindow /*dialog, ipcMain*/ } from 'electron';
+import serve from 'electron-serve';
+import path from 'path';
+import log from 'electron-log';
 
-const fs = require('fs');
+import fs from 'fs';
 try {
+	/*
 	const achievements = require('./utils/achievements.ts');
 	const autoUpdater = require('./utils/autoUpdater.ts');
 	const obs = require('./utils/obs.ts');
@@ -15,19 +16,22 @@ try {
 	const { Achievements } = require('./utils/achievements.ts');
 	const { Api } = require('./utils/api.ts');
 	const { ElectronStore } = require('./utils/electronStore.ts');
-	const { EventEmitter } = require('events');
 	const { MessageHandler } = require('./utils/messageHandler.ts');
 	const { ObsWebSocket } = require('./utils/obs.ts');
 	const { SlippiJs } = require('./utils/slippi.ts');
 	const { StatsDisplay } = require('./utils/statsDisplay.ts');
 	const { Test } = require('./utils/test.ts');
 	const rootDir = `${__dirname}/../`;
+	*/
+	const { EventEmitter } = require('events');
 
 	const os = require('os');
 
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
+
+	log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 	const eventEmitter = new EventEmitter();
 
@@ -44,13 +48,13 @@ try {
 		log.error(e);
 	}
 	const serveURL = serve({ directory: '.' });
-	const port = process.env.PORT || 5173;
+	const port = `${process.env.PORT || 5173}`;
 	const dev = !app.isPackaged;
 
 	console.log('no');
 	console.log('no');
 
-	let mainWindow;
+	let mainWindow: any;
 
 	function createWindow() {
 		let windowState = windowStateManager({
@@ -105,6 +109,7 @@ try {
 				click: () => {
 					mainWindow.webContents.send('reset-score');
 					log.info('Right click: 1');
+					console.log(defaultActions, params, browserWindow);
 				},
 			},
 			{
@@ -117,8 +122,8 @@ try {
 		],
 	});
 
-	function loadVite(port) {
-		mainWindow.loadURL(`http://localhost:${port}`).catch((e) => {
+	function loadVite(port: string) {
+		mainWindow.loadURL(`http://localhost:${port}`).catch((e: any) => {
 			log.error('Error loading URL, retrying', e);
 			setTimeout(() => {
 				loadVite(port);
@@ -136,6 +141,7 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', async () => {
+			/*
 			const api = new Api(log);
 			const electronStore = new ElectronStore(log);
 			const messageHandler = new MessageHandler(
@@ -214,6 +220,7 @@ try {
 		mainWindow.webContents.once('focus', () => {
 			if (dev) return;
 			//autoUpdater.initAutoUpdater(mainWindow, eventEmitter, log);
+			*/
 		});
 	}
 
@@ -227,7 +234,7 @@ try {
 		if (process.platform !== 'darwin') app.quit();
 	});
 
-	eventEmitter.on('test-message', (data) => {
+	eventEmitter.on('test-message', (data: any) => {
 		console.log(data);
 	});
 } catch (err) {
