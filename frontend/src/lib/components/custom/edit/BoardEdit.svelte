@@ -10,7 +10,7 @@
 
 	const overlayId = $page.params.overlay;
 
-	export let height: number | undefined = undefined;
+	export let boardHeight: number | undefined = undefined;
 	export let layer: number | undefined = undefined;
 	export let selectedId: string | undefined = undefined;
 
@@ -79,14 +79,14 @@
 
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />
 
-{#key height}
+{#key boardHeight}
 	{#key $statsScene}
 		<div class="w-full h-full overflow-hidden relative">
 			<BoardContainer bind:scene={curOverlay[$statsScene]} />
 			<div class="w-full h-full z-2 absolute">
 				<Grid
 					bind:items
-					rowHeight={(height ?? innerHeight) / ROW}
+					rowHeight={(boardHeight ?? innerHeight) / ROW}
 					gap={[0, 0]}
 					let:dataItem
 					cols={[[COL, COL]]}

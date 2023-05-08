@@ -9,7 +9,7 @@
 		const availableRoutes = getAvailableRoutes();
 		console.log(availableRoutes);
 		page.subscribe((page) => {
-			const routes = page.url.searchParams.toString(); // ?route=some => redirect to /some
+			const routes = page.url.searchParams.toString(); // ?route1=some?route2/thing => redirect to /some/thing
 			if (!routes) return;
 			const route = routes
 				.split('&')

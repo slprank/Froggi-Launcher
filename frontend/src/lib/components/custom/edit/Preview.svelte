@@ -7,6 +7,7 @@
 
 	const overlayId = $page.params.overlay;
 	export let boardHeight: number;
+	export let boardWidth: number;
 
 	$: overlayUrl = `${$urls?.local}/obs/custom/${overlayId}`;
 
@@ -21,9 +22,10 @@
 		<input type="checkbox" bind:checked={preview} />
 	</div>
 	<div
-		class={`aspect-video w-[400px] h-[225px] xl:w-[500px] xl:h-[280px] 2xl:w-[600px] 2xl:h-[340px] 3xl:w-[700px] 3xl:h-[390px] 4xl:w-[800px] 4xl:h-[450px] 5xl:w-[900px] 5xl:h-[505px] outline outline-4 outline-zinc-700 overflow-hidden shadow-md`}
+		style={`width: ${boardWidth}px; height: ${boardHeight}px`}
+		class={`outline outline-4 outline-zinc-700 overflow-hidden shadow-md`}
 	>
-		<Board bind:height={boardHeight} bind:preview />
+		<Board bind:boardHeight bind:preview />
 	</div>
 	<div class="flex items-center gap-2">
 		<h1 class="text-gray-500 text-md font-medium text-shadow">

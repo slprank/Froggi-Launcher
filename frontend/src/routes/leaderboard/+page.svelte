@@ -41,11 +41,7 @@
 				</MultiSelect>
 			</div>
 			<div class="w-32 mr-2">
-				<MultiSelect
-					bind:value={selectedCharacters}
-					placeholder="Characters"
-					isCharacter={true}
-				>
+				<MultiSelect bind:value={selectedCharacters} label="Characters" isCharacter={true}>
 					<option value={20}>Falco</option>
 					<option value={4}>Kirby</option>
 				</MultiSelect>
@@ -94,8 +90,8 @@
 				</div>
 			</div>
 			<div
-				class="w-full grid grid-cols-12 min-w-2xl max-w-6xl h-full 
-			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25 
+				class="w-full grid grid-cols-12 min-w-2xl max-w-6xl h-full
+			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25
 			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50"
 			>
 				{#each Array.from(Array(200)) as _, i}

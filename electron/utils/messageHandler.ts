@@ -97,14 +97,14 @@ export class MessageHandler {
 		}
 	}
 
-	sendMessage(topic: string, payload: any) {
-		this.mainWindow.webContents.send(
+	async sendMessage(topic: string, payload: any) {
+		await this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
 				[topic]: payload,
 			}),
 		);
-		this.webSockets.forEach((socket: any) => {
+		await this.webSockets.forEach((socket: any) => {
 			socket.send(
 				JSON.stringify({
 					[topic]: payload,

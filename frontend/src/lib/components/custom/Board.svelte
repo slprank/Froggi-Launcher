@@ -8,7 +8,7 @@
 	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import BoardContainer from './BoardContainer.svelte';
 
-	export let height: number | undefined = undefined;
+	export let boardHeight: number | undefined = undefined;
 	export let preview: boolean = true;
 	let curSceneIndex: number | undefined = undefined;
 
@@ -46,31 +46,33 @@
 
 <svelte:window bind:innerHeight />
 
-{#key curSceneIndex}
-	{#key height}
-		<div class="w-full h-full overflow-hidden relative">
-			<BoardContainer bind:scene={curScene} bind:preview />
-			{#each curScene?.layers ?? [] as layer, i}
-				<div class="w-full h-full z-2 absolute">
-					<Grid
-						bind:items={layer}
-						rowHeight={(height ?? innerHeight) / ROW}
-						gap={[0, 0]}
-						let:dataItem
-						cols={[[COL, COL]]}
-						fastStart={true}
-					>
-						<GridContent
-							bind:preview
-							{dataItem}
-							transition={curScene?.elementTransition}
-							additionalDelay={128 * i}
-							duration={curScene?.elementDuration ?? 250}
-						/>
-					</Grid>
-				</div>
-			{/each}
-			<div class="w-full h-full z-8 absolute" />
-		</div>
+{#if curScene}
+	{#key curSceneIndex}
+		{#key boardHeight}
+			<div class="w-full h-full overflow-hidden relative">
+				<BoardContainer bind:scene={curScene} bind:preview />
+				{#each curScene?.layers ?? [] as layer, i}
+					<div class="w-full h-full z-2 absolute">
+						<Grid
+							bind:items={layer}
+							rowHeight={(boardHeight ?? innerHeight) / ROW}
+							gap={[0, 0]}
+							let:dataItem
+							cols={[[COL, COL]]}
+							fastStart={true}
+						>
+							<GridContent
+								bind:preview
+								{dataItem}
+								transition={curScene?.elementTransition}
+								additionalDelay={128 * i}
+								duration={curScene?.elementDuration ?? 250}
+							/>
+						</Grid>
+					</div>
+				{/each}
+				<div class="w-full h-full z-8 absolute" />
+			</div>
+		{/key}
 	{/key}
-{/key}
+{/if}

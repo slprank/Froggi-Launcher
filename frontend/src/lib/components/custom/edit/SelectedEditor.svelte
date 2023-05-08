@@ -6,7 +6,7 @@
 	import { fly } from 'svelte/transition';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
-	import { updateOverlay } from './OverlayHandler.svelte';
+	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	const overlayId = $page.params.overlay;
 
