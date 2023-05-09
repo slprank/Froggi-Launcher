@@ -34,9 +34,7 @@
 	$: $statsScene, resetSelectedLayer();
 
 	async function refreshOverlay() {
-		console.log('here');
 		overlay = await getOverlayById(overlayId);
-		console.log(overlay, 'after');
 	}
 	$: $obs, isElementModalOpen, refreshOverlay();
 
@@ -57,18 +55,12 @@
 	out:fade={{ duration: 300 }}
 >
 	{#if overlay}
-		<div class="w-full h-full grid grid-cols-2 px-16 min-w-2xl">
-			<div
-				style={`max-width: ${boardWidth}px;`}
-				class="w-full h-full col-span-1 grid justify-center content-center"
-			>
+		<div class="w-full h-full grid grid-cols-2 px-16 min-w-2xl justify-center">
+			<div class="w-full h-full col-span-1 grid justify-center content-center">
 				<Preview bind:boardWidth bind:boardHeight />
 			</div>
 
-			<div
-				style={`max-width: ${boardWidth}px;`}
-				class={`w-full h-full grid gap-2 justify-center content-center`}
-			>
+			<div class={`w-full h-full col-span-1 grid gap-2 justify-center content-center`}>
 				<div class="grid gap-2">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
 					<div class="flex gap-2">

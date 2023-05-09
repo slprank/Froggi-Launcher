@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { CustomElement, Transition } from '$lib/types/enum';
 	import type { GridContentItem } from '$lib/types/types';
-	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import { fade, fly, scale, slide, blur, draw, crossfade } from 'svelte/transition';
-	import TextFitMulti from '../TextFitMulti.svelte';
+	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { COL, ROW } from '$lib/types/const';
 
 	export let dataItem: GridContentItem | undefined = undefined;

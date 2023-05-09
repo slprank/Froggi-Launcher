@@ -11,6 +11,7 @@
 	import SceneSelect from '../selector/SceneSelect.svelte';
 	import ImageInput from '$lib/components/input/ImageInput.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import { updateOverlay } from './OverlayHandler.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -36,14 +37,11 @@
 		open = false;
 	}
 
-	function handleUpdate() {
-		updateActiveScenes();
+	async function handleUpdate() {
 		notifications.success('Overlay updated!', 3000);
 		open = false;
-	}
-
-	function updateActiveScenes() {
 		overlay.activeScenes = tempActiveScenes;
+		await updateOverlay(overlay);
 	}
 
 	function enableDefault() {
