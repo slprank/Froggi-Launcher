@@ -151,4 +151,13 @@
 			),
 		);
 	}
+
+	export async function deleteOverlay(overlayId: string | undefined) {
+		if (!overlayId) return;
+		await new Promise(() =>
+			eventEmitter.subscribe((eventEmitter) =>
+				eventEmitter.emit('electron', 'delete-custom-overlay', overlayId),
+			),
+		);
+	}
 </script>

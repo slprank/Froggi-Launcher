@@ -19,7 +19,6 @@
 		sessionStats,
 		statsScene,
 		urls,
-		isMobile,
 		obs,
 	} from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';

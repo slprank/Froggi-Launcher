@@ -4,6 +4,7 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import serve from 'electron-serve';
 import path from 'path';
 import log from 'electron-log';
+import getAppDataPath from 'appdata-path';
 
 /*
 import { Achievements } from './utils/achievements';
@@ -22,13 +23,17 @@ import os = require('os');
 
 import fs from 'fs';
 try {
-	const rootDir = `${__dirname}/../`;
+	const rootDir = `${__dirname}/../..`;
 
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
 
 	log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
+
+	const slippiSettings = getSlippiSettings();
+
+	console.log(slippiSettings); // Replay dir and subfolder settings
 
 	const eventEmitter = new EventEmitter();
 
@@ -207,6 +212,13 @@ try {
 			if (dev) return;
 			//autoUpdater.initAutoUpdater(mainWindow, eventEmitter, log);
 		});
+	}
+
+	function getSlippiSettings() {
+		const slippiPath = getAppDataPath('Slippi Launcher');
+		const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
+		const settings = JSON.parse(rawData)?.settings;
+		return settings;
 	}
 
 	app.once('ready', createMainWindow);

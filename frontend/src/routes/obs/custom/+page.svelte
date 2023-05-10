@@ -4,16 +4,12 @@
 	import { goto } from '$app/navigation';
 	import NewOverlayModal from '$lib/components/custom/NewOverlayModal.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
+	import { deleteOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	let deleteOverlayModalOpen = false;
 	let newOverlayModalOpen = false;
 
 	let overlayId: string | undefined = undefined;
-
-	function deleteOverlay() {
-		if (!overlayId) return;
-		$eventEmitter.emit('electron', 'delete-custom-overlay', overlayId);
-	}
 </script>
 
 <main
@@ -49,6 +45,9 @@
 			Add new
 		</button>
 	</div>
-	<ConfirmModal bind:open={deleteOverlayModalOpen} on:confirm={deleteOverlay} />
+	<ConfirmModal
+		bind:open={deleteOverlayModalOpen}
+		on:confirm={async () => await deleteOverlay(overlayId)}
+	/>
 	<NewOverlayModal bind:open={newOverlayModalOpen} />
 </main>
