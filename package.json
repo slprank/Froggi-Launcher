@@ -8,9 +8,8 @@
 	"sandbox": true,
 	"author": "Sindre Vatnaland",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=dev && npm run dev:all",
-		"dev:quick": "cross-env NODE_ENV=dev npm run dev:electron",
-		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run nodemon\"",
+		"dev": "cross-env NODE_ENV=dev && nodemon",
+		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
 		"dev:svelte": "cd frontend && npm run dev",
 		"dev:electron": "npm run compile:electron && electron build_electron/electron/main.js",
 		"build:svelte": "cd frontend && npm run build",
@@ -20,8 +19,7 @@
 		"compile": "npm run build:svelte && npm run compile:electron && tsc --p ./tsconfig.electron.json",
 		"compile:electron": "npm run compile:electron:fix && tsc --p ./tsconfig.electron.json",
 		"compile:electron:fix": "rm -rf node_modules/@types/cacheable-request",
-		"i": "npm i && npm i --prefix ./frontend",
-		"nodemon": "nodemon"
+		"i": "npm i && npm i --prefix ./frontend"
 	},
 	"engines": {
 		"npm": ">=7",
