@@ -215,10 +215,14 @@ try {
 	}
 
 	function getSlippiSettings() {
-		const slippiPath = getAppDataPath('Slippi Launcher');
-		const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
-		const settings = JSON.parse(rawData)?.settings;
-		return settings;
+		try {
+			const slippiPath = getAppDataPath('Slippi Launcher');
+			const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
+			const settings = JSON.parse(rawData)?.settings;
+			return settings;
+		} catch (err) {
+			log.error(err);
+		}
 	}
 
 	app.once('ready', createMainWindow);

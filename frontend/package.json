@@ -3,7 +3,7 @@
 	"version": "0.0.3",
 	"type": "module",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=dev vite dev",
+		"dev": "npm run build && cross-env NODE_ENV=dev vite dev",
 		"build": "vite build"
 	},
 	"dependencies": {

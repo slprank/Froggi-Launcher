@@ -67,7 +67,7 @@
 		tempOverlay[$statsScene].layers.splice(selectedLayer, 1);
 		const index = await getOverlayIndexById(overlay.id);
 		$obs.overlays[index] = tempOverlay;
-		selectedLayer = 0;
+		selectedLayer -= 1;
 		updateOverlay(tempOverlay);
 	}
 </script>
@@ -75,13 +75,11 @@
 <h1 class="text-gray-500 text-lg font-medium text-shadow">Layers</h1>
 <div class="w-full flex gap-2">
 	<div class="w-24">
-		{#if overlay}
-			<Select bind:selected={selectedLayer}>
-				{#each overlay[$statsScene].layers as _, i}
-					<option selected={i === 0} value={i}>Layer {i + 1}</option>
-				{/each}
-			</Select>
-		{/if}
+		<Select bind:selected={selectedLayer}>
+			{#each overlay[$statsScene].layers as _, i}
+				<option selected={i === 0} value={i}>Layer {i + 1}</option>
+			{/each}
+		</Select>
 	</div>
 	<div>
 		<button

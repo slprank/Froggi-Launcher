@@ -3,11 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import Edit from '$lib/components/custom/edit/Edit.svelte';
 	import Board from '$lib/components/custom/Board.svelte';
-
-	let innerHeight: number;
 </script>
-
-<svelte:window bind:innerHeight />
 
 {#if $obs}
 	<main
@@ -18,7 +14,7 @@
 		{#if $isElectron}
 			<Edit />
 		{:else}
-			<Board bind:height={innerHeight} />
+			<Board />
 		{/if}
 	</main>
 {/if}
