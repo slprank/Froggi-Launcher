@@ -14,11 +14,6 @@
 				.join('/');
 
 			if (availableRoutes.includes(route) || isDynamicRoute(availableRoutes, route)) {
-				console.log(
-					availableRoutes.includes(route),
-					'dynamic',
-					isDynamicRoute(availableRoutes, route),
-				);
 				goto(route);
 				return;
 			}
