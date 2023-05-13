@@ -46,11 +46,20 @@
 
 <svelte:window bind:innerHeight />
 
+<svelte:head>
+	{#if curScene?.font}
+		<link rel="stylesheet" href={`/fonts/${curScene?.font}`} />
+	{/if}
+</svelte:head>
+
 {#if curScene}
 	{#key curSceneIndex}
 		{#key boardHeight}
 			{#key innerHeight}
-				<div class="w-full h-full overflow-hidden relative">
+				<div
+					style={`font-family: ${curScene?.font};`}
+					class="w-full h-full overflow-hidden relative"
+				>
 					<BoardContainer bind:scene={curScene} bind:preview />
 					{#each curScene?.layers ?? [] as layer, i}
 						<div class="w-full h-full z-2 absolute">

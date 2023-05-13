@@ -18,7 +18,7 @@ export enum CustomElement {
 	Player2Score = 103,
 
 	// Box
-	// Potential Box Settings
+	// Potential Box Elements
 
 	// Image
 	Player1RankIcon = 300,

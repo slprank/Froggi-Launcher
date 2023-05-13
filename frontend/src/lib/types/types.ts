@@ -40,6 +40,7 @@ export interface Scene {
 	backgroundOpacity: number;
 	elementDuration: number;
 	elementTransition: Transition;
+	font: string | undefined;
 	layers: GridContentItem[][];
 }
 
@@ -51,11 +52,11 @@ export interface GridContentItem {
 }
 
 export interface ElementPayload {
+	advancedStyling: boolean;
 	class: Class;
 	css: Css;
 	image: Image;
 	string: string | undefined;
-	advancedStyling: boolean;
 }
 
 export interface Image {

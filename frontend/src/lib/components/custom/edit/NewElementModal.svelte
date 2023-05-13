@@ -26,11 +26,13 @@
 
 	let selectedElementId: number;
 	let payload: ElementPayload = {
-		string: '',
-		image: {} as Image,
+		advancedStyling: false,
+		animation: false,
 		class: {} as Class,
 		css: {} as Css,
-		advancedStyling: false,
+		font: undefined,
+		image: {} as Image,
+		string: '',
 	};
 
 	let demoItem: GridContentItem;

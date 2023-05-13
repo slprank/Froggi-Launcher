@@ -12,7 +12,6 @@
 	export let selectedId: string | undefined = undefined;
 	export let transition: Transition = Transition.None;
 	export let duration: number = 250;
-	export let font = '';
 
 	export let demoItem: GridContentItem | undefined = undefined;
 
@@ -62,17 +61,9 @@
 	// TODO: Add custom font support
 </script>
 
-<svelte:head>
-	<!--
-		<link rel="stylesheet" href={`https://fonts.googleapis.com/css?family=${font}`} />
-	-->
-</svelte:head>
-
 {#key dataItem}
 	<div
-		style={`font-family: ${font}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''
-		};`}
+		style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
 		class={`custom-font h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 			selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 		} bg-opacity-50`}

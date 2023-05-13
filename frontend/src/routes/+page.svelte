@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Logo from '$lib/Logo.svelte';
-	import { goto } from '$app/navigation';
-	import { isElectron } from '$lib/utils/store.svelte';
-
-	const agent = $isElectron ? 'Electron' : 'Browser';
 </script>
 
 <main

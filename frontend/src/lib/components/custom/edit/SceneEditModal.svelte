@@ -3,7 +3,6 @@
 	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import type { Overlay } from '$lib/types/types';
 	import { statsScene } from '$lib/utils/store.svelte';
-	import { getContext } from 'svelte';
 	import Select from '$lib/components/input/Select.svelte';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
@@ -12,6 +11,8 @@
 	import ImageInput from '$lib/components/input/ImageInput.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { updateOverlay } from './OverlayHandler.svelte';
+	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
+	import '../../../../app.css';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -20,6 +21,7 @@
 	let tempActiveScenes = overlay?.activeScenes;
 
 	let imageOptions: string[] = [];
+
 	function getImageOptions() {
 		const modules = import.meta.glob('../../../../../static/image/backgrounds/**/**.png');
 		for (let image in modules) {
@@ -53,6 +55,15 @@
 	let autofocus: number = 0;
 </script>
 
+<svelte:head>
+	{#if overlay[$statsScene ?? 0].font}
+		<link
+			rel="stylesheet"
+			href={`https://fonts.googleapis.com/css?family=${overlay[$statsScene ?? 0].font}`}
+		/>
+	{/if}
+</svelte:head>
+
 <Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={clear}>
 	<div
 		class=" w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
@@ -72,6 +83,25 @@
 									autoFocusValue={1}
 								/>
 							</div>
+						</div>
+						<div class="w-60 flex">
+							<div class="w-36 h-full">
+								<h1 class="text-gray-500 text-sm font-medium text-shadow">
+									Border
+								</h1>
+								<Select bind:selected={overlay[$statsScene].font}>
+									<option value={undefined} selected>Default</option>
+									<option value={'Roboto'}>Roboto</option>
+									<option value={'Wix+Madefor+Text'}>Wix</option>
+									<option value={'Open+Sans'}>Open Sans</option>
+								</Select>
+							</div>
+							<TextFitMulti
+								class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
+								style={`font-family: ${overlay[$statsScene].font}`}
+							>
+								Font
+							</TextFitMulti>
 						</div>
 						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
 						<div

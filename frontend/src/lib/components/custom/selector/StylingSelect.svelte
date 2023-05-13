@@ -89,7 +89,7 @@
 			</div>
 		</div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Colors</h1>
-		<div class="w-full h-fit flex flex-wrap ">
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-12">
 				<ColorInput bind:value={payload.css.color} />
 			</div>
@@ -157,13 +157,13 @@
 			</div>
 		</div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Background color</h1>
-		<div class="w-full h-fit flex flex-wrap ">
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-12">
 				<ColorInput bind:value={payload.css.background} />
 			</div>
 		</div>
 		<h1 class="text-gray-500 text-lh font-medium text-shadow">Border color</h1>
-		<div class="w-full h-fit flex flex-wrap ">
+		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-12">
 				<ColorInput bind:value={payload.css.borderColor} />
 			</div>
