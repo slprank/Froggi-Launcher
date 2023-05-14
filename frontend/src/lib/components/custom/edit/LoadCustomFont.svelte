@@ -9,19 +9,3 @@
 		document.fonts.add(loaded_face);
 	});
 </script>
-
-<div style={`--test: url(${base64})`}>
-	<h1 style="font-family: Custom">Melee</h1>
-</div>
-
-<style>
-	@font-face {
-		font-family: 'Custom';
-		src: var(--test);
-	}
-	div {
-		width: calc(var(--size) * 1px);
-		height: calc(var(--size) * 1px);
-		background-color: green;
-	}
-</style>
