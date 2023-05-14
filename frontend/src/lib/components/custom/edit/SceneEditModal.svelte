@@ -61,7 +61,7 @@
 	>
 		{#key overlay[$statsScene]}
 			<div class="w-full h-full grid grid-cols-2">
-				<div class="w-ful p-4 px-8 col-span-1 overflow-scroll">
+				<div class="w-ful p-4 px-8 col-span-1 overflow-scroll enable-scrollbar">
 					<div class="w-full grid gap-4">
 						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
 						<div class="w-full flex gap-2">
