@@ -9,6 +9,7 @@
 		getOverlayIndexById,
 		updateOverlay,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 
 	export let overlay: Overlay;
 	export let selectedLayer: number | undefined;
@@ -21,7 +22,9 @@
 		tempOverlay[$statsScene].layers.push([]);
 		const index = await getOverlayIndexById(overlay.id);
 		$obs.overlays[index] = tempOverlay;
-		selectedLayer = tempOverlay[$statsScene].layers.length - 1;
+		setTimeout(() => {
+			selectedLayer = tempOverlay[$statsScene].layers.length - 1;
+		});
 		updateOverlay(tempOverlay);
 	}
 
@@ -83,35 +86,35 @@
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={newLayer}
 		>
-			New layer
+			<TextFitMulti>New layer</TextFitMulti>
 		</button>
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={moveLayerUp}
 		>
-			Move up
+			<TextFitMulti>Move up</TextFitMulti>
 		</button>
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={moveLayerDown}
 		>
-			Move down
+			<TextFitMulti>Move down</TextFitMulti>
 		</button>
 	</div>
 	{#if overlay[$statsScene]?.layers?.length > 1}
 		<div transition:fly={{ duration: 250, y: -25 }}>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
 				on:click={deleteLayer}
 			>
-				Delete layer
+				<TextFitMulti>Delete layer</TextFitMulti>
 			</button>
 		</div>
 	{/if}
