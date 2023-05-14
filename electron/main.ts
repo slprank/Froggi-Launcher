@@ -20,8 +20,8 @@ import { StatsDisplay } from './utils/statsDisplay';
 import { EventEmitter } from 'events';
 
 import os = require('os');
-
 import fs from 'fs';
+
 try {
 	const rootDir = `${__dirname}/../..`;
 
@@ -197,7 +197,7 @@ try {
 					filters: [{ name: 'json', extensions: ['json'] }],
 				});
 				if (canceled) return;
-				const overlay = await fs.readFileSync(filePaths[0], 'utf8');
+				const overlay = fs.readFileSync(filePaths[0], 'utf8');
 				electronStore.uploadCustomOverlay(JSON.parse(overlay));
 				messageHandler.sendMessage('obs_custom', electronStore.getCustom());
 			});

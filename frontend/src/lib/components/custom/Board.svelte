@@ -8,6 +8,7 @@
 	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import BoardContainer from './BoardContainer.svelte';
 	import { goto } from '$app/navigation';
+	import LoadCustomFont from './edit/LoadCustomFont.svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let preview: boolean = true;
@@ -80,5 +81,10 @@
 				</div>
 			{/key}
 		{/key}
+	{/key}
+{/if}
+{#if curScene?.fontBase64}
+	{#key curScene?.fontBase64}
+		<LoadCustomFont bind:base64={curScene.fontBase64} />
 	{/key}
 {/if}

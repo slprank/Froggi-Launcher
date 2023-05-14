@@ -41,6 +41,7 @@ export interface Scene {
 	elementDuration: number;
 	elementTransition: Transition;
 	font: string | undefined;
+	fontBase64: string | undefined;
 	layers: GridContentItem[][];
 }
 

@@ -1,7 +1,8 @@
 // https://www.npmjs.com/package/electron-store
 import ip from 'ip';
 import Store from 'electron-store';
-import type { Player } from '../../frontend/src/lib/types/types';
+import type { Overlay, Player, Url } from '../../frontend/src/lib/types/types';
+
 export class ElectronStore {
 	log: any;
 	store: any;
@@ -13,7 +14,7 @@ export class ElectronStore {
 
 	newId = () => `${Math.random().toString(36).slice(-8)}`;
 
-	dateTimeNow() {
+	dateTimeNow(): Date {
 		var utcSeconds = Date.now() / 1000;
 		var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
 		d.setUTCSeconds(utcSeconds);
@@ -37,8 +38,8 @@ export class ElectronStore {
 		this.store.set('settings.slippiReplayDir', dir);
 	}
 
-	getLocalUrl() {
-		let urls = { local: '', external: '' };
+	getLocalUrl(): Url {
+		let urls = {} as Url;
 		urls.local = `http://localhost:3200`;
 		urls.external = `http://${ip.address()}:3200`;
 		return urls;
@@ -59,17 +60,17 @@ export class ElectronStore {
 			this.store.set('obs.custom.overlays', []);
 	}
 
-	getCustomOverlayById(overlayId: string) {
+	getCustomOverlayById(overlayId: string): Overlay {
 		const custom = this.getCustom();
 		return custom?.overlays?.find((overlay: any) => overlay.id === overlayId);
 	}
 
-	getCustomOverlayIndex(overlayId: string) {
+	getCustomOverlayIndex(overlayId: string): number {
 		const overlays = this.getCustom().overlays;
 		return overlays?.findIndex((overlay: any) => overlay.id == overlayId) ?? undefined;
 	}
 
-	updateCustomOverlay(overlay: any) {
+	updateCustomOverlay(overlay: any): void {
 		if (!overlay) return;
 		let custom = this.getCustom();
 		console.log('custom', custom);
@@ -81,7 +82,7 @@ export class ElectronStore {
 		this.setCustom(custom);
 	}
 
-	uploadCustomOverlay(overlay: any) {
+	uploadCustomOverlay(overlay: any): void {
 		if (!overlay) return;
 		let custom = this.getCustom();
 		overlay.id = this.newId();
@@ -89,7 +90,7 @@ export class ElectronStore {
 		this.setCustom(custom);
 	}
 
-	deleteCustomOverlay(overlayId: string) {
+	deleteCustomOverlay(overlayId: string): void {
 		if (!overlayId) return;
 		let custom = this.getCustom();
 		custom.overlays = custom.overlays.filter((overlay: any) => overlay.id !== overlayId);

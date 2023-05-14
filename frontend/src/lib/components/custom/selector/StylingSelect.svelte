@@ -6,7 +6,7 @@
 	import { CustomElement } from '$lib/types/enum';
 	import CodeInput from '$lib/components/input/CodeInput.svelte';
 	import { fly } from 'svelte/transition';
-	import ImageInput from '$lib/components/input/ImageInput.svelte';
+	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
@@ -173,7 +173,11 @@
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Select Image</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<ImageInput bind:image={payload.image.src} label="upload" />
+				<FileToBase64Input
+					bind:base64={payload.image.src}
+					label="upload"
+					acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
+				/>
 			</div>
 		</div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Image Positioning</h1>

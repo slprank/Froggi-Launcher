@@ -8,10 +8,11 @@
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import TextInput from '$lib/components/input/TextInput.svelte';
 	import SceneSelect from '../selector/SceneSelect.svelte';
-	import ImageInput from '$lib/components/input/ImageInput.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { updateOverlay } from './OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
+	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
+	import LoadCustomFont from './LoadCustomFont.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -51,6 +52,8 @@
 	}
 	$: overlay.default, enableDefault();
 
+	$: console.log(overlay[$statsScene]);
+
 	let autofocus: number = 0;
 </script>
 
@@ -84,8 +87,14 @@
 									<option value={'A-OTF Folk Pro M'}>A-OTF Folk Pro M</option>
 									<option value={'Roboto'}>Roboto</option>
 									<option value={'Wix'}>Wix</option>
+									<option value={'Custom'}>Custom</option>
 								</Select>
 							</div>
+							<FileToBase64Input
+								label="Custom"
+								acceptedExtensions=".woff2, .woff, .otf, .ttf"
+								bind:base64={overlay[$statsScene].fontBase64}
+							/>
 							<TextFitMulti
 								class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
 								style={`font-family: ${overlay[$statsScene].font}`}
@@ -145,9 +154,10 @@
 							{/if}
 							{#if overlay[$statsScene].backgroundType === SceneBackground.ImageCustom}
 								<div class="w-24">
-									<ImageInput
-										bind:image={overlay[$statsScene].backgroundCustomImage.src}
+									<FileToBase64Input
+										bind:base64={overlay[$statsScene].backgroundCustomImage.src}
 										label="Upload"
+										acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
 									/>
 								</div>
 								<div class="w-24">
@@ -289,4 +299,7 @@
 			</div>
 		{/key}
 	</div>
+	{#key overlay[$statsScene].fontBase64}
+		<LoadCustomFont bind:base64={overlay[$statsScene].fontBase64} />
+	{/key}
 </Modal>
