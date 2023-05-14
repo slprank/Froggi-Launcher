@@ -3,9 +3,7 @@
 	const onFileSelected = async (e: any) => {
 		let reader = new FileReader();
 		reader.readAsDataURL(e.target.files[0]);
-		console.log(e.target.files[0].type);
 		reader.onload = (e) => {
-			console.log(e.target?.result);
 			base64 = `${e.target!.result}`;
 		};
 	};
