@@ -54,7 +54,7 @@
 	let autofocus: number = 0;
 </script>
 
-<Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={clear}>
+<Modal bind:open class="w-[80vw] h-[80vh] min-w-72 rounded-lg" on:close={clear}>
 	<div
 		class=" w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
@@ -252,7 +252,7 @@
 				</div>
 				<div class="w-full h-full col-span-1 flex justify-center items-center">
 					<div
-						class="bg-center aspect-video w-[80%] border"
+						class="bg-center aspect-video w-[35vw] max-w-[500px] border"
 						style={`
 						${
 							previewBackgroundType === SceneBackground.Color

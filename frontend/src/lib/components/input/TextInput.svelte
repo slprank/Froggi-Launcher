@@ -1,8 +1,9 @@
 <script lang="ts">
-	export let value: string;
+	export let value: string | undefined;
 	export let label: string | undefined = undefined;
 	export let autofocus: number | undefined = undefined;
 	export let autoFocusValue: number | undefined = undefined;
+	export let placeholder: string | undefined = undefined;
 </script>
 
 {#if label}
@@ -12,6 +13,7 @@
 	<input
 		on:focus={() => (autofocus = autoFocusValue)}
 		autofocus={!!autofocus && autofocus === autoFocusValue}
+		{placeholder}
 		type="text"
 		class="w-full h-full pl-2 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 dark:text-white"
 		bind:value

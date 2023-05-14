@@ -124,13 +124,13 @@
 	// TODO: Display scroll
 </script>
 
-<Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={() => (open = false)}>
+<Modal bind:open class="w-[80vw] h-[80vh] min-w-72 rounded-lg" on:close={() => (open = false)}>
 	<div
 		class="w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="w-full h-full p-4 px-8 grid grid-cols-2">
-			<div class="w-full h-full col-span-1 overflow-scroll scroll">
+			<div class="w-full h-full col-span-1 overflow-scroll scroll enable-scrollbar">
 				<ElementSelect bind:selectedElementId />
 				<div class="w-full">
 					<StylingSelect bind:selectedElementId bind:payload />
@@ -143,15 +143,16 @@
 				</button>
 			</div>
 			<div class="w-full h-full col-span-1 grid justify-center content-center gap-12">
-				{#each [...Array(2).keys()] as i}
+				<!-- Set array to 2 if you want drag/drop preview-->
+				{#each [...Array(1).keys()] as i}
 					<div
-						class="w-[376px] h-[210px] xl:w-[450px] xl:h-[250px] bg-cover bg-center border z-0 flex items-center justify-center"
+						class="w-[35vw] max-w-[500px] aspect-video bg-cover bg-center border z-0 flex items-center justify-center"
 						style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 						in:fade={{ delay: 50, duration: 150 }}
 						out:fade={{ duration: 300 }}
 					>
 						<div class="w-full h-[50%] border">
-							<GridContent bind:demoItem edit={!i} />
+							<GridContent bind:demoItem edit={i == 1} />
 						</div>
 					</div>
 				{/each}

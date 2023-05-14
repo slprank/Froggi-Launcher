@@ -1,6 +1,9 @@
 <script lang="ts">
 	import '../app.css';
 	import '$lib/styles/fonts.css';
+	import '$lib/styles/scrollbar.css';
+	import '$lib/styles/styles.css';
+	import '$lib/styles/tooltip.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
@@ -179,15 +182,5 @@
 	:root {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	}
-
-	*::-webkit-scrollbar {
-		display: none;
-	}
-
-	* {
-		-webkit-user-select: none; /* Safari */
-		-ms-user-select: none; /* IE 10 and IE 11 */
-		user-select: none; /* Standard syntax */
 	}
 </style>
