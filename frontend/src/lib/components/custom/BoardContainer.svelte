@@ -49,7 +49,7 @@
 						? `background-image: url('/image/backgrounds/8.png');`
 						: ''
 				}
-				${scene?.backgroundOpacity !== undefined ? `opacity: ${scene.backgroundOpacity};` : ''}
+				${scene?.backgroundOpacity !== undefined ? `opacity: ${scene.backgroundOpacity / 100};` : ''}
 				background-repeat: no-repeat;`}
 >
 	<slot />

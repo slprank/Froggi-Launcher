@@ -13,7 +13,7 @@
 		on:focus={() => (autofocus = autoFocusValue)}
 		autofocus={!!autofocus && autofocus === autoFocusValue}
 		type="text"
-		class="w-full h-full pl-2 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700"
+		class="w-full h-full pl-2 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 dark:text-white"
 		bind:value
 	/>
 </div>

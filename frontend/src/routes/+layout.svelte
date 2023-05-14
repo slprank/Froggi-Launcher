@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import '$lib/styles/fonts.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';

@@ -1,0 +1,33 @@
+@font-face {
+	font-family: 'Melee';
+	src: local(''),
+		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/ITC Galliard Std Ultra.otf')
+			format('opentype');
+}
+@font-face {
+	font-family: 'Ultimate';
+	src: local(''),
+		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/SmashBros.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'A-OTF Folk Pro M';
+	src: local(''),
+		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/A-OTF Folk Pro M.otf')
+			format('opentype');
+}
+@font-face {
+	font-family: 'Roboto';
+	src: local(''),
+		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/roboto-regular.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Wix';
+	src: local(''),
+		/* Chrome 26+, Opera 23+, Firefox 39+ */
+			url('/fonts/WixMadeforText-Italic-VariableFont_wght.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Wix';
+	src: local(''),
+		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/OpenSans.ttf') format('truetype');
+}

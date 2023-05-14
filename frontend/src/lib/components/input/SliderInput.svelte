@@ -9,7 +9,7 @@
 <div class="h-10 flex items-center">
 	<input
 		type="range"
-		class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+		class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 dark:text-white"
 		step="0.01"
 		min="0"
 		max="1"

@@ -12,7 +12,6 @@
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { updateOverlay } from './OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import '../../../../app.css';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -55,15 +54,6 @@
 	let autofocus: number = 0;
 </script>
 
-<svelte:head>
-	{#if overlay[$statsScene ?? 0].font}
-		<link
-			rel="stylesheet"
-			href={`https://fonts.googleapis.com/css?family=${overlay[$statsScene ?? 0].font}`}
-		/>
-	{/if}
-</svelte:head>
-
 <Modal bind:open class="w-[80%] h-[80%] min-w-72 rounded-lg" on:close={clear}>
 	<div
 		class=" w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
@@ -84,23 +74,23 @@
 								/>
 							</div>
 						</div>
-						<div class="w-60 flex">
+						<div class="w-full flex gap-2">
 							<div class="w-36 h-full">
-								<h1 class="text-gray-500 text-sm font-medium text-shadow">
-									Border
-								</h1>
+								<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
 								<Select bind:selected={overlay[$statsScene].font}>
 									<option value={undefined} selected>Default</option>
+									<option value={'Melee'}>Melee</option>
+									<option value={'Ultimate'}>Ultimate</option>
+									<option value={'A-OTF Folk Pro M'}>A-OTF Folk Pro M</option>
 									<option value={'Roboto'}>Roboto</option>
-									<option value={'Wix+Madefor+Text'}>Wix</option>
-									<option value={'Open+Sans'}>Open Sans</option>
+									<option value={'Wix'}>Wix</option>
 								</Select>
 							</div>
 							<TextFitMulti
 								class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
 								style={`font-family: ${overlay[$statsScene].font}`}
 							>
-								Font
+								Super Smash Bros
 							</TextFitMulti>
 						</div>
 						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
@@ -164,7 +154,7 @@
 									<Select
 										bind:selected={overlay[$statsScene].backgroundCustomImage
 											.objectFit}
-										label={'Object fit'}
+										label="Object fit"
 									>
 										<option selected value="cover">Cover</option>
 										<option value="contain">Contain</option>
@@ -184,7 +174,7 @@
 									<NumberInput
 										bind:value={overlay[$statsScene].backgroundOpacity}
 										label="Opacity"
-										max={1}
+										max={100}
 										bind:autofocus
 										autoFocusValue={2}
 									/>
@@ -214,7 +204,6 @@
 										bind:value={overlay[$statsScene].elementDuration}
 										label="Duration - ms"
 										max={1500}
-										min={0}
 										bind:autofocus
 										autoFocusValue={3}
 									/>
@@ -244,7 +233,6 @@
 										bind:value={overlay[$statsScene].backgroundDuration}
 										label="Duration - ms"
 										max={1500}
-										min={0}
 										bind:autofocus
 										autoFocusValue={4}
 									/>
@@ -292,7 +280,7 @@
 						}
 						${
 							overlay[$statsScene].backgroundOpacity !== undefined
-								? `opacity: ${overlay[$statsScene].backgroundOpacity};`
+								? `opacity: ${overlay[$statsScene].backgroundOpacity / 100};`
 								: ''
 						}
 						background-repeat: no-repeat;`}

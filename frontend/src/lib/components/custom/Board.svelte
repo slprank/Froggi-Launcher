@@ -7,6 +7,7 @@
 	import { COL, ROW } from '$lib/types/const';
 	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
 	import BoardContainer from './BoardContainer.svelte';
+	import { goto } from '$app/navigation';
 
 	export let boardHeight: number | undefined = undefined;
 	export let preview: boolean = true;
@@ -14,7 +15,7 @@
 
 	const overlayId = $page.params.overlay;
 
-	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
 	let curScene = getCurrentScene($statsScene);
 
 	$: curScene?.layers.forEach((layer: any) => {
@@ -45,12 +46,6 @@
 </script>
 
 <svelte:window bind:innerHeight />
-
-<svelte:head>
-	{#if curScene?.font}
-		<link rel="stylesheet" href={`/fonts/${curScene?.font}`} />
-	{/if}
-</svelte:head>
 
 {#if curScene}
 	{#key curSceneIndex}
