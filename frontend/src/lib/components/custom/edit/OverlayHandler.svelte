@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { CustomElement, LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
-	import type { Obs, Overlay } from '$lib/types/types';
+	import type { Font, Obs, Overlay } from '$lib/types/types';
 
 	import { COL, MIN } from '$lib/types/const';
 
@@ -41,7 +41,7 @@
 				backgroundType: SceneBackground.None,
 				elementDuration: 250,
 				elementTransition: Transition.None,
-				font: undefined,
+				font: {} as Font,
 				layers: [[]],
 			},
 			[LiveStatsScene.PreGame]: {
@@ -58,7 +58,7 @@
 				backgroundType: SceneBackground.None,
 				elementDuration: 250,
 				elementTransition: Transition.None,
-				font: undefined,
+				font: {} as Font,
 				layers: [[]],
 			},
 			[LiveStatsScene.InGame]: {
@@ -75,7 +75,7 @@
 				backgroundType: SceneBackground.None,
 				elementDuration: 250,
 				elementTransition: Transition.None,
-				font: undefined,
+				font: {} as Font,
 				layers: [[]],
 			},
 			[LiveStatsScene.PostGame]: {
@@ -92,7 +92,7 @@
 				backgroundType: SceneBackground.None,
 				elementDuration: 250,
 				elementTransition: Transition.None,
-				font: undefined,
+				font: {} as Font,
 				layers: [[]],
 			},
 			[LiveStatsScene.RankChange]: {
@@ -109,7 +109,7 @@
 				backgroundType: SceneBackground.None,
 				elementDuration: 250,
 				elementTransition: Transition.None,
-				font: undefined,
+				font: {} as Font,
 				layers: [[]],
 			},
 		} as Overlay;

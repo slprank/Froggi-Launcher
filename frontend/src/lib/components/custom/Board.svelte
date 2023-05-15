@@ -6,9 +6,8 @@
 	import type { Overlay, Scene } from '$lib/types/types';
 	import { COL, ROW } from '$lib/types/const';
 	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
-	import BoardContainer from './BoardContainer.svelte';
-	import { goto } from '$app/navigation';
-	import LoadCustomFont from './edit/LoadCustomFont.svelte';
+	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
+	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let preview: boolean = true;
@@ -53,7 +52,7 @@
 		{#key boardHeight}
 			{#key innerHeight}
 				<div
-					style={`font-family: ${curScene?.font};`}
+					style={`font-family: ${curScene?.font?.family};`}
 					class="w-full h-full overflow-hidden relative"
 				>
 					<BoardContainer bind:scene={curScene} bind:preview />
@@ -83,8 +82,8 @@
 		{/key}
 	{/key}
 {/if}
-{#if curScene?.fontBase64}
-	{#key curScene?.fontBase64}
-		<LoadCustomFont bind:base64={curScene.fontBase64} />
+{#if curScene?.font}
+	{#key curScene?.font}
+		<LoadCustomFont bind:base64={curScene.font.base64} />
 	{/key}
 {/if}

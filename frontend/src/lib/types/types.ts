@@ -40,8 +40,7 @@ export interface Scene {
 	backgroundOpacity: number;
 	elementDuration: number;
 	elementTransition: Transition;
-	font: string | undefined;
-	fontBase64: string | undefined;
+	font: Font;
 	layers: GridContentItem[][];
 }
 
@@ -64,6 +63,11 @@ export interface Image {
 	name: string | undefined;
 	src: string | undefined;
 	objectFit: string | undefined;
+}
+
+export interface Font {
+	family: string | undefined;
+	base64: string | undefined;
 }
 
 export interface Class {

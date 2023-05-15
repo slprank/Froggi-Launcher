@@ -7,6 +7,7 @@
 	import { COL, ROW } from '$lib/types/const';
 	import BoardContainer from '../BoardContainer.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -81,25 +82,30 @@
 
 {#key boardHeight}
 	{#key $statsScene}
-		<div class="w-full h-full overflow-hidden relative">
-			<BoardContainer bind:scene={curOverlay[$statsScene]} />
-			<div class="w-full h-full z-2 absolute">
-				<Grid
-					bind:items
-					rowHeight={(boardHeight ?? innerHeight) / ROW}
-					gap={[0, 0]}
-					let:dataItem
-					cols={[[COL, COL]]}
-					fastStart={true}
-					on:change={updateScene}
-					on:pointerup={(e) => {
-						selectedId = undefined;
-						setTimeout(() => (selectedId = e.detail.id), 20);
-					}}
-				>
-					<GridContent edit={true} {dataItem} bind:selectedId />
-				</Grid>
+		{#key curOverlay[$statsScene]?.font?.base64}
+			<div
+				style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
+				class="w-full h-full overflow-hidden relative"
+			>
+				<BoardContainer bind:scene={curOverlay[$statsScene]} />
+				<div class="w-full h-full z-2 absolute">
+					<Grid
+						bind:items
+						rowHeight={(boardHeight ?? innerHeight) / ROW}
+						gap={[0, 0]}
+						let:dataItem
+						cols={[[COL, COL]]}
+						fastStart={true}
+						on:change={updateScene}
+						on:pointerup={(e) => {
+							selectedId = undefined;
+							setTimeout(() => (selectedId = e.detail.id), 20);
+						}}
+					>
+						<GridContent edit={true} {dataItem} bind:selectedId />
+					</Grid>
+				</div>
 			</div>
-		</div>
+		{/key}
 	{/key}
 {/key}

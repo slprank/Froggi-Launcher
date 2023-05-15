@@ -7,12 +7,12 @@
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import TextInput from '$lib/components/input/TextInput.svelte';
-	import SceneSelect from '../selector/SceneSelect.svelte';
+	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import { updateOverlay } from './OverlayHandler.svelte';
+	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
-	import LoadCustomFont from './LoadCustomFont.svelte';
+	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -80,7 +80,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-36 h-full">
 								<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
-								<Select bind:selected={overlay[$statsScene].font}>
+								<Select bind:selected={overlay[$statsScene].font.family}>
 									<option value={undefined} selected>Default</option>
 									<option value={'Melee'}>Melee</option>
 									<option value={'Ultimate'}>Ultimate</option>
@@ -93,11 +93,11 @@
 							<FileToBase64Input
 								label="Custom"
 								acceptedExtensions=".woff2, .woff, .otf, .ttf"
-								bind:base64={overlay[$statsScene].fontBase64}
+								bind:base64={overlay[$statsScene].font.base64}
 							/>
 							<TextFitMulti
 								class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
-								style={`font-family: ${overlay[$statsScene].font}`}
+								style={`font-family: ${overlay[$statsScene].font.family}`}
 							>
 								Super Smash Bros
 							</TextFitMulti>
@@ -299,7 +299,7 @@
 			</div>
 		{/key}
 	</div>
-	{#key overlay[$statsScene].fontBase64}
-		<LoadCustomFont bind:base64={overlay[$statsScene].fontBase64} />
+	{#key overlay[$statsScene].font.base64}
+		<LoadCustomFont bind:base64={overlay[$statsScene].font.base64} />
 	{/key}
 </Modal>
