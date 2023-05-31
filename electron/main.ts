@@ -21,6 +21,7 @@ import { EventEmitter } from 'events';
 
 import os = require('os');
 import fs from 'fs';
+import { LiveStatsScene } from '../frontend/src/lib/types/enum';
 
 try {
 	const rootDir = `${__dirname}/../..`;
@@ -175,7 +176,7 @@ try {
 				messageHandler.sendMessage('obs_custom', electronStore.getCustom());
 			});
 
-			eventEmitter.on('update-live-scene', async (value) => {
+			eventEmitter.on('update-live-scene', async (value: LiveStatsScene) => {
 				electronStore.setStatsScene(value);
 				messageHandler.sendMessage('live_stats_scene', electronStore.getStatsScene());
 			});

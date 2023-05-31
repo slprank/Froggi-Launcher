@@ -8,6 +8,7 @@
 		GridContentItem,
 		Overlay,
 		Css,
+		Shadow,
 	} from '$lib/types/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
@@ -27,11 +28,10 @@
 	let selectedElementId: number;
 	let payload: ElementPayload = {
 		advancedStyling: false,
-		animation: false,
 		class: {} as Class,
 		css: {} as Css,
-		font: undefined,
 		image: {} as Image,
+		shadow: {} as Shadow,
 		string: '',
 	};
 

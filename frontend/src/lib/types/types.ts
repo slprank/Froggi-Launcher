@@ -55,6 +55,7 @@ export interface ElementPayload {
 	advancedStyling: boolean;
 	class: Class;
 	css: Css;
+	shadow: Shadow;
 	image: Image;
 	string: string | undefined;
 }
@@ -87,6 +88,12 @@ export interface Css {
 	customText: string;
 	customImage: string;
 	opacity: number;
+}
+export interface Shadow {
+	x: number;
+	y: number;
+	spread: number;
+	color: string;
 }
 
 // Old types

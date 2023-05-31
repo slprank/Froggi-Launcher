@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement, Transition } from '$lib/types/enum';
-	import type { GridContentItem } from '$lib/types/types';
-	import { fade, fly, scale, slide, blur, draw, crossfade } from 'svelte/transition';
+	import type { GridContentItem, Shadow } from '$lib/types/types';
+	import { fade, fly, scale, slide, blur as blur_ } from 'svelte/transition';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { COL, ROW } from '$lib/types/const';
 
@@ -28,6 +28,10 @@
 		.map(([key, value]) => `${toKebabCase(key)}: ${value}`)
 		.join('; ');
 
+	$: shadow = `filter: drop-shadow(${dataItem?.data.shadow?.x ?? 0}px ${
+		dataItem?.data.shadow?.y ?? 0
+	}px ${dataItem?.data.shadow?.spread - 1 ?? 0}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
+
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
@@ -52,7 +56,7 @@
 			case Transition.Slide:
 				return slide(node, { duration: duration, delay: delay });
 			case Transition.Blur:
-				return blur(node, { duration: duration, delay: delay });
+				return blur_(node, { duration: duration, delay: delay });
 		}
 	};
 
@@ -72,7 +76,7 @@
 		{#if dataItem?.elementId == CustomElement.CustomString}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${
+				style={`${shadow}; ${cssValue}; ${
 					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 				}; ${edit ? 'color: black;' : ''}`}
 				maxFont={1000}
@@ -83,7 +87,7 @@
 		{#if dataItem?.elementId == CustomElement.CustomBox}
 			<div
 				class={`w-full h-full ${classValue}`}
-				style={`${cssValue}; ${
+				style={`${shadow}; ${cssValue}; ${
 					dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 				}; `}
 			/>
@@ -97,7 +101,7 @@
 			>
 				<img
 					class="w-full h-full"
-					style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					style={`${shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 					src={dataItem?.data.image.src}
 					alt="custom"
@@ -107,7 +111,7 @@
 		{#if dataItem?.elementId == CustomElement.Player1Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${
+				style={`${shadow}; ${cssValue}; ${
 					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
@@ -118,7 +122,7 @@
 		{#if dataItem?.elementId == CustomElement.Player2Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${
+				style={`${shadow}; ${cssValue}; ${
 					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
@@ -129,7 +133,7 @@
 		{#if dataItem?.elementId == CustomElement.Player1Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${
+				style={`${shadow}; ${cssValue}; ${
 					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
@@ -140,7 +144,7 @@
 		{#if dataItem?.elementId == CustomElement.Player2Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
-				style={`${cssValue}; ${
+				style={`${shadow}; ${cssValue}; ${
 					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
@@ -157,7 +161,7 @@
 			>
 				<img
 					class="w-full h-full object-contain"
-					style={`${
+					style={`${shadow}; ${
 						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
 					};`}
 					src="/image/rank-icons/GOLD 3.svg"
@@ -174,7 +178,7 @@
 			>
 				<img
 					class="w-full h-full object-contain"
-					style={`${
+					style={`${shadow}; ${
 						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
 					};`}
 					src="/image/rank-icons/SILVER 3.svg"
