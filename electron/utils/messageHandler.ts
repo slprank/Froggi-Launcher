@@ -1,21 +1,31 @@
+import { BrowserWindow, IpcMain, dialog } from "electron";
+import { ElectronLog } from "electron-log";
+import EventEmitter from "events";
+import { delay, inject, singleton } from "tsyringe";
+import { ElectronJsonStore } from "./electronStore";
+import fs from 'fs';
+import { LiveStatsScene } from "../../frontend/src/lib/types/enum";
+
+
+@singleton()
 export class MessageHandler {
 	app: any;
-	rootDir: string;
+	eventEmitter: EventEmitter;
+	ipcMain: IpcMain;
+	mainWindow: BrowserWindow;
+	rootDir: string;;
 	server: any;
+	store: ElectronJsonStore;
 	webSocketServer: any;
-	webSockets: any;
-	store: any;
-	mainWindow: any;
-	ipcMain: any;
-	eventEmitter: any;
+	webSockets: WebSocket[];
 
 	constructor(
-		rootDir: any,
-		mainWindow: any,
-		ipcMain: any,
-		log: any,
-		store: any,
-		eventEmitter: any,
+		@inject("BrowserWindow") mainWindow: BrowserWindow,
+		@inject("IpcMain") ipcMain: IpcMain,
+		@inject("ElectronLog") log: ElectronLog,
+		@inject("EventEmitter") eventEmitter: EventEmitter,
+		@inject("RootDir") rootDir: string,
+		@inject(delay(() => ElectronJsonStore)) store: ElectronJsonStore,
 	) {
 		log.info('Creating message handler..');
 		const path = require('path');
@@ -23,8 +33,8 @@ export class MessageHandler {
 		const cors = require('cors');
 		const http = require('http');
 		const { WebSocketServer } = require('ws');
-
 		this.rootDir = rootDir;
+
 		this.app = express();
 		this.app.use(express.static(path.join(this.rootDir + '/build')));
 		this.app.use(cors());
@@ -33,11 +43,17 @@ export class MessageHandler {
 		this.webSockets = [];
 		this.store = store;
 
+
+		console.log("rootDir", this.rootDir)
+
 		this.mainWindow = mainWindow;
 		this.ipcMain = ipcMain;
 		this.eventEmitter = eventEmitter;
 
 		this.initElectronMessageHandler();
+		this.initHtml();
+		this.initWebSocket();
+		this.initEventHandlers();
 	}
 
 	initHtml() {
@@ -78,7 +94,7 @@ export class MessageHandler {
 
 	initWebSocket() {
 		try {
-			this.webSocketServer.on('connection', (socket: any) => {
+			this.webSocketServer.on('connection', (socket: WebSocket) => {
 				this.webSockets.push(socket);
 				socket.addEventListener('message', (value: any) => {
 					let parse = JSON.parse(value.data);
@@ -87,7 +103,7 @@ export class MessageHandler {
 						this.eventEmitter.emit(key, value);
 					}
 				});
-				socket.on('close', () => {
+				socket.addEventListener('close', () => {
 					this.webSockets = this.webSockets.filter((s: any) => s != socket);
 				});
 				this.initData(socket);
@@ -127,7 +143,7 @@ export class MessageHandler {
 
 	// Any data sent to frontend should be saved and initialized
 	// Leaderboard data should be stored as well
-	initData(socket = undefined) {
+	initData(socket: WebSocket | undefined = undefined) {
 		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(
 			socket,
@@ -151,5 +167,47 @@ export class MessageHandler {
 		);
 		this.sendInitMessage(socket, 'obs_custom', this.store.getCustom());
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
+	}
+
+	initEventHandlers() {
+		this.eventEmitter.on('update-custom-overlay', async (overlay) => {
+			this.store.updateCustomOverlay(overlay);
+			this.sendMessage(
+				'obs_custom_overlay',
+				this.store.getCustomOverlayById(overlay.id),
+			);
+		});
+
+		this.eventEmitter.on('delete-custom-overlay', async (overlayId) => {
+			this.store.deleteCustomOverlay(overlayId);
+			this.sendMessage('obs_custom', this.store.getCustom());
+		});
+
+		this.eventEmitter.on('update-live-scene', async (value: LiveStatsScene) => {
+			this.store.setStatsScene(value);
+			this.sendMessage('live_stats_scene', this.store.getStatsScene());
+		});
+
+		this.eventEmitter.on('download-overlay', async (overlayId) => {
+			const overlay = this.store.getCustomOverlayById(overlayId);
+			if (!overlay) return;
+			const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, {
+				filters: [{ name: 'json', extensions: ['json'] }],
+				nameFieldLabel: overlay.title,
+			});
+			if (canceled || !filePath) return;
+			fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
+		});
+
+		this.eventEmitter.on('upload-overlay', async () => {
+			const { canceled, filePaths } = await dialog.showOpenDialog(this.mainWindow, {
+				properties: ['openFile'],
+				filters: [{ name: 'json', extensions: ['json'] }],
+			});
+			if (canceled) return;
+			const overlay = fs.readFileSync(filePaths[0], 'utf8');
+			this.store.uploadCustomOverlay(JSON.parse(overlay));
+			this.sendMessage('obs_custom', this.store.getCustom());
+		});
 	}
 }

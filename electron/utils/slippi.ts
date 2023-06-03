@@ -9,23 +9,33 @@ import {
 	ConnectionStatus,
 	SlpStream,
 } from '@slippi/slippi-js';
+import { MessageHandler } from './messageHandler';
+import { IpcMain } from 'electron';
+import { inject } from 'tsyringe';
+import { ElectronLog } from 'electron-log';
+import { ElectronJsonStore } from './electronStore';
 
 export class SlippiJs {
-	messageHandler: any;
-	ipcMain: any;
-	log: any;
-	store: any;
 	dolphinConnection: DolphinConnection;
+	ipcMain: IpcMain;
+	log: ElectronLog;
+	messageHandler: MessageHandler;
 	parser: SlpParser;
 	slpStream: SlpStream;
-	constructor(messageHandler: any, ipcMain: any, log: any, store: any) {
-		this.messageHandler = messageHandler;
+	store: ElectronJsonStore;
+	constructor(
+		@inject("IpcMain") ipcMain: IpcMain,
+		@inject("ElectronLog") log: ElectronLog,
+		messageHandler: MessageHandler,
+		store: ElectronJsonStore
+	) {
+		this.dolphinConnection = new DolphinConnection();
 		this.ipcMain = ipcMain;
 		this.log = log;
-		this.store = store;
-		this.dolphinConnection = new DolphinConnection();
+		this.messageHandler = messageHandler
 		this.parser = new SlpParser();
 		this.slpStream = new SlpStream();
+		this.store = store;
 		this.initSlippiJs();
 	}
 

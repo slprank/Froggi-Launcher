@@ -2,13 +2,21 @@
 import ip from 'ip';
 import Store from 'electron-store';
 import type { Overlay, Player, Url } from '../../frontend/src/lib/types/types';
+import { delay, inject, singleton } from 'tsyringe';
+import { ElectronLog } from 'electron-log';
+import { MessageHandler } from './messageHandler';
 
-export class ElectronStore {
-	log: any;
-	store: any;
-	constructor(log: any) {
-		this.store = new Store();
+@singleton()
+export class ElectronJsonStore {
+	log: ElectronLog;
+	messageHandler: MessageHandler;
+	store: any = new Store();
+	constructor(
+		@inject("ElectronLog") log: ElectronLog,
+		@inject(delay(() => MessageHandler)) messageHandler: MessageHandler,
+	) {
 		this.log = log;
+		this.messageHandler = messageHandler
 		this.initCustom();
 	}
 
@@ -18,6 +26,7 @@ export class ElectronStore {
 		var utcSeconds = Date.now() / 1000;
 		var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
 		d.setUTCSeconds(utcSeconds);
+		this.log.info(d)
 		return d;
 	}
 

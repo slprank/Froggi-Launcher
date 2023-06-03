@@ -1,22 +1,29 @@
 import { SlpParserEvent, SlpStreamEvent, SlippiGame } from '@slippi/slippi-js';
+import { MessageHandler } from './messageHandler';
+import EventEmitter from 'events';
+import { ElectronLog } from 'electron-log';
+import { inject, singleton } from 'tsyringe';
+import { Api } from './api';
+import { ElectronJsonStore } from './electronStore';
 
+@singleton()
 export class StatsDisplay {
-	messageHandler: any;
-	eventEmitter: any;
-	log: any;
+	api: Api;
+	eventEmitter: EventEmitter;
+	log: ElectronLog;
+	messageHandler: MessageHandler;
+	store: ElectronJsonStore;
 	slpStream: any;
 	slpParser: any;
-	store: any;
-	api: any;
 
 	constructor(
-		messageHandler: any,
-		eventEmitter: any,
-		log: any,
+		@inject("EventEmitter") eventEmitter: EventEmitter,
+		@inject("ElectronLog") log: ElectronLog,
+		api: Api,
+		messageHandler: MessageHandler,
+		store: ElectronJsonStore,
 		slpStream: any,
 		slpParser: any,
-		store: any,
-		api: any,
 	) {
 		this.messageHandler = messageHandler;
 		this.eventEmitter = eventEmitter;
@@ -99,13 +106,13 @@ export class StatsDisplay {
 
 		this.store.setCurrentPlayerActualRankStats(currentPlayerRankStats);
 
-		const currentPlayerRank = this.store.getCurrentPlayerRankStats();
+		//const currentPlayerRank = this.store.getCurrentPlayerRankStats();
 
 		// Not tested
-		if (currentPlayerRank && currentPlayerRank?.current != currentPlayerRank?.new) {
-			await this.handleRankChange();
-			this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
-		}
+		// if (currentPlayerRank && currentPlayerRank?.current != currentPlayerRank?.new) {
+		// 	await this.handleRankChange();
+		// 	this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
+		// }
 
 		let recentGameStats = this.getRecentGameStats();
 		this.messageHandler.sendMessage('game_stats', recentGameStats);

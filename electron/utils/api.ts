@@ -1,7 +1,11 @@
 import axios from 'axios';
+import { ElectronLog } from 'electron-log';
+import { inject, injectable } from 'tsyringe';
+
+@injectable()
 export class Api {
-	log: any;
-	constructor(log: any) {
+	log: ElectronLog;
+	constructor(@inject("ElectronLog") log: ElectronLog) {
 		this.log = log;
 	}
 

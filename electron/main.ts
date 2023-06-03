@@ -1,30 +1,24 @@
-import windowStateManager from 'electron-window-state';
+import 'reflect-metadata';
+import { app, BrowserWindow, IpcMain, ipcMain } from 'electron';
 import contextMenu from 'electron-context-menu';
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import serve from 'electron-serve';
-import path from 'path';
-import log from 'electron-log';
+import { container } from 'tsyringe'
 import getAppDataPath from 'appdata-path';
+import path from 'path';
+import log, { ElectronLog } from 'electron-log';
+import serve from 'electron-serve';
+import windowStateManager from 'electron-window-state';
 
-/*
-import { Achievements } from './utils/achievements';
 import { Api } from './utils/api';
-*/
-import { ElectronStore } from './utils/electronStore';
-import { MessageHandler } from './utils/messageHandler';
-/*
-import { ObsWebSocket } from './utils/obs';
-import { SlippiJs } from './utils/slippi';
-import { StatsDisplay } from './utils/statsDisplay';
-*/
 import { EventEmitter } from 'events';
+import { MessageHandler } from './utils/messageHandler';
+import { ObsWebSocket } from './utils/obs';
+import { StatsDisplay } from './utils/statsDisplay';
+import { SlippiJs } from './utils/slippi';
 
-import os = require('os');
+import os from 'os';
 import fs from 'fs';
-import { LiveStatsScene } from '../frontend/src/lib/types/enum';
 
 try {
-	const rootDir = `${__dirname}/../..`;
 
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
@@ -44,6 +38,8 @@ try {
 
 		log.transports.file.resolvePath = () => path.join(`C:/slpRank-client-logs/main.logs`);
 	}
+
+
 
 	try {
 		require('electron-reloader')(module);
@@ -136,76 +132,17 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', async () => {
-			//const api = new Api(log);
-			const electronStore = new ElectronStore(log);
-			const messageHandler = new MessageHandler(
-				rootDir,
-				mainWindow,
-				ipcMain,
-				log,
-				electronStore,
-				eventEmitter,
-			);
-			/*
-			const slippiJs = new SlippiJs(messageHandler, ipcMain, log, electronStore);
-			const statsDisplay = new StatsDisplay(
-				messageHandler,
-				eventEmitter,
-				log,
-				slippiJs.slpStream,
-				slippiJs.parser,
-				electronStore,
-				api,
-			);
+			container.register<ElectronLog>("ElectronLog", { useValue: log });
+			container.register<BrowserWindow>("BrowserWindow", { useValue: mainWindow });
+			container.register<IpcMain>("IpcMain", { useValue: ipcMain });
+			container.register<EventEmitter>("EventEmitter", { useValue: eventEmitter });
+			container.register<string>("RootDir", { useValue: `${__dirname}/../..` });
 
-			const obsWebSocket = new ObsWebSocket(messageHandler, eventEmitter, log);
-			const achievements = new Achievements(messageHandler, eventEmitter, log);
-			*/
-
-			// TODO: Move this:
-			eventEmitter.on('update-custom-overlay', async (overlay) => {
-				electronStore.updateCustomOverlay(overlay);
-				messageHandler.sendMessage(
-					'obs_custom_overlay',
-					electronStore.getCustomOverlayById(overlay.id),
-				);
-			});
-
-			eventEmitter.on('delete-custom-overlay', async (overlayId) => {
-				electronStore.deleteCustomOverlay(overlayId);
-				messageHandler.sendMessage('obs_custom', electronStore.getCustom());
-			});
-
-			eventEmitter.on('update-live-scene', async (value: LiveStatsScene) => {
-				electronStore.setStatsScene(value);
-				messageHandler.sendMessage('live_stats_scene', electronStore.getStatsScene());
-			});
-
-			eventEmitter.on('download-overlay', async (overlayId) => {
-				const overlay = electronStore.getCustomOverlayById(overlayId);
-				if (!overlay) return;
-				const { canceled, filePath } = await dialog.showSaveDialog(mainWindow, {
-					filters: [{ name: 'json', extensions: ['json'] }],
-					nameFieldLabel: overlay.title,
-				});
-				if (canceled || !filePath) return;
-				fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
-			});
-
-			eventEmitter.on('upload-overlay', async () => {
-				const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
-					properties: ['openFile'],
-					filters: [{ name: 'json', extensions: ['json'] }],
-				});
-				if (canceled) return;
-				const overlay = fs.readFileSync(filePaths[0], 'utf8');
-				electronStore.uploadCustomOverlay(JSON.parse(overlay));
-				messageHandler.sendMessage('obs_custom', electronStore.getCustom());
-			});
-			// TODO: To this
-
-			messageHandler.initHtml();
-			messageHandler.initWebSocket();
+			container.resolve(Api)
+			container.resolve(MessageHandler)
+			container.resolve(SlippiJs)
+			container.resolve(StatsDisplay)
+			container.resolve(ObsWebSocket)
 		});
 
 		// Find a better solution to init autoUpdate
@@ -228,6 +165,7 @@ try {
 
 	app.once('ready', createMainWindow);
 	app.on('activate', () => {
+		console.log("active")
 		if (!mainWindow) {
 			createMainWindow();
 		}
