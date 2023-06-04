@@ -317,5 +317,8 @@ export class ElectronJsonStore {
 		this.store.onDidChange("stats.scene", () => {
 			this.messageHandler.sendMessage("live_stats_scene", this.getStatsScene())
 		})
+		this.store.onDidChange("obs.custom", () => {
+			this.messageHandler.sendMessage('obs_custom', this.getCustom());
+		})
 	}
 }

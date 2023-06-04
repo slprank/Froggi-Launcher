@@ -24,24 +24,20 @@ try {
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
+	const slippiSettings = getSlippiSettings();
 
 	log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
-
-	const slippiSettings = getSlippiSettings();
-	console.log(slippiSettings); // Replay dir and subfolder settings
+	log.info("SlippiSettings:", slippiSettings); // Replay dir and subfolder settings
 
 	const dolphinConnection = new DolphinConnection();
 	const slpParser = new SlpParser();
 	const slpStream = new SlpStream();
 	const eventEmitter = new EventEmitter();
 
-	if (isWindows) {
-		if (!fs.existsSync(path.join(`C:/slpRank-client-logs`)))
-			fs.mkdirSync(path.join(`C:/slpRank-client-logs`), { recursive: true });
-
+	if (!fs.existsSync(path.join(slippiSettings.path))) {
+		fs.mkdirSync(path.join(slippiSettings.path), { recursive: true });
 		log.transports.file.resolvePath = () => path.join(`C:/slpRank-client-logs/main.logs`);
 	}
-
 
 
 	try {
@@ -162,7 +158,7 @@ try {
 		try {
 			const slippiPath = getAppDataPath('Slippi Launcher');
 			const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
-			const settings = JSON.parse(rawData)?.settings;
+			const settings = { ...JSON.parse(rawData)?.settings, path: slippiPath };
 			return settings;
 		} catch (err) {
 			log.error(err);

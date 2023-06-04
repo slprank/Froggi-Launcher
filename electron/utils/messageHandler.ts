@@ -180,12 +180,10 @@ export class MessageHandler {
 
 		this.eventEmitter.on('delete-custom-overlay', async (overlayId) => {
 			this.store.deleteCustomOverlay(overlayId);
-			this.sendMessage('obs_custom', this.store.getCustom());
 		});
 
 		this.eventEmitter.on('update-live-scene', async (value: LiveStatsScene) => {
 			this.store.setStatsScene(value);
-			this.sendMessage('live_stats_scene', this.store.getStatsScene());
 		});
 
 		this.eventEmitter.on('download-overlay', async (overlayId) => {
@@ -207,7 +205,6 @@ export class MessageHandler {
 			if (canceled) return;
 			const overlay = fs.readFileSync(filePaths[0], 'utf8');
 			this.store.uploadCustomOverlay(JSON.parse(overlay));
-			this.sendMessage('obs_custom', this.store.getCustom());
 		});
 	}
 }
