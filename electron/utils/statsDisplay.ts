@@ -1,29 +1,24 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame } from '@slippi/slippi-js';
+import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import EventEmitter from 'events';
 import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import { Api } from './api';
 import { ElectronJsonStore } from './electronStore';
+import { Player } from '../../frontend/src/lib/types/types';
+import { LiveStatsScene } from '../../frontend/src/lib/types/enum';
 
 @singleton()
 export class StatsDisplay {
-	api: Api;
-	eventEmitter: EventEmitter;
-	log: ElectronLog;
-	messageHandler: MessageHandler;
-	store: ElectronJsonStore;
-	slpStream: any;
-	slpParser: any;
 
 	constructor(
-		@inject("EventEmitter") eventEmitter: EventEmitter,
-		@inject("ElectronLog") log: ElectronLog,
-		api: Api,
-		messageHandler: MessageHandler,
-		store: ElectronJsonStore,
-		slpStream: any,
-		slpParser: any,
+		@inject("EventEmitter") public eventEmitter: EventEmitter,
+		@inject("ElectronLog") public log: ElectronLog,
+		@inject("SlpParser") public slpParser: SlpParser,
+		@inject("SlpStream") public slpStream: SlpStream,
+		public api: Api,
+		public messageHandler: MessageHandler,
+		public store: ElectronJsonStore,
 	) {
 		this.messageHandler = messageHandler;
 		this.eventEmitter = eventEmitter;
@@ -36,93 +31,78 @@ export class StatsDisplay {
 		this.initStatDisplay();
 	}
 
-	initStatDisplay() {
-		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: any) => {
+	async initStatDisplay() {
+		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: SlpRawEventPayload) => {
 			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
 			this.slpParser.handleCommand(event.command, event.payload);
 			if (event.command == 54) {
-				await this.messageGameStart(this.slpParser.getSettings());
+				await this.handleGameStart(this.slpParser.getSettings());
 			}
 		});
 
-		this.slpParser.on(SlpParserEvent.END, async (frameEntry: any) => {
-			await this.messageGameEnd(frameEntry, this.slpParser.getSettings());
+		this.slpParser.on(SlpParserEvent.END, async (gameEnd: GameEndType) => {
+			this.handleScore(gameEnd)
+			await this.handleGameEnd(gameEnd, this.slpParser.getLatestFrame(), this.slpParser.getSettings());
 		});
 
-		this.slpParser.on(SlpParserEvent.FRAME, (frameEntry: any) => {
-			this.messageHandler.sendMessage('game_frame', frameEntry);
+		this.slpParser.on(SlpParserEvent.FRAME, async (frameEntry: FrameEntryType) => {
+			await this.handleGameFrame(frameEntry)
 		});
 	}
 
-	// GAME START
-	async messageGameStart(settings: any) {
-		if (!settings.players.some((p: any) => !p.connectCode)) this.messageOfflineData(settings);
-		await this.messageOnlineData(settings);
-		// Save and emit scene
+	async handleGameFrame(frameEntry: FrameEntryType) {
+		await this.messageHandler.sendMessage('game_frame', frameEntry);
 	}
 
-	async messageOnlineData(settings: any) {
-		let currentPlayersRankStats = [
-			await this.api.getPlayerRankStats(settings.players[0].connectCode),
-			await this.api.getPlayerRankStats(settings.players[1].connectCode),
-		];
+	async handleGameStart(settings: GameStartType | null) {
+		if (!settings) return;
+		let currentPlayers: Player[] = await this.getCurrentPlayersWithRankStats(settings)
 
-		let currentPlayerRankStats = currentPlayersRankStats[0]; // TODO: Return player with current player connectCode
+		let currentPlayer: Player | undefined = this.getCurrentPlayerRankStats(currentPlayers)
+		if (!currentPlayer) return;
 
-		if (settings.matchInfo.gameNumber === 0) {
+		if (settings?.matchInfo?.gameNumber === 0) {
 			this.store.setGameScore([0, 0]);
 		}
 
-		this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
-		this.store.setCurrentPlayersRankStats(currentPlayersRankStats);
+		this.store.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
+		this.store.setCurrentPlayers(currentPlayers);
 		this.store.setGameSettings(settings);
-
-		this.messageHandler.sendMessage('currentPlayer_rank_stats', currentPlayerRankStats);
-		this.messageHandler.sendMessage('currentPlayers_rank_stats', currentPlayersRankStats);
-		this.messageHandler.sendMessage('game_settings', settings);
 	}
 
-	messageOfflineData(settings: any) {
-		const currentPlayersRankStats = this.store.getCurrentPlayersRankStats();
+	// TODO: Handle offline data by returning existing values
+	async handleGameEnd(gameEnd: GameEndType, frameEntry: FrameEntryType | null, settings: GameStartType | null) {
+		if (!settings) return;
+		this.log.info("Game End", gameEnd, frameEntry, settings);
 
-		this.store.setGameSettings(settings);
+		let currentPlayersRankStats: Player[] = await this.getCurrentPlayersWithRankStats(settings)
 
-		this.messageHandler.sendMessage('currentPlayers_rank_stats', currentPlayersRankStats ?? []);
-		this.messageHandler.sendMessage('game_settings', settings);
-	}
+		let currentPlayer: Player | undefined = this.getCurrentPlayerRankStats(currentPlayersRankStats)
+		if (!currentPlayer) return;
 
-	// GAME END
-	async messageGameEnd(frameEntry: any, settings: any) {
-		console.log(frameEntry, settings);
-
-		this.handleScore(frameEntry);
-
-		let currentPlayersRankStats = [
-			await this.api.getPlayerRankStats(settings.players[0].connectCode),
-			await this.api.getPlayerRankStats(settings.players[1].connectCode),
-		];
-
-		let currentPlayerRankStats = currentPlayersRankStats[0]; // TODO: Return player with current player connectCode
-
-		this.store.setCurrentPlayerActualRankStats(currentPlayerRankStats);
-
-		//const currentPlayerRank = this.store.getCurrentPlayerRankStats();
-
-		// Not tested
-		// if (currentPlayerRank && currentPlayerRank?.current != currentPlayerRank?.new) {
-		// 	await this.handleRankChange();
-		// 	this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
-		// }
+		this.store.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
 
 		let recentGameStats = this.getRecentGameStats();
 		this.messageHandler.sendMessage('game_stats', recentGameStats);
-		// Change scene
 	}
 
-	handleScore(frameEntry: any) {
+	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
+		let currentPlayers = settings.players.filter(player => player)
+		return (await Promise.all(
+			currentPlayers.map(async (player: PlayerType) => await this.api.getPlayerWithRankStats(player))
+		)).filter((player): player is Player => player !== undefined);
+	}
+
+	getCurrentPlayerRankStats(players: Player[]): Player | undefined {
+		const player = this.store.getCurrentPlayer()
+		if (!player) return;
+		return players.find(player => player.connectCode === player.connectCode);
+	}
+
+	handleScore(gameEnd: GameEndType) {
 		this.store.setGameScore([0, 0]);
-		let score = this.store.getGameScore() ?? [0, 0];
-		const winnerIndex = frameEntry.placements
+		let score: number[] = this.store.getGameScore() ?? [0, 0];
+		const winnerIndex = gameEnd.placements
 			.filter((p: any) => p.position >= 0)
 			.sort((a: any, b: any) => a.position - b.position)[0].playerIndex;
 		score[winnerIndex] += 1;
@@ -130,12 +110,30 @@ export class StatsDisplay {
 		this.store.setGameScore(score);
 	}
 
+	async initListeners() {
+		this.store.setListener(`settings.currentPlayer.newRankedNetplayProfile`, async () => {
+			await this.handleRankChange()
+		})
+		this.store.setListener(`settings.currentPlayer.rankedNetplayProfile`, async () => {
+			this.messageHandler.sendMessage('current_player', this.store.getCurrentPlayer());
+		})
+		this.store.setListener(`stats.currentPlayers`, async () => {
+			this.messageHandler.sendMessage('current_players', this.store.getCurrentPlayers());
+		})
+		this.store.setListener(`stats.game.settings`, async () => {
+			this.messageHandler.sendMessage('game_settings', this.store.getGameSettings());
+		})
+	}
+
 	async handleRankChange() {
-		this.log.info('Rank change');
-		// Handle rank up animation
+		const playerRank = this.store.getCurrentPlayer()
+		if (!playerRank) return
 		await new Promise((resolve) => {
+			if (playerRank.rankedNetplayProfile !== playerRank.newRankedNetplayProfile) this.store.setStatsScene(LiveStatsScene.RankChange)
 			setTimeout(resolve, 10000);
 		});
+		this.store.setCurrentPlayerCurrentRankStats(playerRank.newRankedNetplayProfile);
+		this.store.setStatsScene(LiveStatsScene.PostGame)
 	}
 
 	// OTHER

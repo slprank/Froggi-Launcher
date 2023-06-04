@@ -5,6 +5,7 @@
 	import { LiveStatsScene } from '$lib/types/enum';
 	import Device from 'svelte-device-info';
 	import type { Obs, Url } from '$lib/types/types';
+	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
 
@@ -28,6 +29,7 @@
 
 	const currentPlayerRankStats = writable<any>();
 	const currentPlayersRankStats = writable<any>();
+	const gameFrame = writable<FrameEntryType>();
 	const gameScore = writable<any>();
 	const gameSettings = writable<any>();
 	const gameStats = writable<any>();
@@ -49,6 +51,7 @@
 		isPWA,
 		currentPlayerRankStats,
 		currentPlayersRankStats,
+		gameFrame,
 		gameScore,
 		gameSettings,
 		gameStats,

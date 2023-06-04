@@ -153,7 +153,7 @@ export class MessageHandler {
 		this.sendInitMessage(
 			socket,
 			'currentPlayers_rank_stats',
-			this.store.getCurrentPlayersRankStats(),
+			this.store.getCurrentPlayers(),
 		);
 		this.sendInitMessage(socket, 'game_settings', this.store.getGameSettings());
 		this.sendInitMessage(socket, 'game_stats', this.store.getGameStats());
@@ -169,7 +169,7 @@ export class MessageHandler {
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
 	}
 
-	initEventHandlers() {
+	private initEventHandlers() {
 		this.eventEmitter.on('update-custom-overlay', async (overlay) => {
 			this.store.updateCustomOverlay(overlay);
 			this.sendMessage(

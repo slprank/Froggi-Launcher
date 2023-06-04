@@ -11,30 +11,28 @@ import {
 } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { IpcMain } from 'electron';
-import { inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ElectronJsonStore } from './electronStore';
 
+@singleton()
 export class SlippiJs {
-	dolphinConnection: DolphinConnection;
-	ipcMain: IpcMain;
-	log: ElectronLog;
-	messageHandler: MessageHandler;
-	parser: SlpParser;
-	slpStream: SlpStream;
-	store: ElectronJsonStore;
+
 	constructor(
-		@inject("IpcMain") ipcMain: IpcMain,
-		@inject("ElectronLog") log: ElectronLog,
-		messageHandler: MessageHandler,
-		store: ElectronJsonStore
+		@inject("DolphinConnection") public dolphinConnection: DolphinConnection,
+		@inject("ElectronLog") public log: ElectronLog,
+		@inject("IpcMain") public ipcMain: IpcMain,
+		@inject("SlpParser") public parser: SlpParser,
+		@inject("SlpStream") public slpStream: SlpStream,
+		public messageHandler: MessageHandler,
+		public store: ElectronJsonStore,
 	) {
 		this.dolphinConnection = new DolphinConnection();
+		this.parser = new SlpParser();
+		this.slpStream = new SlpStream();
 		this.ipcMain = ipcMain;
 		this.log = log;
 		this.messageHandler = messageHandler
-		this.parser = new SlpParser();
-		this.slpStream = new SlpStream();
 		this.store = store;
 		this.initSlippiJs();
 	}
@@ -66,6 +64,14 @@ export class SlippiJs {
 					this.log.info('Connected: ' + message);
 					break;
 				case DolphinMessageType.GAME_EVENT:
+					var decoded = Buffer.from(message.payload, 'base64');
+					this.slpStream.write(decoded);
+					break;
+				case DolphinMessageType.START_GAME:
+					var decoded = Buffer.from(message.payload, 'base64');
+					this.slpStream.write(decoded);
+					break;
+				case DolphinMessageType.END_GAME:
 					var decoded = Buffer.from(message.payload, 'base64');
 					this.slpStream.write(decoded);
 					break;

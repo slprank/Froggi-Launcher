@@ -9,28 +9,11 @@
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import {
-		isBrowser,
-		isElectron,
-		isPWA,
-		eventEmitter,
-		currentPlayerRankStats,
-		currentPlayersRankStats,
-		gameScore,
-		gameSettings,
-		gameStats,
-		recentRankedSets,
-		sessionStats,
-		statsScene,
-		urls,
-		obs,
-	} from '$lib/utils/store.svelte';
+	import { isBrowser, isElectron, isPWA, eventEmitter } from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import type { Overlay } from '$lib/types/types';
 	import { WEBSOCKET_PORT } from '$lib/types/const';
-
-	let isPwaOpen = !$isPWA;
+	import { initEventListener } from '$lib/utils/initEventListener.svelte';
 
 	function initDevices() {
 		if ($isBrowser) {
@@ -42,7 +25,7 @@
 
 		if ($isElectron) {
 			initElectronEvents();
-			initGlobalEventListeners();
+			initEventListener();
 			$eventEmitter.emit('electron', 'init-data-electron');
 		}
 	}
@@ -79,64 +62,7 @@
 				$eventEmitter.emit(key, value);
 			}
 		});
-		initGlobalEventListeners();
-	}
-
-	// Set all global variables here
-	function initGlobalEventListeners() {
-		console.log('Initializing listeners');
-		$eventEmitter.on('currentPlayer_rank_stats', (rankStats: any) => {
-			console.log({ rankStats });
-			currentPlayerRankStats.set(rankStats);
-		});
-		$eventEmitter.on('currentPlayers_rank_stats', (playersRankStats: any) => {
-			console.log({ playersRankStats });
-			currentPlayersRankStats.set(playersRankStats);
-		});
-		$eventEmitter.on('game_settings', (settings: any) => {
-			console.log({ settings });
-			gameSettings.set(settings);
-		});
-		$eventEmitter.on('game_score', (score: any) => {
-			console.log({ score });
-			gameScore.set(score);
-		});
-		$eventEmitter.on('game_stats', (stats: any) => {
-			console.log({ stats });
-			gameStats.set(stats);
-		});
-		$eventEmitter.on('recent_ranked_sets', (recentSets: any) => {
-			console.log({ recentSets });
-			recentRankedSets.set(recentSets);
-		});
-		$eventEmitter.on('session_stats', (session: any) => {
-			console.log({ session });
-			sessionStats.set(session);
-		});
-		$eventEmitter.on('live_stats_scene', (scene: any) => {
-			console.log({ scene });
-			statsScene.set(scene);
-		});
-		$eventEmitter.on('urls', (url: any) => {
-			console.log(url);
-			urls.set(url);
-		});
-
-		$eventEmitter.on('obs_custom_overlay', (value: Overlay) => {
-			console.log(value.id);
-			console.log($obs.overlays.map((o) => o.id));
-			const overlayIndex = $obs.overlays.findIndex((overlay) => overlay.id == value.id);
-			overlayIndex === undefined || overlayIndex === -1
-				? $obs.overlays.push(value)
-				: ($obs.overlays[overlayIndex] = value);
-
-			obs.set($obs);
-		});
-
-		$eventEmitter.on('obs_custom', (value: any) => {
-			console.log('obs', value);
-			obs.set(value);
-		});
+		initEventListener();
 	}
 
 	function initServiceWorker() {

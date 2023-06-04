@@ -7,6 +7,8 @@ import path from 'path';
 import log, { ElectronLog } from 'electron-log';
 import serve from 'electron-serve';
 import windowStateManager from 'electron-window-state';
+import os from 'os';
+import fs from 'fs';
 
 import { Api } from './utils/api';
 import { EventEmitter } from 'events';
@@ -14,9 +16,8 @@ import { MessageHandler } from './utils/messageHandler';
 import { ObsWebSocket } from './utils/obs';
 import { StatsDisplay } from './utils/statsDisplay';
 import { SlippiJs } from './utils/slippi';
+import { DolphinConnection, SlpParser, SlpStream } from '@slippi/slippi-js';
 
-import os from 'os';
-import fs from 'fs';
 
 try {
 
@@ -27,9 +28,11 @@ try {
 	log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 	const slippiSettings = getSlippiSettings();
-
 	console.log(slippiSettings); // Replay dir and subfolder settings
 
+	const dolphinConnection = new DolphinConnection();
+	const slpParser = new SlpParser();
+	const slpStream = new SlpStream();
 	const eventEmitter = new EventEmitter();
 
 	if (isWindows) {
@@ -132,6 +135,9 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', async () => {
+			container.register<DolphinConnection>("DolphinConnection", { useValue: dolphinConnection });
+			container.register<SlpParser>("SlpParser", { useValue: slpParser });
+			container.register<SlpStream>("SlpStream", { useValue: slpStream });
 			container.register<ElectronLog>("ElectronLog", { useValue: log });
 			container.register<BrowserWindow>("BrowserWindow", { useValue: mainWindow });
 			container.register<IpcMain>("IpcMain", { useValue: ipcMain });
