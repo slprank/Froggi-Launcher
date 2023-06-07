@@ -130,8 +130,12 @@ export interface Session {
 	latestUpdate: Date
 };
 
-export interface SlippiSettings {
-	root: string;
+export interface SlippiLauncherSettings {
+	appDataPath: string;
+	isoPath: string;
+	useMonthlySubfolders: boolean;
+	rootSlpPath: string;
+	spectateSlpPath: string;
 }
 
 export interface Character {

@@ -3,12 +3,11 @@ import { app, BrowserWindow, IpcMain, ipcMain } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { container } from 'tsyringe'
 import getAppDataPath from 'appdata-path';
-import path from 'path';
 import log, { ElectronLog } from 'electron-log';
 import serve from 'electron-serve';
 import windowStateManager from 'electron-window-state';
+import path from 'path';
 import os from 'os';
-import fs from 'fs';
 
 import { Api } from './utils/api';
 import { EventEmitter } from 'events';
@@ -22,21 +21,15 @@ try {
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
-	const slippiSettings = getSlippiSettings();
 
 	log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
-	log.info("SlippiSettings:", slippiSettings); // Replay dir and subfolder settings
 
 	const dolphinConnection = new DolphinConnection();
 	const slpParser = new SlpParser();
 	const slpStream = new SlpStream();
 	const eventEmitter = new EventEmitter();
 
-	if (!fs.existsSync(path.join(slippiSettings.path))) {
-		fs.mkdirSync(path.join(slippiSettings.path), { recursive: true });
-		log.transports.file.resolvePath = () => path.join(`C:/slpRank-client-logs/main.logs`);
-	}
-
+	setLoggingPath()
 
 	try {
 		require('electron-reloader')(module);
@@ -152,17 +145,6 @@ try {
 		});
 	}
 
-	function getSlippiSettings() {
-		try {
-			const slippiPath = getAppDataPath('Slippi Launcher');
-			const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
-			const settings = { ...JSON.parse(rawData)?.settings, path: slippiPath };
-			return settings;
-		} catch (err) {
-			log.error(err);
-		}
-	}
-
 	app.once('ready', createMainWindow);
 	app.on('activate', () => {
 		console.log("active")
@@ -177,6 +159,15 @@ try {
 	eventEmitter.on('test-message', (data: any) => {
 		console.log(data);
 	});
+
+	function setLoggingPath() {
+		try {
+			const slippiAppDataPath = getAppDataPath("Slippi Launcher");
+			log.transports.file.resolvePath = () => path.join(`${slippiAppDataPath}/slpRankClient.log`);
+		} catch (err) {
+			log.error(err)
+		}
+	}
 } catch (err) {
 	log.error(err);
 }

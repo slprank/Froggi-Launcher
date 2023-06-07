@@ -1,22 +1,25 @@
 // https://www.npmjs.com/package/electron-store
 import ip from 'ip';
 import Store from 'electron-store';
-import type { CurrentPlayer, GameStartMode, GameStats, Obs, Overlay, Player, RankedNetplayProfile, Session, Url } from '../../frontend/src/lib/models/types';
+import type { CurrentPlayer, GameStartMode, GameStats, Obs, Overlay, Player, RankedNetplayProfile, Session, SlippiLauncherSettings, Url } from '../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from './messageHandler';
+import { GameStartType, PlayerType } from '@slippi/slippi-js';
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
-import { GameStartType, PlayerType } from '@slippi/slippi-js';
+import os from 'os';
+
 
 @singleton()
 export class ElectronJsonStore {
-	log: ElectronLog;
-	messageHandler: MessageHandler;
+	isMac: boolean = os.platform() === 'darwin';
+	isWindows: boolean = os.platform() === 'win32';
+	isLinux: boolean = os.platform() === 'linux';
 	store: Store = new Store();
 	constructor(
-		@inject("ElectronLog") log: ElectronLog,
-		@inject(delay(() => MessageHandler)) messageHandler: MessageHandler,
+		@inject("ElectronLog") public log: ElectronLog,
+		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
 	) {
 		this.log = log;
 		this.messageHandler = messageHandler
@@ -47,23 +50,49 @@ export class ElectronJsonStore {
 		this.store.set('settings.currentPlayer', player);
 	}
 
-	getSlippiRootDirectory(): string {
-		return this.store.get('settings.slippiReplayDir') as string;
+	getSlippiLauncherSettings(): SlippiLauncherSettings {
+		return this.store.get('settings.slippiLauncher') as SlippiLauncherSettings;
 	}
 
-	setSlippiRootDirectory(dir: string) {
-		this.store.set('settings.slippiReplayDir', dir);
+	setSlippiLauncherSettings(dir: string) {
+		this.store.set('settings.slippiLauncher', dir);
 	}
 
-	getSlippiSettings() {
+	getSlippiSettings(): SlippiLauncherSettings | undefined {
 		try {
 			const slippiPath = getAppDataPath('Slippi Launcher');
 			const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
-			const settings = JSON.parse(rawData)?.settings;
+			let settings = JSON.parse(rawData)?.settings as SlippiLauncherSettings;
+			settings = this.verifyAndFixDefaultSettings(settings);
+			this.setSlippiLauncherSettings(settings.rootSlpPath)
 			return settings;
 		} catch (err) {
 			this.log.error(err);
 		}
+		return
+	}
+
+	verifyAndFixDefaultSettings(settings: SlippiLauncherSettings): SlippiLauncherSettings {
+		const defaultPath = this.getSlippiDefaultPath()
+		if (settings?.rootSlpPath === undefined) {
+			settings.rootSlpPath = defaultPath
+		}
+		if (settings?.spectateSlpPath === undefined) {
+			settings.rootSlpPath = `${defaultPath}/spectate`
+		}
+		if (settings?.spectateSlpPath === undefined) {
+			settings.useMonthlySubfolders = false
+		}
+		fs.writeFileSync(getAppDataPath('Slippi Launcher'), JSON.parse(`{"settings": ${settings}}`))
+		return settings;
+	}
+
+	getSlippiDefaultPath(): string {
+		const username = os.userInfo().username
+		if (this.isWindows) return `C:/Users/${username}/Documents/Slippi`;
+		if (this.isMac) return `/Users/${username}/Slippi`;
+		if (this.isLinux) return `/Users/${username}/Slippi`;
+		throw new Error("No valid OS")
 	}
 
 	getLocalUrl(): Url {

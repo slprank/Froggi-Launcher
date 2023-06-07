@@ -142,7 +142,7 @@ export class StatsDisplay {
 		const re = new RegExp('^Game_.*.slp$');
 		const path = require('path');
 
-		const slippiDir = this.store.getSlippiRootDirectory();
+		const slippiDir = this.store.getSlippiLauncherSettings()?.rootSlpPath;
 
 		if (!slippiDir) return null;
 
