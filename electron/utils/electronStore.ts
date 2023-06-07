@@ -25,6 +25,7 @@ export class ElectronJsonStore {
 		this.messageHandler = messageHandler
 		this.initListeners();
 		this.initCustom();
+		this.updateSlippiSettings();
 	}
 
 	setListener(key: string, callback: Function) {
@@ -58,13 +59,13 @@ export class ElectronJsonStore {
 		this.store.set('settings.slippiLauncher', dir);
 	}
 
-	getSlippiSettings(): SlippiLauncherSettings | undefined {
+	updateSlippiSettings(): SlippiLauncherSettings | undefined {
 		try {
 			const slippiPath = getAppDataPath('Slippi Launcher');
 			const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
 			let settings = JSON.parse(rawData)?.settings as SlippiLauncherSettings;
 			settings = this.verifyAndFixDefaultSettings(settings);
-			this.setSlippiLauncherSettings(settings.rootSlpPath)
+			this.setSlippiLauncherSettings(settings.rootSlpPath!)
 			return settings;
 		} catch (err) {
 			this.log.error(err);
@@ -78,7 +79,7 @@ export class ElectronJsonStore {
 			settings.rootSlpPath = defaultPath
 		}
 		if (settings?.spectateSlpPath === undefined) {
-			settings.rootSlpPath = `${defaultPath}/spectate`
+			settings.rootSlpPath = `${settings.rootSlpPath}/spectate`
 		}
 		if (settings?.spectateSlpPath === undefined) {
 			settings.useMonthlySubfolders = false

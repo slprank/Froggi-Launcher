@@ -131,11 +131,11 @@ export interface Session {
 };
 
 export interface SlippiLauncherSettings {
-	appDataPath: string;
-	isoPath: string;
-	useMonthlySubfolders: boolean;
-	rootSlpPath: string;
-	spectateSlpPath: string;
+	appDataPath: string | undefined;
+	isoPath: string | undefined;
+	useMonthlySubfolders: boolean | undefined;
+	rootSlpPath: string | undefined;
+	spectateSlpPath: string | undefined;
 }
 
 export interface Character {
