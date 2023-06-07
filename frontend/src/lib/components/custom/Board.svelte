@@ -3,9 +3,9 @@
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import { page } from '$app/stores';
-	import type { Overlay, Scene } from '$lib/types/types';
-	import { COL, ROW } from '$lib/types/const';
-	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
+	import type { Overlay, Scene } from '$lib/models/types';
+	import { COL, ROW } from '$lib/models/const';
+	import { LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
 	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';
 

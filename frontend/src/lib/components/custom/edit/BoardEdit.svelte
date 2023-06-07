@@ -3,8 +3,8 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
-	import type { Overlay } from '$lib/types/types';
-	import { COL, ROW } from '$lib/types/const';
+	import type { Overlay } from '$lib/models/types';
+	import { COL, ROW } from '$lib/models/const';
 	import BoardContainer from '../BoardContainer.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';

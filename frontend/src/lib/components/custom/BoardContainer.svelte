@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { SceneBackground, Transition } from '$lib/types/enum';
-	import type { Scene } from '$lib/types/types';
+	import { SceneBackground, Transition } from '$lib/models/enum';
+	import type { Scene } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 
 	export let scene: Scene;

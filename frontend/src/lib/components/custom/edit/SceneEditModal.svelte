@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
-	import type { Overlay } from '$lib/types/types';
+	import { LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
+	import type { Overlay } from '$lib/models/types';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import Select from '$lib/components/input/Select.svelte';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';

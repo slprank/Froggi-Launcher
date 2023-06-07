@@ -5,7 +5,7 @@
 	import PostGameStats from '$lib/components/live/PostGameStats/PostGameStats.svelte';
 	import RankChange from '$lib/components/live/RankChange/RankChange.svelte';
 	import WaitingDolphin from '$lib/components/live/WaitingDolphin/WaitingDolphin.svelte';
-	import { LiveStatsScene } from '$lib/types/enum';
+	import { LiveStatsScene } from '$lib/models/enum';
 	import { eventEmitter, isBrowser, isMobile, statsScene } from '$lib/utils/store.svelte';
 	import type {
 		ActionCountsType,

@@ -6,7 +6,7 @@
 	import { urls } from '$lib/utils/store.svelte';
 	import Clipboard from 'svelte-clipboard';
 	import { getOverlayById } from './OverlayHandler.svelte';
-	import type { Overlay } from '$lib/types/types';
+	import type { Overlay } from '$lib/models/types';
 	import { fly } from 'svelte/transition';
 
 	const overlayId = $page.params.overlay;

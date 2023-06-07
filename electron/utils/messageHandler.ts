@@ -4,7 +4,7 @@ import EventEmitter from "events";
 import { delay, inject, singleton } from "tsyringe";
 import { ElectronJsonStore } from "./electronStore";
 import fs from 'fs';
-import { LiveStatsScene } from "../../frontend/src/lib/types/enum";
+import { LiveStatsScene } from "../../frontend/src/lib/models/enum";
 
 
 @singleton()

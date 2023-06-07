@@ -9,7 +9,7 @@
 		Overlay,
 		Css,
 		Shadow,
-	} from '$lib/types/types';
+	} from '$lib/models/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/edit/OverlayHandler.svelte';
@@ -17,7 +17,7 @@
 	import StylingSelect from '$lib/components/custom/selector/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
-	import { COL } from '$lib/types/const';
+	import { COL } from '$lib/models/const';
 
 	const overlayId = $page.params.overlay;
 

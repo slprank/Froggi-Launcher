@@ -1,7 +1,7 @@
 // https://www.npmjs.com/package/electron-store
 import ip from 'ip';
 import Store from 'electron-store';
-import type { CurrentPlayer, GameStartMode, GameStats, Obs, Overlay, Player, RankedNetplayProfile, Session, Url } from '../../frontend/src/lib/types/types';
+import type { CurrentPlayer, GameStartMode, GameStats, Obs, Overlay, Player, RankedNetplayProfile, Session, Url } from '../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from './messageHandler';

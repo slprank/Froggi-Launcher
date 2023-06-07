@@ -1,8 +1,8 @@
 <script lang="ts" context="module">
-	import { CustomElement, LiveStatsScene, SceneBackground, Transition } from '$lib/types/enum';
-	import type { Font, Obs, Overlay } from '$lib/types/types';
+	import { CustomElement, LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
+	import type { Font, Obs, Overlay } from '$lib/models/types';
 
-	import { COL, MIN } from '$lib/types/const';
+	import { COL, MIN } from '$lib/models/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';

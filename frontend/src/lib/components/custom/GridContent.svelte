@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { CustomElement, Transition } from '$lib/types/enum';
-	import type { GridContentItem, Shadow } from '$lib/types/types';
+	import { CustomElement, Transition } from '$lib/models/enum';
+	import type { GridContentItem, Shadow } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur as blur_ } from 'svelte/transition';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import { COL, ROW } from '$lib/types/const';
+	import { COL, ROW } from '$lib/models/const';
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let additionalDelay: number = 0;
@@ -73,7 +73,7 @@
 		} bg-opacity-50`}
 		in:animate
 	>
-		{#if dataItem?.elementId == CustomElement.CustomString}
+		{#if dataItem?.elementId === CustomElement.CustomString}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
 				style={`${shadow}; ${cssValue}; ${
@@ -84,7 +84,7 @@
 				{dataItem?.data.string}
 			</TextFitMulti>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.CustomBox}
+		{#if dataItem?.elementId === CustomElement.CustomBox}
 			<div
 				class={`w-full h-full ${classValue}`}
 				style={`${shadow}; ${cssValue}; ${
@@ -92,7 +92,7 @@
 				}; `}
 			/>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.CustomImage}
+		{#if dataItem?.elementId === CustomElement.CustomImage}
 			<div
 				class={`w-full h-full ${classValue}`}
 				style={`${cssValue}; ${
@@ -108,7 +108,7 @@
 				/>
 			</div>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.Player1Tag}
+		{#if dataItem?.elementId === CustomElement.Player1Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
 				style={`${shadow}; ${cssValue}; ${
@@ -119,7 +119,7 @@
 				{`Player1`}
 			</TextFitMulti>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.Player2Tag}
+		{#if dataItem?.elementId === CustomElement.Player2Tag}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
 				style={`${shadow}; ${cssValue}; ${
@@ -130,7 +130,7 @@
 				{`Player2`}
 			</TextFitMulti>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.Player1Score}
+		{#if dataItem?.elementId === CustomElement.Player1Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
 				style={`${shadow}; ${cssValue}; ${
@@ -141,7 +141,7 @@
 				{`1`}
 			</TextFitMulti>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.Player2Score}
+		{#if dataItem?.elementId === CustomElement.Player2Score}
 			<TextFitMulti
 				class={`h-full flex ${classValue}`}
 				style={`${shadow}; ${cssValue}; ${
@@ -152,7 +152,7 @@
 				{`0`}
 			</TextFitMulti>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.Player1RankIcon}
+		{#if dataItem?.elementId === CustomElement.Player1RankIcon}
 			<div
 				class={`w-full h-full ${classValue}`}
 				style={`${cssValue}; ${
@@ -169,7 +169,7 @@
 				/>
 			</div>
 		{/if}
-		{#if dataItem?.elementId == CustomElement.Player2RankIcon}
+		{#if dataItem?.elementId === CustomElement.Player2RankIcon}
 			<div
 				class={`w-full h-full ${classValue}`}
 				style={`${cssValue}; ${

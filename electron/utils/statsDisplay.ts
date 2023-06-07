@@ -5,8 +5,8 @@ import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import { Api } from './api';
 import { ElectronJsonStore } from './electronStore';
-import { Player } from '../../frontend/src/lib/types/types';
-import { LiveStatsScene } from '../../frontend/src/lib/types/enum';
+import { Player } from '../../frontend/src/lib/models/types';
+import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class StatsDisplay {

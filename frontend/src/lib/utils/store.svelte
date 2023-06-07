@@ -2,9 +2,9 @@
 	import { writable } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { EventEmitter } from 'events';
-	import { LiveStatsScene } from '$lib/types/enum';
+	import { LiveStatsScene } from '$lib/models/enum';
 	import Device from 'svelte-device-info';
-	import type { Obs, Url } from '$lib/types/types';
+	import type { Obs, Url } from '$lib/models/types';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());

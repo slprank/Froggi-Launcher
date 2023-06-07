@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
-	import type { Class, Css, ElementPayload, Shadow } from '$lib/types/types';
+	import type { Class, Css, ElementPayload, Shadow } from '$lib/models/types';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
-	import { CustomElement } from '$lib/types/enum';
+	import { CustomElement } from '$lib/models/enum';
 	import CodeInput from '$lib/components/input/CodeInput.svelte';
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';

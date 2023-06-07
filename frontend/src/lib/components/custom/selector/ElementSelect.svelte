@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CustomElement } from '$lib/types/enum';
+	import { CustomElement } from '$lib/models/enum';
 	import Select from '$lib/components/input/Select.svelte';
 
 	export let selectedElementId: number;

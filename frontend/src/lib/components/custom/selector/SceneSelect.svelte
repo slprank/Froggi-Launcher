@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import { LiveStatsScene } from '$lib/types/enum';
+	import { LiveStatsScene } from '$lib/models/enum';
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 
 	export let selected: LiveStatsScene[] | undefined = undefined;

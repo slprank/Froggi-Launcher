@@ -12,7 +12,7 @@
 	import { isBrowser, isElectron, isPWA, eventEmitter } from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import { WEBSOCKET_PORT } from '$lib/types/const';
+	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { initEventListener } from '$lib/utils/initEventListener.svelte';
 
 	function initDevices() {

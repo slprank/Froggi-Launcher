@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import type { Obs, Overlay } from '$lib/types/types';
+	import type { Obs, Overlay } from '$lib/models/types';
 	import {
 		eventEmitter,
 		currentPlayerRankStats,

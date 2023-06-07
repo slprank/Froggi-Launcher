@@ -18,9 +18,7 @@ import { StatsDisplay } from './utils/statsDisplay';
 import { SlippiJs } from './utils/slippi';
 import { DolphinConnection, SlpParser, SlpStream } from '@slippi/slippi-js';
 
-
 try {
-
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';

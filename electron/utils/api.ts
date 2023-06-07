@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ElectronLog } from 'electron-log';
 import { inject, injectable } from 'tsyringe';
-import { Player, RankedNetplayProfile } from '../../frontend/src/lib/types/types';
+import { Player, RankedNetplayProfile } from '../../frontend/src/lib/models/types';
 import { PlayerType } from '@slippi/slippi-js';
 
 @injectable()
