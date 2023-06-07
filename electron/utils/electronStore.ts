@@ -309,13 +309,13 @@ export class ElectronJsonStore {
 		return this.store.get(`settings.currentPlayer.rankedNetplayProfile`) as RankedNetplayProfile;
 	}
 
-	setCurrentPlayerCurrentRankStats(rankStats: RankedNetplayProfile) {
+	setCurrentPlayerCurrentRankStats(rankStats: RankedNetplayProfile | undefined) {
 		const player = this.getCurrentPlayer();
 		if (!rankStats || !player) return;
 		this.store.set(`settings.currentPlayer.rankedNetplayProfile`, rankStats);
 	}
 
-	setCurrentPlayerNewRankStats(rankStats: RankedNetplayProfile) {
+	setCurrentPlayerNewRankStats(rankStats: RankedNetplayProfile | undefined) {
 		const player = this.getCurrentPlayer();
 		if (!rankStats || !player) return;
 		this.store.set(`settings.currentPlayer.newRankedNetplayProfile`, rankStats);

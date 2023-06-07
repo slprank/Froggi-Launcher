@@ -13,13 +13,12 @@
 
 	function updateSelected() {
 		if (selected === undefined) return;
-		selected =
-			tempSelected
-				.map((s, i) => {
-					if (s === undefined || s === false) return;
-					return i;
-				})
-				.filter((s) => s !== undefined) ?? [];
+		selected = tempSelected
+			.map((s, i) => {
+				if (s === undefined || s === false) return;
+				return i;
+			})
+			.filter((s) => s !== undefined) as LiveStatsScene[];
 	}
 	$: tempSelected, updateSelected();
 

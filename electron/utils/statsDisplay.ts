@@ -5,7 +5,7 @@ import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import { Api } from './api';
 import { ElectronJsonStore } from './electronStore';
-import { Player } from '../../frontend/src/lib/models/types';
+import { Player, RankedNetplayProfile } from '../../frontend/src/lib/models/types';
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 @singleton()
@@ -54,49 +54,51 @@ export class StatsDisplay {
 		await this.messageHandler.sendMessage('game_frame', frameEntry);
 	}
 
+	// TODO: Handle offline game data by returning existing values
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
 		let currentPlayers: Player[] = await this.getCurrentPlayersWithRankStats(settings)
 
-		let currentPlayer: Player | undefined = this.getCurrentPlayerRankStats(currentPlayers)
-		if (!currentPlayer) return;
+		let currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayers)
 
 		if (settings?.matchInfo?.gameNumber === 0) {
 			this.store.setGameScore([0, 0]);
 		}
 
-		this.store.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
+		this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
 		this.store.setCurrentPlayers(currentPlayers);
 		this.store.setGameSettings(settings);
 	}
 
-	// TODO: Handle offline data by returning existing values
+	// TODO: Handle offline game data by returning existing values
 	async handleGameEnd(gameEnd: GameEndType, frameEntry: FrameEntryType | null, settings: GameStartType | null) {
 		if (!settings) return;
 		this.log.info("Game End", gameEnd, frameEntry, settings);
 
-		let currentPlayersRankStats: Player[] = await this.getCurrentPlayersWithRankStats(settings)
+		const currentPlayersRankStats: Player[] = await this.getCurrentPlayersWithRankStats(settings)
+		const currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayersRankStats)
+		const recentGameStats = this.getRecentGameStats();
 
-		let currentPlayer: Player | undefined = this.getCurrentPlayerRankStats(currentPlayersRankStats)
-		if (!currentPlayer) return;
-
-		this.store.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
-
-		let recentGameStats = this.getRecentGameStats();
+		this.store.setCurrentPlayerNewRankStats(currentPlayerRankStats);
 		this.messageHandler.sendMessage('game_stats', recentGameStats);
 	}
 
 	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
 		let currentPlayers = settings.players.filter(player => player)
+		if (currentPlayers.some(player => !player.connectCode)) {
+			return await new Promise<Player[]>(resolve => {
+				resolve(this.store.getCurrentPlayers());
+			})
+		}
 		return (await Promise.all(
 			currentPlayers.map(async (player: PlayerType) => await this.api.getPlayerWithRankStats(player))
 		)).filter((player): player is Player => player !== undefined);
 	}
 
-	getCurrentPlayerRankStats(players: Player[]): Player | undefined {
+	getCurrentPlayerRankStats(players: Player[]): RankedNetplayProfile | undefined {
 		const player = this.store.getCurrentPlayer()
 		if (!player) return;
-		return players.find(player => player.connectCode === player.connectCode);
+		return players.find(player => player.connectCode === player.connectCode)?.rankedNetplayProfile;
 	}
 
 	handleScore(gameEnd: GameEndType) {
@@ -137,6 +139,7 @@ export class StatsDisplay {
 	}
 
 	// OTHER
+	// TODO: Fix these
 	getGameFiles() {
 		const fs = require('fs');
 		const re = new RegExp('^Game_.*.slp$');
