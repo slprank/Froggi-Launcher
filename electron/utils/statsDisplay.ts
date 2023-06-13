@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import EventEmitter from 'events';
@@ -23,8 +24,6 @@ export class StatsDisplay {
 		this.messageHandler = messageHandler;
 		this.eventEmitter = eventEmitter;
 		this.log = log;
-		this.slpStream = slpStream;
-		this.slpParser = slpParser;
 		this.store = store;
 		this.api = api;
 
@@ -35,7 +34,8 @@ export class StatsDisplay {
 		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: SlpRawEventPayload) => {
 			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
 			this.slpParser.handleCommand(event.command, event.payload);
-			if (event.command == 54) {
+			console.log(event.command, event.payload)
+			if (event.command === 54) {
 				await this.handleGameStart(this.slpParser.getSettings());
 			}
 		});
@@ -115,15 +115,6 @@ export class StatsDisplay {
 	async initListeners() {
 		this.store.setListener(`settings.currentPlayer.newRankedNetplayProfile`, async () => {
 			await this.handleRankChange()
-		})
-		this.store.setListener(`settings.currentPlayer.rankedNetplayProfile`, async () => {
-			this.messageHandler.sendMessage('current_player', this.store.getCurrentPlayer());
-		})
-		this.store.setListener(`stats.currentPlayers`, async () => {
-			this.messageHandler.sendMessage('current_players', this.store.getCurrentPlayers());
-		})
-		this.store.setListener(`stats.game.settings`, async () => {
-			this.messageHandler.sendMessage('game_settings', this.store.getGameSettings());
 		})
 	}
 

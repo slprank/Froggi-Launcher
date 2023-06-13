@@ -1,5 +1,5 @@
 // https://github.com/project-slippi/slippi-js
-
+// @ts-nocheck
 import {
 	SlpParser,
 	DolphinConnection,
@@ -27,9 +27,6 @@ export class SlippiJs {
 		public messageHandler: MessageHandler,
 		public store: ElectronJsonStore,
 	) {
-		this.dolphinConnection = new DolphinConnection();
-		this.parser = new SlpParser();
-		this.slpStream = new SlpStream();
 		this.ipcMain = ipcMain;
 		this.log = log;
 		this.messageHandler = messageHandler
@@ -65,15 +62,7 @@ export class SlippiJs {
 					break;
 				case DolphinMessageType.GAME_EVENT:
 					var decoded = Buffer.from(message.payload, 'base64');
-					this.slpStream.write(decoded);
-					break;
-				case DolphinMessageType.START_GAME:
-					var decoded = Buffer.from(message.payload, 'base64');
-					this.slpStream.write(decoded);
-					break;
-				case DolphinMessageType.END_GAME:
-					var decoded = Buffer.from(message.payload, 'base64');
-					this.slpStream.write(decoded);
+					this.slpStream.write(Buffer.from(message.payload, 'base64'));
 					break;
 			}
 		});

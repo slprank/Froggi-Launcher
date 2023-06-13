@@ -84,7 +84,7 @@ export class ElectronJsonStore {
 		if (settings?.spectateSlpPath === undefined) {
 			settings.useMonthlySubfolders = false
 		}
-		fs.writeFileSync(getAppDataPath('Slippi Launcher'), JSON.parse(`{"settings": ${settings}}`))
+		fs.writeFileSync(`${getAppDataPath('Slippi Launcher')}/Settings`, JSON.stringify({ settings: settings }))
 		return settings;
 	}
 
@@ -344,11 +344,23 @@ export class ElectronJsonStore {
 
 	// Listeners
 	initListeners() {
-		this.store.onDidChange("stats.scene", () => {
-			this.messageHandler.sendMessage("live_stats_scene", this.getStatsScene())
+		this.store.onDidChange("stats.scene", (value) => {
+			this.messageHandler.sendMessage("live_stats_scene", value)
 		})
-		this.store.onDidChange("obs.custom", () => {
-			this.messageHandler.sendMessage('obs_custom', this.getCustom());
+		this.store.onDidChange("obs.custom", (value) => {
+			this.messageHandler.sendMessage('obs_custom', value);
+		})
+		this.store.onDidChange(`settings.currentPlayer.rankedNetplayProfile`, async (value) => {
+			this.messageHandler.sendMessage('current_player', value);
+		})
+		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
+			this.messageHandler.sendMessage('current_players', value);
+		})
+		this.store.onDidChange(`stats.game.settings`, async (value) => {
+			this.messageHandler.sendMessage('game_settings', value);
+		})
+		this.store.onDidChange(`obs`, async (value) => {
+			this.messageHandler.sendMessage('game_settings', value);
 		})
 	}
 }
