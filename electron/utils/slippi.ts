@@ -1,5 +1,3 @@
-// https://github.com/project-slippi/slippi-js
-// @ts-nocheck
 import {
 	SlpParser,
 	DolphinConnection,

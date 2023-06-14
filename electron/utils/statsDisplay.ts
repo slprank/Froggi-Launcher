@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import EventEmitter from 'events';
