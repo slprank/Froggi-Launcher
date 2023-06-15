@@ -10,7 +10,6 @@ import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class StatsDisplay {
-
 	constructor(
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
 		@inject("ElectronLog") public log: ElectronLog,
@@ -56,6 +55,7 @@ export class StatsDisplay {
 	// TODO: Handle offline game data by returning existing values
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
+		this.log.info("Game start", settings)
 		let currentPlayers: Player[] = await this.getCurrentPlayersWithRankStats(settings)
 
 		let currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayers)
@@ -67,6 +67,7 @@ export class StatsDisplay {
 		this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
 		this.store.setCurrentPlayers(currentPlayers);
 		this.store.setGameSettings(settings);
+		this.store.setStatsScene(LiveStatsScene.InGame)
 	}
 
 	// TODO: Handle offline game data by returning existing values
@@ -79,7 +80,7 @@ export class StatsDisplay {
 		const recentGameStats = this.getRecentGameStats();
 
 		this.store.setCurrentPlayerNewRankStats(currentPlayerRankStats);
-		this.messageHandler.sendMessage('game_stats', recentGameStats);
+		if (recentGameStats) this.messageHandler.sendMessage('game_stats', recentGameStats);
 	}
 
 	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
@@ -139,6 +140,7 @@ export class StatsDisplay {
 
 		if (!slippiDir) return null;
 
+		// TODO: Handle monthly sub folder
 		let files = fs
 			.readdirSync(slippiDir)
 			.map((filename: string) => `${path.parse(filename).name}.slp`);
@@ -150,7 +152,7 @@ export class StatsDisplay {
 	getRecentGameStats() {
 		const files = this.getGameFiles();
 		if (!files) return null;
-		const game = new SlippiGame(files[files.length - 1]);
+		const game = new SlippiGame(files.at(-1));
 
 		return game?.getStats();
 	}
