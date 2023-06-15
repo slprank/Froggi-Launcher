@@ -5,10 +5,11 @@ import type { CurrentPlayer, GameStartMode, GameStats, Obs, Overlay, Player, Ran
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from './messageHandler';
-import { GameStartType, PlayerType } from '@slippi/slippi-js';
+import { GameEndType, GameStartType, PlayerType, StatsType } from '@slippi/slippi-js';
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
+import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 
 @singleton()
@@ -108,7 +109,7 @@ export class ElectronJsonStore {
 		return this.store.get('obs.custom') as Obs;
 	}
 
-	setCustom(value: any) {
+	setCustom(value: Obs) {
 		if (!value) return;
 		this.store.set('obs.custom', value);
 	}
@@ -128,7 +129,7 @@ export class ElectronJsonStore {
 		return overlays?.findIndex((overlay: any) => overlay.id == overlayId) ?? undefined;
 	}
 
-	updateCustomOverlay(overlay: any): void {
+	updateCustomOverlay(overlay: Overlay): void {
 		if (!overlay) return;
 		let custom = this.getCustom();
 		console.log('custom', custom);
@@ -140,7 +141,7 @@ export class ElectronJsonStore {
 		this.setCustom(custom);
 	}
 
-	uploadCustomOverlay(overlay: any): void {
+	uploadCustomOverlay(overlay: Overlay): void {
 		if (!overlay) return;
 		let custom = this.getCustom();
 		overlay.id = this.newId();
@@ -165,11 +166,11 @@ export class ElectronJsonStore {
 	}
 
 	// LIVE STATS
-	getStatsScene() {
-		return this.store.get('stats.scene') ?? 0;
+	getStatsScene(): LiveStatsScene {
+		return this.store.get('stats.scene') as LiveStatsScene ?? 0;
 	}
 
-	setStatsScene(scene: any) {
+	setStatsScene(scene: LiveStatsScene) {
 		this.store.set('stats.scene', scene ?? 0);
 	}
 
@@ -181,20 +182,19 @@ export class ElectronJsonStore {
 		this.store.set('stats.currentPlayers', players.filter(player => player));
 	}
 
-	getGameSettings() {
-		return this.store.get('stats.game.settings');
+	getGameSettings(): GameStartType {
+		return this.store.get('stats.game.settings') as GameStartType;
 	}
 
-	setGameSettings(settings: any) {
+	setGameSettings(settings: GameStartType) {
 		return this.store.set('stats.game.settings', settings);
 	}
 
-	getGameStats() {
-		return this.store.get('stats.game.stats');
+	getGameStats(): StatsType {
+		return this.store.get('stats.game.stats') as StatsType;
 	}
 
-	setGameStats(gameStats: any, latestFrame: any) {
-		if (latestFrame) gameStats.latestFrame = latestFrame;
+	setGameStats(gameStats: GameEndType) {
 		this.store.set('stats.game.stats', gameStats);
 	}
 
@@ -202,7 +202,7 @@ export class ElectronJsonStore {
 		return this.store.get('stats.game.score') as number[];
 	}
 
-	setGameScore(score: any) {
+	setGameScore(score: number[]) {
 		this.store.set('stats.game.score', score);
 	}
 
@@ -350,7 +350,7 @@ export class ElectronJsonStore {
 		this.store.onDidChange("obs.custom", (value) => {
 			this.messageHandler.sendMessage('obs_custom', value);
 		})
-		this.store.onDidChange(`settings.currentPlayer.rankedNetplayProfile`, async (value) => {
+		this.store.onDidChange(`settings.currentPlayer`, async (value) => {
 			this.messageHandler.sendMessage('current_player', value);
 		})
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
@@ -359,8 +359,11 @@ export class ElectronJsonStore {
 		this.store.onDidChange(`stats.game.settings`, async (value) => {
 			this.messageHandler.sendMessage('game_settings', value);
 		})
-		this.store.onDidChange(`obs`, async (value) => {
-			this.messageHandler.sendMessage('game_settings', value);
+		this.store.onDidChange(`stats.game.score`, async (value) => {
+			this.messageHandler.sendMessage('game_score', value);
+		})
+		this.store.onDidChange(`stats.game.stats`, async (value) => {
+			this.messageHandler.sendMessage('post_game_stats', value);
 		})
 	}
 }

@@ -1,4 +1,4 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
+import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import EventEmitter from 'events';
 import { ElectronLog } from 'electron-log';
@@ -39,7 +39,6 @@ export class StatsDisplay {
 		});
 
 		this.slpParser.on(SlpParserEvent.END, async (gameEnd: GameEndType) => {
-			this.handleScore(gameEnd)
 			await this.handleGameEnd(gameEnd, this.slpParser.getLatestFrame(), this.slpParser.getSettings());
 		});
 
@@ -74,12 +73,14 @@ export class StatsDisplay {
 	async handleGameEnd(gameEnd: GameEndType, frameEntry: FrameEntryType | null, settings: GameStartType | null) {
 		if (!settings) return;
 		this.log.info("Game End", gameEnd, frameEntry, settings);
+		this.handleScore(gameEnd)
 
 		const currentPlayersRankStats: Player[] = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayersRankStats)
 		const recentGameStats = this.getRecentGameStats();
 
 		this.store.setCurrentPlayerNewRankStats(currentPlayerRankStats);
+		this.store.setGameStats(gameEnd)
 		if (recentGameStats) this.messageHandler.sendMessage('post_game_stats', recentGameStats);
 	}
 
@@ -102,13 +103,12 @@ export class StatsDisplay {
 	}
 
 	handleScore(gameEnd: GameEndType) {
-		this.store.setGameScore([0, 0]);
 		let score: number[] = this.store.getGameScore() ?? [0, 0];
 		const winnerIndex = gameEnd.placements
-			.filter((p: any) => p.position >= 0)
-			.sort((a: any, b: any) => a.position - b.position)[0].playerIndex;
+			.filter((p: PlacementType) => p.position ?? -1 >= 0)
+			.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
+			.findIndex(p => p.position === 0); // Verify that winner is 0
 		score[winnerIndex] += 1;
-		this.messageHandler.sendMessage('game_score', score);
 		this.store.setGameScore(score);
 	}
 
