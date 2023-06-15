@@ -80,7 +80,7 @@ export class StatsDisplay {
 		const recentGameStats = this.getRecentGameStats();
 
 		this.store.setCurrentPlayerNewRankStats(currentPlayerRankStats);
-		if (recentGameStats) this.messageHandler.sendMessage('game_stats', recentGameStats);
+		if (recentGameStats) this.messageHandler.sendMessage('post_game_stats', recentGameStats);
 	}
 
 	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {

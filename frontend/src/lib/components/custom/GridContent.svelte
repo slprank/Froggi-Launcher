@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { CustomElement, Transition } from '$lib/models/enum';
-	import type { GridContentItem, Shadow } from '$lib/models/types';
+	import type { GridContentItem } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur as blur_ } from 'svelte/transition';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { COL, ROW } from '$lib/models/const';
+	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let additionalDelay: number = 0;
@@ -30,7 +31,7 @@
 
 	$: shadow = `filter: drop-shadow(${dataItem?.data.shadow?.x ?? 0}px ${
 		dataItem?.data.shadow?.y ?? 0
-	}px ${dataItem?.data.shadow?.spread - 1 ?? 0}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
+	}px ${dataItem?.data.shadow.spread - 1 ?? 0}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
 
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -116,7 +117,7 @@
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
-				{`Player1`}
+				{$currentPlayers?.at(0)?.displayName ?? `Player1`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2Tag}
@@ -127,7 +128,33 @@
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
-				{`Player2`}
+				{$currentPlayers?.at(1)?.displayName ?? `Player2`}
+			</TextFitMulti>
+		{/if}
+		{#if dataItem?.elementId === CustomElement.Player1Percent}
+			<TextFitMulti
+				class={`h-full flex ${classValue}`}
+				style={`${shadow}; ${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				};  ${edit ? 'color: black' : ''}`}
+				maxFont={1000}
+			>
+				{`${
+					$gameFrame?.players[$currentPlayers.at(0)?.playerIndex ?? 0]?.pre.percent ?? 0
+				}%`}
+			</TextFitMulti>
+		{/if}
+		{#if dataItem?.elementId === CustomElement.Player2Percent}
+			<TextFitMulti
+				class={`h-full flex ${classValue}`}
+				style={`${shadow}; ${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				};  ${edit ? 'color: black' : ''}`}
+				maxFont={1000}
+			>
+				{`${
+					$gameFrame?.players[$currentPlayers.at(1)?.playerIndex ?? 0]?.pre.percent ?? 0
+				}%`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Score}
@@ -138,7 +165,7 @@
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
-				{`1`}
+				{$gameScore?.at(0) ?? '0'}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2Score}
@@ -149,7 +176,7 @@
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
-				{`0`}
+				{$gameScore?.at(1) ?? '0'}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1RankIcon}

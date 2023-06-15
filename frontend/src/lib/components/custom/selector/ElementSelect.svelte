@@ -28,6 +28,14 @@
 			value: CustomElement.Player2Tag,
 		},
 		{
+			name: 'Player1 Percent',
+			value: CustomElement.Player1Percent,
+		},
+		{
+			name: 'Player2 Percent',
+			value: CustomElement.Player2Percent,
+		},
+		{
 			name: 'Player1 Score',
 			value: CustomElement.Player1Score,
 		},

@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import type { Obs, Overlay } from '$lib/models/types';
+	import type { Obs, Overlay, Player } from '$lib/models/types';
 	import {
 		eventEmitter,
-		currentPlayerRankStats,
-		currentPlayersRankStats,
+		currentPlayer,
+		currentPlayers,
 		gameScore,
 		gameSettings,
-		gameStats,
+		postGameStats,
 		recentRankedSets,
 		sessionStats,
 		statsScene,
@@ -20,13 +20,13 @@
 	export async function initEventListener() {
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
-		_eventEmitter.on('currentPlayer_rank_stats', (rankStats: any) => {
-			console.log({ rankStats });
-			currentPlayerRankStats.set(rankStats);
+		_eventEmitter.on('current_player', (player: Player) => {
+			console.log({ player });
+			currentPlayer.set(player);
 		});
-		_eventEmitter.on('currentPlayers_rank_stats', (playersRankStats: any) => {
-			console.log({ playersRankStats });
-			currentPlayersRankStats.set(playersRankStats);
+		_eventEmitter.on('current_players', (players: Player[]) => {
+			console.log({ players });
+			currentPlayers.set(players);
 		});
 		_eventEmitter.on('game_frame', (frame: FrameEntryType) => {
 			gameFrame.set(frame);
@@ -39,9 +39,9 @@
 			console.log({ score });
 			gameScore.set(score);
 		});
-		_eventEmitter.on('game_stats', (stats: any) => {
+		_eventEmitter.on('post_game_stats', (stats: any) => {
 			console.log({ stats });
-			gameStats.set(stats);
+			postGameStats.set(stats);
 		});
 		_eventEmitter.on('recent_ranked_sets', (recentSets: any) => {
 			console.log({ recentSets });

@@ -16,6 +16,8 @@ export enum CustomElement {
 	Player2Tag = 101,
 	Player1Score = 102,
 	Player2Score = 103,
+	Player1Percent = 104,
+	Player2Percent = 105,
 
 	// Box
 	// Potential Box Elements

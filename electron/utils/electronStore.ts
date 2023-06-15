@@ -178,7 +178,7 @@ export class ElectronJsonStore {
 	}
 
 	setCurrentPlayers(players: Player[]) {
-		this.store.set('stats.currentPlayers', players);
+		this.store.set('stats.currentPlayers', players.filter(player => player));
 	}
 
 	getGameSettings() {

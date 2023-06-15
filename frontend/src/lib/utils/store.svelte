@@ -4,7 +4,7 @@
 	import { EventEmitter } from 'events';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import Device from 'svelte-device-info';
-	import type { Obs, Url } from '$lib/models/types';
+	import type { Obs, Player, Url } from '$lib/models/types';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
@@ -27,12 +27,12 @@
 			),
 	);
 
-	const currentPlayerRankStats = writable<any>();
-	const currentPlayersRankStats = writable<any>();
+	const currentPlayer = writable<Player>();
+	const currentPlayers = writable<Player[]>();
 	const gameFrame = writable<FrameEntryType>();
-	const gameScore = writable<any>();
+	const gameScore = writable<number[]>([0, 0]);
 	const gameSettings = writable<any>();
-	const gameStats = writable<any>();
+	const postGameStats = writable<any>();
 	const recentRankedSets = writable<any>();
 	const sessionStats = writable<any>();
 	const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
@@ -49,12 +49,12 @@
 		isMobile,
 		isTablet,
 		isPWA,
-		currentPlayerRankStats,
-		currentPlayersRankStats,
+		currentPlayer,
+		currentPlayers,
 		gameFrame,
 		gameScore,
 		gameSettings,
-		gameStats,
+		postGameStats,
 		recentRankedSets,
 		sessionStats,
 		statsScene,
