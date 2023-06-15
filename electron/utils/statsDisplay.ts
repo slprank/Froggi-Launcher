@@ -61,7 +61,7 @@ export class StatsDisplay {
 
 		let currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayers)
 
-		if (settings?.matchInfo?.matchId && settings?.matchInfo?.gameNumber === 0) {
+		if (settings?.matchInfo?.matchId && [0, 1].includes(settings?.matchInfo?.gameNumber ?? 0)) {
 			this.store.setGameScore([0, 0]);
 		}
 

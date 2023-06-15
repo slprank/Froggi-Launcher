@@ -12,6 +12,7 @@ import { IpcMain } from 'electron';
 import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ElectronJsonStore } from './electronStore';
+import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class SlippiJs {
@@ -42,14 +43,16 @@ export class SlippiJs {
 			// Disconnect from Slippi server when we disconnect from Dolphin
 			this.store.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {
-				this.messageHandler.sendMessage('dolphin_connection_status', 'disconnected');
+				this.log.info("Dolphin Disconnected")
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+				this.store.setStatsScene(LiveStatsScene.WaitingForDolphin)
 			}
 			if (status === ConnectionStatus.CONNECTED) {
-				this.messageHandler.sendMessage('dolphin_connection_status', 'connected');
+				this.log.info("Dolphin Connected")
+				this.store.setStatsScene(LiveStatsScene.PreGame)
 			}
 			if (status === ConnectionStatus.CONNECTING) {
-				this.messageHandler.sendMessage('dolphin_connection_status', 'connecting');
+				this.log.info("Dolphin Connected")
 			}
 		});
 

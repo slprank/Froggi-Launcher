@@ -160,11 +160,6 @@ export class MessageHandler {
 		this.sendInitMessage(socket, 'game_score', this.store.getGameScore());
 		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
 		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
-		this.sendInitMessage(
-			socket,
-			'dolphin_connection_status',
-			this.store.getDolphinConnectionStatus(),
-		);
 		this.sendInitMessage(socket, 'obs_custom', this.store.getCustom());
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
 	}
