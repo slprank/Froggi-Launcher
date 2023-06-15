@@ -32,8 +32,9 @@ export class StatsDisplay {
 		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: SlpRawEventPayload) => {
 			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
 			this.slpParser.handleCommand(event.command, event.payload);
-			console.log(event.command, event.payload)
+			//console.log(event.command, event.payload)
 			if (event.command === 54) {
+				this.handleUndefinedPlayers(this.slpParser.getSettings() ?? undefined)
 				await this.handleGameStart(this.slpParser.getSettings());
 			}
 		});
@@ -56,10 +57,11 @@ export class StatsDisplay {
 		if (!settings) return;
 		this.log.info("Game start", settings)
 		let currentPlayers: Player[] = await this.getCurrentPlayersWithRankStats(settings)
+		console.log("current", currentPlayers)
 
 		let currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayers)
 
-		if (settings?.matchInfo?.gameNumber === 0) {
+		if (settings?.matchInfo?.matchId && settings?.matchInfo?.gameNumber === 0) {
 			this.store.setGameScore([0, 0]);
 		}
 
@@ -69,7 +71,6 @@ export class StatsDisplay {
 		this.store.setStatsScene(LiveStatsScene.InGame)
 	}
 
-	// TODO: Handle offline game data by returning existing values
 	async handleGameEnd(gameEnd: GameEndType, frameEntry: FrameEntryType | null, settings: GameStartType | null) {
 		if (!settings) return;
 		this.log.info("Game End", gameEnd, frameEntry, settings);
@@ -81,14 +82,16 @@ export class StatsDisplay {
 
 		this.store.setCurrentPlayerNewRankStats(currentPlayerRankStats);
 		this.store.setGameStats(gameEnd)
+		this.store.setStatsScene(LiveStatsScene.PostGame)
 		if (recentGameStats) this.messageHandler.sendMessage('post_game_stats', recentGameStats);
 	}
 
 	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
 		let currentPlayers = settings.players.filter(player => player)
+		console.log("settings", settings.players)
 		if (currentPlayers.some(player => !player.connectCode)) {
 			return await new Promise<Player[]>(resolve => {
-				resolve(this.store.getCurrentPlayers());
+				resolve(this.store.getCurrentPlayers()!);
 			})
 		}
 		return (await Promise.all(
@@ -105,9 +108,11 @@ export class StatsDisplay {
 	handleScore(gameEnd: GameEndType) {
 		let score: number[] = this.store.getGameScore() ?? [0, 0];
 		const winnerIndex = gameEnd.placements
-			.filter((p: PlacementType) => p.position ?? -1 >= 0)
+			.filter((p: PlacementType) => (p.position ?? -1) >= 0)
 			.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
 			.findIndex(p => p.position === 0); // Verify that winner is 0
+		console.log("Game end", gameEnd.placements)
+		console.log(winnerIndex)
 		score[winnerIndex] += 1;
 		this.store.setGameScore(score);
 	}
@@ -155,5 +160,11 @@ export class StatsDisplay {
 		const game = new SlippiGame(files.at(-1));
 
 		return game?.getStats();
+	}
+
+	handleUndefinedPlayers(settings: GameStartType | undefined) {
+		if (!settings) return;
+		const players = this.store.getCurrentPlayers()
+		if (!players) this.store.setCurrentPlayers(settings.players)
 	}
 }

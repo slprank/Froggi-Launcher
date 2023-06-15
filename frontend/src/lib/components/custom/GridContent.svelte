@@ -31,7 +31,9 @@
 
 	$: shadow = `filter: drop-shadow(${dataItem?.data.shadow?.x ?? 0}px ${
 		dataItem?.data.shadow?.y ?? 0
-	}px ${dataItem?.data.shadow.spread - 1 ?? 0}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
+	}px ${(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0}px ${
+		dataItem?.data.shadow?.color ?? '#000000'
+	});`;
 
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -64,6 +66,8 @@
 	// TODO: Add remaining components
 	// TODO: Use live data
 	// TODO: Add custom font support
+
+	$: console.log($currentPlayers, $gameFrame);
 </script>
 
 {#key dataItem}
@@ -139,9 +143,7 @@
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
-				{`${
-					$gameFrame?.players[$currentPlayers.at(0)?.playerIndex ?? 0]?.pre.percent ?? 0
-				}%`}
+				{`${$gameFrame?.players[0]?.pre.percent?.toFixed(1) ?? 0}%`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2Percent}
@@ -152,9 +154,7 @@
 				};  ${edit ? 'color: black' : ''}`}
 				maxFont={1000}
 			>
-				{`${
-					$gameFrame?.players[$currentPlayers.at(1)?.playerIndex ?? 0]?.pre.percent ?? 0
-				}%`}
+				{`${$gameFrame?.players[1]?.pre.percent?.toFixed(1) ?? 0}%`}
 			</TextFitMulti>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Score}
@@ -179,7 +179,7 @@
 				{$gameScore?.at(1) ?? '0'}
 			</TextFitMulti>
 		{/if}
-		{#if dataItem?.elementId === CustomElement.Player1RankIcon}
+		{#if dataItem?.elementId === CustomElement.Player1RankIcon && $currentPlayers.at(0)?.rankedNetplayProfile}
 			<div
 				class={`w-full h-full ${classValue}`}
 				style={`${cssValue}; ${
@@ -191,12 +191,14 @@
 					style={`${shadow}; ${
 						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
 					};`}
-					src="/image/rank-icons/GOLD 3.svg"
+					src={`/image/rank-icons/${$currentPlayers
+						.at(0)
+						?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
 					alt="rank-icon"
 				/>
 			</div>
 		{/if}
-		{#if dataItem?.elementId === CustomElement.Player2RankIcon}
+		{#if dataItem?.elementId === CustomElement.Player2RankIcon && $currentPlayers.at(1)?.rankedNetplayProfile}
 			<div
 				class={`w-full h-full ${classValue}`}
 				style={`${cssValue}; ${
@@ -208,7 +210,9 @@
 					style={`${shadow}; ${
 						dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
 					};`}
-					src="/image/rank-icons/SILVER 3.svg"
+					src={`/image/rank-icons/${$currentPlayers
+						.at(1)
+						?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
 					alt="rank-icon"
 				/>
 			</div>

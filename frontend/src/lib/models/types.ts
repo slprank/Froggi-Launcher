@@ -97,11 +97,11 @@ export type GameStartMode = "ranked" | "unranked" | ""; // TODO: Verify these ty
 
 
 export interface Player extends PlayerType {
-	rankedNetplayProfile: RankedNetplayProfile;
+	rankedNetplayProfile: RankedNetplayProfile | undefined;
 }
 
 export interface CurrentPlayer extends Player {
-	newRankedNetplayProfile: RankedNetplayProfile;
+	newRankedNetplayProfile: RankedNetplayProfile | undefined;
 }
 
 export interface GameStats extends GameStartType {

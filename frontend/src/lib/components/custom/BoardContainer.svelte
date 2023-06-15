@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SceneBackground, Transition } from '$lib/models/enum';
 	import type { Scene } from '$lib/models/types';
+	import { gameSettings } from '$lib/utils/store.svelte';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 
 	export let scene: Scene;
@@ -46,7 +47,8 @@
 				}
 				${
 					scene?.backgroundType === SceneBackground.ImageStage
-						? `background-image: url('/image/backgrounds/8.png');`
+						? `background-image: url('/image/stages/${$gameSettings.stageId}.png');
+						background-size: ${scene.backgroundImage.objectFit ?? 'cover'};`
 						: ''
 				}
 				${scene?.backgroundOpacity !== undefined ? `opacity: ${scene.backgroundOpacity / 100};` : ''}

@@ -5,7 +5,7 @@
 	import { LiveStatsScene } from '$lib/models/enum';
 	import Device from 'svelte-device-info';
 	import type { Obs, Player, Url } from '$lib/models/types';
-	import type { FrameEntryType } from '@slippi/slippi-js';
+	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 
 	const eventEmitter = writable<EventEmitter>(new EventEmitter());
 
@@ -31,7 +31,7 @@
 	const currentPlayers = writable<Player[]>();
 	const gameFrame = writable<FrameEntryType>();
 	const gameScore = writable<number[]>([0, 0]);
-	const gameSettings = writable<any>();
+	const gameSettings = writable<GameStartType>();
 	const postGameStats = writable<any>();
 	const recentRankedSets = writable<any>();
 	const sessionStats = writable<any>();

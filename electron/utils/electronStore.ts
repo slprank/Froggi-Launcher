@@ -174,12 +174,12 @@ export class ElectronJsonStore {
 		this.store.set('stats.scene', scene ?? 0);
 	}
 
-	getCurrentPlayers(): Player[] {
+	getCurrentPlayers(): Player[] | undefined  {
 		return this.store.get('stats.currentPlayers') as Player[];
 	}
 
-	setCurrentPlayers(players: Player[]) {
-		this.store.set('stats.currentPlayers', players.filter(player => player));
+	setCurrentPlayers(players: (Player | PlayerType)[]) {
+		this.store.set('stats.currentPlayers', players?.filter(player => player));
 	}
 
 	getGameSettings(): GameStartType {
