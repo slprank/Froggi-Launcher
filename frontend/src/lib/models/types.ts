@@ -85,6 +85,7 @@ export interface Css {
 	customText: string;
 	customImage: string;
 	opacity: number;
+	transform: string | undefined;
 }
 export interface Shadow {
 	x: number;

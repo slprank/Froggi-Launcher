@@ -51,6 +51,14 @@
 			name: 'Player2 Rank Icon',
 			value: CustomElement.Player2RankIcon,
 		},
+		{
+			name: 'Player1 Character Render',
+			value: CustomElement.Player1CharacterRender,
+		},
+		{
+			name: 'Player2 Character Render',
+			value: CustomElement.Player2CharacterRender,
+		},
 	];
 </script>
 

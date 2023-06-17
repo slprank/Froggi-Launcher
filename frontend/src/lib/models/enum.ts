@@ -25,6 +25,10 @@ export enum CustomElement {
 	// Image
 	Player1RankIcon = 300,
 	Player2RankIcon = 301,
+	Player1CharacterIcon = 302,
+	Player2CharacterIcon = 303,
+	Player1CharacterRender = 302,
+	Player2CharacterRender = 303,
 }
 
 export enum SceneBackground {

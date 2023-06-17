@@ -64,8 +64,7 @@
 	};
 
 	// TODO: Add remaining components
-	// TODO: Use live data
-	// TODO: Add custom font support
+	// TODO: Add fallback to unknown player - img, name, etc
 
 	$: console.log($currentPlayers, $gameFrame);
 </script>
@@ -214,6 +213,42 @@
 						.at(1)
 						?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
 					alt="rank-icon"
+				/>
+			</div>
+		{/if}
+		{#if dataItem?.elementId === CustomElement.Player1CharacterRender}
+			<div
+				class={`w-full h-full ${classValue}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+				}; `}
+			>
+				<img
+					class="w-full h-full"
+					style={`${shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+					src={`/image/character-renders/${$currentPlayers.at(0)?.characterId}/${
+						$currentPlayers.at(0)?.characterColor
+					}.png`}
+					alt="custom"
+				/>
+			</div>
+		{/if}
+		{#if dataItem?.elementId === CustomElement.Player2CharacterRender}
+			<div
+				class={`w-full h-full ${classValue}`}
+				style={`${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+				}; `}
+			>
+				<img
+					class="w-full h-full"
+					style={`${shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+					src={`/image/character-renders/${$currentPlayers.at(1)?.characterId}/${
+						$currentPlayers.at(1)?.characterColor
+					}.png`}
+					alt="custom"
 				/>
 			</div>
 		{/if}
