@@ -354,6 +354,7 @@ export class ElectronJsonStore {
 			this.messageHandler.sendMessage('current_player', value);
 		})
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
+			console.log("did change", value)
 			this.messageHandler.sendMessage('current_players', value);
 		})
 		this.store.onDidChange(`stats.game.settings`, async (value) => {

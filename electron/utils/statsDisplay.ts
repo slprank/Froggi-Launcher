@@ -56,16 +56,14 @@ export class StatsDisplay {
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
 		this.log.info("Game start", settings)
-		let currentPlayers: Player[] = await this.getCurrentPlayersWithRankStats(settings)
+		let currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		console.log("current", currentPlayers)
 
-		let currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayers)
-
-		if (settings?.matchInfo?.matchId && [0, 1].includes(settings?.matchInfo?.gameNumber ?? 0)) {
+		if (settings?.matchInfo?.matchId && [1].includes(settings?.matchInfo?.gameNumber ?? 0)) {
 			this.store.setGameScore([0, 0]);
 		}
 
-		this.store.setCurrentPlayerCurrentRankStats(currentPlayerRankStats);
+		this.store.setCurrentPlayerCurrentRankStats(this.getCurrentPlayer(currentPlayers)?.rankedNetplayProfile);
 		this.store.setCurrentPlayers(currentPlayers);
 		this.store.setGameSettings(settings);
 		this.store.setStatsScene(LiveStatsScene.InGame)
@@ -76,33 +74,35 @@ export class StatsDisplay {
 		this.log.info("Game End", gameEnd, frameEntry, settings);
 		this.handleScore(gameEnd)
 
-		const currentPlayersRankStats: Player[] = await this.getCurrentPlayersWithRankStats(settings)
-		const currentPlayerRankStats: RankedNetplayProfile | undefined = this.getCurrentPlayerRankStats(currentPlayersRankStats)
+		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
+		
+		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const recentGameStats = this.getRecentGameStats();
 
-		this.store.setCurrentPlayerNewRankStats(currentPlayerRankStats);
+		this.store.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
 		this.store.setGameStats(gameEnd)
 		this.store.setStatsScene(LiveStatsScene.PostGame)
 		if (recentGameStats) this.messageHandler.sendMessage('post_game_stats', recentGameStats);
 	}
 
-	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
+	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
 		let currentPlayers = settings.players.filter(player => player)
 		console.log("settings", settings.players)
-		if (currentPlayers.some(player => !player.connectCode)) {
-			return await new Promise<Player[]>(resolve => {
-				resolve(this.store.getCurrentPlayers()!);
-			})
-		}
+		if (currentPlayers.some(player => !player.connectCode))
+			return settings.players.filter(player => player).map((player, i: number) => { return{
+				...player,
+				rankedNetplayProfile: this.store.getCurrentPlayers()?.at(i)?.rankedNetplayProfile
+			}})
+		
 		return (await Promise.all(
 			currentPlayers.map(async (player: PlayerType) => await this.api.getPlayerWithRankStats(player))
 		)).filter((player): player is Player => player !== undefined);
 	}
 
-	getCurrentPlayerRankStats(players: Player[]): RankedNetplayProfile | undefined {
+	getCurrentPlayer(players: Player[]): Player | undefined {
 		const player = this.store.getCurrentPlayer()
 		if (!player) return;
-		return players.find(player => player.connectCode === player.connectCode)?.rankedNetplayProfile;
+		return players.find(player => player.connectCode === player.connectCode);
 	}
 
 	handleScore(gameEnd: GameEndType) {
@@ -124,13 +124,13 @@ export class StatsDisplay {
 	}
 
 	async handleRankChange() {
-		const playerRank = this.store.getCurrentPlayer()
-		if (!playerRank) return
+		const player = this.store.getCurrentPlayer()
+		if (!player) return
 		await new Promise((resolve) => {
-			if (playerRank.rankedNetplayProfile !== playerRank.newRankedNetplayProfile) this.store.setStatsScene(LiveStatsScene.RankChange)
+			if (player.rankedNetplayProfile !== player.newRankedNetplayProfile) this.store.setStatsScene(LiveStatsScene.RankChange)
 			setTimeout(resolve, 10000);
 		});
-		this.store.setCurrentPlayerCurrentRankStats(playerRank.newRankedNetplayProfile);
+		this.store.setCurrentPlayerCurrentRankStats(player.newRankedNetplayProfile);
 		this.store.setStatsScene(LiveStatsScene.PostGame)
 	}
 
