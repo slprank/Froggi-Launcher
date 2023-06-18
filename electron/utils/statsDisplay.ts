@@ -5,7 +5,7 @@ import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import { Api } from './api';
 import { ElectronJsonStore } from './electronStore';
-import { Player, RankedNetplayProfile } from '../../frontend/src/lib/models/types';
+import { Player } from '../../frontend/src/lib/models/types';
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 @singleton()

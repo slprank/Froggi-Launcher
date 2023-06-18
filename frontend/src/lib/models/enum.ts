@@ -10,6 +10,8 @@ export enum CustomElement {
 	CustomString = 1,
 	CustomBox = 2,
 	CustomImage = 3,
+	Player1CharacterRender = 4,
+	Player2CharacterRender = 5,
 
 	// String
 	Player1Tag = 100,
@@ -27,8 +29,6 @@ export enum CustomElement {
 	Player2RankIcon = 301,
 	Player1CharacterIcon = 302,
 	Player2CharacterIcon = 303,
-	Player1CharacterRender = 302,
-	Player2CharacterRender = 303,
 }
 
 export enum SceneBackground {

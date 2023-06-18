@@ -8,7 +8,7 @@
 	// TODO: Add remaining components - stats/rank-up/session etc..
 	let options = [
 		{
-			name: 'Custom String',
+			name: 'Custom Text',
 			value: CustomElement.CustomString,
 		},
 		{
