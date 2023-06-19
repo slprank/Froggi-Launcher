@@ -227,7 +227,7 @@
 					class="w-full h-full"
 					style={`${shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-					src={`/image/character-renders-color/${$currentPlayers.at(0)?.characterId}.png`}
+					src={`/image/character-renders/${$currentPlayers.at(0)?.characterId}.png`}
 					alt="custom"
 				/>
 			</div>
