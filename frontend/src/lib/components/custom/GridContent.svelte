@@ -225,7 +225,7 @@
 			>
 				<img
 					class="w-full h-full"
-					style={`${shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 					src={`/image/character-renders/${$currentPlayers.at(0)?.characterId}.png`}
 					alt="custom"
@@ -241,7 +241,7 @@
 			>
 				<img
 					class="w-full h-full"
-					style={`${shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 					src={`/image/character-renders/${$currentPlayers.at(1)?.characterId}.png`}
 					alt="custom"

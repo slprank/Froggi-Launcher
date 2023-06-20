@@ -184,16 +184,16 @@
 				</div>
 			</div>
 		{/if}
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-36 h-24">
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Flip</h1>
-				<Select bind:selected={payload.css.transform}>
-					<option selected value="">Default</option>
-					<option value="scaleX(-1);">Horizontal</option>
-				</Select>
-			</div>
-		</div>
 	{/if}
+	<div class="w-full h-fit flex flex-wrap">
+		<div class="w-36 h-24">
+			<h1 class="text-gray-500 text-sm font-medium text-shadow">Flip</h1>
+			<Select bind:selected={payload.css.transform}>
+				<option selected value="">Default</option>
+				<option value="scaleX(-1);">Horizontal</option>
+			</Select>
+		</div>
+	</div>
 	<div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
 		<div class="w-full h-fit flex flex-wrap">
