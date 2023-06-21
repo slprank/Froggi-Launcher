@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
+	import { LiveStatsScene, SceneBackground, SceneForeground, Transition } from '$lib/models/enum';
 	import type { Overlay } from '$lib/models/types';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import Select from '$lib/components/input/Select.svelte';
@@ -62,7 +62,7 @@
 		class=" w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		{#key overlay[$statsScene]}
+		{#key $statsScene}
 			<div class="w-full h-full grid grid-cols-2">
 				<div class="w-ful p-4 px-8 col-span-1 overflow-scroll enable-scrollbar">
 					<div class="w-full grid gap-4">
@@ -192,8 +192,84 @@
 								</div>
 							{/if}
 						</div>
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">Foreground</h1>
+						<div class="w-full flex gap-2">
+							<div class="w-24">
+								<Select
+									bind:selected={overlay[$statsScene].foreground.type}
+									label="Type"
+								>
+									<option value={SceneForeground.None}>None</option>
+									<option value={SceneForeground.ImageCustom}>
+										Custom Image
+									</option>
+								</Select>
+							</div>
+							{#if overlay[$statsScene].foreground.type === SceneForeground.ImageCustom}
+								<div class="w-24">
+									<FileToBase64Input
+										bind:base64={overlay[$statsScene].foreground.customImage
+											.src}
+										label="Upload"
+										acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
+									/>
+								</div>
+								<div class="w-24">
+									<Select
+										bind:selected={overlay[$statsScene].foreground.customImage
+											.objectFit}
+										label="Object fit"
+									>
+										<option selected value="cover">Cover</option>
+										<option value="contain">Contain</option>
+									</Select>
+								</div>
+							{/if}
+							{#if overlay[$statsScene].foreground.type !== SceneForeground.None}
+								<div class="w-24">
+									<NumberInput
+										bind:value={overlay[$statsScene].foreground.opacity}
+										label="Opacity"
+										max={100}
+										bind:autofocus
+										autoFocusValue={2}
+									/>
+								</div>
+							{/if}
+						</div>
+
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Transition elements
+							Transition Background
+						</h1>
+						<div class="w-full flex gap-2">
+							<div class="w-24">
+								<Select
+									bind:selected={overlay[$statsScene].background.transition}
+									label="Type"
+								>
+									<option value={Transition.None}>None</option>
+									<option value={Transition.Blur}>Blur</option>
+									<option value={Transition.Fade}>Fade</option>
+									<option value={Transition.Fly}>Fly</option>
+									<option value={Transition.Scale}>Scale</option>
+									<option value={Transition.Slide}>Slide</option>
+								</Select>
+							</div>
+							{#if overlay[$statsScene].background.transition !== Transition.None}
+								<div class="w-24">
+									<NumberInput
+										bind:value={overlay[$statsScene].background.duration}
+										label="Duration - ms"
+										max={1500}
+										bind:autofocus
+										autoFocusValue={4}
+									/>
+								</div>
+							{/if}
+						</div>
+
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Transition Elements
 						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
@@ -221,13 +297,14 @@
 								</div>
 							{/if}
 						</div>
+
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Transition Background
+							Transition Foreground
 						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
-									bind:selected={overlay[$statsScene].background.transition}
+									bind:selected={overlay[$statsScene].foreground.transition}
 									label="Type"
 								>
 									<option value={Transition.None}>None</option>
@@ -238,7 +315,7 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].background.transition !== Transition.None}
+							{#if overlay[$statsScene].foreground.transition !== Transition.None}
 								<div class="w-24">
 									<NumberInput
 										bind:value={overlay[$statsScene].background.duration}

@@ -39,6 +39,12 @@ export enum SceneBackground {
 	ImageStage = 4,
 }
 
+export enum SceneForeground {
+	None = 0,
+	Image = 1,
+	ImageCustom = 2,
+}
+
 export enum Transition {
 	None = 0,
 	Fade = 1,
