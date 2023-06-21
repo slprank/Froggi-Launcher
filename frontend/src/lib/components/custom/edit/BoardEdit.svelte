@@ -7,7 +7,6 @@
 	import { COL, ROW } from '$lib/models/const';
 	import BoardContainer from '../BoardContainer.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';
 
 	const overlayId = $page.params.overlay;
 

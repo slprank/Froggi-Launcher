@@ -3,10 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
-	import {
-		getNewOverlay,
-		getOverlayById,
-	} from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';

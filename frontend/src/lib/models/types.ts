@@ -28,17 +28,33 @@ export interface Overlay {
 }
 
 export interface Scene {
-	backgroundColor: string | undefined;
-	backgroundCustomImage: Image;
-	backgroundDuration: number;
-	backgroundImage: Image;
-	backgroundTransition: Transition;
-	backgroundType: SceneBackground;
-	backgroundOpacity: number;
-	elementDuration: number;
-	elementTransition: Transition;
+	background: Background;
+	element: Element;
 	font: Font;
+	foreground: Foreground;
 	layers: GridContentItem[][];
+}
+
+export interface Background {
+	color: string | undefined;
+	customImage: Image;
+	duration: number;
+	image: Image;
+	opacity: number;
+	transition: Transition;
+	type: SceneBackground;
+}
+
+export interface Element {
+	duration: number;
+	transition: Transition;
+}
+
+export interface Foreground {
+	customImage: Image;
+	duration: number;
+	opacity: number;
+	transition: number;
 }
 
 export interface GridContentItem {

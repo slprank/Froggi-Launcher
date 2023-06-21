@@ -17,7 +17,7 @@
 	export let open: boolean;
 	export let overlay: Overlay;
 
-	$: previewBackgroundType = overlay[$statsScene].backgroundType;
+	$: previewBackgroundType = overlay[$statsScene].background.type;
 	let tempActiveScenes = overlay?.activeScenes;
 
 	let imageOptions: string[] = [];
@@ -124,7 +124,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
-									bind:selected={overlay[$statsScene].backgroundType}
+									bind:selected={overlay[$statsScene].background.type}
 									label="Type"
 								>
 									<option value={SceneBackground.None}>None</option>
@@ -138,10 +138,10 @@
 									{/if}
 								</Select>
 							</div>
-							{#if overlay[$statsScene].backgroundType === SceneBackground.Image}
+							{#if overlay[$statsScene].background.type === SceneBackground.Image}
 								<div class="w-24">
 									<Select
-										bind:selected={overlay[$statsScene].backgroundImage.src}
+										bind:selected={overlay[$statsScene].background.image.src}
 										label="Image"
 									>
 										{#each imageOptions as image, i}
@@ -152,17 +152,18 @@
 									</Select>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].backgroundType === SceneBackground.ImageCustom}
+							{#if overlay[$statsScene].background.type === SceneBackground.ImageCustom}
 								<div class="w-24">
 									<FileToBase64Input
-										bind:base64={overlay[$statsScene].backgroundCustomImage.src}
+										bind:base64={overlay[$statsScene].background.customImage
+											.src}
 										label="Upload"
 										acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
 									/>
 								</div>
 								<div class="w-24">
 									<Select
-										bind:selected={overlay[$statsScene].backgroundCustomImage
+										bind:selected={overlay[$statsScene].background.customImage
 											.objectFit}
 										label="Object fit"
 									>
@@ -171,18 +172,18 @@
 									</Select>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].backgroundType === SceneBackground.Color}
+							{#if overlay[$statsScene].background.type === SceneBackground.Color}
 								<div class="w-24">
 									<ColorInput
-										bind:value={overlay[$statsScene].backgroundColor}
+										bind:value={overlay[$statsScene].background.color}
 										label="Color"
 									/>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].backgroundType !== SceneBackground.None}
+							{#if overlay[$statsScene].background.type !== SceneBackground.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].backgroundOpacity}
+										bind:value={overlay[$statsScene].background.opacity}
 										label="Opacity"
 										max={100}
 										bind:autofocus
@@ -197,7 +198,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
-									bind:selected={overlay[$statsScene].elementTransition}
+									bind:selected={overlay[$statsScene].element.transition}
 									label="Type"
 								>
 									<option value={Transition.None}>None</option>
@@ -208,10 +209,10 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].elementTransition !== Transition.None}
+							{#if overlay[$statsScene].element.transition !== Transition.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].elementDuration}
+										bind:value={overlay[$statsScene].element.duration}
 										label="Duration - ms"
 										max={1500}
 										bind:autofocus
@@ -226,7 +227,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<Select
-									bind:selected={overlay[$statsScene].backgroundTransition}
+									bind:selected={overlay[$statsScene].background.transition}
 									label="Type"
 								>
 									<option value={Transition.None}>None</option>
@@ -237,10 +238,10 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].backgroundTransition !== Transition.None}
+							{#if overlay[$statsScene].background.transition !== Transition.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].backgroundDuration}
+										bind:value={overlay[$statsScene].background.duration}
 										label="Duration - ms"
 										max={1500}
 										bind:autofocus
@@ -266,21 +267,21 @@
 						style={`
 						${
 							previewBackgroundType === SceneBackground.Color
-								? `background: ${overlay[$statsScene].backgroundColor};`
+								? `background: ${overlay[$statsScene].background.color};`
 								: ''
 						}
 						${
 							previewBackgroundType === SceneBackground.Image
 								? `background-image: url('/image/backgrounds/${
-										overlay[$statsScene].backgroundImage.src
+										overlay[$statsScene].background.image.src
 								  }');
-									background-size: ${overlay[$statsScene].backgroundImage.objectFit ?? 'cover'};`
+									background-size: ${overlay[$statsScene].background.image.objectFit ?? 'cover'};`
 								: ''
 						}
 						${
 							previewBackgroundType === SceneBackground.ImageCustom
-								? `background-image: url('${overlay[$statsScene].backgroundCustomImage.src}');
-									background-size: ${overlay[$statsScene].backgroundCustomImage.objectFit};`
+								? `background-image: url('${overlay[$statsScene].background.customImage.src}');
+									background-size: ${overlay[$statsScene].background.customImage.objectFit};`
 								: ''
 						}
 						${
@@ -289,8 +290,8 @@
 								: ''
 						}
 						${
-							overlay[$statsScene].backgroundOpacity !== undefined
-								? `opacity: ${overlay[$statsScene].backgroundOpacity / 100};`
+							overlay[$statsScene].background.opacity !== undefined
+								? `opacity: ${overlay[$statsScene].background.opacity / 100};`
 								: ''
 						}
 						background-repeat: no-repeat;`}

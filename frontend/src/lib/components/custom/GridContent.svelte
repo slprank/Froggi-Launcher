@@ -113,26 +113,30 @@
 			</div>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Tag}
-			<TextFitMulti
-				class={`h-full flex ${classValue}`}
-				style={`${shadow}; ${cssValue}; ${
-					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-				};  ${edit ? 'color: black' : ''}`}
-				maxFont={1000}
-			>
-				{$currentPlayers?.at(0)?.displayName ?? `Player1`}
-			</TextFitMulti>
+			{#key $currentPlayers?.at(0)?.displayName}
+				<TextFitMulti
+					class={`h-full flex ${classValue}`}
+					style={`${shadow}; ${cssValue}; ${
+						dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+					};  ${edit ? 'color: black' : ''}`}
+					maxFont={1000}
+				>
+					{$currentPlayers?.at(0)?.displayName ?? `Player1`}
+				</TextFitMulti>
+			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2Tag}
-			<TextFitMulti
-				class={`h-full flex ${classValue}`}
-				style={`${shadow}; ${cssValue}; ${
-					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-				};  ${edit ? 'color: black' : ''}`}
-				maxFont={1000}
-			>
-				{$currentPlayers?.at(1)?.displayName ?? `Player2`}
-			</TextFitMulti>
+			{#key $currentPlayers?.at(1)?.displayName}
+				<TextFitMulti
+					class={`h-full flex ${classValue}`}
+					style={`${shadow}; ${cssValue}; ${
+						dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+					};  ${edit ? 'color: black' : ''}`}
+					maxFont={1000}
+				>
+					{$currentPlayers?.at(1)?.displayName ?? `Player2`}
+				</TextFitMulti>
+			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Percent}
 			<TextFitMulti

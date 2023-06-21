@@ -9,19 +9,19 @@
 
 	const animate = (node: Element) => {
 		if (!preview || !scene) return;
-		switch (scene.backgroundTransition) {
+		switch (scene.background.transition) {
 			case Transition.None:
 				return;
 			case Transition.Fade:
-				return fade(node, { duration: scene.backgroundDuration ?? 250 });
+				return fade(node, { duration: scene.background.duration ?? 250 });
 			case Transition.Scale:
-				return scale(node, { duration: scene.backgroundDuration ?? 250 });
+				return scale(node, { duration: scene.background.duration ?? 250 });
 			case Transition.Fly:
-				return fly(node, { duration: scene.backgroundDuration ?? 250, y: -50 });
+				return fly(node, { duration: scene.background.duration ?? 250, y: -50 });
 			case Transition.Slide:
-				return slide(node, { duration: scene.backgroundDuration ?? 250 });
+				return slide(node, { duration: scene.background.duration ?? 250 });
 			case Transition.Blur:
-				return blur(node, { duration: scene.backgroundDuration ?? 250 });
+				return blur(node, { duration: scene.background.duration ?? 250 });
 		}
 	};
 
@@ -32,26 +32,28 @@
 	in:animate
 	class={`w-full h-full bg-center absolute z-0`}
 	style={`
-				${scene?.backgroundType === SceneBackground.Color ? `background: ${scene.backgroundColor};` : ''};
+				${scene?.background.type === SceneBackground.Color ? `background: ${scene.background.color};` : ''};
 				${
-					scene?.backgroundType === SceneBackground.Image
-						? `background-image: url('/image/backgrounds/${scene.backgroundImage.src}');
-						background-size: ${scene.backgroundImage.objectFit ?? 'cover'};`
+					scene?.background.type === SceneBackground.Image
+						? `background-image: url('/image/backgrounds/${
+								scene.background.image.src
+						  }');
+						background-size: ${scene.background.image.objectFit ?? 'cover'};`
 						: ''
 				}
 				${
-					scene?.backgroundType === SceneBackground.ImageCustom
-						? `background-image: url('${scene.backgroundCustomImage.src}'); 
-						background-size: ${scene.backgroundCustomImage.objectFit ?? 'cover'};`
+					scene?.background.type === SceneBackground.ImageCustom
+						? `background-image: url('${scene.background.customImage.src}'); 
+						background-size: ${scene.background.customImage.objectFit ?? 'cover'};`
 						: ''
 				}
 				${
-					scene?.backgroundType === SceneBackground.ImageStage
+					scene?.background.type === SceneBackground.ImageStage
 						? `background-image: url('/image/stages/${$gameSettings.stageId}.png');
-						background-size: ${scene.backgroundImage.objectFit ?? 'cover'};`
+						background-size: ${scene.background.image.objectFit ?? 'cover'};`
 						: ''
 				}
-				${scene?.backgroundOpacity !== undefined ? `opacity: ${scene.backgroundOpacity / 100};` : ''}
+				${scene?.background.opacity !== undefined ? `opacity: ${scene.background.opacity / 100};` : ''}
 				background-repeat: no-repeat;`}
 >
 	<slot />

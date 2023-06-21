@@ -69,9 +69,9 @@
 								<GridContent
 									bind:preview
 									{dataItem}
-									transition={curScene?.elementTransition}
+									transition={curScene?.element.transition}
 									additionalDelay={128 * i}
-									duration={curScene?.elementDuration ?? 250}
+									duration={curScene?.element.duration ?? 250}
 								/>
 							</Grid>
 						</div>
