@@ -194,9 +194,9 @@
 			<div class="w-36">
 				<Select bind:selected={payload.class.textShadow}>
 					<option value="" selected>None</option>
-					<option value="text-shadow-sm">Small</option>
-					<option value="text-shadow" selected>Default</option>
-					<option value="text-shadow-lg">Large</option>
+					<option value="text-border-sm">Small</option>
+					<option value="text-border-md" selected>Default</option>
+					<option value="text-border-lg">Large</option>
 				</Select>
 			</div>
 		</div>
