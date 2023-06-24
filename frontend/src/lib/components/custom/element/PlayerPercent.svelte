@@ -18,23 +18,10 @@
 		numberOfDecimals
 			? frame?.percent?.toFixed(numberOfDecimals).split('.').at(1) ?? '0'
 			: undefined;
-
-	const animateIn = (node: Element) => {
-		if (edit) return;
-		return fly(node, { duration: 10, delay: 100, easing: backInOut });
-	};
-
-	const animateOut = (node: Element) => {
-		if (edit) return;
-		const multiplier = Math.random() < 0.5 ? -1 : 1;
-		const x = multiplier * Math.floor(Math.random() * 30);
-		const y = multiplier * Math.floor(Math.random() * 30);
-		return fly(node, { duration: 50, y: y, x: x, easing: backInOut });
-	};
 </script>
 
 {#key frame?.percent?.toFixed()}
-	<div class={`w-full h-full ${edit ? 'no-transition' : ''}`} in:animateIn out:animateOut>
+	<div class={`w-full h-full ${edit ? 'no-transition' : ''}`}>
 		<TextFitMulti
 			class={`h-full ${classValue} justify-end`}
 			style={`${shadow}; ${cssValue}; ${

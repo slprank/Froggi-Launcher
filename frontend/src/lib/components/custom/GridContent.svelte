@@ -6,6 +6,8 @@
 	import { COL, ROW } from '$lib/models/const';
 	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
 	import PlayerPercent from './element/PlayerPercent.svelte';
+	import AnimationLayer from './element/AnimationLayer.svelte';
+	import { backInOut } from 'svelte/easing';
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let additionalDelay: number = 0;
@@ -162,15 +164,37 @@
 			/>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-			<PlayerPercent
-				{cssValue}
-				{classValue}
-				{dataItem}
-				{edit}
-				{shadow}
-				numberOfDecimals={1}
-				frame={$gameFrame?.players[0]?.pre}
-			/>
+			<AnimationLayer
+				enableTransition={edit}
+				animationIn={(node) =>
+					fly(node, {
+						duration: 10,
+						delay: 50,
+						easing: backInOut,
+					})}
+				animationOut={(node) => {
+					const multiplierX = Math.random() < 0.5 ? -1 : 1;
+					const multiplierY = Math.random() < 0.5 ? -1 : 1;
+					const x = multiplierX * Math.floor(Math.random() * 30);
+					const y = multiplierY * Math.floor(Math.random() * 30);
+					return fly(node, {
+						duration: 50,
+						y: y,
+						x: x,
+						easing: backInOut,
+					});
+				}}
+			>
+				<PlayerPercent
+					{cssValue}
+					{classValue}
+					{dataItem}
+					{edit}
+					{shadow}
+					numberOfDecimals={1}
+					frame={$gameFrame?.players[0]?.pre}
+				/>
+			</AnimationLayer>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
 			<PlayerPercent
