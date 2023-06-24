@@ -2,8 +2,6 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import type { GridContentItem } from '$lib/models/types';
 	import type { PreFrameUpdateType } from '@slippi/slippi-js';
-	import { fade, fly } from 'svelte/transition';
-	import { backInOut } from 'svelte/easing';
 
 	export let classValue: string;
 	export let cssValue: string;
@@ -21,7 +19,7 @@
 </script>
 
 {#key frame?.percent?.toFixed()}
-	<div class={`w-full h-full ${edit ? 'no-transition' : ''}`}>
+	<div class={`w-full h-full`}>
 		<TextFitMulti
 			class={`h-full ${classValue} justify-end`}
 			style={`${shadow}; ${cssValue}; ${

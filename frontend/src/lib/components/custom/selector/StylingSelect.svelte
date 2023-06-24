@@ -40,24 +40,18 @@
 	}
 	$: stringSettings, boxSettings, imageSettings, clearStyle();
 
-	$: customStringSettings = selectedElementId === CustomElement.CustomString;
-	$: customBoxSettings = selectedElementId === CustomElement.CustomBox;
-	$: customImageSettings = selectedElementId === CustomElement.CustomImage;
-	$: stringSettings =
-		selectedElementId === CustomElement.CustomString ||
-		(selectedElementId >= 100 && selectedElementId < 200);
-	$: boxSettings =
-		selectedElementId === CustomElement.CustomBox ||
-		(selectedElementId >= 200 && selectedElementId < 300);
-	$: imageSettings =
-		selectedElementId === CustomElement.CustomImage ||
-		(selectedElementId >= 300 && selectedElementId < 400);
+	$: customStringSettings = selectedElementId >= 100 && selectedElementId < 200;
+	$: customBoxSettings = selectedElementId >= 200 && selectedElementId < 300;
+	$: customImageSettings = selectedElementId >= 300 && selectedElementId < 400;
+	$: stringSettings = selectedElementId >= 400 && selectedElementId < 500;
+	$: boxSettings = selectedElementId >= 500 && selectedElementId < 600;
+	$: imageSettings = selectedElementId >= 600 && selectedElementId < 700;
 
 	isFirstVisit = false;
 </script>
 
 <div class="w-full my-4 grid gap-4">
-	{#if customStringSettings}
+	{#if selectedElementId === CustomElement.CustomString}
 		<div>
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Custom text</h1>
 			<div class="w-full h-fit flex flex-wrap">
@@ -159,7 +153,7 @@
 			</div>
 		</div>
 	{/if}
-	{#if customImageSettings}
+	{#if selectedElementId === CustomElement.CustomImage}
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Select Image</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
@@ -192,6 +186,19 @@
 				<option selected value="">Default</option>
 				<option value="scaleX(-1);">Horizontal</option>
 			</Select>
+		</div>
+	</div>
+	<div>
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Outline</h1>
+		<div class="w-full h-fit flex flex-wrap">
+			<div class="w-36">
+				<Select bind:selected={payload.class.textShadow}>
+					<option value="" selected>None</option>
+					<option value="text-shadow-sm">Small</option>
+					<option value="text-shadow" selected>Default</option>
+					<option value="text-shadow-lg">Large</option>
+				</Select>
+			</div>
 		</div>
 	</div>
 	<div>

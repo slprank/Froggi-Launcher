@@ -10,6 +10,6 @@
 	</div>
 {:else}
 	<div class="w-full h-full" in:animationIn out:animationOut>
-		<slot {node} />
+		<slot />
 	</div>
 {/if}

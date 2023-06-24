@@ -7,31 +7,37 @@ export enum LiveStatsScene {
 }
 
 export enum CustomElement {
-	CustomString = 1,
-	CustomBox = 2,
-	CustomImage = 3,
-	Player1CharacterRender = 4,
-	Player2CharacterRender = 5,
-	Player1Percent = 6,
-	Player2Percent = 7,
-	Player1PercentDecimal = 8,
-	Player2PercentDecimal = 9,
+
+	// Custom String
+	CustomString = 100,
+	Player1Percent = 101,
+	Player2Percent = 102,
+	Player1PercentDecimal = 103,
+	Player2PercentDecimal = 104,
+
+	// Custom Image
+	CustomImage = 200,
+	Player1CharacterRender = 201,
+	Player2CharacterRender = 202,
+
+	// Custom Box
+	CustomBox = 300,
 
 	// String
-	Player1Tag = 100,
-	Player2Tag = 101,
-	Player1Score = 102,
-	Player2Score = 103,
+	Player1Tag = 400,
+	Player2Tag = 401,
+	Player1Score = 402,
+	Player2Score = 403,
 
 
 	// Box
 	// Potential Box Elements
 
 	// Image
-	Player1RankIcon = 300,
-	Player2RankIcon = 301,
-	Player1CharacterIcon = 302,
-	Player2CharacterIcon = 303,
+	Player1RankIcon = 600,
+	Player2RankIcon = 601,
+	Player1CharacterIcon = 602,
+	Player2CharacterIcon = 603,
 }
 
 export enum SceneBackground {

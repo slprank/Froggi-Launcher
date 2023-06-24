@@ -20,6 +20,14 @@ module.exports = {
 			opacity: {
 				60: '.60',
 			},
+			spacing: {
+				18: '4.5em',
+			},
+			screens: {
+				'3xl': '1800px',
+				'4xl': '2000px',
+				'5xl': '2200px',
+			},
 			zIndex: {
 				2: '2',
 				3: '3',
@@ -29,14 +37,6 @@ module.exports = {
 				7: '7',
 				8: '8',
 				9: '9',
-			},
-			spacing: {
-				18: '4.5em',
-			},
-			screens: {
-				'3xl': '1800px',
-				'4xl': '2000px',
-				'5xl': '2200px',
 			},
 		},
 		borderWidth: {
