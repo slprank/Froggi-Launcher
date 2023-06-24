@@ -13,6 +13,8 @@
 	// TODO: fill dropdown options
 	// TODO: use array of filters to filter
 	// Add horizontal scroll bar on PC
+
+	// TODO: Separate header and content component
 </script>
 
 <main

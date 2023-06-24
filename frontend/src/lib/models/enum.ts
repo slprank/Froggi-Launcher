@@ -12,14 +12,17 @@ export enum CustomElement {
 	CustomImage = 3,
 	Player1CharacterRender = 4,
 	Player2CharacterRender = 5,
+	Player1Percent = 6,
+	Player2Percent = 7,
+	Player1PercentDecimal = 8,
+	Player2PercentDecimal = 9,
 
 	// String
 	Player1Tag = 100,
 	Player2Tag = 101,
 	Player1Score = 102,
 	Player2Score = 103,
-	Player1Percent = 104,
-	Player2Percent = 105,
+
 
 	// Box
 	// Potential Box Elements
@@ -37,12 +40,6 @@ export enum SceneBackground {
 	Image = 2,
 	ImageCustom = 3,
 	ImageStage = 4,
-}
-
-export enum SceneForeground {
-	None = 0,
-	Image = 1,
-	ImageCustom = 2,
 }
 
 export enum Transition {

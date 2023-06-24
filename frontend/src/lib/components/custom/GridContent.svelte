@@ -5,6 +5,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { COL, ROW } from '$lib/models/const';
 	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
+	import PlayerPercent from './element/PlayerPercent.svelte';
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let additionalDelay: number = 0;
@@ -139,26 +140,48 @@
 			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Percent}
-			<TextFitMulti
-				class={`h-full flex ${classValue}`}
-				style={`${shadow}; ${cssValue}; ${
-					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-				};  ${edit ? 'color: black' : ''}`}
-				maxFont={1000}
-			>
-				{`${$gameFrame?.players[0]?.pre.percent?.toFixed(1) ?? 0}%`}
-			</TextFitMulti>
+			<PlayerPercent
+				{cssValue}
+				{classValue}
+				{dataItem}
+				{edit}
+				{shadow}
+				numberOfDecimals={0}
+				frame={$gameFrame?.players[0]?.pre}
+			/>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2Percent}
-			<TextFitMulti
-				class={`h-full flex ${classValue}`}
-				style={`${shadow}; ${cssValue}; ${
-					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-				};  ${edit ? 'color: black' : ''}`}
-				maxFont={1000}
-			>
-				{`${$gameFrame?.players[1]?.pre.percent?.toFixed(1) ?? 0}%`}
-			</TextFitMulti>
+			<PlayerPercent
+				{cssValue}
+				{classValue}
+				{dataItem}
+				{edit}
+				{shadow}
+				numberOfDecimals={0}
+				frame={$gameFrame?.players[1]?.pre}
+			/>
+		{/if}
+		{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
+			<PlayerPercent
+				{cssValue}
+				{classValue}
+				{dataItem}
+				{edit}
+				{shadow}
+				numberOfDecimals={1}
+				frame={$gameFrame?.players[0]?.pre}
+			/>
+		{/if}
+		{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
+			<PlayerPercent
+				{cssValue}
+				{classValue}
+				{dataItem}
+				{edit}
+				{shadow}
+				numberOfDecimals={1}
+				frame={$gameFrame?.players[1]?.pre}
+			/>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Score}
 			<TextFitMulti

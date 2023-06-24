@@ -46,16 +46,6 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
-				foreground: {
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					opacity: 100,
-					transition: Transition.None,
-				},
 				layers: [[]],
 			},
 			[LiveStatsScene.PreGame]: {
@@ -77,16 +67,6 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
-				foreground: {
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					opacity: 100,
-					transition: Transition.None,
-				},
 				layers: [[]],
 			},
 			[LiveStatsScene.InGame]: {
@@ -108,16 +88,6 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
-				foreground: {
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					opacity: 100,
-					transition: Transition.None,
-				},
 				layers: [[]],
 			},
 			[LiveStatsScene.PostGame]: {
@@ -139,16 +109,6 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
-				foreground: {
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					opacity: 100,
-					transition: Transition.None,
-				},
 				layers: [[]],
 			},
 			[LiveStatsScene.RankChange]: {
@@ -170,16 +130,6 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
-				foreground: {
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					opacity: 100,
-					transition: Transition.None,
-				},
 				layers: [[]],
 			},
 		} as Overlay;

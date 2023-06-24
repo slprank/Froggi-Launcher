@@ -36,6 +36,14 @@
 			value: CustomElement.Player2Percent,
 		},
 		{
+			name: 'Player1 Percent (Decimal)',
+			value: CustomElement.Player1PercentDecimal,
+		},
+		{
+			name: 'Player2 Percent (Decimal)',
+			value: CustomElement.Player2PercentDecimal,
+		},
+		{
 			name: 'Player1 Score',
 			value: CustomElement.Player1Score,
 		},

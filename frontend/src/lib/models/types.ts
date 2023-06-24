@@ -2,7 +2,7 @@ import type {
 	GameStartType,
 	PlayerType,
 } from '@slippi/slippi-js';
-import type { CustomElement, LiveStatsScene, SceneBackground, SceneForeground, Transition } from './enum';
+import type { CustomElement, LiveStatsScene, SceneBackground, Transition } from './enum';
 import type { COL } from './const';
 
 export interface Url {
@@ -31,7 +31,6 @@ export interface Scene {
 	background: Background;
 	element: Element;
 	font: Font;
-	foreground: Foreground;
 	layers: GridContentItem[][];
 }
 
@@ -48,14 +47,6 @@ export interface Background {
 export interface Element {
 	duration: number;
 	transition: Transition;
-}
-
-export interface Foreground {
-	customImage: Image;
-	duration: number;
-	opacity: number;
-	transition: number;
-	type: SceneForeground;
 }
 
 export interface GridContentItem {
