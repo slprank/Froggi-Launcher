@@ -12,6 +12,8 @@
 	export let frame: PreFrameUpdateType | undefined;
 	export let numberOfDecimals: number;
 
+	$: framePercent = frame ? Math.floor(frame.percent ?? 0).toFixed() : undefined;
+
 	const MAX_INTENSITY = 300;
 
 	let percentageColor: string = '#ffffff';
@@ -81,13 +83,13 @@
 				>
 					{#if !numberOfDecimals}
 						<span class="mr-[.3em]">
-							{`${frame?.percent?.toFixed() ?? 0}`}
+							{`${framePercent}`}
 							<span class="text-[80%] mx-[-.2em]">%</span>
 						</span>
 					{/if}
 					{#if numberOfDecimals}
 						<span class="mr-[.4em]">
-							{`${frame?.percent?.toFixed() ?? 0}`}
+							{`${framePercent}`}
 							<span class="text-[55%] mx-[-.5em]">
 								{`${numberOfDecimals ? `.${decimals()}` : ''}%`}
 							</span>
