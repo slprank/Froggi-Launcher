@@ -8,6 +8,7 @@
 	import PlayerPercent from './element/PlayerPercent.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { backInOut } from 'svelte/easing';
+	import PercentAnimation from './element/animations/PercentAnimation.svelte';
 
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let additionalDelay: number = 0;
@@ -142,136 +143,64 @@
 			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Percent}
-			<AnimationLayer
-				enableTransition={edit}
-				animationIn={(node) =>
-					fly(node, {
-						duration: 10,
-						delay: 50,
-						easing: backInOut,
-					})}
-				animationOut={(node) => {
-					const multiplierX = Math.random() < 0.5 ? -1 : 1;
-					const multiplierY = Math.random() < 0.5 ? -1 : 1;
-					const x = multiplierX * Math.floor(Math.random() * 30);
-					const y = multiplierY * Math.floor(Math.random() * 30);
-					return fly(node, {
-						duration: 50,
-						y: y,
-						x: x,
-						easing: backInOut,
-					});
-				}}
-			>
-				<PlayerPercent
-					{cssValue}
-					{classValue}
-					{dataItem}
-					{edit}
-					{shadow}
-					numberOfDecimals={0}
-					frame={$gameFrame?.players[0]?.pre}
-				/>
-			</AnimationLayer>
+			{#key $gameFrame?.players[0]?.post.percent}
+				<PercentAnimation {edit}>
+					<PlayerPercent
+						{cssValue}
+						{classValue}
+						{dataItem}
+						{edit}
+						{shadow}
+						numberOfDecimals={0}
+						frame={$gameFrame?.players[0]?.post}
+					/>
+				</PercentAnimation>
+			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2Percent}
-			<AnimationLayer
-				enableTransition={edit}
-				animationIn={(node) =>
-					fly(node, {
-						duration: 10,
-						delay: 50,
-						easing: backInOut,
-					})}
-				animationOut={(node) => {
-					const multiplierX = Math.random() < 0.5 ? -1 : 1;
-					const multiplierY = Math.random() < 0.5 ? -1 : 1;
-					const x = multiplierX * Math.floor(Math.random() * 30);
-					const y = multiplierY * Math.floor(Math.random() * 30);
-					return fly(node, {
-						duration: 50,
-						y: y,
-						x: x,
-						easing: backInOut,
-					});
-				}}
-			>
-				<PlayerPercent
-					{cssValue}
-					{classValue}
-					{dataItem}
-					{edit}
-					{shadow}
-					numberOfDecimals={0}
-					frame={$gameFrame?.players[1]?.pre}
-				/>
-			</AnimationLayer>
+			{#key $gameFrame?.players[1]?.post.percent}
+				<PercentAnimation {edit}>
+					<PlayerPercent
+						{cssValue}
+						{classValue}
+						{dataItem}
+						{edit}
+						{shadow}
+						numberOfDecimals={0}
+						frame={$gameFrame?.players[1]?.post}
+					/>
+				</PercentAnimation>
+			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-			<AnimationLayer
-				enableTransition={edit}
-				animationIn={(node) =>
-					fly(node, {
-						duration: 10,
-						delay: 50,
-						easing: backInOut,
-					})}
-				animationOut={(node) => {
-					const multiplierX = Math.random() < 0.5 ? -1 : 1;
-					const multiplierY = Math.random() < 0.5 ? -1 : 1;
-					const x = multiplierX * Math.floor(Math.random() * 30);
-					const y = multiplierY * Math.floor(Math.random() * 30);
-					return fly(node, {
-						duration: 50,
-						y: y,
-						x: x,
-						easing: backInOut,
-					});
-				}}
-			>
-				<PlayerPercent
-					{cssValue}
-					{classValue}
-					{dataItem}
-					{edit}
-					{shadow}
-					numberOfDecimals={1}
-					frame={$gameFrame?.players[0]?.pre}
-				/>
-			</AnimationLayer>
+			{#key $gameFrame?.players[0]?.post.percent}
+				<PercentAnimation {edit}>
+					<PlayerPercent
+						{cssValue}
+						{classValue}
+						{dataItem}
+						{edit}
+						{shadow}
+						numberOfDecimals={1}
+						frame={$gameFrame?.players[0]?.post}
+					/>
+				</PercentAnimation>
+			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-			<AnimationLayer
-				enableTransition={edit}
-				animationIn={(node) =>
-					fly(node, {
-						duration: 10,
-						delay: 50,
-						easing: backInOut,
-					})}
-				animationOut={(node) => {
-					const multiplierX = Math.random() < 0.5 ? -1 : 1;
-					const multiplierY = Math.random() < 0.5 ? -1 : 1;
-					const x = multiplierX * Math.floor(Math.random() * 30);
-					const y = multiplierY * Math.floor(Math.random() * 30);
-					return fly(node, {
-						duration: 50,
-						y: y,
-						x: x,
-						easing: backInOut,
-					});
-				}}
-			>
-				<PlayerPercent
-					{cssValue}
-					{classValue}
-					{dataItem}
-					{edit}
-					{shadow}
-					numberOfDecimals={1}
-					frame={$gameFrame?.players[1]?.pre}
-				/>
-			</AnimationLayer>
+			{#key $gameFrame?.players[1]?.post.percent}
+				<PercentAnimation {edit}>
+					<PlayerPercent
+						{cssValue}
+						{classValue}
+						{dataItem}
+						{edit}
+						{shadow}
+						numberOfDecimals={1}
+						frame={$gameFrame?.players[1]?.post}
+					/>
+				</PercentAnimation>
+			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Score}
 			<TextFitMulti

@@ -189,19 +189,6 @@
 		</div>
 	</div>
 	<div>
-		<h1 class="text-gray-500 text-lg font-medium text-shadow">Outline</h1>
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-36">
-				<Select bind:selected={payload.class.textShadow}>
-					<option value="" selected>None</option>
-					<option value="text-border-sm">Small</option>
-					<option value="text-border-md" selected>Default</option>
-					<option value="text-border-lg">Large</option>
-				</Select>
-			</div>
-		</div>
-	</div>
-	<div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36">

@@ -5,9 +5,7 @@
 </script>
 
 {#if enableTransition}
-	<div class="w-full h-full">
-		<slot />
-	</div>
+	<slot />
 {:else}
 	<div class="w-full h-full" in:animationIn out:animationOut>
 		<slot />
