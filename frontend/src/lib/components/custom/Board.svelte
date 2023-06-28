@@ -16,7 +16,7 @@
 	const overlayId = $page.params.overlay;
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
-	let curScene = getCurrentScene($statsScene);
+	$: curScene = getCurrentScene($statsScene);
 
 	$: curScene?.layers.forEach((layer: any) => {
 		layer.forEach((item: any) => {
@@ -70,8 +70,8 @@
 									bind:preview
 									{dataItem}
 									transition={curScene?.element.transition}
-									additionalDelay={128 * i}
-									duration={curScene?.element.duration ?? 250}
+									additionalDelay={curScene.layerRenderDelay * i}
+									duration={curScene.element.duration ?? 250}
 								/>
 							</Grid>
 						</div>

@@ -46,6 +46,7 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
+				layerRenderDelay: 128,
 				layers: [[]],
 			},
 			[LiveStatsScene.PreGame]: {
@@ -67,6 +68,7 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
+				layerRenderDelay: 128,
 				layers: [[]],
 			},
 			[LiveStatsScene.InGame]: {
@@ -88,6 +90,7 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
+				layerRenderDelay: 128,
 				layers: [[]],
 			},
 			[LiveStatsScene.PostGame]: {
@@ -109,6 +112,7 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
+				layerRenderDelay: 128,
 				layers: [[]],
 			},
 			[LiveStatsScene.RankChange]: {
@@ -130,6 +134,7 @@
 					transition: Transition.None,
 				},
 				font: {} as Font,
+				layerRenderDelay: 128,
 				layers: [[]],
 			},
 		} as Overlay;

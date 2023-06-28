@@ -221,7 +221,7 @@
 						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
-								<NumberInput bind:value={curScene.layerRenderDelay} label="Type" />
+								<NumberInput bind:value={curScene.layerRenderDelay} label="Delay" />
 							</div>
 						</div>
 

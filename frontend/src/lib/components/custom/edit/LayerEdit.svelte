@@ -13,6 +13,7 @@
 
 	export let overlay: Overlay;
 	export let selectedLayer: number | undefined;
+	$: curScene = overlay[$statsScene];
 
 	// TODO: Add confirm on remove
 
@@ -79,7 +80,7 @@
 <div class="w-full flex gap-2">
 	<div class="w-24">
 		<Select bind:selected={selectedLayer}>
-			{#each overlay[$statsScene].layers as _, i}
+			{#each curScene.layers as _, i}
 				<option selected={i === 0} value={i}>Layer {i + 1}</option>
 			{/each}
 		</Select>
@@ -108,7 +109,7 @@
 			<TextFitMulti>Move down</TextFitMulti>
 		</button>
 	</div>
-	{#if overlay[$statsScene]?.layers?.length > 1}
+	{#if curScene?.layers?.length > 1}
 		<div transition:fly={{ duration: 250, y: -25 }}>
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
