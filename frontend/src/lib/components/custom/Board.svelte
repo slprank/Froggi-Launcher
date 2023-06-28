@@ -7,11 +7,12 @@
 	import { COL, ROW } from '$lib/models/const';
 	import { LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
-	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';
+	import { addFont } from '$lib/components/custom/CustomFontHandler.svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let preview: boolean = true;
-	let curSceneIndex: number | undefined = undefined;
+	let curSceneIndex: LiveStatsScene | undefined = undefined;
+	let ready: boolean = false;
 
 	const overlayId = $page.params.overlay;
 
@@ -42,12 +43,17 @@
 	}
 	$: curOverlay, getCurrentScene($statsScene);
 
+	const loadFont = async () => {
+		ready = await addFont(curScene?.font.base64);
+	};
+	$: curScene, loadFont();
+
 	let innerHeight: number;
 </script>
 
 <svelte:window bind:innerHeight />
 
-{#if curScene}
+{#if curScene && ready}
 	{#key curSceneIndex}
 		{#key boardHeight}
 			{#key innerHeight}
@@ -80,10 +86,5 @@
 				</div>
 			{/key}
 		{/key}
-	{/key}
-{/if}
-{#if curScene?.font}
-	{#key curScene?.font}
-		<LoadCustomFont bind:base64={curScene.font.base64} />
 	{/key}
 {/if}

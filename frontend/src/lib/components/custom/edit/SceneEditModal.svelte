@@ -12,7 +12,7 @@
 	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
-	import LoadCustomFont from '$lib/components/custom/LoadCustomFont.svelte';
+	import LoadCustomFont from '$lib/components/custom/CustomFontHandler.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
