@@ -17,7 +17,8 @@
 	export let open: boolean;
 	export let overlay: Overlay;
 
-	$: previewBackgroundType = overlay[$statsScene].background.type;
+	$: curScene = overlay[$statsScene];
+	$: previewBackgroundType = curScene.background.type;
 	let tempActiveScenes = overlay?.activeScenes;
 
 	let imageOptions: string[] = [];
@@ -52,7 +53,7 @@
 	}
 	$: overlay.default, enableDefault();
 
-	$: console.log(overlay[$statsScene]);
+	$: console.log(curScene);
 
 	let autofocus: number = 0;
 </script>
@@ -80,7 +81,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-36 h-full">
 								<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
-								<Select bind:selected={overlay[$statsScene].font.family}>
+								<Select bind:selected={curScene.font.family}>
 									<option value={undefined} selected>Default</option>
 									<option value={'Melee'}>Melee</option>
 									<option value={'Ultimate'}>Ultimate</option>
@@ -93,11 +94,11 @@
 							<FileToBase64Input
 								label="Custom"
 								acceptedExtensions=".woff2, .woff, .otf, .ttf"
-								bind:base64={overlay[$statsScene].font.base64}
+								bind:base64={curScene.font.base64}
 							/>
 							<TextFitMulti
 								class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
-								style={`font-family: ${overlay[$statsScene].font.family}`}
+								style={`font-family: ${curScene.font.family}`}
 							>
 								Super Smash Bros
 							</TextFitMulti>
@@ -123,10 +124,7 @@
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
-								<Select
-									bind:selected={overlay[$statsScene].background.type}
-									label="Type"
-								>
+								<Select bind:selected={curScene.background.type} label="Type">
 									<option value={SceneBackground.None}>None</option>
 									<option value={SceneBackground.Color}>Color</option>
 									<option value={SceneBackground.Image}>Image</option>
@@ -138,10 +136,10 @@
 									{/if}
 								</Select>
 							</div>
-							{#if overlay[$statsScene].background.type === SceneBackground.Image}
+							{#if curScene.background.type === SceneBackground.Image}
 								<div class="w-24">
 									<Select
-										bind:selected={overlay[$statsScene].background.image.src}
+										bind:selected={curScene.background.image.src}
 										label="Image"
 									>
 										{#each imageOptions as image, i}
@@ -152,19 +150,17 @@
 									</Select>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].background.type === SceneBackground.ImageCustom}
+							{#if curScene.background.type === SceneBackground.ImageCustom}
 								<div class="w-24">
 									<FileToBase64Input
-										bind:base64={overlay[$statsScene].background.customImage
-											.src}
+										bind:base64={curScene.background.customImage.src}
 										label="Upload"
 										acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
 									/>
 								</div>
 								<div class="w-24">
 									<Select
-										bind:selected={overlay[$statsScene].background.customImage
-											.objectFit}
+										bind:selected={curScene.background.customImage.objectFit}
 										label="Object fit"
 									>
 										<option selected value="cover">Cover</option>
@@ -172,18 +168,18 @@
 									</Select>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].background.type === SceneBackground.Color}
+							{#if curScene.background.type === SceneBackground.Color}
 								<div class="w-24">
 									<ColorInput
-										bind:value={overlay[$statsScene].background.color}
+										bind:value={curScene.background.color}
 										label="Color"
 									/>
 								</div>
 							{/if}
-							{#if overlay[$statsScene].background.type !== SceneBackground.None}
+							{#if curScene.background.type !== SceneBackground.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].background.opacity}
+										bind:value={curScene.background.opacity}
 										label="Opacity"
 										max={100}
 										bind:autofocus
@@ -198,10 +194,7 @@
 						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
-								<Select
-									bind:selected={overlay[$statsScene].background.transition}
-									label="Type"
-								>
+								<Select bind:selected={curScene.background.transition} label="Type">
 									<option value={Transition.None}>None</option>
 									<option value={Transition.Blur}>Blur</option>
 									<option value={Transition.Fade}>Fade</option>
@@ -210,10 +203,10 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].background.transition !== Transition.None}
+							{#if curScene.background.transition !== Transition.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].background.duration}
+										bind:value={curScene.background.duration}
 										label="Duration - ms"
 										max={1500}
 										bind:autofocus
@@ -224,14 +217,20 @@
 						</div>
 
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Layers Rendering Delay
+						</h1>
+						<div class="w-full flex gap-2">
+							<div class="w-24">
+								<NumberInput bind:value={curScene.layerRenderDelay} label="Type" />
+							</div>
+						</div>
+
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
 							Transition Elements
 						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
-								<Select
-									bind:selected={overlay[$statsScene].element.transition}
-									label="Type"
-								>
+								<Select bind:selected={curScene.element.transition} label="Type">
 									<option value={Transition.None}>None</option>
 									<option value={Transition.Blur}>Blur</option>
 									<option value={Transition.Fade}>Fade</option>
@@ -240,10 +239,10 @@
 									<option value={Transition.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if overlay[$statsScene].element.transition !== Transition.None}
+							{#if curScene.element.transition !== Transition.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={overlay[$statsScene].element.duration}
+										bind:value={curScene.element.duration}
 										label="Duration - ms"
 										max={1500}
 										bind:autofocus
@@ -269,21 +268,21 @@
 						style={`
 						${
 							previewBackgroundType === SceneBackground.Color
-								? `background: ${overlay[$statsScene].background.color};`
+								? `background: ${curScene.background.color};`
 								: ''
 						}
 						${
 							previewBackgroundType === SceneBackground.Image
 								? `background-image: url('/image/backgrounds/${
-										overlay[$statsScene].background.image.src
+										curScene.background.image.src
 								  }');
-									background-size: ${overlay[$statsScene].background.image.objectFit ?? 'cover'};`
+									background-size: ${curScene.background.image.objectFit ?? 'cover'};`
 								: ''
 						}
 						${
 							previewBackgroundType === SceneBackground.ImageCustom
-								? `background-image: url('${overlay[$statsScene].background.customImage.src}');
-									background-size: ${overlay[$statsScene].background.customImage.objectFit};`
+								? `background-image: url('${curScene.background.customImage.src}');
+									background-size: ${curScene.background.customImage.objectFit};`
 								: ''
 						}
 						${
@@ -291,18 +290,14 @@
 								? `background-image: url('/image/stages/8.png');`
 								: ''
 						}
-						${
-							overlay[$statsScene].background.opacity !== undefined
-								? `opacity: ${overlay[$statsScene].background.opacity / 100};`
-								: ''
-						}
+						${curScene.background.opacity !== undefined ? `opacity: ${curScene.background.opacity / 100};` : ''}
 						background-repeat: no-repeat;`}
 					/>
 				</div>
 			</div>
 		{/key}
 	</div>
-	{#key overlay[$statsScene].font.base64}
-		<LoadCustomFont bind:base64={overlay[$statsScene].font.base64} />
+	{#key curScene.font.base64}
+		<LoadCustomFont bind:base64={curScene.font.base64} />
 	{/key}
 </Modal>

@@ -1,18 +1,15 @@
 <script lang="ts">
-	import type { Animation } from '$lib/models/enum';
 	import AnimationLayer from '$lib/components/custom/element/AnimationLayer.svelte';
 	import { testAnimation } from '$lib/components/custom/element/animations/AnimationExport.svelte';
 	import { backInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
-	export let animationType: Animation
+	export let animationType: Animation;
 	export let edit: boolean = false;
 	export let key: any | undefined = undefined;
-
-	// TODO: Move animations to separate file
 </script>
 
-<AnimationLayers
+<AnimationLayer
 	{key}
 	enableTransition={edit}
 	animationIn={(node) =>

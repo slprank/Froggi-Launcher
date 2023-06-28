@@ -12,7 +12,7 @@
 	export let frame: PreFrameUpdateType | undefined;
 	export let numberOfDecimals: number;
 
-	$: framePercent = frame ? Math.floor(frame.percent ?? 0).toFixed() : undefined;
+	$: framePercent = frame ? Math.floor(frame.percent ?? 0).toFixed() : 0;
 
 	const MAX_INTENSITY = 300;
 

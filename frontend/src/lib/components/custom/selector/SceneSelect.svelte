@@ -26,9 +26,6 @@
 		$eventEmitter.emit('electron', 'update-live-scene', scene);
 	}
 
-	// TODO: Notification when selecting a disabled scene
-	// TODO: Refresh page on update
-
 	let buttons = [
 		{
 			text: 'Waiting',

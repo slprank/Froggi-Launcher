@@ -32,6 +32,7 @@ export interface Scene {
 	element: Element;
 	font: Font;
 	layers: GridContentItem[][];
+	layerRenderDelay: number;
 }
 
 export interface Background {
