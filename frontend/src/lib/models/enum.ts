@@ -58,3 +58,7 @@ export enum Transition {
 	Draw = 6,
 	CrossFade = 7,
 }
+
+export enum Animation {
+	None = 0
+}

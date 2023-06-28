@@ -143,64 +143,56 @@
 			{/key}
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Percent}
-			{#key $gameFrame?.players[0]?.post.percent}
-				<PercentAnimation {edit}>
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={0}
-						frame={$gameFrame?.players[0]?.post}
-					/>
-				</PercentAnimation>
-			{/key}
+			<PercentAnimation {edit} key={$gameFrame?.players[0]?.post.percent}>
+				<PlayerPercent
+					{cssValue}
+					{classValue}
+					{dataItem}
+					{edit}
+					{shadow}
+					numberOfDecimals={0}
+					frame={$gameFrame?.players[0]?.pre}
+				/>
+			</PercentAnimation>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2Percent}
-			{#key $gameFrame?.players[1]?.post.percent}
-				<PercentAnimation {edit}>
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={0}
-						frame={$gameFrame?.players[1]?.post}
-					/>
-				</PercentAnimation>
-			{/key}
+			<PercentAnimation {edit} key={$gameFrame?.players[1]?.post.percent}>
+				<PlayerPercent
+					{cssValue}
+					{classValue}
+					{dataItem}
+					{edit}
+					{shadow}
+					numberOfDecimals={0}
+					frame={$gameFrame?.players[1]?.pre}
+				/>
+			</PercentAnimation>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-			{#key $gameFrame?.players[0]?.post.percent}
-				<PercentAnimation {edit}>
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={1}
-						frame={$gameFrame?.players[0]?.post}
-					/>
-				</PercentAnimation>
-			{/key}
+			<PercentAnimation {edit} key={$gameFrame?.players[0]?.post.percent}>
+				<PlayerPercent
+					{cssValue}
+					{classValue}
+					{dataItem}
+					{edit}
+					{shadow}
+					numberOfDecimals={1}
+					frame={$gameFrame?.players[0]?.pre}
+				/>
+			</PercentAnimation>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-			{#key $gameFrame?.players[1]?.post.percent}
-				<PercentAnimation {edit}>
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={1}
-						frame={$gameFrame?.players[1]?.post}
-					/>
-				</PercentAnimation>
-			{/key}
+			<PercentAnimation {edit} key={$gameFrame?.players[0]?.post.percent}>
+				<PlayerPercent
+					{cssValue}
+					{classValue}
+					{dataItem}
+					{edit}
+					{shadow}
+					numberOfDecimals={1}
+					frame={$gameFrame?.players[1]?.pre}
+				/>
+			</PercentAnimation>
 		{/if}
 		{#if dataItem?.elementId === CustomElement.Player1Score}
 			<TextFitMulti

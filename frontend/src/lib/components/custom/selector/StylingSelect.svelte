@@ -9,6 +9,8 @@
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
 
+	// TODO: Animation options and sliders
+
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
 	let isFirstVisit = selectedElementId !== undefined;
