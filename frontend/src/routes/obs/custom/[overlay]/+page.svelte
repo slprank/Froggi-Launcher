@@ -1,11 +1,18 @@
 <script lang="ts">
-	import { eventEmitter, isElectron, obs } from '$lib/utils/store.svelte';
+	import { eventEmitter, isElectron, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 	import Edit from '$lib/components/custom/edit/Edit.svelte';
 	import Board from '$lib/components/custom/Board.svelte';
+	import { page } from '$app/stores';
+	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
+
+	let ready: boolean = false;
+
+	const overlayId = $page.params.overlay;
+	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 </script>
 
-{#if $obs}
+{#if $obs && ready}
 	<main
 		class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
 		in:fade={{ delay: 50, duration: 150 }}
@@ -17,6 +24,11 @@
 			<Board />
 		{/if}
 	</main>
+{/if}
+{#if curOverlay}
+	{#key curOverlay[$statsScene]?.font}
+		<CustomFontHandler bind:base64={curOverlay[$statsScene].font.base64} bind:ready />
+	{/key}
 {/if}
 
 <style>
