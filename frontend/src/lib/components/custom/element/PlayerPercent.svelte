@@ -73,7 +73,7 @@
 		{#each Array.from(Array(2)) as _, i}
 			<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
 				<TextFitMulti
-					class={`h-full ${classValue} justify-end ${i === 0 ? 'font-[1000]' : ``}`}
+					class={`h-full ${classValue} justify-end ${i === 0 ? 'font-[900]' : ``}`}
 					style={`${shadow}; ${cssValue}; ${
 						dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 					};  ${edit ? 'color: black' : ''} ${

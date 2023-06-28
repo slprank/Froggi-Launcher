@@ -3,14 +3,20 @@
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let key: any | undefined = undefined;
+
+	// TODO: Trigger animation on the animation option values? if possible
 </script>
 
-{#if enableTransition}
-	<slot />
-{:else}
-	{#key key}
-		<div class="w-full h-full" in:animationIn|local out:animationOut|local>
+<div class="relative w-full h-full">
+	{#if enableTransition}
+		<div class="absolute w-full h-full">
 			<slot />
 		</div>
-	{/key}
-{/if}
+	{:else}
+		{#key key}
+			<div class="w-full h-full absolute" in:animationIn|local out:animationOut|local>
+				<slot />
+			</div>
+		{/key}
+	{/if}
+</div>

@@ -18,6 +18,7 @@
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/models/const';
+	import { Easing, ElementPauseOption, Animation } from '$lib/models/enum';
 
 	const overlayId = $page.params.overlay;
 
@@ -33,6 +34,17 @@
 		image: {} as Image,
 		shadow: {} as Shadow,
 		string: '',
+		pauseOption: ElementPauseOption.Always,
+		animation: {
+			animationType: Animation.None,
+			options: {
+				delay: 0,
+				duration: 0,
+				easing: Easing.None,
+				x: 0,
+				y: 0,
+			},
+		},
 	};
 
 	let demoItem: GridContentItem;
@@ -133,7 +145,9 @@
 			<div class="w-full h-full col-span-1 overflow-scroll scroll enable-scrollbar">
 				<ElementSelect bind:selectedElementId />
 				<div class="w-full">
-					<StylingSelect bind:selectedElementId bind:payload />
+					{#if payload}
+						<StylingSelect bind:selectedElementId bind:payload />
+					{/if}
 				</div>
 				<button
 					class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
@@ -144,7 +158,7 @@
 			</div>
 			<div class="w-full h-full col-span-1 grid justify-center content-center gap-12">
 				<!-- Set array to 2 if you want drag/drop preview-->
-				{#each [...Array(1).keys()] as i}
+				{#each [...Array(2).keys()] as i}
 					<div
 						class="w-[35vw] max-w-[500px] aspect-video bg-cover bg-center border z-0 flex items-center justify-center"
 						style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"

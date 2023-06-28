@@ -6,13 +6,13 @@
 	import { page } from '$app/stores';
 	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
 
-	let ready: boolean = false;
+	let isFontLoaded: boolean = false;
 
 	const overlayId = $page.params.overlay;
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 </script>
 
-{#if $obs && ready}
+{#if $obs && isFontLoaded}
 	<main
 		class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
 		in:fade={{ delay: 50, duration: 150 }}
@@ -27,7 +27,10 @@
 {/if}
 {#if curOverlay}
 	{#key curOverlay[$statsScene]?.font}
-		<CustomFontHandler bind:base64={curOverlay[$statsScene].font.base64} bind:ready />
+		<CustomFontHandler
+			bind:base64={curOverlay[$statsScene].font.base64}
+			bind:ready={isFontLoaded}
+		/>
 	{/key}
 {/if}
 

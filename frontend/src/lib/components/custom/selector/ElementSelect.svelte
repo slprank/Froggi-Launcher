@@ -5,7 +5,7 @@
 	export let selectedElementId: number;
 	export let label: string | undefined = undefined;
 
-	// TODO: Add remaining components - stats/rank-up/session etc..
+	// TODO: Update to Modal with select in different categories
 	let options = [
 		{
 			name: 'Custom Text',

@@ -2,7 +2,7 @@ import type {
 	GameStartType,
 	PlayerType,
 } from '@slippi/slippi-js';
-import type { CustomElement, LiveStatsScene, SceneBackground, Transition } from './enum';
+import type { Animation, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground, Transition } from './enum';
 import type { COL } from './const';
 
 export interface Url {
@@ -61,9 +61,29 @@ export interface ElementPayload {
 	advancedStyling: boolean;
 	class: Class;
 	css: Css;
+	pauseOption: ElementPauseOption;
 	shadow: Shadow;
 	image: Image;
 	string: string | undefined;
+	animation: AnimationOptions;
+}
+
+export interface AnimationOptions {
+	in: ElementAnimation
+	out: ElementAnimation
+}
+
+export interface ElementAnimation {
+	animationType: Animation;
+	options: ElementAnimationOptions;
+}
+
+export interface ElementAnimationOptions {
+	delay: number;
+	duration: number;
+	easing: Easing;
+	x: number;
+	y: number;
 }
 
 export interface Image {

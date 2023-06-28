@@ -1,6 +1,5 @@
 <script lang="ts">
 	import AnimationLayer from '$lib/components/custom/element/AnimationLayer.svelte';
-	import { testAnimation } from '$lib/components/custom/element/animations/AnimationExport.svelte';
 	import { backInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 

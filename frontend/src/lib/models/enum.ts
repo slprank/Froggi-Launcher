@@ -60,5 +60,21 @@ export enum Transition {
 }
 
 export enum Animation {
-	None = 0
+	None = 0,
+	Shake = 1
+}
+
+export enum Easing {
+	None = 0,
+	BackInOut = 1,
+	BounceInOut = 2,
+	BounceIn = 3,
+	BounceOut = 4,
+	SineOut = 5
+}
+
+export enum ElementPauseOption {
+	Always = 1,
+	OnlyActive = 2,
+	OnlyPaused = 3,
 }
