@@ -12,7 +12,7 @@
 	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
-	import LoadCustomFont from '$lib/components/custom/CustomFontHandler.svelte';
+	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -298,6 +298,6 @@
 		{/key}
 	</div>
 	{#key curScene.font.base64}
-		<LoadCustomFont bind:base64={curScene.font.base64} />
+		<CustomFontHandler bind:base64={curScene.font.base64} />
 	{/key}
 </Modal>

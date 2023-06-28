@@ -13,12 +13,10 @@
 
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
-	let isFirstVisit = selectedElementId !== undefined;
 	let prevSelectedElementId = selectedElementId;
 	let isAdvancedStyle = false;
 
 	function clearStyle() {
-		if (isFirstVisit) return;
 		if (selectedElementId === prevSelectedElementId) return;
 
 		payload.class = {} as Class;
@@ -45,11 +43,15 @@
 	$: customStringSettings = selectedElementId >= 100 && selectedElementId < 200;
 	$: customBoxSettings = selectedElementId >= 200 && selectedElementId < 300;
 	$: customImageSettings = selectedElementId >= 300 && selectedElementId < 400;
-	$: stringSettings = selectedElementId >= 400 && selectedElementId < 500;
-	$: boxSettings = selectedElementId >= 500 && selectedElementId < 600;
-	$: imageSettings = selectedElementId >= 600 && selectedElementId < 700;
-
-	isFirstVisit = false;
+	$: stringSettings =
+		(selectedElementId >= 400 && selectedElementId < 500) ||
+		selectedElementId === CustomElement.CustomString;
+	$: boxSettings =
+		(selectedElementId >= 500 && selectedElementId < 600) ||
+		selectedElementId === CustomElement.CustomBox;
+	$: imageSettings =
+		(selectedElementId >= 600 && selectedElementId < 700) ||
+		selectedElementId === CustomElement.CustomImage;
 </script>
 
 <div class="w-full my-4 grid gap-4">

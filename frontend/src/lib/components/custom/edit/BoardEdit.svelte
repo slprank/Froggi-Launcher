@@ -48,8 +48,9 @@
 	$: $statsScene || layer || $obs, updateLiveScene();
 
 	function updateOverlay() {
-		if (!tempItems || layer === undefined || curScene.layers[layer] == tempItems) return;
-		curScene.layers[layer] = tempItems;
+		if (!tempItems || layer === undefined || curOverlay[$statsScene].layers[layer] == tempItems)
+			return;
+		curOverlay[$statsScene].layers[layer] = tempItems;
 
 		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
 		tempItems = undefined;
@@ -81,12 +82,12 @@
 
 {#key boardHeight}
 	{#key $statsScene}
-		{#key curScene?.font?.base64}
+		{#key curOverlay[$statsScene]?.font?.base64}
 			<div
-				style={`font-family: ${curScene?.font?.family};`}
+				style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
 				class="w-full h-full overflow-hidden relative"
 			>
-				<BoardContainer bind:scene={curScene} />
+				<BoardContainer bind:scene={curOverlay[$statsScene]} />
 				<div class="w-full h-full z-2 absolute">
 					<Grid
 						bind:items

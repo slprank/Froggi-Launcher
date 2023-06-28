@@ -1,12 +1,17 @@
-<script lang="ts" context="module">
+<script lang="ts">
 	import { onMount } from 'svelte';
 
-	export const addFont = async (base64: string | undefined) => {
-		if (base64 === undefined) return false;
-		if (base64.length === 0) return true;
+	export let base64: string | undefined;
+	export let ready: boolean;
+
+	onMount(async () => {
+		if (!base64) {
+			ready = true;
+			return;
+		}
 		const new_font = new FontFace('Custom', `url(${base64})`);
 		const loadedFace = await new_font.load();
 		document.fonts.add(loadedFace);
-		return true;
-	};
+		ready = true;
+	});
 </script>
