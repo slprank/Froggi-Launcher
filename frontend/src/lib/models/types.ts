@@ -83,6 +83,7 @@ export interface ElementAnimationOptions {
 	delay: number;
 	duration: number;
 	easing: Easing;
+	start: number;
 	x: number;
 	y: number;
 }

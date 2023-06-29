@@ -15,13 +15,11 @@
 		}
 	};
 	$: $gameFrame, updateKeyValue();
-
-	// TODO: Use animationTrigger to decide listening value rather than key
 </script>
 
 <div class="relative w-full h-full">
 	{#if animationTrigger === AnimationTrigger.None}
-		<div class="w-full h-full absolute" in:animationIn|local out:animationOut|local>
+		<div class="w-full h-full absolute" in:animationIn out:animationOut>
 			<slot />
 		</div>
 	{:else}

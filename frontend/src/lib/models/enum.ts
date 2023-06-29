@@ -6,6 +6,12 @@ export enum LiveStatsScene {
 	RankChange = 8,
 }
 
+export enum DolphinState {
+	Disconnected = 0,
+	Connected = 1,
+	Connecting = 2,
+}
+
 export enum CustomElement {
 
 	// Custom String
