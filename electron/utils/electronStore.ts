@@ -158,11 +158,11 @@ export class ElectronJsonStore {
 
 	// STATUS
 	getDolphinConnectionStatus() {
-		return this.store.get('status.dolphin');
+		return this.store.get('dolphin.status');
 	}
 
 	setDolphinConnectionStatus(status: any) {
-		return this.store.set('status.dolphin', status);
+		return this.store.set('dolphin.status', status);
 	}
 
 	// LIVE STATS
@@ -174,7 +174,7 @@ export class ElectronJsonStore {
 		this.store.set('stats.scene', scene ?? 0);
 	}
 
-	getCurrentPlayers(): Player[] | undefined  {
+	getCurrentPlayers(): Player[] | undefined {
 		return this.store.get('stats.currentPlayers') as Player[];
 	}
 
@@ -344,11 +344,11 @@ export class ElectronJsonStore {
 
 	// Listeners
 	initListeners() {
-		this.store.onDidChange("stats.scene", (value) => {
-			this.messageHandler.sendMessage("live_stats_scene", value)
-		})
 		this.store.onDidChange("obs.custom", (value) => {
 			this.messageHandler.sendMessage('obs_custom', value);
+		})
+		this.store.onDidChange("stats.scene", (value) => {
+			this.messageHandler.sendMessage("live_stats_scene", value)
 		})
 		this.store.onDidChange(`settings.currentPlayer`, async (value) => {
 			this.messageHandler.sendMessage('current_player', value);
@@ -365,6 +365,9 @@ export class ElectronJsonStore {
 		})
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
 			this.messageHandler.sendMessage('post_game_stats', value);
+		})
+		this.store.onDidChange(`dolphin.status`, async (value) => {
+			this.messageHandler.sendMessage('dolphin_status', value);
 		})
 	}
 }

@@ -1,15 +1,18 @@
-export enum LiveStatsScene {
-	WaitingForDolphin = 0,
-	PreGame = 2,
-	InGame = 4,
-	PostGame = 6,
-	RankChange = 8,
+export enum Animation {
+	None = 0,
+	Blur = 1,
+	Fade = 2,
+	Fly = 3,
+	FlyRandom = 4,
+	Scale = 5,
+	Slide = 6,
 }
 
-export enum DolphinState {
-	Disconnected = 0,
-	Connected = 1,
-	Connecting = 2,
+export enum AnimationTrigger {
+	None = 0,
+	Visibility = 1,
+	Player1Percent = 2,
+	Player2Percent = 3,
 }
 
 export enum CustomElement {
@@ -46,40 +49,10 @@ export enum CustomElement {
 	Player2CharacterIcon = 603,
 }
 
-export enum SceneBackground {
-	None = 0,
-	Color = 1,
-	Image = 2,
-	ImageCustom = 3,
-	ImageStage = 4,
-}
-
-export enum Transition {
-	None = 0,
-	Fade = 1,
-	Scale = 2,
-	Fly = 3,
-	Slide = 4,
-	Blur = 5,
-	Draw = 6,
-	CrossFade = 7,
-}
-
-export enum Animation {
-	None = 0,
-	Blur = 1,
-	Fade = 2,
-	Fly = 3,
-	FlyRandom = 4,
-	Scale = 5,
-	Slide = 6,
-}
-
-export enum AnimationTrigger {
-	None = 0,
-	Visibility = 1,
-	Player1Percent = 2,
-	Player2Percent = 3,
+export enum DolphinState {
+	Disconnected = 0,
+	Connected = 1,
+	Connecting = 2,
 }
 
 export enum Easing {
@@ -99,3 +72,31 @@ export enum ElementPauseOption {
 	OnlyActive = 2,
 	OnlyPaused = 3,
 }
+
+export enum LiveStatsScene {
+	WaitingForDolphin = 0,
+	PreGame = 2,
+	InGame = 4,
+	PostGame = 6,
+	RankChange = 8,
+}
+
+export enum SceneBackground {
+	None = 0,
+	Color = 1,
+	Image = 2,
+	ImageCustom = 3,
+	ImageStage = 4,
+}
+
+export enum Transition {
+	None = 0,
+	Fade = 1,
+	Scale = 2,
+	Fly = 3,
+	Slide = 4,
+	Blur = 5,
+	Draw = 6,
+	CrossFade = 7,
+}
+

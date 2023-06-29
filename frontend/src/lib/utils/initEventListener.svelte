@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+	import type { DolphinState } from '$lib/models/enum';
 	import type { Obs, Overlay, Player } from '$lib/models/types';
 	import {
 		eventEmitter,
@@ -13,6 +14,7 @@
 		urls,
 		obs,
 		gameFrame,
+		dolphinState,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type EventEmitter from 'events';
@@ -27,6 +29,10 @@
 		_eventEmitter.on('current_players', (players: Player[]) => {
 			console.log({ players });
 			currentPlayers.set(players);
+		});
+		_eventEmitter.on('dolphin_state', (state: DolphinState) => {
+			console.log({ state });
+			dolphinState.set(state);
 		});
 		_eventEmitter.on('game_frame', (frame: FrameEntryType) => {
 			gameFrame.set(frame);

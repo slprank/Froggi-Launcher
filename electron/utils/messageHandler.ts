@@ -144,7 +144,6 @@ export class MessageHandler {
 	// Any data sent to frontend should be saved and initialized
 	// Leaderboard data should be stored as well
 	initData(socket: WebSocket | undefined = undefined) {
-		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(
 			socket,
 			'current_player',
@@ -156,12 +155,13 @@ export class MessageHandler {
 			this.store.getCurrentPlayers(),
 		);
 		this.sendInitMessage(socket, 'game_settings', this.store.getGameSettings());
-		this.sendInitMessage(socket, 'post_game_stats', this.store.getGameStats());
 		this.sendInitMessage(socket, 'game_score', this.store.getGameScore());
-		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
-		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
-		this.sendInitMessage(socket, 'obs_custom', this.store.getCustom());
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
+		this.sendInitMessage(socket, 'obs_custom', this.store.getCustom());
+		this.sendInitMessage(socket, 'post_game_stats', this.store.getGameStats());
+		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
+		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
+		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
 	}
 
 	private initEventHandlers() {

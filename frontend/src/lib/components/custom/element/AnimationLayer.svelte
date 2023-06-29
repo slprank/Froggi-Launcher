@@ -8,11 +8,16 @@
 
 	let key: any = undefined;
 	const updateKeyValue = () => {
+		console.log('player1', $gameFrame?.players[0]?.pre.percent);
+		console.log('player2', $gameFrame?.players[1]?.pre.percent);
+		console.log(animationTrigger);
 		switch (animationTrigger) {
 			case AnimationTrigger.Player1Percent:
 				key = $gameFrame?.players[0]?.pre.percent;
+				return;
 			case AnimationTrigger.Player2Percent:
 				key = $gameFrame?.players[1]?.pre.percent;
+				return;
 		}
 	};
 	$: $gameFrame, updateKeyValue();

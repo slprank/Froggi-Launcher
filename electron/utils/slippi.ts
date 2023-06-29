@@ -12,7 +12,7 @@ import { IpcMain } from 'electron';
 import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ElectronJsonStore } from './electronStore';
-import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class SlippiJs {
@@ -36,8 +36,8 @@ export class SlippiJs {
 	initSlippiJs() {
 		this.log.info('Init slippi-js');
 
+		this.store.setStatsScene(LiveStatsScene.WaitingForDolphin)
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
-
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
 			this.log.info('dolphin connection state', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin
@@ -45,13 +45,15 @@ export class SlippiJs {
 			if (status === ConnectionStatus.DISCONNECTED) {
 				this.log.info("Dolphin Disconnected")
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
-				this.store.setStatsScene(LiveStatsScene.WaitingForDolphin)
+				this.store.setDolphinConnectionStatus(DolphinState.Disconnected)
 			}
 			if (status === ConnectionStatus.CONNECTED) {
 				this.log.info("Dolphin Connected")
+				this.store.setDolphinConnectionStatus(DolphinState.Connected)
 				this.store.setStatsScene(LiveStatsScene.PreGame)
 			}
 			if (status === ConnectionStatus.CONNECTING) {
+				this.store.setDolphinConnectionStatus(DolphinState.Connecting)
 				this.log.info("Dolphin Connected")
 			}
 		});
