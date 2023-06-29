@@ -30,17 +30,18 @@ export class StatsDisplay {
 
 	async initStatDisplay() {
 		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: SlpRawEventPayload) => {
-			// console.log("Commmand parsed by SlpStream: " + event.command + event.payload)
 			this.slpParser.handleCommand(event.command, event.payload);
-			//console.log(event.command, event.payload)
 			if (event.command === 54) {
 				this.handleUndefinedPlayers(this.slpParser.getSettings() ?? undefined)
 				await this.handleGameStart(this.slpParser.getSettings());
 			}
+			if (event.command === 60) {
+				await this.handleGamePaused(this.slpParser.getLatestFrame());
+			}
 		});
 
 		this.slpParser.on(SlpParserEvent.END, async (gameEnd: GameEndType) => {
-			await this.handleGameEnd(gameEnd, this.slpParser.getLatestFrame(), this.slpParser.getSettings());
+			await this.handleGameEnd(gameEnd, this.slpParser);
 		});
 
 		this.slpParser.on(SlpParserEvent.FRAME, async (frameEntry: FrameEntryType) => {
@@ -52,12 +53,15 @@ export class StatsDisplay {
 		await this.messageHandler.sendMessage('game_frame', frameEntry);
 	}
 
+	async handleGamePaused(frameEntry: FrameEntryType | null) {
+		if (!frameEntry) return;
+		this.store.setGameFrame(frameEntry)
+	}
+
 	// TODO: Handle offline game data by returning existing values
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
-		this.log.info("Game start", settings)
 		let currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
-		console.log("current", currentPlayers)
 
 		if (settings?.matchInfo?.matchId && [1].includes(settings?.matchInfo?.gameNumber ?? 0)) {
 			this.store.setGameScore([0, 0]);
@@ -69,13 +73,13 @@ export class StatsDisplay {
 		this.store.setStatsScene(LiveStatsScene.InGame)
 	}
 
-	async handleGameEnd(gameEnd: GameEndType, frameEntry: FrameEntryType | null, settings: GameStartType | null) {
+	async handleGameEnd(gameEnd: GameEndType, parser: SlpParser) {
+		const settings = parser.getSettings()
 		if (!settings) return;
-		this.log.info("Game End", gameEnd, frameEntry, settings);
 		this.handleScore(gameEnd)
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
-		
+
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const recentGameStats = this.getRecentGameStats();
 
@@ -87,13 +91,14 @@ export class StatsDisplay {
 
 	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
 		let currentPlayers = settings.players.filter(player => player)
-		console.log("settings", settings.players)
 		if (currentPlayers.some(player => !player.connectCode))
-			return settings.players.filter(player => player).map((player, i: number) => { return{
-				...player,
-				rankedNetplayProfile: this.store.getCurrentPlayers()?.at(i)?.rankedNetplayProfile
-			}})
-		
+			return settings.players.filter(player => player).map((player, i: number) => {
+				return {
+					...player,
+					rankedNetplayProfile: this.store.getCurrentPlayers()?.at(i)?.rankedNetplayProfile
+				}
+			})
+
 		return (await Promise.all(
 			currentPlayers.map(async (player: PlayerType) => await this.api.getPlayerWithRankStats(player))
 		)).filter((player): player is Player => player !== undefined);
@@ -106,13 +111,12 @@ export class StatsDisplay {
 	}
 
 	handleScore(gameEnd: GameEndType) {
+		// TODO: Consider LRAS
 		let score: number[] = this.store.getGameScore() ?? [0, 0];
 		const winnerIndex = gameEnd.placements
 			.filter((p: PlacementType) => (p.position ?? -1) >= 0)
 			.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
 			.findIndex(p => p.position === 0); // Verify that winner is 0
-		console.log("Game end", gameEnd.placements)
-		console.log(winnerIndex)
 		score[winnerIndex] += 1;
 		this.store.setGameScore(score);
 	}

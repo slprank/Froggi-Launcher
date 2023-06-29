@@ -24,6 +24,7 @@
 				return;
 		}
 	};
+	$: $gameFrame, updateKeyValue();
 
 	$svelteEmitter.on('animation_test_trigger', () => {
 		console.log('here');
@@ -31,8 +32,6 @@
 		key = Math.random();
 		setTimeout(() => (key = tempKey));
 	});
-
-	$: $gameFrame, updateKeyValue();
 </script>
 
 <div class="relative w-full h-full">

@@ -154,6 +154,7 @@ export class MessageHandler {
 			'current_players',
 			this.store.getCurrentPlayers(),
 		);
+		//this.sendInitMessage(socket, 'game_frame', this.store.getGameFrame());
 		this.sendInitMessage(socket, 'game_settings', this.store.getGameSettings());
 		this.sendInitMessage(socket, 'game_score', this.store.getGameScore());
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());

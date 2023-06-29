@@ -5,7 +5,7 @@ import type { CurrentPlayer, GameStartMode, GameStats, Obs, Overlay, Player, Ran
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from './messageHandler';
-import { GameEndType, GameStartType, PlayerType, StatsType } from '@slippi/slippi-js';
+import { FrameEntryType, GameEndType, GameStartType, PlayerType, StatsType } from '@slippi/slippi-js';
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
@@ -132,9 +132,7 @@ export class ElectronJsonStore {
 	updateCustomOverlay(overlay: Overlay): void {
 		if (!overlay) return;
 		let custom = this.getCustom();
-		console.log('custom', custom);
 		const overlayIndex = this.getCustomOverlayIndex(overlay.id);
-		console.log('index', overlayIndex);
 		overlayIndex === undefined || overlayIndex === -1
 			? custom.overlays.push(overlay)
 			: (custom.overlays[overlayIndex] = overlay);
@@ -180,6 +178,14 @@ export class ElectronJsonStore {
 
 	setCurrentPlayers(players: (Player | PlayerType)[]) {
 		this.store.set('stats.currentPlayers', players?.filter(player => player));
+	}
+
+	getGameFrame(): FrameEntryType {
+		return this.store.get('stats.game.frame') as FrameEntryType
+	}
+
+	setGameFrame(frameEntry: FrameEntryType) {
+		this.store.set('stats.game.frame', frameEntry)
 	}
 
 	getGameSettings(): GameStartType {
@@ -354,9 +360,11 @@ export class ElectronJsonStore {
 			this.messageHandler.sendMessage('current_player', value);
 		})
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
-			console.log("did change", value)
 			this.messageHandler.sendMessage('current_players', value);
 		})
+		// this.store.onDidChange(`stats.game.frame`, async (value) => {
+		// 	this.messageHandler.sendMessage('game_frame', value);
+		// })
 		this.store.onDidChange(`stats.game.settings`, async (value) => {
 			this.messageHandler.sendMessage('game_settings', value);
 		})
