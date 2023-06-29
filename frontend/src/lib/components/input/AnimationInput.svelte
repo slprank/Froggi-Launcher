@@ -24,7 +24,7 @@
 					<option value={Animation.Fade}>Fade</option>
 					<option value={Animation.Fly}>Fly</option>
 					<option value={Animation.Scale}>Scale</option>
-					<option value={Animation.Shake}>Shake</option>
+					<option value={Animation.FlyRandom}>Fly Random</option>
 					<option value={Animation.Slide}>Slide</option>
 				</Select>
 			</div>

@@ -216,12 +216,19 @@
 							{/if}
 						</div>
 
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+						<h1
+							class="text-gray-500 text-lg font-medium text-shadow"
+							data-tooltip={`Delay between each layer to render when displayed`}
+						>
 							Layers Rendering Delay
 						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
-								<NumberInput bind:value={curScene.layerRenderDelay} label="Delay" />
+								<NumberInput
+									bind:value={curScene.layerRenderDelay}
+									max={1000}
+									label="Delay"
+								/>
 							</div>
 						</div>
 

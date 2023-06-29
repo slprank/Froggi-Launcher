@@ -64,8 +64,8 @@ export enum Animation {
 	Blur = 1,
 	Fade = 2,
 	Fly = 3,
-	Scale = 4,
-	Shake = 5,
+	FlyRandom = 4,
+	Scale = 5,
 	Slide = 6,
 }
 
@@ -75,7 +75,10 @@ export enum Easing {
 	BounceInOut = 2,
 	BounceIn = 3,
 	BounceOut = 4,
-	SineOut = 5
+	ElasticInOut = 5,
+	ElasticIn = 6,
+	ElasticOut = 7,
+	SineOut = 8
 }
 
 export enum ElementPauseOption {

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 
 	export let base64: string | undefined;
-	export let ready: boolean;
+	export let ready: boolean = false;
 
 	onMount(async () => {
 		if (!base64) {
