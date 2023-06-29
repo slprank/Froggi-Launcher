@@ -87,7 +87,7 @@
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={newLayer}
 		>
 			<TextFitMulti>New layer</TextFitMulti>
@@ -95,7 +95,7 @@
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={moveLayerUp}
 		>
 			<TextFitMulti>Move up</TextFitMulti>
@@ -103,7 +103,7 @@
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={moveLayerDown}
 		>
 			<TextFitMulti>Move down</TextFitMulti>
@@ -112,7 +112,7 @@
 	{#if curScene?.layers?.length > 1}
 		<div transition:fly={{ duration: 250, y: -25 }}>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 w-16 lg:w-20 xl:w-auto px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 				on:click={deleteLayer}
 			>
 				<TextFitMulti>Delete layer</TextFitMulti>

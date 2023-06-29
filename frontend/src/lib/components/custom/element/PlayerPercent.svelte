@@ -1,6 +1,7 @@
 <script lang="ts">
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import type { GridContentItem } from '$lib/models/types';
+	import { gameFrame } from '$lib/utils/store.svelte';
 	import type { PreFrameUpdateType } from '@slippi/slippi-js';
 
 	export let classValue: string;
@@ -34,6 +35,8 @@
 		); // Call the function to interpolate the colors
 	};
 	$: frame?.percent, updateColor();
+
+	$: console.log($gameFrame); // Check last game end frame - set percent to 0
 
 	function interpolateColors(startColor: string, endColor: string, value: number) {
 		value = Math.min(value, MAX_INTENSITY);
