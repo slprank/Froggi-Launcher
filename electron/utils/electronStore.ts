@@ -9,7 +9,7 @@ import { FrameEntryType, GameEndType, GameStartType, PlayerType, StatsType } fro
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
-import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 
 @singleton()
@@ -188,6 +188,13 @@ export class ElectronJsonStore {
 		this.store.set('stats.game.frame', frameEntry)
 	}
 
+	getGameState() {
+		return this.store.get("state.game.inGameState")
+	}
+	setGameState(state: InGameState) {
+		return this.store.set("state.game.inGameState", state)
+	}
+
 	getGameSettings(): GameStartType {
 		return this.store.get('stats.game.settings') as GameStartType;
 	}
@@ -346,8 +353,6 @@ export class ElectronJsonStore {
 		);
 	}
 
-	// Get recent game - statDisplay
-
 	// Listeners
 	initListeners() {
 		this.store.onDidChange("obs.custom", (value) => {
@@ -362,14 +367,17 @@ export class ElectronJsonStore {
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
 			this.messageHandler.sendMessage('current_players', value);
 		})
-		// this.store.onDidChange(`stats.game.frame`, async (value) => {
-		// 	this.messageHandler.sendMessage('game_frame', value);
-		// })
+		this.store.onDidChange(`stats.game.frame`, async (value) => {
+			this.messageHandler.sendMessage('game_frame', value);
+		})
 		this.store.onDidChange(`stats.game.settings`, async (value) => {
 			this.messageHandler.sendMessage('game_settings', value);
 		})
 		this.store.onDidChange(`stats.game.score`, async (value) => {
 			this.messageHandler.sendMessage('game_score', value);
+		})
+		this.store.onDidChange(`state.game.inGameState`, async (value) => {
+			this.messageHandler.sendMessage('game_state', value);
 		})
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
 			this.messageHandler.sendMessage('post_game_stats', value);

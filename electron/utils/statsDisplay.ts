@@ -6,7 +6,7 @@ import { inject, singleton } from 'tsyringe';
 import { Api } from './api';
 import { ElectronJsonStore } from './electronStore';
 import { Player } from '../../frontend/src/lib/models/types';
-import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class StatsDisplay {
@@ -58,7 +58,6 @@ export class StatsDisplay {
 		this.store.setGameFrame(frameEntry)
 	}
 
-	// TODO: Handle offline game data by returning existing values
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
 		let currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
@@ -75,16 +74,19 @@ export class StatsDisplay {
 
 	async handleGameEnd(gameEnd: GameEndType, parser: SlpParser) {
 		const settings = parser.getSettings()
-		if (!settings) return;
+		let frame = parser.getLatestFrame()
+
+		if (!settings || !frame) return;
 		this.handleScore(gameEnd)
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
-
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const recentGameStats = this.getRecentGameStats();
 
+
 		this.store.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
 		this.store.setGameStats(gameEnd)
+		this.store.setGameState(InGameState.End)
 		this.store.setStatsScene(LiveStatsScene.PostGame)
 		if (recentGameStats) this.messageHandler.sendMessage('post_game_stats', recentGameStats);
 	}
@@ -139,7 +141,7 @@ export class StatsDisplay {
 	}
 
 	// OTHER
-	// TODO: Fix these
+	// TODO: Complete these
 	getGameFiles() {
 		const fs = require('fs');
 		const re = new RegExp('^Game_.*.slp$');

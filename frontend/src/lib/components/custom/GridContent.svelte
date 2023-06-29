@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { CustomElement, Transition } from '$lib/models/enum';
+	import { CustomElement, ElementPauseOption, InGameState, Transition } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur as blur_ } from 'svelte/transition';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { COL, ROW } from '$lib/models/const';
-	import { currentPlayers, gameFrame, gameScore, statsScene } from '$lib/utils/store.svelte';
+	import { currentPlayers, gameFrame, gameScore, gameState } from '$lib/utils/store.svelte';
 	import PlayerPercent from './element/PlayerPercent.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
@@ -12,6 +12,7 @@
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let additionalDelay: number = 0;
 	export let edit: boolean = false;
+	export let forceDisplay = false;
 	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
 	export let transition: Transition = Transition.None;
@@ -66,11 +67,21 @@
 		}
 	};
 
+	$: isGameRunning = $gameState === InGameState.Running;
+	$: isGamePaused = $gameState === InGameState.Running;
+
+	$: display =
+		edit ||
+		forceDisplay ||
+		dataItem?.data.pauseOption === ElementPauseOption.Always ||
+		(isGameRunning && dataItem?.data.pauseOption === ElementPauseOption.OnlyActive) ||
+		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);
+
 	// TODO: Add remaining components
 	// TODO: Add fallback to unknown player - img, name, etc
 </script>
 
-{#if dataItem}
+{#if dataItem && display}
 	{#key dataItem}
 		<div
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
@@ -182,24 +193,15 @@
 					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-					<AnimationLayer
-						animationIn={(node) =>
-							CreateElementAnimation(node, dataItem?.data.animation.in)}
-						animationOut={(node) =>
-							CreateElementAnimation(node, dataItem?.data.animation.out)}
-						animationTrigger={dataItem?.data.animation.trigger}
+					<PlayerPercent
+						{cssValue}
+						{classValue}
+						{dataItem}
 						{edit}
-					>
-						<PlayerPercent
-							{cssValue}
-							{classValue}
-							{dataItem}
-							{edit}
-							{shadow}
-							numberOfDecimals={1}
-							frame={$gameFrame?.players[1]?.pre}
-						/>
-					</AnimationLayer>
+						{shadow}
+						numberOfDecimals={1}
+						frame={$gameFrame?.players[1]?.pre}
+					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Score}
 					<TextFitMulti

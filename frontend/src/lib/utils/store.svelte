@@ -2,7 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { EventEmitter } from 'events';
-	import { DolphinState, LiveStatsScene } from '$lib/models/enum';
+	import { DolphinState, InGameState, LiveStatsScene } from '$lib/models/enum';
 	import Device from 'svelte-device-info';
 	import type { Obs, Player, Url } from '$lib/models/types';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
@@ -33,6 +33,7 @@
 	export const dolphinState = writable<DolphinState>();
 	export const gameFrame = writable<FrameEntryType>();
 	export const gameScore = writable<number[]>([0, 0]);
+	export const gameState = writable<InGameState>(InGameState.None);
 	export const gameSettings = writable<GameStartType>();
 	export const postGameStats = writable<any>();
 	export const recentRankedSets = writable<any>();

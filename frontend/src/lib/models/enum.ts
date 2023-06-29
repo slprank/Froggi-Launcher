@@ -51,9 +51,6 @@ export enum CustomElement {
 	Player2CharacterIcon = 603,
 }
 
-export enum PlayerActionState {
-	Dead = 0
-}
 
 export enum DolphinState {
 	Disconnected = 0,
@@ -79,12 +76,23 @@ export enum ElementPauseOption {
 	OnlyPaused = 3,
 }
 
+export enum InGameState {
+	None = 0,
+	Running = 1,
+	Paused = 2,
+	End = 3
+}
+
 export enum LiveStatsScene {
 	WaitingForDolphin = 0,
 	PreGame = 2,
 	InGame = 4,
 	PostGame = 6,
 	RankChange = 8,
+}
+
+export enum PlayerActionState {
+	Dead = 0
 }
 
 export enum SceneBackground {

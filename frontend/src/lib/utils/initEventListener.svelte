@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import type { DolphinState } from '$lib/models/enum';
+	import type { DolphinState, InGameState } from '$lib/models/enum';
 	import type { Obs, Overlay, Player } from '$lib/models/types';
 	import {
 		electronEmitter,
@@ -15,6 +15,7 @@
 		obs,
 		gameFrame,
 		dolphinState,
+		gameState,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type electronEmitter from 'events';
@@ -44,6 +45,10 @@
 		_electronEmitter.on('game_score', (score: any) => {
 			console.log({ score });
 			gameScore.set(score);
+		});
+		_electronEmitter.on('game_state', (state: InGameState) => {
+			console.log({ state });
+			gameState.set(state);
 		});
 		_electronEmitter.on('post_game_stats', (stats: any) => {
 			console.log({ stats });

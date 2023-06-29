@@ -181,7 +181,7 @@
 						out:fade={{ duration: 300 }}
 					>
 						<div class={`w-full h-[50%] border bg-${i ? 'black' : 'white'}`}>
-							<GridContent bind:demoItem />
+							<GridContent bind:demoItem forceDisplay={true} />
 						</div>
 					</div>
 				{/each}

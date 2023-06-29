@@ -1,6 +1,8 @@
 <script lang="ts">
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
+	import { InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
+	import { gameState } from '$lib/utils/store.svelte';
 	import type { PreFrameUpdateType } from '@slippi/slippi-js';
 
 	export let classValue: string;
@@ -12,7 +14,9 @@
 	export let frame: PreFrameUpdateType | undefined;
 	export let numberOfDecimals: number;
 
-	$: framePercent = frame ? Math.floor(frame.percent ?? 0).toFixed() : 0;
+	const isRunning = [InGameState.Paused, InGameState.Running].includes($gameState);
+
+	$: framePercent = frame && isRunning ? Math.floor(frame.percent ?? 0).toFixed() : 0;
 
 	const MAX_INTENSITY = 300;
 
