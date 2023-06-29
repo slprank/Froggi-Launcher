@@ -69,6 +69,13 @@ export enum Animation {
 	Slide = 6,
 }
 
+export enum AnimationTrigger {
+	None = 0,
+	Visibility = 1,
+	Player1Percent = 2,
+	Player2Percent = 3,
+}
+
 export enum Easing {
 	None = 0,
 	BackInOut = 1,

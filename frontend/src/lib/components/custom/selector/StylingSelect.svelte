@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
 	import type { Class, ElementPayload } from '$lib/models/types';
-	import { Animation, Easing } from '$lib/models/enum';
+	import { Animation, AnimationTrigger, Easing } from '$lib/models/enum';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
 	import { CustomElement, ElementPauseOption, LiveStatsScene } from '$lib/models/enum';
@@ -56,6 +56,7 @@
 						y: 0,
 					},
 				},
+				trigger: AnimationTrigger.None,
 			},
 			class: {} as Class,
 			css: {
@@ -259,8 +260,16 @@
 		</div>
 		{#if payload.animation.in || payload.animation.out}
 			<div class="w-full flex">
-				<AnimationInput bind:animation={payload.animation.in} label="In" />
-				<AnimationInput bind:animation={payload.animation.out} label="Out" />
+				<AnimationInput
+					bind:animation={payload.animation.in}
+					bind:animationTrigger={payload.animation.trigger}
+					label="In"
+				/>
+				<AnimationInput
+					bind:animation={payload.animation.out}
+					bind:animationTrigger={payload.animation.trigger}
+					label="Out"
+				/>
 			</div>
 		{/if}
 		<button

@@ -8,7 +8,6 @@
 	import PlayerPercent from './element/PlayerPercent.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { backInOut } from 'svelte/easing';
-	import PercentAnimation from './element/animations/PercentAnimation.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
 
 	export let dataItem: GridContentItem | undefined = undefined;
@@ -85,8 +84,6 @@
 		>
 			{#if dataItem?.elementId === CustomElement.CustomString}
 				<AnimationLayer
-					enableTransition={edit}
-					key={$gameFrame?.players[1]?.post.percent}
 					animationIn={(node) => CreateElementAnimation(node, dataItem.data.animation.in)}
 					animationOut={(node) =>
 						CreateElementAnimation(node, dataItem.data.animation.out)}
@@ -155,7 +152,13 @@
 				{/key}
 			{/if}
 			{#if dataItem?.elementId === CustomElement.Player1Percent}
-				<PercentAnimation {edit} key={$gameFrame?.players[0]?.post.percent}>
+				<AnimationLayer
+					animationIn={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.in)}
+					animationOut={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.out)}
+					animationTrigger={dataItem.data.animation.trigger}
+				>
 					<PlayerPercent
 						{cssValue}
 						{classValue}
@@ -165,10 +168,16 @@
 						numberOfDecimals={0}
 						frame={$gameFrame?.players[0]?.pre}
 					/>
-				</PercentAnimation>
+				</AnimationLayer>
 			{/if}
 			{#if dataItem?.elementId === CustomElement.Player2Percent}
-				<PercentAnimation {edit} key={$gameFrame?.players[1]?.post.percent}>
+				<AnimationLayer
+					animationIn={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.in)}
+					animationOut={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.out)}
+					animationTrigger={dataItem.data.animation.trigger}
+				>
 					<PlayerPercent
 						{cssValue}
 						{classValue}
@@ -178,10 +187,16 @@
 						numberOfDecimals={0}
 						frame={$gameFrame?.players[1]?.pre}
 					/>
-				</PercentAnimation>
+				</AnimationLayer>
 			{/if}
 			{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-				<PercentAnimation {edit} key={$gameFrame?.players[0]?.post.percent}>
+				<AnimationLayer
+					animationIn={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.in)}
+					animationOut={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.out)}
+					animationTrigger={dataItem.data.animation.trigger}
+				>
 					<PlayerPercent
 						{cssValue}
 						{classValue}
@@ -191,10 +206,16 @@
 						numberOfDecimals={1}
 						frame={$gameFrame?.players[0]?.pre}
 					/>
-				</PercentAnimation>
+				</AnimationLayer>
 			{/if}
 			{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-				<PercentAnimation {edit} key={$gameFrame?.players[0]?.post.percent}>
+				<AnimationLayer
+					animationIn={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.in)}
+					animationOut={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.out)}
+					animationTrigger={dataItem?.data.animation.trigger}
+				>
 					<PlayerPercent
 						{cssValue}
 						{classValue}
@@ -204,7 +225,7 @@
 						numberOfDecimals={1}
 						frame={$gameFrame?.players[1]?.pre}
 					/>
-				</PercentAnimation>
+				</AnimationLayer>
 			{/if}
 			{#if dataItem?.elementId === CustomElement.Player1Score}
 				<TextFitMulti

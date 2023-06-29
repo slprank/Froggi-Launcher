@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { AnimationOptions, ElementAnimation } from '$lib/models/types';
-	import { Animation, Easing } from '$lib/models/enum';
+	import { Animation, AnimationTrigger, Easing } from '$lib/models/enum';
 	import Select from './Select.svelte';
 
 	const min = 0;
 	const max = 1000;
 	export let animation: ElementAnimation;
+	export let animationTrigger: AnimationTrigger;
 	export let label: string | undefined = undefined;
 	// TODO: Add dropdown for key listening value
 </script>
@@ -30,6 +31,19 @@
 			</div>
 
 			{#if animation?.animationType !== Animation.None}
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
+				<div class="relative w-24 h-11 bg-white rounded-md">
+					<Select bind:selected={animationTrigger}>
+						<option selected value={AnimationTrigger.None}>None</option>
+						<option selected value={AnimationTrigger.Visibility}>Visible</option>
+						<option selected value={AnimationTrigger.Player1Percent}>
+							Player1 Percent Increase
+						</option>
+						<option selected value={AnimationTrigger.Player2Percent}>
+							Player2 Percent Increase
+						</option>
+					</Select>
+				</div>
 				<h1 class="text-gray-500 text-sm font-medium text-shadow">X-distance</h1>
 				<div class="relative w-24 h-11 bg-white rounded-md">
 					<input

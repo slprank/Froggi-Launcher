@@ -1,15 +1,27 @@
 <script lang="ts">
-	export let enableTransition: boolean = false;
+	import { AnimationTrigger } from '$lib/models/enum';
+	import { gameFrame } from '$lib/utils/store.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
-	export let key: any | undefined = undefined;
+	export let animationTrigger: AnimationTrigger = AnimationTrigger.None;
 
-	// TODO: Trigger animation on the animation option values? if possible
+	let key: any = undefined;
+	const updateKeyValue = () => {
+		switch (animationTrigger) {
+			case AnimationTrigger.Player1Percent:
+				key = $gameFrame?.players[0]?.pre.percent;
+			case AnimationTrigger.Player2Percent:
+				key = $gameFrame?.players[1]?.pre.percent;
+		}
+	};
+	$: $gameFrame, updateKeyValue();
+
+	// TODO: Use animationTrigger to decide listening value rather than key
 </script>
 
 <div class="relative w-full h-full">
-	{#if enableTransition}
-		<div class="absolute w-full h-full">
+	{#if animationTrigger === AnimationTrigger.None}
+		<div class="w-full h-full absolute" in:animationIn|local out:animationOut|local>
 			<slot />
 		</div>
 	{:else}

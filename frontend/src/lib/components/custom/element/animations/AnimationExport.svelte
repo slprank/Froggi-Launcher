@@ -88,8 +88,11 @@
 		}
 	};
 
-	export const CreateElementAnimation = (node: any, elementAnimation: ElementAnimation) => {
-		switch (elementAnimation.animationType) {
+	export const CreateElementAnimation = (
+		node: any,
+		elementAnimation: ElementAnimation | undefined,
+	) => {
+		switch (elementAnimation?.animationType) {
 			case Animation.Blur:
 				return animationBlur(node, elementAnimation.options);
 			case Animation.Fade:

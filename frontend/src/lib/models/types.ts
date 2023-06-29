@@ -2,7 +2,7 @@ import type {
 	GameStartType,
 	PlayerType,
 } from '@slippi/slippi-js';
-import type { Animation, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground, Transition } from './enum';
+import type { Animation, AnimationTrigger, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground, Transition } from './enum';
 import type { COL } from './const';
 
 export interface Url {
@@ -71,6 +71,7 @@ export interface ElementPayload {
 export interface AnimationOptions {
 	in: ElementAnimation
 	out: ElementAnimation
+	trigger: AnimationTrigger
 }
 
 export interface ElementAnimation {
