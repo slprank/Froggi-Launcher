@@ -7,7 +7,6 @@ export class initAutoUpdater {
 		this.eventEmitter = eventEmitter;
 		this.log = log;
 	}
-	// TODO: Convert to a class
 	init() {
 		this.log.info('autoUpdater');
 

@@ -6,7 +6,6 @@
 	const min = 0;
 	const max = 1000;
 	export let animation: ElementAnimation;
-	export let animationTrigger: AnimationTrigger;
 	export let label: string | undefined = undefined;
 	// TODO: Add dropdown for key listening value
 </script>
@@ -16,38 +15,23 @@
 		{#if label}
 			<h1 class="text-gray-500 text-md font-medium text-shadow">{label}</h1>
 		{/if}
-		<div class="w-32">
-			<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
-			<div class="relative w-24 h-11 bg-white rounded-md">
-				<Select bind:selected={animationTrigger}>
-					<option selected value={AnimationTrigger.None}>None</option>
-					<option selected value={AnimationTrigger.Visibility}>Visible</option>
-					<option selected value={AnimationTrigger.Player1Percent}>
-						Player1 Percent Increase
-					</option>
-					<option selected value={AnimationTrigger.Player2Percent}>
-						Player2 Percent Increase
-					</option>
+		<div class="w-full">
+			<h1 class="text-gray-500 text-sm font-medium text-shadow">Type</h1>
+			<div class="relative w-full h-11 bg-white rounded-md">
+				<Select bind:selected={animation.animationType}>
+					<option selected value={Animation.None}>None</option>
+					<option value={Animation.Blur}>Blur</option>
+					<option value={Animation.Fade}>Fade</option>
+					<option value={Animation.Fly}>Fly</option>
+					<option value={Animation.Scale}>Scale</option>
+					<option value={Animation.FlyRandom}>Fly Random</option>
+					<option value={Animation.Slide}>Slide</option>
 				</Select>
 			</div>
-			{#if animationTrigger}
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Type</h1>
-				<div class="relative w-24 h-11 bg-white rounded-md">
-					<Select bind:selected={animation.animationType}>
-						<option selected value={Animation.None}>None</option>
-						<option value={Animation.Blur}>Blur</option>
-						<option value={Animation.Fade}>Fade</option>
-						<option value={Animation.Fly}>Fly</option>
-						<option value={Animation.Scale}>Scale</option>
-						<option value={Animation.FlyRandom}>Fly Random</option>
-						<option value={Animation.Slide}>Slide</option>
-					</Select>
-				</div>
-			{/if}
 
 			{#if animation?.animationType !== Animation.None}
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">X-distance</h1>
-				<div class="relative w-24 h-11 bg-white rounded-md">
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">X-distance - px</h1>
+				<div class="relative w-full h-11 bg-white rounded-md">
 					<input
 						type="number"
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
@@ -59,8 +43,8 @@
 					/>
 				</div>
 
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Y-distance</h1>
-				<div class="relative w-24 h-11 bg-white rounded-md">
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Y-distance - px</h1>
+				<div class="relative w-full h-11 bg-white rounded-md">
 					<input
 						type="number"
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
@@ -73,8 +57,8 @@
 				</div>
 
 				{#if animation.animationType === Animation.Scale}
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale From</h1>
-					<div class="relative w-24 h-11 bg-white rounded-md">
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale From - 1x</h1>
+					<div class="relative w-full h-11 bg-white rounded-md">
 						<input
 							type="number"
 							class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
@@ -87,8 +71,8 @@
 					</div>
 				{/if}
 
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Duration</h1>
-				<div class="relative w-24 h-11 bg-white rounded-md">
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Duration - ms</h1>
+				<div class="relative w-full h-11 bg-white rounded-md">
 					<input
 						type="number"
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
@@ -100,8 +84,8 @@
 					/>
 				</div>
 
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay</h1>
-				<div class="relative w-24 h-11 bg-white rounded-md">
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay - ms</h1>
+				<div class="relative w-full h-11 bg-white rounded-md">
 					<input
 						type="number"
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
@@ -114,7 +98,7 @@
 				</div>
 
 				<h1 class="text-gray-500 text-sm font-medium text-shadow">Easing</h1>
-				<div class="relative w-24 h-11 bg-white rounded-md">
+				<div class="relative w-full h-11 bg-white rounded-md">
 					<Select bind:selected={animation.options.easing}>
 						<option selected value={undefined}>None</option>
 						<option value={Easing.BackInOut}>Back In Out</option>

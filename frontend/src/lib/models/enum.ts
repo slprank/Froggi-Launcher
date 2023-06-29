@@ -13,6 +13,8 @@ export enum AnimationTrigger {
 	Visibility = 1,
 	Player1Percent = 2,
 	Player2Percent = 3,
+	Player1StockLost = 2,
+	Player2StockLost = 3,
 }
 
 export enum CustomElement {

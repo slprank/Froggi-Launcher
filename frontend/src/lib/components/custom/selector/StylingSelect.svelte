@@ -91,6 +91,13 @@
 	}
 	$: stringSettings, boxSettings, imageSettings, clearStyle();
 
+	const fixAnimationInputDelay = () => {
+		if (payload.animation.in.options.delay <= payload.animation.out.options.duration) {
+			payload.animation.in.options.delay = payload.animation.out.options.duration + 1;
+		}
+	};
+	$: payload.animation, fixAnimationInputDelay();
+
 	const shuffleAnimationTriggers = () => {
 		// TODO: Randomize values that triggers animations
 	};
@@ -261,18 +268,31 @@
 			</h1>
 		</div>
 		{#if payload.animation.in || payload.animation.out}
-			<div class="w-full flex">
-				<AnimationInput
-					bind:animation={payload.animation.in}
-					bind:animationTrigger={payload.animation.trigger}
-					label="In"
-				/>
-				<AnimationInput
-					bind:animation={payload.animation.out}
-					bind:animationTrigger={payload.animation.trigger}
-					label="Out"
-				/>
+			<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
+			<div class="relative w-[50%] h-11 bg-white rounded-md">
+				<Select bind:selected={payload.animation.trigger}>
+					<option selected value={AnimationTrigger.None}>None</option>
+					<option selected value={AnimationTrigger.Visibility}>Visible</option>
+					<option selected value={AnimationTrigger.Player1Percent}>
+						Player1 Percent Increase
+					</option>
+					<option selected value={AnimationTrigger.Player2Percent}>
+						Player2 Percent Increase
+					</option>
+					<option selected value={AnimationTrigger.Player1StockLost}>
+						Player1 Stock Lost
+					</option>
+					<option selected value={AnimationTrigger.Player2StockLost}>
+						Player2 Stock Lost
+					</option>
+				</Select>
 			</div>
+			{#if payload.animation.trigger}
+				<div class="w-full flex gap-4">
+					<AnimationInput bind:animation={payload.animation.in} label="In" />
+					<AnimationInput bind:animation={payload.animation.out} label="Out" />
+				</div>
+			{/if}
 		{/if}
 		<button
 			on:click={shuffleAnimationTriggers}

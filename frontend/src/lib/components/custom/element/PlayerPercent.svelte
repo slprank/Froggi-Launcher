@@ -24,7 +24,6 @@
 			: undefined;
 
 	const updateColor = () => {
-		console.log('updating');
 		var startColor = '#ffffff'; // Replace with your desired start color
 		var endColor = '#6f1622'; // Replace with your desired end color
 
@@ -33,8 +32,6 @@
 			endColor,
 			parseInt(frame?.percent?.toFixed() ?? '0'),
 		); // Call the function to interpolate the colors
-
-		console.log(percentageColor);
 	};
 	$: frame?.percent, updateColor();
 
