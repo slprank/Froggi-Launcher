@@ -3,7 +3,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import Board from '$lib/components/custom/Board.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import { urls } from '$lib/utils/store.svelte';
+	import { statsScene, urls } from '$lib/utils/store.svelte';
 	import Clipboard from 'svelte-clipboard';
 	import { getOverlayById } from './OverlayHandler.svelte';
 	import type { Overlay } from '$lib/models/types';
@@ -42,7 +42,9 @@
 		style={`width: ${boardWidth}px; height: ${boardHeight}px`}
 		class={`outline outline-4 outline-zinc-700 overflow-hidden shadow-md my-2`}
 	>
-		<Board bind:boardHeight bind:preview />
+		{#key $statsScene}
+			<Board bind:boardHeight bind:preview />
+		{/key}
 	</div>
 	<div class="flex items-center gap-2">
 		<h1 class="text-gray-500 text-md font-medium text-shadow">

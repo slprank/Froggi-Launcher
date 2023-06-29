@@ -4,7 +4,7 @@
 	import { fade, fly, scale, slide, blur as blur_ } from 'svelte/transition';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { COL, ROW } from '$lib/models/const';
-	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
+	import { currentPlayers, gameFrame, gameScore, statsScene } from '$lib/utils/store.svelte';
 	import PlayerPercent from './element/PlayerPercent.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { backInOut } from 'svelte/easing';
@@ -69,8 +69,6 @@
 
 	// TODO: Add remaining components
 	// TODO: Add fallback to unknown player - img, name, etc
-
-	$: console.log($currentPlayers, $gameFrame);
 </script>
 
 {#if dataItem}
@@ -87,6 +85,8 @@
 					animationIn={(node) => CreateElementAnimation(node, dataItem.data.animation.in)}
 					animationOut={(node) =>
 						CreateElementAnimation(node, dataItem.data.animation.out)}
+					animationTrigger={dataItem.data.animation.trigger}
+					{edit}
 				>
 					<TextFitMulti
 						class={`h-full flex ${classValue}`}
@@ -177,6 +177,7 @@
 					animationOut={(node) =>
 						CreateElementAnimation(node, dataItem?.data.animation.out)}
 					animationTrigger={dataItem.data.animation.trigger}
+					{edit}
 				>
 					<PlayerPercent
 						{cssValue}
@@ -196,6 +197,7 @@
 					animationOut={(node) =>
 						CreateElementAnimation(node, dataItem?.data.animation.out)}
 					animationTrigger={dataItem.data.animation.trigger}
+					{edit}
 				>
 					<PlayerPercent
 						{cssValue}
@@ -215,6 +217,7 @@
 					animationOut={(node) =>
 						CreateElementAnimation(node, dataItem?.data.animation.out)}
 					animationTrigger={dataItem?.data.animation.trigger}
+					{edit}
 				>
 					<PlayerPercent
 						{cssValue}

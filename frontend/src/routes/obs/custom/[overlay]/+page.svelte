@@ -12,7 +12,7 @@
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 </script>
 
-{#if $obs && isFontLoaded}
+{#if curOverlay && isFontLoaded}
 	<main
 		class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
 		in:fade={{ delay: 50, duration: 150 }}

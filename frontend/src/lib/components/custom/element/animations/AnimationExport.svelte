@@ -20,6 +20,7 @@
 		const x = multiplierX * Math.floor(Math.random() * option.x);
 		const y = multiplierY * Math.floor(Math.random() * option.y);
 		return fly(node, {
+			delay: option.delay,
 			duration: option.duration,
 			y: y,
 			x: x,
@@ -28,18 +29,20 @@
 	};
 	const animationBlur = (node: any, option: ElementAnimationOptions | any) => {
 		return blur(node, {
+			delay: option.delay,
 			duration: option.duration,
-			easing: getEasing(option.easing),
 		});
 	};
 	const animationFade = (node: any, option: ElementAnimationOptions | any) => {
 		return fade(node, {
+			delay: option.delay,
 			duration: option.duration,
 			easing: getEasing(option.easing),
 		});
 	};
 	const animationFly = (node: any, option: ElementAnimationOptions | any) => {
 		return fly(node, {
+			delay: option.delay,
 			duration: option.duration,
 			y: option.y,
 			x: option.x,
@@ -60,6 +63,7 @@
 	const animationSlide = (node: any, option: ElementAnimationOptions | any) => {
 		// TODO: Optional start value
 		return slide(node, {
+			delay: option.delay,
 			duration: option.duration,
 			easing: getEasing(option.easing),
 		});

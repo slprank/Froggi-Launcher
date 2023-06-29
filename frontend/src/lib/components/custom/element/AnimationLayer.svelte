@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { AnimationTrigger } from '$lib/models/enum';
-	import { gameFrame } from '$lib/utils/store.svelte';
+	import { AnimationTrigger, LiveStatsScene } from '$lib/models/enum';
+	import { gameFrame, statsScene } from '$lib/utils/store.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let animationTrigger: AnimationTrigger = AnimationTrigger.None;
+	export let edit: boolean = false;
 
 	let key: any = undefined;
 	const updateKeyValue = () => {
@@ -18,13 +19,21 @@
 </script>
 
 <div class="relative w-full h-full">
-	{#if animationTrigger === AnimationTrigger.None}
-		<div class="w-full h-full absolute" in:animationIn out:animationOut>
+	{#if edit}
+		<div class="w-full h-full absolute z-2 top-0 left-0">
+			<slot />
+		</div>
+	{:else if animationTrigger === AnimationTrigger.Visibility}
+		<div class="w-full h-full absolute z-3 top-0 left-0" in:animationIn out:animationOut>
 			<slot />
 		</div>
 	{:else}
 		{#key key}
-			<div class="w-full h-full absolute" in:animationIn|local out:animationOut|local>
+			<div
+				class="w-full h-full absolute z-4 top-0 left-0"
+				in:animationIn|local
+				out:animationOut|local
+			>
 				<slot />
 			</div>
 		{/key}
