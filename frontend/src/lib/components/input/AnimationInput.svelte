@@ -20,7 +20,12 @@
 			<div class="relative w-24 h-11 bg-white rounded-md">
 				<Select bind:selected={animation.animationType}>
 					<option selected value={Animation.None}>None</option>
+					<option value={Animation.Blur}>Blur</option>
+					<option value={Animation.Fade}>Fade</option>
+					<option value={Animation.Fly}>Fly</option>
+					<option value={Animation.Scale}>Scale</option>
 					<option value={Animation.Shake}>Shake</option>
+					<option value={Animation.Slide}>Slide</option>
 				</Select>
 			</div>
 

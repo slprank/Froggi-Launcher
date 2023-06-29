@@ -61,7 +61,12 @@ export enum Transition {
 
 export enum Animation {
 	None = 0,
-	Shake = 1
+	Blur = 1,
+	Fade = 2,
+	Fly = 3,
+	Scale = 4,
+	Shake = 5,
+	Slide = 6,
 }
 
 export enum Easing {

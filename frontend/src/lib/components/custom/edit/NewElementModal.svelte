@@ -165,8 +165,8 @@
 						in:fade={{ delay: 50, duration: 150 }}
 						out:fade={{ duration: 300 }}
 					>
-						<div class="w-full h-[50%] border">
-							<GridContent bind:demoItem edit={i == 1} />
+						<div class={`w-full h-[50%] border bg-${i ? 'black' : 'white'}`}>
+							<GridContent bind:demoItem />
 						</div>
 					</div>
 				{/each}
