@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import type { Overlay } from '$lib/models/types';
@@ -52,7 +52,7 @@
 			return;
 		curOverlay[$statsScene].layers[layer] = tempItems;
 
-		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
+		$electronEmitter.emit('electron', 'update-custom-overlay', curOverlay);
 		tempItems = undefined;
 		floatElements();
 	}

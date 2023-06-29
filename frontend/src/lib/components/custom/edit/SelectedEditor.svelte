@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/models/const';
 	import type { Overlay } from '$lib/models/types';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';

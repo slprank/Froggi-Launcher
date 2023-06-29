@@ -9,7 +9,7 @@
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import { statsScene, svelteEmitter } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 
@@ -92,14 +92,14 @@
 	$: stringSettings, boxSettings, imageSettings, clearStyle();
 
 	const fixAnimationInputDelay = () => {
-		if (payload.animation.in.options.delay <= payload.animation.out.options.duration) {
+		if (payload.animation.in?.options.delay <= payload.animation.out?.options.duration) {
 			payload.animation.in.options.delay = payload.animation.out.options.duration + 1;
 		}
 	};
 	$: payload.animation, fixAnimationInputDelay();
 
 	const shuffleAnimationTriggers = () => {
-		// TODO: Randomize values that triggers animations
+		$svelteEmitter.emit('animation_test_trigger');
 	};
 </script>
 
@@ -294,12 +294,14 @@
 				</div>
 			{/if}
 		{/if}
-		<button
-			on:click={shuffleAnimationTriggers}
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-		>
-			Test animation
-		</button>
+		{#if ![AnimationTrigger.None, AnimationTrigger.Visibility].includes(payload.animation.trigger)}
+			<button
+				on:click={shuffleAnimationTriggers}
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+			>
+				Test animation
+			</button>
+		{/if}
 
 		<Select bind:selected={payload.pauseOption} label="Display On Pause">
 			<option selected value={ElementPauseOption.Always}>Always</option>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { eventEmitter, isElectron, obs, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, isElectron, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 	import Edit from '$lib/components/custom/edit/Edit.svelte';
 	import Board from '$lib/components/custom/Board.svelte';

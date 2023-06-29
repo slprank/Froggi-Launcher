@@ -51,6 +51,10 @@ export enum CustomElement {
 	Player2CharacterIcon = 603,
 }
 
+export enum PlayerActionState {
+	Dead = 0
+}
+
 export enum DolphinState {
 	Disconnected = 0,
 	Connected = 1,

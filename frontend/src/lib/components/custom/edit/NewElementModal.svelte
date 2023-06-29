@@ -10,7 +10,7 @@
 		Css,
 		Shadow,
 	} from '$lib/models/types';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
@@ -18,7 +18,7 @@
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/models/const';
-	import { Easing, ElementPauseOption, Animation } from '$lib/models/enum';
+	import { Easing, ElementPauseOption, Animation, AnimationTrigger } from '$lib/models/enum';
 
 	const overlayId = $page.params.overlay;
 
@@ -36,14 +36,29 @@
 		string: '',
 		pauseOption: ElementPauseOption.Always,
 		animation: {
-			animationType: Animation.None,
-			options: {
-				delay: 0,
-				duration: 0,
-				easing: Easing.None,
-				x: 0,
-				y: 0,
+			in: {
+				options: {
+					delay: 0,
+					duration: 0,
+					easing: Easing.None,
+					x: 0,
+					y: 0,
+					start: 0,
+				},
+				animationType: Animation.None,
 			},
+			out: {
+				options: {
+					delay: 0,
+					duration: 0,
+					easing: Easing.None,
+					x: 0,
+					y: 0,
+					start: 0,
+				},
+				animationType: Animation.None,
+			},
+			trigger: AnimationTrigger.None,
 		},
 	};
 
@@ -61,7 +76,7 @@
 	}
 
 	function updateOverlay() {
-		$eventEmitter.emit('electron', 'update-custom-overlay', getCurrentOverlay());
+		$electronEmitter.emit('electron', 'update-custom-overlay', getCurrentOverlay());
 	}
 
 	function getCurrentOverlay() {

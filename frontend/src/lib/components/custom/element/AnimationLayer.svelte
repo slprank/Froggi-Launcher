@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { AnimationTrigger, LiveStatsScene } from '$lib/models/enum';
-	import { gameFrame, statsScene } from '$lib/utils/store.svelte';
+	import { AnimationTrigger, LiveStatsScene, PlayerActionState } from '$lib/models/enum';
+	import { electronEmitter, gameFrame, statsScene, svelteEmitter } from '$lib/utils/store.svelte';
+	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let animationTrigger: AnimationTrigger = AnimationTrigger.None;
@@ -16,13 +17,21 @@
 				key = $gameFrame?.players[1]?.pre.percent;
 				return;
 			case AnimationTrigger.Player1StockLost:
-				key = $gameFrame?.players[0]?.pre.percent;
+				key = $gameFrame?.players[0]?.pre.actionStateId === PlayerActionState.Dead;
 				return;
 			case AnimationTrigger.Player2StockLost:
-				key = $gameFrame?.players[1]?.pre.percent;
+				key = $gameFrame?.players[1]?.pre.actionStateId === PlayerActionState.Dead;
 				return;
 		}
 	};
+
+	$svelteEmitter.on('animation_test_trigger', () => {
+		console.log('here');
+		const tempKey = key;
+		key = Math.random();
+		setTimeout(() => (key = tempKey));
+	});
+
 	$: $gameFrame, updateKeyValue();
 </script>
 

@@ -7,7 +7,6 @@
 	import { currentPlayers, gameFrame, gameScore, statsScene } from '$lib/utils/store.svelte';
 	import PlayerPercent from './element/PlayerPercent.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
-	import { backInOut } from 'svelte/easing';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
 
 	export let dataItem: GridContentItem | undefined = undefined;

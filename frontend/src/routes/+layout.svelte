@@ -9,7 +9,7 @@
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import { isBrowser, isElectron, isPWA, eventEmitter } from '$lib/utils/store.svelte';
+	import { isBrowser, isElectron, isPWA, electronEmitter } from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
@@ -26,20 +26,20 @@
 		if ($isElectron) {
 			initElectronEvents();
 			initEventListener();
-			$eventEmitter.emit('electron', 'init-data-electron');
+			$electronEmitter.emit('electron', 'init-data-electron');
 		}
 	}
 
 	function initElectronEvents() {
 		console.log('Initializing electron');
-		$eventEmitter.on('electron', (topic, payload) => {
+		$electronEmitter.on('electron', (topic, payload) => {
 			console.log('Sending message..', topic, payload);
 			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
 		});
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				$eventEmitter.emit(key, value);
+				$electronEmitter.emit(key, value);
 			}
 		});
 	}
@@ -48,7 +48,7 @@
 		console.log('Initializing websocket');
 		const socket = new WebSocket(`ws://${$page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.onopen = () => {
-			$eventEmitter.on('electron', (topic, payload) => {
+			$electronEmitter.on('electron', (topic, payload) => {
 				console.log('Sending message..', topic, payload);
 				socket.send(JSON.stringify({ [topic]: payload ?? '' }));
 			});
@@ -59,7 +59,7 @@
 		socket.addEventListener('message', ({ data }) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				$eventEmitter.emit(key, value);
+				$electronEmitter.emit(key, value);
 			}
 		});
 		initEventListener();

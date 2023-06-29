@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, statsScene } from '$lib/utils/store.svelte';
 
 	export let selected: LiveStatsScene[] | undefined = undefined;
 	export let defaultValue: LiveStatsScene | undefined = undefined;
@@ -23,7 +23,7 @@
 	$: tempSelected, updateSelected();
 
 	function updateLiveScene(scene: LiveStatsScene) {
-		$eventEmitter.emit('electron', 'update-live-scene', scene);
+		$electronEmitter.emit('electron', 'update-live-scene', scene);
 	}
 
 	let buttons = [
