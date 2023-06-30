@@ -41,7 +41,9 @@ export class StatsDisplay {
 		});
 
 		this.slpParser.on(SlpParserEvent.END, async (gameEnd: GameEndType) => {
-			await this.handleGameEnd(gameEnd, this.slpParser);
+			const settings = this.slpParser.getSettings()
+			if (!settings) return
+			await this.handleGameEnd(gameEnd, settings);
 		});
 
 		this.slpParser.on(SlpParserEvent.FRAME, async (frameEntry: FrameEntryType) => {
@@ -70,23 +72,21 @@ export class StatsDisplay {
 		this.store.setCurrentPlayers(currentPlayers);
 		this.store.setGameSettings(settings);
 		this.store.setStatsScene(LiveStatsScene.InGame)
+
+		// TODO: Get set by match id and emit to svelte
 	}
 
-	async handleGameEnd(gameEnd: GameEndType, parser: SlpParser) {
-		const settings = parser.getSettings()
-		let frame = parser.getLatestFrame()
-
-		if (!settings || !frame) return;
+	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
 		this.handleScore(gameEnd)
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const recentGameStats = this.getRecentGameStats();
 
-
 		this.store.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
 		this.store.setGameStats(gameEnd)
 		this.store.setGameState(InGameState.End)
+		this.store.setGame(settings, gameEnd)
 		this.store.setStatsScene(LiveStatsScene.PostGame)
 		if (recentGameStats) this.messageHandler.sendMessage('post_game_stats', recentGameStats);
 	}

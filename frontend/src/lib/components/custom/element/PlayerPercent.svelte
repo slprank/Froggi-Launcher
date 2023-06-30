@@ -14,18 +14,17 @@
 	export let frame: PreFrameUpdateType | undefined;
 	export let numberOfDecimals: number;
 
-	const isRunning = [InGameState.Paused, InGameState.Running].includes($gameState);
+	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
 
-	$: framePercent = frame && isRunning ? Math.floor(frame.percent ?? 0).toFixed() : 0;
+	$: framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : 0;
+
+	$: decimals =
+		numberOfDecimals && isInGame
+			? frame?.percent?.toFixed(numberOfDecimals).split('.').at(1) ?? '0'
+			: '0';
 
 	const MAX_INTENSITY = 300;
-
 	let percentageColor: string = '#ffffff';
-
-	$: decimals = (): string | undefined =>
-		numberOfDecimals
-			? frame?.percent?.toFixed(numberOfDecimals).split('.').at(1) ?? '0'
-			: undefined;
 
 	const updateColor = () => {
 		var startColor = '#ffffff'; // Replace with your desired start color
@@ -92,7 +91,7 @@
 						<span class="mr-[.4em]">
 							{`${framePercent}`}
 							<span class="text-[55%] mx-[-.5em]">
-								{`${numberOfDecimals ? `.${decimals()}` : ''}%`}
+								{`${numberOfDecimals ? `.${decimals}` : ''}%`}
 							</span>
 						</span>
 					{/if}

@@ -3,7 +3,6 @@
 	import { Animation, AnimationTrigger, Easing } from '$lib/models/enum';
 	import Select from './Select.svelte';
 
-	const min = 0;
 	const max = 1000;
 	export let animation: ElementAnimation;
 	export let label: string | undefined = undefined;
@@ -37,7 +36,7 @@
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
 						id="numberInput"
 						step={1}
-						{min}
+						min={-max}
 						{max}
 						bind:value={animation.options.x}
 					/>
@@ -50,7 +49,7 @@
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
 						id="numberInput"
 						step={max / 100}
-						{min}
+						min={-max}
 						{max}
 						bind:value={animation.options.y}
 					/>
@@ -64,7 +63,7 @@
 							class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
 							id="numberInput"
 							step={0.01}
-							{min}
+							min={0}
 							max={5}
 							bind:value={animation.options.start}
 						/>
@@ -78,7 +77,7 @@
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
 						id="numberInput"
 						step={max / 100}
-						{min}
+						min={0}
 						{max}
 						bind:value={animation.options.duration}
 					/>
@@ -91,7 +90,7 @@
 						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
 						id="numberInput"
 						step={max / 100}
-						{min}
+						min={0}
 						{max}
 						bind:value={animation.options.delay}
 					/>

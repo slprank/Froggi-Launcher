@@ -142,7 +142,9 @@
 							};  ${edit ? 'color: black' : ''}`}
 							maxFont={1000}
 						>
-							{$currentPlayers?.at(0)?.displayName ?? `Player1`}
+							{$currentPlayers?.at(0)?.displayName
+								? $currentPlayers?.at(0)?.displayName
+								: `Player1`}
 						</TextFitMulti>
 					{/key}
 				{/if}
@@ -155,7 +157,9 @@
 							};  ${edit ? 'color: black' : ''}`}
 							maxFont={1000}
 						>
-							{$currentPlayers?.at(1)?.displayName ?? `Player2`}
+							{$currentPlayers?.at(1)?.displayName
+								? $currentPlayers?.at(1)?.displayName
+								: `Player2`}
 						</TextFitMulti>
 					{/key}
 				{/if}

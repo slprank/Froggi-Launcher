@@ -191,6 +191,7 @@ export class ElectronJsonStore {
 	getGameState() {
 		return this.store.get("state.game.inGameState")
 	}
+
 	setGameState(state: InGameState) {
 		return this.store.set("state.game.inGameState", state)
 	}
@@ -255,14 +256,15 @@ export class ElectronJsonStore {
 	}
 
 	// GAME
-	setGame(settings: GameStartType) {
+	setGame(settings: GameStartType, gameEnd: GameEndType) {
 		const player = this.getCurrentPlayer();
 		if (!settings?.matchInfo?.matchId || !player) return;
 		if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))
 			return;
 		const regex = /mode\.(\w+)/;
 		let gameStats: GameStats = {
-			...settings,
+			settings: settings,
+			gameEnd: gameEnd,
 			timestamp: this.dateTimeNow(),
 			score: this.getGameScore(),
 			mode: settings.matchInfo.matchId.match(regex)![1] as GameStartMode
@@ -283,11 +285,15 @@ export class ElectronJsonStore {
 		return games.find(game => game.matchInfo?.matchId === matchId && game.matchInfo?.gameNumber === gameNumber) as GameStats
 	}
 
-	getSet(matchId: string): GameStats[] | undefined {
+	getSetByMatchId(matchId: string): GameStats[] | undefined {
 		const player = this.getCurrentPlayer();
 		if (!player) return;
 		const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
 		return games.filter(game => game.matchInfo?.matchId === matchId) as GameStats[]
+	}
+
+	getCurrentSet() {
+		// TODO: Complete this
 	}
 
 	getAllSets(): GameStats[] | undefined {
@@ -355,6 +361,9 @@ export class ElectronJsonStore {
 
 	// Listeners
 	initListeners() {
+		this.store.onDidChange(`dolphin.status`, async (value) => {
+			this.messageHandler.sendMessage('dolphin_status', value);
+		})
 		this.store.onDidChange("obs.custom", (value) => {
 			this.messageHandler.sendMessage('obs_custom', value);
 		})
@@ -381,9 +390,6 @@ export class ElectronJsonStore {
 		})
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
 			this.messageHandler.sendMessage('post_game_stats', value);
-		})
-		this.store.onDidChange(`dolphin.status`, async (value) => {
-			this.messageHandler.sendMessage('dolphin_status', value);
 		})
 	}
 }

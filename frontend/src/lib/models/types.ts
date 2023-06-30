@@ -1,4 +1,5 @@
 import type {
+	GameEndType,
 	GameStartType,
 	PlayerType,
 } from '@slippi/slippi-js';
@@ -136,7 +137,9 @@ export interface CurrentPlayer extends Player {
 	newRankedNetplayProfile: RankedNetplayProfile | undefined;
 }
 
-export interface GameStats extends GameStartType {
+export interface GameStats {
+	settings: GameStartType,
+	gameEnd: GameEndType
 	timestamp: Date;
 	score: number[];
 	mode: GameStartMode;
