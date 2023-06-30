@@ -261,6 +261,7 @@ export class ElectronJsonStore {
 		if (!settings?.matchInfo?.matchId || !player) return;
 		if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))
 			return;
+
 		const regex = /mode\.(\w+)/;
 		let gameStats: GameStats = {
 			settings: settings,
@@ -269,6 +270,7 @@ export class ElectronJsonStore {
 			score: this.getGameScore(),
 			mode: settings.matchInfo.matchId.match(regex)![1] as GameStartMode
 		}
+
 		let sets = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
 		sets.push(gameStats)
 
@@ -282,14 +284,14 @@ export class ElectronJsonStore {
 		const player = this.getCurrentPlayer();
 		if (!player) return;
 		const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
-		return games.find(game => game.matchInfo?.matchId === matchId && game.matchInfo?.gameNumber === gameNumber) as GameStats
+		return games.find(game => game.settings.matchInfo?.matchId === matchId && game.settings.matchInfo?.gameNumber === gameNumber) as GameStats
 	}
 
 	getSetByMatchId(matchId: string): GameStats[] | undefined {
 		const player = this.getCurrentPlayer();
 		if (!player) return;
 		const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
-		return games.filter(game => game.matchInfo?.matchId === matchId) as GameStats[]
+		return games.filter(game => game.settings.matchInfo?.matchId === matchId) as GameStats[]
 	}
 
 	getCurrentSet() {
