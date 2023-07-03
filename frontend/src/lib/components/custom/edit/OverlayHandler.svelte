@@ -5,7 +5,7 @@
 	import { COL, MIN } from '$lib/models/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { electronEmitter, obs } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 
 	function newId() {
 		return `${Math.random().toString(36).slice(-8)}`;
@@ -176,8 +176,8 @@
 
 	export async function updateOverlay(overlay: Overlay) {
 		await new Promise(() =>
-			electronEmitter.subscribe((electronEmitter) =>
-				electronEmitter.emit('electron', 'update-custom-overlay', overlay),
+			eventEmitter.subscribe((eventEmitter) =>
+				eventEmitter.emit('electron', 'update-custom-overlay', overlay),
 			),
 		);
 	}
@@ -185,8 +185,8 @@
 	export async function deleteOverlay(overlayId: string | undefined) {
 		if (!overlayId) return;
 		await new Promise(() =>
-			electronEmitter.subscribe((electronEmitter) =>
-				electronEmitter.emit('electron', 'delete-custom-overlay', overlayId),
+			eventEmitter.subscribe((eventEmitter) =>
+				eventEmitter.emit('electron', 'delete-custom-overlay', overlayId),
 			),
 		);
 	}

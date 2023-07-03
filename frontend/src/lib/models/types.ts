@@ -2,6 +2,7 @@ import type {
 	GameEndType,
 	GameStartType,
 	PlayerType,
+	StatsType,
 } from '@slippi/slippi-js';
 import type { Animation, AnimationTrigger, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground, Transition } from './enum';
 import type { COL } from './const';
@@ -126,7 +127,7 @@ export interface Shadow {
 	color: string;
 }
 
-export type GameStartMode = "ranked" | "unranked" | ""; // TODO: Verify these types
+export type GameStartMode = "ranked" | "unranked" | "direct" | ""; // TODO: Verify these types
 
 
 export interface Player extends PlayerType {
@@ -138,8 +139,9 @@ export interface CurrentPlayer extends Player {
 }
 
 export interface GameStats {
-	settings: GameStartType,
-	gameEnd: GameEndType
+	settings: GameStartType;
+	gameEnd: GameEndType;
+	postGameStats: StatsType | null;
 	timestamp: Date;
 	score: number[];
 	mode: GameStartMode;

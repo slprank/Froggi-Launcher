@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
-	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
@@ -38,7 +38,7 @@
 	$: $obs, isElementModalOpen, refreshOverlay();
 
 	function downloadOverlay() {
-		$electronEmitter.emit('electron', 'download-overlay', overlayId);
+		$eventEmitter.emit('electron', 'download-overlay', overlayId);
 	}
 
 	// TODO: Display overlay name

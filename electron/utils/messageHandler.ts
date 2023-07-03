@@ -160,6 +160,7 @@ export class MessageHandler {
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
 		this.sendInitMessage(socket, 'obs_custom', this.store.getCustom());
 		this.sendInitMessage(socket, 'post_game_stats', this.store.getGameStats());
+		this.sendInitMessage(socket, 'recent_set_matches', this.store.getRecentRankedSets());
 		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
 		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());

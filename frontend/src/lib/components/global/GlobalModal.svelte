@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isElectron, isPWA, electronEmitter } from '$lib/utils/store.svelte';
+	import { isElectron, isPWA, eventEmitter } from '$lib/utils/store.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
 	import MissingSettings from '../modal/electron/MissingSettings.svelte';

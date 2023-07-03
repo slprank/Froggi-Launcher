@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { AnimationTrigger, PlayerActionState } from '$lib/models/enum';
-	import { gameFrame, svelteEmitter } from '$lib/utils/store.svelte';
+	import { gameFrame, eventEmitter } from '$lib/utils/store.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let animationTrigger: AnimationTrigger = AnimationTrigger.None;
@@ -25,7 +25,7 @@
 	};
 	$: $gameFrame, updateKeyValue();
 
-	$svelteEmitter.on('animation_test_trigger', () => {
+	$eventEmitter.on('animation_test_trigger', () => {
 		const tempKey = key;
 		key = Math.random();
 		setTimeout(() => (key = tempKey));

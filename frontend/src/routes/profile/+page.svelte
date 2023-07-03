@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { electronEmitter } from '$lib/utils/store.svelte';
+	import { eventEmitter } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 

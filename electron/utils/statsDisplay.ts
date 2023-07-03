@@ -7,6 +7,7 @@ import { Api } from './api';
 import { ElectronJsonStore } from './electronStore';
 import { Player } from '../../frontend/src/lib/models/types';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import fs from "fs"
 
 @singleton()
 export class StatsDisplay {
@@ -62,18 +63,17 @@ export class StatsDisplay {
 
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
-		let currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
+		const gameNumber = settings.matchInfo?.gameNumber
+		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 
-		if (settings?.matchInfo?.matchId && [1].includes(settings?.matchInfo?.gameNumber ?? 0)) {
-			this.store.setGameScore([0, 0]);
-		}
-
-		this.store.setCurrentPlayerCurrentRankStats(this.getCurrentPlayer(currentPlayers)?.rankedNetplayProfile);
-		this.store.setCurrentPlayers(currentPlayers);
 		this.store.setGameSettings(settings);
 		this.store.setStatsScene(LiveStatsScene.InGame)
+		this.store.setCurrentPlayerCurrentRankStats(this.getCurrentPlayer(currentPlayers)?.rankedNetplayProfile);
+		this.store.setCurrentPlayers(currentPlayers);
 
-		// TODO: Get set by match id and emit to svelte
+		if (gameNumber !== 1) return;
+		this.store.setGameScore([0, 0]);
+		this.store.resetRecentGames();
 	}
 
 	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
@@ -81,14 +81,14 @@ export class StatsDisplay {
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
-		const recentGameStats = this.getRecentGameStats();
+		const postGameStats = this.getRecentGameStats();
 
 		this.store.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
 		this.store.setGameStats(gameEnd)
 		this.store.setGameState(InGameState.End)
-		this.store.setGame(settings, gameEnd)
+		this.store.setGameMatch(settings, gameEnd, postGameStats)
 		this.store.setStatsScene(LiveStatsScene.PostGame)
-		if (recentGameStats) this.messageHandler.sendMessage('post_game_stats', recentGameStats);
+		if (postGameStats) this.messageHandler.sendMessage('post_game_stats', postGameStats);
 	}
 
 	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
@@ -143,7 +143,6 @@ export class StatsDisplay {
 	// OTHER
 	// TODO: Complete these
 	getGameFiles() {
-		const fs = require('fs');
 		const re = new RegExp('^Game_.*.slp$');
 		const path = require('path');
 
@@ -162,8 +161,8 @@ export class StatsDisplay {
 
 	getRecentGameStats() {
 		const files = this.getGameFiles();
-		if (!files) return null;
-		const game = new SlippiGame(files.at(-1));
+		if (!files || !files.length) return null;
+		const game = new SlippiGame(files.at(-1)!);
 
 		return game?.getStats();
 	}

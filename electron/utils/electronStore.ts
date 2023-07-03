@@ -251,12 +251,24 @@ export class ElectronJsonStore {
 		this.store.set(`player.${player.connectCode}.session`, session);
 	}
 
+	getRecentOfflineSets() {
+		return this.getRecentSetsByMode('');
+	}
+
+	getRecentDirectSets() {
+		return this.getRecentSetsByMode('direct');
+	}
+
+	getRecentUnankedSets() {
+		return this.getRecentSetsByMode('unranked');
+	}
+
 	getRecentRankedSets() {
 		return this.getRecentSetsByMode('ranked');
 	}
 
 	// GAME
-	setGame(settings: GameStartType, gameEnd: GameEndType) {
+	setGameMatch(settings: GameStartType, gameEnd: GameEndType, postGameStats: StatsType | null) {
 		const player = this.getCurrentPlayer();
 		if (!settings?.matchInfo?.matchId || !player) return;
 		if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))
@@ -266,21 +278,22 @@ export class ElectronJsonStore {
 		let gameStats: GameStats = {
 			settings: settings,
 			gameEnd: gameEnd,
+			postGameStats: postGameStats,
 			timestamp: this.dateTimeNow(),
 			score: this.getGameScore(),
 			mode: settings.matchInfo.matchId.match(regex)![1] as GameStartMode
 		}
 
-		let sets = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
-		sets.push(gameStats)
+		this.setRecentGames(gameStats)
 
-		this.store.set(
-			`player.${player.connectCode}.games`,
-			gameStats,
-		);
+		if (!settings.matchInfo.matchId || !settings.matchInfo.gameNumber) return;
+		let matches = (this.getSetByMatchId(settings.matchInfo.matchId) ?? []) as GameStats[];
+		matches.push(gameStats)
+
+		this.store.set(`player.${player.connectCode}.game`, gameStats);
 	}
 
-	getGame(matchId: string, gameNumber: number): GameStats | undefined {
+	getGameMatch(matchId: string, gameNumber: number): GameStats | undefined {
 		const player = this.getCurrentPlayer();
 		if (!player) return;
 		const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
@@ -294,8 +307,18 @@ export class ElectronJsonStore {
 		return games.filter(game => game.settings.matchInfo?.matchId === matchId) as GameStats[]
 	}
 
-	getCurrentSet() {
-		// TODO: Complete this
+	setRecentGames(game: GameStats) {
+		let games = this.getRecentGames();
+		games.push(game)
+		this.store.set(`recent.game`, games)
+	}
+
+	getRecentGames(): GameStats[] {
+		return (this.store.get(`recent.game`) ?? []) as GameStats[];
+	}
+
+	resetRecentGames() {
+		this.store.set(`recent.game`, [])
 	}
 
 	getAllSets(): GameStats[] | undefined {
@@ -392,6 +415,9 @@ export class ElectronJsonStore {
 		})
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
 			this.messageHandler.sendMessage('post_game_stats', value);
+		})
+		this.store.onDidChange(`recent.game`, async (value) => {
+			this.messageHandler.sendMessage('recent_games', value);
 		})
 	}
 }

@@ -4,11 +4,10 @@
 	import { EventEmitter } from 'events';
 	import { DolphinState, InGameState, LiveStatsScene } from '$lib/models/enum';
 	import Device from 'svelte-device-info';
-	import type { Obs, Player, Url } from '$lib/models/types';
+	import type { GameStats, Obs, Player, Url } from '$lib/models/types';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 
-	export const svelteEmitter = writable<EventEmitter>(new EventEmitter());
-	export const electronEmitter = writable<EventEmitter>(new EventEmitter());
+	export const eventEmitter = writable<EventEmitter>(new EventEmitter());
 
 	export const isBrowser = writable<boolean>(!window.electron && browser);
 	export const isDesktop = writable<boolean>(
@@ -37,6 +36,7 @@
 	export const gameSettings = writable<GameStartType>();
 	export const postGameStats = writable<any>();
 	export const recentRankedSets = writable<any>();
+	export const recentGames = writable<GameStats[]>();
 	export const sessionStats = writable<any>();
 	export const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 

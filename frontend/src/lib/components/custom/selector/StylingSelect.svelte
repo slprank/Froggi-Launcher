@@ -9,7 +9,7 @@
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
-	import { statsScene, svelteEmitter } from '$lib/utils/store.svelte';
+	import { statsScene, eventEmitter } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 
@@ -99,7 +99,7 @@
 	$: payload.animation, fixAnimationInputDelay();
 
 	const shuffleAnimationTriggers = () => {
-		$svelteEmitter.emit('animation_test_trigger');
+		$eventEmitter.emit('animation_test_trigger');
 	};
 </script>
 

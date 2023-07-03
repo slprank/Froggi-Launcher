@@ -10,7 +10,7 @@
 		Css,
 		Shadow,
 	} from '$lib/models/types';
-	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { generateNewItem } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
@@ -76,7 +76,7 @@
 	}
 
 	function updateOverlay() {
-		$electronEmitter.emit('electron', 'update-custom-overlay', getCurrentOverlay());
+		$eventEmitter.emit('electron', 'update-custom-overlay', getCurrentOverlay());
 	}
 
 	function getCurrentOverlay() {
