@@ -22,6 +22,8 @@
 				return slide(node, { duration: scene.background.duration ?? 250 });
 			case Transition.Blur:
 				return blur(node, { duration: scene.background.duration ?? 250 });
+			default:
+				return;
 		}
 	};
 

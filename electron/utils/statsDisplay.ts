@@ -114,6 +114,7 @@ export class StatsDisplay {
 
 	handleScore(gameEnd: GameEndType) {
 		// TODO: Consider LRAS
+		// TODO: Consider Tie
 		let score: number[] = this.store.getGameScore() ?? [0, 0];
 		const winnerIndex = gameEnd.placements
 			.filter((p: PlacementType) => (p.position ?? -1) >= 0)

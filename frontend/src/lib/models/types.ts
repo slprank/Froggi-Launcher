@@ -63,6 +63,7 @@ export interface ElementPayload {
 	advancedStyling: boolean;
 	class: Class;
 	css: Css;
+	description: string;
 	pauseOption: ElementPauseOption;
 	shadow: Shadow;
 	image: Image;

@@ -83,58 +83,138 @@
 
 {#if dataItem && display}
 	{#key dataItem}
-		<div
-			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
-			class={`custom-font h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
-				selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
-			} bg-opacity-50`}
-			in:animate
-		>
-			<AnimationLayer
-				animationIn={(node) => CreateElementAnimation(node, dataItem?.data.animation.in)}
-				animationOut={(node) => CreateElementAnimation(node, dataItem?.data.animation.out)}
-				animationTrigger={dataItem.data.animation.trigger}
-				{edit}
+		<div class="custom-font h-full w-full relative">
+			<div
+				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
+				class={`custom-font absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
+					selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
+				} bg-opacity-50`}
+				in:animate
 			>
-				{#if dataItem?.elementId === CustomElement.CustomString}
-					<TextFitMulti
-						class={`h-full flex ${classValue}`}
-						style={`${shadow}; ${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						}; ${edit ? 'color: black;' : ''}`}
-						maxFont={1000}
-					>
-						{dataItem?.data.string}
-					</TextFitMulti>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.CustomBox}
-					<div
-						class={`w-full h-full ${classValue}`}
-						style={`${shadow}; ${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.CustomImage}
-					<div
-						class={`w-full h-full ${classValue}`}
-						style={`${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					>
-						<img
-							class="w-full h-full"
-							style={`${shadow}; object-fit: ${
-								dataItem?.data.image.objectFit ?? 'contain'
-							};
-					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-							src={dataItem?.data.image.src}
-							alt="custom"
+				<AnimationLayer
+					animationIn={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.in)}
+					animationOut={(node) =>
+						CreateElementAnimation(node, dataItem?.data.animation.out)}
+					animationTrigger={dataItem.data.animation.trigger}
+					{edit}
+				>
+					{#if dataItem?.elementId === CustomElement.CustomString}
+						<TextFitMulti
+							class={`h-full flex ${classValue}`}
+							style={`${shadow}; ${cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+							}; ${edit ? 'color: black;' : ''}`}
+							maxFont={1000}
+						>
+							{dataItem?.data.string}
+						</TextFitMulti>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.CustomBox}
+						<div
+							class={`w-full h-full ${classValue}`}
+							style={`${shadow}; ${cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
 						/>
-					</div>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1Tag}
-					{#key $currentPlayers?.at(0)?.displayName}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.CustomImage}
+						<div
+							class={`w-full h-full ${classValue}`}
+							style={`${cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
+						>
+							<img
+								class="w-full h-full"
+								style={`${shadow}; object-fit: ${
+									dataItem?.data.image.objectFit ?? 'contain'
+								};
+					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+								src={dataItem?.data.image.src}
+								alt="custom"
+							/>
+						</div>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1Tag}
+						{#key $currentPlayers?.at(0)?.displayName}
+							<TextFitMulti
+								class={`h-full flex ${classValue}`}
+								style={`${shadow}; ${cssValue}; ${
+									dataItem?.data.advancedStyling
+										? dataItem?.data.css.customText
+										: ''
+								};  ${edit ? 'color: black' : ''}`}
+								maxFont={1000}
+							>
+								{$currentPlayers?.at(0)?.displayName
+									? $currentPlayers?.at(0)?.displayName
+									: `Player1`}
+							</TextFitMulti>
+						{/key}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2Tag}
+						{#key $currentPlayers?.at(1)?.displayName}
+							<TextFitMulti
+								class={`h-full flex ${classValue}`}
+								style={`${shadow}; ${cssValue}; ${
+									dataItem?.data.advancedStyling
+										? dataItem?.data.css.customText
+										: ''
+								};  ${edit ? 'color: black' : ''}`}
+								maxFont={1000}
+							>
+								{$currentPlayers?.at(1)?.displayName
+									? $currentPlayers?.at(1)?.displayName
+									: `Player2`}
+							</TextFitMulti>
+						{/key}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1Percent}
+						<PlayerPercent
+							{cssValue}
+							{classValue}
+							{dataItem}
+							{edit}
+							{shadow}
+							numberOfDecimals={0}
+							frame={$gameFrame?.players[0]?.pre}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2Percent}
+						<PlayerPercent
+							{cssValue}
+							{classValue}
+							{dataItem}
+							{edit}
+							{shadow}
+							numberOfDecimals={0}
+							frame={$gameFrame?.players[1]?.pre}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
+						<PlayerPercent
+							{cssValue}
+							{classValue}
+							{dataItem}
+							{edit}
+							{shadow}
+							numberOfDecimals={1}
+							frame={$gameFrame?.players[0]?.pre}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
+						<PlayerPercent
+							{cssValue}
+							{classValue}
+							{dataItem}
+							{edit}
+							{shadow}
+							numberOfDecimals={1}
+							frame={$gameFrame?.players[1]?.pre}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1Score}
 						<TextFitMulti
 							class={`h-full flex ${classValue}`}
 							style={`${shadow}; ${cssValue}; ${
@@ -142,14 +222,10 @@
 							};  ${edit ? 'color: black' : ''}`}
 							maxFont={1000}
 						>
-							{$currentPlayers?.at(0)?.displayName
-								? $currentPlayers?.at(0)?.displayName
-								: `Player1`}
+							{$gameScore?.at(0) ?? '0'}
 						</TextFitMulti>
-					{/key}
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2Tag}
-					{#key $currentPlayers?.at(1)?.displayName}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2Score}
 						<TextFitMulti
 							class={`h-full flex ${classValue}`}
 							style={`${shadow}; ${cssValue}; ${
@@ -157,153 +233,94 @@
 							};  ${edit ? 'color: black' : ''}`}
 							maxFont={1000}
 						>
-							{$currentPlayers?.at(1)?.displayName
-								? $currentPlayers?.at(1)?.displayName
-								: `Player2`}
+							{$gameScore?.at(1) ?? '0'}
 						</TextFitMulti>
-					{/key}
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1Percent}
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={0}
-						frame={$gameFrame?.players[0]?.pre}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2Percent}
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={0}
-						frame={$gameFrame?.players[1]?.pre}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={1}
-						frame={$gameFrame?.players[0]?.pre}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-					<PlayerPercent
-						{cssValue}
-						{classValue}
-						{dataItem}
-						{edit}
-						{shadow}
-						numberOfDecimals={1}
-						frame={$gameFrame?.players[1]?.pre}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1Score}
-					<TextFitMulti
-						class={`h-full flex ${classValue}`}
-						style={`${shadow}; ${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						};  ${edit ? 'color: black' : ''}`}
-						maxFont={1000}
-					>
-						{$gameScore?.at(0) ?? '0'}
-					</TextFitMulti>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2Score}
-					<TextFitMulti
-						class={`h-full flex ${classValue}`}
-						style={`${shadow}; ${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						};  ${edit ? 'color: black' : ''}`}
-						maxFont={1000}
-					>
-						{$gameScore?.at(1) ?? '0'}
-					</TextFitMulti>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1RankIcon && $currentPlayers.at(0)?.rankedNetplayProfile}
-					<div
-						class={`w-full h-full ${classValue}`}
-						style={`${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					>
-						<img
-							class="w-full h-full object-contain"
-							style={`${shadow}; ${
-								dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
-							};`}
-							src={`/image/rank-icons/${$currentPlayers
-								.at(0)
-								?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
-							alt="rank-icon"
-						/>
-					</div>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2RankIcon && $currentPlayers.at(1)?.rankedNetplayProfile}
-					<div
-						class={`w-full h-full ${classValue}`}
-						style={`${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					>
-						<img
-							class="w-full h-full object-contain"
-							style={`${shadow}; ${
-								dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
-							};`}
-							src={`/image/rank-icons/${$currentPlayers
-								.at(1)
-								?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
-							alt="rank-icon"
-						/>
-					</div>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1CharacterRender}
-					<div
-						class={`w-full h-full ${classValue}`}
-						style={`${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					>
-						<img
-							class="w-full h-full"
-							style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1RankIcon && $currentPlayers.at(0)?.rankedNetplayProfile}
+						<div
+							class={`w-full h-full ${classValue}`}
+							style={`${cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
+						>
+							<img
+								class="w-full h-full object-contain"
+								style={`${shadow}; ${
+									dataItem?.data.advancedStyling
+										? dataItem?.data.css.customImage
+										: ''
+								};`}
+								src={`/image/rank-icons/${$currentPlayers
+									.at(0)
+									?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
+								alt="rank-icon"
+							/>
+						</div>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2RankIcon && $currentPlayers.at(1)?.rankedNetplayProfile}
+						<div
+							class={`w-full h-full ${classValue}`}
+							style={`${cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
+						>
+							<img
+								class="w-full h-full object-contain"
+								style={`${shadow}; ${
+									dataItem?.data.advancedStyling
+										? dataItem?.data.css.customImage
+										: ''
+								};`}
+								src={`/image/rank-icons/${$currentPlayers
+									.at(1)
+									?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
+								alt="rank-icon"
+							/>
+						</div>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1CharacterRender}
+						<div
+							class={`w-full h-full ${classValue}`}
+							style={`${cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
+						>
+							<img
+								class="w-full h-full"
+								style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-							src={`/image/character-renders/${
-								$currentPlayers.at(0)?.characterId
-							}.png`}
-							alt="custom"
-						/>
-					</div>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2CharacterRender}
-					<div
-						class={`w-full h-full ${classValue}`}
-						style={`${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					>
-						<img
-							class="w-full h-full"
-							style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
+								src={`/image/character-renders/${
+									$currentPlayers.at(0)?.characterId
+								}.png`}
+								alt="custom"
+							/>
+						</div>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2CharacterRender}
+						<div
+							class={`w-full h-full ${classValue}`}
+							style={`${cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
+						>
+							<img
+								class="w-full h-full"
+								style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-							src={`/image/character-renders/${
-								$currentPlayers.at(1)?.characterId
-							}.png`}
-							alt="custom"
-						/>
-					</div>
-				{/if}
-			</AnimationLayer>
+								src={`/image/character-renders/${
+									$currentPlayers.at(1)?.characterId
+								}.png`}
+								alt="custom"
+							/>
+						</div>
+					{/if}
+				</AnimationLayer>
+			</div>
+			{#if edit}
+				<div class="h-full w-full absolute">
+					<h1 class="top-0 left-0">{dataItem.data.description ?? ''}</h1>
+				</div>
+			{/if}
 		</div>
 	{/key}
 {/if}

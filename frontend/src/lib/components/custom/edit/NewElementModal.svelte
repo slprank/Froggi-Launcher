@@ -175,12 +175,15 @@
 				<!-- Set array to 2 if you want drag/drop preview-->
 				{#each [...Array(2).keys()] as i}
 					<div
-						class="w-[35vw] max-w-[500px] aspect-video bg-cover bg-center border z-0 flex items-center justify-center"
+						class="w-[35vw] max-w-[500px] aspect-video bg-cover bg-center border z-0 flex items-center justify-center relative"
 						style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 						in:fade={{ delay: 50, duration: 150 }}
 						out:fade={{ duration: 300 }}
 					>
-						<div class={`w-full h-[50%] border bg-${i ? 'black' : 'white'}`}>
+						<div
+							class={`w-full h-[50%] border bg-${i ? 'black' : 'absolute'}`}
+							style={`font-family: ${getCurrentOverlay()[$statsScene]?.font?.family}`}
+						>
 							<GridContent bind:demoItem forceDisplay={true} />
 						</div>
 					</div>
@@ -189,6 +192,3 @@
 		</div>
 	</div>
 </Modal>
-
-<style>
-</style>
