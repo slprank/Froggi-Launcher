@@ -294,7 +294,7 @@
 				</div>
 			{/if}
 		{/if}
-		{#if ![AnimationTrigger.None, AnimationTrigger.Visibility].includes(payload.animation.trigger)}
+		{#if payload.animation.trigger !== AnimationTrigger.None}
 			<button
 				on:click={shuffleAnimationTriggers}
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
