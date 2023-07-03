@@ -10,6 +10,8 @@
 
 	const overlayId = $page.params.overlay;
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
+
+	$: console.log('stats scene', $statsScene);
 </script>
 
 {#if curOverlay && isFontLoaded}
@@ -21,7 +23,9 @@
 		{#if $isElectron}
 			<Edit />
 		{:else}
-			<Board />
+			{#key $statsScene}
+				<Board />
+			{/key}
 		{/if}
 	</main>
 {/if}

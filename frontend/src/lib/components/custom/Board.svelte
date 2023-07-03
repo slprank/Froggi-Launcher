@@ -49,35 +49,33 @@
 {#if curScene}
 	{#key boardHeight}
 		{#key innerHeight}
-			{#key $statsScene}
-				<div
-					style={`font-family: ${curScene?.font?.family};`}
-					class="w-full h-full overflow-hidden relative"
-				>
-					<BoardContainer bind:scene={curScene} bind:preview />
-					{#each curScene?.layers ?? [] as layer, i}
-						<div class="w-full h-full z-2 absolute">
-							<Grid
-								bind:items={layer}
-								rowHeight={(boardHeight ?? innerHeight) / ROW}
-								gap={[0, 0]}
-								let:dataItem
-								cols={[[COL, COL]]}
-								fastStart={true}
-							>
-								<GridContent
-									bind:preview
-									{dataItem}
-									transition={curScene?.element.transition}
-									additionalDelay={curScene.layerRenderDelay * i}
-									duration={curScene.element.duration ?? 250}
-								/>
-							</Grid>
-						</div>
-					{/each}
-					<div class="w-full h-full z-8 absolute" />
-				</div>
-			{/key}
+			<div
+				style={`font-family: ${curScene?.font?.family};`}
+				class="w-full h-full overflow-hidden relative"
+			>
+				<BoardContainer bind:scene={curScene} bind:preview />
+				{#each curScene?.layers ?? [] as layer, i}
+					<div class="w-full h-full z-2 absolute">
+						<Grid
+							bind:items={layer}
+							rowHeight={(boardHeight ?? innerHeight) / ROW}
+							gap={[0, 0]}
+							let:dataItem
+							cols={[[COL, COL]]}
+							fastStart={true}
+						>
+							<GridContent
+								bind:preview
+								{dataItem}
+								transition={curScene?.element.transition}
+								additionalDelay={curScene.layerRenderDelay * i}
+								duration={curScene.element.duration ?? 250}
+							/>
+						</Grid>
+					</div>
+				{/each}
+				<div class="w-full h-full z-8 absolute" />
+			</div>
 		{/key}
 	{/key}
 {/if}
