@@ -19,7 +19,8 @@
 	}
 	getOverlay();
 
-	$: overlayUrl = `${$urls?.local}/obs/custom/${overlayId}`;
+	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
+	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
 
 	$: preview = false;
 
@@ -35,7 +36,7 @@
 		</TextFitMulti>
 	{/if}
 	<div class="flex items-center gap-2">
-		<h1 class="text-gray-500 text-md font-medium text-shadow">Preview with transitions</h1>
+		<h1 class="text-gray-500 text-md font-medium text-shadow">Preview Transitions</h1>
 		<input type="checkbox" bind:checked={preview} />
 	</div>
 	<div
@@ -47,11 +48,23 @@
 		{/key}
 	</div>
 	<div class="flex items-center gap-2">
-		<h1 class="text-gray-500 text-md font-medium text-shadow">
-			{overlayUrl}
-		</h1>
+		<h1 class="text-gray-500 text-md font-medium text-shadow">External Url</h1>
 		<Clipboard
-			text={overlayUrl}
+			text={externalUrl}
+			let:copy
+			on:copy={() => {
+				notifications.success('Copied to clipboard!', 2000);
+			}}
+		>
+			<button on:click={copy} class="w-5 h-5 invert transition hover:scale-110">
+				<img src="/image/button-icons/copy.png" alt="copy" />
+			</button>
+		</Clipboard>
+	</div>
+	<div class="flex items-center gap-2">
+		<h1 class="text-gray-500 text-md font-medium text-shadow">Local Url</h1>
+		<Clipboard
+			text={localUrl}
 			let:copy
 			on:copy={() => {
 				notifications.success('Copied to clipboard!', 2000);

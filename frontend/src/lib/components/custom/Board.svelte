@@ -47,9 +47,9 @@
 <svelte:window bind:innerHeight />
 
 {#if curScene}
-	{#key curSceneIndex}
-		{#key boardHeight}
-			{#key innerHeight}
+	{#key boardHeight}
+		{#key innerHeight}
+			{#key $statsScene}
 				<div
 					style={`font-family: ${curScene?.font?.family};`}
 					class="w-full h-full overflow-hidden relative"

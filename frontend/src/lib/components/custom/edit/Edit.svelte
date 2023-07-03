@@ -54,7 +54,7 @@
 	out:fade={{ duration: 300 }}
 >
 	{#if overlay}
-		<div class="w-full h-full grid grid-cols-3 px-16 min-w-2xl justify-center">
+		<div class="w-full h-full grid grid-cols-3 px-16 justify-center">
 			<div class="w-full h-full col-span-1 grid justify-center content-center">
 				<Preview
 					bind:boardWidth={boardWidthPreview}
@@ -62,7 +62,9 @@
 				/>
 			</div>
 
-			<div class={`w-full h-full col-span-2 grid gap-2 justify-center content-center`}>
+			<div
+				class={`w-full h-full overflow-y-scroll col-span-2 grid gap-2 justify-center content-center py-2`}
+			>
 				<div class="grid gap-2">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
 					<div class="flex gap-2">
