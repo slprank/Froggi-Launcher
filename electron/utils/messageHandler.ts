@@ -82,7 +82,7 @@ export class MessageHandler {
 	initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
 			let parse = JSON.parse(data);
-			console.log(parse);
+			// console.log(parse);
 			for (const [key, value] of Object.entries(parse)) {
 				this.eventEmitter.emit(key, value);
 			}
@@ -98,7 +98,7 @@ export class MessageHandler {
 				this.webSockets.push(socket);
 				socket.addEventListener('message', (value: any) => {
 					let parse = JSON.parse(value.data);
-					console.log(parse);
+					// console.log(parse);
 					for (const [key, value] of Object.entries(parse)) {
 						this.eventEmitter.emit(key, value);
 					}

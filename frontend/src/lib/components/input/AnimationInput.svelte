@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { AnimationOptions, ElementAnimation } from '$lib/models/types';
-	import { Animation, AnimationTrigger, Easing } from '$lib/models/enum';
+	import type { ElementAnimation } from '$lib/models/types';
+	import { Animation, Easing } from '$lib/models/enum';
 	import Select from './Select.svelte';
 
 	const max = 1000;

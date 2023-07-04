@@ -29,7 +29,6 @@
 			const routeElements = route.split('/');
 			if (curRouteElements.length != routeElements.length) return;
 			var zipped = curRouteElements.map((e, i) => [e, routeElements[i]]);
-			console.log(zipped);
 			isValidRoute = zipped.every(
 				(zip) => zip[0] === zip[1] || zip.some((z) => isWrapped(z)),
 			);
@@ -38,7 +37,6 @@
 	}
 
 	function isWrapped(route: string) {
-		console.log('wrap', route, route[0] === '[' && route.slice(-1) === ']');
 		return route[0] === '[' && route.slice(-1) === ']';
 	}
 

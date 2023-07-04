@@ -156,10 +156,6 @@ try {
 		if (process.platform !== 'darwin') app.quit();
 	});
 
-	eventEmitter.on('test-message', (data: any) => {
-		console.log(data);
-	});
-
 	function setLoggingPath() {
 		try {
 			const slippiAppDataPath = getAppDataPath("Slippi Launcher");

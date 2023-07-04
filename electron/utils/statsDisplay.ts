@@ -11,6 +11,7 @@ import fs from "fs"
 
 @singleton()
 export class StatsDisplay {
+	pauseInterval: NodeJS.Timer
 	constructor(
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
 		@inject("ElectronLog") public log: ElectronLog,
@@ -25,7 +26,6 @@ export class StatsDisplay {
 		this.log = log;
 		this.store = store;
 		this.api = api;
-
 		this.initStatDisplay();
 	}
 
@@ -35,9 +35,6 @@ export class StatsDisplay {
 			if (event.command === 54) {
 				this.handleUndefinedPlayers(this.slpParser.getSettings() ?? undefined)
 				await this.handleGameStart(this.slpParser.getSettings());
-			}
-			if (event.command === 60) {
-				await this.handleGamePaused(this.slpParser.getLatestFrame());
 			}
 		});
 
@@ -52,13 +49,27 @@ export class StatsDisplay {
 		});
 	}
 
+	resetPauseInterval() {
+		this.stopPauseInterval()
+		this.pauseInterval = setTimeout(() => {
+			this.handleGamePaused(this.slpParser.getLatestFrame())
+		}, 64)
+	}
+
+	stopPauseInterval() {
+		clearInterval(this.pauseInterval)
+	}
+
 	async handleGameFrame(frameEntry: FrameEntryType) {
+		this.resetPauseInterval()
 		await this.messageHandler.sendMessage('game_frame', frameEntry);
+		this.store.setGameState(InGameState.Running)
 	}
 
 	async handleGamePaused(frameEntry: FrameEntryType | null) {
 		if (!frameEntry) return;
 		this.store.setGameFrame(frameEntry)
+		this.store.setGameState(InGameState.Paused)
 	}
 
 	async handleGameStart(settings: GameStartType | null) {
@@ -67,6 +78,7 @@ export class StatsDisplay {
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 
 		this.store.setGameSettings(settings);
+		this.store.setGameState(InGameState.Running)
 		this.store.setStatsScene(LiveStatsScene.InGame)
 		this.store.setCurrentPlayerCurrentRankStats(this.getCurrentPlayer(currentPlayers)?.rankedNetplayProfile);
 		this.store.setCurrentPlayers(currentPlayers);
@@ -77,6 +89,7 @@ export class StatsDisplay {
 	}
 
 	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
+		this.stopPauseInterval()
 		this.handleScore(gameEnd)
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)

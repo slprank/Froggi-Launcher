@@ -2,8 +2,8 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
-	import { gameState } from '$lib/utils/store.svelte';
-	import type { PreFrameUpdateType } from '@slippi/slippi-js';
+	import { gameFrame, gameState } from '$lib/utils/store.svelte';
+	import type { PostFrameUpdateType } from '@slippi/slippi-js';
 
 	export let classValue: string;
 	export let cssValue: string;
@@ -11,7 +11,7 @@
 	export let edit: boolean;
 	export let shadow: string;
 
-	export let frame: PreFrameUpdateType | undefined;
+	export let frame: PostFrameUpdateType | undefined;
 	export let numberOfDecimals: number;
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
@@ -70,33 +70,29 @@
 
 {#key frame?.percent}
 	<div class="w-full h-full relative">
-		{#each Array.from(Array(2)) as _, i}
-			<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
-				<TextFitMulti
-					class={`h-full ${classValue} justify-end ${i === 0 ? 'font-[900]' : ``}`}
-					style={`${shadow}; ${cssValue}; ${
-						dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-					};  ${edit ? 'color: black' : ''} ${
-						i !== 0 ? `color: ${percentageColor}` : ``
-					}`}
-					maxFont={1000}
-				>
-					{#if !numberOfDecimals}
-						<span class="mr-[.3em]">
-							{`${framePercent}`}
-							<span class="text-[80%] mx-[-.2em]">%</span>
+		<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
+			<TextFitMulti
+				class={`h-full ${classValue} justify-end ${i === 0 ? 'font-[900]' : ``}`}
+				style={`${shadow}; ${cssValue}; ${
+					dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+				};  ${edit ? 'color: black' : ''} ${i !== 0 ? `color: ${percentageColor}` : ``}`}
+				maxFont={1000}
+			>
+				{#if !numberOfDecimals}
+					<span class="mr-[.3em]">
+						{`${framePercent}`}
+						<span class="text-[80%] mx-[-.2em]">%</span>
+					</span>
+				{/if}
+				{#if numberOfDecimals}
+					<span class="mr-[.4em]">
+						{`${framePercent}`}
+						<span class="text-[55%] mx-[-.5em]">
+							{`${numberOfDecimals ? `.${decimals}` : ''}%`}
 						</span>
-					{/if}
-					{#if numberOfDecimals}
-						<span class="mr-[.4em]">
-							{`${framePercent}`}
-							<span class="text-[55%] mx-[-.5em]">
-								{`${numberOfDecimals ? `.${decimals}` : ''}%`}
-							</span>
-						</span>
-					{/if}
-				</TextFitMulti>
-			</div>
-		{/each}
+					</span>
+				{/if}
+			</TextFitMulti>
+		</div>
 	</div>
 {/key}

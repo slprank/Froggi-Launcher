@@ -1,16 +1,23 @@
 <script lang="ts">
-	import { CustomElement, ElementPauseOption, InGameState, Transition } from '$lib/models/enum';
+	import {
+		AnimationTrigger,
+		CustomElement,
+		ElementPauseOption,
+		InGameState,
+		Transition,
+	} from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
-	import { fade, fly, scale, slide, blur as blur_ } from 'svelte/transition';
-	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
+	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
 	import { currentPlayers, gameFrame, gameScore, gameState } from '$lib/utils/store.svelte';
 	import PlayerPercent from './element/PlayerPercent.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
+	import TextElement from './element/TextElement.svelte';
 
 	export let additionalDelay: number = 0;
 	export let dataItem: GridContentItem | undefined = undefined;
+	export let demoItem: GridContentItem | undefined = undefined;
 	export let duration: number = 250;
 	export let edit: boolean = false;
 	export let forceDisplay = false;
@@ -18,11 +25,12 @@
 	export let selectedId: string | undefined = undefined;
 	export let transition: Transition = Transition.None;
 
-	export let demoItem: GridContentItem | undefined = undefined;
-
 	function updateDemoData() {
 		if (demoItem) dataItem = demoItem;
 	}
+
+	$: animateEntrance = dataItem?.data.animation.trigger !== AnimationTrigger.Visibility;
+
 	$: demoItem, updateDemoData();
 
 	$: classValue = Object.entries(dataItem?.data.class ?? {})
@@ -44,7 +52,7 @@
 	}
 
 	const animate = (node: Element) => {
-		if (!preview || edit || !dataItem) return;
+		if (edit || !preview || !dataItem || !animateEntrance) return;
 		const delay =
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
@@ -63,12 +71,12 @@
 			case Transition.Slide:
 				return slide(node, { duration: duration, delay: delay });
 			case Transition.Blur:
-				return blur_(node, { duration: duration, delay: delay });
+				return blur(node, { duration: duration, delay: delay });
 		}
 	};
 
 	$: isGameRunning = $gameState === InGameState.Running;
-	$: isGamePaused = $gameState === InGameState.Running;
+	$: isGamePaused = $gameState === InGameState.Paused;
 
 	$: display =
 		edit ||
@@ -97,16 +105,9 @@
 				{edit}
 			>
 				{#if dataItem?.elementId === CustomElement.CustomString}
-					<TextFitMulti
-						class={`h-full flex ${classValue}`}
-						style={`${shadow}; ${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						}; ${edit ? 'color: black;' : ''}`}
-						maxFont={1000}
-						key={dataItem}
-					>
+					<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
 						{dataItem?.data.string}
-					</TextFitMulti>
+					</TextElement>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.CustomBox}
 					<div
@@ -136,34 +137,20 @@
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Tag}
 					{#key $currentPlayers?.at(0)?.displayName}
-						<TextFitMulti
-							class={`h-full flex ${classValue}`}
-							style={`${shadow}; ${cssValue}; ${
-								dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-							};  ${edit ? 'color: black' : ''}`}
-							maxFont={1000}
-							key={dataItem}
-						>
+						<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
 							{$currentPlayers?.at(0)?.displayName
 								? $currentPlayers?.at(0)?.displayName
 								: `Player1`}
-						</TextFitMulti>
+						</TextElement>
 					{/key}
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2Tag}
 					{#key $currentPlayers?.at(1)?.displayName}
-						<TextFitMulti
-							class={`h-full flex ${classValue}`}
-							style={`${shadow}; ${cssValue}; ${
-								dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-							};  ${edit ? 'color: black' : ''}`}
-							maxFont={1000}
-							key={dataItem}
-						>
+						<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
 							{$currentPlayers?.at(1)?.displayName
 								? $currentPlayers?.at(1)?.displayName
 								: `Player2`}
-						</TextFitMulti>
+						</TextElement>
 					{/key}
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Percent}
@@ -174,7 +161,7 @@
 						{edit}
 						{shadow}
 						numberOfDecimals={0}
-						frame={$gameFrame?.players[0]?.pre}
+						frame={$gameFrame?.players[0]?.post}
 					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2Percent}
@@ -185,7 +172,7 @@
 						{edit}
 						{shadow}
 						numberOfDecimals={0}
-						frame={$gameFrame?.players[1]?.pre}
+						frame={$gameFrame?.players[1]?.post}
 					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
@@ -196,7 +183,7 @@
 						{edit}
 						{shadow}
 						numberOfDecimals={1}
-						frame={$gameFrame?.players[0]?.pre}
+						frame={$gameFrame?.players[0]?.post}
 					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
@@ -207,32 +194,18 @@
 						{edit}
 						{shadow}
 						numberOfDecimals={1}
-						frame={$gameFrame?.players[1]?.pre}
+						frame={$gameFrame?.players[1]?.post}
 					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Score}
-					<TextFitMulti
-						class={`h-full flex ${classValue}`}
-						style={`${shadow}; ${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						};  ${edit ? 'color: black' : ''}`}
-						maxFont={1000}
-						key={dataItem}
-					>
+					<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
 						{$gameScore?.at(0) ?? '0'}
-					</TextFitMulti>
+					</TextElement>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2Score}
-					<TextFitMulti
-						class={`h-full flex ${classValue}`}
-						style={`${shadow}; ${cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						};  ${edit ? 'color: black' : ''}`}
-						maxFont={1000}
-						key={dataItem}
-					>
+					<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
 						{$gameScore?.at(1) ?? '0'}
-					</TextFitMulti>
+					</TextElement>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1RankIcon && $currentPlayers.at(0)?.rankedNetplayProfile}
 					<div

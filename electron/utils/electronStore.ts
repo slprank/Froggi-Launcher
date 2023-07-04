@@ -193,6 +193,7 @@ export class ElectronJsonStore {
 	}
 
 	setGameState(state: InGameState) {
+		if (state === this.getGameState()) return;
 		return this.store.set("state.game.inGameState", state)
 	}
 
