@@ -140,11 +140,13 @@
 			</button>
 		</div>
 	</div>
-	{#key isElementModalOpen || selectedId}
-		<NewElementModal
-			bind:open={isElementModalOpen}
-			bind:layer={selectedLayer}
-			bind:selectedId
-		/>
+	{#key isElementModalOpen}
+		{#key selectedId}
+			<NewElementModal
+				bind:open={isElementModalOpen}
+				bind:layer={selectedLayer}
+				bind:selectedId
+			/>
+		{/key}
 	{/key}
 {/if}

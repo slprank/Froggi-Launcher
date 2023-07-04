@@ -4,6 +4,7 @@
 	export let maxFont = 100;
 	export { _class as class };
 	export let style = '';
+	export let key: any | undefined = undefined;
 	let _class: string;
 
 	let parent: Node;
@@ -15,22 +16,30 @@
 
 <svelte:window bind:innerWidth bind:innerHeight bind:outerWidth bind:outerHeight />
 
-{#key innerWidth || innerHeight || outerWidth || outerHeight}
-	<div
-		class={`w-full max-w-full whitespace-nowrap m-0 font-medium flex items-center ${_class}`}
-		style={`${style}`}
-		bind:this={parent}
-	>
-		<h1
-			use:textfit={{
-				parent,
-				mode: 'multi',
-				max: maxFont,
-			}}
-		>
-			<slot />
-		</h1>
-	</div>
+{#key innerWidth}
+	{#key innerHeight}
+		{#key outerWidth}
+			{#key outerHeight}
+				{#key key}
+					<div
+						class={`w-full max-w-full whitespace-nowrap m-0 font-medium flex items-center ${_class}`}
+						style={`${style}`}
+						bind:this={parent}
+					>
+						<h1
+							use:textfit={{
+								parent,
+								mode: 'multi',
+								max: maxFont,
+							}}
+						>
+							<slot />
+						</h1>
+					</div>
+				{/key}
+			{/key}
+		{/key}
+	{/key}
 {/key}
 
 <style>

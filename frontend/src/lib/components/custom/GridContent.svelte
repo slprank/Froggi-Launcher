@@ -103,6 +103,7 @@
 							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 						}; ${edit ? 'color: black;' : ''}`}
 						maxFont={1000}
+						key={dataItem}
 					>
 						{dataItem?.data.string}
 					</TextFitMulti>
@@ -141,6 +142,7 @@
 								dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 							};  ${edit ? 'color: black' : ''}`}
 							maxFont={1000}
+							key={dataItem}
 						>
 							{$currentPlayers?.at(0)?.displayName
 								? $currentPlayers?.at(0)?.displayName
@@ -156,6 +158,7 @@
 								dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 							};  ${edit ? 'color: black' : ''}`}
 							maxFont={1000}
+							key={dataItem}
 						>
 							{$currentPlayers?.at(1)?.displayName
 								? $currentPlayers?.at(1)?.displayName
@@ -214,6 +217,7 @@
 							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 						};  ${edit ? 'color: black' : ''}`}
 						maxFont={1000}
+						key={dataItem}
 					>
 						{$gameScore?.at(0) ?? '0'}
 					</TextFitMulti>
@@ -225,6 +229,7 @@
 							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 						};  ${edit ? 'color: black' : ''}`}
 						maxFont={1000}
+						key={dataItem}
 					>
 						{$gameScore?.at(1) ?? '0'}
 					</TextFitMulti>

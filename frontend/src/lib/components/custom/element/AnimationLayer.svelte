@@ -7,7 +7,6 @@
 	export let edit: boolean = false;
 
 	let key: any = undefined;
-	let keyTrigger: any = undefined;
 	const updateKeyValue = () => {
 		switch (animationTrigger) {
 			case AnimationTrigger.Player1Percent:
@@ -27,7 +26,9 @@
 	$: $gameFrame, updateKeyValue();
 
 	$eventEmitter.on('animation_test_trigger', () => {
-		keyTrigger = Math.random();
+		const tempKey = key;
+		key = Math.random();
+		setTimeout(() => (key = tempKey));
 	});
 </script>
 
@@ -37,22 +38,20 @@
 			<slot />
 		</div>
 	{:else if animationTrigger === AnimationTrigger.Visibility}
-		{#key keyTrigger}
+		{#key key}
 			<div class="w-full h-full absolute z-3 top-0 left-0" in:animationIn out:animationOut>
 				<slot />
 			</div>
 		{/key}
 	{:else}
 		{#key key}
-			{#key keyTrigger}
-				<div
-					class="w-full h-full absolute z-4 top-0 left-0"
-					in:animationIn|local
-					out:animationOut|local
-				>
-					<slot />
-				</div>
-			{/key}
+			<div
+				class="w-full h-full absolute z-4 top-0 left-0"
+				in:animationIn|local
+				out:animationOut|local
+			>
+				<slot />
+			</div>
 		{/key}
 	{/if}
 </div>
