@@ -9,14 +9,14 @@
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
 
-	export let dataItem: GridContentItem | undefined = undefined;
 	export let additionalDelay: number = 0;
+	export let dataItem: GridContentItem | undefined = undefined;
+	export let duration: number = 250;
 	export let edit: boolean = false;
 	export let forceDisplay = false;
 	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
 	export let transition: Transition = Transition.None;
-	export let duration: number = 250;
 
 	export let demoItem: GridContentItem | undefined = undefined;
 
@@ -312,7 +312,7 @@
 		</div>
 		{#if edit}
 			<div class="h-full w-full absolute">
-				<h1 class="top-0 left-0">{dataItem.data.description ?? ''}</h1>
+				<h1 class="top-0 left-0 absolute">{dataItem.data.description ?? ''}</h1>
 			</div>
 		{/if}
 	</div>

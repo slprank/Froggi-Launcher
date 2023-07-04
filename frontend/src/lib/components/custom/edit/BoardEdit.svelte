@@ -94,6 +94,7 @@
 						rowHeight={(boardHeight ?? innerHeight) / ROW}
 						gap={[0, 0]}
 						let:dataItem
+						let:resizePointerDown
 						cols={[[COL, COL]]}
 						fastStart={true}
 						on:change={updateScene}
@@ -102,7 +103,15 @@
 							setTimeout(() => (selectedId = e.detail.id), 20);
 						}}
 					>
-						<GridContent edit={true} {dataItem} bind:selectedId />
+						<div class="w-full h-full relative">
+							<div class="w-full h-full absolute">
+								<GridContent edit={true} {dataItem} bind:selectedId />
+							</div>
+							<div
+								class="bottom-0 right-0 w-[5%] h-[5%] max-w-[0.8em] max-h-[0.8em] absolute cursor-se-resize overflow-hidden z-5"
+								on:pointerdown={resizePointerDown}
+							/>
+						</div>
 					</Grid>
 				</div>
 			</div>
