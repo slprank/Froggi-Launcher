@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { AnimationTrigger, PlayerActionState } from '$lib/models/enum';
 	import { gameFrame, eventEmitter } from '$lib/utils/store.svelte';
+	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let animationTrigger: AnimationTrigger = AnimationTrigger.None;
@@ -25,10 +26,12 @@
 	};
 	$: $gameFrame, updateKeyValue();
 
-	$eventEmitter.on('animation_test_trigger', () => {
-		const tempKey = key;
-		key = Math.random();
-		setTimeout(() => (key = tempKey));
+	onMount(() => {
+		$eventEmitter.on('animation_test_trigger', () => {
+			const tempKey = key;
+			key = Math.random();
+			setTimeout(() => (key = tempKey));
+		});
 	});
 </script>
 
@@ -39,7 +42,11 @@
 		</div>
 	{:else if animationTrigger === AnimationTrigger.Visibility}
 		{#key key}
-			<div class="w-full h-full absolute z-3 top-0 left-0" in:animationIn out:animationOut>
+			<div
+				class="w-full h-full absolute z-3 top-0 left-0"
+				in:animationIn|local
+				out:animationOut|local
+			>
 				<slot />
 			</div>
 		{/key}

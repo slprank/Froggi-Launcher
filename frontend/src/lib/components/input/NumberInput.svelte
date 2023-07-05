@@ -5,6 +5,13 @@
 	export let max: number = 100;
 	export let autofocus: number | undefined = undefined;
 	export let autoFocusValue: number | undefined = undefined;
+
+	const revertToMax = () => {
+		if (value > max) {
+			value = max;
+		}
+	};
+	$: value, revertToMax();
 </script>
 
 {#if label}

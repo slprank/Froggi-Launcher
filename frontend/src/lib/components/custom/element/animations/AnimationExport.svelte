@@ -11,8 +11,14 @@
 		elasticIn,
 		elasticInOut,
 	} from 'svelte/easing';
-	import type { ElementAnimation, ElementAnimationOptions } from '$lib/models/types';
-	import { Animation, Easing } from '$lib/models/enum';
+	import type {
+		ElementAnimation,
+		ElementAnimationOptions,
+		ElementPayload,
+		GridContentItem,
+	} from '$lib/models/types';
+	import { Animation, Easing, Transition } from '$lib/models/enum';
+	import { COL, ROW } from '$lib/models/const';
 
 	const animationFlyRandom = (node: any, option: ElementAnimationOptions | any) => {
 		const multiplierX = Math.random() < 0.5 ? -1 : 1;

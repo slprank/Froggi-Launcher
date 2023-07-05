@@ -16,7 +16,6 @@
 
 	let curOverlay =
 		$obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-	$: curScene = curOverlay[$statsScene];
 	let items: any[] = [];
 	let tempItems: any = undefined;
 
@@ -81,40 +80,38 @@
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />
 
 {#key boardHeight}
-	{#key $statsScene}
-		{#key curOverlay[$statsScene]?.font?.base64}
-			<div
-				style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
-				class="w-full h-full overflow-hidden relative"
-			>
-				<BoardContainer bind:scene={curOverlay[$statsScene]} />
-				<div class="w-full h-full z-2 absolute">
-					<Grid
-						bind:items
-						rowHeight={(boardHeight ?? innerHeight) / ROW}
-						gap={[0, 0]}
-						let:dataItem
-						let:resizePointerDown
-						cols={[[COL, COL]]}
-						fastStart={true}
-						on:change={updateScene}
-						on:pointerup={(e) => {
-							selectedId = undefined;
-							setTimeout(() => (selectedId = e.detail.id), 20);
-						}}
-					>
-						<div class="w-full h-full relative">
-							<div class="w-full h-full absolute">
-								<GridContent edit={true} {dataItem} bind:selectedId />
-							</div>
-							<div
-								class="bottom-0 right-0 w-[5%] h-[5%] max-w-[0.8em] max-h-[0.8em] absolute cursor-se-resize overflow-hidden z-5"
-								on:pointerdown={resizePointerDown}
-							/>
+	{#key curOverlay[$statsScene]?.font?.base64}
+		<div
+			style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
+			class="w-full h-full overflow-hidden relative"
+		>
+			<BoardContainer bind:scene={curOverlay[$statsScene]} />
+			<div class="w-full h-full z-2 absolute">
+				<Grid
+					bind:items
+					rowHeight={(boardHeight ?? innerHeight) / ROW}
+					gap={[0, 0]}
+					let:dataItem
+					let:resizePointerDown
+					cols={[[COL, COL]]}
+					fastStart={true}
+					on:change={updateScene}
+					on:pointerup={(e) => {
+						selectedId = undefined;
+						setTimeout(() => (selectedId = e.detail.id), 20);
+					}}
+				>
+					<div class="w-full h-full relative">
+						<div class="w-full h-full absolute">
+							<GridContent edit={true} {dataItem} bind:selectedId />
 						</div>
-					</Grid>
-				</div>
+						<div
+							class="bottom-0 right-0 w-[5%] h-[5%] max-w-[0.8em] max-h-[0.8em] absolute cursor-se-resize overflow-hidden z-5"
+							on:pointerdown={resizePointerDown}
+						/>
+					</div>
+				</Grid>
 			</div>
-		{/key}
+		</div>
 	{/key}
 {/key}

@@ -251,7 +251,7 @@
 									<NumberInput
 										bind:value={curScene.element.duration}
 										label="Duration - ms"
-										max={1500}
+										max={1000}
 										bind:autofocus
 										autoFocusValue={3}
 									/>

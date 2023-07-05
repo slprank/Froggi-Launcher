@@ -112,16 +112,16 @@
 	</h1>
 	<div class="w-full flex gap-2">
 		<div in:fly={{ duration: 250, y: 50 }}>
-			<NumberInput bind:value={selectedItem[COL].x} label={`X - ${COL}`} />
+			<NumberInput bind:value={selectedItem[COL].x} max={COL} label={`X - ${COL}`} />
 		</div>
 		<div in:fly={{ duration: 250, y: 50, delay: 50 }}>
-			<NumberInput bind:value={selectedItem[COL].y} label={`Y - ${ROW}`} />
+			<NumberInput bind:value={selectedItem[COL].y} max={ROW} label={`Y - ${ROW}`} />
 		</div>
 		<div in:fly={{ duration: 250, y: 50, delay: 100 }}>
-			<NumberInput bind:value={selectedItem[COL].h} label={`H`} />
+			<NumberInput bind:value={selectedItem[COL].h} max={ROW} label={`H`} />
 		</div>
 		<div in:fly={{ duration: 250, y: 50, delay: 150 }}>
-			<NumberInput bind:value={selectedItem[COL].w} label={`W`} />
+			<NumberInput bind:value={selectedItem[COL].w} max={COL} label={`W`} />
 		</div>
 		<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 200 }}>
 			<button

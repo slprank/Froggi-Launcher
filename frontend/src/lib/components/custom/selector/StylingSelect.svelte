@@ -93,7 +93,10 @@
 	$: stringSettings, boxSettings, imageSettings, clearStyle();
 
 	const fixAnimationInputDelay = () => {
-		if (payload.animation.in?.options.delay <= payload.animation.out?.options.duration) {
+		if (
+			payload.animation.trigger !== AnimationTrigger.Visibility &&
+			payload.animation.in?.options.delay <= payload.animation.out?.options.duration
+		) {
 			payload.animation.in.options.delay = payload.animation.out.options.duration + 1;
 		}
 		if (payload.animation.in.animationType === Animation.None) {

@@ -1,15 +1,15 @@
 <script lang="ts">
-	import {
-		AnimationTrigger,
-		CustomElement,
-		ElementPauseOption,
-		InGameState,
-		Transition,
-	} from '$lib/models/enum';
+	import { CustomElement, ElementPauseOption, InGameState, Transition } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
-	import { currentPlayers, gameFrame, gameScore, gameState } from '$lib/utils/store.svelte';
+	import {
+		currentPlayers,
+		gameFrame,
+		gameScore,
+		gameState,
+		statsScene,
+	} from '$lib/utils/store.svelte';
 	import PlayerPercent from './element/PlayerPercent.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
@@ -28,8 +28,6 @@
 	function updateDemoData() {
 		if (demoItem) dataItem = demoItem;
 	}
-
-	$: animateEntrance = dataItem?.data.animation.trigger !== AnimationTrigger.Visibility;
 
 	$: demoItem, updateDemoData();
 
@@ -51,7 +49,8 @@
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
 
-	const animation = (node, delay) => {
+	const animation = (node: any, delay: number = 0) => {
+		if (!dataItem) return;
 		const y = ((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50;
 		const x = ((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50;
 		switch (transition) {
@@ -71,17 +70,22 @@
 	};
 
 	const animateIn = (node: Element) => {
-		if (edit || !preview || !dataItem || !animateEntrance) return;
+		console.log('here');
+		if (edit || !preview || !dataItem) return;
 		const delay =
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
-		return animation(node, delay);
+
+		// Currently using max scene transition duration as addition delay
+		// TODO: Get longest scene transition and apply that instead
+		return animation(node, delay + 1000);
 	};
+
 	const animateOut = (node: Element) => {
+		console.log('here');
 		if (edit || !preview || !dataItem) return;
-		const delay = 0;
-		return animation(node, delay);
+		return animation(node);
 	};
 
 	$: isGameRunning = $gameState === InGameState.Running;
