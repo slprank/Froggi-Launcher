@@ -51,12 +51,7 @@
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
 
-	const animate = (node: Element) => {
-		if (edit || !preview || !dataItem || !animateEntrance) return;
-		const delay =
-			dataItem[COL]?.y +
-				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
-				additionalDelay ?? 0;
+	const animation = (node, delay) => {
 		const y = ((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50;
 		const x = ((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50;
 		switch (transition) {
@@ -73,6 +68,20 @@
 			case Transition.Blur:
 				return blur(node, { duration: duration, delay: delay });
 		}
+	};
+
+	const animateIn = (node: Element) => {
+		if (edit || !preview || !dataItem || !animateEntrance) return;
+		const delay =
+			dataItem[COL]?.y +
+				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
+				additionalDelay ?? 0;
+		return animation(node, delay);
+	};
+	const animateOut = (node: Element) => {
+		if (edit || !preview || !dataItem) return;
+		const delay = 0;
+		return animation(node, delay);
 	};
 
 	$: isGameRunning = $gameState === InGameState.Running;
@@ -96,7 +105,8 @@
 			class={`custom-font absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 				selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 			} bg-opacity-50`}
-			in:animate
+			in:animateIn
+			out:animateOut
 		>
 			<AnimationLayer
 				animationIn={(node) => CreateElementAnimation(node, dataItem?.data.animation.in)}

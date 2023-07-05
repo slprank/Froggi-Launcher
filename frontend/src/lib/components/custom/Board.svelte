@@ -3,10 +3,11 @@
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import { page } from '$app/stores';
-	import type { Overlay, Scene } from '$lib/models/types';
+	import type { Scene } from '$lib/models/types';
 	import { COL, ROW } from '$lib/models/const';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
+	import { fly } from 'svelte/transition';
 
 	export let boardHeight: number | undefined = undefined;
 	export let preview: boolean = true;
@@ -15,7 +16,7 @@
 	const overlayId = $page.params.overlay;
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
-	$: curScene = getCurrentScene($statsScene);
+	let curScene = getCurrentScene($statsScene);
 
 	$: curScene?.layers.forEach((layer: any) => {
 		layer.forEach((item: any) => {
@@ -23,6 +24,11 @@
 			item[COL].resizable = false;
 		});
 	});
+
+	const test = () => {
+		curScene = getCurrentScene($statsScene);
+	};
+	$: $statsScene, test();
 
 	function updateScene() {
 		if (!curOverlay || curSceneIndex === undefined) return;
@@ -47,35 +53,37 @@
 <svelte:window bind:innerHeight />
 
 {#if curScene}
-	{#key boardHeight}
-		{#key innerHeight}
-			<div
-				style={`font-family: ${curScene?.font?.family};`}
-				class="w-full h-full overflow-hidden relative"
-			>
-				<BoardContainer bind:scene={curScene} bind:preview />
-				{#each curScene?.layers ?? [] as layer, i}
-					<div class="w-full h-full z-2 absolute">
-						<Grid
-							bind:items={layer}
-							rowHeight={(boardHeight ?? innerHeight) / ROW}
-							gap={[0, 0]}
-							let:dataItem
-							cols={[[COL, COL]]}
-							fastStart={true}
-						>
-							<GridContent
-								bind:preview
-								{dataItem}
-								transition={curScene?.element.transition}
-								additionalDelay={curScene.layerRenderDelay * i}
-								duration={curScene.element.duration ?? 250}
-							/>
-						</Grid>
-					</div>
-				{/each}
-				<div class="w-full h-full z-8 absolute" />
-			</div>
+	{#key $statsScene}
+		{#key boardHeight}
+			{#key innerHeight}
+				<div
+					style={`font-family: ${curScene?.font?.family};`}
+					class="w-full h-full overflow-hidden relative"
+				>
+					<BoardContainer scene={curScene} {preview} />
+					{#each curScene?.layers ?? [] as layer, i}
+						<div class="w-full h-full z-2 absolute">
+							<Grid
+								items={layer}
+								rowHeight={(boardHeight ?? innerHeight) / ROW}
+								gap={[0, 0]}
+								let:dataItem
+								cols={[[COL, COL]]}
+								fastStart={true}
+							>
+								<GridContent
+									{preview}
+									{dataItem}
+									transition={curScene?.element.transition}
+									additionalDelay={curScene.layerRenderDelay * i}
+									duration={curScene.element.duration ?? 250}
+								/>
+							</Grid>
+						</div>
+					{/each}
+					<div class="w-full h-full z-8 absolute" />
+				</div>
+			{/key}
 		{/key}
 	{/key}
 {/if}

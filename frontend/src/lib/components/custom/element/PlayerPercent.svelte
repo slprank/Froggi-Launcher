@@ -2,7 +2,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
-	import { gameFrame, gameState } from '$lib/utils/store.svelte';
+	import { gameState } from '$lib/utils/store.svelte';
 	import type { PostFrameUpdateType } from '@slippi/slippi-js';
 
 	export let classValue: string;
