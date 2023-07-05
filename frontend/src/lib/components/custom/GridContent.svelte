@@ -70,7 +70,6 @@
 	};
 
 	const animateIn = (node: Element) => {
-		console.log('here');
 		if (edit || !preview || !dataItem) return;
 		const delay =
 			dataItem[COL]?.y +
@@ -79,7 +78,7 @@
 
 		// Currently using max scene transition duration as addition delay
 		// TODO: Get longest scene transition and apply that instead
-		return animation(node, delay + 1000);
+		return animation(node, delay);
 	};
 
 	const animateOut = (node: Element) => {

@@ -4,7 +4,7 @@
 	import GridContent from './GridContent.svelte';
 	import { page } from '$app/stores';
 	import type { Scene } from '$lib/models/types';
-	import { COL, ROW } from '$lib/models/const';
+	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
 	import { fly } from 'svelte/transition';
@@ -48,6 +48,8 @@
 	$: curOverlay, getCurrentScene($statsScene);
 
 	let innerHeight: number;
+
+	// TODO: Make scene transition delay dynamic based on previous scene
 </script>
 
 <svelte:window bind:innerHeight />
@@ -75,7 +77,8 @@
 									{preview}
 									{dataItem}
 									transition={curScene?.element.transition}
-									additionalDelay={curScene.layerRenderDelay * i}
+									additionalDelay={SCENE_TRANSITION_DELAY +
+										curScene.layerRenderDelay * i}
 									duration={curScene.element.duration ?? 250}
 								/>
 							</Grid>

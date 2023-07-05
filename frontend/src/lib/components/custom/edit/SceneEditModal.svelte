@@ -13,6 +13,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
+	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -251,7 +252,7 @@
 									<NumberInput
 										bind:value={curScene.element.duration}
 										label="Duration - ms"
-										max={1000}
+										max={SCENE_TRANSITION_DELAY}
 										bind:autofocus
 										autoFocusValue={3}
 									/>
