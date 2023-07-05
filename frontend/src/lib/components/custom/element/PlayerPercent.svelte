@@ -16,9 +16,9 @@
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
 
-	$: framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : 0;
+	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : 0;
 
-	$: decimals =
+	let decimals =
 		numberOfDecimals && isInGame
 			? frame?.percent?.toFixed(numberOfDecimals).split('.').at(1) ?? '0'
 			: '0';
