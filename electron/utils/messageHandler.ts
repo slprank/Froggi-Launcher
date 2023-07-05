@@ -155,6 +155,7 @@ export class MessageHandler {
 			this.store.getCurrentPlayers(),
 		);
 		//this.sendInitMessage(socket, 'game_frame', this.store.getGameFrame());
+
 		this.sendInitMessage(socket, 'game_settings', this.store.getGameSettings());
 		this.sendInitMessage(socket, 'game_score', this.store.getGameScore());
 		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
@@ -164,6 +165,7 @@ export class MessageHandler {
 		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
 		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
+		this.sendInitMessage(socket, 'stats.game.frame', this.store.getGameFrame());
 	}
 
 	private initEventHandlers() {

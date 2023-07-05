@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene, urls } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
@@ -11,6 +11,8 @@
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
 	import SceneSelect from '../selector/SceneSelect.svelte';
 	import SceneEditModal from './SceneEditModal.svelte';
+	import Clipboard from 'svelte-clipboard';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -41,8 +43,8 @@
 		$eventEmitter.emit('electron', 'download-overlay', overlayId);
 	}
 
-	// TODO: Display overlay name
-	// TODO: If overlay doesn't exist - redirect
+	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
+	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
 </script>
 
 <svelte:window bind:innerWidth />
@@ -62,9 +64,7 @@
 				/>
 			</div>
 
-			<div
-				class={`w-full h-full overflow-y-scroll col-span-2 grid gap-2 justify-center content-center py-2`}
-			>
+			<div class={`w-full h-full col-span-2 grid gap-2 justify-center content-center py-2`}>
 				<div class="grid gap-2">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
 					<div class="flex gap-2">
@@ -82,6 +82,46 @@
 						>
 							Share
 						</button>
+						<div class="grid grid-flow-row">
+							<div class="flex items-center gap-2">
+								<h1 class="text-gray-500 text-sm font-medium text-shadow">
+									External Url
+								</h1>
+								<Clipboard
+									text={externalUrl}
+									let:copy
+									on:copy={() => {
+										notifications.success('Copied to clipboard!', 2000);
+									}}
+								>
+									<button
+										on:click={copy}
+										class="w-5 h-5 invert transition hover:scale-110"
+									>
+										<img src="/image/button-icons/copy.png" alt="copy" />
+									</button>
+								</Clipboard>
+							</div>
+							<div class="flex items-center gap-2">
+								<h1 class="text-gray-500 text-sm font-medium text-shadow">
+									Local Url
+								</h1>
+								<Clipboard
+									text={localUrl}
+									let:copy
+									on:copy={() => {
+										notifications.success('Copied to clipboard!', 2000);
+									}}
+								>
+									<button
+										on:click={copy}
+										class="w-5 h-5 invert transition hover:scale-110"
+									>
+										<img src="/image/button-icons/copy.png" alt="copy" />
+									</button>
+								</Clipboard>
+							</div>
+						</div>
 					</div>
 					<LayerEdit bind:overlay bind:selectedLayer />
 					<SelectedEditor bind:selectedId bind:selectedLayer />

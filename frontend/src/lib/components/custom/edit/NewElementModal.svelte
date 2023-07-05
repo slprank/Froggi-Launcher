@@ -148,7 +148,6 @@
 		selectedElementId = item.elementId;
 	}
 	updatePayload();
-	// TODO: Display scroll
 </script>
 
 <Modal bind:open class="w-[80vw] h-[80vh] min-w-72 rounded-lg" on:close={() => (open = false)}>
@@ -156,8 +155,8 @@
 		class="w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		<div class="w-full h-full p-4 px-8 grid grid-cols-2">
-			<div class="w-full h-full col-span-1 overflow-scroll scroll enable-scrollbar">
+		<div class="w-full h-full p-4 px-8 grid grid-cols-7">
+			<div class="w-full h-full col-span-4 overflow-scroll scroll enable-scrollbar">
 				<ElementSelect bind:selectedElementId />
 				<div class="w-full">
 					{#if payload}
@@ -171,11 +170,11 @@
 					{selectedId ? 'Update' : 'Add'}
 				</button>
 			</div>
-			<div class="w-full h-full col-span-1 grid justify-center content-center gap-12">
+			<div class="w-full h-full col-span-3 grid justify-center content-center gap-12">
 				<!-- Set array to 2 if you want drag/drop preview-->
 				{#each [...Array(2).keys()] as i}
 					<div
-						class="w-[35vw] max-w-[500px] aspect-video bg-cover bg-center border z-0 flex items-center justify-center relative"
+						class="w-[30vw] max-w-full max-h-[30vh] aspect-video bg-cover bg-center border z-0 flex items-center justify-center relative"
 						style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 						in:fade={{ delay: 50, duration: 150 }}
 						out:fade={{ duration: 300 }}
