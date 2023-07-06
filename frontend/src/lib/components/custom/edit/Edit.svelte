@@ -59,6 +59,7 @@
 		<div class="w-full h-full grid grid-cols-3 px-16 justify-center">
 			<div class="w-full h-full col-span-1 grid justify-center content-center">
 				<Preview
+					src={localUrl}
 					bind:boardWidth={boardWidthPreview}
 					bind:boardHeight={boardHeightPreview}
 				/>

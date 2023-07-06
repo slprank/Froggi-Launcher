@@ -11,7 +11,6 @@
 	import { onMount, tick } from 'svelte';
 
 	export let boardHeight: number | undefined = undefined;
-	export let preview: boolean = true;
 	let curSceneIndex: LiveStatsScene | undefined = undefined;
 
 	const overlayId = $page.params.overlay;
@@ -88,7 +87,7 @@
 				style={`font-family: ${curScene?.font?.family};`}
 				class="w-full h-full overflow-hidden relative"
 			>
-				<BoardContainer scene={curScene} {preview} />
+				<BoardContainer scene={curScene} />
 
 				{#each curScene?.layers ?? [] as layer, i}
 					<div class="w-full h-full z-2 absolute">
@@ -101,7 +100,6 @@
 							fastStart={true}
 						>
 							<GridContent
-								{preview}
 								{dataItem}
 								transition={curScene?.element.transition}
 								additionalDelay={SCENE_TRANSITION_DELAY +

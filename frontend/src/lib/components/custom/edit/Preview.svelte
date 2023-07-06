@@ -9,16 +9,13 @@
 	const overlayId = $page.params.overlay;
 	export let boardHeight: number;
 	export let boardWidth: number;
+	export let src: string;
 	let currentOverlay: Overlay;
 
 	async function getOverlay() {
 		currentOverlay = await getOverlayById(overlayId);
 	}
 	getOverlay();
-
-	$: preview = false;
-
-	// TODO: Add alert component
 </script>
 
 <div class="w-full h-full">
@@ -29,16 +26,15 @@
 			{currentOverlay.title}
 		</TextFitMulti>
 	{/if}
-	<div class="flex items-center gap-2">
-		<h1 class="text-gray-500 text-md font-medium text-shadow">Preview Transitions</h1>
-		<input type="checkbox" bind:checked={preview} />
-	</div>
 	<div
 		style={`width: ${boardWidth}px; height: ${boardHeight}px`}
-		class={`outline outline-4 outline-zinc-700 overflow-hidden shadow-md my-2`}
+		class={`outline outline-4 outline-zinc-700 overflow-hidden shadow-md my-2 relative`}
 	>
-		{#key $statsScene}
-			<Board bind:boardHeight bind:preview />
+		{#key boardWidth}
+			<div class="absolute w-full h-full">
+				<iframe {src} title="preview" style="width: 100%; height: 100%;" />
+			</div>
 		{/key}
+		<div class="w-full h-full z-2 absolute" />
 	</div>
 </div>

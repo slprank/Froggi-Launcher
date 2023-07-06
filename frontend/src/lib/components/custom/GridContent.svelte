@@ -19,7 +19,6 @@
 	export let duration: number = 250;
 	export let edit: boolean = false;
 	export let forceDisplay = false;
-	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
 	export let transition: Transition = Transition.None;
 
@@ -51,7 +50,7 @@
 	};
 
 	const animateIn = (node: Element) => {
-		if (edit || !preview || !dataItem || isTriggerVisible) return;
+		if (edit || !dataItem || isTriggerVisible) return;
 		const delay =
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
@@ -63,7 +62,7 @@
 	};
 
 	const animateOut = (node: Element) => {
-		if (edit || !preview || !dataItem || isTriggerVisible) return;
+		if (edit || !dataItem || isTriggerVisible) return;
 		return animation(node);
 	};
 
@@ -97,19 +96,6 @@
 				<GridElements {dataItem} {edit} />
 			{:else if !$isElectron}
 				<div class="w-full h-full" in:animateIn out:animateOut>
-					<AnimationLayer
-						animationIn={(node) =>
-							CreateElementAnimation(node, dataItem?.data.animation.in)}
-						animationOut={(node) =>
-							CreateElementAnimation(node, dataItem?.data.animation.out)}
-						animationTrigger={dataItem.data.animation.trigger}
-						{edit}
-					>
-						<GridElements {dataItem} {edit} />
-					</AnimationLayer>
-				</div>
-			{:else if !edit}
-				<div class="w-full h-full" in:animateIn>
 					<AnimationLayer
 						animationIn={(node) =>
 							CreateElementAnimation(node, dataItem?.data.animation.in)}
