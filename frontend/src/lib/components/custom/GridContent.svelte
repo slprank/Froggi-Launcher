@@ -8,7 +8,7 @@
 	import type { GridContentItem } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
-	import { gameState } from '$lib/utils/store.svelte';
+	import { gameState, isElectron } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/AnimationLayer.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
 	import GridElements from '$lib/components/custom/element/GridElements.svelte';
@@ -79,26 +79,49 @@
 
 	// TODO: Add remaining components
 	// TODO: Add fallback to unknown player - img, name, etc
+	let test = 0;
+	setInterval(() => {
+		test = Math.random();
+	}, 100);
 </script>
 
-{#if dataItem && display}
+{#if dataItem}
 	<div class="custom-font h-full w-full relative">
 		<div
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
 			class={`custom-font absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 				selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
 			} bg-opacity-50`}
-			in:animateIn
-			out:animateOut
 		>
-			<AnimationLayer
-				animationIn={(node) => CreateElementAnimation(node, dataItem?.data.animation.in)}
-				animationOut={(node) => CreateElementAnimation(node, dataItem?.data.animation.out)}
-				animationTrigger={dataItem.data.animation.trigger}
-				{edit}
-			>
+			{#if edit}
 				<GridElements {dataItem} {edit} />
-			</AnimationLayer>
+			{:else if !$isElectron}
+				<div class="w-full h-full" in:animateIn out:animateOut>
+					<AnimationLayer
+						animationIn={(node) =>
+							CreateElementAnimation(node, dataItem?.data.animation.in)}
+						animationOut={(node) =>
+							CreateElementAnimation(node, dataItem?.data.animation.out)}
+						animationTrigger={dataItem.data.animation.trigger}
+						{edit}
+					>
+						<GridElements {dataItem} {edit} />
+					</AnimationLayer>
+				</div>
+			{:else if !edit}
+				<div class="w-full h-full" in:animateIn>
+					<AnimationLayer
+						animationIn={(node) =>
+							CreateElementAnimation(node, dataItem?.data.animation.in)}
+						animationOut={(node) =>
+							CreateElementAnimation(node, dataItem?.data.animation.out)}
+						animationTrigger={dataItem.data.animation.trigger}
+						{edit}
+					>
+						<GridElements {dataItem} {edit} />
+					</AnimationLayer>
+				</div>
+			{/if}
 		</div>
 		{#if edit}
 			<div class="h-full w-full absolute">

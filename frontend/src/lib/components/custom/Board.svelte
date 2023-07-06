@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { isElectron, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import { page } from '$app/stores';
@@ -7,7 +7,8 @@
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
-	import { fly } from 'svelte/transition';
+	import { goto } from '$app/navigation';
+	import { onMount, tick } from 'svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let preview: boolean = true;
@@ -67,48 +68,51 @@
 	// };
 	// $: $statsScene, getAdditionalDelay();
 
-	let innerHeight: number;
+	let innerHeight = 0;
+	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
+
+	const refreshExternal = async () => {
+		await tick();
+		if (!$isElectron) location.reload();
+	};
 
 	// TODO: Make scene transition delay dynamic based on previous scene
 </script>
 
-<svelte:window bind:innerHeight />
+<svelte:window bind:innerHeight on:resize={refreshExternal} />
 
-{#if curScene}
-	{#key $statsScene}
-		{#key boardHeight}
-			{#key innerHeight}
-				<div
-					style={`font-family: ${curScene?.font?.family};`}
-					class="w-full h-full overflow-hidden relative"
-				>
-					<BoardContainer scene={curScene} {preview} />
-					{#each curScene?.layers ?? [] as layer, i}
-						<div class="w-full h-full z-2 absolute">
-							<Grid
-								items={layer}
-								rowHeight={(boardHeight ?? innerHeight) / ROW}
-								gap={[0, 0]}
-								let:dataItem
-								cols={[[COL, COL]]}
-								fastStart={true}
-							>
-								{#key additionalDelay}
-									<GridContent
-										{preview}
-										{dataItem}
-										transition={curScene?.element.transition}
-										additionalDelay={SCENE_TRANSITION_DELAY +
-											curScene.layerRenderDelay * i}
-										duration={curScene.element.duration ?? 250}
-									/>
-								{/key}
-							</Grid>
-						</div>
-					{/each}
-					<div class="w-full h-full z-8 absolute" />
-				</div>
-			{/key}
+{#if curScene && rowHeight}
+	{#key rowHeight}
+		{#key $statsScene}
+			<div
+				style={`font-family: ${curScene?.font?.family};`}
+				class="w-full h-full overflow-hidden relative"
+			>
+				<BoardContainer scene={curScene} {preview} />
+
+				{#each curScene?.layers ?? [] as layer, i}
+					<div class="w-full h-full z-2 absolute">
+						<Grid
+							bind:items={layer}
+							bind:rowHeight
+							gap={[0, 0]}
+							let:dataItem
+							cols={[[COL, COL]]}
+							fastStart={true}
+						>
+							<GridContent
+								{preview}
+								{dataItem}
+								transition={curScene?.element.transition}
+								additionalDelay={SCENE_TRANSITION_DELAY +
+									curScene.layerRenderDelay * i}
+								duration={curScene.element.duration ?? 250}
+							/>
+						</Grid>
+					</div>
+				{/each}
+				<div class="w-full h-full z-8 absolute" />
+			</div>
 		{/key}
 	{/key}
 {/if}
