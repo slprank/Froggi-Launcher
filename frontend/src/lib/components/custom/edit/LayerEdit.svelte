@@ -7,6 +7,7 @@
 	import {
 		getOverlayById,
 		getOverlayIndexById,
+		newId,
 		updateOverlay,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
@@ -20,7 +21,7 @@
 	async function newLayer() {
 		let tempOverlay = await getOverlayById(overlay.id);
 		if (!tempOverlay) return;
-		tempOverlay[$statsScene].layers.push([]);
+		tempOverlay[$statsScene].layers.push({ id: newId(), items: [] });
 		const index = await getOverlayIndexById(overlay.id);
 		$obs.overlays[index] = tempOverlay;
 		setTimeout(() => {

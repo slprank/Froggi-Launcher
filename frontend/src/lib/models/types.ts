@@ -33,8 +33,14 @@ export interface Scene {
 	background: Background;
 	element: Element;
 	font: Font;
-	layers: GridContentItem[][];
+	previewLayers: string[];
+	layers: Layer[];
 	layerRenderDelay: number;
+}
+
+export interface Layer {
+	items: GridContentItem[]
+	id: string;
 }
 
 export interface Background {

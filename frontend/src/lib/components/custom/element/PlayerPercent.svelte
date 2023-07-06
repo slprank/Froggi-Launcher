@@ -69,34 +69,36 @@
 </script>
 
 {#key frame?.percent}
-	<div class="w-full h-full relative">
-		{#each Array.from(Array(2)) as _, i}
-			<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
-				<TextFitMulti
-					class={`h-full ${classValue} justify-end ${i === 0 ? 'font-[900]' : ``}`}
-					style={`${shadow}; ${cssValue}; ${
-						dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-					};  ${edit ? 'color: black' : ''} ${
-						i !== 0 ? `color: ${percentageColor}` : ``
-					}`}
-					maxFont={1000}
-				>
-					{#if !numberOfDecimals}
-						<span class="mr-[.3em]">
-							{`${framePercent}`}
-							<span class="text-[80%] mx-[-.2em]">%</span>
-						</span>
-					{/if}
-					{#if numberOfDecimals}
-						<span class="mr-[.4em]">
-							{`${framePercent}`}
-							<span class="text-[55%] mx-[-.5em]">
-								{`${numberOfDecimals ? `.${decimals}` : ''}%`}
+	{#key dataItem}
+		<div class="w-full h-full relative">
+			{#each Array.from(Array(2)) as _, i}
+				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
+					<TextFitMulti
+						class={`h-full ${classValue} justify-end ${i === 0 ? 'font-[900]' : ``}`}
+						style={`${shadow}; ${cssValue}; ${
+							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
+						};  ${edit ? 'color: black' : ''} ${
+							i !== 0 ? `color: ${percentageColor}` : ``
+						}`}
+						maxFont={1000}
+					>
+						{#if !numberOfDecimals}
+							<span class="mr-[.3em]">
+								{`${framePercent}`}
+								<span class="text-[80%] mx-[-.2em]">%</span>
 							</span>
-						</span>
-					{/if}
-				</TextFitMulti>
-			</div>
-		{/each}
-	</div>
+						{/if}
+						{#if numberOfDecimals}
+							<span class="mr-[.4em]">
+								{`${framePercent}`}
+								<span class="text-[55%] mx-[-.5em]">
+									{`${numberOfDecimals ? `.${decimals}` : ''}%`}
+								</span>
+							</span>
+						{/if}
+					</TextFitMulti>
+				</div>
+			{/each}
+		</div>
+	{/key}
 {/key}

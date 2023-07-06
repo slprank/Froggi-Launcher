@@ -7,7 +7,7 @@
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 
-	function newId() {
+	export function newId() {
 		return `${Math.random().toString(36).slice(-8)}`;
 	}
 
@@ -47,7 +47,13 @@
 				},
 				font: {} as Font,
 				layerRenderDelay: 128,
-				layers: [[]],
+				layers: [
+					{
+						id: newId(),
+						items: [],
+					},
+				],
+				previewLayers: [],
 			},
 			[LiveStatsScene.PreGame]: {
 				background: {
@@ -69,7 +75,13 @@
 				},
 				font: {} as Font,
 				layerRenderDelay: 128,
-				layers: [[]],
+				layers: [
+					{
+						id: newId(),
+						items: [],
+					},
+				],
+				previewLayers: [],
 			},
 			[LiveStatsScene.InGame]: {
 				background: {
@@ -91,7 +103,13 @@
 				},
 				font: {} as Font,
 				layerRenderDelay: 128,
-				layers: [[]],
+				layers: [
+					{
+						id: newId(),
+						items: [],
+					},
+				],
+				previewLayers: [],
 			},
 			[LiveStatsScene.PostGame]: {
 				background: {
@@ -113,7 +131,13 @@
 				},
 				font: {} as Font,
 				layerRenderDelay: 128,
-				layers: [[]],
+				layers: [
+					{
+						id: newId(),
+						items: [],
+					},
+				],
+				previewLayers: [],
 			},
 			[LiveStatsScene.RankChange]: {
 				background: {
@@ -135,7 +159,13 @@
 				},
 				font: {} as Font,
 				layerRenderDelay: 128,
-				layers: [[]],
+				layers: [
+					{
+						id: newId(),
+						items: [],
+					},
+				],
+				previewLayers: [],
 			},
 		} as Overlay;
 	}

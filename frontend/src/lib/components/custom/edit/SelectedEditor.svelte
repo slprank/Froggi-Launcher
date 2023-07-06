@@ -21,10 +21,10 @@
 
 	function getItemById() {
 		if (!curOverlay || selectedLayer === undefined || selectedId === undefined) return;
-		selectedItemIndex = curOverlay[$statsScene]?.layers[selectedLayer]
+		selectedItemIndex = curOverlay[$statsScene]?.layers[selectedLayer].items
 			.map((i) => i.id)
 			.indexOf(selectedId);
-		selectedItem = curOverlay[$statsScene]?.layers[selectedLayer][selectedItemIndex];
+		selectedItem = curOverlay[$statsScene]?.layers[selectedLayer].items[selectedItemIndex];
 	}
 	$: selectedId, getItemById();
 
@@ -47,7 +47,7 @@
 
 	function deleteElement() {
 		if (!curOverlay || selectedLayer === undefined) return;
-		curOverlay[$statsScene]?.layers[selectedLayer].splice(selectedItemIndex, 1);
+		curOverlay[$statsScene]?.layers[selectedLayer].items.splice(selectedItemIndex, 1);
 		selectedId = undefined;
 		selectedItem = undefined;
 		selectedItemIndex = 0;
@@ -60,7 +60,7 @@
 
 		handleOverflow();
 
-		curOverlay[$statsScene].layers[selectedLayer][selectedItemIndex] = selectedItem;
+		curOverlay[$statsScene].layers[selectedLayer].items[selectedItemIndex] = selectedItem;
 		updateOverlay(curOverlay);
 	}
 	$: selectedItem, updateSelectItem();

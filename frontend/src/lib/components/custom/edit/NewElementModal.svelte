@@ -60,6 +60,7 @@
 			},
 			trigger: AnimationTrigger.None,
 		},
+		description: '',
 	};
 
 	let demoItem: GridContentItem;
@@ -90,7 +91,7 @@
 
 	function getCurrentItems() {
 		let curOverlay = getCurrentOverlay();
-		return curOverlay[$statsScene].layers[layer ?? 0] ?? [];
+		return curOverlay[$statsScene].layers[layer ?? 0].items ?? [];
 	}
 
 	function add() {
@@ -104,12 +105,12 @@
 				...newItem[COL],
 				...findOutPosition,
 			},
-		};
+		} as GridContentItem;
 
-		items = [...items, ...[newItem]];
+		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
-		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0] = items;
+		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
 
 		updateOverlay();
 
@@ -118,6 +119,7 @@
 
 	function edit() {
 		let items = getCurrentItems();
+		console.log('items', items);
 		let prevItem = items.find((item) => item.id === selectedId);
 
 		let newItem = {
@@ -127,13 +129,13 @@
 			[COL]: {
 				...prevItem![COL],
 			},
-		};
+		} as GridContentItem;
 
 		items = items.filter((item) => item.id != selectedId);
-		items = [...items, ...[newItem]];
+		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
-		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0] = items;
+		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
 
 		updateOverlay();
 		open = false;
