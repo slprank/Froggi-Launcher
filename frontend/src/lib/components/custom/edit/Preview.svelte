@@ -32,7 +32,12 @@
 	>
 		{#key boardWidth}
 			<div class="absolute w-full h-full">
-				<iframe {src} title="preview" style="width: 100%; height: 100%;" />
+				<iframe
+					allowtransparency={true}
+					{src}
+					title="preview"
+					style="width: 100%; height: 100%;"
+				/>
 			</div>
 		{/key}
 		<div class="w-full h-full z-2 absolute" />

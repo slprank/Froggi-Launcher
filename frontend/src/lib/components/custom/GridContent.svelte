@@ -107,6 +107,19 @@
 						<GridElements {dataItem} {edit} />
 					</AnimationLayer>
 				</div>
+			{:else}
+				<div class="w-full h-full" in:animateIn out:animateOut>
+					<AnimationLayer
+						animationIn={(node) =>
+							CreateElementAnimation(node, dataItem?.data.animation.in)}
+						animationOut={(node) =>
+							CreateElementAnimation(node, dataItem?.data.animation.out)}
+						animationTrigger={dataItem.data.animation.trigger}
+						{edit}
+					>
+						<GridElements {dataItem} {edit} />
+					</AnimationLayer>
+				</div>
 			{/if}
 		</div>
 		{#if edit}
