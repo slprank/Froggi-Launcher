@@ -165,7 +165,7 @@ export class MessageHandler {
 		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
 		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
 		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
-		this.sendInitMessage(socket, 'stats.game.frame', this.store.getGameFrame());
+		this.sendInitMessage(socket, 'stats_game_frame', this.store.getGameFrame());
 	}
 
 	private initEventHandlers() {

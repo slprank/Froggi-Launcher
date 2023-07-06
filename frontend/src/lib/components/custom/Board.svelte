@@ -36,7 +36,6 @@
 	}
 	$: curOverlay, updateScene();
 
-	$: additionalDelay = 0;
 	function getCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
 		if (!curOverlay) return;
 		let tempSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
@@ -47,25 +46,6 @@
 		curScene = curOverlay[curSceneIndex as LiveStatsScene];
 	}
 	$: curOverlay, getCurrentScene($statsScene);
-
-	// TODO: get dynamic delay
-	// const getAdditionalDelay = () => {
-	// 	console.log('scene', curScene);
-	// 	if (!curScene) return;
-	// 	additionalDelay = Math.max(
-	// 		...curScene.layers.map((layer) =>
-	// 			Math.max(
-	// 				...layer.map(
-	// 					(l) =>
-	// 						l.data.animation.out.options.delay +
-	// 						l.data.animation.out.options.duration,
-	// 				),
-	// 			),
-	// 		),
-	// 		curScene.element.duration,
-	// 	);
-	// };
-	// $: $statsScene, getAdditionalDelay();
 
 	let innerHeight = 0;
 	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
