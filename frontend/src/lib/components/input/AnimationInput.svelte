@@ -2,10 +2,35 @@
 	import type { ElementAnimation } from '$lib/models/types';
 	import { Animation, Easing } from '$lib/models/enum';
 	import Select from './Select.svelte';
+	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
+	import { notifications } from '../notification/Notifications.svelte';
 
 	const max = 1000;
 	export let animation: ElementAnimation;
 	export let label: string | undefined = undefined;
+
+	const fixAnimationInputDelay = () => {
+		if (animation?.options.duration > SCENE_TRANSITION_DELAY) {
+			animation.options.duration = SCENE_TRANSITION_DELAY;
+			notifications.warning(`Duration cannot exceed ${SCENE_TRANSITION_DELAY}ms`, 3000);
+		}
+		if (animation?.options.duration + animation?.options.delay > SCENE_TRANSITION_DELAY) {
+			animation.options.delay = SCENE_TRANSITION_DELAY - animation?.options.duration;
+			notifications.warning(
+				`Duration + delay cannot exceed ${SCENE_TRANSITION_DELAY}ms`,
+				3000,
+			);
+		}
+		if (animation.animationType === Animation.None) {
+			animation.options.delay = 0;
+			animation.options.duration = 0;
+		}
+		if (animation.animationType === Animation.None) {
+			animation.options.delay = 0;
+			animation.options.duration = 0;
+		}
+	};
+	$: animation, fixAnimationInputDelay();
 	// TODO: Add dropdown for key listening value
 </script>
 

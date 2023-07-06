@@ -66,22 +66,8 @@
 		return animation(node);
 	};
 
-	$: isGameRunning = $gameState === InGameState.Running;
-	$: isGamePaused = $gameState === InGameState.Paused;
-
-	$: display =
-		edit ||
-		forceDisplay ||
-		dataItem?.data.pauseOption === ElementPauseOption.Always ||
-		(isGameRunning && dataItem?.data.pauseOption === ElementPauseOption.OnlyActive) ||
-		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);
-
 	// TODO: Add remaining components
 	// TODO: Add fallback to unknown player - img, name, etc
-	let test = 0;
-	setInterval(() => {
-		test = Math.random();
-	}, 100);
 </script>
 
 {#if dataItem}
@@ -94,19 +80,6 @@
 		>
 			{#if edit}
 				<GridElements {dataItem} {edit} />
-			{:else if !$isElectron}
-				<div class="w-full h-full" in:animateIn out:animateOut>
-					<AnimationLayer
-						animationIn={(node) =>
-							CreateElementAnimation(node, dataItem?.data.animation.in)}
-						animationOut={(node) =>
-							CreateElementAnimation(node, dataItem?.data.animation.out)}
-						animationTrigger={dataItem.data.animation.trigger}
-						{edit}
-					>
-						<GridElements {dataItem} {edit} />
-					</AnimationLayer>
-				</div>
 			{:else}
 				<div class="w-full h-full" in:animateIn out:animateOut>
 					<AnimationLayer
