@@ -43,7 +43,7 @@
 		$eventEmitter.emit('electron', 'download-overlay', overlayId);
 	}
 
-	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}/layers`;
+	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
 	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
 </script>
 
@@ -59,7 +59,7 @@
 		<div class="w-full h-full grid grid-cols-8 px-16 justify-center">
 			<div class="w-full h-full col-span-3 grid justify-center content-center">
 				<Preview
-					src={localUrl}
+					src={`${localUrl}/layers`}
 					bind:boardWidth={boardWidthPreview}
 					bind:boardHeight={boardHeightPreview}
 				/>
@@ -89,7 +89,7 @@
 									External Url
 								</h1>
 								<Clipboard
-									text={externalUrl}
+									text={`${externalUrl}/preview`}
 									let:copy
 									on:copy={() => {
 										notifications.success('Copied to clipboard!', 2000);
@@ -108,7 +108,7 @@
 									Local Url
 								</h1>
 								<Clipboard
-									text={localUrl}
+									text={`${externalUrl}/preview`}
 									let:copy
 									on:copy={() => {
 										notifications.success('Copied to clipboard!', 2000);
@@ -138,7 +138,7 @@
 					/>
 				</div>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => {
 						isElementModalOpen = true;
 					}}

@@ -3,13 +3,14 @@
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import { page } from '$app/stores';
-	import type { Scene } from '$lib/models/types';
+	import type { Layer, Scene } from '$lib/models/types';
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
 	import { tick } from 'svelte';
 
 	export let boardHeight: number | undefined = undefined;
+	export let isLayerSpecific: boolean = false;
 	let curSceneIndex: LiveStatsScene | undefined = undefined;
 
 	const overlayId = $page.params.overlay;
@@ -47,8 +48,8 @@
 	$: curOverlay, getCurrentScene($statsScene);
 
 	// TODO: Utilize this
-	function getSceneLayers() {
-		return curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id));
+	function getSceneLayers(): Layer[] {
+		return curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id)) ?? [];
 	}
 
 	let innerHeight = 0;
@@ -71,7 +72,7 @@
 			>
 				<BoardContainer scene={curScene} />
 
-				{#each curScene?.layers ?? [] as layer, i}
+				{#each isLayerSpecific ? getSceneLayers() : curScene?.layers ?? [] as layer, i}
 					<div class="w-full h-full z-2 absolute">
 						<Grid
 							bind:items={layer.items}

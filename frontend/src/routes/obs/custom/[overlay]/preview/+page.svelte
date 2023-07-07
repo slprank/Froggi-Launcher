@@ -2,7 +2,7 @@
 	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
 </script>
 
-<MainOverlay isLayerSpecific={true} />
+<MainOverlay />
 
 <style>
 	:global(body) {
