@@ -189,12 +189,12 @@ export class ElectronJsonStore {
 	}
 
 	getGameState() {
-		return this.store.get("state.game.inGameState")
+		return this.store.get("stats.game.state")
 	}
 
 	setGameState(state: InGameState) {
 		if (state === this.getGameState()) return;
-		return this.store.set("state.game.inGameState", state)
+		return this.store.set("stats.game.state", state)
 	}
 
 	getGameSettings(): GameStartType {
@@ -411,7 +411,7 @@ export class ElectronJsonStore {
 		this.store.onDidChange(`stats.game.score`, async (value) => {
 			this.messageHandler.sendMessage('game_score', value);
 		})
-		this.store.onDidChange(`state.game.inGameState`, async (value) => {
+		this.store.onDidChange(`state.game.state`, async (value) => {
 			this.messageHandler.sendMessage('game_state', value);
 		})
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
