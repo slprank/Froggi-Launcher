@@ -15,6 +15,11 @@
 	// TODO: Add complete scenes
 
 	export function getNewOverlay(): Overlay {
+		const waitingForDolphinLayerId = newId();
+		const preGameId = newId();
+		const inGameId = newId();
+		const postGameId = newId();
+		const rankChangeId = newId();
 		return {
 			activeScenes: [
 				LiveStatsScene.WaitingForDolphin,
@@ -49,11 +54,11 @@
 				layerRenderDelay: 128,
 				layers: [
 					{
-						id: newId(),
+						id: waitingForDolphinLayerId,
 						items: [],
 					},
 				],
-				previewLayers: [],
+				previewLayers: [waitingForDolphinLayerId],
 			},
 			[LiveStatsScene.PreGame]: {
 				background: {
@@ -77,11 +82,11 @@
 				layerRenderDelay: 128,
 				layers: [
 					{
-						id: newId(),
+						id: preGameId,
 						items: [],
 					},
 				],
-				previewLayers: [],
+				previewLayers: [preGameId],
 			},
 			[LiveStatsScene.InGame]: {
 				background: {
@@ -105,11 +110,11 @@
 				layerRenderDelay: 128,
 				layers: [
 					{
-						id: newId(),
+						id: inGameId,
 						items: [],
 					},
 				],
-				previewLayers: [],
+				previewLayers: [inGameId],
 			},
 			[LiveStatsScene.PostGame]: {
 				background: {
@@ -133,11 +138,11 @@
 				layerRenderDelay: 128,
 				layers: [
 					{
-						id: newId(),
+						id: postGameId,
 						items: [],
 					},
 				],
-				previewLayers: [],
+				previewLayers: [postGameId],
 			},
 			[LiveStatsScene.RankChange]: {
 				background: {
@@ -161,11 +166,11 @@
 				layerRenderDelay: 128,
 				layers: [
 					{
-						id: newId(),
+						id: rankChangeId,
 						items: [],
 					},
 				],
-				previewLayers: [],
+				previewLayers: [rankChangeId],
 			},
 		} as Overlay;
 	}

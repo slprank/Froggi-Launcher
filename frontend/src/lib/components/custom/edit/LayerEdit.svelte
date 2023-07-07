@@ -21,7 +21,10 @@
 	async function newLayer() {
 		let tempOverlay = await getOverlayById(overlay.id);
 		if (!tempOverlay) return;
-		tempOverlay[$statsScene].layers.push({ id: newId(), items: [] });
+		const newLayerId = newId();
+		tempOverlay[$statsScene].layers.push({ id: newLayerId, items: [] });
+		tempOverlay[$statsScene].previewLayers.push(newLayerId);
+
 		const index = await getOverlayIndexById(overlay.id);
 		$obs.overlays[index] = tempOverlay;
 		setTimeout(() => {
