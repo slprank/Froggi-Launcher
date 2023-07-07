@@ -185,7 +185,7 @@
 							class={`w-full h-[50%] border bg-${i ? 'black' : 'white'} 'absolute'`}
 							style={`font-family: ${getCurrentOverlay()[$statsScene]?.font?.family}`}
 						>
-							<GridContent bind:demoItem forceDisplay={true} />
+							<GridContent bind:demoItem />
 						</div>
 					</div>
 				{/each}

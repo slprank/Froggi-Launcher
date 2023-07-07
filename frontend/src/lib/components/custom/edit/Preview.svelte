@@ -29,7 +29,7 @@
 		class={`outline outline-4 outline-zinc-700 overflow-hidden shadow-md my-2 relative`}
 	>
 		{#key boardWidth}
-			<div class="absolute w-full h-full">
+			<div class="w-full h-full absolute">
 				<iframe
 					allowtransparency={true}
 					{src}

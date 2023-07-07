@@ -12,13 +12,15 @@
 </script>
 
 {#if curOverlay && isFontLoaded}
-	<main
-		class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
-		in:fade={{ delay: 50, duration: 150 }}
-		out:fade={{ duration: 300 }}
-	>
-		<Board />
-	</main>
+	{#key $statsScene}
+		<main
+			class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
+			in:fade={{ delay: 50, duration: 150 }}
+			out:fade={{ duration: 300 }}
+		>
+			<Board />
+		</main>
+	{/key}
 {/if}
 {#if curOverlay}
 	{#key curOverlay[$statsScene]?.font}
@@ -30,4 +32,7 @@
 {/if}
 
 <style>
+	:global(body) {
+		background: transparent;
+	}
 </style>

@@ -43,7 +43,7 @@
 		$eventEmitter.emit('electron', 'download-overlay', overlayId);
 	}
 
-	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
+	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}/layers`;
 	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
 </script>
 
