@@ -13,6 +13,7 @@
 	import SceneEditModal from './SceneEditModal.svelte';
 	import Clipboard from 'svelte-clipboard';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import LayerScroll from '../preview/LayerToggle.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -56,16 +57,21 @@
 	out:fade={{ duration: 300 }}
 >
 	{#if overlay}
-		<div class="w-full h-full grid grid-cols-8 px-16 justify-center">
-			<div class="w-full h-full col-span-3 grid justify-center content-center">
-				<Preview
-					src={`${localUrl}/layers`}
-					bind:boardWidth={boardWidthPreview}
-					bind:boardHeight={boardHeightPreview}
-				/>
+		<div class="w-full h-full grid grid-cols-3 px-16 justify-center">
+			<div class="w-full h-full col-span-1 grid justify-center content-center">
+				<div class="w- full h-full grid">
+					<Preview
+						src={`${localUrl}/layers`}
+						bind:boardWidth={boardWidthPreview}
+						bind:boardHeight={boardHeightPreview}
+					/>
+					<LayerScroll src={`${localUrl}/layers`} />
+				</div>
 			</div>
 
-			<div class={`w-full h-full col-span-5 grid gap-2 justify-center content-center py-2`}>
+			<div
+				class={`w-full h-full col-span-2 grid gap-2 justify-center content-center py-2 overflow-x-scroll`}
+			>
 				<div class="grid gap-2">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
 					<div class="flex gap-2">
@@ -128,8 +134,8 @@
 					<SelectedEditor bind:selectedId bind:selectedLayer />
 				</div>
 				<div
-					style={`width: ${boardWidthEdit}px; height: ${boardHeightEdit}px`}
-					class={`w-[${boardWidthEdit}px] h-[${boardHeightEdit}px] outline outline-4 outline-zinc-700 overflow-hidden shadow-md`}
+					style={`width: ${boardWidthEdit}px; height: ${boardHeightEdit}px;`}
+					class={`outline outline-zinc-700 overflow-hidden shadow-md`}
 				>
 					<BoardEdit
 						bind:boardHeight={boardHeightEdit}

@@ -22,8 +22,7 @@
 	$: curScene?.layers.forEach((layer: any) => {
 		if (!layer) return;
 		layer?.items.forEach((item: any) => {
-			item[COL].draggable = false;
-			item[COL].resizable = false;
+			item[COL].fixed = true;
 		});
 	});
 
@@ -53,7 +52,22 @@
 	function getSceneLayers(): Layer[] {
 		console.log(layerId);
 		return layerId
-			? [curScene?.layers.find((layer) => layer.id === layerId)!]
+			? [curScene?.layers.find((layer) => layer.id === layerId)!].map((layer) => {
+					return {
+						...layer,
+						items: [
+							...layer.items.map((item) => {
+								return {
+									...item,
+									[COL]: {
+										...item[COL],
+										fixed: true,
+									},
+								};
+							}),
+						],
+					};
+			  })
 			: curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id)) ?? [];
 	}
 

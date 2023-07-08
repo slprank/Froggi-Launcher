@@ -26,7 +26,7 @@
 	{/if}
 	<div
 		style={`width: ${boardWidth}px; height: ${boardHeight}px`}
-		class={`outline outline-4 outline-zinc-700 overflow-hidden shadow-md my-2 relative`}
+		class={`outline outline-zinc-700 overflow-hidden shadow-md my-2 relative`}
 	>
 		{#key boardWidth}
 			<div class="w-full h-full absolute">
