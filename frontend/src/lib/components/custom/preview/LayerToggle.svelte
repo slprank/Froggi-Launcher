@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { fly } from 'svelte/transition';
 	import LayerDisplayRow from './LayerDisplayRow.svelte';
 
 	export let src: string;
@@ -18,7 +19,8 @@
 			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50"
 	>
 		<div
-			class="w-full h-20 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-3 justify-between items-center bg-black"
+			class="w-full h-12 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-3 justify-between items-center bg-black"
+			in:fly={{ duration: 750, x: 150, delay: 100 }}
 		>
 			<div class="col-span-1 grid justify-center">
 				<h1 class="text-lg font-bold text-white shadow-md no-w">Visible</h1>

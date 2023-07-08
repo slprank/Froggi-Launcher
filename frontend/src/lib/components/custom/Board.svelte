@@ -19,13 +19,6 @@
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
 	let curScene = getCurrentScene($statsScene);
 
-	$: curScene?.layers.forEach((layer: any) => {
-		if (!layer) return;
-		layer?.items.forEach((item: any) => {
-			item[COL].fixed = true;
-		});
-	});
-
 	const curSceneTrigger = () => {
 		curScene = getCurrentScene($statsScene);
 	};
@@ -52,23 +45,27 @@
 	function getSceneLayers(): Layer[] {
 		console.log(layerId);
 		return layerId
-			? [curScene?.layers.find((layer) => layer.id === layerId)!].map((layer) => {
-					return {
-						...layer,
-						items: [
-							...layer.items.map((item) => {
-								return {
-									...item,
-									[COL]: {
-										...item[COL],
-										fixed: true,
-									},
-								};
-							}),
-						],
-					};
-			  })
+			? [curScene?.layers.find((layer) => layer.id === layerId)!]
 			: curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id)) ?? [];
+	}
+
+	function getFixedLayerItems(layers: Layer[]): Layer[] {
+		return layers.map((layer) => {
+			return {
+				...layer,
+				items: [
+					...layer.items.map((item) => {
+						return {
+							...item,
+							[COL]: {
+								...item[COL],
+								customResizer: true,
+							},
+						};
+					}),
+				],
+			};
+		});
 	}
 
 	let innerHeight = 0;
@@ -91,10 +88,10 @@
 			>
 				<BoardContainer scene={curScene} />
 
-				{#each isLayerSpecific ? getSceneLayers() : curScene?.layers ?? [] as layer, i}
+				{#each getFixedLayerItems(isLayerSpecific ? getSceneLayers() : curScene?.layers ?? []) as layer, i}
 					<div class="w-full h-full z-2 absolute">
 						<Grid
-							bind:items={layer.items}
+							items={layer.items}
 							bind:rowHeight
 							gap={[0, 0]}
 							let:dataItem

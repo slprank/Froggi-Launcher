@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Layer } from '$lib/models/types';
+	import { fly } from 'svelte/transition';
 	import NonInteractiveIFrame from './NonInteractiveIFrame.svelte';
 
 	export let layer: Layer;
@@ -10,6 +11,7 @@
 {#if layer}
 	<div
 		class="w-full h-20 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-3 justify-between items-center bg-black"
+		in:fly={{ duration: 750, delay: 100 * layerNumber, x: 150 }}
 	>
 		<div class="col-span-1 grid justify-center">
 			<input type="checkbox" class="w-12 h-12" />
