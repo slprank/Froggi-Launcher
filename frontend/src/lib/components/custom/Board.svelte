@@ -13,13 +13,15 @@
 	export let isLayerSpecific: boolean = false;
 	let curSceneIndex: LiveStatsScene | undefined = undefined;
 
-	const overlayId = $page.params.overlay;
+	const overlayId: string | undefined = $page.params.overlay;
+	const layerId: string | undefined = $page.params.layerId;
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
 	let curScene = getCurrentScene($statsScene);
 
 	$: curScene?.layers.forEach((layer: any) => {
-		layer.items.forEach((item: any) => {
+		if (!layer) return;
+		layer?.items.forEach((item: any) => {
 			item[COL].draggable = false;
 			item[COL].resizable = false;
 		});
@@ -49,7 +51,10 @@
 
 	// TODO: Utilize this
 	function getSceneLayers(): Layer[] {
-		return curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id)) ?? [];
+		console.log(layerId);
+		return layerId
+			? [curScene?.layers.find((layer) => layer.id === layerId)!]
+			: curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id)) ?? [];
 	}
 
 	let innerHeight = 0;
