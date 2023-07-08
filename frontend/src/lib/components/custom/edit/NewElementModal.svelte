@@ -119,7 +119,6 @@
 
 	function edit() {
 		let items = getCurrentItems();
-		console.log('items', items);
 		let prevItem = items.find((item) => item.id === selectedId);
 
 		let newItem = {

@@ -54,8 +54,6 @@
 	}
 	$: overlay.default, enableDefault();
 
-	$: console.log(curScene);
-
 	let autofocus: number = 0;
 </script>
 

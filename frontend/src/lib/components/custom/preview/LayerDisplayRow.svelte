@@ -1,11 +1,35 @@
 <script lang="ts">
-	import type { Layer } from '$lib/models/types';
+	import type { Layer, Overlay } from '$lib/models/types';
 	import { fly } from 'svelte/transition';
 	import NonInteractiveIFrame from './NonInteractiveIFrame.svelte';
+	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 
+	export let curOverlay: Overlay;
 	export let layer: Layer;
 	export let layerNumber: number;
+	export let previewLayers: string[];
 	export let src: string;
+
+	let isChecked = previewLayers?.includes(layer.id) ?? false;
+
+	const updateOverlay = () => {
+		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
+	};
+
+	const handleChecked = () => {
+		if (isChecked) curOverlay[$statsScene].previewLayers.push(layer.id);
+		if (!isChecked) {
+			curOverlay[$statsScene].previewLayers = curOverlay[$statsScene].previewLayers.filter(
+				(layerId) => layerId !== layer.id,
+			);
+		}
+		updateOverlay();
+	};
+
+	const updateCheck = () => {
+		isChecked = previewLayers?.includes(layer.id) ?? false;
+	};
+	$: $statsScene, updateCheck();
 </script>
 
 {#if layer}
@@ -14,7 +38,12 @@
 		in:fly={{ duration: 750, delay: 100 * layerNumber, x: 150 }}
 	>
 		<div class="col-span-1 grid justify-center">
-			<input type="checkbox" class="w-12 h-12" />
+			<input
+				type="checkbox"
+				class="w-12 h-12"
+				bind:checked={isChecked}
+				on:change={handleChecked}
+			/>
 		</div>
 
 		<div class="col-span-1 grid justify-center">

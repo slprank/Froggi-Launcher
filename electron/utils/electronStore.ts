@@ -411,7 +411,8 @@ export class ElectronJsonStore {
 		this.store.onDidChange(`stats.game.score`, async (value) => {
 			this.messageHandler.sendMessage('game_score', value);
 		})
-		this.store.onDidChange(`state.game.state`, async (value) => {
+		this.store.onDidChange(`stats.game.state`, async (value) => {
+			console.log("state", value)
 			this.messageHandler.sendMessage('game_state', value);
 		})
 		this.store.onDidChange(`stats.game.stats`, async (value) => {

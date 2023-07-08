@@ -43,18 +43,17 @@
 
 	// TODO: Utilize this
 	function getSceneLayers(): Layer[] {
-		console.log(layerId);
 		return layerId
 			? [curScene?.layers.find((layer) => layer.id === layerId)!]
 			: curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id)) ?? [];
 	}
 
 	function getFixedLayerItems(layers: Layer[]): Layer[] {
-		return layers.map((layer) => {
+		return layers?.map((layer) => {
 			return {
 				...layer,
 				items: [
-					...layer.items.map((item) => {
+					...layer?.items.map((item) => {
 						return {
 							...item,
 							[COL]: {

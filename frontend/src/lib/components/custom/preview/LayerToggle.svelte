@@ -6,13 +6,13 @@
 
 	export let src: string;
 	const overlayId: string | undefined = $page.params.overlay;
-	const layerId: string | undefined = $page.params.layerId;
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay[$statsScene].layers : undefined;
+	$: previewLayers = curOverlay ? curOverlay[$statsScene].previewLayers : undefined;
 </script>
 
-{#if layers}
+{#if layers && previewLayers && curOverlay}
 	<div
 		class="w-full h-full max-h-48 outline outline-zinc-700 overflow-y-scroll
 			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		{#each layers as layer, i}
-			<LayerDisplayRow {src} {layer} layerNumber={i + 1} />
+			<LayerDisplayRow {curOverlay} {src} {layer} layerNumber={i + 1} {previewLayers} />
 		{/each}
 	</div>
 {/if}
