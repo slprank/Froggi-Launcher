@@ -6,7 +6,7 @@
 	import PlayerPercent from '$lib/components/custom/element/PlayerPercent.svelte';
 
 	export let dataItem: GridContentItem;
-	export let edit: boolean;
+	export let edit: boolean = false;
 
 	$: classValue = Object.entries(dataItem?.data.class ?? {})
 		.map(([_, value]) => `${value}`)

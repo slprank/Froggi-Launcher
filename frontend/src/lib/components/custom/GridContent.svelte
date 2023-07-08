@@ -65,11 +65,20 @@
 		return animation(node);
 	};
 
+	$: isGameRunning = $gameState === InGameState.Running;
+	$: isGamePaused = $gameState === InGameState.Paused;
+
+	$: display =
+		edit ||
+		dataItem?.data.pauseOption === ElementPauseOption.Always ||
+		(isGameRunning && dataItem?.data.pauseOption === ElementPauseOption.OnlyActive) ||
+		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);
+
 	// TODO: Add remaining components
 	// TODO: Add fallback to unknown player - img, name, etc
 </script>
 
-{#if dataItem}
+{#if dataItem && display}
 	<div class="custom-font h-full w-full relative">
 		<div
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
@@ -89,7 +98,7 @@
 						animationTrigger={dataItem.data.animation.trigger}
 						{edit}
 					>
-						<GridElements {dataItem} {edit} />
+						<GridElements {dataItem} />
 					</AnimationLayer>
 				</div>
 			{/if}

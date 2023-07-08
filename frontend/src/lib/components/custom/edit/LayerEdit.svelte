@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Overlay } from '$lib/models/types';
 	import Select from '$lib/components/input/Select.svelte';
-	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import { getContext } from 'svelte';
 	import {
@@ -15,6 +15,10 @@
 	export let overlay: Overlay;
 	export let selectedLayer: number | undefined;
 	$: curScene = overlay[$statsScene];
+
+	$eventEmitter.on('change_layer', (layerIndex: number) => {
+		selectedLayer = layerIndex;
+	});
 
 	// TODO: Add confirm on remove
 

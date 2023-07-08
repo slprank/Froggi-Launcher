@@ -6,9 +6,11 @@
 
 	export let curOverlay: Overlay;
 	export let layer: Layer;
-	export let layerNumber: number;
+	export let layerIndex: number;
 	export let previewLayers: string[];
 	export let src: string;
+
+	export let handleClick: Function;
 
 	let isChecked = previewLayers?.includes(layer.id) ?? false;
 
@@ -34,10 +36,12 @@
 
 {#if layer}
 	<div
-		class="w-full h-20 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-3 justify-between items-center bg-black"
-		in:fly={{ duration: 750, delay: 100 * layerNumber, x: 150 }}
+		class="w-full h-22 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-10 justify-between items-center bg-black"
 	>
-		<div class="col-span-1 grid justify-center">
+		<div
+			class="col-span-3 grid justify-center"
+			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 150 }}
+		>
 			<input
 				type="checkbox"
 				class="w-12 h-12"
@@ -46,19 +50,26 @@
 			/>
 		</div>
 
-		<div class="col-span-1 grid justify-center">
-			<div class="h-16 aspect-video rounded-sm border border-zinc-700">
+		<div
+			class="col-span-4 grid justify-center"
+			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 150 }}
+		>
+			<div class="h-16 aspect-video rounded-sm">
 				<NonInteractiveIFrame
-					class="h-16 w-full"
+					class="h-16 w-full border border-zinc-700"
 					src={`${src}/${layer.id}`}
 					title={`layer-${layer.id}`}
 				/>
 			</div>
 		</div>
-		<div class="col-span-1 grid justify-center">
-			<h1 class="text-lg font-bold text-white shadow-md no-w">
-				{layerNumber}
-			</h1>
-		</div>
+		<button
+			class="w-full h-full col-span-3 grid justify-center text-lg font-bold text-white shadow-md no-w"
+			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 150 }}
+			on:click={() => handleClick(layerIndex)}
+		>
+			<div class="w-full h-full grid justify-center items-center text-[1.5em]">
+				{layerIndex + 1}
+			</div>
+		</button>
 	</div>
 {/if}
