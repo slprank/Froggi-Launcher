@@ -14,6 +14,7 @@
 	import Clipboard from 'svelte-clipboard';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import LayerScroll from '../preview/LayerToggle.svelte';
+	import PreviewModal from './PreviewModal.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -23,12 +24,7 @@
 
 	let isElementModalOpen = false;
 	let isSceneModalOpen = false;
-
-	$: innerWidth = 400;
-	$: boardWidthEdit = Math.floor(((innerWidth - 160) / 3) * 2);
-	$: boardHeightEdit = Math.floor((boardWidthEdit / 16) * 9);
-	$: boardWidthPreview = Math.floor((innerWidth - 160) / 3);
-	$: boardHeightPreview = Math.floor((boardWidthPreview / 16) * 9);
+	let isPreviewModalOpen = false;
 
 	function resetSelectedLayer() {
 		selectedLayer = 0;
@@ -46,6 +42,15 @@
 
 	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
 	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
+
+	$: displayPreview = innerWidth > 1100;
+	$: gridCols = displayPreview ? 3 : 2;
+
+	$: innerWidth = 400;
+	$: boardWidthEdit = Math.floor(((innerWidth - 160) / gridCols) * 2);
+	$: boardHeightEdit = Math.floor((boardWidthEdit / 16) * 9);
+	$: boardWidthPreview = Math.floor((innerWidth - 160) / gridCols);
+	$: boardHeightPreview = Math.floor((boardWidthPreview / 16) * 9);
 </script>
 
 <svelte:window bind:innerWidth />
@@ -57,17 +62,22 @@
 	out:fade={{ duration: 300 }}
 >
 	{#if overlay}
-		<div class="w-full h-full grid grid-cols-3 px-16 justify-center">
-			<div class="w-full h-full col-span-1 grid justify-center content-center">
-				<div class="w- full h-full grid">
-					<Preview
-						src={`${localUrl}/layers`}
-						bind:boardWidth={boardWidthPreview}
-						bind:boardHeight={boardHeightPreview}
-					/>
-					<LayerScroll src={`${localUrl}/layers`} />
+		<div
+			class={`w-full h-full grid px-16 justify-center`}
+			style={`grid-template-columns: repeat(${gridCols}, minmax(0, 1fr));`}
+		>
+			{#if displayPreview}
+				<div class="w-full h-full col-span-1 grid justify-center content-center">
+					<div class="w- full h-full grid">
+						<Preview
+							src={`${localUrl}/layers`}
+							bind:boardWidth={boardWidthPreview}
+							bind:boardHeight={boardHeightPreview}
+						/>
+						<LayerScroll src={`${localUrl}/layers`} />
+					</div>
 				</div>
-			</div>
+			{/if}
 
 			<div
 				class={`w-full h-full col-span-2 grid gap-2 justify-center content-center py-2 overflow-x-scroll`}
@@ -88,6 +98,12 @@
 							on:click={downloadOverlay}
 						>
 							Share
+						</button>
+						<button
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
+							on:click={() => (isPreviewModalOpen = true)}
+						>
+							Preview
 						</button>
 						<div class="grid grid-flow-row">
 							<div class="flex items-center gap-2">
@@ -157,4 +173,5 @@
 		<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />
 		<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 	{/if}
+	<PreviewModal bind:open={isPreviewModalOpen} {localUrl} {externalUrl} />
 </main>

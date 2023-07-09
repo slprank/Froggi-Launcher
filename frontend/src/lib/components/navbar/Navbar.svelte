@@ -113,7 +113,7 @@
 				}`}
 			>
 				<div
-					class={`grid grid-cols-5 justify-center content-center place-items-center divide-x divide-zinc-800 w-screen ${
+					class={`grid grid-cols-6 justify-center content-center place-items-center divide-x divide-zinc-800 w-screen ${
 						$isMobile ? 'max-w-lg' : 'max-w-xl'
 					}`}
 				>
@@ -131,6 +131,9 @@
 					</NavButton>
 					<NavButton click={() => goto('/profile')}>
 						<img src="/image/button-icons/profile.png" alt="profile" />
+					</NavButton>
+					<NavButton click={() => goto('/obs/custom')}>
+						<img src="/image/button-icons/obs.png" alt="obs" />
 					</NavButton>
 				</div>
 			</div>

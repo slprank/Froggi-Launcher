@@ -62,7 +62,7 @@
 		place-items: center;
 	}
 	aside {
-		background-color: white;
+		background-color: transparent;
 	}
 	div {
 		position: absolute;

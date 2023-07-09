@@ -12,8 +12,7 @@
 	$: previewLayers = curOverlay ? curOverlay[$statsScene].previewLayers : undefined;
 
 	const handleClick = (layerIndex: number) => {
-		console.log(layerIndex);
-		$eventEmitter.emit('change_layer', layerIndex);
+		$eventEmitter.emit('layer_change', layerIndex);
 	};
 </script>
 
