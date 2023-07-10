@@ -15,7 +15,7 @@
 
 {#if curOverlay && isFontLoaded}
 	<main
-		class="fixed h-screen w-screen bg-cover bg-center bg-transparent"
+		class="fixed h-full w-full bg-cover bg-center bg-transparent"
 		in:fade={{ delay: 50, duration: 150 }}
 		out:fade={{ duration: 300 }}
 	>

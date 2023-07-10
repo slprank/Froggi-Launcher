@@ -158,8 +158,8 @@ try {
 
 	function setLoggingPath() {
 		try {
-			const slippiAppDataPath = getAppDataPath("Slippi Launcher");
-			log.transports.file.resolvePath = () => path.join(`${slippiAppDataPath}/slpRankClient.log`);
+			const appDataPath = getAppDataPath("slp-rank-client");
+			log.transports.file.resolvePath = () => path.join(`${appDataPath}/slpRankClient.log`);
 		} catch (err) {
 			log.error(err)
 		}

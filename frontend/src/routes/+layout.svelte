@@ -32,15 +32,22 @@
 
 	function initElectronEvents() {
 		console.log('Initializing electron');
-		$eventEmitter.on('electron', (topic, payload) => {
-			console.log('Sending message..', topic, payload);
-			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
-		});
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
 				$eventEmitter.emit(key, value);
 			}
+		});
+		$eventEmitter.on('electron', (topic, payload) => {
+			console.log('Sending electron message..', topic, payload);
+			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
+		});
+		$eventEmitter.on('global', (topic, payload) => {
+			console.log('Sending global message..', topic, payload);
+			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
+		});
+		$eventEmitter.on('local', (topic, payload) => {
+			$eventEmitter.emit(topic, payload);
 		});
 	}
 

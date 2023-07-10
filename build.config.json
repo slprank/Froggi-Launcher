@@ -23,7 +23,7 @@
 		"target": ["default"],
 		"extraResources": ["res", "favicon.png"]
 	},
-	"executableName": "slp-rank-client",
+	"executableName": "Slp Client",
 	"files": [
 		"build",
 		"build_electron",

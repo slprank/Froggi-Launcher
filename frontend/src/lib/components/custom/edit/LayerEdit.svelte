@@ -16,7 +16,8 @@
 	export let selectedLayer: number | undefined;
 	$: curScene = overlay[$statsScene];
 
-	$eventEmitter.on('layer_change', (layerIndex: number) => {
+	$eventEmitter.on('edit_layer_preview', (layerIndex: number) => {
+		console.log('here');
 		selectedLayer = layerIndex;
 	});
 

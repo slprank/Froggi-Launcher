@@ -10,9 +10,11 @@
 	export let previewLayers: string[];
 	export let src: string;
 
-	export let handleClick: Function;
-
 	let isChecked = previewLayers?.includes(layer.id) ?? false;
+
+	const changeEditLayer = (layerIndex: number) => {
+		$eventEmitter.emit('electron', 'edit_layer_preview', layerIndex);
+	};
 
 	const updateOverlay = () => {
 		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
@@ -64,8 +66,7 @@
 		</div>
 		<button
 			class="w-full h-full col-span-3 grid justify-center text-lg font-bold text-white shadow-md no-w"
-			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 150 }}
-			on:click={() => handleClick(layerIndex)}
+			on:click={() => changeEditLayer(layerIndex)}
 		>
 			<div class="w-full h-full grid justify-center items-center text-[1.5em]">
 				{layerIndex + 1}

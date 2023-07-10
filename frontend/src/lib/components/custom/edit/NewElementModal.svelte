@@ -86,7 +86,7 @@
 
 	function getCurrentOverlayIndex() {
 		const overlay = getCurrentOverlay();
-		return $obs.overlays.indexOf(overlay);
+		return $obs?.overlays.indexOf(overlay);
 	}
 
 	function getCurrentItems() {

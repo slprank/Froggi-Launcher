@@ -12,7 +12,7 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-full h-72 min-w-72 max-w-[612px] grid grid-cols-2 rounded-lg bg-transparent m-0"
+		class="w-full h-72 min-w-72 max-w-[612px] grid grid-cols-2 rounded-lg bg-transparent m-0 bg-cover bg-center"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="col-span-1 place-items-center grid">
@@ -21,7 +21,7 @@
 					Open Preview In New Window
 				</h1>
 			</div>
-			<a target="popup" href={`${localUrl}/preview`}>
+			<a target="popup" href={`${localUrl}/layers/external`}>
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
 				>
@@ -35,7 +35,7 @@
 				<div class="w-full flex">
 					<h1 class="text-gray-500 text-md font-medium text-shadow">External device</h1>
 					<Clipboard
-						text={`${$urls?.external}/preview`}
+						text={`${localUrl}/layers/external`}
 						let:copy
 						on:copy={() => {
 							notifications.success('Copied to clipboard!', 2000);

@@ -13,7 +13,7 @@
 	import SceneEditModal from './SceneEditModal.svelte';
 	import Clipboard from 'svelte-clipboard';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import LayerScroll from '../preview/LayerToggle.svelte';
+	import LayerToggle from '../preview/LayerToggle.svelte';
 	import PreviewModal from './PreviewModal.svelte';
 
 	const overlayId = $page.params.overlay;
@@ -59,7 +59,6 @@
 	class="fixed h-screen w-screen bg-cover bg-center"
 	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	in:fade={{ delay: 50, duration: 150 }}
-	out:fade={{ duration: 300 }}
 >
 	{#if overlay}
 		<div
@@ -68,13 +67,15 @@
 		>
 			{#if displayPreview}
 				<div class="w-full h-full col-span-1 grid justify-center content-center">
-					<div class="w- full h-full grid">
+					<div class="w-full h-full grid">
 						<Preview
 							src={`${localUrl}/layers`}
 							bind:boardWidth={boardWidthPreview}
 							bind:boardHeight={boardHeightPreview}
 						/>
-						<LayerScroll src={`${localUrl}/layers`} />
+						<div class="w-full h-80">
+							<LayerToggle src={`${localUrl}/layers`} />
+						</div>
 					</div>
 				</div>
 			{/if}

@@ -53,7 +53,8 @@ export class MessageHandler {
 		this.initElectronMessageHandler();
 		this.initHtml();
 		this.initWebSocket();
-		this.initEventHandlers();
+		this.initEventHandlers()
+		this.initGlobalEventListeners();
 	}
 
 	initHtml() {
@@ -81,9 +82,7 @@ export class MessageHandler {
 
 	initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
-			let parse = JSON.parse(data);
-			// console.log(parse);
-			for (const [key, value] of Object.entries(parse)) {
+			let parse = JSON.parse(data); for (const [key, value] of Object.entries(parse)) {
 				this.eventEmitter.emit(key, value);
 			}
 		});
@@ -114,13 +113,13 @@ export class MessageHandler {
 	}
 
 	async sendMessage(topic: string, payload: any) {
-		await this.mainWindow.webContents.send(
+		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
 				[topic]: payload,
 			}),
 		);
-		await this.webSockets.forEach((socket: any) => {
+		this.webSockets.forEach((socket: any) => {
 			socket.send(
 				JSON.stringify({
 					[topic]: payload,
@@ -205,6 +204,13 @@ export class MessageHandler {
 			if (canceled) return;
 			const overlay = fs.readFileSync(filePaths[0], 'utf8');
 			this.store.uploadCustomOverlay(JSON.parse(overlay));
+		});
+	}
+
+	initGlobalEventListeners() {
+		this.eventEmitter.on('edit_layer_preview', async (layerIndex) => {
+			console.log("change", layerIndex)
+			this.sendMessage("edit_layer_preview", layerIndex)
 		});
 	}
 }
