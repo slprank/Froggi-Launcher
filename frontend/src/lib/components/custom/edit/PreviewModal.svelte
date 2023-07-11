@@ -1,13 +1,16 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { urls } from '$lib/utils/store.svelte';
 	import Clipboard from 'svelte-clipboard';
 	import QrCode from 'svelte-qrcode';
 
+	const overlayId = $page.params.overlay;
+	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}/preview/external`;
+	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}/preview/external`;
+
 	export let open: boolean = false;
-	export let localUrl: string;
-	export let externalUrl: string;
 </script>
 
 <Modal bind:open on:close={() => (open = false)}>
@@ -21,7 +24,7 @@
 					Open Preview In New Window
 				</h1>
 			</div>
-			<a target="popup" href={`${localUrl}/layers/external`}>
+			<a target="popup" href={`${localUrl}`}>
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
 				>
@@ -31,11 +34,11 @@
 		</div>
 		<div class="col-span-1 place-items-center grid rounded-md">
 			<div class="w-48 h-48 border-4 border-zinc-700 text-center grid gap-2">
-				<QrCode value={externalUrl} size="192" />
+				<QrCode value={`${externalUrl}`} size="192" />
 				<div class="w-full flex">
 					<h1 class="text-gray-500 text-md font-medium text-shadow">External device</h1>
 					<Clipboard
-						text={`${localUrl}/layers/external`}
+						text={`${externalUrl}`}
 						let:copy
 						on:copy={() => {
 							notifications.success('Copied to clipboard!', 2000);

@@ -3,11 +3,14 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { getOverlayById } from './OverlayHandler.svelte';
 	import type { Overlay } from '$lib/models/types';
+	import { isElectron, urls } from '$lib/utils/store.svelte';
 
-	const overlayId = $page.params.overlay;
 	export let boardHeight: number;
 	export let boardWidth: number;
-	export let src: string;
+
+	const overlayId = $page.params.overlay;
+	$: src = `${$isElectron ? $urls?.local : $urls.local}/obs/custom/${overlayId}/layers`;
+
 	let currentOverlay: Overlay;
 
 	async function getOverlay() {

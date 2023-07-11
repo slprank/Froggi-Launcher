@@ -69,12 +69,11 @@
 				<div class="w-full h-full col-span-1 grid justify-center content-center">
 					<div class="w-full h-full grid">
 						<Preview
-							src={`${localUrl}/layers`}
 							bind:boardWidth={boardWidthPreview}
 							bind:boardHeight={boardHeightPreview}
 						/>
 						<div class="w-full h-80">
-							<LayerToggle src={`${localUrl}/layers`} />
+							<LayerToggle />
 						</div>
 					</div>
 				</div>
@@ -174,5 +173,5 @@
 		<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />
 		<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 	{/if}
-	<PreviewModal bind:open={isPreviewModalOpen} {localUrl} {externalUrl} />
+	<PreviewModal bind:open={isPreviewModalOpen} />
 </main>

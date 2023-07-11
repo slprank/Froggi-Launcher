@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
 	import { fly, blur, fade } from 'svelte/transition';
 	import LayerDisplayRow from './LayerDisplayRow.svelte';
 
-	export let src: string;
 	const overlayId: string | undefined = $page.params.overlay;
+	$: src = `${$isElectron ? $urls?.local : $urls.local}/obs/custom/${overlayId}/layers`;
 
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay[$statsScene].layers : undefined;
