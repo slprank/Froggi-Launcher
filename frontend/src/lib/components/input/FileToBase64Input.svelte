@@ -7,7 +7,7 @@
 			base64 = `${e.target!.result}`;
 		};
 	};
-	export let label: string | undefined;
+	export let label: string | undefined = undefined;
 	export let base64: string | undefined;
 	export let acceptedExtensions: string | undefined = undefined;
 </script>

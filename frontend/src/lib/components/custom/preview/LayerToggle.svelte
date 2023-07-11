@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { eventEmitter, isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
+	import { isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
 	import { fly, blur, fade } from 'svelte/transition';
 	import LayerDisplayRow from './LayerDisplayRow.svelte';
 
