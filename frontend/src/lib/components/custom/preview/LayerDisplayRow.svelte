@@ -10,7 +10,7 @@
 	export let previewLayers: string[];
 	export let src: string;
 
-	$: isChecked = previewLayers?.includes(layer.id) ?? false;
+	let isChecked = previewLayers?.includes(layer.id) ?? false;
 
 	const changeEditLayer = (layerIndex: number) => {
 		$eventEmitter.emit('electron', 'edit_layer_preview', layerIndex);
@@ -33,7 +33,7 @@
 	const updateCheck = () => {
 		isChecked = previewLayers?.includes(layer.id) ?? false;
 	};
-	$: $statsScene, updateCheck();
+	$: $statsScene, previewLayers, updateCheck();
 </script>
 
 {#if layer}

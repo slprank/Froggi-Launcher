@@ -14,14 +14,12 @@
 
 {#if layers && previewLayers && curOverlay}
 	<div
-		class={`w-full h-full outline outline-zinc-700 overflow-y-scroll ${
-			$isElectron ? '' : 'pb-10'
-		} 
+		class={`w-full h-full border-2 border-zinc-700 overflow-y-scroll 
 			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25
 			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50`}
 	>
 		<div
-			class="w-full h-12 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-10 justify-between items-center bg-black"
+			class="w-full h-12 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-10 justify-between bg-black"
 		>
 			<div
 				class="col-span-3 grid justify-center"

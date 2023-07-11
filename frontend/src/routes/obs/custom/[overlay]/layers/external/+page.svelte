@@ -19,11 +19,11 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 {#if isVerticalScreen}
-	<div class="grid grid-flow-row">
-		<div class="w-full aspect-video">
+	<div class="grid grid-flow-row h-screen items-start">
+		<div class="w-full aspect-video border-2">
 			<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
 		</div>
-		<div class="w-full h-full pb-10">
+		<div class="w-full full">
 			<LayerToggle />
 		</div>
 	</div>
