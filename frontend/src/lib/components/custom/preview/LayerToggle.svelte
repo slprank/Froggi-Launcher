@@ -5,7 +5,7 @@
 	import LayerDisplayRow from './LayerDisplayRow.svelte';
 
 	const overlayId: string | undefined = $page.params.overlay;
-	$: src = `${$isElectron ? $urls?.local : $urls.local}/obs/custom/${overlayId}/layers`;
+	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
 
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay[$statsScene].layers : undefined;
@@ -14,9 +14,11 @@
 
 {#if layers && previewLayers && curOverlay}
 	<div
-		class="w-full h-full outline outline-zinc-700 overflow-y-scroll
+		class={`w-full h-full outline outline-zinc-700 overflow-y-scroll ${
+			$isElectron ? '' : 'pb-10'
+		} 
 			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25
-			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50"
+			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50`}
 	>
 		<div
 			class="w-full h-12 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-10 justify-between items-center bg-black"

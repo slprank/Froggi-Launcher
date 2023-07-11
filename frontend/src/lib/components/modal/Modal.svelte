@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { isIframe } from '$lib/utils/store.svelte';
 	import { stringify } from 'postcss';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
@@ -39,20 +40,22 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-{#if open}
-	<div use:modalAction transition:fade={{ duration: 200 }} class="w-screen h-screen z-50">
-		<section class="w-full h-full">
-			<aside
-				in:fly={{ duration: 200, y: 100 }}
-				out:fade={{ duration: 200 }}
-				use:clickOutside
-				on:click_outside={handleCloseClick}
-				class={`${_class}`}
-			>
-				<slot />
-			</aside>
-		</section>
-	</div>
+{#if !$isIframe}
+	{#if open}
+		<div use:modalAction transition:fade={{ duration: 200 }} class="w-screen h-screen z-50">
+			<section class="w-full h-full">
+				<aside
+					in:fly={{ duration: 200, y: 100 }}
+					out:fade={{ duration: 200 }}
+					use:clickOutside
+					on:click_outside={handleCloseClick}
+					class={`${_class}`}
+				>
+					<slot />
+				</aside>
+			</section>
+		</div>
+	{/if}
 {/if}
 
 <style>

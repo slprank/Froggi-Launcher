@@ -12,7 +12,8 @@
 	$: isVerticalScreen = innerHeight > innerWidth;
 	$: isHorizontalScreen = !isVerticalScreen;
 
-	$: src = `${$isElectron ? $urls?.external : $urls?.local}/obs/custom/${overlayId}/layers`;
+	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
+	$: console.log('src', src);
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -23,7 +24,7 @@
 			<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
 		</div>
 		<div class="w-full h-full pb-10">
-			<LayerToggle {src} />
+			<LayerToggle />
 		</div>
 	</div>
 {/if}

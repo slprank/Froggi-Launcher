@@ -98,10 +98,9 @@ export class ElectronJsonStore {
 	}
 
 	getLocalUrl(): Url {
-		let urls = {} as Url;
-		urls.local = `http://localhost:3200`;
-		urls.external = `http://${ip.address()}:3200`;
-		return urls;
+		return {
+			local: `http://localhost:3200`, external: `http://${ip.address()}:3200`
+		};
 	}
 
 	// CUSTOM OVERLAY

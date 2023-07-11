@@ -10,7 +10,7 @@
 	export let previewLayers: string[];
 	export let src: string;
 
-	let isChecked = previewLayers?.includes(layer.id) ?? false;
+	$: isChecked = previewLayers?.includes(layer.id) ?? false;
 
 	const changeEditLayer = (layerIndex: number) => {
 		$eventEmitter.emit('electron', 'edit_layer_preview', layerIndex);

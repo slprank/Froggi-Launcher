@@ -130,7 +130,7 @@
 									Local Url
 								</h1>
 								<Clipboard
-									text={`${externalUrl}/preview`}
+									text={`${localUrl}/preview`}
 									let:copy
 									on:copy={() => {
 										notifications.success('Copied to clipboard!', 2000);

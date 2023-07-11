@@ -1,7 +1,14 @@
 <script lang="ts">
 	import NavButton from '$lib/components/navbar/NavButton.svelte';
 	import { fly } from 'svelte/transition';
-	import { isBrowser, isDesktop, isElectron, isMobile, isTablet } from '$lib/utils/store.svelte';
+	import {
+		isBrowser,
+		isDesktop,
+		isElectron,
+		isIframe,
+		isMobile,
+		isTablet,
+	} from '$lib/utils/store.svelte';
 	import { goto } from '$app/navigation';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Mobile from '$lib/components/modal/electron/Mobile.svelte';
@@ -23,7 +30,7 @@
 	}
 
 	let visibilityTimer: NodeJS.Timeout;
-	$: isVisible = $isMobile ? true : false;
+	$: isVisible = $isMobile && !$isIframe;
 	startVisibilityTimer();
 
 	let isMobileOpen: boolean;
@@ -140,6 +147,7 @@
 		{/if}
 	{/if}
 </div>
+
 <Modal
 	bind:open={isMobileOpen}
 	on:close={() => (isMobileOpen = false)}

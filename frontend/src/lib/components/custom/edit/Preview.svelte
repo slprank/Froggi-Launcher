@@ -9,7 +9,7 @@
 	export let boardWidth: number;
 
 	const overlayId = $page.params.overlay;
-	$: src = `${$isElectron ? $urls?.local : $urls.local}/obs/custom/${overlayId}/layers`;
+	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
 
 	let currentOverlay: Overlay;
 

@@ -9,11 +9,13 @@
 	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import { isBrowser, isElectron, isPWA, eventEmitter } from '$lib/utils/store.svelte';
+	import { isBrowser, isElectron, isPWA, eventEmitter, isIframe } from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { initEventListener } from '$lib/utils/initEventListener.svelte';
+
+	$: console.log('iframe', $isIframe);
 
 	function initDevices() {
 		if ($isBrowser) {
