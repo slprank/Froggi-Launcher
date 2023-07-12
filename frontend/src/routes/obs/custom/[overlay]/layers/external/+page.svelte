@@ -32,7 +32,7 @@
 
 {#if isVerticalScreen}
 	<div
-		class={`grid grid-flow-row bg-cover bg-center items-start}`}
+		class={`flex flex-col bg-cover bg-center items-start`}
 		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png'); padding-bottom: ${
 			$isMobile ? '5' : '4'
 		}em`}
@@ -69,7 +69,7 @@
 				</button>
 			</div>
 		</div>
-		<div class={`w-full h-full max-h-full overflow-y-scroll`}>
+		<div class={`w-full h-full overflow-y-scroll`}>
 			<LayerToggle />
 		</div>
 	</div>
