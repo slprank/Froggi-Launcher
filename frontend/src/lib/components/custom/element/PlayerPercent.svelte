@@ -16,7 +16,7 @@
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
 
-	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : 0;
+	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
 
 	let decimals =
 		numberOfDecimals && isInGame
@@ -30,11 +30,7 @@
 		var startColor = '#ffffff'; // Replace with your desired start color
 		var endColor = '#6f1622'; // Replace with your desired end color
 
-		percentageColor = interpolateColors(
-			startColor,
-			endColor,
-			parseInt(frame?.percent?.toFixed() ?? '0'),
-		); // Call the function to interpolate the colors
+		percentageColor = interpolateColors(startColor, endColor, parseInt(framePercent)); // Call the function to interpolate the colors
 	};
 	$: frame?.percent, updateColor();
 

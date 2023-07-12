@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
 	import LayerToggle from '$lib/components/custom/preview/LayerToggle.svelte';
 	import NonInteractiveIFrame from '$lib/components/custom/preview/NonInteractiveIFrame.svelte';
-	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
-	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
 	import { isElectron, isMobile, urls } from '$lib/utils/store.svelte';
 
