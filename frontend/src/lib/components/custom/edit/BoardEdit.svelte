@@ -91,7 +91,7 @@
 				style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
 				class="w-full h-full overflow-hidden relative"
 			>
-				<BoardContainer bind:scene={curOverlay[$statsScene]} />
+				<BoardContainer bind:scene={curOverlay[$statsScene]} edit={true} />
 				<div class="w-full h-full z-2 absolute">
 					<Grid
 						bind:items
