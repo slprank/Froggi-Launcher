@@ -189,32 +189,37 @@
 							{/if}
 						</div>
 
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Transition Background
-						</h1>
-						<div class="w-full flex gap-2">
-							<div class="w-24">
-								<Select bind:selected={curScene.background.transition} label="Type">
-									<option value={Transition.None}>None</option>
-									<option value={Transition.Blur}>Blur</option>
-									<option value={Transition.Fade}>Fade</option>
-									<option value={Transition.Fly}>Fly</option>
-									<option value={Transition.Scale}>Scale</option>
-									<option value={Transition.Slide}>Slide</option>
-								</Select>
-							</div>
-							{#if curScene.background.transition !== Transition.None}
+						{#if curScene.background.type !== SceneBackground.None}
+							<h1 class="text-gray-500 text-lg font-medium text-shadow">
+								Transition Background
+							</h1>
+							<div class="w-full flex gap-2">
 								<div class="w-24">
-									<NumberInput
-										bind:value={curScene.background.duration}
-										label="Duration - ms"
-										max={1500}
-										bind:autofocus
-										autoFocusValue={4}
-									/>
+									<Select
+										bind:selected={curScene.background.transition}
+										label="Type"
+									>
+										<option value={Transition.None}>None</option>
+										<option value={Transition.Blur}>Blur</option>
+										<option value={Transition.Fade}>Fade</option>
+										<option value={Transition.Fly}>Fly</option>
+										<option value={Transition.Scale}>Scale</option>
+										<option value={Transition.Slide}>Slide</option>
+									</Select>
 								</div>
-							{/if}
-						</div>
+								{#if curScene.background.transition !== Transition.None}
+									<div class="w-24">
+										<NumberInput
+											bind:value={curScene.background.duration}
+											label="Duration - ms"
+											max={1000}
+											bind:autofocus
+											autoFocusValue={4}
+										/>
+									</div>
+								{/if}
+							</div>
+						{/if}
 
 						<h1
 							class="text-gray-500 text-lg font-medium text-shadow"
