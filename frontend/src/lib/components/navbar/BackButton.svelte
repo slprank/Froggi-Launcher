@@ -17,7 +17,7 @@
 		transition:fade
 	>
 		<NavButton click={() => goto(prevRoute)}>
-			<img src="/image/button-icons/back.png" alt="back" />
+			<img src="/image/button-icons/left.png" alt="back" />
 		</NavButton>
 	</div>
 {/if}

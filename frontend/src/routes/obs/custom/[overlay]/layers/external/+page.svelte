@@ -37,7 +37,7 @@
 			$isMobile ? '5' : '4'
 		}em`}
 	>
-		<div class="w-full grid justify-center">
+		<div class="w-full flex flex-col justify-center">
 			<div>
 				<TextFitMulti
 					class="h-16 w-full text-gray-500 text-md font-medium text-shadow justify-center underline"
@@ -69,13 +69,18 @@
 {/if}
 {#if isHorizontalScreen}
 	<div
-		class={`flex flex-row bg-cover bg-center items-center px-16 gap-2`}
+		class={`flex flex-row bg-cover bg-center items-center p-16 px-18 gap-2`}
 		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png'); padding-bottom: ${
 			$isMobile && '5em'
 		}`}
 	>
-		<div class="w-full gap-2">
-			<div class="w-full aspect-video max-h-full border-2 border-zinc-800 relative">
+		<div class="w-full gap-2 flex flex-col justify-center">
+			<TextFitMulti
+				class="h-16 w-full text-gray-500 text-md font-medium text-shadow justify-center underline"
+			>
+				Preview
+			</TextFitMulti>
+			<div class="w-full h-full aspect-video max-h-full border-2 border-zinc-800 relative">
 				<div class="w-full h-full absolute bg-black" />
 				<div
 					class="w-full h-full absolute bg-black bg-cover bg-center"
@@ -92,7 +97,7 @@
 				<ExternalPreviewSettings bind:base64 bind:imageOpacity {reset} />
 			</div>
 		</div>
-		<div class={`w-[28em] h-full overflow-y-scroll py-16`}>
+		<div class={`w-[28em] h-full overflow-y-scroll`}>
 			<LayerToggle />
 		</div>
 	</div>

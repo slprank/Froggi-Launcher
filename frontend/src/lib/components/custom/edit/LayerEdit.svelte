@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { Overlay } from '$lib/models/types';
+	import type { LayerOrderChange, Overlay } from '$lib/models/types';
 	import Select from '$lib/components/input/Select.svelte';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import { getContext } from 'svelte';
 	import {
 		getOverlayById,
 		getOverlayIndexById,
@@ -11,13 +10,13 @@
 		updateOverlay,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
+	import { Direction } from '$lib/models/enum';
 
 	export let overlay: Overlay;
 	export let selectedLayer: number | undefined;
 	$: curScene = overlay[$statsScene];
 
 	$eventEmitter.on('edit_layer_preview', (layerIndex: number) => {
-		console.log('here');
 		selectedLayer = layerIndex;
 	});
 
@@ -38,7 +37,7 @@
 		updateOverlay(tempOverlay);
 	}
 
-	async function moveLayerUp() {
+	async function moveLayerDown() {
 		let tempOverlay = await getOverlayById(overlay.id);
 		if (
 			selectedLayer === undefined ||
@@ -58,7 +57,7 @@
 		updateOverlay(tempOverlay);
 	}
 
-	async function moveLayerDown() {
+	async function moveLayerUp() {
 		let tempOverlay = await getOverlayById(overlay.id);
 		if (selectedLayer === undefined || selectedLayer === 0) return;
 		[

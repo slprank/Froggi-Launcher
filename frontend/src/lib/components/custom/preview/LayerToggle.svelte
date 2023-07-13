@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
-	import { fly, blur, fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import LayerDisplayRow from './LayerDisplayRow.svelte';
 
 	const overlayId: string | undefined = $page.params.overlay;
@@ -39,6 +39,12 @@
 				in:fly|local={{ duration: 750, x: 150, delay: 100 }}
 			>
 				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Layer</h1>
+			</div>
+			<div
+				class="col-span-3 grid justify-center"
+				in:fly|local={{ duration: 750, x: 150, delay: 100 }}
+			>
+				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Move</h1>
 			</div>
 		</div>
 		{#each layers as layer, layerIndex}

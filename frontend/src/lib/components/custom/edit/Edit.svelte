@@ -146,7 +146,9 @@
 							</div>
 						</div>
 					</div>
-					<LayerEdit bind:overlay bind:selectedLayer />
+					{#if !displayPreview}
+						<LayerEdit bind:overlay bind:selectedLayer />
+					{/if}
 					<SelectedEditor bind:selectedId bind:selectedLayer />
 				</div>
 				<div

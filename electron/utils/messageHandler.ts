@@ -209,7 +209,6 @@ export class MessageHandler {
 
 	initGlobalEventListeners() {
 		this.eventEmitter.on('edit_layer_preview', async (layerIndex) => {
-			console.log("change", layerIndex)
 			this.sendMessage("edit_layer_preview", layerIndex)
 		});
 	}
