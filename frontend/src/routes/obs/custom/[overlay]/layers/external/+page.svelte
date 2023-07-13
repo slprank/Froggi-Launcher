@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
+	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import ExternalPreviewSettings from '$lib/components/custom/preview/ExternalPreviewSettings.svelte';
 	import LayerToggle from '$lib/components/custom/preview/LayerToggle.svelte';
 	import NonInteractiveIFrame from '$lib/components/custom/preview/NonInteractiveIFrame.svelte';
-	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
-	import SliderInput from '$lib/components/input/SliderInput.svelte';
-	import { LiveStatsScene } from '$lib/models/enum';
-	import { isElectron, isMobile, statsScene, urls } from '$lib/utils/store.svelte';
+	import type { Overlay } from '$lib/models/types';
+	import { isElectron, isMobile, urls } from '$lib/utils/store.svelte';
 
 	const overlayId: string | undefined = $page.params.overlay;
+	let curOverlay: Overlay | undefined = undefined;
+
+	const getOverlay = async () => {
+		curOverlay = await getOverlayById(overlayId);
+	};
+	$: $page.params.overlay, getOverlay();
 
 	let base64: string;
 	let imageOpacity: number = 1;
@@ -42,7 +47,7 @@
 				<TextFitMulti
 					class="h-16 w-full text-gray-500 text-md font-medium text-shadow justify-center underline"
 				>
-					Preview
+					{curOverlay?.title ?? 'Preview'}
 				</TextFitMulti>
 			</div>
 			<div class="w-full aspect-video border-2 border-zinc-800 relative">
