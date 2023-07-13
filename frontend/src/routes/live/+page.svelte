@@ -9,6 +9,7 @@
 	import { statsScene } from '$lib/utils/store.svelte';
 
 	import { fly } from 'svelte/transition';
+	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 </script>
 
 <main
@@ -18,30 +19,42 @@
 	out:fade={{ duration: 300 }}
 >
 	{#if $statsScene == LiveStatsScene.WaitingForDolphin}
-		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+		<div
+			in:fly={{ y: -200, duration: 300, delay: SCENE_TRANSITION_DELAY }}
+			out:fly={{ y: -200, duration: 300 }}
+		>
 			<WaitingDolphin />
 		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.PreGame}
-		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+		<div
+			in:fly={{ y: -200, duration: 300, delay: SCENE_TRANSITION_DELAY }}
+			out:fly={{ y: -200, duration: 300 }}
+		>
 			<PlayerRankStats />
 		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.InGame}
-		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+		<div
+			in:fly={{ y: -200, duration: 300, delay: SCENE_TRANSITION_DELAY }}
+			out:fly={{ y: -200, duration: 300 }}
+		>
 			<OngoingGame />
 		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.PostGame}
 		<div
-			in:fly={{ y: -200, duration: 300, delay: 1000 }}
+			in:fly={{ y: -200, duration: 300, delay: SCENE_TRANSITION_DELAY }}
 			out:fly={{ y: -200, duration: 300, delay: 300 }}
 		>
 			<PostGameStats />
 		</div>
 	{/if}
 	{#if $statsScene == LiveStatsScene.RankChange}
-		<div in:fly={{ y: -200, duration: 300, delay: 1000 }} out:fly={{ y: -200, duration: 300 }}>
+		<div
+			in:fly={{ y: -200, duration: 300, delay: SCENE_TRANSITION_DELAY }}
+			out:fly={{ y: -200, duration: 300 }}
+		>
 			<RankChange />
 		</div>
 	{/if}

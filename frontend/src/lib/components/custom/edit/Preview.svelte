@@ -4,9 +4,13 @@
 	import { getOverlayById } from './OverlayHandler.svelte';
 	import type { Overlay } from '$lib/models/types';
 	import { isElectron, urls } from '$lib/utils/store.svelte';
+	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
 
 	export let boardHeight: number;
 	export let boardWidth: number;
+
+	let timeout: NodeJS.Timeout;
+	let keyTrigger: number;
 
 	const overlayId = $page.params.overlay;
 	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
@@ -17,6 +21,14 @@
 		currentOverlay = await getOverlayById(overlayId);
 	}
 	getOverlay();
+
+	const refreshTrigger = () => {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => {
+			keyTrigger = Math.random();
+		}, 1500);
+	};
+	$: boardWidth, refreshTrigger();
 </script>
 
 <div class="w-full h-full">
@@ -29,18 +41,10 @@
 	{/if}
 	<div
 		style={`width: ${boardWidth}px; height: ${boardHeight}px`}
-		class={`border-2 border-zinc-700 overflow-hidden shadow-md my-2 relative`}
+		class={`border-2 border-zinc-700 overflow-hidden shadow-md my-2`}
 	>
-		{#key boardWidth}
-			<div class="w-full h-full absolute">
-				<iframe
-					allowtransparency={true}
-					{src}
-					title="preview"
-					style="width: 100%; height: 100%;"
-				/>
-			</div>
+		{#key keyTrigger}
+			<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
 		{/key}
-		<div class="w-full h-full z-2 absolute" />
 	</div>
 </div>

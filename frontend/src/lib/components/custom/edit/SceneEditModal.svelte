@@ -212,7 +212,7 @@
 										<NumberInput
 											bind:value={curScene.background.duration}
 											label="Duration - ms"
-											max={1000}
+											max={SCENE_TRANSITION_DELAY}
 											bind:autofocus
 											autoFocusValue={4}
 										/>
@@ -231,7 +231,7 @@
 							<div class="w-24">
 								<NumberInput
 									bind:value={curScene.layerRenderDelay}
-									max={1000}
+									max={SCENE_TRANSITION_DELAY}
 									label="Delay"
 								/>
 							</div>

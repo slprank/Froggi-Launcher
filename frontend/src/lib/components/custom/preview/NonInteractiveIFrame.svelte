@@ -1,5 +1,5 @@
 <script lang="ts">
-	let _class: string;
+	let _class: string = '';
 	export { _class as class };
 	export let src: string;
 	export let title: string;
