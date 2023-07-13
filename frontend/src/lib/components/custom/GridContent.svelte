@@ -100,7 +100,7 @@
 						animationTrigger={dataItem.data.animation.trigger}
 						{edit}
 					>
-						<GridElements {dataItem} />
+						<GridElements {dataItem} {preview} />
 					</AnimationLayer>
 				</div>
 			{/if}

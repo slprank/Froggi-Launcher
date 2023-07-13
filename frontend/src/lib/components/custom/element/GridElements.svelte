@@ -7,6 +7,9 @@
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
+	export let preview: boolean = false;
+
+	$: defaultPreview = edit || preview;
 
 	$: classValue = Object.entries(dataItem?.data.class ?? {})
 		.map(([_, value]) => `${value}`)
@@ -171,7 +174,9 @@
 	>
 		<img
 			class="w-full h-full"
-			style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
+			style={`${shadow}; object-fit: ${
+				preview ? 'contain' : 'cover'
+			}; ${'object-position: 100% 0;'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={`/image/character-renders/${$currentPlayers.at(0)?.characterId}.png`}
 			alt="custom"

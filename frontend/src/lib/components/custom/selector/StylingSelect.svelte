@@ -231,8 +231,8 @@
 				<div class="w-36 h-24">
 					<h1 class="text-gray-500 text-sm font-medium text-shadow">Fit</h1>
 					<Select bind:selected={payload.image.objectFit}>
-						<option selected value="contain">Contain</option>
-						<option value="cover">Cover</option>
+						<option value="contain">Contain</option>
+						<option selected value="cover">Cover</option>
 					</Select>
 				</div>
 			</div>

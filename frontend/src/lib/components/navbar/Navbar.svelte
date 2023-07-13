@@ -95,21 +95,21 @@
 				out:fly={{ x: 100, duration: 400 }}
 				class="fixed top-0 right-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-l-1 border-opacity-25 border-white justify-center items-center space-y-4 z-50"
 			>
-				{#if $isElectron}
-					<div
-						class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
-					>
-						<NavButton click={() => goto('/obs')}>
-							<img src="/image/button-icons/obs.png" alt="obs" />
-						</NavButton>
-						<NavButton click={() => (isMobileOpen = true)}>
-							<img src="/image/button-icons/mobile.png" alt="mobile" />
-						</NavButton>
+				<div
+					class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
+				>
+					<NavButton click={() => goto('/obs')}>
+						<img src="/image/button-icons/obs.png" alt="obs" />
+					</NavButton>
+					<NavButton click={() => (isMobileOpen = true)}>
+						<img src="/image/button-icons/mobile.png" alt="mobile" />
+					</NavButton>
+					{#if $isElectron}
 						<NavButton click={() => goto('/settings')}>
 							<img src="/image/button-icons/settings.png" alt="settings" />
 						</NavButton>
-					</div>
-				{/if}
+					{/if}
+				</div>
 			</div>
 		{:else}
 			<div
