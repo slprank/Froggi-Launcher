@@ -18,6 +18,7 @@
 	export let demoItem: GridContentItem | undefined = undefined;
 	export let duration: number = 250;
 	export let edit: boolean = false;
+	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
 	export let transition: Transition = Transition.None;
 
@@ -70,6 +71,7 @@
 
 	$: display =
 		edit ||
+		preview ||
 		dataItem?.data.pauseOption === ElementPauseOption.Always ||
 		(isGameRunning && dataItem?.data.pauseOption === ElementPauseOption.OnlyActive) ||
 		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);

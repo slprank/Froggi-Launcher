@@ -11,6 +11,7 @@
 
 	export let boardHeight: number | undefined = undefined;
 	export let isLayerSpecific: boolean = false;
+	export let preview: boolean = false;
 	let curSceneIndex: LiveStatsScene | undefined = undefined;
 
 	const overlayId: string | undefined = $page.params.overlay;
@@ -98,6 +99,7 @@
 							fastStart={true}
 						>
 							<GridContent
+								{preview}
 								{dataItem}
 								transition={curScene?.element.transition}
 								additionalDelay={SCENE_TRANSITION_DELAY +
