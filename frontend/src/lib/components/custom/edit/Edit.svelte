@@ -40,6 +40,10 @@
 		$eventEmitter.emit('electron', 'download-overlay', overlayId);
 	}
 
+	$eventEmitter.on('edit_layer_preview', (layerIndex: number) => {
+		selectedLayer = layerIndex;
+	});
+
 	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
 	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
 

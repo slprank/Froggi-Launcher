@@ -10,15 +10,10 @@
 		updateOverlay,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import { Direction } from '$lib/models/enum';
 
 	export let overlay: Overlay;
 	export let selectedLayer: number | undefined;
 	$: curScene = overlay[$statsScene];
-
-	$eventEmitter.on('edit_layer_preview', (layerIndex: number) => {
-		selectedLayer = layerIndex;
-	});
 
 	// TODO: Add confirm on remove
 
