@@ -5,8 +5,9 @@
 	import Board from '$lib/components/custom/Board.svelte';
 	import { page } from '$app/stores';
 	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
+	import type { Layer } from '$lib/models/types';
 
-	export let isLayerSpecific: boolean = false;
+	export let layers: Layer[] | undefined = undefined;
 
 	let isFontLoaded: boolean = false;
 	const overlayId = $page.params.overlay;
@@ -23,7 +24,7 @@
 			<Edit />
 		{:else}
 			{#key $statsScene}
-				<Board {isLayerSpecific} />
+				<Board bind:layers />
 			{/key}
 		{/if}
 	</main>

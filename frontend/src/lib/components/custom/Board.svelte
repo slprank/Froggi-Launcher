@@ -10,12 +10,11 @@
 	import { tick } from 'svelte';
 
 	export let boardHeight: number | undefined = undefined;
-	export let isLayerSpecific: boolean = false;
+	export let layers: Layer[] | undefined = undefined;
 	export let preview: boolean = false;
 	let curSceneIndex: LiveStatsScene | undefined = undefined;
 
 	const overlayId: string | undefined = $page.params.overlay;
-	const layerId: string | undefined = $page.params.layerId;
 
 	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
 	let curScene = getCurrentScene($statsScene);
@@ -41,13 +40,6 @@
 		curScene = curOverlay[curSceneIndex as LiveStatsScene];
 	}
 	$: curOverlay, getCurrentScene($statsScene);
-
-	// TODO: Utilize this
-	function getSceneLayers(): Layer[] {
-		return layerId
-			? [curScene?.layers.find((layer) => layer.id === layerId)!]
-			: curScene?.layers.filter((layer) => curScene?.previewLayers.includes(layer.id)) ?? [];
-	}
 
 	function getFixedLayerItems(layers: Layer[]): Layer[] {
 		return layers?.map((layer) => {
@@ -88,7 +80,7 @@
 			>
 				<BoardContainer scene={curScene} />
 
-				{#each getFixedLayerItems(isLayerSpecific ? getSceneLayers() : curScene?.layers ?? []) as layer, i}
+				{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
 					<div class="w-full h-full z-2 absolute">
 						<Grid
 							items={layer.items}
