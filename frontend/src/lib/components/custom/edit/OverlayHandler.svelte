@@ -195,7 +195,7 @@
 		return await new Promise<Overlay>((resolve) => {
 			obs?.subscribe((obs) =>
 				resolve(
-					obs.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ??
+					obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ??
 						({} as Overlay),
 				),
 			);
@@ -205,7 +205,7 @@
 	export async function getOverlayIndexById(overlayId: string): Promise<number> {
 		let curOverlay = await getOverlayById(overlayId);
 		return await new Promise<number>((resolve) =>
-			obs?.subscribe((obs) => resolve(obs.overlays.indexOf(curOverlay))),
+			obs?.subscribe((obs) => resolve(obs?.overlays.indexOf(curOverlay))),
 		);
 	}
 

@@ -65,6 +65,12 @@ export interface GridContentItem {
 	id: string;
 }
 
+export interface GridContentItemStyle {
+	cssValue: string;
+	classValue: string;
+	shadow: string;
+}
+
 export interface ElementPayload {
 	advancedStyling: boolean;
 	class: Class;

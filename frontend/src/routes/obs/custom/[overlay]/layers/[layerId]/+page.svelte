@@ -16,10 +16,8 @@
 	$: overlayId, layerId, $statsScene, getOverlay();
 </script>
 
-{#if overlayId}
-	{#if layerId}
-		<MainOverlay bind:layers />
-	{/if}
+{#if overlayId && layerId}
+	<MainOverlay bind:layers />
 {/if}
 
 <style>

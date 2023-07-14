@@ -8,6 +8,7 @@
 	import type { Layer } from '$lib/models/types';
 
 	export let layers: Layer[] | undefined = undefined;
+	export let preview: boolean = false;
 
 	let isFontLoaded: boolean = false;
 	const overlayId = $page.params.overlay;
@@ -24,7 +25,7 @@
 			<Edit />
 		{:else}
 			{#key $statsScene}
-				<Board bind:layers />
+				<Board bind:layers {preview} />
 			{/key}
 		{/if}
 	</main>

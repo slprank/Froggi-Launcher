@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { AnimationTrigger, CustomElement } from '$lib/models/enum';
-	import type { GridContentItem } from '$lib/models/types';
+	import { CustomElement } from '$lib/models/enum';
+	import type { GridContentItem, GridContentItemStyleData } from '$lib/models/types';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
 	import PlayerPercent from '$lib/components/custom/element/PlayerPercent.svelte';
+	import CharacterRender from './CharacterRender.svelte';
+	import PlayerRankIcon from './PlayerRankIcon.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
@@ -11,15 +13,21 @@
 
 	$: defaultPreview = edit || preview;
 
-	$: classValue = Object.entries(dataItem?.data.class ?? {})
+	let style: GridContentItemStyleData = {
+		classValue: '',
+		cssValue: '',
+		shadow: '',
+	};
+
+	$: style.classValue = Object.entries(dataItem?.data.class ?? {})
 		.map(([_, value]) => `${value}`)
 		.join(' ');
 
-	$: cssValue = Object.entries(dataItem?.data.css ?? {})
+	$: style.cssValue = Object.entries(dataItem?.data.css ?? {})
 		.map(([key, value]) => `${toKebabCase(key)}: ${value}`)
 		.join('; ');
 
-	$: shadow = `filter: drop-shadow(${dataItem?.data.shadow?.x ?? 0}px ${
+	$: style.shadow = `filter: drop-shadow(${dataItem?.data.shadow?.x ?? 0}px ${
 		dataItem?.data.shadow?.y ?? 0
 	}px ${(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0}px ${
 		dataItem?.data.shadow?.color ?? '#000000'
@@ -31,28 +39,28 @@
 </script>
 
 {#if dataItem?.elementId === CustomElement.CustomString}
-	<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
+	<TextElement {style} {dataItem} {edit}>
 		{dataItem?.data.string}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.CustomBox}
 	<div
-		class={`w-full h-full ${classValue}`}
-		style={`${shadow}; ${cssValue}; ${
+		class={`w-full h-full ${style.classValue}`}
+		style={`${style.shadow}; ${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CustomImage}
 	<div
-		class={`w-full h-full ${classValue}`}
-		style={`${cssValue}; ${
+		class={`w-full h-full ${style.classValue}`}
+		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
 	>
 		<img
 			class="w-full h-full"
-			style={`${shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+			style={`${style.shadow}; object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={dataItem?.data.image.src}
 			alt="custom"
@@ -61,141 +69,73 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.Player1Tag}
 	{#key $currentPlayers?.at(0)?.displayName}
-		<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
+		<TextElement {style} {dataItem} {edit}>
 			{$currentPlayers?.at(0)?.displayName ? $currentPlayers?.at(0)?.displayName : `Player1`}
 		</TextElement>
 	{/key}
 {/if}
 {#if dataItem?.elementId === CustomElement.Player2Tag}
 	{#key $currentPlayers?.at(1)?.displayName}
-		<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
+		<TextElement {style} {dataItem} {edit}>
 			{$currentPlayers?.at(1)?.displayName ? $currentPlayers?.at(1)?.displayName : `Player2`}
 		</TextElement>
 	{/key}
 {/if}
 {#if dataItem?.elementId === CustomElement.Player1Percent}
 	<PlayerPercent
-		{cssValue}
-		{classValue}
+		{style}
 		{dataItem}
 		{edit}
-		{shadow}
 		numberOfDecimals={0}
 		frame={$gameFrame?.players[0]?.post}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.Player2Percent}
 	<PlayerPercent
-		{cssValue}
-		{classValue}
+		{style}
 		{dataItem}
 		{edit}
-		{shadow}
 		numberOfDecimals={0}
 		frame={$gameFrame?.players[1]?.post}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
 	<PlayerPercent
-		{cssValue}
-		{classValue}
+		{style}
 		{dataItem}
 		{edit}
-		{shadow}
 		numberOfDecimals={1}
 		frame={$gameFrame?.players[0]?.post}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
 	<PlayerPercent
-		{cssValue}
-		{classValue}
+		{style}
 		{dataItem}
 		{edit}
-		{shadow}
 		numberOfDecimals={1}
 		frame={$gameFrame?.players[1]?.post}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.Player1Score}
-	<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
+	<TextElement {style} {dataItem} {edit}>
 		{$gameScore?.at(0) ?? '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.Player2Score}
-	<TextElement {classValue} {cssValue} {dataItem} {edit} {shadow}>
+	<TextElement {style} {dataItem} {edit}>
 		{$gameScore?.at(1) ?? '0'}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.Player1RankIcon && $currentPlayers.at(0)?.rankedNetplayProfile}
-	<div
-		class={`w-full h-full ${classValue}`}
-		style={`${cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
-		<img
-			class="w-full h-full object-contain"
-			style={`${shadow}; ${
-				dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
-			};`}
-			src={`/image/rank-icons/${$currentPlayers
-				.at(0)
-				?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
-			alt="rank-icon"
-		/>
-	</div>
+{#if dataItem?.elementId === CustomElement.Player1RankIcon}
+	<PlayerRankIcon {dataItem} {style} player={$currentPlayers.at(0)} preview={defaultPreview} />
 {/if}
-{#if dataItem?.elementId === CustomElement.Player2RankIcon && $currentPlayers.at(1)?.rankedNetplayProfile}
-	<div
-		class={`w-full h-full ${classValue}`}
-		style={`${cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
-		<img
-			class="w-full h-full object-contain"
-			style={`${shadow}; ${
-				dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
-			};`}
-			src={`/image/rank-icons/${$currentPlayers
-				.at(1)
-				?.rankedNetplayProfile?.rank?.toUpperCase()}.svg`}
-			alt="rank-icon"
-		/>
-	</div>
+{#if dataItem?.elementId === CustomElement.Player2RankIcon}
+	<PlayerRankIcon {dataItem} {style} player={$currentPlayers.at(1)} preview={defaultPreview} />
 {/if}
 {#if dataItem?.elementId === CustomElement.Player1CharacterRender}
-	<div
-		class={`w-full h-full ${classValue}`}
-		style={`${cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
-		<img
-			class="w-full h-full"
-			style={`${shadow}; object-fit: ${
-				preview ? 'contain' : 'cover'
-			}; ${'object-position: 100% 0;'};
-					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${$currentPlayers.at(0)?.characterId}.png`}
-			alt="custom"
-		/>
-	</div>
+	<CharacterRender {dataItem} {style} player={$currentPlayers.at(0)} preview={defaultPreview} />
 {/if}
 {#if dataItem?.elementId === CustomElement.Player2CharacterRender}
-	<div
-		class={`w-full h-full ${classValue}`}
-		style={`${cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
-		<img
-			class="w-full h-full"
-			style={`${shadow}; object-fit: cover; ${'object-position: 100% 0;'};
-					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${$currentPlayers.at(1)?.characterId}.png`}
-			alt="custom"
-		/>
-	</div>
+	<CharacterRender {dataItem} {style} player={$currentPlayers.at(1)} preview={defaultPreview} />
 {/if}

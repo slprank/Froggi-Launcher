@@ -1,18 +1,16 @@
 <script lang="ts">
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import type { GridContentItem } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 
-	export let classValue: string;
-	export let cssValue: string;
 	export let dataItem: GridContentItem;
 	export let edit: boolean;
-	export let shadow: string;
+	export let style: GridContentItemStyle;
 </script>
 
 {#key dataItem}
 	<TextFitMulti
-		class={`h-full flex ${classValue}`}
-		style={`${shadow}; ${cssValue}; ${
+		class={`h-full flex ${style.classValue}`}
+		style={`${style.shadow}; ${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 		};  ${edit ? 'color: black' : ''}`}
 		maxFont={1000}

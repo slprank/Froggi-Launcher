@@ -16,7 +16,7 @@
 
 	const overlayId: string | undefined = $page.params.overlay;
 
-	$: curOverlay = $obs.overlays.find((overlay) => overlay.id === overlayId);
+	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	let curScene = getCurrentScene($statsScene);
 
 	const curSceneTrigger = () => {

@@ -1,15 +1,13 @@
 <script lang="ts">
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { InGameState } from '$lib/models/enum';
-	import type { GridContentItem } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import { gameState } from '$lib/utils/store.svelte';
 	import type { PostFrameUpdateType } from '@slippi/slippi-js';
 
-	export let classValue: string;
-	export let cssValue: string;
 	export let dataItem: GridContentItem;
 	export let edit: boolean;
-	export let shadow: string;
+	export let style: GridContentItemStyle;
 
 	export let frame: PostFrameUpdateType | undefined;
 	export let numberOfDecimals: number;
@@ -70,8 +68,10 @@
 			{#each Array.from(Array(2)) as _, i}
 				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
 					<TextFitMulti
-						class={`h-full ${classValue} justify-end ${i === 0 ? 'font-[900]' : ``}`}
-						style={`${shadow}; ${cssValue}; ${
+						class={`h-full ${style.classValue} justify-end ${
+							i === 0 ? 'font-[900]' : ``
+						}`}
+						style={`${style.shadow}; ${style.cssValue}; ${
 							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 						};  ${edit ? 'color: black' : ''} ${
 							i !== 0 ? `color: ${percentageColor}` : ``
