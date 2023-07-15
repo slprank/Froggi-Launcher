@@ -5,7 +5,7 @@
 	import { COL, MIN } from '$lib/models/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { eventEmitter, obs } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 
 	export function newId() {
 		return `${Math.random().toString(36).slice(-8)}`;
@@ -223,6 +223,106 @@
 			eventEmitter.subscribe((eventEmitter) =>
 				eventEmitter.emit('electron', 'delete-custom-overlay', overlayId),
 			),
+		);
+	}
+
+	export async function newLayer(overlayId: string, statsScene: LiveStatsScene): Promise<number> {
+		let overlay = await getOverlayById(overlayId);
+		const newLayerId = newId();
+
+		const index = await getOverlayIndexById(overlayId);
+		obs.update((obs) => {
+			let overlay = obs.overlays[index];
+			overlay[statsScene].layers.push({ id: newLayerId, items: [] });
+			overlay[statsScene].previewLayers.push(newLayerId);
+			updateOverlay(overlay);
+			return obs;
+		});
+		return new Promise<number>((resolve) =>
+			setTimeout(() => {
+				resolve(overlay[statsScene].layers.length - 1);
+			}),
+		);
+	}
+
+	export async function moveLayerDown(
+		overlayId: string,
+		statsScene: LiveStatsScene,
+		selectedLayer: number,
+	): Promise<number> {
+		let updatedOverlay = await getOverlayById(overlayId);
+		if (
+			selectedLayer === undefined ||
+			selectedLayer >= updatedOverlay[statsScene].layers.length - 1
+		)
+			return 0;
+		[
+			updatedOverlay[statsScene].layers[selectedLayer],
+			updatedOverlay[statsScene].layers[selectedLayer + 1],
+		] = [
+			updatedOverlay[statsScene].layers[selectedLayer + 1],
+			updatedOverlay[statsScene].layers[selectedLayer],
+		];
+		const index = await getOverlayIndexById(overlayId);
+		obs.update((obs) => {
+			obs.overlays[index] = updatedOverlay;
+			return obs;
+		});
+		updateOverlay(updatedOverlay);
+
+		return new Promise<number>((resolve) =>
+			setTimeout(() => {
+				resolve(selectedLayer + 1);
+			}),
+		);
+	}
+
+	export async function moveLayerUp(
+		overlayId: string,
+		statsScene: LiveStatsScene,
+		selectedLayer: number,
+	): Promise<number> {
+		let updatedOverlay = await getOverlayById(overlayId);
+		if (selectedLayer === undefined || selectedLayer === 0) return 0;
+		[
+			updatedOverlay[statsScene].layers[selectedLayer],
+			updatedOverlay[statsScene].layers[selectedLayer - 1],
+		] = [
+			updatedOverlay[statsScene].layers[selectedLayer - 1],
+			updatedOverlay[statsScene].layers[selectedLayer],
+		];
+		const index = await getOverlayIndexById(overlayId);
+		obs.update((obs) => {
+			obs.overlays[index] = updatedOverlay;
+			return obs;
+		});
+		updateOverlay(updatedOverlay);
+		return new Promise<number>((resolve) =>
+			setTimeout(() => {
+				resolve(selectedLayer - 1);
+			}),
+		);
+	}
+
+	export async function deleteLayer(
+		overlayId: string,
+		statsScene: LiveStatsScene,
+		selectedLayer: number,
+	): Promise<number> {
+		let updatedOverlay = await getOverlayById(overlayId);
+		if (!updatedOverlay || selectedLayer === undefined) return 0;
+		updatedOverlay[statsScene].layers.splice(selectedLayer, 1);
+
+		const index = await getOverlayIndexById(overlayId);
+		obs.update((obs) => {
+			obs.overlays[index] = updatedOverlay;
+			return obs;
+		});
+		updateOverlay(updatedOverlay);
+		return new Promise<number>((resolve) =>
+			setTimeout(() => {
+				resolve(selectedLayer - 1);
+			}),
 		);
 	}
 </script>

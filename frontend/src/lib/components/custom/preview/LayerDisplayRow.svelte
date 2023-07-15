@@ -4,8 +4,9 @@
 	import NonInteractiveIFrame from './NonInteractiveIFrame.svelte';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import {
-		getOverlayById,
-		getOverlayIndexById,
+		deleteLayer,
+		moveLayerDown,
+		moveLayerUp,
 		updateOverlay,
 	} from '../edit/OverlayHandler.svelte';
 
@@ -20,49 +21,6 @@
 	const changeEditLayer = (layerIndex: number) => {
 		$eventEmitter.emit('electron', 'edit_layer_preview', layerIndex);
 	};
-
-	async function moveLayerUp(layerIndex: number) {
-		let tempOverlay = await getOverlayById(curOverlay.id);
-		if (layerIndex === undefined || layerIndex === 0) return;
-		[
-			tempOverlay[$statsScene].layers[layerIndex],
-			tempOverlay[$statsScene].layers[layerIndex - 1],
-		] = [
-			tempOverlay[$statsScene].layers[layerIndex - 1],
-			tempOverlay[$statsScene].layers[layerIndex],
-		];
-		const index = await getOverlayIndexById(curOverlay.id);
-		$obs.overlays[index] = tempOverlay;
-		updateOverlay(tempOverlay);
-		changeEditLayer(layerIndex - 1);
-	}
-
-	async function moveLayerDown(layerIndex: number) {
-		if (!curOverlay) return;
-		let tempOverlay = await getOverlayById(curOverlay.id);
-		if (layerIndex >= tempOverlay[$statsScene].layers.length - 1) return;
-		[
-			tempOverlay[$statsScene].layers[layerIndex],
-			tempOverlay[$statsScene].layers[layerIndex + 1],
-		] = [
-			tempOverlay[$statsScene].layers[layerIndex + 1],
-			tempOverlay[$statsScene].layers[layerIndex],
-		];
-		const index = await getOverlayIndexById(curOverlay.id);
-		$obs.overlays[index] = tempOverlay;
-		updateOverlay(tempOverlay);
-		changeEditLayer(layerIndex + 1);
-	}
-
-	async function deleteLayer(layerIndex: number) {
-		let tempOverlay = await getOverlayById(curOverlay.id);
-		if (!tempOverlay) return;
-		tempOverlay[$statsScene].layers.splice(layerIndex, 1);
-		const index = await getOverlayIndexById(curOverlay.id);
-		$obs.overlays[index] = tempOverlay;
-		updateOverlay(tempOverlay);
-		changeEditLayer(0);
-	}
 
 	const handleChecked = () => {
 		if (isChecked) curOverlay[$statsScene].previewLayers.push(layer.id);
@@ -123,13 +81,19 @@
 		>
 			<button
 				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
-				on:click={async () => await moveLayerUp(layerIndex)}
+				on:click={async () => {
+					await moveLayerUp(curOverlay.id, $statsScene, layerIndex);
+					changeEditLayer(layerIndex + 1);
+				}}
 			>
 				<img src="/image/button-icons/up.png" alt="up" style="filter: invert(1)" />
 			</button>
 			<button
 				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
-				on:click={async () => await moveLayerDown(layerIndex)}
+				on:click={async () => {
+					await moveLayerDown(curOverlay.id, $statsScene, layerIndex);
+					changeEditLayer(layerIndex + 1);
+				}}
 			>
 				<div class="w-full h-full grid justify-center items-center text-[0.5em]">
 					<img src="/image/button-icons/down.png" alt="down" style="filter: invert(1)" />
@@ -141,7 +105,10 @@
 		>
 			<button
 				class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
-				on:click={async () => await deleteLayer(layerIndex)}
+				on:click={async () => {
+					await deleteLayer(curOverlay.id, $statsScene, layerIndex);
+					changeEditLayer(0);
+				}}
 			>
 				<img
 					src="/image/button-icons/remove.png"

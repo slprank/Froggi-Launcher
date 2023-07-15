@@ -18,7 +18,7 @@
 
 	const overlayId = $page.params.overlay;
 
-	let selectedLayer: number | undefined = 0;
+	let selectedLayer: number = 0;
 	let selectedId: string | undefined = undefined;
 	let overlay: Overlay;
 

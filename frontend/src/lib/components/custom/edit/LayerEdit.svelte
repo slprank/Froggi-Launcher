@@ -1,82 +1,22 @@
 <script lang="ts">
-	import type { LayerOrderChange, Overlay } from '$lib/models/types';
+	import type { Overlay } from '$lib/models/types';
 	import Select from '$lib/components/input/Select.svelte';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import {
+		deleteLayer,
 		getOverlayById,
 		getOverlayIndexById,
-		newId,
+		moveLayerDown,
+		moveLayerUp,
+		newLayer,
 		updateOverlay,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 
 	export let overlay: Overlay;
-	export let selectedLayer: number | undefined;
+	export let selectedLayer: number;
 	$: curScene = overlay[$statsScene];
-
-	// TODO: Add confirm on remove
-
-	async function newLayer() {
-		let tempOverlay = await getOverlayById(overlay.id);
-		if (!tempOverlay) return;
-		const newLayerId = newId();
-		tempOverlay[$statsScene].layers.push({ id: newLayerId, items: [] });
-		tempOverlay[$statsScene].previewLayers.push(newLayerId);
-
-		const index = await getOverlayIndexById(overlay.id);
-		$obs.overlays[index] = tempOverlay;
-		setTimeout(() => {
-			selectedLayer = tempOverlay[$statsScene].layers.length - 1;
-		});
-		updateOverlay(tempOverlay);
-	}
-
-	async function moveLayerDown() {
-		let tempOverlay = await getOverlayById(overlay.id);
-		if (
-			selectedLayer === undefined ||
-			selectedLayer >= tempOverlay[$statsScene].layers.length - 1
-		)
-			return;
-		[
-			tempOverlay[$statsScene].layers[selectedLayer],
-			tempOverlay[$statsScene].layers[selectedLayer + 1],
-		] = [
-			tempOverlay[$statsScene].layers[selectedLayer + 1],
-			tempOverlay[$statsScene].layers[selectedLayer],
-		];
-		const index = await getOverlayIndexById(overlay.id);
-		$obs.overlays[index] = tempOverlay;
-		selectedLayer += 1;
-		updateOverlay(tempOverlay);
-	}
-
-	async function moveLayerUp() {
-		let tempOverlay = await getOverlayById(overlay.id);
-		if (selectedLayer === undefined || selectedLayer === 0) return;
-		[
-			tempOverlay[$statsScene].layers[selectedLayer],
-			tempOverlay[$statsScene].layers[selectedLayer - 1],
-		] = [
-			tempOverlay[$statsScene].layers[selectedLayer - 1],
-			tempOverlay[$statsScene].layers[selectedLayer],
-		];
-		const index = await getOverlayIndexById(overlay.id);
-		$obs.overlays[index] = tempOverlay;
-		selectedLayer -= 1;
-		updateOverlay(tempOverlay);
-	}
-
-	async function deleteLayer() {
-		let tempOverlay = await getOverlayById(overlay.id);
-		if (!tempOverlay || selectedLayer === undefined) return;
-		tempOverlay[$statsScene].layers.splice(selectedLayer, 1);
-		const index = await getOverlayIndexById(overlay.id);
-		$obs.overlays[index] = tempOverlay;
-		selectedLayer -= 1;
-		updateOverlay(tempOverlay);
-	}
 </script>
 
 <h1 class="text-gray-500 text-lg font-medium text-shadow">Layers</h1>
@@ -91,7 +31,7 @@
 	<div>
 		<button
 			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
-			on:click={newLayer}
+			on:click={async () => (selectedLayer = await newLayer(overlay.id, $statsScene))}
 		>
 			<TextFitMulti>New layer</TextFitMulti>
 		</button>
@@ -99,7 +39,8 @@
 	<div>
 		<button
 			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
-			on:click={moveLayerUp}
+			on:click={async () =>
+				(selectedLayer = await moveLayerUp(overlay.id, $statsScene, selectedLayer))}
 		>
 			<TextFitMulti>Move up</TextFitMulti>
 		</button>
@@ -107,7 +48,8 @@
 	<div>
 		<button
 			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
-			on:click={moveLayerDown}
+			on:click={async () =>
+				(selectedLayer = await moveLayerDown(overlay.id, $statsScene, selectedLayer))}
 		>
 			<TextFitMulti>Move down</TextFitMulti>
 		</button>
@@ -116,7 +58,8 @@
 		<div transition:fly={{ duration: 250, y: -25 }}>
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
-				on:click={deleteLayer}
+				on:click={async () =>
+					(selectedLayer = await deleteLayer(overlay.id, $statsScene, selectedLayer))}
 			>
 				<TextFitMulti>Delete layer</TextFitMulti>
 			</button>
