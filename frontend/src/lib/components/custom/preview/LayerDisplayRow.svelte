@@ -7,19 +7,23 @@
 		deleteLayer,
 		moveLayerDown,
 		moveLayerUp,
+		newLayer,
 		updateOverlay,
-	} from '../edit/OverlayHandler.svelte';
+	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	export let curOverlay: Overlay;
 	export let layer: Layer;
 	export let layerIndex: number;
 	export let previewLayers: string[];
+	export let selectedLayer: number | undefined = undefined;
 	export let src: string;
 
 	let isChecked = previewLayers?.includes(layer.id) ?? false;
+	$: isSelected = selectedLayer === layerIndex;
 
 	const changeEditLayer = (layerIndex: number) => {
 		$eventEmitter.emit('electron', 'edit_layer_preview', layerIndex);
+		selectedLayer = layerIndex;
 	};
 
 	const handleChecked = () => {
@@ -33,6 +37,10 @@
 		updateOverlay(curOverlay);
 	};
 
+	const handleNewLayer = async () => {
+		await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
+	};
+
 	const updateCheck = () => {
 		isChecked = previewLayers.includes(layer.id) ?? false;
 	};
@@ -42,6 +50,7 @@
 {#if layer}
 	<div
 		class="w-full h-22 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center bg-black"
+		style={`${isSelected && 'outline: 1px solid green;'}`}
 	>
 		<div
 			class="col-span-1 grid justify-center"
@@ -115,5 +124,13 @@
 				/>
 			</button>
 		</div>
+	</div>
+	<div class="w-full h-22 items-center">
+		<button
+			class="w-full h-full justify-center hover:scale-110 block hover:bg-white hover:bg-opacity-20"
+			on:click={handleNewLayer}
+		>
+			<h1 class="text-white text-shadow-md">+</h1>
+		</button>
 	</div>
 {/if}

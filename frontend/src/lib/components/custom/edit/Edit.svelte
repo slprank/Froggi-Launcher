@@ -157,7 +157,7 @@
 				</div>
 				<div
 					style={`width: ${boardWidthEdit}px; height: ${boardHeightEdit}px;`}
-					class={`border-2 border-zinc-700 overflow-hidden shadow-md`}
+					class={`outline outline-zinc-700 overflow-hidden shadow-md`}
 				>
 					<BoardEdit
 						bind:boardHeight={boardHeightEdit}

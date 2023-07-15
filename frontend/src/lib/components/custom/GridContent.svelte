@@ -85,7 +85,7 @@
 		<div
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
 			class={`custom-font absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
-				selectedId && selectedId === dataItem?.id ? 'border border-red-500' : ''
+				selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
 			} bg-opacity-50`}
 		>
 			{#if edit}

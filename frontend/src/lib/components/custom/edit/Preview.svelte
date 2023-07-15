@@ -41,7 +41,7 @@
 	{/if}
 	<div
 		style={`width: ${boardWidth}px; height: ${boardHeight}px`}
-		class={`border-2 border-zinc-700 overflow-hidden shadow-md my-2`}
+		class={`outline outline-zinc-700 overflow-hidden shadow-md my-2`}
 	>
 		{#key keyTrigger}
 			<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />

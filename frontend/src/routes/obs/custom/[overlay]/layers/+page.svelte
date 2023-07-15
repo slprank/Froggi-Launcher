@@ -10,7 +10,7 @@
 
 	const getOverlay = async () => {
 		const overlay = await getOverlayById(overlayId);
-		const layerIds = overlay[$statsScene].previewLayers;
+		const layerIds = overlay[$statsScene]?.previewLayers;
 		layers = overlay[$statsScene].layers.filter((layer) => layerIds.includes(layer.id));
 	};
 	$: overlayId, $statsScene, $obs, getOverlay();

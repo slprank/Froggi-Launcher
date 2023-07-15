@@ -226,14 +226,22 @@
 		);
 	}
 
-	export async function newLayer(overlayId: string, statsScene: LiveStatsScene): Promise<number> {
+	export async function newLayer(
+		overlayId: string,
+		statsScene: LiveStatsScene,
+		indexPlacement: number | undefined = undefined,
+	): Promise<number> {
 		let overlay = await getOverlayById(overlayId);
 		const newLayerId = newId();
 
 		const index = await getOverlayIndexById(overlayId);
 		obs.update((obs) => {
 			let overlay = obs.overlays[index];
-			overlay[statsScene]?.layers.push({ id: newLayerId, items: [] });
+			const layersLength = overlay[statsScene]?.layers.length;
+			overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
+				id: newLayerId,
+				items: [],
+			});
 			overlay[statsScene]?.previewLayers.push(newLayerId);
 			updateOverlay(overlay);
 			return obs;
