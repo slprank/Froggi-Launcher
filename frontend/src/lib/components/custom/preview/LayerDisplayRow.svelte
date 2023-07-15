@@ -45,7 +45,7 @@
 
 {#if layer}
 	<div
-		class={`w-full h-22 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center`}
+		class={`w-full h-full border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center`}
 		style={`${isSelected && 'background-color: rgba(255, 255, 255, 0.10);'}`}
 	>
 		<div

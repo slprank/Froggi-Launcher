@@ -51,8 +51,8 @@ try {
 		const mainWindow = new BrowserWindow({
 			backgroundColor: 'whitesmoke',
 			titleBarStyle: 'default',
-			minHeight: 540,
-			minWidth: 960,
+			minHeight: 600,
+			minWidth: 800,
 			webPreferences: {
 				contextIsolation: true,
 				nodeIntegration: true,

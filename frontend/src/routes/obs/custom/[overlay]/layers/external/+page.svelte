@@ -74,7 +74,7 @@
 {/if}
 {#if isHorizontalScreen}
 	<div
-		class={`flex flex-row bg-cover bg-center items-center py-4 px-16 gap-2`}
+		class={`flex flex-row bg-cover bg-center items-center py-4 px-18 gap-2`}
 		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png'); padding-bottom: ${
 			$isMobile && '5em'
 		}`}

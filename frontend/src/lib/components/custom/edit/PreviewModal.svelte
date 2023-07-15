@@ -24,7 +24,7 @@
 					Open Preview In New Window
 				</h1>
 			</div>
-			<a target="popup" href={`${localUrl}`}>
+			<a target="popup" href={`${localUrl}`} on:click={() => (open = false)}>
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
 				>

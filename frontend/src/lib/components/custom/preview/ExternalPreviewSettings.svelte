@@ -10,7 +10,7 @@
 <div class="h-full w-full grid grid-flow-row grid-cols-8 gap-2 items-center px-2">
 	<div
 		class="w-full col-span-3 grid items-center"
-		data-tooltip="Set a temporary background image"
+		data-tooltip="Set a temporary background image (Only visible if a background isn't already set)"
 	>
 		<FileToBase64Input bind:base64 acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'} />
 	</div>

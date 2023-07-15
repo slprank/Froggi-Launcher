@@ -70,7 +70,7 @@
 			style={`grid-template-columns: repeat(${gridCols}, minmax(0, 1fr));`}
 		>
 			{#if displayPreview}
-				<div class="w-full h-full col-span-1 grid justify-center content-center">
+				<div class="w-full h-full col-span-1 grid justify-center content-center px-1">
 					<div class="w-full h-full grid">
 						<Preview
 							bind:boardWidth={boardWidthPreview}

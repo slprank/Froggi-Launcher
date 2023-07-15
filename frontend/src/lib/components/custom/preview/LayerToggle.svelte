@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
-	import { fly } from 'svelte/transition';
+	import { crossfade, fly } from 'svelte/transition';
 	import LayerDisplayRow from '$lib/components/custom/preview/LayerDisplayRow.svelte';
 	import { newLayer } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import { flip } from 'svelte/animate';
 
 	const overlayId: string | undefined = $page.params.overlay;
 
@@ -18,7 +19,7 @@
 
 {#if layers && previewLayers && curOverlay}
 	<div
-		class={`w-full h-full outline outline-zinc-700 overflow-y-scroll 
+		class={`w-full h-full border border-zinc-700 overflow-y-scroll 
 			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25
 			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50`}
 	>
@@ -65,15 +66,18 @@
 				<h1 class="text-white text-shadow-md">+</h1>
 			</button>
 		</div>
-		{#each layers as layer, layerIndex}
-			<LayerDisplayRow
-				{curOverlay}
-				{src}
-				{layer}
-				{layerIndex}
-				{previewLayers}
-				bind:selectedLayer
-			/>
+
+		{#each layers as layer, layerIndex (layer.id)}
+			<div class="w-full h-22" animate:flip={{ duration: 350 }} id={layer.id}>
+				<LayerDisplayRow
+					{curOverlay}
+					{src}
+					{layer}
+					{layerIndex}
+					{previewLayers}
+					bind:selectedLayer
+				/>
+			</div>
 		{/each}
 	</div>
 {/if}
