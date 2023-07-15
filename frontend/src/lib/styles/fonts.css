@@ -21,6 +21,11 @@
 		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/roboto-regular.woff2') format('woff2');
 }
 @font-face {
+	font-family: 'Roboto Bold Italic';
+	src: local(''),
+		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/Roboto-BoldItalic.woff2') format('woff2');
+}
+@font-face {
 	font-family: 'Wix';
 	src: local(''),
 		/* Chrome 26+, Opera 23+, Firefox 39+ */
