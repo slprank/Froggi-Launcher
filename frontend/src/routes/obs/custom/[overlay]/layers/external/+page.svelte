@@ -74,7 +74,7 @@
 {/if}
 {#if isHorizontalScreen}
 	<div
-		class={`flex flex-row bg-cover bg-center items-center p-16 px-18 gap-2`}
+		class={`flex flex-row bg-cover bg-center items-center py-4 px-16 gap-2`}
 		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png'); padding-bottom: ${
 			$isMobile && '5em'
 		}`}
@@ -83,7 +83,7 @@
 			<TextFitMulti
 				class="h-16 w-full text-gray-500 text-md font-medium text-shadow justify-center underline"
 			>
-				Preview
+				{curOverlay?.title ?? 'Preview'}
 			</TextFitMulti>
 			<div class="w-full h-full aspect-video max-h-full border-2 border-zinc-800 relative">
 				<div class="w-full h-full absolute bg-black" />
@@ -102,7 +102,7 @@
 				<ExternalPreviewSettings bind:base64 bind:imageOpacity {reset} />
 			</div>
 		</div>
-		<div class={`w-[28em] h-full overflow-y-scroll`}>
+		<div class={`w-[50em] h-full overflow-y-scroll`}>
 			<LayerToggle />
 		</div>
 	</div>
