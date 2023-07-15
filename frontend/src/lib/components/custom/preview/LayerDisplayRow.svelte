@@ -37,10 +37,6 @@
 		updateOverlay(curOverlay);
 	};
 
-	const handleNewLayer = async () => {
-		await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
-	};
-
 	const updateCheck = () => {
 		isChecked = previewLayers.includes(layer.id) ?? false;
 	};
@@ -49,8 +45,8 @@
 
 {#if layer}
 	<div
-		class="w-full h-22 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center bg-black"
-		style={`${isSelected && 'outline: 1px solid green;'}`}
+		class={`w-full h-22 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center`}
+		style={`${isSelected && 'background-color: rgba(255, 255, 255, 0.10);'}`}
 	>
 		<div
 			class="col-span-1 grid justify-center"
@@ -68,7 +64,10 @@
 			class="col-span-2 grid justify-center"
 			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 150 }}
 		>
-			<button class="w-full h-full" on:click={() => changeEditLayer(layerIndex)}>
+			<button
+				class="w-full h-full transition hover:scale-110"
+				on:click={() => changeEditLayer(layerIndex)}
+			>
 				<div class="h-16 aspect-video rounded-sm">
 					<NonInteractiveIFrame
 						class="h-16 w-full border border-zinc-700"
@@ -79,7 +78,7 @@
 			</button>
 		</div>
 		<button
-			class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md no-w"
+			class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md transition hover:scale-110"
 			on:click={() => changeEditLayer(layerIndex)}
 		>
 			<div class="w-full h-full grid justify-center items-center text-[1.5em]">
@@ -87,10 +86,10 @@
 			</div>
 		</button>
 		<div
-			class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md no-w"
+			class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md"
 		>
 			<button
-				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
+				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md hover:scale-[1.05]"
 				on:click={async () => {
 					changeEditLayer(await moveLayerUp(curOverlay.id, $statsScene, layerIndex));
 				}}
@@ -98,7 +97,7 @@
 				<img src="/image/button-icons/up.png" alt="up" style="filter: invert(1)" />
 			</button>
 			<button
-				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
+				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md hover:scale-[1.05]"
 				on:click={async () => {
 					changeEditLayer(await moveLayerDown(curOverlay.id, $statsScene, layerIndex));
 				}}
@@ -109,10 +108,10 @@
 			</button>
 		</div>
 		<div
-			class="w-full h-full col-span-1 grid justify-center items-center text-lg font-bold text-white shadow-md no-w"
+			class="w-full h-full col-span-1 grid justify-center items-center text-lg font-bold text-white shadow-md"
 		>
 			<button
-				class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
+				class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white shadow-md hover:scale-[1.05]"
 				on:click={async () => {
 					changeEditLayer(await deleteLayer(curOverlay.id, $statsScene, layerIndex));
 				}}
@@ -125,10 +124,10 @@
 			</button>
 		</div>
 	</div>
-	<div class="w-full h-22 items-center">
+	<div class="w-full h-22 items-center border-b-1 border-zinc-700">
 		<button
 			class="w-full h-full justify-center hover:scale-110 block hover:bg-white hover:bg-opacity-20"
-			on:click={handleNewLayer}
+			on:click={async () => await newLayer(curOverlay.id, $statsScene, layerIndex + 1)}
 		>
 			<h1 class="text-white text-shadow-md">+</h1>
 		</button>

@@ -2,7 +2,8 @@
 	import { page } from '$app/stores';
 	import { isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import LayerDisplayRow from './LayerDisplayRow.svelte';
+	import LayerDisplayRow from '$lib/components/custom/preview/LayerDisplayRow.svelte';
+	import { newLayer } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	const overlayId: string | undefined = $page.params.overlay;
 
@@ -22,7 +23,7 @@
 			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50`}
 	>
 		<div
-			class="w-full h-12 border-b-1 border-gray-500 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black"
+			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black"
 		>
 			<div
 				class="col-span-1 grid justify-center"
@@ -55,6 +56,14 @@
 			>
 				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Del</h1>
 			</div>
+		</div>
+		<div class="w-full h-22 items-center border-b-1 border-zinc-700">
+			<button
+				class="w-full h-full justify-center hover:scale-110 block hover:bg-white hover:bg-opacity-20"
+				on:click={async () => await newLayer(overlayId, $statsScene, 0)}
+			>
+				<h1 class="text-white text-shadow-md">+</h1>
+			</button>
 		</div>
 		{#each layers as layer, layerIndex}
 			<LayerDisplayRow
