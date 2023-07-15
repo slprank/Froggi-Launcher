@@ -23,9 +23,10 @@
 	};
 
 	const handleChecked = () => {
+		if (!curOverlay) return;
 		if (isChecked) curOverlay[$statsScene].previewLayers.push(layer.id);
 		if (!isChecked) {
-			curOverlay[$statsScene].previewLayers = curOverlay[$statsScene].previewLayers.filter(
+			curOverlay[$statsScene].previewLayers = curOverlay[$statsScene]?.previewLayers.filter(
 				(layerId) => layerId !== layer.id,
 			);
 		}
@@ -33,7 +34,7 @@
 	};
 
 	const updateCheck = () => {
-		isChecked = previewLayers?.includes(layer.id) ?? false;
+		isChecked = previewLayers.includes(layer.id) ?? false;
 	};
 	$: $statsScene, previewLayers, updateCheck();
 </script>
@@ -82,8 +83,7 @@
 			<button
 				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
 				on:click={async () => {
-					await moveLayerUp(curOverlay.id, $statsScene, layerIndex);
-					changeEditLayer(layerIndex + 1);
+					changeEditLayer(await moveLayerUp(curOverlay.id, $statsScene, layerIndex));
 				}}
 			>
 				<img src="/image/button-icons/up.png" alt="up" style="filter: invert(1)" />
@@ -91,8 +91,7 @@
 			<button
 				class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
 				on:click={async () => {
-					await moveLayerDown(curOverlay.id, $statsScene, layerIndex);
-					changeEditLayer(layerIndex + 1);
+					changeEditLayer(await moveLayerDown(curOverlay.id, $statsScene, layerIndex));
 				}}
 			>
 				<div class="w-full h-full grid justify-center items-center text-[0.5em]">
@@ -106,8 +105,7 @@
 			<button
 				class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white shadow-md no-w hover:scale-[1.05]"
 				on:click={async () => {
-					await deleteLayer(curOverlay.id, $statsScene, layerIndex);
-					changeEditLayer(0);
+					changeEditLayer(await deleteLayer(curOverlay.id, $statsScene, layerIndex));
 				}}
 			>
 				<img

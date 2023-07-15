@@ -38,7 +38,7 @@
 	function updateLiveScene() {
 		if (layer === undefined) return;
 		curOverlay = $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-		items = curOverlay[$statsScene].layers[layer]?.items ?? [];
+		items = curOverlay[$statsScene]?.layers[layer]?.items ?? [];
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
 			item[COL].resizable = true;
@@ -50,7 +50,7 @@
 		if (
 			!tempItems ||
 			layer === undefined ||
-			curOverlay[$statsScene].layers[layer].items == tempItems
+			curOverlay[$statsScene]?.layers[layer].items == tempItems
 		)
 			return;
 		curOverlay[$statsScene].layers[layer].items = tempItems;

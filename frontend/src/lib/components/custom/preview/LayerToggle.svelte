@@ -9,7 +9,7 @@
 
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay[$statsScene].layers : undefined;
-	$: previewLayers = curOverlay ? curOverlay[$statsScene].previewLayers : undefined;
+	$: previewLayers = curOverlay ? curOverlay[$statsScene]?.previewLayers : undefined;
 </script>
 
 {#if layers && previewLayers && curOverlay}

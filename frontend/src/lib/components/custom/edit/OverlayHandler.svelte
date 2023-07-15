@@ -233,8 +233,8 @@
 		const index = await getOverlayIndexById(overlayId);
 		obs.update((obs) => {
 			let overlay = obs.overlays[index];
-			overlay[statsScene].layers.push({ id: newLayerId, items: [] });
-			overlay[statsScene].previewLayers.push(newLayerId);
+			overlay[statsScene]?.layers.push({ id: newLayerId, items: [] });
+			overlay[statsScene]?.previewLayers.push(newLayerId);
 			updateOverlay(overlay);
 			return obs;
 		});

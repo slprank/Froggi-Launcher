@@ -79,7 +79,6 @@
 				class="w-full h-full overflow-hidden relative"
 			>
 				<BoardContainer scene={curScene} />
-
 				{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
 					<div class="w-full h-full z-2 absolute">
 						<Grid

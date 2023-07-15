@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { isIframe } from '$lib/utils/store.svelte';
-	import { stringify } from 'postcss';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	export let open = false;

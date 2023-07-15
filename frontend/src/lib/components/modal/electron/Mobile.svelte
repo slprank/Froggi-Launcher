@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import { isIframe, urls } from '$lib/utils/store.svelte';
+	import { urls } from '$lib/utils/store.svelte';
 	import QrCode from 'svelte-qrcode';
 	import Clipboard from 'svelte-clipboard';
 </script>

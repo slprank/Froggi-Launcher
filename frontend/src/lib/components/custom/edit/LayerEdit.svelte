@@ -1,16 +1,13 @@
 <script lang="ts">
 	import type { Overlay } from '$lib/models/types';
 	import Select from '$lib/components/input/Select.svelte';
-	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import {
 		deleteLayer,
-		getOverlayById,
-		getOverlayIndexById,
 		moveLayerDown,
 		moveLayerUp,
 		newLayer,
-		updateOverlay,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 
@@ -23,7 +20,7 @@
 <div class="w-full flex gap-2">
 	<div class="w-24">
 		<Select bind:selected={selectedLayer}>
-			{#each curScene.layers as _, i}
+			{#each curScene?.layers as _, i}
 				<option selected={i === 0} value={i}>Layer {i + 1}</option>
 			{/each}
 		</Select>
