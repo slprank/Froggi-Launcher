@@ -15,16 +15,17 @@
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay[$statsScene].layers : undefined;
 	$: previewLayers = curOverlay ? curOverlay[$statsScene]?.previewLayers : undefined;
+
+	let scrollElement: HTMLElement;
+	const scrollToBottom = () => {
+		scrollElement.scrollBy({ behavior: 'smooth', top: 1000 });
+	};
 </script>
 
 {#if layers && previewLayers && curOverlay}
-	<div
-		class={`w-full h-full border border-zinc-700 overflow-y-scroll 
-			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25
-			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50`}
-	>
+	<div class="w-full h-full border-1 flex flex-col border-zinc-700">
 		<div
-			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black"
+			class="w-full h-12 border-b-1 border-t-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
 		>
 			<div
 				class="col-span-1 grid justify-center"
@@ -58,26 +59,31 @@
 				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Del</h1>
 			</div>
 		</div>
-		<div class="w-full h-22 items-center border-b-1 border-zinc-700">
-			<button
-				class="w-full h-full justify-center hover:scale-110 block hover:bg-white hover:bg-opacity-20"
-				on:click={async () => await newLayer(overlayId, $statsScene, 0)}
-			>
-				<h1 class="text-white text-shadow-md">+</h1>
-			</button>
-		</div>
-
-		{#each layers as layer, layerIndex (layer.id)}
-			<div class="w-full h-22" animate:flip={{ duration: 350 }} id={layer.id}>
-				<LayerDisplayRow
-					{curOverlay}
-					{src}
-					{layer}
-					{layerIndex}
-					{previewLayers}
-					bind:selectedLayer
-				/>
+		<div class={`w-full h-full overflow-y-scroll`} bind:this={scrollElement}>
+			<div class="w-full h-6 items-center">
+				<button
+					class="w-full h-full justify-center bg-black hover:scale-110 bg-opacity-40 hover:bg-opacity-60"
+					on:click={async () => {
+						await newLayer(overlayId, $statsScene, 0);
+					}}
+				>
+					<h1 class="text-white text-shadow-md">+</h1>
+				</button>
 			</div>
-		{/each}
+
+			{#each layers as layer, layerIndex (layer.id)}
+				<div class="w-full" animate:flip={{ duration: 250 }} id={layer.id}>
+					<LayerDisplayRow
+						{curOverlay}
+						{src}
+						{layer}
+						{layerIndex}
+						{previewLayers}
+						{scrollToBottom}
+						bind:selectedLayer
+					/>
+				</div>
+			{/each}
+		</div>
 	</div>
 {/if}

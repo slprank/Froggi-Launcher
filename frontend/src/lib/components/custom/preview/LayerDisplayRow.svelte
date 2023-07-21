@@ -2,7 +2,7 @@
 	import type { Layer, Overlay } from '$lib/models/types';
 	import { fly } from 'svelte/transition';
 	import NonInteractiveIFrame from './NonInteractiveIFrame.svelte';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 	import {
 		deleteLayer,
 		moveLayerDown,
@@ -17,9 +17,11 @@
 	export let previewLayers: string[];
 	export let selectedLayer: number | undefined = undefined;
 	export let src: string;
+	export let scrollToBottom: Function;
 
 	let isChecked = previewLayers?.includes(layer.id) ?? false;
 	$: isSelected = selectedLayer === layerIndex;
+	$: isLastRow = curOverlay[$statsScene].layers.length === layerIndex + 1;
 
 	const changeEditLayer = (layerIndex: number) => {
 		$eventEmitter.emit('electron', 'edit_layer_preview', layerIndex);
@@ -45,13 +47,10 @@
 
 {#if layer}
 	<div
-		class={`w-full h-full border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center`}
+		class={`w-full h-full border-b-1 border-t-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center bg-black bg-opacity-30 hover:bg-opacity-60`}
 		style={`${isSelected && 'background-color: rgba(255, 255, 255, 0.10);'}`}
 	>
-		<div
-			class="col-span-1 grid justify-center"
-			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 150 }}
-		>
+		<div class="col-span-1 grid justify-center">
 			<input
 				type="checkbox"
 				class="w-12 h-12"
@@ -62,7 +61,7 @@
 
 		<div
 			class="col-span-2 grid justify-center"
-			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 150 }}
+			in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 75 }}
 		>
 			<button
 				class="w-full h-full transition hover:scale-110"
@@ -124,10 +123,13 @@
 			</button>
 		</div>
 	</div>
-	<div class="w-full h-22 items-center border-b-1 border-zinc-700">
+	<div class="w-full items-center">
 		<button
-			class="w-full h-full justify-center hover:scale-110 block hover:bg-white hover:bg-opacity-20"
-			on:click={async () => await newLayer(curOverlay.id, $statsScene, layerIndex + 1)}
+			class="w-full h-full justify-center bg-black hover:scale-110 bg-opacity-40 hover:bg-opacity-60"
+			on:click={async () => {
+				if (isLastRow) setTimeout(scrollToBottom);
+				await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
+			}}
 		>
 			<h1 class="text-white text-shadow-md">+</h1>
 		</button>
