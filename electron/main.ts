@@ -9,12 +9,12 @@ import windowStateManager from 'electron-window-state';
 import path from 'path';
 import os from 'os';
 
-import { Api } from './utils/api';
+import { Api } from './services/api';
 import { EventEmitter } from 'events';
-import { MessageHandler } from './utils/messageHandler';
-import { ObsWebSocket } from './utils/obs';
-import { StatsDisplay } from './utils/statsDisplay';
-import { SlippiJs } from './utils/slippi';
+import { MessageHandler } from './services/messageHandler';
+import { ObsWebSocket } from './services/obs';
+import { StatsDisplay } from './services/statsDisplay';
+import { SlippiJs } from './services/slippi';
 import { DolphinConnection, SlpParser, SlpStream } from '@slippi/slippi-js';
 
 try {
