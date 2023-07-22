@@ -9,9 +9,9 @@
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
 	import { gameState, isElectron } from '$lib/utils/store.svelte';
-	import AnimationLayer from './element/AnimationLayer.svelte';
+	import AnimationLayer from './element/animations/AnimationLayer.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
-	import GridElements from '$lib/components/custom/element/GridElements.svelte';
+	import GridElements from '$lib/components/custom/GridElements.svelte';
 
 	export let additionalDelay: number = 0;
 	export let dataItem: GridContentItem | undefined = undefined;

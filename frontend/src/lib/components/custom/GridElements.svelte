@@ -4,8 +4,8 @@
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
 	import PlayerPercent from '$lib/components/custom/element/PlayerPercent.svelte';
-	import CharacterRender from './CharacterRender.svelte';
-	import PlayerRankIcon from './PlayerRankIcon.svelte';
+	import CharacterRender from './element/CharacterRender.svelte';
+	import PlayerRankIcon from './element/PlayerRankIcon.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
