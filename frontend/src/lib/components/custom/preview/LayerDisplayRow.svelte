@@ -10,18 +10,21 @@
 		newLayer,
 		updateOverlay,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 
 	export let curOverlay: Overlay;
 	export let layer: Layer;
 	export let layerIndex: number;
 	export let previewLayers: string[];
-	export let selectedLayer: number | undefined = undefined;
+	export let selectedLayer: number = 0;
 	export let src: string;
 	export let scrollToBottom: Function;
 
 	let isChecked = previewLayers?.includes(layer.id) ?? false;
 	$: isSelected = selectedLayer === layerIndex;
 	$: isLastRow = curOverlay[$statsScene].layers.length === layerIndex + 1;
+
+	let deleteLayerModalOpen = false;
 
 	const changeEditLayer = (layerIndex: number) => {
 		$eventEmitter.emit('electron', 'edit_layer_preview', layerIndex);
@@ -111,9 +114,7 @@
 		>
 			<button
 				class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white shadow-md hover:scale-[1.05]"
-				on:click={async () => {
-					changeEditLayer(await deleteLayer(curOverlay.id, $statsScene, layerIndex));
-				}}
+				on:click={async () => (deleteLayerModalOpen = true)}
 			>
 				<img
 					src="/image/button-icons/remove.png"
@@ -134,4 +135,11 @@
 			<h1 class="text-white text-shadow-md">+</h1>
 		</button>
 	</div>
+	<ConfirmModal
+		bind:open={deleteLayerModalOpen}
+		on:confirm={async () =>
+			changeEditLayer(await deleteLayer(curOverlay.id, $statsScene, layerIndex))}
+	>
+		Delete layer?
+	</ConfirmModal>
 {/if}

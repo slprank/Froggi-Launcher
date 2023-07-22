@@ -58,6 +58,8 @@
 	<ConfirmModal
 		bind:open={deleteOverlayModalOpen}
 		on:confirm={async () => await deleteOverlay(overlayId)}
-	/>
+	>
+		Delete Overlay?
+	</ConfirmModal>
 	<NewOverlayModal bind:open={newOverlayModalOpen} />
 </main>

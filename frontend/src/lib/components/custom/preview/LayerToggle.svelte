@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
-	import { crossfade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import LayerDisplayRow from '$lib/components/custom/preview/LayerDisplayRow.svelte';
 	import { newLayer } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import { flip } from 'svelte/animate';
 
 	const overlayId: string | undefined = $page.params.overlay;
 
-	let selectedLayer: number | undefined;
+	let selectedLayer: number = 0;
 
 	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
 
@@ -20,12 +20,17 @@
 	const scrollToBottom = () => {
 		scrollElement.scrollBy({ behavior: 'smooth', top: 1000 });
 	};
+
+	const updateSelectedLayer = () => {
+		selectedLayer = 0;
+	};
+	$: $statsScene, updateSelectedLayer();
 </script>
 
 {#if layers && previewLayers && curOverlay}
 	<div class="w-full h-full border-1 flex flex-col border-zinc-700">
 		<div
-			class="w-full h-12 border-b-1 border-t-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
+			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
 		>
 			<div
 				class="col-span-1 grid justify-center"
