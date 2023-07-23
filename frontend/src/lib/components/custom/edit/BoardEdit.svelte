@@ -8,6 +8,7 @@
 	import BoardContainer from '../BoardContainer.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { addFont } from '../CustomFontHandler.svelte';
+	import { asyncForEach } from '$lib/utils/asyncForEach.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -20,8 +21,6 @@
 	let items: GridContentItem[] = [];
 	let tempItems: any = undefined;
 
-	const isItemFontsLoaded = async () =>
-		items.map(async (item) => await addFont(item.data.font.base64, item.id));
 	function updateScene() {
 		items
 			.map((item: any) => item[COL])
@@ -76,13 +75,21 @@
 	}
 	$: $statsScene, notifyDisabledScene();
 
+	const updateFont = async () => {
+		await addFont(curOverlay[$statsScene]?.font?.base64);
+		await asyncForEach(items, async (item: GridContentItem) => {
+			await addFont(item.data.font.base64, item.id);
+		});
+	};
+	$: items, updateFont();
+
 	let innerHeight: number;
 	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
 </script>
 
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />
 
-{#await isItemFontsLoaded() then}
+{#await updateFont() then}
 	{#key $statsScene}
 		{#key rowHeight}
 			{#key curOverlay[$statsScene]?.font?.base64}

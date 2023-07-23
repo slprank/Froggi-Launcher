@@ -7,6 +7,7 @@
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
+	import { addFont } from './CustomFontHandler.svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let layers: Layer[];
@@ -62,6 +63,12 @@
 	let innerHeight = 0;
 	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
 
+	const updateFont = async () => {
+		if (!curScene) return;
+		await addFont(curScene.font.base64);
+	};
+	$: curScene, updateFont();
+
 	const refreshExternal = async () => {
 		if (!$isElectron) location.reload();
 	};
@@ -70,36 +77,40 @@
 <svelte:window bind:innerHeight on:resize={refreshExternal} />
 
 {#if curScene && rowHeight}
-	{#key rowHeight}
-		{#key $statsScene}
-			<div
-				class="w-full h-full overflow-hidden relative"
-				style={`font-family: ${curScene?.font?.family};`}
-			>
-				<BoardContainer scene={curScene} />
-				{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
-					<div class="w-full h-full z-2 absolute">
-						<Grid
-							items={layer.items}
-							bind:rowHeight
-							gap={[0, 0]}
-							let:dataItem
-							cols={[[COL, COL]]}
-							fastStart={true}
-						>
-							<GridContent
-								{preview}
-								{dataItem}
-								transition={curScene?.element.transition}
-								additionalDelay={SCENE_TRANSITION_DELAY +
-									curScene.layerRenderDelay * i}
-								duration={curScene.element.duration ?? 250}
-							/>
-						</Grid>
+	{#await updateFont() then}
+		{#key rowHeight}
+			{#key $statsScene}
+				{#key curScene?.font?.family}
+					<div
+						class="w-full h-full overflow-hidden relative"
+						style={`font-family: ${curScene?.font?.family};`}
+					>
+						<BoardContainer scene={curScene} />
+						{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
+							<div class="w-full h-full z-2 absolute">
+								<Grid
+									items={layer.items}
+									bind:rowHeight
+									gap={[0, 0]}
+									let:dataItem
+									cols={[[COL, COL]]}
+									fastStart={true}
+								>
+									<GridContent
+										{preview}
+										{dataItem}
+										transition={curScene?.element.transition}
+										additionalDelay={SCENE_TRANSITION_DELAY +
+											curScene.layerRenderDelay * i}
+										duration={curScene.element.duration ?? 250}
+									/>
+								</Grid>
+							</div>
+						{/each}
+						<div class="w-full h-full z-8 absolute" />
 					</div>
-				{/each}
-				<div class="w-full h-full z-8 absolute" />
-			</div>
+				{/key}
+			{/key}
 		{/key}
-	{/key}
+	{/await}
 {/if}

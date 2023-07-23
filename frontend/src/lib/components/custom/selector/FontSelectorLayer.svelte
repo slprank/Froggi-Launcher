@@ -7,6 +7,7 @@
 	export let fontId: string;
 
 	const isFontLoaded = async () => await addFont(font.base64, fontId);
+	$: font, isFontLoaded();
 </script>
 
 <div class="w-full flex gap-2">

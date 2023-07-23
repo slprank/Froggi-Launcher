@@ -6,13 +6,15 @@
 
 	export let font: Font;
 	export let fontId: string;
+
+	$: console.log(font);
 </script>
 
 <div class="w-full flex gap-2">
 	<div class="w-36 h-full">
 		<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
 		<Select bind:selected={font.family}>
-			<option value={undefined} selected>Default</option>
+			<option value={'custom'} selected>Default</option>
 			<option value={'Melee'}>Melee</option>
 			<option value={'Ultimate'}>Ultimate</option>
 			<option value={'A-OTF Folk Pro M'}>A-OTF Folk Pro M</option>
@@ -27,12 +29,10 @@
 		acceptedExtensions=".woff2, .woff, .otf, .ttf"
 		bind:base64={font.base64}
 	/>
-	{#key font.base64}
-		<TextFitMulti
-			class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
-			style={`font-family: ${font?.family}`}
-		>
-			Super Smash Bros
-		</TextFitMulti>
-	{/key}
+	<TextFitMulti
+		class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
+		style={`font-family: ${font?.family}`}
+	>
+		Super Smash Bros
+	</TextFitMulti>
 </div>

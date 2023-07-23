@@ -22,7 +22,8 @@
 			.flat()
 			.map(async (item) => await addFont(item.data.font.base64, item.id))
 			.every((x) => x);
-		setTimeout(() => (keyTrigger = Math.random()));
+		await document.fonts.ready;
+		//setTimeout(() => (keyTrigger = Math.random()));
 	};
 </script>
 
