@@ -11,9 +11,8 @@
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
-	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
-	import FontSelector from '../selector/FontSelector.svelte';
+	import FontSelectorLayer from '../selector/FontSelectorLayer.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -77,7 +76,8 @@
 								/>
 							</div>
 						</div>
-						<FontSelector bind:font={curScene.font} fontId={'custom'} />
+
+						<FontSelectorLayer bind:font={curScene.font} fontId={'custom'} />
 						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
 						<div
 							class="w-28"
@@ -284,7 +284,4 @@
 			</div>
 		{/key}
 	</div>
-	{#key curScene.font.base64}
-		<CustomFontHandler bind:base64={curScene.font.base64} />
-	{/key}
 </Modal>

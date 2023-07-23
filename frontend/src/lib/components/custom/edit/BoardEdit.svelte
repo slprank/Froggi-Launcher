@@ -3,10 +3,11 @@
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
-	import type { Overlay } from '$lib/models/types';
+	import type { GridContentItem, Overlay } from '$lib/models/types';
 	import { COL, ROW } from '$lib/models/const';
 	import BoardContainer from '../BoardContainer.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import { addFont } from '../CustomFontHandler.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -16,14 +17,11 @@
 
 	let curOverlay =
 		$obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-	let items: any[] = [];
+	let items: GridContentItem[] = [];
 	let tempItems: any = undefined;
 
-	$: items?.forEach((item: any) => {
-		item[COL].draggable = true;
-		item[COL].resizable = true;
-	});
-
+	const isItemFontsLoaded = async () =>
+		items.map(async (item) => await addFont(item.data.font.base64, item.id));
 	function updateScene() {
 		items
 			.map((item: any) => item[COL])
@@ -84,41 +82,43 @@
 
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />
 
-{#key $statsScene}
-	{#key rowHeight}
-		{#key curOverlay[$statsScene]?.font?.base64}
-			<div
-				style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
-				class="w-full h-full overflow-hidden relative"
-			>
-				<BoardContainer bind:scene={curOverlay[$statsScene]} edit={true} />
-				<div class="w-full h-full z-2 absolute">
-					<Grid
-						bind:items
-						bind:rowHeight
-						gap={[0, 0]}
-						let:dataItem
-						let:resizePointerDown
-						cols={[[COL, COL]]}
-						fastStart={true}
-						on:change={updateScene}
-						on:pointerup={(e) => {
-							selectedId = undefined;
-							setTimeout(() => (selectedId = e.detail.id), 20);
-						}}
-					>
-						<div class="w-full h-full relative">
-							<div class="w-full h-full absolute">
-								<GridContent edit={true} {dataItem} bind:selectedId />
+{#await isItemFontsLoaded() then}
+	{#key $statsScene}
+		{#key rowHeight}
+			{#key curOverlay[$statsScene]?.font?.base64}
+				<div
+					style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
+					class="w-full h-full overflow-hidden relative"
+				>
+					<BoardContainer bind:scene={curOverlay[$statsScene]} edit={true} />
+					<div class="w-full h-full z-2 absolute">
+						<Grid
+							bind:items
+							bind:rowHeight
+							gap={[0, 0]}
+							let:dataItem
+							let:resizePointerDown
+							cols={[[COL, COL]]}
+							fastStart={true}
+							on:change={updateScene}
+							on:pointerup={(e) => {
+								selectedId = undefined;
+								setTimeout(() => (selectedId = e.detail.id), 20);
+							}}
+						>
+							<div class="w-full h-full relative">
+								<div class="w-full h-full absolute">
+									<GridContent edit={true} {dataItem} bind:selectedId />
+								</div>
+								<div
+									class="bottom-0 right-0 w-[5%] h-[5%] max-w-[0.8em] max-h-[0.8em] absolute cursor-se-resize overflow-hidden z-5"
+									on:pointerdown={resizePointerDown}
+								/>
 							</div>
-							<div
-								class="bottom-0 right-0 w-[5%] h-[5%] max-w-[0.8em] max-h-[0.8em] absolute cursor-se-resize overflow-hidden z-5"
-								on:pointerdown={resizePointerDown}
-							/>
-						</div>
-					</Grid>
+						</Grid>
+					</div>
 				</div>
-			</div>
+			{/key}
 		{/key}
 	{/key}
-{/key}
+{/await}

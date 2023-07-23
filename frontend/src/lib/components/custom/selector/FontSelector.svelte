@@ -3,7 +3,6 @@
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import Select from '$lib/components/input/Select.svelte';
 	import type { Font } from '$lib/models/types';
-	import CustomFontHandler from '../CustomFontHandler.svelte';
 
 	export let font: Font;
 	export let fontId: string;
@@ -28,13 +27,12 @@
 		acceptedExtensions=".woff2, .woff, .otf, .ttf"
 		bind:base64={font.base64}
 	/>
-	<TextFitMulti
-		class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
-		style={`font-family: ${font?.family}`}
-	>
-		Super Smash Bros
-	</TextFitMulti>
+	{#key font.base64}
+		<TextFitMulti
+			class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
+			style={`font-family: ${font?.family}`}
+		>
+			Super Smash Bros
+		</TextFitMulti>
+	{/key}
 </div>
-{#key font.base64}
-	<CustomFontHandler base64={font.base64} {fontId} />
-{/key}

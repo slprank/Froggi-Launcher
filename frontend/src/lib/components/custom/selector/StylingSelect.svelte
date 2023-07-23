@@ -12,7 +12,7 @@
 	import { statsScene, eventEmitter } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
-	import FontSelector from './FontSelector.svelte';
+	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectorLayer.svelte';
 
 	// TODO: Animation options and sliders
 
@@ -134,7 +134,8 @@
 	{/if}
 
 	{#if stringSettings}
-		<FontSelector bind:font={payload.font} fontId={selectedId} />
+		<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
+
 		<div>
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Alignment</h1>
 			<div class="w-full h-fit flex flex-wrap">
