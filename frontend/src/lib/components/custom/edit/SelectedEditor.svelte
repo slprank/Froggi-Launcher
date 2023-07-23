@@ -145,7 +145,7 @@
 			<NewElementModal
 				bind:open={isElementModalOpen}
 				bind:layer={selectedLayer}
-				bind:selectedId
+				{selectedId}
 			/>
 		{/key}
 	{/key}

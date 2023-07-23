@@ -12,7 +12,7 @@
 	} from '$lib/models/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { generateNewItem } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import { generateNewItem, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
 	import StylingSelect from '$lib/components/custom/selector/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
@@ -26,15 +26,11 @@
 	export let layer: number | undefined;
 	export let selectedId: string | undefined = undefined;
 
+	if (!selectedId) selectedId = newId();
+
 	let selectedElementId: number;
 	let payload: ElementPayload = {
 		advancedStyling: false,
-		class: {} as Class,
-		css: {} as Css,
-		image: {} as Image,
-		shadow: {} as Shadow,
-		string: '',
-		pauseOption: ElementPauseOption.Always,
 		animation: {
 			in: {
 				options: {
@@ -60,7 +56,17 @@
 			},
 			trigger: AnimationTrigger.None,
 		},
+		class: {} as Class,
+		css: {} as Css,
 		description: '',
+		font: {
+			family: undefined,
+			base64: undefined,
+		},
+		image: {} as Image,
+		pauseOption: ElementPauseOption.Always,
+		shadow: {} as Shadow,
+		string: '',
 	};
 
 	let demoItem: GridContentItem;
@@ -70,11 +76,6 @@
 		data: payload,
 		id: 'demo',
 	};
-
-	function handleElement() {
-		if (selectedId) edit();
-		if (!selectedId) add();
-	}
 
 	function updateOverlay() {
 		$eventEmitter.emit('electron', 'update-custom-overlay', getCurrentOverlay());
@@ -91,12 +92,12 @@
 
 	function getCurrentItems() {
 		let curOverlay = getCurrentOverlay();
-		return curOverlay[$statsScene].layers[layer ?? 0].items ?? [];
+		return curOverlay[$statsScene]?.layers[layer ?? 0].items ?? [];
 	}
 
 	function add() {
 		let items = getCurrentItems();
-		let newItem = generateNewItem(selectedElementId, payload);
+		let newItem = generateNewItem(selectedElementId, payload, selectedId);
 		let findOutPosition = gridHelp.findSpace(newItem, items, COL);
 
 		newItem = {
@@ -113,14 +114,16 @@
 		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
 
 		updateOverlay();
-
 		open = false;
 	}
 
 	function edit() {
 		let items = getCurrentItems();
 		let prevItem = items.find((item) => item.id === selectedId);
-
+		if (!prevItem) {
+			add();
+			return;
+		}
 		let newItem = {
 			elementId: selectedElementId,
 			id: selectedId,
@@ -160,13 +163,13 @@
 			<div class="w-full h-full col-span-4 overflow-scroll scroll enable-scrollbar">
 				<ElementSelect bind:selectedElementId />
 				<div class="w-full">
-					{#if payload}
-						<StylingSelect bind:selectedElementId bind:payload />
+					{#if payload && selectedId}
+						<StylingSelect bind:selectedElementId bind:payload bind:selectedId />
 					{/if}
 				</div>
 				<button
 					class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-					on:click={handleElement}
+					on:click={edit}
 				>
 					{selectedId ? 'Update' : 'Add'}
 				</button>

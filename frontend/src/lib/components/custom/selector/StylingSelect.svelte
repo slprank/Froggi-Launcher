@@ -12,9 +12,11 @@
 	import { statsScene, eventEmitter } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
+	import FontSelector from './FontSelector.svelte';
 
 	// TODO: Animation options and sliders
 
+	export let selectedId: string;
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
 	let prevSelectedElementId = selectedElementId;
@@ -73,6 +75,10 @@
 				transform: undefined,
 			},
 			description: '',
+			font: {
+				family: undefined,
+				base64: undefined,
+			},
 			shadow: {
 				x: 0,
 				y: 0,
@@ -128,6 +134,7 @@
 	{/if}
 
 	{#if stringSettings}
+		<FontSelector bind:font={payload.font} fontId={selectedId} />
 		<div>
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Alignment</h1>
 			<div class="w-full h-fit flex flex-wrap">

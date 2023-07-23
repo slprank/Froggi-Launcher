@@ -16,8 +16,6 @@
 
 	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '300';
 
-	$: console.log('frame', framePercent);
-
 	let decimals =
 		numberOfDecimals && isInGame
 			? frame?.percent?.toFixed(numberOfDecimals).split('.').at(1) ?? '0'

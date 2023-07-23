@@ -76,6 +76,7 @@ export interface ElementPayload {
 	class: Class;
 	css: Css;
 	description: string;
+	font: Font
 	pauseOption: ElementPauseOption;
 	shadow: Shadow;
 	image: Image;

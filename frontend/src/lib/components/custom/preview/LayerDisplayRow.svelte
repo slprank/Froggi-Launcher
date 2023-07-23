@@ -22,7 +22,7 @@
 
 	let isChecked = previewLayers?.includes(layer.id) ?? false;
 	$: isSelected = selectedLayer === layerIndex;
-	$: isLastRow = curOverlay[$statsScene].layers.length === layerIndex + 1;
+	$: isLastRow = curOverlay[$statsScene]?.layers.length === layerIndex + 1;
 
 	let deleteLayerModalOpen = false;
 

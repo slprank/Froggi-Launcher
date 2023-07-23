@@ -1,11 +1,11 @@
 <script lang="ts" context="module">
 	import { CustomElement, LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
-	import type { Font, Obs, Overlay } from '$lib/models/types';
+	import type { Font, Obs, Overlay, Scene } from '$lib/models/types';
 
 	import { COL, MIN } from '$lib/models/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 
 	export function newId() {
 		return `${Math.random().toString(36).slice(-8)}`;
@@ -14,12 +14,38 @@
 	// TODO: Add complete overlays
 	// TODO: Add complete scenes
 
+	const getDefaultScene = (sceneId: string): Scene => {
+		return {
+			background: {
+				color: 'white',
+				customImage: {
+					src: undefined,
+					name: undefined,
+					objectFit: undefined,
+				},
+				duration: 250,
+				image: { src: undefined, name: undefined, objectFit: undefined },
+				opacity: 100,
+				transition: Transition.None,
+				type: SceneBackground.None,
+			},
+			element: {
+				duration: 250,
+				transition: Transition.None,
+			},
+			font: {} as Font,
+			layerRenderDelay: 128,
+			layers: [
+				{
+					id: sceneId,
+					items: [],
+				},
+			],
+			previewLayers: [sceneId],
+		};
+	};
+
 	export function getNewOverlay(): Overlay {
-		const waitingForDolphinLayerId = newId();
-		const preGameId = newId();
-		const inGameId = newId();
-		const postGameId = newId();
-		const rankChangeId = newId();
 		return {
 			activeScenes: [
 				LiveStatsScene.WaitingForDolphin,
@@ -32,150 +58,19 @@
 			title: 'New Title',
 			description: 'Scene Description',
 			default: LiveStatsScene.PreGame,
-			[LiveStatsScene.WaitingForDolphin]: {
-				background: {
-					color: 'white',
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					image: { src: undefined, name: undefined, objectFit: undefined },
-					opacity: 100,
-					transition: Transition.None,
-					type: SceneBackground.None,
-				},
-				element: {
-					duration: 250,
-					transition: Transition.None,
-				},
-				font: {} as Font,
-				layerRenderDelay: 128,
-				layers: [
-					{
-						id: waitingForDolphinLayerId,
-						items: [],
-					},
-				],
-				previewLayers: [waitingForDolphinLayerId],
-			},
-			[LiveStatsScene.PreGame]: {
-				background: {
-					color: 'white',
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					image: { src: undefined, name: undefined, objectFit: undefined },
-					opacity: 100,
-					transition: Transition.None,
-					type: SceneBackground.None,
-				},
-				element: {
-					duration: 250,
-					transition: Transition.None,
-				},
-				font: {} as Font,
-				layerRenderDelay: 128,
-				layers: [
-					{
-						id: preGameId,
-						items: [],
-					},
-				],
-				previewLayers: [preGameId],
-			},
-			[LiveStatsScene.InGame]: {
-				background: {
-					color: 'white',
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					image: { src: undefined, name: undefined, objectFit: undefined },
-					opacity: 100,
-					transition: Transition.None,
-					type: SceneBackground.None,
-				},
-				element: {
-					duration: 250,
-					transition: Transition.None,
-				},
-				font: {} as Font,
-				layerRenderDelay: 128,
-				layers: [
-					{
-						id: inGameId,
-						items: [],
-					},
-				],
-				previewLayers: [inGameId],
-			},
-			[LiveStatsScene.PostGame]: {
-				background: {
-					color: 'white',
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					image: { src: undefined, name: undefined, objectFit: undefined },
-					opacity: 100,
-					transition: Transition.None,
-					type: SceneBackground.None,
-				},
-				element: {
-					duration: 250,
-					transition: Transition.None,
-				},
-				font: {} as Font,
-				layerRenderDelay: 128,
-				layers: [
-					{
-						id: postGameId,
-						items: [],
-					},
-				],
-				previewLayers: [postGameId],
-			},
-			[LiveStatsScene.RankChange]: {
-				background: {
-					color: 'white',
-					customImage: {
-						src: undefined,
-						name: undefined,
-						objectFit: undefined,
-					},
-					duration: 250,
-					image: { src: undefined, name: undefined, objectFit: undefined },
-					opacity: 100,
-					transition: Transition.None,
-					type: SceneBackground.None,
-				},
-				element: {
-					duration: 250,
-					transition: Transition.None,
-				},
-				font: {} as Font,
-				layerRenderDelay: 128,
-				layers: [
-					{
-						id: rankChangeId,
-						items: [],
-					},
-				],
-				previewLayers: [rankChangeId],
-			},
+			[LiveStatsScene.WaitingForDolphin]: getDefaultScene(newId()),
+			[LiveStatsScene.PreGame]: getDefaultScene(newId()),
+			[LiveStatsScene.InGame]: getDefaultScene(newId()),
+			[LiveStatsScene.PostGame]: getDefaultScene(newId()),
+			[LiveStatsScene.RankChange]: getDefaultScene(newId()),
 		} as Overlay;
 	}
 
-	export function generateNewItem(elementId: CustomElement, data: any) {
+	export function generateNewItem(
+		elementId: CustomElement,
+		data: any,
+		id: string | undefined = undefined,
+	) {
 		return {
 			[COL]: gridHelp.item({
 				w: 24,
@@ -185,7 +80,7 @@
 				min: { w: MIN, h: MIN },
 				max: { y: COL - MIN, h: COL + 1 },
 			}),
-			id: newId(),
+			id: id ?? newId(),
 			elementId: elementId,
 			data: data,
 		};
@@ -248,7 +143,7 @@
 		});
 		return new Promise<number>((resolve) =>
 			setTimeout(() => {
-				resolve(overlay[statsScene].layers.length - 1);
+				resolve(overlay[statsScene]?.layers.length - 1);
 			}),
 		);
 	}
@@ -261,7 +156,7 @@
 		let updatedOverlay = await getOverlayById(overlayId);
 		if (
 			selectedLayer === undefined ||
-			selectedLayer >= updatedOverlay[statsScene].layers.length - 1
+			selectedLayer >= updatedOverlay[statsScene]?.layers.length - 1
 		)
 			return 0;
 		[

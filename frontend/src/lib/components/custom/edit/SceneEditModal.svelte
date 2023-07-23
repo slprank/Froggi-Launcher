@@ -10,10 +10,10 @@
 	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
-	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
+	import FontSelector from '../selector/FontSelector.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -77,32 +77,7 @@
 								/>
 							</div>
 						</div>
-						<div class="w-full flex gap-2">
-							<div class="w-36 h-full">
-								<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
-								<Select bind:selected={curScene.font.family}>
-									<option value={undefined} selected>Default</option>
-									<option value={'Melee'}>Melee</option>
-									<option value={'Ultimate'}>Ultimate</option>
-									<option value={'A-OTF Folk Pro M'}>A-OTF Folk Pro M</option>
-									<option value={'Roboto'}>Roboto</option>
-									<option value={'Roboto Bold Italic'}>Roboto Bold Italic</option>
-									<option value={'Wix'}>Wix</option>
-									<option value={'Custom'}>Custom</option>
-								</Select>
-							</div>
-							<FileToBase64Input
-								label="Custom"
-								acceptedExtensions=".woff2, .woff, .otf, .ttf"
-								bind:base64={curScene.font.base64}
-							/>
-							<TextFitMulti
-								class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
-								style={`font-family: ${curScene.font.family}`}
-							>
-								Super Smash Bros
-							</TextFitMulti>
-						</div>
+						<FontSelector bind:font={curScene.font} fontId={'custom'} />
 						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
 						<div
 							class="w-28"

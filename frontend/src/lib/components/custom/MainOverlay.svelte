@@ -7,7 +7,7 @@
 	import CustomFontHandler from '$lib/components/custom/CustomFontHandler.svelte';
 	import type { Layer } from '$lib/models/types';
 
-	export let layers: Layer[] | undefined = undefined;
+	export let layers: Layer[];
 	export let preview: boolean = false;
 
 	let isFontLoaded: boolean = false;

@@ -81,10 +81,13 @@
 </script>
 
 {#if dataItem && display}
-	<div class="custom-font h-full w-full relative">
+	<div
+		class="h-full w-full relative"
+		style={`${dataItem.data?.font?.family && `font-family: ${dataItem.data?.font?.family}`}`}
+	>
 		<div
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
-			class={`custom-font absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
+			class={`absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 				selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
 			} bg-opacity-50`}
 		>
