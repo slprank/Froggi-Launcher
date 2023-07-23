@@ -270,7 +270,7 @@
 				class="text-gray-500 text-lg font-medium text-shadow mb-2"
 				data-tooltip="Animations that triggers on in-game events such as taking damage"
 			>
-				Trigger Animations
+				Animation Trigger
 			</h1>
 		</div>
 		{#if payload.animation.in || payload.animation.out}
@@ -303,13 +303,14 @@
 		{#if payload.animation.trigger !== AnimationTrigger.None}
 			<button
 				on:click={shuffleAnimationTriggers}
+				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 			>
 				Test animation
 			</button>
 		{/if}
 
-		<Select bind:selected={payload.pauseOption} label="Display On Pause">
+		<Select bind:selected={payload.pauseOption} label="Display">
 			<option selected value={ElementPauseOption.Always}>Always</option>
 			<option value={ElementPauseOption.OnlyActive}>Only While Playing</option>
 			<option value={ElementPauseOption.OnlyPaused}>Only While Paused</option>

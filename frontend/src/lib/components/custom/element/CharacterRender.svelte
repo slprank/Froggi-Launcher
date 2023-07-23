@@ -6,10 +6,13 @@
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
 
-	$: playerCharacterId = player?.characterId;
-	$: characterId = preview
-		? playerCharacterId || Math.floor(Math.random() * 26) + 1
-		: player?.characterId;
+	$: characterId = getCharacterId(player?.characterId);
+
+	const getCharacterId = (characterId: number | undefined | null) => {
+		if (preview && (characterId === undefined || characterId === null))
+			return Math.floor(Math.random() * 25);
+		return characterId;
+	};
 
 	let div: HTMLElement;
 </script>

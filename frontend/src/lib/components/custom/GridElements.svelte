@@ -36,6 +36,8 @@
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
+
+	$: console.log('current players:', $currentPlayers);
 </script>
 
 {#if dataItem?.elementId === CustomElement.CustomString}
@@ -133,9 +135,9 @@
 {#if dataItem?.elementId === CustomElement.Player2RankIcon}
 	<PlayerRankIcon {dataItem} {style} player={$currentPlayers.at(1)} preview={defaultPreview} />
 {/if}
-{#if dataItem?.elementId === CustomElement.Player1CharacterRender}
+{#if dataItem?.elementId === CustomElement.Player1CharacterRender && $currentPlayers.at(0)}
 	<CharacterRender {dataItem} {style} player={$currentPlayers.at(0)} preview={defaultPreview} />
 {/if}
-{#if dataItem?.elementId === CustomElement.Player2CharacterRender}
+{#if dataItem?.elementId === CustomElement.Player2CharacterRender && $currentPlayers.at(1)}
 	<CharacterRender {dataItem} {style} player={$currentPlayers.at(1)} preview={defaultPreview} />
 {/if}

@@ -86,7 +86,7 @@
 									<option value={'Ultimate'}>Ultimate</option>
 									<option value={'A-OTF Folk Pro M'}>A-OTF Folk Pro M</option>
 									<option value={'Roboto'}>Roboto</option>
-									<option value={'Roboto Bold Italic'}>Roboto</option>
+									<option value={'Roboto Bold Italic'}>Roboto Bold Italic</option>
 									<option value={'Wix'}>Wix</option>
 									<option value={'Custom'}>Custom</option>
 								</Select>
