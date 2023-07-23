@@ -14,7 +14,7 @@
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	let keyTrigger = 0;
 
-	const isFontLoaded = async () => {
+	const updateFont = async () => {
 		if (!curOverlay) return;
 		await addFont(curOverlay[$statsScene].font.base64);
 		layers
@@ -23,11 +23,10 @@
 			.map(async (item) => await addFont(item.data.font.base64, item.id))
 			.every((x) => x);
 		await document.fonts.ready;
-		//setTimeout(() => (keyTrigger = Math.random()));
 	};
 </script>
 
-{#await isFontLoaded() then}
+{#await updateFont() then}
 	{#if curOverlay}
 		<main
 			class="fixed h-full w-full bg-cover bg-center bg-transparent"

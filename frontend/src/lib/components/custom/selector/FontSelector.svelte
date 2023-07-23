@@ -6,8 +6,6 @@
 
 	export let font: Font;
 	export let fontId: string;
-
-	$: console.log(font);
 </script>
 
 <div class="w-full flex gap-2">

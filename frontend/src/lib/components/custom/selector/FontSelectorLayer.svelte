@@ -6,13 +6,13 @@
 	export let font: Font;
 	export let fontId: string;
 
-	const isFontLoaded = async () => await addFont(font.base64, fontId);
-	$: font, isFontLoaded();
+	const updateFont = async () => await addFont(font.base64, fontId);
+	$: font, updateFont();
 </script>
 
 <div class="w-full flex gap-2">
 	{#key font.base64}
-		{#await isFontLoaded()}
+		{#await updateFont()}
 			<FontSelector bind:font bind:fontId />
 		{:then}
 			<FontSelector bind:font bind:fontId />
