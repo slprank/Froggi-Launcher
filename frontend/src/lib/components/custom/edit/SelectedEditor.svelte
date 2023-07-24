@@ -35,6 +35,7 @@
 	$: selectedLayer, $statsScene, clearItem();
 
 	function handleOverflow() {
+		if (!selectedItem) return;
 		if (selectedItem[COL].x < 0) selectedItem[COL].x = 0;
 		if (selectedItem[COL].y < 0) selectedItem[COL].y = 0;
 		if (selectedItem[COL].x >= COL) selectedItem[COL].x = COL - MIN;

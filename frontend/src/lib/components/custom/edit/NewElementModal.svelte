@@ -26,8 +26,6 @@
 	export let layer: number | undefined;
 	export let selectedId: string | undefined = undefined;
 
-	if (!selectedId) selectedId = newId();
-
 	let selectedElementId: number;
 	let payload: ElementPayload = {
 		advancedStyling: false,

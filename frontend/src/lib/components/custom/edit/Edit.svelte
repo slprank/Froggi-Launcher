@@ -3,7 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { eventEmitter, obs, statsScene, urls } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
-	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import { getOverlayById, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
 	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';
@@ -168,6 +168,7 @@
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => {
+						selectedId = newId();
 						isElementModalOpen = true;
 					}}
 				>
@@ -176,7 +177,7 @@
 				<SceneSelect />
 			</div>
 		</div>
-		<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} />
+		<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} {selectedId} />
 		<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 	{/if}
 	<PreviewModal bind:open={isPreviewModalOpen} />
