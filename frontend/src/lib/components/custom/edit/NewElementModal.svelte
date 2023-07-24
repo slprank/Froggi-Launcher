@@ -57,6 +57,10 @@
 		class: {} as Class,
 		css: {} as Css,
 		description: '',
+		percent: {
+			startColor: '#ffffff',
+			endColor: '#6f1622',
+		},
 		font: {
 			family: undefined,
 			base64: undefined,

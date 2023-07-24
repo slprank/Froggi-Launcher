@@ -78,10 +78,16 @@ export interface ElementPayload {
 	description: string;
 	font: Font
 	pauseOption: ElementPauseOption;
+	percent: Percent
 	shadow: Shadow;
 	image: Image;
 	string: string | undefined;
 	animation: AnimationOptions;
+}
+
+export interface Percent {
+	startColor: string;
+	endColor: string;
 }
 
 export interface AnimationOptions {

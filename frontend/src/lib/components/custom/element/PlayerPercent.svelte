@@ -22,11 +22,11 @@
 			: '0';
 
 	const MAX_INTENSITY = 300;
-	let percentageColor: string = '#ffffff';
+	let percentageColor: string = dataItem.data.percent.startColor;
 
 	const updateColor = () => {
-		var startColor = '#ffffff'; // Replace with your desired start color
-		var endColor = '#6f1622'; // Replace with your desired end color
+		var startColor = dataItem.data.percent.startColor; // Replace with your desired start color
+		var endColor = dataItem.data.percent.endColor; // Replace with your desired end color
 
 		percentageColor = interpolateColors(startColor, endColor, parseInt(framePercent)); // Call the function to interpolate the colors
 	};

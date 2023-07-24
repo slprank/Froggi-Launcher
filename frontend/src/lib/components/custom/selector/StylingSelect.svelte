@@ -12,7 +12,7 @@
 	import { statsScene, eventEmitter } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
-	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectorLayer.svelte';
+	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';
 
 	// TODO: Animation options and sliders
 
@@ -133,9 +133,29 @@
 		</div>
 	{/if}
 
-	{#if stringSettings}
+	{#if stringSettings || customStringSettings}
 		<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
-
+	{/if}
+	{#if customStringSettings}
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Percent Colors</h1>
+		<div>
+			<div class="w-full h-fit flex flex-wrap">
+				<h1>Start Color</h1>
+				<div class="w-36 h-12">
+					<ColorInput bind:value={payload.percent.startColor} />
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="w-full h-fit flex flex-wrap">
+				<h1>End Color</h1>
+				<div class="w-36 h-12">
+					<ColorInput bind:value={payload.percent.endColor} />
+				</div>
+			</div>
+		</div>
+	{/if}
+	{#if stringSettings}
 		<div>
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Alignment</h1>
 			<div class="w-full h-fit flex flex-wrap">

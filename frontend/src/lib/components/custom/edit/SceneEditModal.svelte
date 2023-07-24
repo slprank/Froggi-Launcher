@@ -12,7 +12,7 @@
 	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
-	import FontSelectorLayer from '../selector/FontSelectorLayer.svelte';
+	import FontSelectorLayer from '../selector/FontSelectLayer.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
