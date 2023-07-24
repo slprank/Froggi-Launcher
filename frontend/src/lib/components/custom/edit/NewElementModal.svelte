@@ -1,24 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type {
-		Image,
-		Class,
-		ElementPayload,
-		GridContentItem,
-		Overlay,
-		Css,
-		Shadow,
-	} from '$lib/models/types';
+	import type { ElementPayload, GridContentItem, Overlay } from '$lib/models/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { generateNewItem, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import {
+		generateNewItem,
+		getDefaultElementPayload,
+	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
 	import StylingSelect from '$lib/components/custom/selector/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/models/const';
-	import { Easing, ElementPauseOption, Animation, AnimationTrigger } from '$lib/models/enum';
 
 	const overlayId = $page.params.overlay;
 
@@ -27,49 +21,7 @@
 	export let selectedId: string | undefined = undefined;
 
 	let selectedElementId: number;
-	let payload: ElementPayload = {
-		advancedStyling: false,
-		animation: {
-			in: {
-				options: {
-					delay: 0,
-					duration: 0,
-					easing: Easing.None,
-					x: 0,
-					y: 0,
-					start: 0,
-				},
-				animationType: Animation.None,
-			},
-			out: {
-				options: {
-					delay: 0,
-					duration: 0,
-					easing: Easing.None,
-					x: 0,
-					y: 0,
-					start: 0,
-				},
-				animationType: Animation.None,
-			},
-			trigger: AnimationTrigger.None,
-		},
-		class: {} as Class,
-		css: {} as Css,
-		description: '',
-		percent: {
-			startColor: '#ffffff',
-			endColor: '#6f1622',
-		},
-		font: {
-			family: undefined,
-			base64: undefined,
-		},
-		image: {} as Image,
-		pauseOption: ElementPauseOption.Always,
-		shadow: {} as Shadow,
-		string: '',
-	};
+	let payload: ElementPayload = getDefaultElementPayload();
 
 	let demoItem: GridContentItem;
 	$: demoItem = {

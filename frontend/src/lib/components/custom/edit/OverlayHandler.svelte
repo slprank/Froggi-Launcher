@@ -1,6 +1,24 @@
 <script lang="ts" context="module">
-	import { CustomElement, LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
-	import type { Font, Obs, Overlay, Scene } from '$lib/models/types';
+	import {
+		Animation,
+		AnimationTrigger,
+		CustomElement,
+		Easing,
+		ElementPauseOption,
+		LiveStatsScene,
+		SceneBackground,
+		Transition,
+	} from '$lib/models/enum';
+	import type {
+		Class,
+		Css,
+		ElementPayload,
+		Font,
+		Image,
+		Overlay,
+		Scene,
+		Shadow,
+	} from '$lib/models/types';
 
 	import { COL, MIN } from '$lib/models/const';
 
@@ -119,6 +137,52 @@
 				eventEmitter.emit('electron', 'delete-custom-overlay', overlayId),
 			),
 		);
+	}
+
+	export function getDefaultElementPayload(): ElementPayload {
+		return {
+			advancedStyling: false,
+			animation: {
+				in: {
+					options: {
+						delay: 0,
+						duration: 0,
+						easing: Easing.None,
+						x: 0,
+						y: 0,
+						start: 0,
+					},
+					animationType: Animation.None,
+				},
+				out: {
+					options: {
+						delay: 0,
+						duration: 0,
+						easing: Easing.None,
+						x: 0,
+						y: 0,
+						start: 0,
+					},
+					animationType: Animation.None,
+				},
+				trigger: AnimationTrigger.None,
+			},
+			class: {} as Class,
+			css: {} as Css,
+			description: '',
+			percent: {
+				startColor: '#ffffff',
+				endColor: '#6f1622',
+			},
+			font: {
+				family: undefined,
+				base64: undefined,
+			},
+			image: {} as Image,
+			pauseOption: ElementPauseOption.Always,
+			shadow: {} as Shadow,
+			string: '',
+		};
 	}
 
 	export async function newLayer(

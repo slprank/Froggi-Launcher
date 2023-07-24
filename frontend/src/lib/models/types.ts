@@ -138,7 +138,8 @@ export interface Css {
 	customText: string;
 	customImage: string;
 	opacity: number;
-	transform: string | undefined;
+	rotate: string;
+	scale: string;
 }
 export interface Shadow {
 	x: number;

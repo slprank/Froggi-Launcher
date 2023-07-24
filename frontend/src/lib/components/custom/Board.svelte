@@ -8,7 +8,6 @@
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
 	import { addFont } from './CustomFontHandler.svelte';
-	import { onMount } from 'svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let layers: Layer[];
@@ -67,7 +66,7 @@
 	let keyTrigger = 0;
 	const updateFont = async () => {
 		if (!curScene) return;
-		await addFont(curScene.font.base64);
+		await addFont(curScene.font?.base64);
 		setTimeout(() => (keyTrigger = Math.random()), 50);
 	};
 	updateFont();

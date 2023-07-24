@@ -13,6 +13,7 @@
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';
+	import { getDefaultElementPayload } from '../edit/OverlayHandler.svelte';
 
 	// TODO: Animation options and sliders
 
@@ -33,67 +34,11 @@
 	$: imageSettings =
 		(selectedElementId >= 600 && selectedElementId < 700) ||
 		selectedElementId === CustomElement.CustomImage;
+	$: percentSettings = selectedElementId >= 101 && selectedElementId <= 104;
 
 	function clearStyle() {
 		if (selectedElementId === prevSelectedElementId) return;
-		payload = {
-			animation: {
-				in: {
-					animationType: Animation.None,
-					options: {
-						delay: 0,
-						duration: 0,
-						easing: Easing.BackInOut,
-						start: 0,
-						x: 0,
-						y: 0,
-					},
-				},
-				out: {
-					animationType: Animation.None,
-					options: {
-						delay: 0,
-						duration: 0,
-						easing: Easing.BackInOut,
-						start: 0,
-						x: 0,
-						y: 0,
-					},
-				},
-				trigger: AnimationTrigger.None,
-			},
-			class: {} as Class,
-			css: {
-				background: boxSettings ? '#000000' : '',
-				borderColor: boxSettings ? '#000000' : '',
-				color: stringSettings ? '#000000' : '',
-				opacity: 1,
-				customParent: '',
-				customBox: '',
-				customText: '',
-				customImage: '',
-				transform: undefined,
-			},
-			description: '',
-			font: {
-				family: undefined,
-				base64: undefined,
-			},
-			shadow: {
-				x: 0,
-				y: 0,
-				spread: 0,
-				color: '#000000',
-			},
-			string: '',
-			advancedStyling: false,
-			pauseOption: ElementPauseOption.Always,
-			image: {
-				name: undefined,
-				src: undefined,
-				objectFit: undefined,
-			},
-		};
+		payload = getDefaultElementPayload();
 		prevSelectedElementId = selectedElementId;
 	}
 	$: stringSettings, boxSettings, imageSettings, clearStyle();
@@ -117,18 +62,16 @@
 
 <div class="w-full my-4 grid gap-4">
 	{#if selectedElementId === CustomElement.CustomString}
-		<div>
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Custom text</h1>
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36 h-10">
-					<input
-						type="text"
-						id="default-input"
-						placeholder="Text"
-						bind:value={payload.string}
-						class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 dark:bg-gray-700 dark:text-white"
-					/>
-				</div>
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Custom text</h1>
+		<div class="w-full h-fit flex flex-wrap">
+			<div class="w-36 h-10">
+				<input
+					type="text"
+					id="default-input"
+					placeholder="Text"
+					bind:value={payload.string}
+					class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 dark:bg-gray-700 dark:text-white"
+				/>
 			</div>
 		</div>
 	{/if}
@@ -136,20 +79,20 @@
 	{#if stringSettings || customStringSettings}
 		<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
 	{/if}
-	{#if customStringSettings}
+	{#if percentSettings}
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Percent Colors</h1>
 		<div>
 			<div class="w-full h-fit flex flex-wrap">
-				<h1>Start Color</h1>
 				<div class="w-36 h-12">
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">Start Color</h1>
 					<ColorInput bind:value={payload.percent.startColor} />
 				</div>
 			</div>
 		</div>
 		<div>
 			<div class="w-full h-fit flex flex-wrap">
-				<h1>End Color</h1>
 				<div class="w-36 h-12">
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">End Color</h1>
 					<ColorInput bind:value={payload.percent.endColor} />
 				</div>
 			</div>
@@ -170,7 +113,7 @@
 			</div>
 		</div>
 		<div>
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Colors</h1>
+			<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 h-12">
 					<ColorInput bind:value={payload.css.color} />
@@ -266,13 +209,31 @@
 			</div>
 		{/if}
 	{/if}
+	<h1 class="text-gray-500 text-lg font-medium text-shadow">Transformation</h1>
 	<div class="w-full h-fit flex flex-wrap">
 		<div class="w-36 h-24">
 			<h1 class="text-gray-500 text-sm font-medium text-shadow">Flip</h1>
-			<Select bind:selected={payload.css.transform}>
-				<option selected value="">Default</option>
-				<option value="scaleX(-1);">Horizontal</option>
+			<Select bind:selected={payload.css.scale}>
+				<option selected value={undefined}>Default</option>
+				<option value={'-1 1;'}>Horizontal</option>
+				<option value={'1 -1'}>Vertical</option>
+				<option value={'-1 -1'}>Horizontal & Vertical</option>
 			</Select>
+		</div>
+	</div>
+	<div class="w-full h-fit flex flex-wrap">
+		<div class="w-44 h-24">
+			<h1 class="text-gray-500 text-sm font-medium text-shadow">
+				Rotate - {payload.css.rotate ?? '0deg'}
+			</h1>
+			<SliderInput
+				value={payload.css.rotate ? parseInt(payload.css.rotate.slice(0, -3)) : 0}
+				stringFormat={'{0}deg'}
+				bind:valueConcat={payload.css.rotate}
+				min={-180}
+				max={180}
+				step={1}
+			/>
 		</div>
 	</div>
 	<div>
