@@ -63,11 +63,12 @@
 	let innerHeight = 0;
 	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
 
+	let keyTrigger = 0;
 	const updateFont = async () => {
 		if (!curScene) return;
 		await addFont(curScene.font.base64);
+		setTimeout(() => (keyTrigger = Math.random()), 500);
 	};
-	$: curScene, updateFont();
 
 	const refreshExternal = async () => {
 		if (!$isElectron) location.reload();
@@ -80,7 +81,7 @@
 	{#await updateFont() then}
 		{#key rowHeight}
 			{#key $statsScene}
-				{#key curScene?.font?.family}
+				{#key keyTrigger}
 					<div
 						class="w-full h-full overflow-hidden relative"
 						style={`font-family: ${curScene?.font?.family};`}

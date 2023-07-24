@@ -75,13 +75,15 @@
 	}
 	$: $statsScene, notifyDisabledScene();
 
+	let keyTrigger = 0;
 	const updateFont = async () => {
 		await addFont(curOverlay[$statsScene]?.font?.base64);
 		await asyncForEach(items, async (item: GridContentItem) => {
 			await addFont(item.data.font.base64, item.id);
 		});
+		await document.fonts.ready;
+		setTimeout(() => (keyTrigger = Math.random()), 500);
 	};
-	$: items, updateFont();
 
 	let innerHeight: number;
 	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
@@ -92,7 +94,7 @@
 {#await updateFont() then}
 	{#key $statsScene}
 		{#key rowHeight}
-			{#key curOverlay[$statsScene]?.font?.base64}
+			{#key keyTrigger}
 				<div
 					style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
 					class="w-full h-full overflow-hidden relative"

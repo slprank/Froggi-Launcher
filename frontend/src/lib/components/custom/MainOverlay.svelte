@@ -12,7 +12,6 @@
 
 	const overlayId = $page.params.overlay;
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
-	let keyTrigger = 0;
 
 	const updateFont = async () => {
 		if (!curOverlay) return;
@@ -37,9 +36,7 @@
 				<Edit />
 			{:else}
 				{#key $statsScene}
-					{#key keyTrigger}
-						<Board bind:layers {preview} />
-					{/key}
+					<Board bind:layers {preview} />
 				{/key}
 			{/if}
 		</main>
