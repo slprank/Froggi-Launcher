@@ -82,8 +82,9 @@
 			await addFont(item.data.font.base64, item.id);
 		});
 		await document.fonts.ready;
-		setTimeout(() => (keyTrigger = Math.random()), 500);
+		setTimeout(() => (keyTrigger = Math.random()), 50);
 	};
+	updateFont();
 
 	let innerHeight: number;
 	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
