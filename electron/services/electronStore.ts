@@ -33,7 +33,7 @@ export class ElectronJsonStore {
 		this.store.onDidChange(key, () => callback())
 	}
 
-	newId = () => `${Math.random().toString(36).slice(-8)}`;
+	newId = () => `e${Math.random().toString(36).slice(-8)}`;
 
 	dateTimeNow(): Date {
 		var utcSeconds = Date.now() / 1000;

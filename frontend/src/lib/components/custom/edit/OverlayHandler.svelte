@@ -17,7 +17,7 @@
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 
 	export function newId() {
-		return `${Math.random().toString(36).slice(-8)}`;
+		return `c${Math.random().toString(36).slice(-8)}`;
 	}
 
 	// TODO: Add complete overlays
@@ -81,7 +81,7 @@
 
 	export function generateNewItem(
 		elementId: CustomElement,
-		data: GridContentItem,
+		payload: ElementPayload,
 		id: string | undefined = undefined,
 	) {
 		return {
@@ -95,7 +95,7 @@
 			}),
 			id: id ?? newId(),
 			elementId: elementId,
-			data: data,
+			data: payload,
 		};
 	}
 

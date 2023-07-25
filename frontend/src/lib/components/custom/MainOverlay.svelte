@@ -6,7 +6,6 @@
 	import { page } from '$app/stores';
 	import { addFont } from '$lib/components/custom/CustomFontHandler.svelte';
 	import type { Layer } from '$lib/models/types';
-	import { onMount } from 'svelte';
 
 	export let layers: Layer[];
 	export let preview: boolean = false;
