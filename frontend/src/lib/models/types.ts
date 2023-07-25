@@ -81,6 +81,7 @@ export interface ElementPayload {
 	pauseOption: ElementPauseOption;
 	percent: Percent
 	shadow: Shadow;
+	stroke: Stroke;
 	image: Image;
 	string: string | undefined;
 	animation: AnimationOptions;
@@ -146,6 +147,11 @@ export interface Shadow {
 	x: number;
 	y: number;
 	spread: number;
+	color: string;
+}
+
+export interface Stroke {
+	size: string;
 	color: string;
 }
 

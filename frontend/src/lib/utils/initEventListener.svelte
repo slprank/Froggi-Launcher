@@ -23,7 +23,7 @@
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');
-		const _eventEmitter = await geteventEmitter();
+		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.on('current_player', (player: Player) => {
 			console.log({ player });
 			currentPlayer.set(player);
@@ -92,7 +92,29 @@
 		});
 	}
 
-	async function geteventEmitter(): Promise<EventEmitter> {
+	export const initElectronEvents = async () => {
+		const _eventEmitter = await getEventEmitter();
+		console.log('Initializing electron');
+		window.electron.receive('message', (data: any) => {
+			let parse = JSON.parse(data);
+			for (const [key, value] of Object.entries(parse)) {
+				_eventEmitter.emit(key, value);
+			}
+		});
+		_eventEmitter.on('electron', (topic, payload) => {
+			console.log('Sending electron message..', topic, payload);
+			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
+		});
+		_eventEmitter.on('global', (topic, payload) => {
+			console.log('Sending global message..', topic, payload);
+			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
+		});
+		_eventEmitter.on('local', (topic, payload) => {
+			_eventEmitter.emit(topic, payload);
+		});
+	};
+
+	async function getEventEmitter(): Promise<EventEmitter> {
 		return await new Promise<EventEmitter>((resolve) => {
 			eventEmitter.subscribe((eventEmitter) => {
 				resolve(eventEmitter);

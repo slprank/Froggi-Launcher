@@ -200,7 +200,7 @@
 				x: 0,
 				y: 0,
 				spread: 0,
-				color: '',
+				color: '#000000',
 			},
 			string: '',
 		};

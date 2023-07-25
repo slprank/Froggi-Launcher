@@ -14,6 +14,7 @@
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';
 	import { getDefaultElementPayload } from '../edit/OverlayHandler.svelte';
+	import NumberInput from '$lib/components/input/NumberInput.svelte';
 
 	// TODO: Animation options and sliders
 
@@ -234,6 +235,14 @@
 				max={180}
 				step={1}
 			/>
+		</div>
+	</div>
+	<div>
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
+		<div class="w-full h-fit flex flex-wrap">
+			<div class="w-36">
+				<NumberInput bind:value={payload.shadow} />
+			</div>
 		</div>
 	</div>
 	<div>
