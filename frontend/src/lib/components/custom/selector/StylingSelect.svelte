@@ -237,11 +237,26 @@
 			/>
 		</div>
 	</div>
+	<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
 	<div>
-		<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
+		<h1 class="text-gray-500 text-sm font-medium text-shadow">
+			Size - ({payload.stroke.size})
+		</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36">
-				<NumberInput bind:value={payload.shadow} />
+				<NumberInput
+					value={parseInt(payload.stroke.size.slice(0, -2))}
+					stringFormat={'{0}px'}
+					bind:valueConcat={payload.stroke.size}
+				/>
+			</div>
+		</div>
+		<h1 class="text-gray-500 text-sm font-medium text-shadow">
+			Color - ({payload.stroke.size})
+		</h1>
+		<div class="w-full h-fit flex flex-wrap">
+			<div class="w-36">
+				<ColorInput bind:value={payload.stroke.color} />
 			</div>
 		</div>
 	</div>

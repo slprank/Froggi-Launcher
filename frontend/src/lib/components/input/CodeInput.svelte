@@ -3,7 +3,7 @@
 	import 'brace/mode/json';
 	import 'brace/theme/chrome';
 	export let label: string | undefined = undefined;
-	export let value: string;
+	export let value: string | undefined;
 </script>
 
 {#if label}

@@ -1,10 +1,17 @@
 <script lang="ts">
-	export let value: number;
-	export let label: string | undefined = undefined;
-	export let min: number = 0;
-	export let max: number = 100;
 	export let autofocus: number | undefined = undefined;
 	export let autoFocusValue: number | undefined = undefined;
+	export let label: string | undefined = undefined;
+	export let max: number = 100;
+	export let min: number = 0;
+	export let value: number;
+	export let valueConcat: string = '';
+	export let stringFormat: string = '{0}';
+
+	const updateConcatValue = (value: number) => {
+		valueConcat = String.format(stringFormat, value);
+	};
+	$: updateConcatValue(value);
 
 	const revertToMax = () => {
 		if (value > max) {

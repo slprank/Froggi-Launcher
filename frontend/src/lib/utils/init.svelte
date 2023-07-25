@@ -1,13 +1,13 @@
 <script lang="ts" context="module">
 	import type EventEmitter from 'events';
-	import { initElectronEvents, initEventListener } from './initEventListener.svelte';
-	import { initNoSleep } from './noSleep.svelte';
-	import { eventEmitter, isBrowser, isElectron, obs } from './store.svelte';
+	import { initElectronEvents, initEventListener } from '$lib/utils/initEventListener.svelte';
+	import { initNoSleep } from '$lib/utils/noSleep.svelte';
+	import { eventEmitter, isBrowser, isElectron, obs } from '$lib/utils/store.svelte';
 	import type { Obs } from '$lib/models/types';
 	import { page } from '$app/stores';
 	import type { Page } from '@sveltejs/kit';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import { paramRedirect } from './routeHandler.svelte';
+	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
 
 	export const initClient = async () => {
 		await initEventListener();

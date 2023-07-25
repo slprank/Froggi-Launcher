@@ -203,6 +203,10 @@
 				color: '#000000',
 			},
 			string: '',
+			stroke: {
+				size: '0px',
+				color: '#000000',
+			},
 		};
 	}
 

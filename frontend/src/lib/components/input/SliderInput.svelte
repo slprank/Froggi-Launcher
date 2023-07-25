@@ -11,8 +11,6 @@
 		valueConcat = String.format(stringFormat, value);
 	};
 	$: updateConcatValue(value);
-
-	$: console.log(value, valueConcat);
 </script>
 
 <div>
