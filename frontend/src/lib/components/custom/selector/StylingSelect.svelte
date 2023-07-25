@@ -224,7 +224,7 @@
 	<div class="w-full h-fit flex flex-wrap">
 		<div class="w-44 h-24">
 			<h1 class="text-gray-500 text-sm font-medium text-shadow">
-				Rotate - {payload.css.rotate ?? '0deg'}
+				Rotate - ({payload.css.rotate ?? '0deg'})
 			</h1>
 			<SliderInput
 				value={payload.css.rotate ? parseInt(payload.css.rotate.slice(0, -3)) : 0}
@@ -248,26 +248,29 @@
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Transparency</h1>
 		<div class="w-full h-fit flex flex-wrap items-start">
 			<div class="w-36 h-24">
-				<SliderInput bind:value={payload.css.opacity} />
+				<SliderInput
+					value={parseInt(payload.css.opacity)}
+					bind:valueConcat={payload.css.opacity}
+				/>
 			</div>
 			<h1 class="text-white text-center capitalize">{payload.css.opacity}</h1>
 		</div>
 	</div>
-	{#if $statsScene === LiveStatsScene.InGame}
-		<div class="items-center gap-2 flex">
-			<h1
-				class="text-gray-500 text-lg font-medium text-shadow mb-2"
-				data-tooltip="Animations that triggers on in-game events such as taking damage"
-			>
-				Animation Trigger
-			</h1>
-		</div>
-		{#if payload.animation.in || payload.animation.out}
-			<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
-			<div class="relative w-[50%] h-11 bg-white rounded-md">
-				<Select bind:selected={payload.animation.trigger}>
-					<option selected value={AnimationTrigger.None}>None</option>
-					<option selected value={AnimationTrigger.Visibility}>Visible</option>
+	<div class="items-center gap-2 flex">
+		<h1
+			class="text-gray-500 text-lg font-medium text-shadow mb-2"
+			data-tooltip="Animations that triggers on in-game events such as taking damage"
+		>
+			Animations
+		</h1>
+	</div>
+	{#if payload.animation.in || payload.animation.out}
+		<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
+		<div class="relative w-[50%] bg-white rounded-md">
+			<Select bind:selected={payload.animation.trigger}>
+				<option selected value={AnimationTrigger.None}>None</option>
+				<option selected value={AnimationTrigger.Visibility}>Visible</option>
+				{#if $statsScene === LiveStatsScene.InGame}
 					<option selected value={AnimationTrigger.Player1Percent}>
 						Player1 Percent Increase
 					</option>
@@ -280,31 +283,31 @@
 					<option selected value={AnimationTrigger.Player2StockLost}>
 						Player2 Stock Lost
 					</option>
-				</Select>
+				{/if}
+			</Select>
+		</div>
+		{#if payload.animation.trigger}
+			<div class="w-full flex gap-4">
+				<AnimationInput bind:animation={payload.animation.in} label="In" />
+				<AnimationInput bind:animation={payload.animation.out} label="Out" />
 			</div>
-			{#if payload.animation.trigger}
-				<div class="w-full flex gap-4">
-					<AnimationInput bind:animation={payload.animation.in} label="In" />
-					<AnimationInput bind:animation={payload.animation.out} label="Out" />
-				</div>
-			{/if}
 		{/if}
-		{#if payload.animation.trigger !== AnimationTrigger.None}
-			<button
-				on:click={shuffleAnimationTriggers}
-				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-			>
-				Test animation
-			</button>
-		{/if}
-
-		<Select bind:selected={payload.pauseOption} label="Display">
-			<option selected value={ElementPauseOption.Always}>Always</option>
-			<option value={ElementPauseOption.OnlyActive}>Only While Playing</option>
-			<option value={ElementPauseOption.OnlyPaused}>Only While Paused</option>
-		</Select>
 	{/if}
+	{#if payload.animation.trigger !== AnimationTrigger.None}
+		<button
+			on:click={shuffleAnimationTriggers}
+			data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+		>
+			Test animation
+		</button>
+	{/if}
+
+	<Select bind:selected={payload.pauseOption} label="Display">
+		<option selected value={ElementPauseOption.Always}>Always</option>
+		<option value={ElementPauseOption.OnlyActive}>Only While Playing</option>
+		<option value={ElementPauseOption.OnlyPaused}>Only While Paused</option>
+	</Select>
 	<div class="items-center gap-2 flex">
 		<h1 class="text-gray-500 text-lg font-medium text-shadow mb-2">Advanced styling</h1>
 		<div class="mb-2">

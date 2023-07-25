@@ -9,16 +9,7 @@
 		SceneBackground,
 		Transition,
 	} from '$lib/models/enum';
-	import type {
-		Class,
-		Css,
-		ElementPayload,
-		Font,
-		Image,
-		Overlay,
-		Scene,
-		Shadow,
-	} from '$lib/models/types';
+	import type { ElementPayload, GridContentItem, Overlay, Scene } from '$lib/models/types';
 
 	import { COL, MIN } from '$lib/models/const';
 
@@ -51,7 +42,10 @@
 				duration: 250,
 				transition: Transition.None,
 			},
-			font: {} as Font,
+			font: {
+				family: undefined,
+				base64: undefined,
+			},
 			layerRenderDelay: 128,
 			layers: [
 				{
@@ -80,13 +74,14 @@
 			[LiveStatsScene.PreGame]: getDefaultScene(newId()),
 			[LiveStatsScene.InGame]: getDefaultScene(newId()),
 			[LiveStatsScene.PostGame]: getDefaultScene(newId()),
+			[LiveStatsScene.PostSet]: getDefaultScene(newId()),
 			[LiveStatsScene.RankChange]: getDefaultScene(newId()),
 		} as Overlay;
 	}
 
 	export function generateNewItem(
 		elementId: CustomElement,
-		data: any,
+		data: GridContentItem,
 		id: string | undefined = undefined,
 	) {
 		return {
@@ -167,8 +162,25 @@
 				},
 				trigger: AnimationTrigger.None,
 			},
-			class: {} as Class,
-			css: {} as Css,
+			class: {
+				border: undefined,
+				rounded: undefined,
+				alignment: undefined,
+				textShadow: undefined,
+				boxShadow: undefined,
+			},
+			css: {
+				background: undefined,
+				borderColor: undefined,
+				color: '#ffffff',
+				customParent: undefined,
+				customBox: undefined,
+				customText: undefined,
+				customImage: undefined,
+				opacity: '1',
+				rotate: undefined,
+				scale: undefined,
+			},
 			description: '',
 			percent: {
 				startColor: '#ffffff',
@@ -178,9 +190,18 @@
 				family: undefined,
 				base64: undefined,
 			},
-			image: {} as Image,
+			image: {
+				name: undefined,
+				src: undefined,
+				objectFit: undefined,
+			},
 			pauseOption: ElementPauseOption.Always,
-			shadow: {} as Shadow,
+			shadow: {
+				x: 0,
+				y: 0,
+				spread: 0,
+				color: '',
+			},
 			string: '',
 		};
 	}

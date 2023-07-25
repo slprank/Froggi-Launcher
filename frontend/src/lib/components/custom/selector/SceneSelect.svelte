@@ -44,6 +44,10 @@
 			liveScene: LiveStatsScene.PostGame,
 		},
 		{
+			text: 'Post Set',
+			liveScene: LiveStatsScene.PostSet,
+		},
+		{
 			text: 'Rank Change',
 			liveScene: LiveStatsScene.RankChange,
 		},

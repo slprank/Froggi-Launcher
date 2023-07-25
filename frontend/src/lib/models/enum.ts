@@ -95,7 +95,8 @@ export enum LiveStatsScene {
 	PreGame = 2,
 	InGame = 4,
 	PostGame = 6,
-	RankChange = 8,
+	PostSet = 8,
+	RankChange = 10,
 }
 
 export enum PlayerActionState {

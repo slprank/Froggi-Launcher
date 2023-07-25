@@ -26,6 +26,7 @@ export interface Overlay {
 	[LiveStatsScene.PreGame]: Scene;
 	[LiveStatsScene.InGame]: Scene;
 	[LiveStatsScene.PostGame]: Scene;
+	[LiveStatsScene.PostSet]: Scene;
 	[LiveStatsScene.RankChange]: Scene;
 }
 
@@ -122,24 +123,24 @@ export interface Font {
 }
 
 export interface Class {
-	border: string;
-	rounded: string;
-	alignment: string;
-	textShadow: string;
-	boxShadow: string;
+	border: string | undefined;
+	rounded: string | undefined;
+	alignment: string | undefined;
+	textShadow: string | undefined;
+	boxShadow: string | undefined;
 }
 
 export interface Css {
-	background: string;
-	borderColor: string;
-	color: string;
-	customParent: string;
-	customBox: string;
-	customText: string;
-	customImage: string;
-	opacity: number;
-	rotate: string;
-	scale: string;
+	background: string | undefined;
+	borderColor: string | undefined;
+	color: string | undefined;
+	customParent: string | undefined;
+	customBox: string | undefined;
+	customText: string | undefined;
+	customImage: string | undefined;
+	opacity: string;
+	rotate: string | undefined;
+	scale: string | undefined;
 }
 export interface Shadow {
 	x: number;
