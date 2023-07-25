@@ -63,11 +63,9 @@
 	let innerHeight = 0;
 	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
 
-	let keyTrigger = 0;
 	const updateFont = async () => {
 		if (!curScene) return;
 		await addFont(curScene.font?.base64);
-		setTimeout(() => (keyTrigger = Math.random()), 50);
 	};
 	updateFont();
 
@@ -82,36 +80,34 @@
 	{#await updateFont() then}
 		{#key rowHeight}
 			{#key $statsScene}
-				{#key keyTrigger}
-					<div
-						class="w-full h-full overflow-hidden relative"
-						style={`font-family: ${curScene?.font?.family};`}
-					>
-						<BoardContainer scene={curScene} />
-						{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
-							<div class="w-full h-full z-2 absolute">
-								<Grid
-									items={layer.items}
-									bind:rowHeight
-									gap={[0, 0]}
-									let:dataItem
-									cols={[[COL, COL]]}
-									fastStart={true}
-								>
-									<GridContent
-										{preview}
-										{dataItem}
-										transition={curScene?.element.transition}
-										additionalDelay={SCENE_TRANSITION_DELAY +
-											curScene.layerRenderDelay * i}
-										duration={curScene.element.duration ?? 250}
-									/>
-								</Grid>
-							</div>
-						{/each}
-						<div class="w-full h-full z-8 absolute" />
-					</div>
-				{/key}
+				<div
+					class="w-full h-full overflow-hidden relative"
+					style={`font-family: ${curScene?.font?.family};`}
+				>
+					<BoardContainer scene={curScene} />
+					{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
+						<div class="w-full h-full z-2 absolute">
+							<Grid
+								items={layer.items}
+								bind:rowHeight
+								gap={[0, 0]}
+								let:dataItem
+								cols={[[COL, COL]]}
+								fastStart={true}
+							>
+								<GridContent
+									{preview}
+									{dataItem}
+									transition={curScene?.element.transition}
+									additionalDelay={SCENE_TRANSITION_DELAY +
+										curScene.layerRenderDelay * i}
+									duration={curScene.element.duration ?? 250}
+								/>
+							</Grid>
+						</div>
+					{/each}
+					<div class="w-full h-full z-8 absolute" />
+				</div>
 			{/key}
 		{/key}
 	{/await}
