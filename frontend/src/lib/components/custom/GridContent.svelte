@@ -15,6 +15,8 @@
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
 	export let additionalDelay: number = 0;
+	export let boardHeight: number | undefined;
+	export let boardWidth: number | undefined;
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let demoItem: GridContentItem | undefined = undefined;
 	export let duration: number = 250;
@@ -34,13 +36,13 @@
 		if (!dataItem) return;
 		const y = getRelativePixelSize(
 			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
-			innerWidth,
-			innerHeight,
+			boardWidth ?? innerWidth,
+			boardHeight ?? innerHeight,
 		);
 		const x = getRelativePixelSize(
 			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
-			innerWidth,
-			innerHeight,
+			boardWidth ?? innerWidth,
+			boardHeight ?? innerHeight,
 		);
 		switch (transition) {
 			case Transition.None:
