@@ -18,6 +18,7 @@
 		classValue: '',
 		cssValue: '',
 		shadow: '',
+		stroke: '',
 	};
 
 	$: style.classValue = Object.entries(dataItem?.data.class ?? {})
@@ -33,6 +34,9 @@
 	}px ${(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0}px ${
 		dataItem?.data.shadow?.color ?? '#000000'
 	});`;
+
+	$: style.stroke = `-webkit-text-stroke-width: ${dataItem.data.stroke.size}pt;
+						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
 
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

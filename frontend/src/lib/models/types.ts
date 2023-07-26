@@ -70,6 +70,7 @@ export interface GridContentItemStyle {
 	cssValue: string;
 	classValue: string;
 	shadow: string;
+	stroke: string;
 }
 
 export interface ElementPayload {
@@ -151,7 +152,7 @@ export interface Shadow {
 }
 
 export interface Stroke {
-	size: string;
+	size: number;
 	color: string;
 }
 

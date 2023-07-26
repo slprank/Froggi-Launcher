@@ -55,9 +55,6 @@
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
-
-		// Currently using max scene transition duration as addition delay
-		// TODO: Get longest scene transition and apply that instead
 		return animation(node, delay);
 	};
 
@@ -75,9 +72,6 @@
 		dataItem?.data.pauseOption === ElementPauseOption.Always ||
 		(isGameRunning && dataItem?.data.pauseOption === ElementPauseOption.OnlyActive) ||
 		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);
-
-	// TODO: Add remaining components
-	// TODO: Add fallback to unknown player - img, name, etc
 </script>
 
 {#if dataItem && display}

@@ -244,16 +244,10 @@
 		</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36">
-				<NumberInput
-					value={parseInt(payload.stroke.size.slice(0, -2))}
-					stringFormat={'{0}px'}
-					bind:valueConcat={payload.stroke.size}
-				/>
+				<NumberInput bind:value={payload.stroke.size} />
 			</div>
 		</div>
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">
-			Color - ({payload.stroke.size})
-		</h1>
+		<h1 class="text-gray-500 text-sm font-medium text-shadow">Color</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36">
 				<ColorInput bind:value={payload.stroke.color} />

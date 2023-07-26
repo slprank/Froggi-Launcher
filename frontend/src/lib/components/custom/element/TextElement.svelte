@@ -12,7 +12,7 @@
 		class={`h-full flex ${style.classValue}`}
 		style={`${style.shadow}; ${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-		};  ${edit ? 'color: black' : ''}`}
+		};  ${edit && 'color: black'}; ${style.stroke}`}
 		maxFont={1000}
 	>
 		<slot />

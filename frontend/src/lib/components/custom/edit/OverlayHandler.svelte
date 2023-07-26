@@ -9,7 +9,7 @@
 		SceneBackground,
 		Transition,
 	} from '$lib/models/enum';
-	import type { ElementPayload, GridContentItem, Overlay, Scene } from '$lib/models/types';
+	import type { ElementPayload, Overlay, Scene } from '$lib/models/types';
 
 	import { COL, MIN } from '$lib/models/const';
 
@@ -204,7 +204,7 @@
 			},
 			string: '',
 			stroke: {
-				size: '0px',
+				size: 0,
 				color: '#000000',
 			},
 		};
