@@ -15,8 +15,8 @@
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
 	export let additionalDelay: number = 0;
-	export let boardHeight: number | undefined;
-	export let boardWidth: number | undefined;
+	export let boardHeight: number | undefined = undefined;
+	export let boardWidth: number | undefined = undefined;
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let demoItem: GridContentItem | undefined = undefined;
 	export let duration: number = 250;
@@ -107,20 +107,20 @@
 							CreateElementAnimation(
 								node,
 								dataItem?.data.animation.in,
-								innerHeight,
-								innerWidth,
+								boardHeight ?? innerHeight,
+								boardWidth ?? innerWidth,
 							)}
 						animationOut={(node) =>
 							CreateElementAnimation(
 								node,
 								dataItem?.data.animation.out,
-								innerHeight,
-								innerWidth,
+								boardHeight ?? innerHeight,
+								boardWidth ?? innerWidth,
 							)}
 						animationTrigger={dataItem.data.animation.trigger}
 						{edit}
 					>
-						<GridElements {dataItem} {preview} />
+						<GridElements {dataItem} {preview} bind:boardHeight bind:boardWidth />
 					</AnimationLayer>
 				</div>
 			{/if}

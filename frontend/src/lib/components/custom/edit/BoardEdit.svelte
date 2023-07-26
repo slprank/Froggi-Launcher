@@ -120,8 +120,8 @@
 									edit={true}
 									{dataItem}
 									bind:selectedId
-									boardHeight={boardWidth ?? innerWidth}
-									boardWidth={boardHeight ?? innerHeight}
+									boardHeight={boardHeight ?? innerHeight}
+									boardWidth={boardWidth ?? innerWidth}
 								/>
 							</div>
 							<div

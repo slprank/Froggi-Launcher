@@ -7,11 +7,11 @@
 
 	export const getRelativePixelSize = (
 		size: number,
-		windowWidth: number,
 		windowHeight: number,
+		windowWidth: number,
 	): number => {
 		return windowWidth > windowHeight
-			? size * (innerWidth / 1920)
-			: size * (innerHeight / 1080);
+			? size * (windowWidth / 1920)
+			: size * (windowHeight / 1080);
 	};
 </script>

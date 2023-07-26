@@ -12,6 +12,8 @@
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
 	export let preview: boolean = false;
+	export let boardHeight: number | undefined = undefined;
+	export let boardWidth: number | undefined = undefined;
 
 	let innerWidth = 0;
 	let innerHeight = 0;
@@ -33,13 +35,25 @@
 		.map(([key, value]) => `${toKebabCase(key)}: ${value}`)
 		.join('; ');
 
-	$: shadowSizeX = getRelativePixelSize(dataItem?.data.shadow?.x, innerWidth, innerHeight);
-	$: shadowSizeY = getRelativePixelSize(dataItem?.data.shadow?.y, innerWidth, innerHeight);
+	$: shadowSizeX = getRelativePixelSize(
+		dataItem?.data.shadow?.x,
+		boardHeight ?? innerHeight,
+		boardWidth ?? innerWidth,
+	);
+	$: shadowSizeY = getRelativePixelSize(
+		dataItem?.data.shadow?.y,
+		boardHeight ?? innerHeight,
+		boardWidth ?? innerWidth,
+	);
 	$: style.shadow = `filter: drop-shadow(${shadowSizeX}px ${shadowSizeY}px ${
 		(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0
 	}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
 
-	$: strokeSize = getRelativePixelSize(dataItem.data.stroke.size, innerWidth, innerHeight);
+	$: strokeSize = getRelativePixelSize(
+		dataItem.data.stroke.size,
+		boardHeight ?? innerHeight,
+		boardWidth ?? innerWidth,
+	);
 	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}px;
 						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
 
