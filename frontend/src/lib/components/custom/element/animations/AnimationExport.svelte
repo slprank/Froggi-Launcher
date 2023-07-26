@@ -13,12 +13,26 @@
 	} from 'svelte/easing';
 	import type { ElementAnimation, ElementAnimationOptions } from '$lib/models/types';
 	import { Animation, Easing } from '$lib/models/enum';
+	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
-	const animationFlyRandom = (node: any, option: ElementAnimationOptions | any) => {
+	const animationFlyRandom = (
+		node: any,
+		option: ElementAnimationOptions | any,
+		windowHeight: number,
+		windowWidth: number,
+	) => {
 		const multiplierX = Math.random() < 0.5 ? -1 : 1;
 		const multiplierY = Math.random() < 0.5 ? -1 : 1;
-		const x = multiplierX * Math.floor(Math.random() * option.x);
-		const y = multiplierY * Math.floor(Math.random() * option.y);
+		const x = getRelativePixelSize(
+			multiplierX * Math.floor(Math.random() * option.x),
+			windowWidth,
+			windowHeight,
+		);
+		const y = getRelativePixelSize(
+			multiplierY * Math.floor(Math.random() * option.x),
+			windowWidth,
+			windowHeight,
+		);
 		return fly(node, {
 			delay: option.delay,
 			duration: option.duration,
@@ -40,7 +54,12 @@
 			easing: getEasing(option.easing),
 		});
 	};
-	const animationFly = (node: any, option: ElementAnimationOptions | any) => {
+	const animationFly = (
+		node: any,
+		option: ElementAnimationOptions | any,
+		windowHeight: number,
+		windowWidth: number,
+	) => {
 		return fly(node, {
 			delay: option.delay,
 			duration: option.duration,
@@ -95,6 +114,8 @@
 	export const CreateElementAnimation = (
 		node: any,
 		elementAnimation: ElementAnimation | undefined,
+		windowHeight: number,
+		windowWidth: number,
 	) => {
 		switch (elementAnimation?.animationType) {
 			case Animation.Blur:
@@ -102,11 +123,16 @@
 			case Animation.Fade:
 				return animationFade(node, elementAnimation.options);
 			case Animation.Fly:
-				return animationFly(node, elementAnimation.options);
+				return animationFly(node, elementAnimation.options, windowHeight, windowWidth);
 			case Animation.Scale:
 				return animationScale(node, elementAnimation.options);
 			case Animation.FlyRandom:
-				return animationFlyRandom(node, elementAnimation.options);
+				return animationFlyRandom(
+					node,
+					elementAnimation.options,
+					windowHeight,
+					windowWidth,
+				);
 			case Animation.Slide:
 				return animationSlide(node, elementAnimation.options);
 			default:
