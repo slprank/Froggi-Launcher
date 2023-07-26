@@ -8,7 +8,7 @@
 	import type { GridContentItem } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
-	import { gameState, isElectron } from '$lib/utils/store.svelte';
+	import { gameState } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
 	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';

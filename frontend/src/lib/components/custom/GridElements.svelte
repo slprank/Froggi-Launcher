@@ -7,10 +7,14 @@
 	import CharacterRender from './element/CharacterRender.svelte';
 	import PlayerRankIcon from './element/PlayerRankIcon.svelte';
 	import { addFont } from './CustomFontHandler.svelte';
+	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
 	export let preview: boolean = false;
+
+	let innerWidth = 0;
+	let innerHeight = 0;
 
 	$: defaultPreview = edit || preview;
 
@@ -29,13 +33,14 @@
 		.map(([key, value]) => `${toKebabCase(key)}: ${value}`)
 		.join('; ');
 
-	$: style.shadow = `filter: drop-shadow(${dataItem?.data.shadow?.x ?? 0}px ${
-		dataItem?.data.shadow?.y ?? 0
-	}px ${(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0}px ${
-		dataItem?.data.shadow?.color ?? '#000000'
-	});`;
+	$: shadowSizeX = getRelativePixelSize(dataItem?.data.shadow?.x, innerWidth, innerHeight);
+	$: shadowSizeY = getRelativePixelSize(dataItem?.data.shadow?.y, innerWidth, innerHeight);
+	$: style.shadow = `filter: drop-shadow(${shadowSizeX}px ${shadowSizeY}px ${
+		(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0
+	}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
 
-	$: style.stroke = `-webkit-text-stroke-width: ${dataItem.data.stroke.size}pt;
+	$: strokeSize = getRelativePixelSize(dataItem.data.stroke.size, innerWidth, innerHeight);
+	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}px;
 						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
 
 	function toKebabCase(str: string) {
@@ -50,6 +55,8 @@
 
 	$: console.log('current players:', $currentPlayers);
 </script>
+
+<svelte:window bind:innerWidth bind:innerHeight />
 
 {#await updateFont() then}
 	{#key dataItem}

@@ -4,4 +4,14 @@
 			await callback(array[index], index, array);
 		}
 	}
+
+	export const getRelativePixelSize = (
+		size: number,
+		windowWidth: number,
+		windowHeight: number,
+	): number => {
+		return windowWidth > windowHeight
+			? size * (innerWidth / 1920)
+			: size * (innerHeight / 1080);
+	};
 </script>
