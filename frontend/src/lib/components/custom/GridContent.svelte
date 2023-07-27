@@ -1,11 +1,6 @@
 <script lang="ts">
-	import {
-		AnimationTrigger,
-		ElementPauseOption,
-		InGameState,
-		Transition,
-	} from '$lib/models/enum';
-	import type { GridContentItem } from '$lib/models/types';
+	import { AnimationTrigger, ElementPauseOption, InGameState, Animation } from '$lib/models/enum';
+	import type { Animations, GridContentItem, Scene } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
 	import { gameState } from '$lib/utils/store.svelte';
@@ -17,13 +12,12 @@
 	export let additionalDelay: number = 0;
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;
+	export let curScene: Scene | undefined = undefined;
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let demoItem: GridContentItem | undefined = undefined;
-	export let duration: number = 250;
 	export let edit: boolean = false;
 	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
-	export let transition: Transition = Transition.None;
 
 	function updateDemoData() {
 		if (demoItem) dataItem = demoItem;
@@ -32,7 +26,7 @@
 	$: demoItem, updateDemoData();
 	$: isTriggerVisible = dataItem?.data.animation.trigger === AnimationTrigger.Visibility;
 
-	const animation = (node: any, delay: number = 0) => {
+	const animation = (node: any, animationType: Animation, delay: number = 0) => {
 		if (!dataItem) return;
 		const y = getRelativePixelSize(
 			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
@@ -44,34 +38,35 @@
 			boardWidth ?? innerWidth,
 			boardHeight ?? innerHeight,
 		);
-		switch (transition) {
-			case Transition.None:
+		const duration = curScene?.animation.duration;
+		switch (animationType) {
+			case Animation.None:
 				return;
-			case Transition.Fade:
+			case Animation.Fade:
 				return fade(node, { duration: duration, delay: delay });
-			case Transition.Fly:
+			case Animation.Fly:
 				return fly(node, { duration: duration, x: x, y: y, delay: delay });
-			case Transition.Scale:
+			case Animation.Scale:
 				return scale(node, { duration: duration, delay: delay });
-			case Transition.Slide:
+			case Animation.Slide:
 				return slide(node, { duration: duration, delay: delay });
-			case Transition.Blur:
+			case Animation.Blur:
 				return blur(node, { duration: duration, delay: delay });
 		}
 	};
 
 	const animateIn = (node: Element) => {
-		if (edit || !dataItem || isTriggerVisible) return;
+		if (edit || !dataItem || isTriggerVisible || !curScene) return;
 		const delay =
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
-		return animation(node, delay);
+		return animation(node, curScene.animation.in.animationType, delay);
 	};
 
 	const animateOut = (node: Element) => {
-		if (edit || !dataItem || isTriggerVisible) return;
-		return animation(node);
+		if (edit || !dataItem || isTriggerVisible || !curScene) return;
+		return animation(node, curScene.animation.out.animationType);
 	};
 
 	$: isGameRunning = $gameState === InGameState.Running;

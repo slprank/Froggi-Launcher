@@ -31,12 +31,11 @@ export interface Overlay {
 }
 
 export interface Scene {
+	animation: SceneAnimation;
 	background: Background;
-	element: Element;
 	font: Font;
 	previewLayers: string[];
 	layers: Layer[];
-	layerRenderDelay: number;
 }
 
 export interface Layer {
@@ -52,11 +51,6 @@ export interface Background {
 	opacity: number;
 	transition: Transition;
 	type: SceneBackground;
-}
-
-export interface Element {
-	duration: number;
-	transition: Transition;
 }
 
 export interface GridContentItem {
@@ -75,6 +69,7 @@ export interface GridContentItemStyle {
 
 export interface ElementPayload {
 	advancedStyling: boolean;
+	animation: Animations;
 	class: Class;
 	css: Css;
 	description: string;
@@ -85,7 +80,6 @@ export interface ElementPayload {
 	stroke: Stroke;
 	image: Image;
 	string: string | undefined;
-	animation: AnimationOptions;
 }
 
 export interface Percent {
@@ -93,18 +87,23 @@ export interface Percent {
 	endColor: string;
 }
 
-export interface AnimationOptions {
-	in: ElementAnimation
-	out: ElementAnimation
+export interface Animations {
+	in: AnimationSettings
+	out: AnimationSettings
 	trigger: AnimationTrigger
 }
 
-export interface ElementAnimation {
-	animationType: Animation;
-	options: ElementAnimationOptions;
+export interface SceneAnimation extends Animations {
+	duration: number;
+	layerRenderDelay: number;
 }
 
-export interface ElementAnimationOptions {
+export interface AnimationSettings {
+	animationType: Animation;
+	options: AnimationOptions;
+}
+
+export interface AnimationOptions {
 	delay: number;
 	duration: number;
 	easing: Easing;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { LiveStatsScene, SceneBackground, Transition } from '$lib/models/enum';
+	import { LiveStatsScene, SceneBackground, Transition, Animation } from '$lib/models/enum';
 	import type { Overlay } from '$lib/models/types';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import Select from '$lib/components/input/Select.svelte';
@@ -174,12 +174,12 @@
 										bind:selected={curScene.background.transition}
 										label="Type"
 									>
-										<option value={Transition.None}>None</option>
-										<option value={Transition.Blur}>Blur</option>
-										<option value={Transition.Fade}>Fade</option>
-										<option value={Transition.Fly}>Fly</option>
-										<option value={Transition.Scale}>Scale</option>
-										<option value={Transition.Slide}>Slide</option>
+										<option value={Animation.None}>None</option>
+										<option value={Animation.Blur}>Blur</option>
+										<option value={Animation.Fade}>Fade</option>
+										<option value={Animation.Fly}>Fly</option>
+										<option value={Animation.Scale}>Scale</option>
+										<option value={Animation.Slide}>Slide</option>
 									</Select>
 								</div>
 								{#if curScene.background.transition !== Transition.None}
@@ -205,7 +205,7 @@
 						<div class="w-full flex gap-2">
 							<div class="w-24">
 								<NumberInput
-									bind:value={curScene.layerRenderDelay}
+									bind:value={curScene.animation.layerRenderDelay}
 									max={SCENE_TRANSITION_DELAY}
 									label="Delay"
 								/>
@@ -213,23 +213,55 @@
 						</div>
 
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Transition Elements
+							Transition Elements - In
 						</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-24">
-								<Select bind:selected={curScene.element.transition} label="Type">
-									<option value={Transition.None}>None</option>
-									<option value={Transition.Blur}>Blur</option>
-									<option value={Transition.Fade}>Fade</option>
-									<option value={Transition.Fly}>Fly</option>
-									<option value={Transition.Scale}>Scale</option>
-									<option value={Transition.Slide}>Slide</option>
+								<Select
+									bind:selected={curScene.animation.in.animationType}
+									label="Type"
+								>
+									<option value={Animation.None}>None</option>
+									<option value={Animation.Blur}>Blur</option>
+									<option value={Animation.Fade}>Fade</option>
+									<option value={Animation.Fly}>Fly</option>
+									<option value={Animation.Scale}>Scale</option>
+									<option value={Animation.Slide}>Slide</option>
 								</Select>
 							</div>
-							{#if curScene.element.transition !== Transition.None}
+							{#if curScene.animation.in.animationType !== Animation.None}
 								<div class="w-24">
 									<NumberInput
-										bind:value={curScene.element.duration}
+										bind:value={curScene.animation.duration}
+										label="Duration - ms"
+										max={SCENE_TRANSITION_DELAY}
+										bind:autofocus
+										autoFocusValue={3}
+									/>
+								</div>
+							{/if}
+						</div>
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Transition Elements - Out
+						</h1>
+						<div class="w-full flex gap-2">
+							<div class="w-24">
+								<Select
+									bind:selected={curScene.animation.out.animationType}
+									label="Type"
+								>
+									<option value={Animation.None}>None</option>
+									<option value={Animation.Blur}>Blur</option>
+									<option value={Animation.Fade}>Fade</option>
+									<option value={Animation.Fly}>Fly</option>
+									<option value={Animation.Scale}>Scale</option>
+									<option value={Animation.Slide}>Slide</option>
+								</Select>
+							</div>
+							{#if curScene.animation.out.animationType !== Animation.None}
+								<div class="w-24">
+									<NumberInput
+										bind:value={curScene.animation.duration}
 										label="Duration - ms"
 										max={SCENE_TRANSITION_DELAY}
 										bind:autofocus

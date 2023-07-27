@@ -98,10 +98,9 @@
 								<GridContent
 									{preview}
 									{dataItem}
-									transition={curScene?.element.transition}
+									{curScene}
 									additionalDelay={SCENE_TRANSITION_DELAY +
-										curScene.layerRenderDelay * i}
-									duration={curScene.element.duration ?? 250}
+										curScene.animation.layerRenderDelay * i}
 								/>
 							</Grid>
 						</div>

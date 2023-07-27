@@ -9,7 +9,13 @@
 		SceneBackground,
 		Transition,
 	} from '$lib/models/enum';
-	import type { ElementPayload, Overlay, Scene } from '$lib/models/types';
+	import type {
+		AnimationOptions,
+		AnimationSettings,
+		ElementPayload,
+		Overlay,
+		Scene,
+	} from '$lib/models/types';
 
 	import { COL, MIN } from '$lib/models/const';
 
@@ -25,6 +31,12 @@
 
 	const getDefaultScene = (sceneId: string): Scene => {
 		return {
+			animation: {
+				duration: 250,
+				in: getDefaultAnimations(),
+				out: getDefaultAnimations(),
+				trigger: AnimationTrigger.None,
+			},
 			background: {
 				color: 'white',
 				customImage: {
@@ -37,10 +49,6 @@
 				opacity: 100,
 				transition: Transition.None,
 				type: SceneBackground.None,
-			},
-			element: {
-				duration: 250,
-				transition: Transition.None,
 			},
 			font: {
 				family: undefined,
@@ -138,28 +146,8 @@
 		return {
 			advancedStyling: false,
 			animation: {
-				in: {
-					options: {
-						delay: 0,
-						duration: 0,
-						easing: Easing.None,
-						x: 0,
-						y: 0,
-						start: 0,
-					},
-					animationType: Animation.None,
-				},
-				out: {
-					options: {
-						delay: 0,
-						duration: 0,
-						easing: Easing.None,
-						x: 0,
-						y: 0,
-						start: 0,
-					},
-					animationType: Animation.None,
-				},
+				in: getDefaultAnimations(),
+				out: getDefaultAnimations(),
 				trigger: AnimationTrigger.None,
 			},
 			class: {
@@ -207,6 +195,20 @@
 				size: 0,
 				color: '#000000',
 			},
+		};
+	}
+
+	export function getDefaultAnimations(): AnimationSettings {
+		return {
+			options: {
+				delay: 0,
+				duration: 0,
+				easing: Easing.None,
+				start: 0,
+				x: 0,
+				y: 0,
+			},
+			animationType: Animation.None,
 		};
 	}
 
