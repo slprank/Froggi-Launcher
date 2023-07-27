@@ -24,6 +24,7 @@
 
 	let selectedElementId: number;
 	let payload: ElementPayload = getDefaultElementPayload();
+	$: isNewElement = !getCurrentItems().some((item) => item.id === selectedId);
 
 	let demoItem: GridContentItem;
 	$: demoItem = {
@@ -99,10 +100,6 @@
 		open = false;
 	}
 
-	onMount(() => {
-		selectedId = newId();
-	});
-
 	function updatePayload() {
 		if (!selectedId) return;
 		let items = getCurrentItems();
@@ -131,7 +128,7 @@
 					class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={edit}
 				>
-					{selectedId ? 'Update' : 'Add'}
+					{isNewElement ? 'Add' : 'Update'}
 				</button>
 			</div>
 			<div class="w-full h-full col-span-3 grid justify-center content-center gap-12">
