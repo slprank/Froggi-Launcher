@@ -71,7 +71,7 @@
 						class={`h-full ${style.classValue} justify-end ${
 							i === 0 ? 'font-[900]' : ``
 						}`}
-						style={`${style.shadow}; ${style.cssValue}; ${
+						style={`${style.cssValue}; ${
 							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 						};  ${edit ? 'color: black' : ''} ${
 							i !== 0 && `color: ${percentageColor}`

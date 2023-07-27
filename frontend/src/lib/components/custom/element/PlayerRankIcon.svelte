@@ -21,9 +21,7 @@
 	>
 		<img
 			class="w-full h-full object-contain"
-			style={`${style.shadow}; ${
-				dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
-			};`}
+			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={`/image/rank-icons/${rankIcon}.svg`}
 			alt="rank-icon"
 		/>

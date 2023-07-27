@@ -27,7 +27,7 @@
 	>
 		<img
 			class="h-full aspect-video"
-			style={`${style.shadow}; object-fit: cover; ${'object-position: 100% 0;'};  height: ${
+			style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
 				div?.clientHeight
 			}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}

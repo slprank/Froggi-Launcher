@@ -10,9 +10,9 @@
 {#key dataItem}
 	<TextFitMulti
 		class={`h-full flex ${style.classValue}`}
-		style={`${style.shadow}; ${style.cssValue}; ${
+		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-		};  ${edit && 'color: black'}; ${style.stroke}`}
+		};  ${edit && 'color: black'}`}
 		maxFont={1000}
 	>
 		<slot />
