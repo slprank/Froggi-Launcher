@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { AnimationTrigger, ElementPauseOption, InGameState, Animation } from '$lib/models/enum';
-	import type { Animations, GridContentItem, Scene } from '$lib/models/types';
+	import type { GridContentItem, Scene } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
 	import { gameState } from '$lib/utils/store.svelte';

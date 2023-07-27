@@ -13,6 +13,7 @@
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import FontSelectorLayer from '../selector/FontSelectLayer.svelte';
+	import SceneAnimationSelect from '../selector/SceneAnimationSelect.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -215,60 +216,19 @@
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">
 							Transition Elements - In
 						</h1>
-						<div class="w-full flex gap-2">
-							<div class="w-24">
-								<Select
-									bind:selected={curScene.animation.in.animationType}
-									label="Type"
-								>
-									<option value={Animation.None}>None</option>
-									<option value={Animation.Blur}>Blur</option>
-									<option value={Animation.Fade}>Fade</option>
-									<option value={Animation.Fly}>Fly</option>
-									<option value={Animation.Scale}>Scale</option>
-									<option value={Animation.Slide}>Slide</option>
-								</Select>
-							</div>
-							{#if curScene.animation.in.animationType !== Animation.None}
-								<div class="w-24">
-									<NumberInput
-										bind:value={curScene.animation.duration}
-										label="Duration - ms"
-										max={SCENE_TRANSITION_DELAY}
-										bind:autofocus
-										autoFocusValue={3}
-									/>
-								</div>
-							{/if}
+						<div class="w-24">
+							<SceneAnimationSelect
+								bind:animationType={curScene.animation.in.animationType}
+								bind:duration={curScene.animation.duration}
+							/>
 						</div>
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">
 							Transition Elements - Out
 						</h1>
-						<div class="w-full flex gap-2">
-							<div class="w-24">
-								<Select
-									bind:selected={curScene.animation.out.animationType}
-									label="Type"
-								>
-									<option value={Animation.None}>None</option>
-									<option value={Animation.Blur}>Blur</option>
-									<option value={Animation.Fade}>Fade</option>
-									<option value={Animation.Fly}>Fly</option>
-									<option value={Animation.Scale}>Scale</option>
-									<option value={Animation.Slide}>Slide</option>
-								</Select>
-							</div>
-							{#if curScene.animation.out.animationType !== Animation.None}
-								<div class="w-24">
-									<NumberInput
-										bind:value={curScene.animation.duration}
-										label="Duration - ms"
-										max={SCENE_TRANSITION_DELAY}
-										bind:autofocus
-										autoFocusValue={3}
-									/>
-								</div>
-							{/if}
+						<div class="w-24">
+							<SceneAnimationSelect
+								bind:animationType={curScene.animation.out.animationType}
+							/>
 						</div>
 
 						<div class="w-24 flex items-end">
