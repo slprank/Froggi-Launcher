@@ -64,7 +64,7 @@
 	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 >
-	{#if overlay}
+	{#if overlay && boardHeightEdit && boardWidthEdit}
 		<div
 			class={`w-full h-full grid px-16 justify-center`}
 			style={`grid-template-columns: repeat(${gridCols}, minmax(0, 1fr));`}

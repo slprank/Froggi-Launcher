@@ -166,34 +166,28 @@
 						</div>
 
 						{#if curScene.background.type !== SceneBackground.None}
-							<h1 class="text-gray-500 text-lg font-medium text-shadow">
-								Transition Background
-							</h1>
-							<div class="w-full flex gap-2">
-								<div class="w-24">
-									<Select
-										bind:selected={curScene.background.transition}
-										label="Type"
-									>
-										<option value={Animation.None}>None</option>
-										<option value={Animation.Blur}>Blur</option>
-										<option value={Animation.Fade}>Fade</option>
-										<option value={Animation.Fly}>Fly</option>
-										<option value={Animation.Scale}>Scale</option>
-										<option value={Animation.Slide}>Slide</option>
-									</Select>
-								</div>
-								{#if curScene.background.transition !== Transition.None}
-									<div class="w-24">
-										<NumberInput
-											bind:value={curScene.background.duration}
-											label="Duration - ms"
-											max={SCENE_TRANSITION_DELAY}
-											bind:autofocus
-											autoFocusValue={4}
+							<div class="flex">
+								<div class="w-full">
+									<h1 class="text-gray-500 text-lg font-medium text-shadow">
+										Background Transition - In
+									</h1>
+									<div class="w-48">
+										<SceneAnimationSelect
+											bind:animation={curScene.background.animation.in}
+											isSceneInAnimation={true}
 										/>
 									</div>
-								{/if}
+								</div>
+								<div class="w-full">
+									<h1 class="text-gray-500 text-lg font-medium text-shadow">
+										Background Transition - Out
+									</h1>
+									<div class="w-48">
+										<SceneAnimationSelect
+											bind:animation={curScene.background.animation.out}
+										/>
+									</div>
+								</div>
 							</div>
 						{/if}
 
@@ -204,7 +198,7 @@
 							Layers Rendering Delay
 						</h1>
 						<div class="w-full flex gap-2">
-							<div class="w-24">
+							<div class="w-48">
 								<NumberInput
 									bind:value={curScene.animation.layerRenderDelay}
 									max={SCENE_TRANSITION_DELAY}
@@ -212,26 +206,29 @@
 								/>
 							</div>
 						</div>
-
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Transition Elements - In
-						</h1>
-						<div class="w-24">
-							<SceneAnimationSelect
-								bind:animationType={curScene.animation.in.animationType}
-								bind:duration={curScene.animation.duration}
-							/>
+						<div class="flex">
+							<div class="w-full">
+								<h1 class="text-gray-500 text-lg font-medium text-shadow">
+									Element Transition - In
+								</h1>
+								<div class="w-48">
+									<SceneAnimationSelect
+										bind:animation={curScene.animation.in}
+										bind:duration={curScene.animation.duration}
+									/>
+								</div>
+							</div>
+							<div class="w-full">
+								<h1 class="text-gray-500 text-lg font-medium text-shadow">
+									Element Transition - Out
+								</h1>
+								<div class="w-48">
+									<SceneAnimationSelect bind:animation={curScene.animation.out} />
+								</div>
+							</div>
 						</div>
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Transition Elements - Out
-						</h1>
-						<div class="w-24">
-							<SceneAnimationSelect
-								bind:animationType={curScene.animation.out.animationType}
-							/>
-						</div>
 
-						<div class="w-24 flex items-end">
+						<div class="w-48 flex items-end">
 							<button
 								class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
 								on:click={handleUpdate}

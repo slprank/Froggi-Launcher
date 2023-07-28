@@ -4,7 +4,7 @@ import type {
 	PlayerType,
 	StatsType,
 } from '@slippi/slippi-js';
-import type { Animation, AnimationTrigger, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground, Transition } from './enum';
+import type { Animation, AnimationTrigger, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground } from './enum';
 import type { COL } from './const';
 
 export interface Url {
@@ -44,12 +44,11 @@ export interface Layer {
 }
 
 export interface Background {
+	animation: Animations
 	color: string | undefined;
 	customImage: Image;
-	duration: number;
 	image: Image;
 	opacity: number;
-	transition: Transition;
 	type: SceneBackground;
 }
 
@@ -99,7 +98,7 @@ export interface SceneAnimation extends Animations {
 }
 
 export interface AnimationSettings {
-	animationType: Animation;
+	type: Animation;
 	options: AnimationOptions;
 }
 

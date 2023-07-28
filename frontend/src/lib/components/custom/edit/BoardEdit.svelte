@@ -12,8 +12,8 @@
 
 	const overlayId = $page.params.overlay;
 
-	export let boardHeight: number | undefined = undefined;
-	export let boardWidth: number | undefined = undefined;
+	export let boardHeight: number;
+	export let boardWidth: number;
 	export let layer: number | undefined = undefined;
 	export let selectedId: string | undefined = undefined;
 

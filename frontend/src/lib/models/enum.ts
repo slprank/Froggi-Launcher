@@ -4,8 +4,9 @@ export enum Animation {
 	Fade = 2,
 	Fly = 3,
 	FlyRandom = 4,
-	Scale = 5,
-	Slide = 6,
+	FlyAutomatic = 5,
+	Scale = 6,
+	Slide = 7,
 }
 
 export enum AnimationTrigger {

@@ -5,7 +5,7 @@
 	import { COL, ROW } from '$lib/models/const';
 	import { gameState } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
-	import { CreateElementAnimation } from './element/animations/AnimationExport.svelte';
+	import { createElementAnimation } from './element/animations/AnimationExport.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
@@ -26,7 +26,7 @@
 	$: demoItem, updateDemoData();
 	$: isTriggerVisible = dataItem?.data.animation.trigger === AnimationTrigger.Visibility;
 
-	const animation = (node: any, animationType: Animation, delay: number = 0) => {
+	const animation = (node: any, type: Animation, delay: number = 0) => {
 		if (!dataItem) return;
 		const y = getRelativePixelSize(
 			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
@@ -39,7 +39,7 @@
 			boardHeight ?? innerHeight,
 		);
 		const duration = curScene?.animation.duration;
-		switch (animationType) {
+		switch (type) {
 			case Animation.None:
 				return;
 			case Animation.Fade:
@@ -61,12 +61,12 @@
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
-		return animation(node, curScene.animation.in.animationType, delay);
+		return animation(node, curScene.animation.in.type, delay);
 	};
 
 	const animateOut = (node: Element) => {
 		if (edit || !dataItem || isTriggerVisible || !curScene) return;
-		return animation(node, curScene.animation.out.animationType);
+		return animation(node, curScene.animation.out.type);
 	};
 
 	$: isGameRunning = $gameState === InGameState.Running;
@@ -99,14 +99,14 @@
 				<div class="w-full h-full" in:animateIn out:animateOut>
 					<AnimationLayer
 						animationIn={(node) =>
-							CreateElementAnimation(
+							createElementAnimation(
 								node,
 								dataItem?.data.animation.in,
 								boardHeight ?? innerHeight,
 								boardWidth ?? innerWidth,
 							)}
 						animationOut={(node) =>
-							CreateElementAnimation(
+							createElementAnimation(
 								node,
 								dataItem?.data.animation.out,
 								boardHeight ?? innerHeight,

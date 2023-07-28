@@ -17,7 +17,7 @@
 		Scene,
 	} from '$lib/models/types';
 
-	import { COL, MIN } from '$lib/models/const';
+	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';
@@ -36,25 +36,28 @@
 				in: getDefaultAnimations(),
 				out: getDefaultAnimations(),
 				trigger: AnimationTrigger.None,
+				layerRenderDelay: 250,
 			},
 			background: {
-				color: 'white',
+				color: '#000000',
 				customImage: {
 					src: undefined,
 					name: undefined,
 					objectFit: undefined,
 				},
-				duration: 250,
 				image: { src: undefined, name: undefined, objectFit: undefined },
 				opacity: 100,
-				transition: Transition.None,
 				type: SceneBackground.None,
+				animation: {
+					in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
+					out: getDefaultAnimations(),
+					trigger: AnimationTrigger.None,
+				},
 			},
 			font: {
 				family: undefined,
 				base64: undefined,
 			},
-			layerRenderDelay: 128,
 			layers: [
 				{
 					id: sceneId,
@@ -146,7 +149,7 @@
 		return {
 			advancedStyling: false,
 			animation: {
-				in: getDefaultAnimations(),
+				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
 				trigger: AnimationTrigger.None,
 			},
@@ -198,17 +201,17 @@
 		};
 	}
 
-	export function getDefaultAnimations(): AnimationSettings {
+	export function getDefaultAnimations(delay: number = 0): AnimationSettings {
 		return {
 			options: {
-				delay: 0,
+				delay: delay,
 				duration: 0,
 				easing: Easing.None,
 				start: 0,
 				x: 0,
 				y: 0,
 			},
-			animationType: Animation.None,
+			type: Animation.None,
 		};
 	}
 

@@ -1,32 +1,32 @@
 <script lang="ts">
-	import type { ElementAnimation } from '$lib/models/types';
+	import type { AnimationSettings } from '$lib/models/types';
 	import { Animation, Easing } from '$lib/models/enum';
 	import Select from './Select.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { notifications } from '../notification/Notifications.svelte';
 
 	const max = 1000;
-	export let animation: ElementAnimation;
+	export let animation: AnimationSettings;
 	export let label: string | undefined = undefined;
+	export let isSceneInAnimation: boolean = false;
+	export let isSceneAnimation: boolean = false;
 
 	const fixAnimationInputDelay = () => {
-		if (animation?.options.duration > SCENE_TRANSITION_DELAY) {
+		if (isSceneInAnimation && animation?.options.duration > SCENE_TRANSITION_DELAY) {
 			animation.options.duration = SCENE_TRANSITION_DELAY;
 			notifications.warning(`Duration cannot exceed ${SCENE_TRANSITION_DELAY}ms`, 3000);
 		}
 		if (animation?.options.duration + animation?.options.delay > SCENE_TRANSITION_DELAY) {
-			animation.options.delay = SCENE_TRANSITION_DELAY - animation?.options.duration;
+			animation.options.delay = isSceneInAnimation
+				? SCENE_TRANSITION_DELAY
+				: SCENE_TRANSITION_DELAY - animation?.options.duration;
 			notifications.warning(
 				`Duration + delay cannot exceed ${SCENE_TRANSITION_DELAY}ms`,
 				3000,
 			);
 		}
-		if (animation.animationType === Animation.None) {
-			animation.options.delay = 0;
-			animation.options.duration = 0;
-		}
-		if (animation.animationType === Animation.None) {
-			animation.options.delay = 0;
+		if (animation.type === Animation.None) {
+			animation.options.delay = isSceneInAnimation ? SCENE_TRANSITION_DELAY : 0;
 			animation.options.duration = 0;
 		}
 	};
@@ -41,19 +41,22 @@
 		{/if}
 		<div class="w-full">
 			<h1 class="text-gray-500 text-sm font-medium text-shadow">Type</h1>
-			<div class="relative w-full h-11 bg-white rounded-md">
-				<Select bind:selected={animation.animationType}>
+			<div class="relative w-full bg-white rounded-md">
+				<Select bind:selected={animation.type}>
 					<option selected value={Animation.None}>None</option>
 					<option value={Animation.Blur}>Blur</option>
 					<option value={Animation.Fade}>Fade</option>
 					<option value={Animation.Fly}>Fly</option>
 					<option value={Animation.Scale}>Scale</option>
 					<option value={Animation.FlyRandom}>Fly Random</option>
+					{#if isSceneAnimation}
+						<option value={Animation.FlyAutomatic}>Fly Automatic</option>
+					{/if}
 					<option value={Animation.Slide}>Slide</option>
 				</Select>
 			</div>
 
-			{#if animation?.animationType !== Animation.None}
+			{#if animation?.type !== Animation.None}
 				<h1 class="text-gray-500 text-sm font-medium text-shadow">X-distance - px</h1>
 				<div class="relative w-full h-11 bg-white rounded-md">
 					<input
@@ -80,7 +83,7 @@
 					/>
 				</div>
 
-				{#if animation.animationType === Animation.Scale}
+				{#if animation.type === Animation.Scale}
 					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale From - 1x</h1>
 					<div class="relative w-full h-11 bg-white rounded-md">
 						<input
@@ -108,21 +111,23 @@
 					/>
 				</div>
 
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay - ms</h1>
-				<div class="relative w-full h-11 bg-white rounded-md">
-					<input
-						type="number"
-						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
-						id="numberInput"
-						step={max / 100}
-						min={0}
-						{max}
-						bind:value={animation.options.delay}
-					/>
-				</div>
+				{#if !isSceneInAnimation}
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay - ms</h1>
+					<div class="relative w-full h-11 bg-white rounded-md">
+						<input
+							type="number"
+							class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
+							id="numberInput"
+							step={max / 100}
+							min={0}
+							{max}
+							bind:value={animation.options.delay}
+						/>
+					</div>
+				{/if}
 
 				<h1 class="text-gray-500 text-sm font-medium text-shadow">Easing</h1>
-				<div class="relative w-full h-11 bg-white rounded-md">
+				<div class="relative w-full bg-white rounded-md">
 					<Select bind:selected={animation.options.easing}>
 						<option selected value={undefined}>None</option>
 						<option value={Easing.BackInOut}>Back In Out</option>

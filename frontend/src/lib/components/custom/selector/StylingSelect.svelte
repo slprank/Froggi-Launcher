@@ -45,11 +45,11 @@
 	$: stringSettings, boxSettings, imageSettings, clearStyle();
 
 	const fixAnimationInputDelay = () => {
-		if (payload.animation.in.animationType === Animation.None) {
+		if (payload.animation.in.type === Animation.None) {
 			payload.animation.in.options.delay = 0;
 			payload.animation.in.options.duration = 0;
 		}
-		if (payload.animation.out.animationType === Animation.None) {
+		if (payload.animation.out.type === Animation.None) {
 			payload.animation.out.options.delay = 0;
 			payload.animation.out.options.duration = 0;
 		}

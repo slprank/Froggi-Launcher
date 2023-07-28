@@ -9,7 +9,6 @@
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';
 	import { addFont } from './CustomFontHandler.svelte';
 
-	export let boardHeight: number | undefined = undefined;
 	export let layers: Layer[];
 	export let preview: boolean = false;
 	let curSceneIndex: LiveStatsScene | undefined = undefined;
@@ -61,7 +60,8 @@
 	}
 
 	let innerHeight = 0;
-	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
+	let innerWidth = 0;
+	$: rowHeight = innerHeight / ROW;
 
 	const updateFont = async () => {
 		if (!curScene) return;
@@ -74,7 +74,7 @@
 	};
 </script>
 
-<svelte:window bind:innerHeight on:resize={refreshExternal} />
+<svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
 
 {#if curScene && rowHeight}
 	{#await updateFont() then}
@@ -84,7 +84,11 @@
 					class="w-full h-full overflow-hidden relative"
 					style={`font-family: ${curScene?.font?.family};`}
 				>
-					<BoardContainer scene={curScene} />
+					<BoardContainer
+						scene={curScene}
+						bind:boardHeight={innerHeight}
+						bind:boardWidth={innerWidth}
+					/>
 					{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
 						<div class="w-full h-full z-2 absolute">
 							<Grid

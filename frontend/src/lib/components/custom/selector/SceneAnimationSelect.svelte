@@ -1,24 +1,21 @@
 <script lang="ts">
+	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import Select from '$lib/components/input/Select.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { Animation } from '$lib/models/enum';
-	export let animationType: Animation;
+	import type { AnimationSettings } from '$lib/models/types';
+
+	export let animation: AnimationSettings;
 	export let duration: number | undefined = undefined;
+	export let isSceneInAnimation: boolean = false;
 </script>
 
-<div class="w-24">
-	<Select bind:selected={animationType} label="Type">
-		<option value={Animation.None}>None</option>
-		<option value={Animation.Blur}>Blur</option>
-		<option value={Animation.Fade}>Fade</option>
-		<option value={Animation.Fly}>Fly</option>
-		<option value={Animation.Scale}>Scale</option>
-		<option value={Animation.Slide}>Slide</option>
-	</Select>
+<div class="w-full">
+	<AnimationInput bind:animation isSceneAnimation={true} {isSceneInAnimation} />
 </div>
-{#if animationType !== Animation.None && duration !== undefined}
-	<div class="w-24">
+{#if animation.type !== Animation.None && duration !== undefined}
+	<div class="w-full">
 		<NumberInput
 			bind:value={duration}
 			label="Duration - ms"
