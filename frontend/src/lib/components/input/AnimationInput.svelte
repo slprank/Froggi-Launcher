@@ -8,16 +8,16 @@
 	const max = 1000;
 	export let animation: AnimationSettings;
 	export let label: string | undefined = undefined;
-	export let isSceneInAnimation: boolean = false;
+	export let isInAnimation: boolean = false;
 	export let isSceneAnimation: boolean = false;
 
 	const fixAnimationInputDelay = () => {
-		if (isSceneInAnimation && animation?.options.duration > SCENE_TRANSITION_DELAY) {
+		if (isInAnimation && animation?.options.duration > SCENE_TRANSITION_DELAY) {
 			animation.options.duration = SCENE_TRANSITION_DELAY;
 			notifications.warning(`Duration cannot exceed ${SCENE_TRANSITION_DELAY}ms`, 3000);
 		}
 		if (animation?.options.duration + animation?.options.delay > SCENE_TRANSITION_DELAY) {
-			animation.options.delay = isSceneInAnimation
+			animation.options.delay = isInAnimation
 				? SCENE_TRANSITION_DELAY
 				: SCENE_TRANSITION_DELAY - animation?.options.duration;
 			notifications.warning(
@@ -26,7 +26,7 @@
 			);
 		}
 		if (animation.type === Animation.None) {
-			animation.options.delay = isSceneInAnimation ? SCENE_TRANSITION_DELAY : 0;
+			animation.options.delay = isInAnimation ? SCENE_TRANSITION_DELAY : 0;
 			animation.options.duration = 0;
 		}
 	};
@@ -111,7 +111,7 @@
 					/>
 				</div>
 
-				{#if !isSceneInAnimation}
+				{#if !isInAnimation}
 					<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay - ms</h1>
 					<div class="relative w-full h-11 bg-white rounded-md">
 						<input

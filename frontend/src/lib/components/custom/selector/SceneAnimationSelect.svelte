@@ -8,11 +8,11 @@
 
 	export let animation: AnimationSettings;
 	export let duration: number | undefined = undefined;
-	export let isSceneInAnimation: boolean = false;
+	export let isInAnimation: boolean = false;
 </script>
 
 <div class="w-full">
-	<AnimationInput bind:animation isSceneAnimation={true} {isSceneInAnimation} />
+	<AnimationInput bind:animation isSceneAnimation={true} {isInAnimation} />
 </div>
 {#if animation.type !== Animation.None && duration !== undefined}
 	<div class="w-full">

@@ -33,7 +33,7 @@
 		return {
 			animation: {
 				duration: 250,
-				in: getDefaultAnimations(),
+				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
 				trigger: AnimationTrigger.None,
 				layerRenderDelay: 250,

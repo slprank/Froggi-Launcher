@@ -174,7 +174,7 @@
 									<div class="w-48">
 										<SceneAnimationSelect
 											bind:animation={curScene.background.animation.in}
-											isSceneInAnimation={true}
+											isInAnimation={true}
 										/>
 									</div>
 								</div>
@@ -215,6 +215,7 @@
 									<SceneAnimationSelect
 										bind:animation={curScene.animation.in}
 										bind:duration={curScene.animation.duration}
+										isInAnimation={true}
 									/>
 								</div>
 							</div>

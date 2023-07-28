@@ -306,7 +306,11 @@
 		</div>
 		{#if payload.animation.trigger}
 			<div class="w-full flex gap-4">
-				<AnimationInput bind:animation={payload.animation.in} label="In" />
+				<AnimationInput
+					bind:animation={payload.animation.in}
+					isInAnimation={true}
+					label="In"
+				/>
 				<AnimationInput bind:animation={payload.animation.out} label="Out" />
 			</div>
 		{/if}
