@@ -42,7 +42,7 @@
 	};
 
 	const animateOut = (node: Element) => {
-		if (edit || !dataItem || isTriggerVisible || !curScene) return;
+		if (edit || isTriggerVisible || !curScene) return;
 		return createAnimation(
 			node,
 			curScene.animation.out,
@@ -67,7 +67,7 @@
 
 <svelte:window bind:innerHeight bind:innerWidth />
 
-{#if dataItem && display}
+{#if dataItem}
 	<div class="h-full w-full relative">
 		<div
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
@@ -95,6 +95,7 @@
 								boardWidth ?? innerWidth,
 							)}
 						animationTrigger={dataItem.data.animation.trigger}
+						{display}
 						{edit}
 					>
 						<GridElements {dataItem} {preview} bind:boardHeight bind:boardWidth />

@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { AnimationTrigger, PlayerActionState } from '$lib/models/enum';
 	import { gameFrame, eventEmitter } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let animationTrigger: AnimationTrigger = AnimationTrigger.None;
+	export let display: boolean = false;
 	export let edit: boolean = false;
 
 	let key: any = undefined;
@@ -29,10 +31,17 @@
 	onMount(() => {
 		$eventEmitter.on('animation_test_trigger', () => {
 			const tempKey = key;
+			const tempDisplay = display;
 			key = Math.random();
-			setTimeout(() => (key = tempKey));
+			display = !display;
+			setTimeout(() => {
+				key = tempKey;
+				display = !tempDisplay;
+			});
 		});
 	});
+
+	$: console.log('display:', display);
 </script>
 
 <div class="relative w-full h-full">
@@ -41,11 +50,15 @@
 			<slot />
 		</div>
 	{:else if animationTrigger === AnimationTrigger.Visibility}
-		{#key key}
-			<div class="w-full h-full absolute z-3 top-0 left-0" in:animationIn out:animationOut>
+		{#if display}
+			<div
+				class="w-full h-full absolute z-3 top-0 left-0"
+				in:animationIn|local
+				out:animationOut|local
+			>
 				<slot />
 			</div>
-		{/key}
+		{/if}
 	{:else}
 		{#key key}
 			<div
