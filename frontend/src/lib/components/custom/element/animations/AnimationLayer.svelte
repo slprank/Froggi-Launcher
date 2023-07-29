@@ -1,32 +1,15 @@
 <script lang="ts">
-	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
-	import { AnimationTrigger, PlayerActionState } from '$lib/models/enum';
-	import { gameFrame, eventEmitter } from '$lib/utils/store.svelte';
+	import { AnimationTrigger } from '$lib/models/enum';
+	import { eventEmitter } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let animationTrigger: AnimationTrigger = AnimationTrigger.None;
 	export let display: boolean = false;
 	export let edit: boolean = false;
+	export let key: any = undefined;
 
-	let key: any = undefined;
-	const updateKeyValue = () => {
-		switch (animationTrigger) {
-			case AnimationTrigger.Player1Percent:
-				key = $gameFrame?.players[0]?.pre.percent;
-				return;
-			case AnimationTrigger.Player2Percent:
-				key = $gameFrame?.players[1]?.pre.percent;
-				return;
-			case AnimationTrigger.Player1StockLost:
-				key = $gameFrame?.players[0]?.post.stocksRemaining;
-				return;
-			case AnimationTrigger.Player2StockLost:
-				key = $gameFrame?.players[1]?.post.stocksRemaining;
-				return;
-		}
-	};
-	$: $gameFrame, updateKeyValue();
+	$: console.log('paused', display);
 
 	onMount(() => {
 		$eventEmitter.on('animation_test_trigger', () => {
@@ -40,8 +23,6 @@
 			});
 		});
 	});
-
-	$: console.log('display:', display);
 </script>
 
 <div class="relative w-full h-full">

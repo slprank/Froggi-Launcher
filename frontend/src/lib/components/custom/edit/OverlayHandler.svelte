@@ -26,9 +26,6 @@
 		return `c${Math.random().toString(36).slice(-8)}`;
 	}
 
-	// TODO: Add complete overlays
-	// TODO: Add complete scenes
-
 	const getDefaultScene = (sceneId: string): Scene => {
 		return {
 			animation: {

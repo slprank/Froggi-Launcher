@@ -12,7 +12,7 @@
 	export let frame: PostFrameUpdateType | undefined;
 	export let numberOfDecimals: number;
 
-	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
+	$: isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
 
 	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '300';
 

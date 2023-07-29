@@ -3,10 +3,11 @@
 	import type { GridContentItem, Scene } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
-	import { gameState } from '$lib/utils/store.svelte';
+	import { gameFrame, gameState, statsScene } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
 	import { createAnimation } from './element/animations/AnimationExport.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';
+	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
 	export let additionalDelay: number = 0;
 	export let boardHeight: number | undefined = undefined;
@@ -21,17 +22,31 @@
 	function updateDemoData() {
 		if (demoItem) dataItem = demoItem;
 	}
-
 	$: demoItem, updateDemoData();
-	$: isTriggerVisible = dataItem?.data.animation.trigger === AnimationTrigger.Visibility;
+
+	const flyAutomatic = (node: any, delay: number = 0, duration: number) => {
+		if (!dataItem) return;
+		const y = getRelativePixelSize(
+			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
+			boardWidth ?? innerWidth,
+			boardHeight ?? innerHeight,
+		);
+		const x = getRelativePixelSize(
+			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
+			boardWidth ?? innerWidth,
+			boardHeight ?? innerHeight,
+		);
+		return fly(node, { duration: duration, x: x, y: y, delay: delay });
+	};
 
 	const animateIn = (node: Element) => {
-		if (edit || !dataItem || isTriggerVisible || !curScene) return;
+		if (edit || !dataItem || !curScene) return;
 		const delay =
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
-		console.log('animate in');
+		if (curScene.animation.in.type === Animation.FlyAutomatic)
+			return flyAutomatic(node, delay, curScene.animation.in.options.duration);
 		return createAnimation(
 			node,
 			curScene.animation.in,
@@ -42,7 +57,9 @@
 	};
 
 	const animateOut = (node: Element) => {
-		if (edit || isTriggerVisible || !curScene) return;
+		if (edit || !curScene) return;
+		if (curScene.animation.out.type === Animation.FlyAutomatic)
+			return flyAutomatic(node, 0, curScene.animation.out.options.duration);
 		return createAnimation(
 			node,
 			curScene.animation.out,
@@ -50,6 +67,26 @@
 			boardWidth ?? innerWidth,
 		);
 	};
+
+	let key: any = undefined;
+	const updateKeyValue = () => {
+		if (!dataItem) return;
+		switch (dataItem.data.animation.trigger) {
+			case AnimationTrigger.Player1Percent:
+				key = $gameFrame?.players[0]?.pre.percent;
+				return;
+			case AnimationTrigger.Player2Percent:
+				key = $gameFrame?.players[1]?.pre.percent;
+				return;
+			case AnimationTrigger.Player1StockLost:
+				key = $gameFrame?.players[0]?.post.stocksRemaining;
+				return;
+			case AnimationTrigger.Player2StockLost:
+				key = $gameFrame?.players[1]?.post.stocksRemaining;
+				return;
+		}
+	};
+	$: $gameFrame, updateKeyValue();
 
 	$: isGameRunning = $gameState === InGameState.Running;
 	$: isGamePaused = $gameState === InGameState.Paused;
@@ -80,6 +117,7 @@
 			{:else}
 				<div class="w-full h-full" in:animateIn out:animateOut>
 					<AnimationLayer
+						animationTrigger={dataItem.data.animation.trigger}
 						animationIn={(node) =>
 							createAnimation(
 								node,
@@ -94,9 +132,9 @@
 								boardHeight ?? innerHeight,
 								boardWidth ?? innerWidth,
 							)}
-						animationTrigger={dataItem.data.animation.trigger}
 						{display}
 						{edit}
+						bind:key
 					>
 						<GridElements {dataItem} {preview} bind:boardHeight bind:boardWidth />
 					</AnimationLayer>
