@@ -215,7 +215,6 @@
 									<SceneAnimationSelect
 										bind:animation={curScene.animation.in}
 										bind:duration={curScene.animation.duration}
-										isInAnimation={true}
 									/>
 								</div>
 							</div>

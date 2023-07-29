@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { SceneBackground } from '$lib/models/enum';
 	import type { Scene } from '$lib/models/types';
 	import { gameSettings } from '$lib/utils/store.svelte';
-	import { createElementAnimation } from './element/animations/AnimationExport.svelte';
+	import { createAnimation } from './element/animations/AnimationExport.svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;
@@ -15,27 +16,23 @@
 
 	const animateIn = (node: Element) => {
 		if (preview || edit || !scene) return;
-		console.log('In:', scene);
-		return createElementAnimation(
+		return createAnimation(
 			node,
 			scene.background.animation.in,
 			boardHeight ?? innerHeight,
 			boardWidth ?? innerWidth,
+			SCENE_TRANSITION_DELAY,
 		);
 	};
 	const animateOut = (node: Element) => {
 		if (preview || edit || !scene) return;
-		console.log('board', boardHeight, boardWidth);
-		console.log('Out:', scene);
-		return createElementAnimation(
+		return createAnimation(
 			node,
 			scene.background.animation.out,
 			boardHeight ?? innerHeight,
 			boardWidth ?? innerWidth,
 		);
 	};
-
-	// TODO: Add support for "Stage" option
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth />

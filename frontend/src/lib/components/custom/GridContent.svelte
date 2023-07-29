@@ -2,12 +2,11 @@
 	import { AnimationTrigger, ElementPauseOption, InGameState, Animation } from '$lib/models/enum';
 	import type { GridContentItem, Scene } from '$lib/models/types';
 	import { fade, fly, scale, slide, blur } from 'svelte/transition';
-	import { COL, ROW } from '$lib/models/const';
+	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { gameState } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
-	import { createElementAnimation } from './element/animations/AnimationExport.svelte';
+	import { createAnimation } from './element/animations/AnimationExport.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';
-	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
 	export let additionalDelay: number = 0;
 	export let boardHeight: number | undefined = undefined;
@@ -26,47 +25,30 @@
 	$: demoItem, updateDemoData();
 	$: isTriggerVisible = dataItem?.data.animation.trigger === AnimationTrigger.Visibility;
 
-	const animation = (node: any, type: Animation, delay: number = 0) => {
-		if (!dataItem) return;
-		const y = getRelativePixelSize(
-			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
-			boardWidth ?? innerWidth,
-			boardHeight ?? innerHeight,
-		);
-		const x = getRelativePixelSize(
-			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
-			boardWidth ?? innerWidth,
-			boardHeight ?? innerHeight,
-		);
-		const duration = curScene?.animation.duration;
-		switch (type) {
-			case Animation.None:
-				return;
-			case Animation.Fade:
-				return fade(node, { duration: duration, delay: delay });
-			case Animation.Fly:
-				return fly(node, { duration: duration, x: x, y: y, delay: delay });
-			case Animation.Scale:
-				return scale(node, { duration: duration, delay: delay });
-			case Animation.Slide:
-				return slide(node, { duration: duration, delay: delay });
-			case Animation.Blur:
-				return blur(node, { duration: duration, delay: delay });
-		}
-	};
-
 	const animateIn = (node: Element) => {
 		if (edit || !dataItem || isTriggerVisible || !curScene) return;
 		const delay =
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
-		return animation(node, curScene.animation.in.type, delay);
+		console.log('animate in');
+		return createAnimation(
+			node,
+			curScene.animation.in,
+			boardHeight ?? innerHeight,
+			boardWidth ?? innerWidth,
+			delay,
+		);
 	};
 
 	const animateOut = (node: Element) => {
 		if (edit || !dataItem || isTriggerVisible || !curScene) return;
-		return animation(node, curScene.animation.out.type);
+		return createAnimation(
+			node,
+			curScene.animation.out,
+			boardHeight ?? innerHeight,
+			boardWidth ?? innerWidth,
+		);
 	};
 
 	$: isGameRunning = $gameState === InGameState.Running;
@@ -99,14 +81,14 @@
 				<div class="w-full h-full" in:animateIn out:animateOut>
 					<AnimationLayer
 						animationIn={(node) =>
-							createElementAnimation(
+							createAnimation(
 								node,
 								dataItem?.data.animation.in,
 								boardHeight ?? innerHeight,
 								boardWidth ?? innerWidth,
 							)}
 						animationOut={(node) =>
-							createElementAnimation(
+							createAnimation(
 								node,
 								dataItem?.data.animation.out,
 								boardHeight ?? innerHeight,

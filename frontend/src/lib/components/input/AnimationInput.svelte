@@ -8,25 +8,22 @@
 	const max = 1000;
 	export let animation: AnimationSettings;
 	export let label: string | undefined = undefined;
-	export let isInAnimation: boolean = false;
 	export let isSceneAnimation: boolean = false;
 
 	const fixAnimationInputDelay = () => {
-		if (isInAnimation && animation?.options.duration > SCENE_TRANSITION_DELAY) {
+		if (animation?.options.duration > SCENE_TRANSITION_DELAY) {
 			animation.options.duration = SCENE_TRANSITION_DELAY;
 			notifications.warning(`Duration cannot exceed ${SCENE_TRANSITION_DELAY}ms`, 3000);
 		}
 		if (animation?.options.duration + animation?.options.delay > SCENE_TRANSITION_DELAY) {
-			animation.options.delay = isInAnimation
-				? SCENE_TRANSITION_DELAY
-				: SCENE_TRANSITION_DELAY - animation?.options.duration;
+			animation.options.delay = SCENE_TRANSITION_DELAY - animation?.options.duration;
 			notifications.warning(
 				`Duration + delay cannot exceed ${SCENE_TRANSITION_DELAY}ms`,
 				3000,
 			);
 		}
 		if (animation.type === Animation.None) {
-			animation.options.delay = isInAnimation ? SCENE_TRANSITION_DELAY : 0;
+			animation.options.delay = 0;
 			animation.options.duration = 0;
 		}
 	};
@@ -111,20 +108,18 @@
 					/>
 				</div>
 
-				{#if !isInAnimation}
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay - ms</h1>
-					<div class="relative w-full h-11 bg-white rounded-md">
-						<input
-							type="number"
-							class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
-							id="numberInput"
-							step={max / 100}
-							min={0}
-							{max}
-							bind:value={animation.options.delay}
-						/>
-					</div>
-				{/if}
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay - ms</h1>
+				<div class="relative w-full h-11 bg-white rounded-md">
+					<input
+						type="number"
+						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
+						id="numberInput"
+						step={max / 100}
+						min={0}
+						{max}
+						bind:value={animation.options.delay}
+					/>
+				</div>
 
 				<h1 class="text-gray-500 text-sm font-medium text-shadow">Easing</h1>
 				<div class="relative w-full bg-white rounded-md">

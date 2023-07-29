@@ -17,6 +17,7 @@
 	const animationFlyRandom = (
 		node: any,
 		option: AnimationOptions | any,
+		additionalDelay = 0,
 		windowHeight: number,
 		windowWidth: number,
 	) => {
@@ -33,22 +34,22 @@
 			windowHeight,
 		);
 		return fly(node, {
-			delay: option.delay,
+			delay: option.delay + additionalDelay,
 			duration: option.duration,
 			y: y,
 			x: x,
 			easing: getEasing(option.easing),
 		});
 	};
-	const animationBlur = (node: any, option: AnimationOptions | any) => {
+	const animationBlur = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
 		return blur(node, {
-			delay: option.delay,
+			delay: option.delay + additionalDelay,
 			duration: option.duration,
 		});
 	};
-	const animationFade = (node: any, option: AnimationOptions | any) => {
+	const animationFade = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
 		return fade(node, {
-			delay: option.delay,
+			delay: option.delay + additionalDelay,
 			duration: option.duration,
 			easing: getEasing(option.easing),
 		});
@@ -56,21 +57,22 @@
 	const animationFly = (
 		node: any,
 		option: AnimationOptions | any,
+		additionalDelay = 0,
 		windowHeight: number,
 		windowWidth: number,
 	) => {
 		return fly(node, {
-			delay: option.delay,
+			delay: option.delay + additionalDelay,
 			duration: option.duration,
 			y: getRelativePixelSize(option.y, windowHeight, windowWidth),
 			x: getRelativePixelSize(option.x, windowHeight, windowWidth),
 			easing: getEasing(option.easing),
 		});
 	};
-	const animationScale = (node: any, option: AnimationOptions | any) => {
+	const animationScale = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
 		// TODO: Optional start value
 		return {
-			delay: option.delay,
+			delay: option.delay + additionalDelay,
 			duration: option.duration,
 			css: (t) => {
 				const eased = getEasing(option.easing)(t);
@@ -78,10 +80,10 @@
 			},
 		};
 	};
-	const animationSlide = (node: any, option: AnimationOptions | any) => {
+	const animationSlide = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
 		// TODO: Optional start value
 		return slide(node, {
-			delay: option.delay,
+			delay: option.delay + additionalDelay,
 			duration: option.duration,
 			easing: getEasing(option.easing),
 		});
@@ -110,26 +112,39 @@
 		}
 	};
 
-	export const createElementAnimation = (
+	export const createAnimation = (
 		node: any,
 		animation: AnimationSettings | undefined,
 		windowHeight: number,
 		windowWidth: number,
+		additionalDelay: number = 0,
 	) => {
-		console.log('window', windowHeight, windowWidth);
+		console.log('type', animation?.type);
 		switch (animation?.type) {
 			case Animation.Blur:
-				return animationBlur(node, animation.options);
+				return animationBlur(node, animation.options, additionalDelay);
 			case Animation.Fade:
-				return animationFade(node, animation.options);
+				return animationFade(node, animation.options, additionalDelay);
 			case Animation.Fly:
-				return animationFly(node, animation.options, windowHeight, windowWidth);
+				return animationFly(
+					node,
+					animation.options,
+					additionalDelay,
+					windowHeight,
+					windowWidth,
+				);
 			case Animation.Scale:
-				return animationScale(node, animation.options);
+				return animationScale(node, animation.options, additionalDelay);
 			case Animation.FlyRandom:
-				return animationFlyRandom(node, animation.options, windowHeight, windowWidth);
+				return animationFlyRandom(
+					node,
+					animation.options,
+					additionalDelay,
+					windowHeight,
+					windowWidth,
+				);
 			case Animation.Slide:
-				return animationSlide(node, animation.options);
+				return animationSlide(node, animation.options, additionalDelay);
 			default:
 				return undefined;
 		}
