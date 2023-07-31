@@ -118,7 +118,9 @@
 						<TextElement {style} {dataItem} {edit}>
 							{$currentPlayers?.at(0)?.displayName
 								? $currentPlayers?.at(0)?.displayName
-								: `Player1`}
+								: defaultPreview
+								? `Player1`
+								: ''}
 						</TextElement>
 					{/key}
 				{/if}
@@ -127,21 +129,51 @@
 						<TextElement {style} {dataItem} {edit}>
 							{$currentPlayers?.at(1)?.displayName
 								? $currentPlayers?.at(1)?.displayName
-								: `Player2`}
+								: defaultPreview
+								? `Player2`
+								: ''}
 						</TextElement>
 					{/key}
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Percent}
-					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={0} playerIndex={0} />
+					<PlayerPercent
+						{style}
+						{dataItem}
+						{edit}
+						{preview}
+						numberOfDecimals={0}
+						playerIndex={0}
+					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2Percent}
-					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={0} playerIndex={1} />
+					<PlayerPercent
+						{style}
+						{dataItem}
+						{edit}
+						{preview}
+						numberOfDecimals={0}
+						playerIndex={1}
+					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={1} playerIndex={0} />
+					<PlayerPercent
+						{style}
+						{dataItem}
+						{edit}
+						{preview}
+						numberOfDecimals={1}
+						playerIndex={0}
+					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={1} playerIndex={1} />
+					<PlayerPercent
+						{style}
+						{dataItem}
+						{edit}
+						{preview}
+						numberOfDecimals={1}
+						playerIndex={1}
+					/>
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Score}
 					<TextElement {style} {dataItem} {edit}>

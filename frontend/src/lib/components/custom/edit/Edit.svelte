@@ -115,7 +115,7 @@
 									External Url
 								</h1>
 								<Clipboard
-									text={`${externalUrl}/preview`}
+									text={`${externalUrl}`}
 									let:copy
 									on:copy={() => {
 										notifications.success('Copied to clipboard!', 2000);
@@ -134,7 +134,7 @@
 									Local Url
 								</h1>
 								<Clipboard
-									text={`${localUrl}/preview`}
+									text={`${localUrl}`}
 									let:copy
 									on:copy={() => {
 										notifications.success('Copied to clipboard!', 2000);

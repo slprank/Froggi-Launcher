@@ -17,7 +17,7 @@
 </script>
 
 {#if overlayId}
-	<MainOverlay bind:layers />
+	<MainOverlay bind:layers preview={true} />
 {/if}
 
 <style>

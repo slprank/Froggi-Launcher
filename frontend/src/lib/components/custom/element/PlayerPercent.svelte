@@ -6,12 +6,15 @@
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean;
+	export let preview: boolean;
 	export let style: GridContentItemStyle;
 
 	export let playerIndex: number;
 	export let numberOfDecimals: number;
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
+	$: displayPreviewValue = edit || preview;
+
 	$: frame = $gameFrame?.players[playerIndex]?.post;
 
 	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
@@ -64,7 +67,7 @@
 
 {#key frame?.percent}
 	<div class="w-full h-full relative">
-		{#if edit || isInGame}
+		{#if isInGame || displayPreviewValue}
 			{#each Array.from(Array(2)) as _, i}
 				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
 					<TextFitMulti
@@ -80,13 +83,13 @@
 					>
 						{#if !numberOfDecimals}
 							<span class="mr-[.3em]">
-								{`${edit ? 300 : framePercent}`}
+								{`${displayPreviewValue ? 300 : framePercent}`}
 								<span class="text-[80%] mx-[-.2em]">%</span>
 							</span>
 						{/if}
 						{#if numberOfDecimals}
 							<span class="mr-[.4em]">
-								{`${edit ? 300 : framePercent}`}
+								{`${displayPreviewValue ? 300 : framePercent}`}
 								<span class="text-[55%] mx-[-.5em]">
 									{`${numberOfDecimals ? `.${decimals}` : ''}%`}
 								</span>

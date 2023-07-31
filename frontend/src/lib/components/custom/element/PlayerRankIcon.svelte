@@ -6,13 +6,21 @@
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
 
-	$: playerRankIcon = player?.rankedNetplayProfile?.rank?.toUpperCase();
-	$: rankIcon = preview ? playerRankIcon || 'GOLD 2' : playerRankIcon;
+	let ranks: string[] = ['BRONZE', 'SILVER', 'GOLD', 'DIAMOND', 'MASTER'];
 
-	$: console.log('hmm', playerRankIcon, rankIcon);
+	$: playerRankIcon = player?.rankedNetplayProfile?.rank?.toUpperCase();
+	$: getRankIcon = (rankIcon: string | undefined) => {
+		if (rankIcon) return rankIcon;
+		if (preview)
+			return `${ranks[Math.floor(Math.random() * ranks.length)]} ${Math.floor(
+				Math.random() * 3 + 1,
+			)}`;
+		return '';
+	};
+	$: rankIcon = getRankIcon(playerRankIcon);
 </script>
 
-{#if player?.rankedNetplayProfile || preview}
+{#if rankIcon}
 	<div
 		class={`w-full h-full ${style.classValue}`}
 		style={`${style.cssValue}; ${
