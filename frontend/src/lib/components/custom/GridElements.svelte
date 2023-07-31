@@ -132,40 +132,16 @@
 					{/key}
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Percent}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						numberOfDecimals={0}
-						frame={$gameFrame?.players[0]?.post}
-					/>
+					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={0} playerIndex={0} />
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2Percent}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						numberOfDecimals={0}
-						frame={$gameFrame?.players[1]?.post}
-					/>
+					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={0} playerIndex={1} />
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						numberOfDecimals={1}
-						frame={$gameFrame?.players[0]?.post}
-					/>
+					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={1} playerIndex={0} />
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						numberOfDecimals={1}
-						frame={$gameFrame?.players[1]?.post}
-					/>
+					<PlayerPercent {style} {dataItem} {edit} numberOfDecimals={1} playerIndex={1} />
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player1Score}
 					<TextElement {style} {dataItem} {edit}>

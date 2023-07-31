@@ -2,19 +2,19 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { InGameState } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import { gameState } from '$lib/utils/store.svelte';
-	import type { PostFrameUpdateType } from '@slippi/slippi-js';
+	import { gameFrame, gameState } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean;
 	export let style: GridContentItemStyle;
 
-	export let frame: PostFrameUpdateType | undefined;
+	export let playerIndex: number;
 	export let numberOfDecimals: number;
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
+	$: frame = $gameFrame?.players[playerIndex]?.post;
 
-	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '300';
+	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
 
 	let decimals =
 		numberOfDecimals && isInGame
@@ -63,8 +63,8 @@
 </script>
 
 {#key frame?.percent}
-	{#key dataItem}
-		<div class="w-full h-full relative">
+	<div class="w-full h-full relative">
+		{#if edit || isInGame}
 			{#each Array.from(Array(2)) as _, i}
 				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
 					<TextFitMulti
@@ -80,13 +80,13 @@
 					>
 						{#if !numberOfDecimals}
 							<span class="mr-[.3em]">
-								{`${framePercent}`}
+								{`${edit ? 300 : framePercent}`}
 								<span class="text-[80%] mx-[-.2em]">%</span>
 							</span>
 						{/if}
 						{#if numberOfDecimals}
 							<span class="mr-[.4em]">
-								{`${framePercent}`}
+								{`${edit ? 300 : framePercent}`}
 								<span class="text-[55%] mx-[-.5em]">
 									{`${numberOfDecimals ? `.${decimals}` : ''}%`}
 								</span>
@@ -95,6 +95,6 @@
 					</TextFitMulti>
 				</div>
 			{/each}
-		</div>
-	{/key}
+		{/if}
+	</div>
 {/key}
