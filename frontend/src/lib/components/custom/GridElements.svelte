@@ -116,22 +116,14 @@
 				{#if dataItem?.elementId === CustomElement.Player1Tag}
 					{#key $currentPlayers?.at(0)?.displayName}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.displayName
-								? $currentPlayers?.at(0)?.displayName
-								: defaultPreview
-								? `Player1`
-								: ''}
+							{$currentPlayers?.at(0)?.displayName || defaultPreview ? `Player1` : ''}
 						</TextElement>
 					{/key}
 				{/if}
 				{#if dataItem?.elementId === CustomElement.Player2Tag}
 					{#key $currentPlayers?.at(1)?.displayName}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.displayName
-								? $currentPlayers?.at(1)?.displayName
-								: defaultPreview
-								? `Player2`
-								: ''}
+							{$currentPlayers?.at(1)?.displayName || defaultPreview ? `Player2` : ''}
 						</TextElement>
 					{/key}
 				{/if}

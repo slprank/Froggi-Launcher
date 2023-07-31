@@ -33,6 +33,8 @@
 			boardWidth ?? innerWidth,
 		);
 	};
+
+	// TODO: In game/Post game uses different stageId
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth />
