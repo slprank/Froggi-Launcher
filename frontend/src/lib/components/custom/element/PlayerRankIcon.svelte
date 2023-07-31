@@ -6,15 +6,12 @@
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
 
-	let ranks: string[] = ['BRONZE', 'SILVER', 'GOLD', 'DIAMOND', 'MASTER'];
+	let fallbackIcon = 'GOLD 2';
 
 	$: playerRankIcon = player?.rankedNetplayProfile?.rank?.toUpperCase();
 	$: getRankIcon = (rankIcon: string | undefined) => {
 		if (rankIcon) return rankIcon;
-		if (preview)
-			return `${ranks[Math.floor(Math.random() * ranks.length)]} ${Math.floor(
-				Math.random() * 3 + 1,
-			)}`;
+		if (preview) return fallbackIcon;
 		return '';
 	};
 	$: rankIcon = getRankIcon(playerRankIcon);

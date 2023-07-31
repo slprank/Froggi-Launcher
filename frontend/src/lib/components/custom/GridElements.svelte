@@ -15,6 +15,9 @@
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;
 
+	let div: HTMLElement;
+	$: boardWidth = div?.clientWidth ?? 0;
+	$: boardHeight = div?.clientHeight ?? 0;
 	let innerWidth = 0;
 	let innerHeight = 0;
 
@@ -65,7 +68,7 @@
 	const updateFont = async () => {
 		await addFont(dataItem.data.font.base64, dataItem.id);
 		await document.fonts.ready;
-		fontTrigger = Math.random();
+		setTimeout(() => (fontTrigger = Math.random()), 50);
 	};
 	$: dataItem.data.font.base64, updateFont();
 </script>
@@ -80,134 +83,141 @@
 				style={`${
 					dataItem.data?.font?.family !== undefined &&
 					`font-family: ${dataItem.data?.font?.family};
-				`
+	`
 				}; ${style.stroke};
-			${style.shadow};`}
+${style.shadow};`}
+				bind:this={div}
 			>
-				{#if dataItem?.elementId === CustomElement.CustomString}
-					<TextElement {style} {dataItem} {edit}>
-						{dataItem?.data.string}
-					</TextElement>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.CustomBox}
-					<div
-						class={`w-full h-full ${style.classValue}`}
-						style={`${style.cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.CustomImage}
-					<div
-						class={`w-full h-full ${style.classValue}`}
-						style={`${style.cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-						}; `}
-					>
-						<img
-							class="w-full h-full"
-							style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
-					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-							src={dataItem?.data.image.src}
-							alt="custom"
+				{#if div}
+					{#if dataItem?.elementId === CustomElement.CustomString}
+						<TextElement {style} {dataItem} {edit}>
+							{dataItem?.data.string}
+						</TextElement>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.CustomBox}
+						<div
+							class={`w-full h-full ${style.classValue}`}
+							style={`${style.cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
 						/>
-					</div>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1Tag}
-					{#key $currentPlayers?.at(0)?.displayName}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.CustomImage}
+						<div
+							class={`w-full h-full ${style.classValue}`}
+							style={`${style.cssValue}; ${
+								dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+							}; `}
+						>
+							<img
+								class="w-full h-full"
+								style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+								src={dataItem?.data.image.src}
+								alt="custom"
+							/>
+						</div>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1Tag}
+						{#key $currentPlayers?.at(0)?.displayName}
+							<TextElement {style} {dataItem} {edit}>
+								{$currentPlayers?.at(0)?.displayName || defaultPreview
+									? `Player1`
+									: ''}
+							</TextElement>
+						{/key}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2Tag}
+						{#key $currentPlayers?.at(1)?.displayName}
+							<TextElement {style} {dataItem} {edit}>
+								{$currentPlayers?.at(1)?.displayName || defaultPreview
+									? `Player2`
+									: ''}
+							</TextElement>
+						{/key}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1Percent}
+						<PlayerPercent
+							{style}
+							{dataItem}
+							{edit}
+							{preview}
+							numberOfDecimals={0}
+							playerIndex={0}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2Percent}
+						<PlayerPercent
+							{style}
+							{dataItem}
+							{edit}
+							{preview}
+							numberOfDecimals={0}
+							playerIndex={1}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
+						<PlayerPercent
+							{style}
+							{dataItem}
+							{edit}
+							{preview}
+							numberOfDecimals={1}
+							playerIndex={0}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
+						<PlayerPercent
+							{style}
+							{dataItem}
+							{edit}
+							{preview}
+							numberOfDecimals={1}
+							playerIndex={1}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1Score}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.displayName || defaultPreview ? `Player1` : ''}
+							{$gameScore?.at(0) ?? '0'}
 						</TextElement>
-					{/key}
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2Tag}
-					{#key $currentPlayers?.at(1)?.displayName}
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2Score}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.displayName || defaultPreview ? `Player2` : ''}
+							{$gameScore?.at(1) ?? '0'}
 						</TextElement>
-					{/key}
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1Percent}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						{preview}
-						numberOfDecimals={0}
-						playerIndex={0}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2Percent}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						{preview}
-						numberOfDecimals={0}
-						playerIndex={1}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1PercentDecimal}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						{preview}
-						numberOfDecimals={1}
-						playerIndex={0}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2PercentDecimal}
-					<PlayerPercent
-						{style}
-						{dataItem}
-						{edit}
-						{preview}
-						numberOfDecimals={1}
-						playerIndex={1}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1Score}
-					<TextElement {style} {dataItem} {edit}>
-						{$gameScore?.at(0) ?? '0'}
-					</TextElement>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2Score}
-					<TextElement {style} {dataItem} {edit}>
-						{$gameScore?.at(1) ?? '0'}
-					</TextElement>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1RankIcon}
-					<PlayerRankIcon
-						{dataItem}
-						{style}
-						player={$currentPlayers.at(0)}
-						preview={defaultPreview}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2RankIcon}
-					<PlayerRankIcon
-						{dataItem}
-						{style}
-						player={$currentPlayers.at(1)}
-						preview={defaultPreview}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player1CharacterRender && $currentPlayers.at(0)}
-					<CharacterRender
-						{dataItem}
-						{style}
-						player={$currentPlayers.at(0)}
-						preview={defaultPreview}
-					/>
-				{/if}
-				{#if dataItem?.elementId === CustomElement.Player2CharacterRender && $currentPlayers.at(1)}
-					<CharacterRender
-						{dataItem}
-						{style}
-						player={$currentPlayers.at(1)}
-						preview={defaultPreview}
-					/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1RankIcon}
+						<PlayerRankIcon
+							{dataItem}
+							{style}
+							player={$currentPlayers.at(0)}
+							preview={defaultPreview}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2RankIcon}
+						<PlayerRankIcon
+							{dataItem}
+							{style}
+							player={$currentPlayers.at(1)}
+							preview={defaultPreview}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1CharacterRender && $currentPlayers.at(0)}
+						<CharacterRender
+							{dataItem}
+							{style}
+							player={$currentPlayers.at(0)}
+							preview={defaultPreview}
+						/>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2CharacterRender && $currentPlayers.at(1)}
+						<CharacterRender
+							{dataItem}
+							{style}
+							player={$currentPlayers.at(1)}
+							preview={defaultPreview}
+						/>
+					{/if}
 				{/if}
 			</div>
 		{/key}

@@ -161,7 +161,6 @@
 				>
 					<BoardEdit
 						bind:boardHeight={boardHeightEdit}
-						bind:boardWidth={boardWidthEdit}
 						bind:layer={selectedLayer}
 						bind:selectedId
 					/>

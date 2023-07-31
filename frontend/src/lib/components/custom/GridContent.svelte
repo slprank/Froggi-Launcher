@@ -10,8 +10,6 @@
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
 	export let additionalDelay: number = 0;
-	export let boardHeight: number | undefined = undefined;
-	export let boardWidth: number | undefined = undefined;
 	export let curScene: Scene | undefined = undefined;
 	export let dataItem: GridContentItem | undefined = undefined;
 	export let demoItem: GridContentItem | undefined = undefined;
@@ -98,53 +96,57 @@
 		(isGameRunning && dataItem?.data.pauseOption === ElementPauseOption.OnlyActive) ||
 		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);
 
-	let innerWidth = 0;
-	let innerHeight = 0;
+	let div: HTMLElement;
+
+	$: boardWidth = div?.clientWidth ?? 0;
+	$: boardHeight = div?.clientHeight ?? 0;
 </script>
 
-<svelte:window bind:innerHeight bind:innerWidth />
+<svelte:window />
 
 {#if dataItem}
-	<div class="h-full w-full relative">
-		<div
-			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
-			class={`absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
-				selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
-			} bg-opacity-50`}
-		>
+	<div class="h-full w-full relative" bind:this={div}>
+		{#if div}
+			<div
+				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
+				class={`absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
+					selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
+				} bg-opacity-50`}
+			>
+				{#if edit}
+					<GridElements {dataItem} {edit} />
+				{:else}
+					<div class="w-full h-full" in:animateIn out:animateOut>
+						<AnimationLayer
+							animationTrigger={dataItem.data.animation.trigger}
+							animationIn={(node) =>
+								createAnimation(
+									node,
+									dataItem?.data.animation.in,
+									boardHeight,
+									boardWidth,
+								)}
+							animationOut={(node) =>
+								createAnimation(
+									node,
+									dataItem?.data.animation.out,
+									boardHeight,
+									boardWidth,
+								)}
+							{display}
+							{edit}
+							bind:key
+						>
+							<GridElements {dataItem} {preview} />
+						</AnimationLayer>
+					</div>
+				{/if}
+			</div>
 			{#if edit}
-				<GridElements {dataItem} {edit} />
-			{:else}
-				<div class="w-full h-full" in:animateIn out:animateOut>
-					<AnimationLayer
-						animationTrigger={dataItem.data.animation.trigger}
-						animationIn={(node) =>
-							createAnimation(
-								node,
-								dataItem?.data.animation.in,
-								boardHeight ?? innerHeight,
-								boardWidth ?? innerWidth,
-							)}
-						animationOut={(node) =>
-							createAnimation(
-								node,
-								dataItem?.data.animation.out,
-								boardHeight ?? innerHeight,
-								boardWidth ?? innerWidth,
-							)}
-						{display}
-						{edit}
-						bind:key
-					>
-						<GridElements {dataItem} {preview} bind:boardHeight bind:boardWidth />
-					</AnimationLayer>
+				<div class="h-full w-full absolute">
+					<h1 class="top-0 left-0 absolute">{dataItem.data.description ?? ''}</h1>
 				</div>
 			{/if}
-		</div>
-		{#if edit}
-			<div class="h-full w-full absolute">
-				<h1 class="top-0 left-0 absolute">{dataItem.data.description ?? ''}</h1>
-			</div>
 		{/if}
 	</div>
 {/if}

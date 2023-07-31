@@ -12,8 +12,7 @@
 
 	const overlayId = $page.params.overlay;
 
-	export let boardHeight: number;
-	export let boardWidth: number;
+	export let boardHeight: number | undefined;
 	export let layer: number | undefined = undefined;
 	export let selectedId: string | undefined = undefined;
 
@@ -116,13 +115,7 @@
 					>
 						<div class="w-full h-full relative">
 							<div class="w-full h-full absolute">
-								<GridContent
-									edit={true}
-									{dataItem}
-									bind:selectedId
-									boardHeight={boardHeight ?? innerHeight}
-									boardWidth={boardWidth ?? innerWidth}
-								/>
+								<GridContent edit={true} {dataItem} bind:selectedId />
 							</div>
 							<div
 								class="bottom-0 right-0 w-[5%] h-[5%] max-w-[0.8em] max-h-[0.8em] absolute cursor-se-resize overflow-hidden z-5"

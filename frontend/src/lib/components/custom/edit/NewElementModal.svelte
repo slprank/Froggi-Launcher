@@ -7,14 +7,12 @@
 	import {
 		generateNewItem,
 		getDefaultElementPayload,
-		newId,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
 	import StylingSelect from '$lib/components/custom/selector/StylingSelect.svelte';
 	import { fade } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/models/const';
-	import { onMount } from 'svelte';
 
 	const overlayId = $page.params.overlay;
 
