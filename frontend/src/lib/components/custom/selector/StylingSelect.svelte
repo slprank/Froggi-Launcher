@@ -122,6 +122,25 @@
 			</div>
 		</div>
 	{/if}
+	{#if stringSettings || percentSettings}
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
+		<div>
+			<h1 class="text-gray-500 text-sm font-medium text-shadow">
+				Size - ({payload.stroke.size})
+			</h1>
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-36">
+					<NumberInput bind:value={payload.stroke.size} />
+				</div>
+			</div>
+			<h1 class="text-gray-500 text-sm font-medium text-shadow">Color</h1>
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-36">
+					<ColorInput bind:value={payload.stroke.color} />
+				</div>
+			</div>
+		</div>
+	{/if}
 	{#if boxSettings}
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
@@ -237,23 +256,7 @@
 			/>
 		</div>
 	</div>
-	<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
-	<div>
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">
-			Size - ({payload.stroke.size})
-		</h1>
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-36">
-				<NumberInput bind:value={payload.stroke.size} />
-			</div>
-		</div>
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">Color</h1>
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-36">
-				<ColorInput bind:value={payload.stroke.color} />
-			</div>
-		</div>
-	</div>
+
 	<div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
 		<div class="w-full h-fit flex flex-wrap">
