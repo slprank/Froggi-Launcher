@@ -97,7 +97,6 @@
 		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);
 
 	let div: HTMLElement;
-
 	$: boardWidth = div?.clientWidth ?? 0;
 	$: boardHeight = div?.clientHeight ?? 0;
 </script>

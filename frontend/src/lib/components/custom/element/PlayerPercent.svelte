@@ -17,9 +17,17 @@
 
 	$: frame = $gameFrame?.players[playerIndex]?.post;
 
-	let framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
+	$: framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
 
-	let decimals =
+	$: console.log(
+		frame,
+		isInGame,
+		$gameState,
+		Math.floor(frame?.percent ?? 0).toFixed(),
+		framePercent,
+	);
+
+	$: decimals =
 		numberOfDecimals && isInGame
 			? frame?.percent?.toFixed(numberOfDecimals).split('.').at(1) ?? '0'
 			: '0';
@@ -65,7 +73,7 @@
 	}
 </script>
 
-{#key frame?.percent}
+{#key framePercent}
 	<div class="w-full h-full relative">
 		{#if isInGame || displayPreviewValue}
 			{#each Array.from(Array(2)) as _, i}
@@ -91,7 +99,7 @@
 							<span class="mr-[.4em]">
 								{`${displayPreviewValue ? 300 : framePercent}`}
 								<span class="text-[55%] mx-[-.5em]">
-									{`${numberOfDecimals ? `.${decimals}` : ''}%`}
+									{`${`.${displayPreviewValue ? 0 : decimals}`}%`}
 								</span>
 							</span>
 						{/if}

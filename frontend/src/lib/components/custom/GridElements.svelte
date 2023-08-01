@@ -76,19 +76,19 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 {#await updateFont() then}
-	{#key dataItem}
-		{#key fontTrigger}
-			<div
-				class="w-full h-full"
-				style={`${
-					dataItem.data?.font?.family !== undefined &&
-					`font-family: ${dataItem.data?.font?.family};
+	<div
+		class="w-full h-full"
+		style={`${
+			dataItem.data?.font?.family !== undefined &&
+			`font-family: ${dataItem.data?.font?.family};
 	`
-				}; ${style.stroke};
+		}; ${style.stroke};
 ${style.shadow};`}
-				bind:this={div}
-			>
-				{#if div}
+		bind:this={div}
+	>
+		{#if div}
+			{#key dataItem}
+				{#key fontTrigger}
 					{#if dataItem?.elementId === CustomElement.CustomString}
 						<TextElement {style} {dataItem} {edit}>
 							{dataItem?.data.string}
@@ -218,8 +218,8 @@ ${style.shadow};`}
 							preview={defaultPreview}
 						/>
 					{/if}
-				{/if}
-			</div>
-		{/key}
-	{/key}
+				{/key}
+			{/key}
+		{/if}
+	</div>
 {/await}
