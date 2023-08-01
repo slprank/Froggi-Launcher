@@ -16,12 +16,7 @@
 	const overlayId: string | undefined = $page.params.overlay;
 
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
-	let curScene = getCurrentScene($statsScene);
-
-	const curSceneTrigger = () => {
-		curScene = getCurrentScene($statsScene);
-	};
-	$: $statsScene, curSceneTrigger();
+	let curScene: Scene | undefined;
 
 	function updateScene() {
 		if (!curOverlay || curSceneIndex === undefined) return;
@@ -29,16 +24,15 @@
 	}
 	$: curOverlay, updateScene();
 
-	function getCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
+	function updateCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
 		if (!curOverlay) return;
 		let tempSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
 			? statsScene
-			: curOverlay?.default ?? LiveStatsScene.PreGame;
+			: curOverlay?.defaultScene ?? LiveStatsScene.PreGame;
 		if (tempSceneIndex === curSceneIndex) return;
-		curSceneIndex = tempSceneIndex;
-		curScene = curOverlay[curSceneIndex as LiveStatsScene];
+		curScene = curOverlay[tempSceneIndex];
 	}
-	$: curOverlay, getCurrentScene($statsScene);
+	$: curOverlay, updateCurrentScene($statsScene);
 
 	function getFixedLayerItems(layers: Layer[]): Layer[] {
 		return layers?.map((layer) => {

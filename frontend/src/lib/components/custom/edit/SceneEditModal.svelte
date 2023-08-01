@@ -49,10 +49,10 @@
 	}
 
 	function enableDefault() {
-		if (overlay.activeScenes?.includes(overlay.default)) return;
-		overlay.activeScenes?.push(overlay.default);
+		if (overlay.activeScenes?.includes(overlay.defaultScene)) return;
+		overlay.activeScenes?.push(overlay.defaultScene);
 	}
-	$: overlay.default, enableDefault();
+	$: overlay.defaultScene, enableDefault();
 
 	let autofocus: number = 0;
 </script>
@@ -84,7 +84,7 @@
 							class="w-28"
 							data-tooltip={`Selected scene will be displayed instead of disabled scenes`}
 						>
-							<Select bind:selected={overlay.default} label="Default scene">
+							<Select bind:selected={overlay.defaultScene} label="Default scene">
 								<option value={LiveStatsScene.WaitingForDolphin}>Waiting</option>
 								<option selected value={LiveStatsScene.PreGame}>Pre Game</option>
 								<option value={LiveStatsScene.InGame}>In Game</option>
@@ -95,7 +95,7 @@
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Active scenes</h1>
 						<SceneSelect
 							bind:selected={tempActiveScenes}
-							bind:defaultValue={overlay.default}
+							bind:defaultValue={overlay.defaultScene}
 						/>
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
 						<div class="w-full flex gap-2">

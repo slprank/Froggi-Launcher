@@ -24,6 +24,17 @@
 		await document.fonts.ready;
 	};
 	updateFont();
+
+	let keySceneUpdate: number;
+	const updateScene = () => {
+		if (curOverlay?.activeScenes?.includes($statsScene)) keySceneUpdate = Math.random();
+		if (
+			!curOverlay?.activeScenes?.includes($statsScene) &&
+			$statsScene !== curOverlay?.defaultScene
+		)
+			keySceneUpdate = Math.random();
+	};
+	$: $statsScene, updateScene();
 </script>
 
 {#await updateFont() then}
@@ -36,7 +47,7 @@
 			{#if $isElectron}
 				<Edit />
 			{:else}
-				{#key $statsScene}
+				{#key keySceneUpdate}
 					<Board bind:layers {preview} />
 				{/key}
 			{/if}

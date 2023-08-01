@@ -18,7 +18,7 @@ export interface Obs {
 
 export interface Overlay {
 	activeScenes: LiveStatsScene[];
-	default: LiveStatsScene;
+	defaultScene: LiveStatsScene;
 	description: string;
 	id: string;
 	title: string;
