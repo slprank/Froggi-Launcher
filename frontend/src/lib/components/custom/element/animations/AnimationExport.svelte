@@ -146,7 +146,7 @@
 			case Animation.Slide:
 				return animationSlide(node, animation.options, additionalDelay);
 			default:
-				return fly(node, { delay: 5, duration: 5 });
+				return fly(node, { delay: 5, duration: 0 });
 		}
 	};
 </script>
