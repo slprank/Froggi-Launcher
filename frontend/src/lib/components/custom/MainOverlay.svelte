@@ -27,12 +27,9 @@
 
 	let keySceneUpdate: number;
 	const updateScene = () => {
+		if ($statsScene !== curOverlay?.defaultScene) return;
 		if (curOverlay?.activeScenes?.includes($statsScene)) keySceneUpdate = Math.random();
-		if (
-			!curOverlay?.activeScenes?.includes($statsScene) &&
-			$statsScene !== curOverlay?.defaultScene
-		)
-			keySceneUpdate = Math.random();
+		if (!curOverlay?.activeScenes?.includes($statsScene)) keySceneUpdate = Math.random();
 	};
 	$: $statsScene, updateScene();
 </script>
