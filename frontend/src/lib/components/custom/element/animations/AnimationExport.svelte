@@ -89,6 +89,11 @@
 		});
 	};
 
+	const emptyAnimation = (node: any, delay: number) => {
+		// TODO: Optional start value
+		return fly(node, { delay: delay, duration: 0 });
+	};
+
 	const getEasing = (easing: Easing): EasingFunction => {
 		switch (easing) {
 			case Easing.BackInOut:
@@ -119,7 +124,7 @@
 		windowWidth: number,
 		additionalDelay: number = 0,
 	) => {
-		console.log('type', animation?.type);
+		console.log('animation type', animation?.type);
 		switch (animation?.type) {
 			case Animation.Blur:
 				return animationBlur(node, animation.options, additionalDelay);
@@ -146,7 +151,7 @@
 			case Animation.Slide:
 				return animationSlide(node, animation.options, additionalDelay);
 			default:
-				return fly(node, { delay: 5, duration: 0 });
+				return emptyAnimation(node, additionalDelay + 5);
 		}
 	};
 </script>

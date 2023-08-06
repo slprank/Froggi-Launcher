@@ -9,8 +9,6 @@
 	export let edit: boolean = false;
 	export let key: any = undefined;
 
-	$: console.log('paused', display);
-
 	onMount(() => {
 		$eventEmitter.on('animation_test_trigger', () => {
 			const tempKey = key;

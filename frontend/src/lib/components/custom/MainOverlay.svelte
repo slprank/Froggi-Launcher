@@ -24,6 +24,28 @@
 		await document.fonts.ready;
 	};
 	updateFont();
+
+	let keySceneUpdate: number;
+	let prevStatsScene = $statsScene;
+	const updateScene = () => {
+		if (!curOverlay) return;
+		const nonDefaultActiveScenes = curOverlay.activeScenes.filter(
+			(scene) => scene !== curOverlay?.defaultScene,
+		);
+		console.log(nonDefaultActiveScenes);
+		if (
+			(nonDefaultActiveScenes.includes(prevStatsScene) &&
+				!nonDefaultActiveScenes.includes($statsScene)) ||
+			[prevStatsScene, $statsScene].every(
+				(scene) => curOverlay?.activeScenes.includes(scene) || preview,
+			)
+		)
+			keySceneUpdate = Math.random();
+		prevStatsScene = $statsScene;
+	};
+	$: $statsScene, updateScene();
+
+	$: console.log('UPDATED', keySceneUpdate);
 </script>
 
 {#await updateFont() then}
@@ -36,8 +58,8 @@
 			{#if $isElectron}
 				<Edit />
 			{:else}
-				{#key $statsScene}
-					<Board bind:layers {preview} />
+				{#key keySceneUpdate}
+					<Board bind:curOverlay bind:layers bind:preview />
 				{/key}
 			{/if}
 		</main>

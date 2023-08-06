@@ -77,7 +77,7 @@
 			id: newId(),
 			title: 'New Title',
 			description: 'Scene Description',
-			default: LiveStatsScene.PreGame,
+			defaultScene: LiveStatsScene.PreGame,
 			[LiveStatsScene.WaitingForDolphin]: getDefaultScene(newId()),
 			[LiveStatsScene.PreGame]: getDefaultScene(newId()),
 			[LiveStatsScene.InGame]: getDefaultScene(newId()),

@@ -16,9 +16,7 @@
 	$: overlayId, $statsScene, $obs, getOverlay();
 </script>
 
-{#if overlayId}
-	<MainOverlay bind:layers preview={true} />
-{/if}
+<MainOverlay bind:layers preview={true} />
 
 <style>
 	:global(body) {
