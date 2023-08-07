@@ -12,27 +12,23 @@
 	export let layerIds: string[] | undefined;
 	export let preview: boolean = false;
 
-	let curScene: Scene | undefined;
+	let curStatsScene: LiveStatsScene;
 	function updateCurrentScene(): Scene | undefined {
 		if (preview) {
 			updateFixedLayerItems(curOverlay[$statsScene].layers);
-			curScene = curOverlay[$statsScene];
+			curStatsScene = $statsScene;
 			return;
 		} else {
-			let liveStatsScene = curOverlay?.activeScenes?.includes($statsScene)
+			curStatsScene = curOverlay?.activeScenes?.includes($statsScene)
 				? $statsScene
 				: curOverlay?.defaultScene ?? LiveStatsScene.PreGame;
-
-			curScene = curOverlay[liveStatsScene];
 		}
-		updateFixedLayerItems(curScene.layers);
+		updateFixedLayerItems(curOverlay[curStatsScene].layers);
 	}
 	$: layerIds, $statsScene, $obs, updateCurrentScene();
 
 	let fixedLayers: Layer[] = [];
 	function updateFixedLayerItems(layers: Layer[]) {
-		console.log('Scene layers', layers);
-		console.log('Visible Ids', layerIds);
 		fixedLayers = layers
 			?.filter((layer) => layerIds?.includes(layer.id) ?? true)
 			.map((layer) => {
@@ -56,6 +52,7 @@
 	let innerHeight = 0;
 	let innerWidth = 0;
 	$: rowHeight = innerHeight / ROW;
+	$: curScene = curOverlay[curStatsScene];
 
 	const updateFont = async () => {
 		if (!curScene) return;
@@ -71,12 +68,12 @@
 <svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
 
 {#if curScene && rowHeight && fixedLayers}
-	{#key fixedLayers}
-		{#await updateFont() then}
-			<div
-				class="w-full h-full overflow-hidden relative"
-				style={`font-family: ${curScene?.font?.family};`}
-			>
+	{#await updateFont() then}
+		<div
+			class="w-full h-full overflow-hidden relative"
+			style={`font-family: ${curScene?.font?.family};`}
+		>
+			{#key curScene}
 				<BoardContainer
 					scene={curScene}
 					bind:boardHeight={innerHeight}
@@ -102,8 +99,8 @@
 						</Grid>
 					</div>
 				{/each}
-				<div class="w-full h-full z-8 absolute" />
-			</div>
-		{/await}
-	{/key}
+			{/key}
+			<div class="w-full h-full z-8 absolute" />
+		</div>
+	{/await}
 {/if}
