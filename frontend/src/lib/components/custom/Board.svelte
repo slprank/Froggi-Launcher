@@ -25,7 +25,6 @@
 
 			curScene = curOverlay[liveStatsScene];
 		}
-
 		updateFixedLayerItems(curScene.layers);
 	}
 	$: layerIds, $statsScene, $obs, updateCurrentScene();
@@ -52,11 +51,7 @@
 					],
 				};
 			});
-		test = Math.random();
 	}
-
-	$: console.log('FIXED', fixedLayers);
-	$: console.log('TEST', test);
 
 	let innerHeight = 0;
 	let innerWidth = 0;
@@ -71,14 +66,12 @@
 	const refreshExternal = async () => {
 		if (!$isElectron) location.reload();
 	};
-
-	let test: number;
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
 
 {#if curScene && rowHeight && fixedLayers}
-	{#key test}
+	{#key fixedLayers}
 		{#await updateFont() then}
 			<div
 				class="w-full h-full overflow-hidden relative"
