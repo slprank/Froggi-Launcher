@@ -7,18 +7,18 @@
 
 	$: overlayId = $page.params.overlay;
 	$: layerId = $page.params.layer;
-	let layers: Layer[] = [];
+	let layerIds: string[] = [];
 
 	const getOverlay = async () => {
 		const overlay = await getOverlayById(overlayId);
-		layers = overlay[$statsScene].layers.filter((layer) => layerId === layer.id);
+		layerIds = overlay[$statsScene].layers
+			.filter((layer) => layerId === layer.id)
+			.map((layer) => layer.id);
 	};
 	$: overlayId, layerId, $statsScene, $obs, getOverlay();
 </script>
 
-{#if layerId}
-	<MainOverlay bind:layers preview={true} />
-{/if}
+<MainOverlay bind:layerIds preview={true} />
 
 <style>
 	:global(body) {

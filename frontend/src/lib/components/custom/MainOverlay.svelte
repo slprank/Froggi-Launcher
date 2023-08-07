@@ -7,7 +7,7 @@
 	import { addFont } from '$lib/components/custom/CustomFontHandler.svelte';
 	import type { Layer } from '$lib/models/types';
 
-	export let layers: Layer[] | undefined = undefined;
+	export let layerIds: string[] | undefined = undefined;
 	export let preview: boolean = false;
 
 	const overlayId = $page.params.overlay;
@@ -16,7 +16,7 @@
 	const updateFont = async () => {
 		if (!curOverlay) return;
 		await addFont(curOverlay[$statsScene].font.base64);
-		layers
+		curOverlay[$statsScene].layers
 			?.map((layer) => layer.items)
 			.flat()
 			.map(async (item) => await addFont(item.data.font.base64, item.id))
@@ -24,28 +24,6 @@
 		await document.fonts.ready;
 	};
 	updateFont();
-
-	let keySceneUpdate: number;
-	let prevStatsScene = $statsScene;
-	const updateScene = () => {
-		if (!curOverlay) return;
-		const nonDefaultActiveScenes = curOverlay.activeScenes.filter(
-			(scene) => scene !== curOverlay?.defaultScene,
-		);
-		console.log(nonDefaultActiveScenes);
-		if (
-			(nonDefaultActiveScenes.includes(prevStatsScene) &&
-				!nonDefaultActiveScenes.includes($statsScene)) ||
-			[prevStatsScene, $statsScene].every(
-				(scene) => curOverlay?.activeScenes.includes(scene) || preview,
-			)
-		)
-			keySceneUpdate = Math.random();
-		prevStatsScene = $statsScene;
-	};
-	$: $statsScene, updateScene();
-
-	$: console.log('UPDATED', keySceneUpdate);
 </script>
 
 {#await updateFont() then}
@@ -58,9 +36,7 @@
 			{#if $isElectron}
 				<Edit />
 			{:else}
-				{#key keySceneUpdate}
-					<Board bind:curOverlay bind:layers bind:preview />
-				{/key}
+				<Board bind:curOverlay bind:layerIds {preview} />
 			{/if}
 		</main>
 	{/if}

@@ -2,7 +2,6 @@
 	import { isElectron, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
-	import { page } from '$app/stores';
 	import type { Layer, Overlay, Scene } from '$lib/models/types';
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { LiveStatsScene } from '$lib/models/enum';
@@ -10,7 +9,7 @@
 	import { addFont } from './CustomFontHandler.svelte';
 
 	export let curOverlay: Overlay;
-	export let layers: Layer[] | undefined;
+	export let layerIds: string[] | undefined;
 	export let preview: boolean = false;
 
 	let curScene: Scene | undefined;
@@ -28,22 +27,24 @@
 	$: updateCurrentScene($statsScene);
 
 	function getFixedLayerItems(layers: Layer[]): Layer[] {
-		return layers?.map((layer) => {
-			return {
-				...layer,
-				items: [
-					...layer?.items.map((item) => {
-						return {
-							...item,
-							[COL]: {
-								...item[COL],
-								customResizer: true,
-							},
-						};
-					}),
-				],
-			};
-		});
+		return layers
+			?.filter((layer) => layerIds?.includes(layer.id) ?? true)
+			.map((layer) => {
+				return {
+					...layer,
+					items: [
+						...layer?.items.map((item) => {
+							return {
+								...item,
+								[COL]: {
+									...item[COL],
+									customResizer: true,
+								},
+							};
+						}),
+					],
+				};
+			});
 	}
 
 	let innerHeight = 0;
@@ -60,7 +61,7 @@
 		if (!$isElectron) location.reload();
 	};
 
-	$: console.log('newScene', curScene);
+	$: console.log('scene', curScene);
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
@@ -76,7 +77,7 @@
 				bind:boardHeight={innerHeight}
 				bind:boardWidth={innerWidth}
 			/>
-			{#each getFixedLayerItems(layers || (curScene?.layers ?? [])) as layer, i}
+			{#each getFixedLayerItems(curScene?.layers ?? []) as layer, i}
 				<div class="w-full h-full z-2 absolute">
 					<Grid
 						items={layer.items}
@@ -87,7 +88,7 @@
 						fastStart={true}
 					>
 						<GridContent
-							bind:preview
+							{preview}
 							{dataItem}
 							{curScene}
 							additionalDelay={SCENE_TRANSITION_DELAY +
