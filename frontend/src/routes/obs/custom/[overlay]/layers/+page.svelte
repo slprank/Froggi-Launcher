@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
 	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
-	import type { Layer } from '$lib/models/types';
 	import { obs, statsScene } from '$lib/utils/store.svelte';
 
 	$: overlayId = $page.params.overlay;
@@ -11,9 +10,9 @@
 	const getOverlay = async () => {
 		const overlay = await getOverlayById(overlayId);
 		if (!overlay) return;
-		layerIds = overlay[$statsScene].layers.map((layer) => layer.id);
+		layerIds = overlay[$statsScene].previewLayers;
 	};
-	$: overlayId, $statsScene, $obs, getOverlay();
+	$: $statsScene, $obs, getOverlay();
 </script>
 
 <MainOverlay bind:layerIds preview={true} />

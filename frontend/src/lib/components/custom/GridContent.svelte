@@ -17,6 +17,8 @@
 	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
 
+	console.log('DATA ITEM', dataItem);
+
 	function updateDemoData() {
 		if (demoItem) dataItem = demoItem;
 	}

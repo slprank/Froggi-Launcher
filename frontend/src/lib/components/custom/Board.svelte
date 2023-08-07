@@ -13,19 +13,22 @@
 	export let preview: boolean = false;
 
 	let curScene: Scene | undefined;
-	function updateCurrentScene(statsScene: LiveStatsScene): Scene | undefined {
-		if (!curOverlay) return;
+	function updateCurrentScene(): Scene | undefined {
 		if (preview) {
-			curScene = curOverlay[statsScene];
+			updateFixedLayerItems(curOverlay[$statsScene].layers);
+			curScene = curOverlay[$statsScene];
+			return;
 		} else {
-			let tempSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
-				? statsScene
+			let liveStatsScene = curOverlay?.activeScenes?.includes($statsScene)
+				? $statsScene
 				: curOverlay?.defaultScene ?? LiveStatsScene.PreGame;
-			curScene = curOverlay[tempSceneIndex];
+
+			curScene = curOverlay[liveStatsScene];
 		}
+
 		updateFixedLayerItems(curScene.layers);
 	}
-	$: $statsScene, $obs, updateCurrentScene($statsScene);
+	$: layerIds, $statsScene, $obs, updateCurrentScene();
 
 	let fixedLayers: Layer[] = [];
 	function updateFixedLayerItems(layers: Layer[]) {
@@ -49,9 +52,11 @@
 					],
 				};
 			});
+		test = Math.random();
 	}
 
-	$: console.log('Fixed layers', fixedLayers);
+	$: console.log('FIXED', fixedLayers);
+	$: console.log('TEST', test);
 
 	let innerHeight = 0;
 	let innerWidth = 0;
@@ -61,49 +66,51 @@
 		if (!curScene) return;
 		await addFont(curScene.font?.base64);
 	};
-	updateFont();
+	$: curScene, updateFont();
 
 	const refreshExternal = async () => {
 		if (!$isElectron) location.reload();
 	};
 
-	$: console.log('scene', curScene);
+	let test: number;
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
 
 {#if curScene && rowHeight && fixedLayers}
-	{#await updateFont() then}
-		<div
-			class="w-full h-full overflow-hidden relative"
-			style={`font-family: ${curScene?.font?.family};`}
-		>
-			<BoardContainer
-				scene={curScene}
-				bind:boardHeight={innerHeight}
-				bind:boardWidth={innerWidth}
-			/>
-			{#each fixedLayers as layer, i}
-				<div class="w-full h-full z-2 absolute">
-					<Grid
-						items={layer.items}
-						bind:rowHeight
-						gap={[0, 0]}
-						let:dataItem
-						cols={[[COL, COL]]}
-						fastStart={true}
-					>
-						<GridContent
-							{preview}
-							{dataItem}
-							{curScene}
-							additionalDelay={SCENE_TRANSITION_DELAY +
-								curScene.animation.layerRenderDelay * i}
-						/>
-					</Grid>
-				</div>
-			{/each}
-			<div class="w-full h-full z-8 absolute" />
-		</div>
-	{/await}
+	{#key test}
+		{#await updateFont() then}
+			<div
+				class="w-full h-full overflow-hidden relative"
+				style={`font-family: ${curScene?.font?.family};`}
+			>
+				<BoardContainer
+					scene={curScene}
+					bind:boardHeight={innerHeight}
+					bind:boardWidth={innerWidth}
+				/>
+				{#each fixedLayers as layer, i}
+					<div class="w-full h-full z-2 absolute">
+						<Grid
+							items={layer.items}
+							bind:rowHeight
+							gap={[0, 0]}
+							let:dataItem
+							cols={[[COL, COL]]}
+							fastStart={true}
+						>
+							<GridContent
+								{preview}
+								{dataItem}
+								{curScene}
+								additionalDelay={SCENE_TRANSITION_DELAY +
+									curScene.animation.layerRenderDelay * i}
+							/>
+						</Grid>
+					</div>
+				{/each}
+				<div class="w-full h-full z-8 absolute" />
+			</div>
+		{/await}
+	{/key}
 {/if}
