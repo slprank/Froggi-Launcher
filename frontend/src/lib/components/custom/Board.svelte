@@ -17,17 +17,19 @@
 		if (!curOverlay) return;
 		if (preview) {
 			curScene = curOverlay[statsScene];
-			return;
+		} else {
+			let tempSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
+				? statsScene
+				: curOverlay?.defaultScene ?? LiveStatsScene.PreGame;
+			curScene = curOverlay[tempSceneIndex];
 		}
-		let tempSceneIndex = curOverlay?.activeScenes?.includes(statsScene)
-			? statsScene
-			: curOverlay?.defaultScene ?? LiveStatsScene.PreGame;
-		curScene = curOverlay[tempSceneIndex];
+		updateFixedLayerItems(curScene.layers);
 	}
-	$: updateCurrentScene($statsScene);
+	$: $obs, updateCurrentScene($statsScene);
 
-	function getFixedLayerItems(layers: Layer[]): Layer[] {
-		return layers
+	let fixedLayers: Layer[] = [];
+	function updateFixedLayerItems(layers: Layer[]) {
+		fixedLayers = layers
 			?.filter((layer) => layerIds?.includes(layer.id) ?? true)
 			.map((layer) => {
 				return {
@@ -46,6 +48,8 @@
 				};
 			});
 	}
+
+	$: console.log('Fixed layers', fixedLayers);
 
 	let innerHeight = 0;
 	let innerWidth = 0;
@@ -66,7 +70,7 @@
 
 <svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
 
-{#if curScene && rowHeight}
+{#if curScene && rowHeight && fixedLayers}
 	{#await updateFont() then}
 		<div
 			class="w-full h-full overflow-hidden relative"
@@ -77,7 +81,7 @@
 				bind:boardHeight={innerHeight}
 				bind:boardWidth={innerWidth}
 			/>
-			{#each getFixedLayerItems(curScene?.layers ?? []) as layer, i}
+			{#each fixedLayers as layer, i}
 				<div class="w-full h-full z-2 absolute">
 					<Grid
 						items={layer.items}
