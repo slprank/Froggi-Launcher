@@ -25,10 +25,12 @@
 		}
 		updateFixedLayerItems(curScene.layers);
 	}
-	$: $obs, updateCurrentScene($statsScene);
+	$: $statsScene, $obs, updateCurrentScene($statsScene);
 
 	let fixedLayers: Layer[] = [];
 	function updateFixedLayerItems(layers: Layer[]) {
+		console.log('Scene layers', layers);
+		console.log('Visible Ids', layerIds);
 		fixedLayers = layers
 			?.filter((layer) => layerIds?.includes(layer.id) ?? true)
 			.map((layer) => {

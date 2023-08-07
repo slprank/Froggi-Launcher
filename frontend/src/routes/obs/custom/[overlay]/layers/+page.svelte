@@ -6,17 +6,17 @@
 	import { obs, statsScene } from '$lib/utils/store.svelte';
 
 	$: overlayId = $page.params.overlay;
-	let layers: Layer[] = [];
+	let layerIds: string[] = [];
 
 	const getOverlay = async () => {
 		const overlay = await getOverlayById(overlayId);
-		const layerIds = overlay[$statsScene]?.previewLayers;
-		layers = overlay[$statsScene].layers.filter((layer) => layerIds.includes(layer.id));
+		if (!overlay) return;
+		layerIds = overlay[$statsScene].layers.map((layer) => layer.id);
 	};
 	$: overlayId, $statsScene, $obs, getOverlay();
 </script>
 
-<MainOverlay bind:layers preview={true} />
+<MainOverlay bind:layerIds preview={true} />
 
 <style>
 	:global(body) {

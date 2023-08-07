@@ -5,7 +5,6 @@
 	import Board from '$lib/components/custom/Board.svelte';
 	import { page } from '$app/stores';
 	import { addFont } from '$lib/components/custom/CustomFontHandler.svelte';
-	import type { Layer } from '$lib/models/types';
 
 	export let layerIds: string[] | undefined = undefined;
 	export let preview: boolean = false;

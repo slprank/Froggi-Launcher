@@ -11,11 +11,12 @@
 
 	const getOverlay = async () => {
 		const overlay = await getOverlayById(overlayId);
+		if (!overlay) return;
 		layerIds = overlay[$statsScene].layers
 			.filter((layer) => layerId === layer.id)
 			.map((layer) => layer.id);
 	};
-	$: overlayId, layerId, $statsScene, $obs, getOverlay();
+	$: layerId, $statsScene, $obs, getOverlay();
 </script>
 
 <MainOverlay bind:layerIds preview={true} />

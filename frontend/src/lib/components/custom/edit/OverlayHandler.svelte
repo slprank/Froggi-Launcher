@@ -107,21 +107,18 @@
 		};
 	}
 
-	export async function getOverlayById(overlayId: string): Promise<Overlay> {
-		return await new Promise<Overlay>((resolve) => {
+	export async function getOverlayById(overlayId: string): Promise<Overlay | undefined> {
+		return await new Promise<Overlay | undefined>((resolve) => {
 			obs?.subscribe((obs) =>
-				resolve(
-					obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ??
-						({} as Overlay),
-				),
+				resolve(obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId)),
 			);
 		});
 	}
 
-	export async function getOverlayIndexById(overlayId: string): Promise<number> {
+	export async function getOverlayIndexById(overlayId: string): Promise<number | undefined> {
 		let curOverlay = await getOverlayById(overlayId);
-		return await new Promise<number>((resolve) =>
-			obs?.subscribe((obs) => resolve(obs?.overlays.indexOf(curOverlay))),
+		return await new Promise<number | undefined>((resolve) =>
+			obs?.subscribe((obs) => resolve(obs?.overlays.indexOf(curOverlay ?? ({} as Overlay)))),
 		);
 	}
 
