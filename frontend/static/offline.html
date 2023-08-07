@@ -9,6 +9,10 @@
 
 		<!-- Inline the page's stylesheet. -->
 		<style>
+			:global(body) {
+				background: transparent;
+			}
+			
 			body {
 				width: 100vw;
 				height: 100vh;
@@ -17,6 +21,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				background: transparent;
 			}
 
 			img {
@@ -26,11 +31,14 @@
 
 			h1 {
 				font-style: italic;
-				color: #000000;
+				color: #ffffff;
+				text-shadow: 1px 1px 3px black;
 			}
 
 			p {
 				margin-block: 1rem;
+				color: #ffffff;
+				text-shadow: 1px 1px 3px black;
 			}
 
 			button {
@@ -44,11 +52,9 @@
 	</head>
 	<body>
 		<div>
-			<img src="./favicon.ico" />
 			<h1>Slp Client Disconnected</h1>
 			<p>Make sure Slp Rank Client app is open</p>
-			<p>Refresh the page</p>
-			<p>On mobile scan a new QR code in Settings/Obs</p>
+			<p>Scan new QR code - IP address might have changed - Use a static IP on hosting device</p>
 		</div>
 
 		<!-- Inline the page's JavaScript file. -->
@@ -61,16 +67,18 @@
 					const response = await fetch('.');
 					// Verify we get a valid response from the server
 					if (response.status >= 200 && response.status < 500) {
+						await new Promise(resolve => {
+							setTimeout(resolve, 1500)
+						})
 						window.location.reload();
-						return;
 					}
 				} catch {
+					await checkNetworkAndReload()
 					// Unable to connect to the server, ignore.
 				}
-				setTimeout(checkNetworkAndReload, 1000);
 			}
 
-			checkNetworkAndReload();
+			checkNetworkAndReload()
 		</script>
 	</body>
 </html>

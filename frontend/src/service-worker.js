@@ -3,7 +3,7 @@ import { build, files, version } from '$service-worker';
 // Create a unique cache name for this deployment
 const CACHE = `cache-v${version}`;
 
-const ASSETS = ['offline.html', 'favicon.ico'];
+const ASSETS = ['offline.html', 'favicon.ico', 'icon.png'];
 
 self.addEventListener('install', (event) => {
 	/*
