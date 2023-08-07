@@ -73,7 +73,7 @@
 			class="w-full h-full overflow-hidden relative"
 			style={`font-family: ${curScene?.font?.family};`}
 		>
-			{#key curScene}
+			{#key curScene && curStatsScene}
 				<BoardContainer
 					scene={curScene}
 					bind:boardHeight={innerHeight}
