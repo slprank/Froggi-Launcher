@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { AnimationTrigger, ElementPauseOption, InGameState, Animation } from '$lib/models/enum';
 	import type { GridContentItem, Scene } from '$lib/models/types';
-	import { fade, fly, scale, slide, blur } from 'svelte/transition';
-	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
-	import { gameFrame, gameState, statsScene } from '$lib/utils/store.svelte';
+	import { fly } from 'svelte/transition';
+	import { COL, ROW } from '$lib/models/const';
+	import { gameFrame, gameState } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
 	import { createAnimation } from './element/animations/AnimationExport.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';
@@ -16,8 +16,6 @@
 	export let edit: boolean = false;
 	export let preview: boolean = false;
 	export let selectedId: string | undefined = undefined;
-
-	console.log('DATA ITEM', dataItem);
 
 	function updateDemoData() {
 		if (demoItem) dataItem = demoItem;

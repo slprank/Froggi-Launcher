@@ -85,7 +85,7 @@
 		<div>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 h-12">
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Start Color</h1>
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">Start Color - 0%</h1>
 					<ColorInput bind:value={payload.percent.startColor} />
 				</div>
 			</div>
@@ -93,7 +93,7 @@
 		<div>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 h-12">
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">End Color</h1>
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">End Color - 300%</h1>
 					<ColorInput bind:value={payload.percent.endColor} />
 				</div>
 			</div>

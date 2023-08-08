@@ -5,6 +5,7 @@
 	import ExternalPreviewSettings from '$lib/components/custom/preview/ExternalPreviewSettings.svelte';
 	import LayerToggle from '$lib/components/custom/preview/LayerToggle.svelte';
 	import NonInteractiveIFrame from '$lib/components/custom/preview/NonInteractiveIFrame.svelte';
+	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
 	import type { Overlay } from '$lib/models/types';
 	import { isElectron, isMobile, urls } from '$lib/utils/store.svelte';
 
@@ -63,7 +64,8 @@
 					<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
 				</div>
 			</div>
-			<div class="h-16 w-full">
+			<div class="w-full p-2 grid grid-flow-row gap-2">
+				<SceneSelect />
 				<ExternalPreviewSettings bind:base64 bind:imageOpacity {reset} />
 			</div>
 		</div>
