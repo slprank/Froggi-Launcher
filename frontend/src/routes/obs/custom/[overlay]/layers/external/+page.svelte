@@ -32,6 +32,10 @@
 		base64 = '';
 		imageOpacity = 1;
 	};
+
+	let parentDiv: HTMLElement;
+
+	$: maxHeight = innerHeight - parentDiv?.clientHeight;
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -43,7 +47,7 @@
 		}`}
 		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png')`}
 	>
-		<div class="w-full flex flex-col justify-center">
+		<div class="w-full flex flex-col justify-center" bind:this={parentDiv}>
 			<div>
 				<TextFitMulti
 					class="h-16 w-full text-gray-500 text-md font-medium text-shadow justify-center underline"
@@ -69,7 +73,7 @@
 				<ExternalPreviewSettings bind:base64 bind:imageOpacity {reset} />
 			</div>
 		</div>
-		<div class={`w-full h-full`}>
+		<div class={`w-full pb-16`} style={`max-height: ${maxHeight}px`}>
 			<LayerToggle />
 		</div>
 	</div>
@@ -100,7 +104,8 @@
 					<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
 				</div>
 			</div>
-			<div class="h-16 w-full">
+			<div class="w-full p-2 grid grid-flow-row gap-2">
+				<SceneSelect />
 				<ExternalPreviewSettings bind:base64 bind:imageOpacity {reset} />
 			</div>
 		</div>

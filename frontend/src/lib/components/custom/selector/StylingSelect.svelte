@@ -130,7 +130,7 @@
 			</h1>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36">
-					<NumberInput bind:value={payload.stroke.size} />
+					<NumberInput bind:value={payload.stroke.size} min={0} max={5} step={0.1} />
 				</div>
 			</div>
 			<h1 class="text-gray-500 text-sm font-medium text-shadow">Color</h1>

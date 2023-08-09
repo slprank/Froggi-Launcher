@@ -57,7 +57,7 @@
 		boardHeight ?? innerHeight,
 		boardWidth ?? innerWidth,
 	);
-	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}px;
+	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}rem;
 						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
 
 	function toKebabCase(str: string) {
