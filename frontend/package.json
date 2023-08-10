@@ -3,7 +3,7 @@
 	"version": "0.0.3",
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently -n=dev,build -c='#ff3e00',blue \"vite dev\" \"npm run build\"",
+		"dev": "concurrently -n=dev,build -c='#ff3e00',blue \"vite dev --host\" \"npm run build\"",
 		"build": "vite build"
 	},
 	"dependencies": {

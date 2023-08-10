@@ -37,8 +37,8 @@ try {
 		log.error(e);
 	}
 	const serveURL = serve({ directory: '.' });
-	const port = `${process.env.PORT || 5173}`;
 	const dev = !app.isPackaged;
+	const port = dev ? "5173" : `3200`;
 
 	let mainWindow: any;
 
@@ -94,10 +94,9 @@ try {
 				},
 			},
 			{
-				label: 'Run function 2',
+				label: 'Dev',
 				click: () => {
-					mainWindow.webContents.send('reset-score');
-					log.info('Right click: 2');
+					mainWindow.openDevTools()
 				},
 			},
 		],
@@ -129,7 +128,10 @@ try {
 			container.register<BrowserWindow>("BrowserWindow", { useValue: mainWindow });
 			container.register<IpcMain>("IpcMain", { useValue: ipcMain });
 			container.register<EventEmitter>("EventEmitter", { useValue: eventEmitter });
+
 			container.register<string>("RootDir", { useValue: `${__dirname}/../..` });
+			container.register<string>("Port", { useValue: port });
+			container.register<boolean>("Dev", { useValue: dev });
 
 			container.resolve(Api)
 			container.resolve(MessageHandler)

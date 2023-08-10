@@ -21,6 +21,7 @@ export class ElectronJsonStore {
 	constructor(
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+		@inject("Port") public port: string,
 	) {
 		this.log = log;
 		this.messageHandler = messageHandler
@@ -99,7 +100,7 @@ export class ElectronJsonStore {
 
 	getLocalUrl(): Url {
 		return {
-			local: `http://localhost:3200`, external: `http://${ip.address()}:3200`
+			local: `http://localhost:${this.port}`, external: `http://${ip.address()}:${this.port}`
 		};
 	}
 

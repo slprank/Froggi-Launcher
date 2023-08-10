@@ -5,27 +5,25 @@ import { delay, inject, singleton } from "tsyringe";
 import { ElectronJsonStore } from "./electronStore";
 import fs from 'fs';
 import { LiveStatsScene } from "../../frontend/src/lib/models/enum";
+import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
 
 
 @singleton()
 export class MessageHandler {
 	app: any;
-	eventEmitter: EventEmitter;
-	ipcMain: IpcMain;
-	mainWindow: BrowserWindow;
-	rootDir: string;;
 	server: any;
-	store: ElectronJsonStore;
 	webSocketServer: any;
 	webSockets: WebSocket[];
 
 	constructor(
-		@inject("BrowserWindow") mainWindow: BrowserWindow,
-		@inject("IpcMain") ipcMain: IpcMain,
-		@inject("ElectronLog") log: ElectronLog,
-		@inject("EventEmitter") eventEmitter: EventEmitter,
-		@inject("RootDir") rootDir: string,
-		@inject(delay(() => ElectronJsonStore)) store: ElectronJsonStore,
+		@inject("Dev") public dev: boolean,
+		@inject("EventEmitter") public eventEmitter: EventEmitter,
+		@inject("IpcMain") public ipcMain: IpcMain,
+		@inject("ElectronLog") public log: ElectronLog,
+		@inject("BrowserWindow") public mainWindow: BrowserWindow,
+		@inject("Port") public port: string,
+		@inject("RootDir") public rootDir: string,
+		@inject(delay(() => ElectronJsonStore)) public store: ElectronJsonStore,
 	) {
 		log.info('Creating message handler..');
 		const path = require('path');
@@ -39,7 +37,7 @@ export class MessageHandler {
 		this.app.use(express.static(path.join(this.rootDir + '/build')));
 		this.app.use(cors());
 		this.server = http.createServer(this.app);
-		this.webSocketServer = new WebSocketServer({ port: 3100 });
+		this.webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
 		this.webSockets = [];
 		this.store = store;
 
@@ -51,7 +49,7 @@ export class MessageHandler {
 		this.eventEmitter = eventEmitter;
 
 		this.initElectronMessageHandler();
-		this.initHtml();
+		if (!dev) this.initHtml();
 		this.initWebSocket();
 		this.initEventHandlers()
 		this.initGlobalEventListeners();
@@ -72,8 +70,8 @@ export class MessageHandler {
 				res.redirect(`/?${params}`);
 			});
 
-			this.server.listen(3200, (_: any) => {
-				console.log('listening on *:3200');
+			this.server.listen(this.port, (_: any) => {
+				console.log(`listening on *:${this.port}`);
 			});
 		} catch (err) {
 			console.log(err);
