@@ -31,7 +31,7 @@
 						{$urls?.external}
 					</h1>
 					<Clipboard
-						text={`${$urls?.external}/preview`}
+						text={`${$urls?.external}`}
 						let:copy
 						on:copy={() => {
 							notifications.success('Copied to clipboard!', 2000);

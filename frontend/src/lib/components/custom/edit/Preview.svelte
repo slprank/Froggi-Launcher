@@ -15,7 +15,7 @@
 	const overlayId = $page.params.overlay;
 	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
 
-	let currentOverlay: Overlay;
+	let currentOverlay: Overlay | undefined;
 
 	async function getOverlay() {
 		currentOverlay = await getOverlayById(overlayId);
