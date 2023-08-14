@@ -1,11 +1,9 @@
 <script lang="ts">
+	import Modal from '$lib/components/modal/Modal.svelte';
 	import { CustomElement } from '$lib/models/enum';
-	import Select from '$lib/components/input/Select.svelte';
+	import { getEnumStringValues } from '$lib/utils/helper.svelte';
 
-	export let selectedElementId: number;
-	export let label: string | undefined = undefined;
-
-	// TODO: Update to Modal with select in different categories
+	// Move this to separate file
 	let options = [
 		{
 			name: 'Custom Text',
@@ -68,14 +66,39 @@
 			value: CustomElement.Player2CharacterRender,
 		},
 	];
+
+	export let selectedElementId: CustomElement;
+	let open: boolean;
+
+	console.log('First key', getEnumStringValues(CustomElement)[0]);
+	console.log('First value', CustomElement[getEnumStringValues(CustomElement)[0]!]);
 </script>
 
-<div class="w-40 h-12">
-	<Select bind:selected={selectedElementId} {label}>
-		{#each options as option, i}
-			<option selected={i === 0} value={option.value}>
-				{option.name}
-			</option>
-		{/each}
-	</Select>
+<div class="grid grid-flow-col gap-2 items-center">
+	<button
+		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+		on:click={() => (open = true)}
+	>
+		Select
+	</button>
+	<h1 class="text-gray-500 text-md font-medium text-shadow">
+		{CustomElement[selectedElementId] ?? ''}
+	</h1>
 </div>
+
+<Modal bind:open on:close={() => (open = false)}>
+	<div
+		class="w-full h-full min-w-lg py-4 grid gap-8 justify-center bg-cover bg-center rounded-md border border-zinc-700"
+		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+	>
+		<button
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+			on:click={() => {
+				selectedElementId = CustomElement.CustomImage;
+				open = false;
+			}}
+		>
+			Test
+		</button>
+	</div>
+</Modal>

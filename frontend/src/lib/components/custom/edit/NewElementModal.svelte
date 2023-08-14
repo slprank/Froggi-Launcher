@@ -8,11 +8,12 @@
 		generateNewItem,
 		getDefaultElementPayload,
 	} from '$lib/components/custom/edit/OverlayHandler.svelte';
-	import ElementSelect from '$lib/components/custom/selector/ElementSelect.svelte';
 	import StylingSelect from '$lib/components/custom/selector/StylingSelect.svelte';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/models/const';
+	import ElementSelect from '../selector/ElementSelect.svelte';
+	import type { CustomElement } from '$lib/models/enum';
 
 	const overlayId = $page.params.overlay;
 
@@ -20,7 +21,7 @@
 	export let layer: number | undefined;
 	export let selectedId: string | undefined = undefined;
 
-	let selectedElementId: number;
+	let selectedElementId: CustomElement;
 	let payload: ElementPayload = getDefaultElementPayload();
 	$: isNewElement = !getCurrentItems().some((item) => item.id === selectedId);
 
@@ -107,6 +108,8 @@
 		selectedElementId = item.elementId;
 	}
 	updatePayload();
+
+	$: console.log('new element', selectedElementId);
 </script>
 
 <Modal bind:open class="w-[80vw] h-[80vh] min-w-72 rounded-lg" on:close={() => (open = false)}>
@@ -117,17 +120,20 @@
 		<div class="w-full h-full p-4 px-8 grid grid-cols-7">
 			<div class="w-full h-full col-span-4 overflow-scroll scroll enable-scrollbar">
 				<ElementSelect bind:selectedElementId />
-				<div class="w-full">
-					{#if payload && selectedId}
-						<StylingSelect bind:selectedElementId bind:payload bind:selectedId />
-					{/if}
-				</div>
-				<button
-					class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-					on:click={edit}
-				>
-					{isNewElement ? 'Add' : 'Update'}
-				</button>
+				{#if selectedElementId}
+					<div class="w-full" transition:fly={{ duration: 250, x: 150 }}>
+						{#if payload && selectedId}
+							<StylingSelect bind:selectedElementId bind:payload bind:selectedId />
+						{/if}
+					</div>
+					<button
+						transition:fly={{ duration: 250, x: 150 }}
+						class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+						on:click={edit}
+					>
+						{isNewElement ? 'Add' : 'Update'}
+					</button>
+				{/if}
 			</div>
 			<div class="w-full h-full col-span-3 grid justify-center content-center gap-12">
 				<!-- Set array to 2 if you want drag/drop preview-->

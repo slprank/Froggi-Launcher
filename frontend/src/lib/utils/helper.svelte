@@ -5,6 +5,18 @@
 		}
 	}
 
+	const getEnumKeys = <T>(e: T): (keyof T)[] => {
+		return Object.keys(e) as (keyof T)[];
+	};
+
+	export const getEnumStringValues = <T>(e: T): string[] => {
+		const keys = getEnumKeys(e);
+		return keys
+			.map((key) => e[key])
+			.filter((e) => typeof e === 'string')
+			.map((s) => `${s}`);
+	};
+
 	export const getRelativePixelSize = (
 		size: number,
 		windowHeight: number,
