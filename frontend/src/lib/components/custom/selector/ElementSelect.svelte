@@ -1,7 +1,9 @@
 <script lang="ts">
-	import Modal from '$lib/components/modal/Modal.svelte';
-	import { CustomElement } from '$lib/models/enum';
+	import WaitingDolphin from '$lib/components/live/WaitingDolphin/WaitingDolphin.svelte';
+import Modal from '$lib/components/modal/Modal.svelte';
+	import { CustomElement, LiveStatsScene } from '$lib/models/enum';
 	import { getEnumStringValues } from '$lib/utils/helper.svelte';
+	import { statsScene } from '$lib/utils/store.svelte';
 
 	// Move this to separate file
 	let options = [
@@ -100,5 +102,17 @@
 		>
 			Test
 		</button>
+		{#if [LiveStatsScene.PreGame].includes($statsScene)}
+			Options from memory read data
+		{/if}
+		{#if [LiveStatsScene.InGame].includes($statsScene)}
+			Options from in-game data
+		{/if}
+		{#if [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene)}
+			Options from post game analyzed data
+		{/if}
+		{#if [LiveStatsScene.PostSet].includes($statsScene)}
+			Options from rank change data
+		{/if}
 	</div>
 </Modal>

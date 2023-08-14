@@ -8,6 +8,7 @@ import { ElectronJsonStore } from './electronStore';
 import { Player } from '../../frontend/src/lib/models/types';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs"
+import { findPlayKey } from '../utils/playkey';
 
 @singleton()
 export class StatsDisplay {
@@ -76,12 +77,14 @@ export class StatsDisplay {
 		if (!settings) return;
 		const gameNumber = settings.matchInfo?.gameNumber
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
+		const currentPlayer = this.getCurrentPlayer(currentPlayers)!
 
 		this.store.setGameSettings(settings);
 		this.store.setGameState(InGameState.Running)
 		this.store.setStatsScene(LiveStatsScene.InGame)
-		this.store.setCurrentPlayerCurrentRankStats(this.getCurrentPlayer(currentPlayers)?.rankedNetplayProfile);
 		this.store.setCurrentPlayers(currentPlayers);
+		this.store.setCurrentPlayer(currentPlayer)
+		this.store.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
 
 		if (gameNumber !== 1) return;
 		this.store.setGameScore([0, 0]);
@@ -102,6 +105,7 @@ export class StatsDisplay {
 		this.store.setGameMatch(settings, gameEnd, postGameStats)
 		this.store.setStatsScene(LiveStatsScene.PostGame)
 		if (postGameStats) this.messageHandler.sendMessage('post_game_stats', postGameStats);
+		// If post set
 	}
 
 	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
@@ -122,7 +126,7 @@ export class StatsDisplay {
 	getCurrentPlayer(players: Player[]): Player | undefined {
 		const player = this.store.getCurrentPlayer()
 		if (!player) return;
-		return players.find(player => player.connectCode === player.connectCode);
+		return players.find(p => p.connectCode === player.connectCode);
 	}
 
 	handleScore(gameEnd: GameEndType) {

@@ -13,6 +13,8 @@ import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ElectronJsonStore } from './electronStore';
 import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { findPlayKey } from '../utils/playkey';
+import { Player } from '../../frontend/src/lib/models/types';
 
 @singleton()
 export class SlippiJs {
@@ -38,7 +40,7 @@ export class SlippiJs {
 
 		this.store.setStatsScene(LiveStatsScene.WaitingForDolphin)
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
-		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, (status) => {
+		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('dolphin connection state', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin
 			this.store.setDolphinConnectionStatus(status);

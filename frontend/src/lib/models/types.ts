@@ -161,10 +161,6 @@ export interface Player extends PlayerType {
 	rankedNetplayProfile: RankedNetplayProfile | undefined;
 }
 
-export interface CurrentPlayer extends Player {
-	newRankedNetplayProfile: RankedNetplayProfile | undefined;
-}
-
 export interface GameStats {
 	settings: GameStartType;
 	gameEnd: GameEndType;
@@ -209,4 +205,12 @@ export interface Character {
 	characterColorId: number;
 	gameCount: number;
 	icon: string;
+}
+
+export interface PlayKey {
+	uid: string;
+	playKey: string;
+	connectCode: string;
+	displayName: string;
+	latestVersion?: string;
 }

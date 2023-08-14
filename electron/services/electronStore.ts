@@ -1,7 +1,7 @@
 // https://www.npmjs.com/package/electron-store
 import ip from 'ip';
 import Store from 'electron-store';
-import type { CurrentPlayer, GameStartMode, GameStats, Obs, Overlay, Player, RankedNetplayProfile, Session, SlippiLauncherSettings, Url } from '../../frontend/src/lib/models/types';
+import type { GameStartMode, GameStats, Obs, Overlay, Player, RankedNetplayProfile, Session, SlippiLauncherSettings, Url } from '../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from './messageHandler';
@@ -45,12 +45,12 @@ export class ElectronJsonStore {
 	}
 
 	// SETTINGS
-	getCurrentPlayer(): CurrentPlayer | undefined {
-		return this.store.get('settings.currentPlayer') as CurrentPlayer;
+	getCurrentPlayer(): Player | undefined {
+		return this.store.get('settings.currentPlayer.player') as Player;
 	}
 
-	setCurrentPlayer(player: CurrentPlayer) {
-		this.store.set('settings.currentPlayer', player);
+	setCurrentPlayer(player: Player) {
+		this.store.set('settings.currentPlayer.player', player);
 	}
 
 	getSlippiLauncherSettings(): SlippiLauncherSettings {
