@@ -8,7 +8,6 @@ import { ElectronJsonStore } from './electronStore';
 import { Player } from '../../frontend/src/lib/models/types';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs"
-import { findPlayKey } from '../utils/playkey';
 
 @singleton()
 export class StatsDisplay {

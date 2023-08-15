@@ -13,8 +13,6 @@ import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ElectronJsonStore } from './electronStore';
 import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
-import { findPlayKey } from '../utils/playkey';
-import { Player } from '../../frontend/src/lib/models/types';
 
 @singleton()
 export class SlippiJs {

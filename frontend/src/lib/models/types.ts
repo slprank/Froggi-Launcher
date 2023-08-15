@@ -161,6 +161,10 @@ export interface Player extends PlayerType {
 	rankedNetplayProfile: RankedNetplayProfile | undefined;
 }
 
+export interface CurrentPlayer extends Player {
+	newRankedNetplayProfile: RankedNetplayProfile | undefined;
+}
+
 export interface GameStats {
 	settings: GameStartType;
 	gameEnd: GameEndType;
