@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"outDir": "../build_electron",
 		"paths": {
-      "@svelte/*": ["/frontend/src/lib/*"],
+      "@svelte/*": ["./frontend/src/lib/*"],
     },
 	"baseUrl": "../",
 	"target": "ES2015",

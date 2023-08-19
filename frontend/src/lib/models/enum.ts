@@ -100,6 +100,16 @@ export enum LiveStatsScene {
 	RankChange = 10,
 }
 
+export enum ElementCategory {
+	WaitingForDolphin = 0,
+	PreGame = 2,
+	InGame = 4,
+	PostGame = 6,
+	PostSet = 8,
+	RankChange = 10,
+	Custom = 12,
+}
+
 export enum PlayerActionState {
 	Dead = 0
 }

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import WaitingDolphin from '$lib/components/live/WaitingDolphin/WaitingDolphin.svelte';
-import Modal from '$lib/components/modal/Modal.svelte';
+	import Modal from '$lib/components/modal/Modal.svelte';
 	import { CustomElement, LiveStatsScene } from '$lib/models/enum';
 	import { getEnumStringValues } from '$lib/utils/helper.svelte';
 	import { statsScene } from '$lib/utils/store.svelte';
+	import ElementCategorySelect from './ElementCategorySelect.svelte';
 
 	// Move this to separate file
 	let options = [
@@ -71,9 +72,6 @@ import Modal from '$lib/components/modal/Modal.svelte';
 
 	export let selectedElementId: CustomElement;
 	let open: boolean;
-
-	console.log('First key', getEnumStringValues(CustomElement)[0]);
-	console.log('First value', CustomElement[getEnumStringValues(CustomElement)[0]!]);
 </script>
 
 <div class="grid grid-flow-col gap-2 items-center">
@@ -88,31 +86,11 @@ import Modal from '$lib/components/modal/Modal.svelte';
 	</h1>
 </div>
 
-<Modal bind:open on:close={() => (open = false)}>
+<Modal bind:open on:close={() => (open = false)} class="w-[70vw] h-[70vh]">
 	<div
-		class="w-full h-full min-w-lg py-4 grid gap-8 justify-center bg-cover bg-center rounded-md border border-zinc-700"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-full h-full bg-cover bg-center p-16"
+		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
-		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
-			on:click={() => {
-				selectedElementId = CustomElement.CustomImage;
-				open = false;
-			}}
-		>
-			Test
-		</button>
-		{#if [LiveStatsScene.PreGame].includes($statsScene)}
-			Options from memory read data
-		{/if}
-		{#if [LiveStatsScene.InGame].includes($statsScene)}
-			Options from in-game data
-		{/if}
-		{#if [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene)}
-			Options from post game analyzed data
-		{/if}
-		{#if [LiveStatsScene.PostSet].includes($statsScene)}
-			Options from rank change data
-		{/if}
+		<ElementCategorySelect bind:selectedElementId bind:open />
 	</div>
 </Modal>

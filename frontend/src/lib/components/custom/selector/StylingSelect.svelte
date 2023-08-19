@@ -42,7 +42,13 @@
 		payload = getDefaultElementPayload();
 		prevSelectedElementId = selectedElementId;
 	}
-	$: stringSettings, boxSettings, imageSettings, clearStyle();
+	$: stringSettings,
+		customStringSettings,
+		boxSettings,
+		customBoxSettings,
+		imageSettings,
+		customImageSettings,
+		clearStyle();
 
 	const fixAnimationInputDelay = () => {
 		if (payload.animation.in.type === Animation.None) {
@@ -59,8 +65,6 @@
 	const shuffleAnimationTriggers = () => {
 		$eventEmitter.emit('animation_test_trigger');
 	};
-
-	$: console.log('styling', selectedElementId);
 </script>
 
 <div class="w-full my-4 grid gap-4">

@@ -1,0 +1,27 @@
+<script lang="ts">
+	import type { CustomElement } from '$lib/models/enum';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
+	function select(customElement: CustomElement) {
+		dispatch('select', customElement);
+	}
+
+	export let customElement: CustomElement;
+	export let description: string;
+</script>
+
+<div class="flex flex-row items-center gap-2">
+	<button
+		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+		on:click={() => {
+			select(customElement);
+		}}
+	>
+		<slot />
+	</button>
+	<h1 class="text-gray-300 text-md font-medium text-shadow">
+		{description}
+	</h1>
+</div>
