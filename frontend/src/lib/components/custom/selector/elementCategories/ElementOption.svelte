@@ -14,7 +14,7 @@
 
 <div class="flex flex-row items-center gap-2">
 	<button
-		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+		class={`w-80 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-105 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 		on:click={() => {
 			select(customElement);
 		}}

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { CustomElement } from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/enum';
 	import { createEventDispatcher } from 'svelte';
+	import ElementOption from './ElementOption.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -9,4 +10,12 @@
 	}
 </script>
 
-<div>Some</div>
+<div class="flex flex-col gap-2">
+	<ElementOption
+		description="Customizable box"
+		customElement={CustomElement.CustomBox}
+		on:select={select}
+	>
+		Custom box
+	</ElementOption>
+</div>

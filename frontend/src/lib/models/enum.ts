@@ -22,34 +22,43 @@ export enum CustomElement {
 
 	// Custom String
 	CustomString = 100,
-	Player1Percent = 101,
-	Player2Percent = 102,
-	Player1PercentDecimal = 103,
-	Player2PercentDecimal = 104,
+	CurrentPlayerPercent = 101,
+	Player1Percent = 102,
+	Player2Percent = 103,
+	CurrentPlayerPercentDecimal = 104,
+	Player1PercentDecimal = 105,
+	Player2PercentDecimal = 106,
 
 	// Custom Image
 	CustomImage = 200,
-	Player1CharacterRender = 201,
-	Player2CharacterRender = 202,
+	CurrentPlayerCharacterRender = 201,
+	Player1CharacterRender = 202,
+	Player2CharacterRender = 203,
 
 	// Custom Box
 	CustomBox = 300,
 
 	// String
-	Player1Tag = 400,
-	Player2Tag = 401,
-	Player1Score = 402,
-	Player2Score = 403,
+	CurrentPlayerTag = 400,
+	Player1Tag = 401,
+	Player2Tag = 402,
+	Player1Score = 403,
+	Player2Score = 404,
+
+	GameMode = 450,
+	BestOf = 451,
 
 
 	// Box
 	// Potential Box Elements
 
 	// Image
-	Player1RankIcon = 600,
-	Player2RankIcon = 601,
-	Player1CharacterIcon = 602,
-	Player2CharacterIcon = 603,
+	CurrentPlayerRankIcon = 600,
+	Player1RankIcon = 601,
+	Player2RankIcon = 602,
+	CurrentPlayerCharacterIcon = 603,
+	Player1CharacterIcon = 604,
+	Player2CharacterIcon = 605,
 }
 
 
@@ -69,6 +78,17 @@ export enum Easing {
 	ElasticIn = 6,
 	ElasticOut = 7,
 	SineOut = 8
+}
+
+export enum ElementCategory {
+	WaitingForDolphin = 0,
+	PreGame = 2,
+	InGame = 4,
+	CustomUi = 5,
+	PostGame = 6,
+	PostSet = 8,
+	RankChange = 10,
+	Custom = 12,
 }
 
 export enum ElementPauseOption {
@@ -98,16 +118,6 @@ export enum LiveStatsScene {
 	PostGame = 6,
 	PostSet = 8,
 	RankChange = 10,
-}
-
-export enum ElementCategory {
-	WaitingForDolphin = 0,
-	PreGame = 2,
-	InGame = 4,
-	PostGame = 6,
-	PostSet = 8,
-	RankChange = 10,
-	Custom = 12,
 }
 
 export enum PlayerActionState {

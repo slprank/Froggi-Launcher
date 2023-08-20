@@ -2,6 +2,7 @@
 	import { CustomElement, ElementCategory, LiveStatsScene } from '$lib/models/enum';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
+	import CustomUiElementSelect from './elementCategories/CustomUiElementSelect.svelte';
 	import CustomElementSelect from './elementCategories/CustomElementSelect.svelte';
 	import InGameElementSelect from './elementCategories/InGameElementSelect.svelte';
 	import PostGameElementSelect from './elementCategories/PostGameElementSelect.svelte';
@@ -26,11 +27,11 @@
 			category: ElementCategory.Custom,
 			visible: true,
 		},
-		{
-			text: 'Waiting',
-			category: ElementCategory.WaitingForDolphin,
-			visible: [LiveStatsScene.WaitingForDolphin].includes($statsScene),
-		},
+		// {
+		// 	text: 'Waiting',
+		// 	category: ElementCategory.WaitingForDolphin,
+		// 	visible: [LiveStatsScene.WaitingForDolphin].includes($statsScene),
+		// },
 		{
 			text: 'Pre Game',
 			category: ElementCategory.PreGame,
@@ -39,6 +40,11 @@
 		{
 			text: 'In Game',
 			category: ElementCategory.InGame,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			text: 'Custom UI',
+			category: ElementCategory.CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
@@ -79,9 +85,13 @@
 			</div>
 		{/each}
 	</div>
+	<h1 class="text-gray-500 text-lg font-medium text-shadow">Element</h1>
 	{#key selectedCategory}
-		<div in:fly={{ duration: 250, x: 50, delay: 250 }} out:fly={{ duration: 250, x: 50 }}>
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Element</h1>
+		<div
+			in:fly={{ duration: 250, x: 50, delay: 250 }}
+			out:fly={{ duration: 250, x: 50 }}
+			class="overflow-scroll"
+		>
 			{#if selectedCategory === ElementCategory.Custom}
 				<CustomElementSelect on:select={select} />
 			{/if}
@@ -93,6 +103,9 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.InGame}
 				<InGameElementSelect on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CustomUi}
+				<CustomUiElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.PostGame}
 				<PostGameElementSelect on:select={select} />

@@ -12,21 +12,21 @@
 
 <div class="flex flex-col gap-2">
 	<ElementOption
-		description="description"
+		description="Customizable box"
 		customElement={CustomElement.CustomBox}
 		on:select={select}
 	>
 		Custom box
 	</ElementOption>
 	<ElementOption
-		description="description"
+		description="Upload and utilize a custom image"
 		customElement={CustomElement.CustomImage}
 		on:select={select}
 	>
 		Custom image
 	</ElementOption>
 	<ElementOption
-		description="description"
+		description="Customizable text"
 		customElement={CustomElement.CustomString}
 		on:select={select}
 	>

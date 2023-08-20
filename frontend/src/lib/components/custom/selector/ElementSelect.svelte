@@ -9,18 +9,6 @@
 	// Move this to separate file
 	let options = [
 		{
-			name: 'Custom Text',
-			value: CustomElement.CustomString,
-		},
-		{
-			name: 'Custom Box',
-			value: CustomElement.CustomBox,
-		},
-		{
-			name: 'Custom Image',
-			value: CustomElement.CustomImage,
-		},
-		{
 			name: 'Player1 Tag',
 			value: CustomElement.Player1Tag,
 		},
