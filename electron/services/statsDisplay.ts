@@ -1,6 +1,5 @@
 import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
-import EventEmitter from 'events';
 import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import { Api } from './api';
@@ -13,7 +12,6 @@ import fs from "fs"
 export class StatsDisplay {
 	pauseInterval: NodeJS.Timer
 	constructor(
-		@inject("EventEmitter") public eventEmitter: EventEmitter,
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("SlpParser") public slpParser: SlpParser,
 		@inject("SlpStream") public slpStream: SlpStream,
@@ -22,7 +20,6 @@ export class StatsDisplay {
 		public store: ElectronJsonStore,
 	) {
 		this.messageHandler = messageHandler;
-		this.eventEmitter = eventEmitter;
 		this.log = log;
 		this.store = store;
 		this.api = api;

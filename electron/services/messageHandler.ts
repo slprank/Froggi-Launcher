@@ -3,6 +3,7 @@ import { ElectronLog } from "electron-log";
 import EventEmitter from "events";
 import { delay, inject, singleton } from "tsyringe";
 import { ElectronJsonStore } from "./electronStore";
+import { MemoryRead } from "./memoryRead";
 import fs from 'fs';
 import { LiveStatsScene } from "../../frontend/src/lib/models/enum";
 import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
@@ -17,13 +18,15 @@ export class MessageHandler {
 
 	constructor(
 		@inject("Dev") public dev: boolean,
+		@inject("BrowserWindow") public mainWindow: BrowserWindow,
+		@inject(delay(() => ElectronJsonStore)) public store: ElectronJsonStore,
+		@inject("ElectronLog") public log: ElectronLog,
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
 		@inject("IpcMain") public ipcMain: IpcMain,
-		@inject("ElectronLog") public log: ElectronLog,
-		@inject("BrowserWindow") public mainWindow: BrowserWindow,
 		@inject("Port") public port: string,
 		@inject("RootDir") public rootDir: string,
-		@inject(delay(() => ElectronJsonStore)) public store: ElectronJsonStore,
+		public memoryRead: MemoryRead,
+
 	) {
 		log.info('Creating message handler..');
 		const path = require('path');
@@ -41,7 +44,6 @@ export class MessageHandler {
 		this.webSockets = [];
 		this.store = store;
 
-
 		console.log("rootDir", this.rootDir)
 
 		this.mainWindow = mainWindow;
@@ -53,6 +55,7 @@ export class MessageHandler {
 		this.initWebSocket();
 		this.initEventHandlers()
 		this.initGlobalEventListeners();
+		this.memoryRead.initMemoryRead()
 	}
 
 	initHtml() {
@@ -93,21 +96,25 @@ export class MessageHandler {
 		try {
 			this.webSocketServer.on('connection', (socket: WebSocket) => {
 				this.webSockets.push(socket);
-				socket.addEventListener('message', (value: any) => {
-					let parse = JSON.parse(value.data);
-					// console.log(parse);
-					for (const [key, value] of Object.entries(parse)) {
-						this.eventEmitter.emit(key, value);
-					}
-				});
-				socket.addEventListener('close', () => {
-					this.webSockets = this.webSockets.filter((s: any) => s != socket);
-				});
+				this.receiveMessage(socket)
 				this.initData(socket);
 			});
 		} catch (err) {
 			console.log(err);
 		}
+	}
+
+	receiveMessage = (socket: any) => {
+		socket.addEventListener('message', (value: any) => {
+			let parse = JSON.parse(value.data);
+			// console.log(parse);
+			for (const [key, value] of Object.entries(parse)) {
+				this.eventEmitter.emit(key, value);
+			}
+		});
+		socket.addEventListener('close', () => {
+			this.webSockets = this.webSockets.filter((s: any) => s != socket);
+		});
 	}
 
 	async sendMessage(topic: string, payload: any) {
