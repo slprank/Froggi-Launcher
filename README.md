@@ -1,5 +1,5 @@
 <p align="center">
-  <img style="width: 50" src="frontend/static/icon.png" />
+  <img style="width: 50; height: 50" src="frontend/static/icon.png" />
 </p>
 
 ## Installation
