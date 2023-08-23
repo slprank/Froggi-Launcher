@@ -19,12 +19,13 @@ export class MemoryRead {
 
 	runMemoryRead() {
 		this.log.info('Starting MemoryRead.cs');
-
-		// Run script that connects to: ws://localhost:3100
+		// Run C# script that 
+		// Connects to: ws://localhost:3100
+		// Start memory reads
 	}
 
 	initMemoryReadEvents = () => {
-		this.eventEmitter.on("game-mode", (gameMode: string) => {
+		this.eventEmitter.on("csharp-game-mode", (gameMode: string) => {
 			this.log.info("New game mode", gameMode)
 			// Save data to electron store
 		})

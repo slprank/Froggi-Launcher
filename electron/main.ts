@@ -10,6 +10,7 @@ import path from 'path';
 import os from 'os';
 
 import { Api } from './services/api';
+import { Discord } from './services/discord';
 import { EventEmitter } from 'events';
 import { MessageHandler } from './services/messageHandler';
 import { ObsWebSocket } from './services/obs';
@@ -138,6 +139,7 @@ try {
 			container.resolve(SlippiJs)
 			container.resolve(StatsDisplay)
 			container.resolve(ObsWebSocket)
+			container.resolve(Discord)
 		});
 
 		// Find a better solution to init autoUpdate
