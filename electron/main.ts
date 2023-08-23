@@ -122,24 +122,24 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', async () => {
+			container.register<BrowserWindow>("BrowserWindow", { useValue: mainWindow });
 			container.register<DolphinConnection>("DolphinConnection", { useValue: dolphinConnection });
+			container.register<ElectronLog>("ElectronLog", { useValue: log });
+			container.register<EventEmitter>("EventEmitter", { useValue: eventEmitter });
+			container.register<IpcMain>("IpcMain", { useValue: ipcMain });
 			container.register<SlpParser>("SlpParser", { useValue: slpParser });
 			container.register<SlpStream>("SlpStream", { useValue: slpStream });
-			container.register<ElectronLog>("ElectronLog", { useValue: log });
-			container.register<BrowserWindow>("BrowserWindow", { useValue: mainWindow });
-			container.register<IpcMain>("IpcMain", { useValue: ipcMain });
-			container.register<EventEmitter>("EventEmitter", { useValue: eventEmitter });
 
 			container.register<string>("RootDir", { useValue: `${__dirname}/../..` });
 			container.register<string>("Port", { useValue: port });
 			container.register<boolean>("Dev", { useValue: dev });
 
 			container.resolve(Api)
+			container.resolve(Discord)
 			container.resolve(MessageHandler)
 			container.resolve(SlippiJs)
 			container.resolve(StatsDisplay)
 			container.resolve(ObsWebSocket)
-			container.resolve(Discord)
 		});
 
 		// Find a better solution to init autoUpdate
