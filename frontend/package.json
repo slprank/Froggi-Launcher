@@ -10,7 +10,6 @@
 		"@dimfeld/svelte-lazyload": "^0.0.4",
 		"@leveluptuts/svelte-fit": "^1.0.3",
 		"cors": "^2.8.5",
-		"discord.js": "^14.13.0",
 		"events": "^3.3.0",
 		"got": "^12.5.3",
 		"nosleep.js": "^0.12.0",
