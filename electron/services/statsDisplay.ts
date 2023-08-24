@@ -19,10 +19,6 @@ export class StatsDisplay {
 		public messageHandler: MessageHandler,
 		public store: ElectronJsonStore,
 	) {
-		this.messageHandler = messageHandler;
-		this.log = log;
-		this.store = store;
-		this.api = api;
 		this.initStatDisplay();
 	}
 

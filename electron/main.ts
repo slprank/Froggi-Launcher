@@ -17,6 +17,7 @@ import { ObsWebSocket } from './services/obs';
 import { StatsDisplay } from './services/statsDisplay';
 import { SlippiJs } from './services/slippi';
 import { DolphinConnection, SlpParser, SlpStream } from '@slippi/slippi-js';
+import { MemoryRead } from './services/memoryRead';
 
 try {
 	const isMac = os.platform() === 'darwin';
@@ -137,6 +138,7 @@ try {
 			container.resolve(Api)
 			container.resolve(Discord)
 			container.resolve(MessageHandler)
+			container.resolve(MemoryRead)
 			container.resolve(SlippiJs)
 			container.resolve(StatsDisplay)
 			container.resolve(ObsWebSocket)

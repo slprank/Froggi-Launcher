@@ -3,7 +3,6 @@ import { ElectronLog } from "electron-log";
 import EventEmitter from "events";
 import { delay, inject, singleton } from "tsyringe";
 import { ElectronJsonStore } from "./electronStore";
-import { MemoryRead } from "./memoryRead";
 import fs from 'fs';
 import { LiveStatsScene } from "../../frontend/src/lib/models/enum";
 import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
@@ -25,7 +24,6 @@ export class MessageHandler {
 		@inject("IpcMain") public ipcMain: IpcMain,
 		@inject("Port") public port: string,
 		@inject("RootDir") public rootDir: string,
-		public memoryRead: MemoryRead,
 
 	) {
 		log.info('Creating message handler..');
@@ -34,7 +32,6 @@ export class MessageHandler {
 		const cors = require('cors');
 		const http = require('http');
 		const { WebSocketServer } = require('ws');
-		this.rootDir = rootDir;
 
 		this.app = express();
 		this.app.use(express.static(path.join(this.rootDir + '/build')));
@@ -44,18 +41,11 @@ export class MessageHandler {
 		this.webSockets = [];
 		this.store = store;
 
-		console.log("rootDir", this.rootDir)
-
-		this.mainWindow = mainWindow;
-		this.ipcMain = ipcMain;
-		this.eventEmitter = eventEmitter;
-
 		this.initElectronMessageHandler();
 		if (!dev) this.initHtml();
 		this.initWebSocket();
 		this.initEventHandlers()
 		this.initGlobalEventListeners();
-		this.memoryRead.initMemoryRead()
 	}
 
 	initHtml() {
@@ -107,7 +97,6 @@ export class MessageHandler {
 	receiveMessage = (socket: any) => {
 		socket.addEventListener('message', (value: any) => {
 			let parse = JSON.parse(value.data);
-			// console.log(parse);
 			for (const [key, value] of Object.entries(parse)) {
 				this.eventEmitter.emit(key, value);
 			}
@@ -131,6 +120,7 @@ export class MessageHandler {
 				}),
 			);
 		});
+		this.eventEmitter.emit(topic, payload)
 	}
 
 	sendInitMessage(socket: any, topic: string, payload: any) {
@@ -213,7 +203,7 @@ export class MessageHandler {
 	}
 
 	initGlobalEventListeners() {
-		this.eventEmitter.on('edit_layer_preview', async (layerIndex) => {
+		this.eventEmitter.on('edit_layer_preview', async (layerIndex: number) => {
 			this.sendMessage("edit_layer_preview", layerIndex)
 		});
 	}

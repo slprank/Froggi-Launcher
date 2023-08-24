@@ -2,20 +2,31 @@ import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import EventEmitter from 'events';
 import { Client, Presence } from "discord-rpc"
+import { LiveStatsScene } from '@svelte/models/enum';
+import { FrameEntryType } from '@slippi/slippi-js';
 
 @singleton()
 export class Discord {
 	rpc: Client;
 	activity: Presence = {
-		details: "Menu",
-		state: "Ranked",
+		details: "Ranked: In Game",
+		state: "SNIDER#0 vs IBDW#1 (0 - 1)",
 		startTimestamp: undefined,
-		endTimestamp: undefined,
-		smallImageKey: "character_2_0",
+		endTimestamp: 15076221500,
+		smallImageKey: "character_icon_2_0",
 		smallImageText: "Fox",
 		largeImageKey: "stage_32",
 		largeImageText: "Final Destination",
-		buttons: []
+		buttons: [
+			{
+				label: "SNIDER - Fox - Stock: 3 - 43%",
+				url: "https://slippi.gg/user/snider-0"
+			},
+			{
+				label: "IBDW - Fox - Stock: 4 - 83%",
+				url: "https://slippi.gg/user/ibdw-0"
+			},
+		]
 	};
 	constructor(
 		@inject("ElectronLog") public log: ElectronLog,
@@ -38,9 +49,12 @@ export class Discord {
 	}
 
 	initDiscordEvents = () => {
-		this.eventEmitter.on("game-mode", (gameMode: string) => {
-			this.log.info("Updating discord game mode:", gameMode)
+		this.eventEmitter.on("live_stats_scene", (live_stats_scene: LiveStatsScene) => {
+			this.log.info("Updating discord game mode:", live_stats_scene)
 			// Update discord game mode
+		})
+		this.eventEmitter.on("game_frame", (frame: FrameEntryType) => {
+			this.log.info("Updating frame:", frame)
 		})
 	};
 }

@@ -9,7 +9,9 @@ export class MemoryRead {
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
 		public store: ElectronJsonStore,
-	) { }
+	) {
+		this.initMemoryRead()
+	}
 
 	initMemoryRead() {
 		this.log.info("Initializing memory read")
@@ -25,8 +27,8 @@ export class MemoryRead {
 	}
 
 	initMemoryReadEvents = () => {
-		this.eventEmitter.on("csharp-game-mode", (gameMode: string) => {
-			this.log.info("New game mode", gameMode)
+		this.eventEmitter.on("csharp-menu-activity", (activity: string) => {
+			this.log.info("New menu activity", activity)
 			// Save data to electron store
 		})
 	};
