@@ -203,7 +203,17 @@ export class ElectronJsonStore {
 	}
 
 	setGameSettings(settings: GameStartType) {
+		const regex = /mode\.(\w+)/;
+		this.setGameMode(settings?.matchInfo?.matchId?.match(regex)![1])
 		return this.store.set('stats.game.settings', settings);
+	}
+
+	getGameMode(): string {
+		return this.store.get('stats.game.settings.matchInfo.mode') as string;
+	}
+
+	setGameMode(mode: string | undefined) {
+		return this.store.set('stats.game.settings.matchInfo.mode', mode);
 	}
 
 	getGameStats(): StatsType {
@@ -214,7 +224,7 @@ export class ElectronJsonStore {
 		this.store.set('stats.game.stats', gameStats);
 	}
 
-	getGameScore(): number[] {
+	getGameScore(): number[] | undefined {
 		return this.store.get('stats.game.score') as number[];
 	}
 

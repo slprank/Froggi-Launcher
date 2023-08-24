@@ -18,6 +18,35 @@ export enum AnimationTrigger {
 	Player2StockLost = 3,
 }
 
+export enum Character {
+	Falcon = 0,
+	DK = 1,
+	Fox = 2,
+	GW = 3,
+	Kirby = 4,
+	Bowser = 5,
+	Link = 6,
+	Luigi = 7,
+	Mario = 8,
+	Marth = 9,
+	MewTwo = 10,
+	Ness = 11,
+	Peach = 12,
+	Pikachu = 13,
+	IceClimbers = 14,
+	Jigglypuff = 15,
+	Samus = 16,
+	Yoshi = 17,
+	Zelda = 18,
+	Sheik = 19,
+	Falco = 20,
+	YoungLink = 21,
+	DrMario = 22,
+	Roy = 23,
+	Pichu = 24,
+	Ganondorf = 25
+}
+
 export enum CustomElement {
 
 	// Custom String
