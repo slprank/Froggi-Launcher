@@ -2,7 +2,7 @@ import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import EventEmitter from 'events';
 import { Client, Presence } from "discord-rpc"
-import { LiveStatsScene } from '@svelte/models/enum';
+import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { FrameEntryType, GameEndType, GameStartType } from '@slippi/slippi-js';
 import { ElectronJsonStore } from './electronStore';
 
@@ -10,24 +10,18 @@ import { ElectronJsonStore } from './electronStore';
 export class Discord {
 	rpc: Client;
 	activity: Presence = {
-		details: "Ranked: In Game",
-		state: "SNIDER#0 vs IBDW#1 (0 - 1)",
+		details: "Menu",
+		state: "Rating",
 		startTimestamp: undefined,
 		endTimestamp: 15076221500,
-		smallImageKey: "character_icon_2_0",
-		smallImageText: "Fox",
-		largeImageKey: "stage_32",
-		largeImageText: "Final Destination",
+		largeImageKey: "menu",
+		largeImageText: "Menu",
 		buttons: [
 			{
-				label: "SNIDER - Fox - Stock: 3 - 43%",
-				url: "https://slippi.gg/user/snider-0"
+				label: `Get Froggy`,
+				url: `https://slippi.gg/user/snider-0`
 			},
-			{
-				label: "IBDW - Fox - Stock: 4 - 83%",
-				url: "https://slippi.gg/user/ibdw-0"
-			},
-		]
+		],
 	};
 	constructor(
 		@inject("ElectronLog") public log: ElectronLog,
@@ -53,11 +47,13 @@ export class Discord {
 		this.eventEmitter.on("live_stats_scene", (live_stats_scene: LiveStatsScene) => {
 			if (live_stats_scene !== LiveStatsScene.InGame) this.activity.details = "Menu"
 		})
-		this.eventEmitter.on("game_settings", (settings: GameStartType) => {
+		this.eventEmitter.on("game_settings", (settings: GameStartType | undefined) => {
+			if (!settings) return;
 			this.log.info("Updating settings:", settings)
 			const mode = this.store.getGameMode()
 			const score = this.store.getGameScore() ?? [0, 0]
 
+			const currentPlayer = this.store.getCurrentPlayer()
 			const players = this.store.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
@@ -70,18 +66,21 @@ export class Discord {
 			this.activity = {
 				...this.activity,
 				details: `${mode} - In Game`,
-				state: `${player1?.connectCode} - ${player2?.connectCode} (${score.join(" - ")})`,
 				endTimestamp: timer,
 				buttons: [
 					{
-						label: `${player1?.connectCode.split("#").at(0)} - ${CharacterConversion[Number(player1?.characterId)]} - Stock: ${player1?.startStocks} - 0%`,
+						label: `${player1?.connectCode.split("#").at(0)} - ${CharacterConversion[player1?.characterId ?? 0]} - Stock: ${player1?.startStocks} - 0%`,
 						url: `https://slippi.gg/user/${player1?.connectCode?.replace("#", "-")}`
 					},
 					{
-						label: `${player2?.connectCode.split("#").at(0)} - ${CharacterConversion[(player2?.characterId ?? 0).toString()]} - Stock: ${player2?.startStocks} - 0%`,
+						label: `${player2?.connectCode.split("#").at(0)} - ${CharacterConversion[player1?.characterId ?? 0]} - Stock: ${player2?.startStocks} - 0%`,
 						url: `https://slippi.gg/user/${player2?.connectCode?.replace("#", "-")}`
 					},
-				]
+				],
+				largeImageKey: `stage_${settings.stageId}`,
+				largeImageText: StageConversion[settings.stageId ?? 2],
+				smallImageKey: `character_icon_${currentPlayer?.characterId}_${currentPlayer?.characterColor}`,
+				state: `${player1?.connectCode} - ${player2?.connectCode} (${score.join(" - ")})`,
 			}
 
 			this.updateActivity()
@@ -92,11 +91,19 @@ export class Discord {
 			const currentPlayer = this.store.getCurrentPlayer()
 			this.activity = {
 				...this.activity,
+				buttons: [
+					{
+						label: `Get Froggy`,
+						url: `https://slippi.gg/user/snider-0`
+					},
+				],
 				details: `Menu`,
 				endTimestamp: undefined,
+				largeImageKey: "menu",
+				largeImageText: "Menu",
+				smallImageKey: undefined,
 				state: `${currentPlayer?.rankedNetplayProfile?.rank} - ${currentPlayer?.rankedNetplayProfile?.ratingOrdinal}`,
 			}
-			delete this.activity.buttons;
 			this.updateActivity()
 		})
 
@@ -117,7 +124,7 @@ export class Discord {
 						url: `https://slippi.gg/user/${player1?.connectCode?.replace("#", "-")}`
 					},
 					{
-						label: `${player2?.connectCode.split("#").at(0)} - ${CharacterConversion[player2?.characterId ?? 0]} - Stock: ${player2frame?.stocksRemaining} - ${player2frame?.percent?.toFixed()}%`,
+						label: `${player2?.connectCode.split("#").at(0)} - ${CharacterConversion[player1?.characterId ?? 0]} - Stock: ${player2frame?.stocksRemaining} - ${player2frame?.percent?.toFixed()}%`,
 						url: `https://slippi.gg/user/${player2?.connectCode?.replace("#", "-")}`
 					},
 				]
@@ -134,7 +141,7 @@ export class Discord {
 	}
 }
 
-const CharacterConversion = {
+const CharacterConversion: any = {
 	0: "CF",
 	1: "DK",
 	2: "Fox",
@@ -161,4 +168,36 @@ const CharacterConversion = {
 	23: "Roy",
 	24: "Pichu",
 	25: "Ganon",
+}
+
+const StageConversion: any = {
+	2: "Fountain of Dreams",
+	3: "Pokémon Stadium",
+	4: "Princess Peach's Castle",
+	5: "Kongo Jungle",
+	6: "Brinstar",
+	7: "Corneria",
+	8: "Yoshi's Story",
+	9: "Onett",
+	10: "MuteCity",
+	11: "Rainbow Cruise",
+	12: "Jungle Japes",
+	13: "Great Bay",
+	14: "Temple",
+	15: "Brinstar Depths",
+	16: "Yoshi's Island",
+	17: "Green Greens",
+	18: "Fourside",
+	19: "Mushroom Kingdom",
+	20: "Mushroom Kingdom II",
+	22: "Venom",
+	23: "Poké Floats",
+	24: "Big Blue",
+	25: "Icicle Mountain",
+	27: "Flat Zone",
+	28: "Dream Land",
+	29: "Yoshi's Island",
+	30: "Kongo Jungle",
+	31: "Battlefield",
+	32: "Final Destination",
 }

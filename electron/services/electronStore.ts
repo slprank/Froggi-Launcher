@@ -292,7 +292,7 @@ export class ElectronJsonStore {
 			gameEnd: gameEnd,
 			postGameStats: postGameStats,
 			timestamp: this.dateTimeNow(),
-			score: this.getGameScore(),
+			score: this.getGameScore() ?? [0, 0],
 			mode: settings.matchInfo.matchId.match(regex)![1] as GameStartMode
 		}
 
