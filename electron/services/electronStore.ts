@@ -264,7 +264,7 @@ export class ElectronJsonStore {
 	}
 
 	getRecentOfflineSets() {
-		return this.getRecentSetsByMode('');
+		return this.getRecentSetsByMode();
 	}
 
 	getRecentDirectSets() {
@@ -352,7 +352,7 @@ export class ElectronJsonStore {
 		return recentSets.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number);
 	}
 
-	getRecentSetsByMode(mode: GameStartMode, number = 10) {
+	getRecentSetsByMode(mode: GameStartMode | undefined = undefined, number = 10) {
 		if (!mode) return;
 		let rankedSets = this.getAllSets() ?? [];
 		return rankedSets.filter(set => set.mode === mode).sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number);
