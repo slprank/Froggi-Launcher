@@ -3,7 +3,7 @@ import { inject, singleton } from 'tsyringe';
 import EventEmitter from 'events';
 import { Client, Presence } from "discord-rpc"
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
-import { FrameEntryType, GameEndType, GameStartType } from '@slippi/slippi-js';
+import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 import { ElectronJsonStore } from './electronStore';
 
 @singleton()
@@ -52,9 +52,8 @@ export class Discord {
 		})
 
 
-		this.eventEmitter.on("game_settings", () => {
+		this.eventEmitter.on("game_settings", (settings: GameStartType) => {
 			if (this.store.getStatsScene() !== LiveStatsScene.InGame) return;
-			const settings = this.store.getGameSettings()
 			const mode = this.store.getGameMode()
 			const score = this.store.getGameScore() ?? [0, 0]
 
