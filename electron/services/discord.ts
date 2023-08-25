@@ -12,8 +12,8 @@ export class Discord {
 	activity: Presence = {
 		details: "Menu",
 		state: "Rating",
-		startTimestamp: undefined,
-		endTimestamp: 15076221500,
+		startTimestamp: new Date().getTime(),
+		endTimestamp: undefined,
 		largeImageKey: "menu",
 		largeImageText: "Menu",
 		buttons: [
@@ -41,15 +41,20 @@ export class Discord {
 			}, 1500)
 		})
 		this.initDiscordEvents()
+		this.setMenuActivity("Menu")
 	}
 
 	initDiscordEvents = () => {
-		this.eventEmitter.on("live_stats_scene", (live_stats_scene: LiveStatsScene) => {
-			if (live_stats_scene !== LiveStatsScene.InGame) this.activity.details = "Menu"
+		this.eventEmitter.on("live_stats_scene", (scene: LiveStatsScene) => {
+			if ([LiveStatsScene.PreGame].includes(scene)) {
+				this.setMenuActivity("Menu")
+			}
 		})
-		this.eventEmitter.on("game_settings", (settings: GameStartType | undefined) => {
-			if (!settings) return;
-			this.log.info("Updating settings:", settings)
+
+
+		this.eventEmitter.on("game_settings", () => {
+			if (this.store.getStatsScene() !== LiveStatsScene.InGame) return;
+			const settings = this.store.getGameSettings()
 			const mode = this.store.getGameMode()
 			const score = this.store.getGameScore() ?? [0, 0]
 
@@ -68,42 +73,15 @@ export class Discord {
 				details: `${mode} - In Game`,
 				endTimestamp: timer,
 				buttons: [
-					{
-						label: `${player1?.connectCode.split("#").at(0)} - ${CharacterConversion[player1?.characterId ?? 0]} - Stock: ${player1?.startStocks} - 0%`,
-						url: `https://slippi.gg/user/${player1?.connectCode?.replace("#", "-")}`
-					},
-					{
-						label: `${player2?.connectCode.split("#").at(0)} - ${CharacterConversion[player1?.characterId ?? 0]} - Stock: ${player2?.startStocks} - 0%`,
-						url: `https://slippi.gg/user/${player2?.connectCode?.replace("#", "-")}`
-					},
+					buttonBuilder(player1?.connectCode, player1?.characterId, player1?.startStocks),
+					buttonBuilder(player2?.connectCode, player2?.characterId, player2?.startStocks),
 				],
 				largeImageKey: `stage_${settings.stageId}`,
 				largeImageText: StageConversion[settings.stageId ?? 2],
-				smallImageKey: `character_icon_${currentPlayer?.characterId}_${currentPlayer?.characterColor}`,
+				smallImageKey: `${currentPlayer?.rankedNetplayProfile?.rank.toLowerCase().replace(" ", "_")}`,
 				state: `${player1?.connectCode} - ${player2?.connectCode} (${score.join(" - ")})`,
 			}
 
-			this.updateActivity()
-		})
-
-		this.eventEmitter.on("game_end", (gameEnd: GameEndType) => {
-			this.log.info("Discord game end:", gameEnd)
-			const currentPlayer = this.store.getCurrentPlayer()
-			this.activity = {
-				...this.activity,
-				buttons: [
-					{
-						label: `Get Froggy`,
-						url: `https://slippi.gg/user/snider-0`
-					},
-				],
-				details: `Menu`,
-				endTimestamp: undefined,
-				largeImageKey: "menu",
-				largeImageText: "Menu",
-				smallImageKey: undefined,
-				state: `${currentPlayer?.rankedNetplayProfile?.rank} - ${currentPlayer?.rankedNetplayProfile?.ratingOrdinal}`,
-			}
 			this.updateActivity()
 		})
 
@@ -119,14 +97,8 @@ export class Discord {
 			this.activity = {
 				...this.activity,
 				buttons: [
-					{
-						label: `${player1?.connectCode.split("#").at(0)} - ${CharacterConversion[player1?.characterId ?? 0]} - Stock: ${player1frame?.stocksRemaining} - ${player1frame?.percent?.toFixed()}%`,
-						url: `https://slippi.gg/user/${player1?.connectCode?.replace("#", "-")}`
-					},
-					{
-						label: `${player2?.connectCode.split("#").at(0)} - ${CharacterConversion[player1?.characterId ?? 0]} - Stock: ${player2frame?.stocksRemaining} - ${player2frame?.percent?.toFixed()}%`,
-						url: `https://slippi.gg/user/${player2?.connectCode?.replace("#", "-")}`
-					},
+					buttonBuilder(player1?.connectCode, player1?.characterId, player1frame?.stocksRemaining, player1frame?.percent),
+					buttonBuilder(player2?.connectCode, player2?.characterId, player2frame?.stocksRemaining, player2frame?.percent),
 				]
 			}
 
@@ -136,8 +108,45 @@ export class Discord {
 		})
 	};
 
+	setMenuActivity = (menuActivity: string) => {
+		this.log.info("Discord menu")
+		const currentPlayer = this.store.getCurrentPlayer()
+		this.activity = {
+			...this.activity,
+			buttons: [
+				{
+					label: `Get Froggy`,
+					url: `https://slippi.gg/user/snider-0`
+				},
+			],
+			details: menuActivity,
+			endTimestamp: undefined,
+			largeImageKey: "menu",
+			largeImageText: menuActivity,
+			smallImageKey: `${currentPlayer?.rankedNetplayProfile?.rank.toLowerCase().replace(" ", "_")}`,
+			state: `${currentPlayer?.rankedNetplayProfile?.rank || "No rank"} - ${currentPlayer?.rankedNetplayProfile?.ratingOrdinal || "No rating"}`,
+		}
+		this.updateActivity()
+	}
+
 	updateActivity() {
 		this.rpc.setActivity(this.activity)
+	}
+}
+
+
+
+const buttonBuilder = (connectCode: string | undefined, characterId: number | null | undefined, stocks: number | null | undefined = 4, percent: number | null | undefined = 0) => {
+	let label = ""
+	label += connectCode ? `${connectCode.split("#").at(0)} - ` : ""
+	label += characterId ? `${CharacterConversion[characterId ?? 0]} - ` : ""
+	label += stocks ? `Stocks: ${stocks} - ` : ""
+	label += percent ? `${percent.toFixed()}%` : ""
+
+	const url = `https://slippi.gg${connectCode ? `/user/${connectCode.replace("#", "-")}` : "/leaderboards"}`
+	return {
+		label: label,
+		url: url
 	}
 }
 
