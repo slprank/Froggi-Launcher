@@ -52,7 +52,6 @@ export class ElectronLiveStatsStore {
 
     setGameSettings(settings: GameStartType) {
         const regex = /mode\.(\w+)/;
-        console.log("set settings", settings)
         this.setGameMode(settings?.matchInfo?.matchId?.match(regex)?.at(1) ?? "")
         return this.store.set('stats.game.settings', settings);
     }

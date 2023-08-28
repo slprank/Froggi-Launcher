@@ -82,7 +82,7 @@ export class MessageHandler {
 		}
 	}
 
-	initElectronMessageHandler() {
+	private initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
 			let parse = JSON.parse(data); for (const [key, value] of Object.entries(parse)) {
 				this.eventEmitter.emit(key, value);
@@ -93,7 +93,7 @@ export class MessageHandler {
 		});
 	}
 
-	initWebSocket() {
+	private initWebSocket() {
 		try {
 			this.webSocketServer.on('connection', (socket: WebSocket) => {
 				this.webSockets.push(socket);
@@ -134,7 +134,7 @@ export class MessageHandler {
 		this.eventEmitter.emit(topic, payload)
 	}
 
-	sendInitMessage(socket: any, topic: string, payload: any) {
+	private sendInitMessage(socket: any, topic: string, payload: any) {
 		if (!socket) {
 			this.sendMessage(topic, payload);
 			return;
@@ -148,7 +148,7 @@ export class MessageHandler {
 
 	// Any data sent to frontend should be saved and initialized
 	// Leaderboard data should be stored as well
-	initData(socket: WebSocket | undefined = undefined) {
+	private initData(socket: WebSocket | undefined = undefined) {
 		this.sendInitMessage(
 			socket,
 			'current_player',
@@ -211,7 +211,7 @@ export class MessageHandler {
 		});
 	}
 
-	initGlobalEventListeners() {
+	private initGlobalEventListeners() {
 		this.eventEmitter.on('edit_layer_preview', async (layerIndex: number) => {
 			this.sendMessage("edit_layer_preview", layerIndex)
 		});

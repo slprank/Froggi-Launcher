@@ -19,10 +19,9 @@ export class ElectronSessionStore {
     constructor(
         @inject("ElectronLog") public log: ElectronLog,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronSettingsStore)) public settingsStore: ElectronSettingsStore,
+        @inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
     ) {
-        this.initPlayerListener();
-        this.initListeners(this.settingsStore.getCurrentPlayer())
+        this.initPlayerListener()
     }
 
     getSessionStats(): Session | undefined {
@@ -57,14 +56,15 @@ export class ElectronSessionStore {
     }
 
     private initPlayerListener() {
-        this.store.onDidChange('settings.currentPlayer', async (player) => {
+        this.store.onDidChange(`stats.currentPlayers`, async () => {
             this.unsubscribeListeners()
-            this.initListeners(player as CurrentPlayer)
+            this.initListeners()
         })
     }
 
     // TODO:
-    private initListeners(player: CurrentPlayer | undefined) {
+    private initListeners() {
+        const player = this.storeSettings.getCurrentPlayer()
         if (!player) return;
         this.listeners = [
             this.store.onDidChange(`player.${player.connectCode}.session`, (value) => {

@@ -33,8 +33,5 @@ export class ElectronPlayersStore {
         this.store.onDidChange(`stats.currentPlayers`, async (value) => {
             this.messageHandler.sendMessage('current_players', value);
         })
-        this.store.onDidChange(`stats.game.settings`, async (value) => {
-            console.log("New Game Settings", value)
-        })
     }
 }

@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { CurrentPlayer, GameStartMode, GameStats } from '../../../frontend/src/lib/models/types';
+import type { GameStartMode, GameStats } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -20,10 +20,9 @@ export class ElectronGamesStore {
     constructor(
         @inject("ElectronLog") public log: ElectronLog,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronSettingsStore)) public settingsStore: ElectronSettingsStore,
+        @inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
     ) {
-        this.initPlayerListener();
-        this.initListeners(this.settingsStore.getCurrentPlayer())
+        this.initPlayerListener()
     }
 
     getRecentOfflineSets() {
@@ -52,7 +51,7 @@ export class ElectronGamesStore {
     }
 
     setGameMatch(settings: GameStartType, gameEnd: GameEndType, postGameStats: StatsType | null) {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!settings?.matchInfo?.matchId || !player) return;
         if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))
             return;
@@ -77,21 +76,21 @@ export class ElectronGamesStore {
     }
 
     getGameMatch(matchId: string, gameNumber: number): GameStats | undefined {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
         return games.find(game => game.settings.matchInfo?.matchId === matchId && game.settings.matchInfo?.gameNumber === gameNumber) as GameStats
     }
 
     getSetByMatchId(matchId: string): GameStats[] | undefined {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
         return games.filter(game => game.settings.matchInfo?.matchId === matchId) as GameStats[]
     }
 
     setRecentGames(game: GameStats) {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         let games = this.getRecentGames();
         games.push(game)
@@ -99,19 +98,19 @@ export class ElectronGamesStore {
     }
 
     getRecentGames(): GameStats[] {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return [];
         return (this.store.get(`player.${player.connectCode}.game.recent`) ?? []) as GameStats[];
     }
 
     resetRecentGames() {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         this.store.set(`player.${player.connectCode}.game.recent`, [])
     }
 
     getAllSets(): GameStats[] | undefined {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         return this.store.get(`player.${player.connectCode}.game`) as GameStats[] | undefined;
     }
@@ -136,20 +135,24 @@ export class ElectronGamesStore {
     }
 
     private initPlayerListener() {
-        this.store.onDidChange('settings.currentPlayer', async (player) => {
+        this.store.onDidChange(`stats.currentPlayers`, async () => {
             this.unsubscribeListeners()
-            this.initListeners(player as CurrentPlayer)
+            this.initListeners()
         })
     }
 
     // TODO:
-    private initListeners(player: CurrentPlayer | undefined) {
+    private initListeners() {
+        const player = this.storeSettings.getCurrentPlayer()
         if (!player) return;
         this.listeners = [
             this.store.onDidChange(`player.${player.connectCode}.game.recent`, (value) => {
                 console.log(value)
                 // Emit to svelte
             }),
+            this.store.onDidChange(`stats.currentPlayers`, async (value) => {
+                this.messageHandler.sendMessage('current_players', value);
+            })
         ]
     }
     private unsubscribeListeners() {
