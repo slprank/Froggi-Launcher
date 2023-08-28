@@ -13,9 +13,6 @@ export class ObsWebSocket {
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
 		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
 	) {
-		this.messageHandler = messageHandler;
-		this.eventEmitter = eventEmitter;
-		this.log = log;
 		this.initObsWebSocket();
 	}
 

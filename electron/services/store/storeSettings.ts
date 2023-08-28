@@ -17,8 +17,8 @@ export class ElectronSettingsStore {
     store: Store = new Store();
     constructor(
         @inject("ElectronLog") public log: ElectronLog,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
         @inject("Port") public port: string,
+        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
     ) {
         this.initListeners();
         this.updateSlippiSettings();

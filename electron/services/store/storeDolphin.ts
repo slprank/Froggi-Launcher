@@ -16,8 +16,6 @@ export class ElectronDolphinStore {
         @inject("ElectronLog") public log: ElectronLog,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
     ) {
-        this.log = log;
-        this.messageHandler = messageHandler
         this.initListeners();
     }
 
