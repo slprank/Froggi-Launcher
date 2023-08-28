@@ -2,10 +2,16 @@ import { BrowserWindow, IpcMain, dialog } from "electron";
 import { ElectronLog } from "electron-log";
 import EventEmitter from "events";
 import { delay, inject, singleton } from "tsyringe";
-import { ElectronJsonStore } from "./electronStore";
+import { ElectronGamesStore } from "./store/storeGames";
+import { ElectronLiveStatsStore } from "./store/storeLiveStats";
+import { ElectronSettingsStore } from "./store/storeSettings";
+import { ElectronObsStore } from "./store/storeObs";
 import fs from 'fs';
 import { LiveStatsScene } from "../../frontend/src/lib/models/enum";
 import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
+import { ElectronRankStore } from "./store/storeRank";
+import { ElectronPlayersStore } from "./store/storePlayers";
+import { ElectronSessionStore } from "./store/storeSession";
 
 
 @singleton()
@@ -18,12 +24,18 @@ export class MessageHandler {
 	constructor(
 		@inject("Dev") public dev: boolean,
 		@inject("BrowserWindow") public mainWindow: BrowserWindow,
-		@inject(delay(() => ElectronJsonStore)) public store: ElectronJsonStore,
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
 		@inject("IpcMain") public ipcMain: IpcMain,
 		@inject("Port") public port: string,
 		@inject("RootDir") public rootDir: string,
+		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
+		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => ElectronObsStore)) public storeObs: ElectronObsStore,
+		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
+		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+		@inject(delay(() => ElectronSessionStore)) public storeSession: ElectronSessionStore,
+		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
 
 	) {
 		log.info('Creating message handler..');
@@ -39,7 +51,6 @@ export class MessageHandler {
 		this.server = http.createServer(this.app);
 		this.webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
 		this.webSockets = [];
-		this.store = store;
 
 		this.initElectronMessageHandler();
 		if (!dev) this.initHtml();
@@ -141,47 +152,45 @@ export class MessageHandler {
 		this.sendInitMessage(
 			socket,
 			'current_player',
-			this.store.getCurrentPlayerRankStats(),
+			this.storeRank.getCurrentPlayerCurrentRankStats(),
 		);
 		this.sendInitMessage(
 			socket,
 			'current_players',
-			this.store.getCurrentPlayers(),
+			this.storePlayers.getCurrentPlayers(),
 		);
-		//this.sendInitMessage(socket, 'game_frame', this.store.getGameFrame());
-
-		this.sendInitMessage(socket, 'game_frame', this.store.getGameFrame());
-		this.sendInitMessage(socket, 'game_score', this.store.getGameScore());
-		this.sendInitMessage(socket, 'game_settings', this.store.getGameSettings());
-		this.sendInitMessage(socket, 'game_state', this.store.getGameState());
-		this.sendInitMessage(socket, 'live_stats_scene', this.store.getStatsScene());
-		this.sendInitMessage(socket, 'obs_custom', this.store.getCustom());
-		this.sendInitMessage(socket, 'post_game_stats', this.store.getGameStats());
-		this.sendInitMessage(socket, 'recent_set_matches', this.store.getRecentRankedSets());
-		this.sendInitMessage(socket, 'recent_ranked_sets', this.store.getRecentRankedSets());
-		this.sendInitMessage(socket, 'urls', this.store.getLocalUrl());
-		this.sendInitMessage(socket, 'session_stats', this.store.getSessionStats());
+		this.sendInitMessage(socket, 'game_frame', this.storeLiveStats.getGameFrame());
+		this.sendInitMessage(socket, 'game_score', this.storeGames.getGameScore());
+		this.sendInitMessage(socket, 'game_settings', this.storeLiveStats.getGameSettings());
+		this.sendInitMessage(socket, 'game_state', this.storeLiveStats.getGameState());
+		this.sendInitMessage(socket, 'live_stats_scene', this.storeLiveStats.getStatsScene());
+		this.sendInitMessage(socket, 'obs_custom', this.storeObs.getCustom());
+		this.sendInitMessage(socket, 'post_game_stats', this.storeLiveStats.getGameStats());
+		this.sendInitMessage(socket, 'recent_set_matches', this.storeGames.getRecentRankedSets());
+		this.sendInitMessage(socket, 'recent_ranked_sets', this.storeGames.getRecentRankedSets());
+		this.sendInitMessage(socket, 'urls', this.storeSettings.getLocalUrl());
+		this.sendInitMessage(socket, 'session_stats', this.storeSession.getSessionStats());
 	}
 
 	private initEventHandlers() {
 		this.eventEmitter.on('update-custom-overlay', async (overlay) => {
-			this.store.updateCustomOverlay(overlay);
+			this.storeObs.updateCustomOverlay(overlay);
 			this.sendMessage(
 				'obs_custom_overlay',
-				this.store.getCustomOverlayById(overlay.id),
+				this.storeObs.getCustomOverlayById(overlay.id),
 			);
 		});
 
 		this.eventEmitter.on('delete-custom-overlay', async (overlayId) => {
-			this.store.deleteCustomOverlay(overlayId);
+			this.storeObs.deleteCustomOverlay(overlayId);
 		});
 
 		this.eventEmitter.on('update-live-scene', async (value: LiveStatsScene) => {
-			this.store.setStatsScene(value);
+			this.storeLiveStats.setStatsScene(value);
 		});
 
 		this.eventEmitter.on('download-overlay', async (overlayId) => {
-			const overlay = this.store.getCustomOverlayById(overlayId);
+			const overlay = this.storeObs.getCustomOverlayById(overlayId);
 			if (!overlay) return;
 			const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, {
 				filters: [{ name: 'json', extensions: ['json'] }],
@@ -198,7 +207,7 @@ export class MessageHandler {
 			});
 			if (canceled) return;
 			const overlay = fs.readFileSync(filePaths[0], 'utf8');
-			this.store.uploadCustomOverlay(JSON.parse(overlay));
+			this.storeObs.uploadCustomOverlay(JSON.parse(overlay));
 		});
 	}
 

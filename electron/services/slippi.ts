@@ -11,8 +11,9 @@ import { MessageHandler } from './messageHandler';
 import { IpcMain } from 'electron';
 import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
-import { ElectronJsonStore } from './electronStore';
 import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { ElectronDolphinStore } from './store/storeDolphin';
+import { ElectronLiveStatsStore } from './store/storeLiveStats';
 
 @singleton()
 export class SlippiJs {
@@ -24,36 +25,36 @@ export class SlippiJs {
 		@inject("SlpParser") public parser: SlpParser,
 		@inject("SlpStream") public slpStream: SlpStream,
 		public messageHandler: MessageHandler,
-		public store: ElectronJsonStore,
+		public storeDolphin: ElectronDolphinStore,
+		public storeLiveStats: ElectronLiveStatsStore,
 	) {
 		this.ipcMain = ipcMain;
 		this.log = log;
 		this.messageHandler = messageHandler
-		this.store = store;
 		this.initSlippiJs();
 	}
 
 	initSlippiJs() {
 		this.log.info('Init slippi-js');
 
-		this.store.setStatsScene(LiveStatsScene.WaitingForDolphin)
+		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin)
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('dolphin connection state', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin
-			this.store.setDolphinConnectionStatus(status);
+			this.storeDolphin.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {
 				this.log.info("Dolphin Disconnected")
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
-				this.store.setDolphinConnectionStatus(DolphinState.Disconnected)
+				this.storeDolphin.setDolphinConnectionStatus(DolphinState.Disconnected)
 			}
 			if (status === ConnectionStatus.CONNECTED) {
 				this.log.info("Dolphin Connected")
-				this.store.setDolphinConnectionStatus(DolphinState.Connected)
-				this.store.setStatsScene(LiveStatsScene.PreGame)
+				this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connected)
+				this.storeLiveStats.setStatsScene(LiveStatsScene.PreGame)
 			}
 			if (status === ConnectionStatus.CONNECTING) {
-				this.store.setDolphinConnectionStatus(DolphinState.Connecting)
+				this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connecting)
 				this.log.info("Dolphin Connected")
 			}
 		});

@@ -1,14 +1,12 @@
 import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import EventEmitter from 'events';
-import { ElectronJsonStore } from './electronStore';
 
 @singleton()
 export class MemoryRead {
 	constructor(
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
-		public store: ElectronJsonStore,
 	) {
 		this.initMemoryRead()
 	}

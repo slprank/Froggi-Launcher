@@ -162,6 +162,7 @@ export interface Player extends PlayerType {
 }
 
 export interface CurrentPlayer extends Player {
+	prevRankedNetplayProfile: RankedNetplayProfile | undefined;
 	newRankedNetplayProfile: RankedNetplayProfile | undefined;
 }
 

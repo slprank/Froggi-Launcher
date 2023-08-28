@@ -1,10 +1,13 @@
 import { ElectronLog } from 'electron-log';
-import { inject, singleton } from 'tsyringe';
+import { delay, inject, singleton } from 'tsyringe';
 import EventEmitter from 'events';
 import { Client, Presence } from "discord-rpc"
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
-import { ElectronJsonStore } from './electronStore';
+import { ElectronSettingsStore } from './store/storeSettings';
+import { ElectronLiveStatsStore } from './store/storeLiveStats';
+import { ElectronPlayersStore } from './store/storePlayers';
+import { ElectronGamesStore } from './store/storeGames';
 
 @singleton()
 export class Discord {
@@ -26,7 +29,10 @@ export class Discord {
 	constructor(
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
-		public store: ElectronJsonStore,
+		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
+		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
+		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
 	) {
 		this.rpc = new Client({ transport: "ipc" })
 		this.rpc.login({ clientId: "1143955754643112016" }).catch(err => this.log.error("err", err))
@@ -53,12 +59,12 @@ export class Discord {
 
 
 		this.eventEmitter.on("game_settings", (settings: GameStartType) => {
-			if (this.store.getStatsScene() !== LiveStatsScene.InGame) return;
-			const mode = this.store.getGameMode()
-			const score = this.store.getGameScore() ?? [0, 0]
+			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return;
+			const mode = this.storeLiveStats.getGameMode()
+			const score = this.storeGames.getGameScore() ?? [0, 0]
 
-			const currentPlayer = this.store.getCurrentPlayer()
-			const players = this.store.getCurrentPlayers()
+			const currentPlayer = this.storeSettings.getCurrentPlayer()
+			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
 
@@ -85,8 +91,8 @@ export class Discord {
 		})
 
 		this.eventEmitter.on("game_frame", (frame: FrameEntryType) => {
-			if (this.store.getStatsScene() !== LiveStatsScene.InGame) return
-			const players = this.store.getCurrentPlayers()
+			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return
+			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
 
@@ -109,7 +115,7 @@ export class Discord {
 
 	setMenuActivity = (menuActivity: string) => {
 		this.log.info("Discord menu")
-		const currentPlayer = this.store.getCurrentPlayer()
+		const currentPlayer = this.storeSettings.getCurrentPlayer()
 		this.activity = {
 			...this.activity,
 			buttons: [

@@ -3,5 +3,5 @@
 		"editor.formatOnSave": true,
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	},
-	"cSpell.words": ["slippi"]
+	"cSpell.words": ["Netplay", "slippi"]
 }

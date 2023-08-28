@@ -1,23 +1,31 @@
 import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
-import { inject, singleton } from 'tsyringe';
+import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
-import { ElectronJsonStore } from './electronStore';
 import { Player } from '../../frontend/src/lib/models/types';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs"
+import { ElectronGamesStore } from './store/storeGames';
+import { ElectronLiveStatsStore } from './store/storeLiveStats';
+import { ElectronRankStore } from './store/storeRank';
+import { ElectronSettingsStore } from './store/storeSettings';
+import { ElectronPlayersStore } from './store/storePlayers';
 
 @singleton()
 export class StatsDisplay {
 	pauseInterval: NodeJS.Timer
 	constructor(
+		public api: Api,
+		public messageHandler: MessageHandler,
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("SlpParser") public slpParser: SlpParser,
 		@inject("SlpStream") public slpStream: SlpStream,
-		public api: Api,
-		public messageHandler: MessageHandler,
-		public store: ElectronJsonStore,
+		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
+		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
+		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
 	) {
 		this.initStatDisplay();
 	}
@@ -56,13 +64,13 @@ export class StatsDisplay {
 	async handleGameFrame(frameEntry: FrameEntryType) {
 		this.resetPauseInterval()
 		await this.messageHandler.sendMessage('game_frame', frameEntry);
-		this.store.setGameState(InGameState.Running)
+		this.storeLiveStats.setGameState(InGameState.Running)
 	}
 
 	async handleGamePaused(frameEntry: FrameEntryType | null) {
 		if (!frameEntry) return;
-		this.store.setGameFrame(frameEntry)
-		this.store.setGameState(InGameState.Paused)
+		this.storeLiveStats.setGameFrame(frameEntry)
+		this.storeLiveStats.setGameState(InGameState.Paused)
 	}
 
 	async handleGameStart(settings: GameStartType | null) {
@@ -71,16 +79,16 @@ export class StatsDisplay {
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)!
 
-		this.store.setGameSettings(settings);
-		this.store.setGameState(InGameState.Running)
-		this.store.setStatsScene(LiveStatsScene.InGame)
-		this.store.setCurrentPlayers(currentPlayers);
-		this.store.setCurrentPlayer(currentPlayer)
-		this.store.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
+		this.storeLiveStats.setGameSettings(settings);
+		this.storeLiveStats.setGameState(InGameState.Running)
+		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame)
+		this.storePlayers.setCurrentPlayers(currentPlayers);
+		this.storeSettings.setCurrentPlayer(currentPlayer)
+		this.storeRank.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
 
 		if (gameNumber !== 1) return;
-		this.store.setGameScore([0, 0]);
-		this.store.resetRecentGames();
+		this.storeGames.setGameScore([0, 0]);
+		this.storeGames.resetRecentGames();
 	}
 
 	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
@@ -91,11 +99,11 @@ export class StatsDisplay {
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const postGameStats = this.getRecentGameStats();
 
-		this.store.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
-		this.store.setGameStats(gameEnd)
-		this.store.setGameState(InGameState.End)
-		this.store.setGameMatch(settings, gameEnd, postGameStats)
-		this.store.setStatsScene(LiveStatsScene.PostGame)
+		this.storeRank.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
+		this.storeLiveStats.setGameStats(gameEnd)
+		this.storeLiveStats.setGameState(InGameState.End)
+		this.storeGames.setGameMatch(settings, gameEnd, postGameStats)
+		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		if (postGameStats) this.messageHandler.sendMessage('post_game_stats', postGameStats);
 		// If post set
 	}
@@ -106,7 +114,7 @@ export class StatsDisplay {
 			return settings.players.filter(player => player).map((player, i: number) => {
 				return {
 					...player,
-					rankedNetplayProfile: this.store.getCurrentPlayers()?.at(i)?.rankedNetplayProfile
+					rankedNetplayProfile: this.storePlayers.getCurrentPlayers()?.at(i)?.rankedNetplayProfile
 				}
 			})
 
@@ -116,7 +124,7 @@ export class StatsDisplay {
 	}
 
 	getCurrentPlayer(players: Player[]): Player | undefined {
-		const player = this.store.getCurrentPlayer()
+		const player = this.storeSettings.getCurrentPlayer()
 		if (!player) return;
 		return players.find(p => p.connectCode === player.connectCode);
 	}
@@ -124,30 +132,13 @@ export class StatsDisplay {
 	handleScore(gameEnd: GameEndType) {
 		// TODO: Consider LRAS
 		// TODO: Consider Tie
-		let score: number[] = this.store.getGameScore() ?? [0, 0];
+		let score: number[] = this.storeGames.getGameScore() ?? [0, 0];
 		const winnerIndex = gameEnd.placements
 			.filter((p: PlacementType) => (p.position ?? -1) >= 0)
 			.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
 			.findIndex(p => p.position === 0); // Verify that winner is 0
 		score[winnerIndex] += 1;
-		this.store.setGameScore(score);
-	}
-
-	async initListeners() {
-		this.store.setListener(`settings.currentPlayer.newRankedNetplayProfile`, async () => {
-			await this.handleRankChange()
-		})
-	}
-
-	async handleRankChange() {
-		const player = this.store.getCurrentPlayer()
-		if (!player) return
-		await new Promise((resolve) => {
-			if (player.rankedNetplayProfile !== player.newRankedNetplayProfile) this.store.setStatsScene(LiveStatsScene.RankChange)
-			setTimeout(resolve, 10000);
-		});
-		this.store.setCurrentPlayerCurrentRankStats(player.newRankedNetplayProfile);
-		this.store.setStatsScene(LiveStatsScene.PostGame)
+		this.storeGames.setGameScore(score);
 	}
 
 	// OTHER
@@ -156,7 +147,7 @@ export class StatsDisplay {
 		const re = new RegExp('^Game_.*.slp$');
 		const path = require('path');
 
-		const slippiDir = this.store.getSlippiLauncherSettings()?.rootSlpPath;
+		const slippiDir = this.storeSettings.getSlippiLauncherSettings()?.rootSlpPath;
 
 		if (!slippiDir) return null;
 
@@ -179,7 +170,7 @@ export class StatsDisplay {
 
 	handleUndefinedPlayers(settings: GameStartType | undefined) {
 		if (!settings) return;
-		const players = this.store.getCurrentPlayers()
-		if (!players) this.store.setCurrentPlayers(settings.players)
+		const players = this.storePlayers.getCurrentPlayers()
+		if (!players) this.storePlayers.setCurrentPlayers(settings.players)
 	}
 }
