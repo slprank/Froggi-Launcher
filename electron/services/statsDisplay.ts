@@ -16,11 +16,11 @@ import { ElectronPlayersStore } from './store/storePlayers';
 export class StatsDisplay {
 	pauseInterval: NodeJS.Timer
 	constructor(
-		public api: Api,
-		public messageHandler: MessageHandler,
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("SlpParser") public slpParser: SlpParser,
 		@inject("SlpStream") public slpStream: SlpStream,
+		@inject(delay(() => Api)) public api: Api,
+		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
 		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
@@ -83,12 +83,14 @@ export class StatsDisplay {
 		this.storeLiveStats.setGameState(InGameState.Running)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame)
 		this.storePlayers.setCurrentPlayers(currentPlayers);
-		this.storeSettings.setCurrentPlayer(currentPlayer)
-		this.storeRank.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
 
 		if (gameNumber !== 1) return;
 		this.storeGames.setGameScore([0, 0]);
 		this.storeGames.resetRecentGames();
+
+		if (!currentPlayer.rankedNetplayProfile) return
+		this.storeSettings.setCurrentPlayer(currentPlayer)
+		this.storeRank.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
 	}
 
 	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {

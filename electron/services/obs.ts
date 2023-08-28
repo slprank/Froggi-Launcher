@@ -3,18 +3,15 @@
 import EventEmitter from "events";
 import { MessageHandler } from "./messageHandler";
 import { ElectronLog } from "electron-log";
-import { inject, singleton } from "tsyringe";
+import { delay, inject, singleton } from "tsyringe";
 import OBSWebSocket from "obs-websocket-js";
 
 @singleton()
 export class ObsWebSocket {
-	messageHandler: MessageHandler;
-	eventEmitter: EventEmitter;
-	log: ElectronLog;
 	constructor(
-		@inject("ElectronLog") log: ElectronLog,
-		@inject("EventEmitter") eventEmitter: EventEmitter,
-		messageHandler: MessageHandler,
+		@inject("ElectronLog") public log: ElectronLog,
+		@inject("EventEmitter") public eventEmitter: EventEmitter,
+		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
 	) {
 		this.messageHandler = messageHandler;
 		this.eventEmitter = eventEmitter;

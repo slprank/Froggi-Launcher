@@ -9,7 +9,7 @@ import {
 } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { IpcMain } from 'electron';
-import { inject, singleton } from 'tsyringe';
+import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
@@ -24,13 +24,10 @@ export class SlippiJs {
 		@inject("IpcMain") public ipcMain: IpcMain,
 		@inject("SlpParser") public parser: SlpParser,
 		@inject("SlpStream") public slpStream: SlpStream,
-		public messageHandler: MessageHandler,
-		public storeDolphin: ElectronDolphinStore,
-		public storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+		@inject(delay(() => ElectronDolphinStore)) public storeDolphin: ElectronDolphinStore,
+		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 	) {
-		this.ipcMain = ipcMain;
-		this.log = log;
-		this.messageHandler = messageHandler
 		this.initSlippiJs();
 	}
 
