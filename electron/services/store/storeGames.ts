@@ -122,7 +122,6 @@ export class ElectronGamesStore {
         return sets.filter(set => set.mode === mode)
     }
 
-    // RECENT SETS
     getRecentSets(number = 10): GameStats[] {
         const recentSets = this.getAllSets() ?? [];
         return recentSets.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number);
@@ -150,9 +149,9 @@ export class ElectronGamesStore {
                 console.log(value)
                 // Emit to svelte
             }),
-            this.store.onDidChange(`stats.currentPlayers`, async (value) => {
-                this.messageHandler.sendMessage('current_players', value);
-            })
+            this.store.onDidChange(`stats.game.score`, async (value) => {
+                this.messageHandler.sendMessage('game_score', value);
+            }),
         ]
     }
     private unsubscribeListeners() {

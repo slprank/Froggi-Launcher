@@ -131,14 +131,10 @@ export class StatsDisplay {
 		return players.find(p => p.connectCode === player.connectCode);
 	}
 
+	// TODO: Consider Tie
 	handleScore(gameEnd: GameEndType) {
-		// TODO: Consider LRAS
-		// TODO: Consider Tie
 		let score: number[] = this.storeGames.getGameScore() ?? [0, 0];
-		const winnerIndex = gameEnd.placements
-			.filter((p: PlacementType) => (p.position ?? -1) >= 0)
-			.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
-			.findIndex(p => p.position === 0); // Verify that winner is 0
+		const winnerIndex = getWinnerIndex(gameEnd)
 		score[winnerIndex] += 1;
 		this.storeGames.setGameScore(score);
 	}
@@ -175,4 +171,13 @@ export class StatsDisplay {
 		const players = this.storePlayers.getCurrentPlayers()
 		if (!players) this.storePlayers.setCurrentPlayers(settings.players)
 	}
+}
+
+const getWinnerIndex = (gameEnd: GameEndType) => {
+	const lrasIndex = gameEnd.lrasInitiatorIndex
+	if (lrasIndex === null) return gameEnd.placements
+		.filter((p: PlacementType) => (p.position ?? -1) >= 0)
+		.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
+		.findIndex(p => p.position === 0);
+	return lrasIndex === 0 ? 1 : 0
 }

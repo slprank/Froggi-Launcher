@@ -85,9 +85,6 @@ export class ElectronLiveStatsStore {
         this.store.onDidChange(`stats.game.settings`, async (value) => {
             this.messageHandler.sendMessage('game_settings', value);
         })
-        this.store.onDidChange(`stats.game.score`, async (value) => {
-            this.messageHandler.sendMessage('game_score', value);
-        })
         this.store.onDidChange(`stats.game.state`, async (value) => {
             console.log("state", value)
             this.messageHandler.sendMessage('game_state', value);
