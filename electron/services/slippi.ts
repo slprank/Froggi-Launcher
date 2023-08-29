@@ -21,9 +21,8 @@ import { ElectronRankStore } from './store/storeRank';
 
 @singleton()
 export class SlippiJs {
-
+	dolphinConnection = new DolphinConnection()
 	constructor(
-		@inject("DolphinConnection") public dolphinConnection: DolphinConnection,
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("IpcMain") public ipcMain: IpcMain,
 		@inject("SlpParser") public parser: SlpParser,
@@ -97,12 +96,13 @@ export class SlippiJs {
 
 	private handleDisconnected() {
 		this.log.info("Dolphin Disconnected")
-		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Disconnected)
+		this.dolphinConnection = new DolphinConnection()
+		this.initSlippiJs()
 	}
 
 	private handleConnecting() {
-		this.log.info("Dolphin Connected")
+		this.log.info("Dolphin Connecting")
 		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connecting)
 	}
 

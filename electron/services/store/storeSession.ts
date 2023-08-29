@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { CurrentPlayer, RankedNetplayProfile, Session } from '../../../frontend/src/lib/models/types';
+import type { RankedNetplayProfile, Session } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -25,13 +25,13 @@ export class ElectronSessionStore {
     }
 
     getSessionStats(): Session | undefined {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         return this.store.get(`player.${player.connectCode}.session`) as Session;
     }
 
     resetSessionStats() {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         let currentRankedStats = player.rankedNetplayProfile;
         if (!currentRankedStats) return;
@@ -46,7 +46,7 @@ export class ElectronSessionStore {
     }
 
     updateSessionStats(rankStats: RankedNetplayProfile) {
-        const player = this.settingsStore.getCurrentPlayer();
+        const player = this.storeSettings.getCurrentPlayer();
         if (!player) return;
         let session = this.getSessionStats() ?? this.resetSessionStats();
         if (!session) return;

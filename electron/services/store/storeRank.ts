@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { CurrentPlayer, RankedNetplayProfile } from '../../../frontend/src/lib/models/types';
+import type { RankedNetplayProfile } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';

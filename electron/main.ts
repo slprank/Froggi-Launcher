@@ -16,7 +16,7 @@ import { MessageHandler } from './services/messageHandler';
 import { ObsWebSocket } from './services/obs';
 import { StatsDisplay } from './services/statsDisplay';
 import { SlippiJs } from './services/slippi';
-import { DolphinConnection, SlpParser, SlpStream } from '@slippi/slippi-js';
+import { SlpParser, SlpStream } from '@slippi/slippi-js';
 import { MemoryRead } from './services/memoryRead';
 
 try {
@@ -26,7 +26,6 @@ try {
 
 	log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
-	const dolphinConnection = new DolphinConnection();
 	const slpParser = new SlpParser();
 	const slpStream = new SlpStream();
 	const eventEmitter = new EventEmitter();
@@ -124,7 +123,6 @@ try {
 
 		mainWindow.webContents.once('dom-ready', async () => {
 			container.register<BrowserWindow>("BrowserWindow", { useValue: mainWindow });
-			container.register<DolphinConnection>("DolphinConnection", { useValue: dolphinConnection });
 			container.register<ElectronLog>("ElectronLog", { useValue: log });
 			container.register<EventEmitter>("EventEmitter", { useValue: eventEmitter });
 			container.register<IpcMain>("IpcMain", { useValue: ipcMain });
