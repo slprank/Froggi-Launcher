@@ -5,7 +5,7 @@
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import { getOverlayById, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
-	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
+	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';
 	import type { Overlay } from '$lib/models/types';
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
@@ -20,7 +20,7 @@
 
 	let selectedLayer: number = 0;
 	let selectedId: string | undefined = undefined;
-	let overlay: Overlay;
+	let overlay: Overlay | undefined;
 
 	let isElementModalOpen = false;
 	let isSceneModalOpen = false;
@@ -177,7 +177,7 @@
 				<SceneSelect />
 			</div>
 		</div>
-		<NewElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} {selectedId} />
+		<ElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} {selectedId} />
 		<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 	{/if}
 	<PreviewModal bind:open={isPreviewModalOpen} />

@@ -133,6 +133,10 @@ export interface Class {
 export interface Css {
 	background: string | undefined;
 	borderColor: string | undefined;
+	borderLeft: string | undefined;
+	borderRight: string | undefined;
+	borderTop: string | undefined;
+	borderBottom: string | undefined;
 	color: string | undefined;
 	customParent: string | undefined;
 	customBox: string | undefined;

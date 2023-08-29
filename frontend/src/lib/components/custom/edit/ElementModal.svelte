@@ -119,28 +119,18 @@
 			<div class="w-full h-full col-span-4 overflow-scroll scroll enable-scrollbar">
 				<ElementSelect bind:selectedElementId />
 				{#if selectedElementId}
-					{#key selectedElementId}
-						<div
-							class="w-full"
-							in:fly={{ duration: 250, x: 150, delay: 250 }}
-							out:fly={{ duration: 250, x: 150 }}
-						>
-							{#if payload && selectedId}
-								<StylingSelect
-									bind:selectedElementId
-									bind:payload
-									bind:selectedId
-								/>
-							{/if}
-						</div>
-						<button
-							transition:fly={{ duration: 250, x: 150 }}
-							class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-							on:click={edit}
-						>
-							{isNewElement ? 'Add' : 'Update'}
-						</button>
-					{/key}
+					<div class="w-full">
+						{#if payload && selectedId}
+							<StylingSelect bind:selectedElementId bind:payload bind:selectedId />
+						{/if}
+					</div>
+					<button
+						transition:fly={{ duration: 250, x: 150 }}
+						class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+						on:click={edit}
+					>
+						{isNewElement ? 'Add' : 'Update'}
+					</button>
 				{/if}
 			</div>
 			<div class="w-full h-full col-span-3 grid justify-center content-center gap-12">

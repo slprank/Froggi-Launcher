@@ -4,7 +4,7 @@
 	import type { Overlay } from '$lib/models/types';
 	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import NewElementModal from '$lib/components/custom/edit/NewElementModal.svelte';
+	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
@@ -143,11 +143,7 @@
 	</div>
 	{#key isElementModalOpen}
 		{#key selectedId}
-			<NewElementModal
-				bind:open={isElementModalOpen}
-				bind:layer={selectedLayer}
-				{selectedId}
-			/>
+			<ElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} {selectedId} />
 		{/key}
 	{/key}
 {/if}

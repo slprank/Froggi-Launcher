@@ -156,6 +156,10 @@
 			},
 			css: {
 				background: undefined,
+				borderLeft: '0rem',
+				borderRight: '0rem',
+				borderTop: '0rem',
+				borderBottom: '0rem',
 				borderColor: undefined,
 				color: '#ffffff',
 				customParent: undefined,

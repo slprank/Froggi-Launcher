@@ -2,7 +2,7 @@
 	import { eventEmitter, isElectron, obs } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
-	import NewOverlayModal from '$lib/components/custom/NewOverlayModal.svelte';
+	import OverlayModal from '$lib/components/custom/OverlayModal.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import { deleteOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
@@ -61,5 +61,5 @@
 	>
 		Delete Overlay?
 	</ConfirmModal>
-	<NewOverlayModal bind:open={newOverlayModalOpen} />
+	<OverlayModal bind:open={newOverlayModalOpen} />
 </main>

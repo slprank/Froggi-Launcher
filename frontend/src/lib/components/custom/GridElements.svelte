@@ -30,13 +30,30 @@
 		stroke: '',
 	};
 
-	$: style.classValue = Object.entries(dataItem?.data.class ?? {})
-		.map(([_, value]) => `${value}`)
-		.join(' ');
+	$: innerWidth,
+		(style.classValue = Object.entries(dataItem?.data.class ?? {})
+			.map(([_, value]) => `${value}`)
+			.join(' '));
 
-	$: style.cssValue = Object.entries(dataItem?.data.css ?? {})
-		.map(([key, value]) => `${toKebabCase(key)}: ${value}`)
-		.join('; ');
+	$: innerWidth,
+		(style.cssValue = Object.entries(dataItem?.data.css ?? {})
+			.map(relativeBoarderSize)
+			.map(([key, value]) => `${toKebabCase(key)}: ${value}`)
+			.join('; '));
+
+	const relativeBoarderSize = ([key, value]: [string, string]) => {
+		console.log('here', key, value);
+		if (!['borderLeft', 'borderRight', 'borderTop', 'borderBottom'].includes(key))
+			return [key, value];
+		return [
+			key,
+			`${getRelativePixelSize(
+				Number(value.slice(0, -9)),
+				boardHeight ?? innerHeight,
+				boardWidth ?? innerWidth,
+			)}${value.slice(-9)}`,
+		];
+	};
 
 	$: shadowSizeX = getRelativePixelSize(
 		dataItem?.data.shadow?.x,
@@ -83,7 +100,7 @@
 			`font-family: ${dataItem.data?.font?.family};
 	`
 		}; ${style.stroke};
-${style.shadow};`}
+		${style.shadow};`}
 		bind:this={div}
 	>
 		{#if div}
