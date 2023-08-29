@@ -132,7 +132,7 @@ export class StatsDisplay {
 	}
 
 	// TODO: Consider Tie
-	handleScore(gameEnd: GameEndType) {
+	private handleScore(gameEnd: GameEndType) {
 		let score: number[] = this.storeGames.getGameScore() ?? [0, 0];
 		const winnerIndex = getWinnerIndex(gameEnd)
 		score[winnerIndex] += 1;
@@ -173,9 +173,9 @@ export class StatsDisplay {
 	}
 }
 
-const getWinnerIndex = (gameEnd: GameEndType) => {
+const getWinnerIndex = (gameEnd: GameEndType): number => {
 	const lrasIndex = gameEnd.lrasInitiatorIndex
-	if (lrasIndex === null) return gameEnd.placements
+	if (lrasIndex === -1) return gameEnd.placements
 		.filter((p: PlacementType) => (p.position ?? -1) >= 0)
 		.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
 		.findIndex(p => p.position === 0);
