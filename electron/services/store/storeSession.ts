@@ -5,8 +5,8 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import os from 'os';
-import { ElectronSettingsStore } from './storeSettings';
 import { dateTimeNow } from '../../utils/functions';
+import { ElectronRankStore } from './storeRank';
 
 
 @singleton()
@@ -19,21 +19,21 @@ export class ElectronSessionStore {
     constructor(
         @inject("ElectronLog") public log: ElectronLog,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
+        @inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
     ) {
         this.initPlayerListener()
     }
 
     getSessionStats(): Session | undefined {
-        const player = this.storeSettings.getCurrentPlayer();
+        const player = this.storeRank.getCurrentPlayer();
         if (!player) return;
         return this.store.get(`player.${player.connectCode}.session`) as Session;
     }
 
     resetSessionStats() {
-        const player = this.storeSettings.getCurrentPlayer();
+        const player = this.storeRank.getCurrentPlayer();
         if (!player) return;
-        let currentRankedStats = player.rankedNetplayProfile;
+        let currentRankedStats = player.rank.current;
         if (!currentRankedStats) return;
         let session: Session = {
             startRankStats: currentRankedStats,
@@ -46,7 +46,7 @@ export class ElectronSessionStore {
     }
 
     updateSessionStats(rankStats: RankedNetplayProfile) {
-        const player = this.storeSettings.getCurrentPlayer();
+        const player = this.storeRank.getCurrentPlayer();
         if (!player) return;
         let session = this.getSessionStats() ?? this.resetSessionStats();
         if (!session) return;
@@ -64,7 +64,7 @@ export class ElectronSessionStore {
 
     // TODO:
     private initListeners() {
-        const player = this.storeSettings.getCurrentPlayer()
+        const player = this.storeRank.getCurrentPlayer()
         if (!player) return;
         this.listeners = [
             this.store.onDidChange(`player.${player.connectCode}.session`, (value) => {

@@ -8,6 +8,7 @@ import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronGamesStore } from './store/storeGames';
+import { ElectronRankStore } from './store/storeRank';
 
 @singleton()
 export class Discord {
@@ -21,7 +22,7 @@ export class Discord {
 		largeImageText: "Menu",
 		buttons: [
 			{
-				label: `Get Froggy`,
+				label: `Get Froggi`,
 				url: `https://slippi.gg/user/snider-0`
 			},
 		],
@@ -33,6 +34,7 @@ export class Discord {
 		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
+		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
 	) {
 		this.rpc = new Client({ transport: "ipc" })
 		this.rpc.login({ clientId: "1143955754643112016" }).catch(err => this.log.error("err", err))
@@ -57,13 +59,12 @@ export class Discord {
 			}
 		})
 
-
 		this.eventEmitter.on("game_settings", (settings: GameStartType) => {
 			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return;
 			const mode = this.storeLiveStats.getGameMode()
 			const score = this.storeGames.getGameScore() ?? [0, 0]
 
-			const currentPlayer = this.storeSettings.getCurrentPlayer()
+			const currentPlayer = this.storeRank.getCurrentPlayer()
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
@@ -83,7 +84,7 @@ export class Discord {
 				],
 				largeImageKey: `stage_${settings.stageId}`,
 				largeImageText: StageConversion[settings.stageId ?? 2],
-				smallImageKey: `${currentPlayer?.rankedNetplayProfile?.rank.toLowerCase().replace(" ", "_")}`,
+				smallImageKey: `${currentPlayer?.rank.current?.rank.toLowerCase().replace(" ", "_")}`,
 				state: `${player1?.connectCode} - ${player2?.connectCode} (${score.join(" - ")})`,
 			}
 
@@ -115,12 +116,13 @@ export class Discord {
 
 	setMenuActivity = (menuActivity: string) => {
 		this.log.info("Discord menu")
-		const currentPlayer = this.storeSettings.getCurrentPlayer()
+		const currentPlayer = this.storeRank.getCurrentPlayer()
+		console.log("Current player", currentPlayer)
 		this.activity = {
 			...this.activity,
 			buttons: [
 				{
-					label: `Get Froggy`,
+					label: `Get Froggi`,
 					url: `https://slippi.gg/user/snider-0`
 				},
 			],
@@ -128,8 +130,8 @@ export class Discord {
 			endTimestamp: undefined,
 			largeImageKey: "menu",
 			largeImageText: menuActivity,
-			smallImageKey: `${currentPlayer?.rankedNetplayProfile?.rank.toLowerCase().replace(" ", "_")}`,
-			state: `${currentPlayer?.rankedNetplayProfile?.rank || "No rank"} - ${currentPlayer?.rankedNetplayProfile?.ratingOrdinal || "No rating"}`,
+			smallImageKey: `${currentPlayer?.rank.current?.rank.toLowerCase().replace(" ", "_")}`,
+			state: `${currentPlayer?.rank.current?.rank || "No rank"} - ${currentPlayer?.rank.current?.rating || "No rating"}`,
 		}
 		this.updateActivity()
 	}

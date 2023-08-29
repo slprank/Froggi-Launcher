@@ -51,7 +51,6 @@ export class SlippiJs {
 			}
 			if (status === ConnectionStatus.CONNECTED) {
 				await this.handleConnect()
-				// TODO: Set current player - connectCode/rankedNetplayProfile
 			}
 			if (status === ConnectionStatus.CONNECTING) {
 				this.handleConnecting()
@@ -110,6 +109,7 @@ export class SlippiJs {
 		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connected)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PreGame)
 		const connectCode = (await findPlayKey()).connectCode
+		this.storeSettings.setCurrentPlayerConnectCode(connectCode)
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode)
 		this.storeRank.setCurrentPlayerCurrentRankStats(rankedNetplayProfile)
 		this.storeRank.setCurrentPlayerNewRankStats(rankedNetplayProfile)

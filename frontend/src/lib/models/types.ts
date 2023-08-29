@@ -162,13 +162,24 @@ export type GameStartMode = "ranked" | "unranked" | "direct" | ""; // TODO: Veri
 
 
 export interface Player extends PlayerType {
-	rankedNetplayProfile: RankedNetplayProfile | undefined;
+	rank: Rank | undefined;
 }
 
 export interface CurrentPlayer extends Player {
-	prevRankedNetplayProfile: RankedNetplayProfile | undefined;
-	newRankedNetplayProfile: RankedNetplayProfile | undefined;
+	rank: CurrentPlayerRank
 }
+
+export interface Rank {
+	current: RankedNetplayProfile | undefined;
+}
+
+export interface CurrentPlayerRank extends Rank {
+	prev: RankedNetplayProfile | undefined;
+	new: RankedNetplayProfile | undefined;
+	history: RankHistory;
+}
+
+export interface RankHistory { }
 
 export interface GameStats {
 	settings: GameStartType;
@@ -201,7 +212,7 @@ export interface RankedNetplayProfile {
 	dailyRegionalPlacement: number;
 	losses: number;
 	wins: number;
-	ratingOrdinal: number;
+	rating: number;
 	rank: string;
 	seasons: RankedNetplaySeason[]
 }

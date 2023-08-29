@@ -23,8 +23,8 @@ export class Api {
 
 	async getPlayerWithRankStats(player: PlayerType): Promise<Player | undefined> {
 		try {
-			const rankData = (await axios.get(`http://slprank.com/rank/${player.connectCode.replace('#', '-')}?raw`)).data
-			return { ...player, rankedNetplayProfile: rankData }
+			const rankData = (await axios.get(`http://slprank.com/rank/${player.connectCode.replace('#', '-')}?raw`)).data as RankedNetplayProfile
+			return { ...player, rank: { current: rankData } }
 		} catch (err) {
 			this.log.error(err);
 			return undefined

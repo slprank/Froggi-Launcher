@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { RankedNetplayProfile } from '../../../frontend/src/lib/models/types';
+import type { CurrentPlayer, RankedNetplayProfile } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -28,51 +28,58 @@ export class ElectronRankStore {
     }
 
     // Rank
+    getCurrentPlayer(): CurrentPlayer | undefined {
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        return this.store.get(`player.${connectCode}`) as CurrentPlayer;
+    }
+
     getCurrentPlayerCurrentRankStats(): RankedNetplayProfile | undefined {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return;
-        return this.store.get(`player.${player.connectCode}.rank.rankedNetplayProfile`) as RankedNetplayProfile;
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        return this.store.get(`player.${connectCode}.rank.current`) as RankedNetplayProfile;
     }
 
     setCurrentPlayerCurrentRankStats(rankStats: RankedNetplayProfile | undefined) {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!rankStats || !player) return;
-        this.store.set(`player.${player.connectCode}.rank.rankedNetplayProfile`, rankStats);
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!rankStats || !connectCode) return;
+        this.store.set(`player.${connectCode}.rank.current`, rankStats);
     }
 
     setCurrentPlayerNewRankStats(rankStats: RankedNetplayProfile | undefined) {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!rankStats || !player) return;
-        this.store.set(`player.${player.connectCode}.rank.prevRankedNetplayProfile`, player.rankedNetplayProfile)
-        this.store.set(`player.${player.connectCode}.rank.newRankedNetplayProfile`, rankStats);
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        const currentRankedNetplayProfile = this.getCurrentPlayerCurrentRankStats()
+        if (!rankStats || !connectCode) return;
+        this.store.set(`player.${connectCode}.rank.prev`, currentRankedNetplayProfile ?? rankStats)
+        this.store.set(`player.${connectCode}.rank.new`, rankStats);
         this.updateCurrentPlayerRankHistory(rankStats);
     }
 
     getPlayerRankHistory(): RankedNetplayProfile[] | undefined {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return;
-        return this.store.get(`player.${player.connectCode}.rank.history`) as RankedNetplayProfile[];
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        return this.store.get(`player.${connectCode}.rank.history`) as RankedNetplayProfile[];
     }
 
     updateCurrentPlayerRankHistory(rankStats: RankedNetplayProfile) {
-        const player = this.storeSettings.getCurrentPlayer();
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         let history = this.getPlayerRankHistory();
-        if (!rankStats || !player || !history) return;
+        if (!rankStats || !connectCode || !history) return;
         history.push(rankStats)
         this.store.set(
-            `player.${player.connectCode}.rank.history`,
+            `player.${connectCode}.rank.history`,
             history,
         );
     }
 
     async handleRankChange() {
-        const player = this.storeSettings.getCurrentPlayer()
+        const player = this.getCurrentPlayer()
         if (!player) return
         await new Promise((resolve) => {
-            if (player.rankedNetplayProfile !== player.newRankedNetplayProfile) this.storeLiveStats.setStatsScene(LiveStatsScene.RankChange)
+            if (player.rank.current !== player.rank.new) this.storeLiveStats.setStatsScene(LiveStatsScene.RankChange)
             setTimeout(resolve, 10000);
         });
-        this.setCurrentPlayerCurrentRankStats(player.newRankedNetplayProfile);
+        this.setCurrentPlayerCurrentRankStats(player.rank.new);
         this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
     }
 
@@ -85,18 +92,18 @@ export class ElectronRankStore {
 
     // TODO:
     private initListeners() {
-        const player = this.storeSettings.getCurrentPlayer()
-        if (!player) return;
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
+        if (!connectCode) return;
         this.listeners = [
-            this.store.onDidChange(`player.${player.connectCode}.rank.prevRankedNetplayProfile`, (value) => {
+            this.store.onDidChange(`player.${connectCode}.rank.prevRankedNetplayProfile`, (value) => {
                 console.log(value)
                 // Emit to svelte
             }),
-            this.store.onDidChange(`player.${player.connectCode}.rank.currentRankedNetplayProfile`, (value) => {
+            this.store.onDidChange(`player.${connectCode}.rank.currentRankedNetplayProfile`, (value) => {
                 console.log(value)
                 // Emit to svelte
             }),
-            this.store.onDidChange(`player.${player.connectCode}.rank.newRankedNetplayProfile`, (value) => {
+            this.store.onDidChange(`player.${connectCode}.rank.newRankedNetplayProfile`, (value) => {
                 console.log(value)
                 // Emit to svelte
             }),

@@ -1,7 +1,7 @@
 // https://www.npmjs.com/package/electron-store
 import ip from 'ip';
 import Store from 'electron-store';
-import type { CurrentPlayer, Player, SlippiLauncherSettings, Url } from '../../../frontend/src/lib/models/types';
+import type { SlippiLauncherSettings, Url } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -26,13 +26,8 @@ export class ElectronSettingsStore {
         this.updateSlippiSettings();
     }
 
-    getCurrentPlayer(): CurrentPlayer | undefined {
-        return this.store.get('settings.currentPlayer') as CurrentPlayer;
-    }
-
-    setCurrentPlayer(player: Player) {
-        const prevPlayer = this.getCurrentPlayer()
-        this.store.set('settings.currentPlayer', { ...prevPlayer, player: player });
+    getCurrentPlayerConnectCode(): string | undefined {
+        return this.store.get('settings.currentPlayer.connectCode') as string;
     }
 
     setCurrentPlayerConnectCode(connectCode: string) {

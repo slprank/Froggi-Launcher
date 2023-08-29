@@ -8,6 +8,7 @@ import { GameEndType, GameStartType, PlayerType, StatsType } from '@slippi/slipp
 import os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { dateTimeNow } from '../../utils/functions';
+import { ElectronRankStore } from './storeRank';
 
 
 @singleton()
@@ -21,6 +22,7 @@ export class ElectronGamesStore {
         @inject("ElectronLog") public log: ElectronLog,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
         @inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
+        @inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
     ) {
         this.initPlayerListener()
     }
@@ -51,7 +53,7 @@ export class ElectronGamesStore {
     }
 
     setGameMatch(settings: GameStartType, gameEnd: GameEndType, postGameStats: StatsType | null) {
-        const player = this.storeSettings.getCurrentPlayer();
+        const player = this.storeRank.getCurrentPlayer();
         if (!settings?.matchInfo?.matchId || !player) return;
         if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))
             return;
@@ -76,43 +78,43 @@ export class ElectronGamesStore {
     }
 
     getGameMatch(matchId: string, gameNumber: number): GameStats | undefined {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return;
-        const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        const games = this.store.get(`player.${connectCode}.game`) as GameStats[];
         return games.find(game => game.settings.matchInfo?.matchId === matchId && game.settings.matchInfo?.gameNumber === gameNumber) as GameStats
     }
 
     getSetByMatchId(matchId: string): GameStats[] | undefined {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return;
-        const games = this.store.get(`player.${player.connectCode}.game`) as GameStats[];
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        const games = this.store.get(`player.${connectCode}.game`) as GameStats[];
         return games.filter(game => game.settings.matchInfo?.matchId === matchId) as GameStats[]
     }
 
     setRecentGames(game: GameStats) {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return;
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
         let games = this.getRecentGames();
         games.push(game)
-        this.store.set(`player.${player.connectCode}.game.recent`, games)
+        this.store.set(`player.${connectCode}.game.recent`, games)
     }
 
     getRecentGames(): GameStats[] {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return [];
-        return (this.store.get(`player.${player.connectCode}.game.recent`) ?? []) as GameStats[];
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return [];
+        return (this.store.get(`player.${connectCode}.game.recent`) ?? []) as GameStats[];
     }
 
     resetRecentGames() {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return;
-        this.store.set(`player.${player.connectCode}.game.recent`, [])
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        this.store.set(`player.${connectCode}.game.recent`, [])
     }
 
     getAllSets(): GameStats[] | undefined {
-        const player = this.storeSettings.getCurrentPlayer();
-        if (!player) return;
-        return this.store.get(`player.${player.connectCode}.game`) as GameStats[] | undefined;
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        return this.store.get(`player.${connectCode}.game`) as GameStats[] | undefined;
     }
 
     getAllSetsByMode(mode: GameStartMode): GameStats[] | undefined {
@@ -142,10 +144,10 @@ export class ElectronGamesStore {
 
     // TODO:
     private initListeners() {
-        const player = this.storeSettings.getCurrentPlayer()
-        if (!player) return;
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
+        if (!connectCode) return;
         this.listeners = [
-            this.store.onDidChange(`player.${player.connectCode}.game.recent`, (value) => {
+            this.store.onDidChange(`player.${connectCode}.game.recent`, (value) => {
                 console.log(value)
                 // Emit to svelte
             }),

@@ -88,9 +88,8 @@ export class StatsDisplay {
 		this.storeGames.setGameScore([0, 0]);
 		this.storeGames.resetRecentGames();
 
-		if (!currentPlayer.rankedNetplayProfile) return
-		this.storeSettings.setCurrentPlayer(currentPlayer)
-		this.storeRank.setCurrentPlayerCurrentRankStats(currentPlayer.rankedNetplayProfile);
+		if (!currentPlayer.rank?.current) return
+		this.storeRank.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
 	}
 
 	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
@@ -101,7 +100,7 @@ export class StatsDisplay {
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const postGameStats = this.getRecentGameStats();
 
-		this.storeRank.setCurrentPlayerNewRankStats(currentPlayer?.rankedNetplayProfile);
+		this.storeRank.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameEnd)
 		this.storeLiveStats.setGameState(InGameState.End)
 		this.storeGames.setGameMatch(settings, gameEnd, postGameStats)
@@ -116,7 +115,7 @@ export class StatsDisplay {
 			return settings.players.filter(player => player).map((player, i: number) => {
 				return {
 					...player,
-					rankedNetplayProfile: this.storePlayers.getCurrentPlayers()?.at(i)?.rankedNetplayProfile
+					rank: this.storePlayers.getCurrentPlayers()?.at(i)?.rank
 				}
 			})
 
@@ -126,9 +125,9 @@ export class StatsDisplay {
 	}
 
 	getCurrentPlayer(players: Player[]): Player | undefined {
-		const player = this.storeSettings.getCurrentPlayer()
-		if (!player) return;
-		return players.find(p => p.connectCode === player.connectCode);
+		const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
+		if (!connectCode) return;
+		return players.find(p => p.connectCode === connectCode);
 	}
 
 	// TODO: Consider Tie
