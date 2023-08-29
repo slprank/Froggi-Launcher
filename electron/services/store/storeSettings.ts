@@ -8,6 +8,7 @@ import { MessageHandler } from '../messageHandler';
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
+import { Api } from '../api';
 
 @singleton()
 export class ElectronSettingsStore {
@@ -18,6 +19,7 @@ export class ElectronSettingsStore {
     constructor(
         @inject("ElectronLog") public log: ElectronLog,
         @inject("Port") public port: string,
+        @inject(delay(() => Api)) public api: Api,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
     ) {
         this.initListeners();
@@ -31,6 +33,10 @@ export class ElectronSettingsStore {
     setCurrentPlayer(player: Player) {
         const prevPlayer = this.getCurrentPlayer()
         this.store.set('settings.currentPlayer', { ...prevPlayer, player: player });
+    }
+
+    setCurrentPlayerConnectCode(connectCode: string) {
+        this.store.set('settings.currentPlayer.connectCode', connectCode);
     }
 
     getSlippiLauncherSettings(): SlippiLauncherSettings {

@@ -6,19 +6,18 @@ import { PlayerType } from '@slippi/slippi-js';
 
 @injectable()
 export class Api {
-	log: ElectronLog;
-	constructor(@inject("ElectronLog") log: ElectronLog) {
-		this.log = log;
-	}
+	constructor(@inject("ElectronLog") public log: ElectronLog) { }
 
 	async getPlayerRankStats(connectCode: string): Promise<RankedNetplayProfile | undefined> {
+		this.log.info("Attempting to fetch user:", connectCode)
 		if (!connectCode) return undefined;
 		try {
 			let player = await axios.get(`http://slprank.com/rank/${connectCode.replace('#', '-')}?raw`)
+			this.log.info("Fetched user:", player)
 			return player.data
 		} catch (err) {
 			this.log.error(err);
-			return undefined
+			return
 		}
 	}
 

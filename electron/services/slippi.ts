@@ -14,6 +14,10 @@ import { ElectronLog } from 'electron-log';
 import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
+import { Api } from './api';
+import { ElectronSettingsStore } from './store/storeSettings';
+import { findPlayKey } from 'electron/utils/playkey';
+import { ElectronRankStore } from './store/storeRank';
 
 @singleton()
 export class SlippiJs {
@@ -24,9 +28,12 @@ export class SlippiJs {
 		@inject("IpcMain") public ipcMain: IpcMain,
 		@inject("SlpParser") public parser: SlpParser,
 		@inject("SlpStream") public slpStream: SlpStream,
+		@inject(delay(() => Api)) public api: Api,
 		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
 		@inject(delay(() => ElectronDolphinStore)) public storeDolphin: ElectronDolphinStore,
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
+		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
 	) {
 		this.initSlippiJs();
 	}
@@ -41,20 +48,18 @@ export class SlippiJs {
 			// Disconnect from Slippi server when we disconnect from Dolphin
 			this.storeDolphin.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {
-				this.log.info("Dolphin Disconnected")
-				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
-				this.storeDolphin.setDolphinConnectionStatus(DolphinState.Disconnected)
+				this.handleDisconnected()
 			}
 			if (status === ConnectionStatus.CONNECTED) {
-				this.log.info("Dolphin Connected")
-				this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connected)
-				this.storeLiveStats.setStatsScene(LiveStatsScene.PreGame)
+				this.handleConnect()
+				// TODO: Set current player - connectCode/rankedNetplayProfile
 			}
 			if (status === ConnectionStatus.CONNECTING) {
-				this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connecting)
-				this.log.info("Dolphin Connected")
+				this.handleConnecting()
 			}
 		});
+
+
 
 		this.dolphinConnection.on(ConnectionEvent.MESSAGE, (message) => {
 			switch (message.type) {
@@ -88,6 +93,26 @@ export class SlippiJs {
 				}
 			}
 		});
+	}
 
+	private handleDisconnected() {
+		this.log.info("Dolphin Disconnected")
+		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Disconnected)
+	}
+
+	private handleConnecting() {
+		this.log.info("Dolphin Connected")
+		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connecting)
+	}
+
+	private async handleConnect() {
+		this.log.info("Dolphin Connected")
+		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connected)
+		this.storeLiveStats.setStatsScene(LiveStatsScene.PreGame)
+		const connectCode = (await findPlayKey()).connectCode
+		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode)
+		this.storeRank.setCurrentPlayerCurrentRankStats(rankedNetplayProfile)
+		this.storeRank.setCurrentPlayerNewRankStats(rankedNetplayProfile)
 	}
 }
