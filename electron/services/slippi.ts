@@ -16,7 +16,7 @@ import { ElectronDolphinStore } from './store/storeDolphin';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { Api } from './api';
 import { ElectronSettingsStore } from './store/storeSettings';
-import { findPlayKey } from 'electron/utils/playkey';
+import { findPlayKey } from '../utils/playkey';
 import { ElectronRankStore } from './store/storeRank';
 
 @singleton()
@@ -47,10 +47,10 @@ export class SlippiJs {
 			// Disconnect from Slippi server when we disconnect from Dolphin
 			this.storeDolphin.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {
-				this.handleDisconnected()
+				await this.handleDisconnected()
 			}
 			if (status === ConnectionStatus.CONNECTED) {
-				this.handleConnect()
+				await this.handleConnect()
 				// TODO: Set current player - connectCode/rankedNetplayProfile
 			}
 			if (status === ConnectionStatus.CONNECTING) {
@@ -94,11 +94,10 @@ export class SlippiJs {
 		});
 	}
 
-	private handleDisconnected() {
+	private async handleDisconnected() {
 		this.log.info("Dolphin Disconnected")
 		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Disconnected)
-		this.dolphinConnection = new DolphinConnection()
-		this.initSlippiJs()
+		await this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
 	}
 
 	private handleConnecting() {

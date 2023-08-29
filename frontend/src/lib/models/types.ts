@@ -175,11 +175,11 @@ export interface GameStats {
 	mode: GameStartMode;
 }
 
-export interface RankedNetplayProfile {
-	continent: string;
-	continentInitials: string;
+export interface RankedNetplaySeason {
+	continent: string | undefined;
+	continentInitials: string | undefined;
 	characters: Character[];
-	leaderboardPlacement: number;
+	leaderboardPlacement: number | undefined;
 	dailyGlobalPlacement: number;
 	dailyRegionalPlacement: number;
 	losses: number;
@@ -187,6 +187,22 @@ export interface RankedNetplayProfile {
 	ratingOrdinal: number;
 	rank: string;
 }
+
+export interface RankedNetplayProfile {
+	continent: string | undefined;
+	continentInitials: string | undefined;
+	characters: Character[];
+	leaderboardPlacement: number | undefined;
+	dailyGlobalPlacement: number;
+	dailyRegionalPlacement: number;
+	losses: number;
+	wins: number;
+	ratingOrdinal: number;
+	rank: string;
+	seasons: RankedNetplaySeason[]
+}
+
+
 
 export interface Session {
 	startRankStats: RankedNetplayProfile,

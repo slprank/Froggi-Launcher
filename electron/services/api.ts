@@ -13,7 +13,7 @@ export class Api {
 		if (!connectCode) return undefined;
 		try {
 			let player = await axios.get(`http://slprank.com/rank/${connectCode.replace('#', '-')}?raw`)
-			this.log.info("Fetched user:", player)
+			this.log.info("Fetched user:", player.data)
 			return player.data
 		} catch (err) {
 			this.log.error(err);

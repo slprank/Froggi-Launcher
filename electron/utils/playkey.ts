@@ -24,6 +24,7 @@ export async function findPlayKey(): Promise<PlayKey> {
       break;
     }
   }
-  const rawData = fs.readFileSync(slippiDir, 'utf-8');
+
+  const rawData = fs.readFileSync(`${slippiDir}/user.json`, 'utf-8');
   return JSON.parse(rawData) as PlayKey;
 }
