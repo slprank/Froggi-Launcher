@@ -118,13 +118,6 @@
 			console.log('Sending electron message..', topic, payload);
 			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
 		});
-		_eventEmitter.on('global', (topic, payload) => {
-			console.log('Sending global message..', topic, payload);
-			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
-		});
-		_eventEmitter.on('local', (topic, payload) => {
-			_eventEmitter.emit(topic, payload);
-		});
 	};
 
 	async function getEventEmitter(): Promise<EventEmitter> {
