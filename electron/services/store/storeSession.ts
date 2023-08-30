@@ -6,7 +6,7 @@ import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import os from 'os';
 import { dateTimeNow } from '../../utils/functions';
-import { ElectronRankStore } from './storeRank';
+import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 
 @singleton()
@@ -19,19 +19,19 @@ export class ElectronSessionStore {
     constructor(
         @inject("ElectronLog") public log: ElectronLog,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+        @inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
         this.initPlayerListener()
     }
 
     getSessionStats(): Session | undefined {
-        const player = this.storeRank.getCurrentPlayer();
+        const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
         return this.store.get(`player.${player.connectCode}.session`) as Session;
     }
 
     resetSessionStats() {
-        const player = this.storeRank.getCurrentPlayer();
+        const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
         let currentRankedStats = player.rank.current;
         if (!currentRankedStats) return;
@@ -46,7 +46,7 @@ export class ElectronSessionStore {
     }
 
     updateSessionStats(rankStats: RankedNetplayProfile) {
-        const player = this.storeRank.getCurrentPlayer();
+        const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
         let session = this.getSessionStats() ?? this.resetSessionStats();
         if (!session) return;
@@ -64,7 +64,7 @@ export class ElectronSessionStore {
 
     // TODO:
     private initListeners() {
-        const player = this.storeRank.getCurrentPlayer()
+        const player = this.storeCurrentPlayer.getCurrentPlayer()
         if (!player) return;
         this.listeners = [
             this.store.onDidChange(`player.${player.connectCode}.session`, (value) => {

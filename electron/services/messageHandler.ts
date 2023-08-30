@@ -9,7 +9,7 @@ import { ElectronObsStore } from "./store/storeObs";
 import fs from 'fs';
 import { LiveStatsScene } from "../../frontend/src/lib/models/enum";
 import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
-import { ElectronRankStore } from "./store/storeRank";
+import { ElectronCurrentPlayerStore } from "./store/storeCurrentPlayer";
 import { ElectronPlayersStore } from "./store/storePlayers";
 import { ElectronSessionStore } from "./store/storeSession";
 
@@ -33,7 +33,7 @@ export class MessageHandler {
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) public storeObs: ElectronObsStore,
 		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(delay(() => ElectronSessionStore)) public storeSession: ElectronSessionStore,
 		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
 
@@ -152,7 +152,7 @@ export class MessageHandler {
 		this.sendInitMessage(
 			socket,
 			'current_player',
-			this.storeRank.getCurrentPlayerCurrentRankStats(),
+			this.storeCurrentPlayer.getCurrentPlayerCurrentRankStats(),
 		);
 		this.sendInitMessage(
 			socket,

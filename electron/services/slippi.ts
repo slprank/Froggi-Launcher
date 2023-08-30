@@ -17,7 +17,7 @@ import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { Api } from './api';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { findPlayKey } from '../utils/playkey';
-import { ElectronRankStore } from './store/storeRank';
+import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 
 @singleton()
 export class SlippiJs {
@@ -32,7 +32,7 @@ export class SlippiJs {
 		@inject(delay(() => ElectronDolphinStore)) public storeDolphin: ElectronDolphinStore,
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
-		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		this.initSlippiJs();
 	}
@@ -111,7 +111,7 @@ export class SlippiJs {
 		const connectCode = (await findPlayKey()).connectCode
 		this.storeSettings.setCurrentPlayerConnectCode(connectCode)
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode)
-		this.storeRank.setCurrentPlayerCurrentRankStats(rankedNetplayProfile)
-		this.storeRank.setCurrentPlayerNewRankStats(rankedNetplayProfile)
+		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile)
+		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile)
 	}
 }

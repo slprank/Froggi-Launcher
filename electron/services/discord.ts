@@ -8,7 +8,7 @@ import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronGamesStore } from './store/storeGames';
-import { ElectronRankStore } from './store/storeRank';
+import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 
 @singleton()
 export class Discord {
@@ -34,7 +34,7 @@ export class Discord {
 		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		this.rpc = new Client({ transport: "ipc" })
 		this.rpc.login({ clientId: "1143955754643112016" }).catch(err => this.log.error("err", err))
@@ -64,7 +64,7 @@ export class Discord {
 			const mode = this.storeLiveStats.getGameMode()
 			const score = this.storeGames.getGameScore() ?? [0, 0]
 
-			const currentPlayer = this.storeRank.getCurrentPlayer()
+			const currentPlayer = this.storeCurrentPlayer.getCurrentPlayer()
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
@@ -116,7 +116,7 @@ export class Discord {
 
 	setMenuActivity = (menuActivity: string) => {
 		this.log.info("Discord menu")
-		const currentPlayer = this.storeRank.getCurrentPlayer()
+		const currentPlayer = this.storeCurrentPlayer.getCurrentPlayer()
 		console.log("Current player", currentPlayer)
 		this.activity = {
 			...this.activity,

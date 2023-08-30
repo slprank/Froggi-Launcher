@@ -8,7 +8,7 @@ import { GameEndType, GameStartType, PlayerType, StatsType } from '@slippi/slipp
 import os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { dateTimeNow } from '../../utils/functions';
-import { ElectronRankStore } from './storeRank';
+import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 
 @singleton()
@@ -22,7 +22,7 @@ export class ElectronGamesStore {
         @inject("ElectronLog") public log: ElectronLog,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
         @inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
-        @inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+        @inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
         this.initPlayerListener()
     }
@@ -53,7 +53,7 @@ export class ElectronGamesStore {
     }
 
     setGameMatch(settings: GameStartType, gameEnd: GameEndType, postGameStats: StatsType | null) {
-        const player = this.storeRank.getCurrentPlayer();
+        const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!settings?.matchInfo?.matchId || !player) return;
         if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))
             return;

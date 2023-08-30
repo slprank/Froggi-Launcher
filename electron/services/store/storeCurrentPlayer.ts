@@ -11,7 +11,7 @@ import { ElectronLiveStatsStore } from './storeLiveStats';
 
 
 @singleton()
-export class ElectronRankStore {
+export class ElectronCurrentPlayerStore {
     isMac: boolean = os.platform() === 'darwin';
     isWindows: boolean = os.platform() === 'win32';
     isLinux: boolean = os.platform() === 'linux';
@@ -72,7 +72,7 @@ export class ElectronRankStore {
         );
     }
 
-    async handleRankChange() {
+    private async handleRankChange() {
         const player = this.getCurrentPlayer()
         if (!player) return
         await new Promise((resolve) => {

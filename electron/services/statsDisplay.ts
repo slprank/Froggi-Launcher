@@ -8,7 +8,7 @@ import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum'
 import fs from "fs"
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
-import { ElectronRankStore } from './store/storeRank';
+import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 
@@ -24,7 +24,7 @@ export class StatsDisplay {
 		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronRankStore)) public storeRank: ElectronRankStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
 	) {
 		this.initStatDisplay();
@@ -89,7 +89,7 @@ export class StatsDisplay {
 		this.storeGames.resetRecentGames();
 
 		if (!currentPlayer.rank?.current) return
-		this.storeRank.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
+		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
 	}
 
 	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
@@ -100,7 +100,7 @@ export class StatsDisplay {
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const postGameStats = this.getRecentGameStats();
 
-		this.storeRank.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
+		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameEnd)
 		this.storeLiveStats.setGameState(InGameState.End)
 		this.storeGames.setGameMatch(settings, gameEnd, postGameStats)
