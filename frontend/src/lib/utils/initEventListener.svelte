@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import type { DolphinState, InGameState } from '$lib/models/enum';
-	import type { Obs, Overlay, Player } from '$lib/models/types';
+	import type { AutoUpdater, Obs, Overlay, Player } from '$lib/models/types';
 	import {
 		eventEmitter,
 		currentPlayer,
@@ -17,6 +17,7 @@
 		dolphinState,
 		gameState,
 		recentGames,
+		autoUpdater,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type EventEmitter from 'events';
@@ -24,6 +25,18 @@
 	export async function initEventListener() {
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
+		_eventEmitter.on('autoUpdater-status', (status: string) => {
+			console.log({ status });
+			autoUpdater.update((autoUpdater: AutoUpdater) => {
+				return { ...autoUpdater, status: status };
+			});
+		});
+		_eventEmitter.on('autoUpdater-progress', (progress: string) => {
+			console.log({ progress });
+			autoUpdater.update((autoUpdater: AutoUpdater) => {
+				return { ...autoUpdater, status: progress };
+			});
+		});
 		_eventEmitter.on('current_player', (player: Player) => {
 			console.log({ player });
 			currentPlayer.set(player);

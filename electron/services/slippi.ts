@@ -43,7 +43,7 @@ export class SlippiJs {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin)
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
-			this.log.info('dolphin connection state', status);
+			this.log.info('Dolphin Connection State', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin
 			this.storeDolphin.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {

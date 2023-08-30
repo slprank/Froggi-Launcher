@@ -7,6 +7,11 @@ import type {
 import type { Animation, AnimationTrigger, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground } from './enum';
 import type { COL } from './const';
 
+export interface AutoUpdater {
+	progression: string;
+	status: string;
+}
+
 export interface Url {
 	external: string;
 	local: string;
@@ -250,3 +255,4 @@ export interface PlayKey {
 	displayName: string;
 	latestVersion?: string;
 }
+

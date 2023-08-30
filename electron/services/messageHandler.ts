@@ -12,6 +12,7 @@ import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
 import { ElectronCurrentPlayerStore } from "./store/storeCurrentPlayer";
 import { ElectronPlayersStore } from "./store/storePlayers";
 import { ElectronSessionStore } from "./store/storeSession";
+import { AutoUpdater } from "./autoUpdater";
 
 
 @singleton()
@@ -29,6 +30,7 @@ export class MessageHandler {
 		@inject("IpcMain") public ipcMain: IpcMain,
 		@inject("Port") public port: string,
 		@inject("RootDir") public rootDir: string,
+		@inject(delay(() => AutoUpdater)) public autoUpdater: AutoUpdater,
 		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) public storeObs: ElectronObsStore,
@@ -57,6 +59,7 @@ export class MessageHandler {
 		this.initWebSocket();
 		this.initEventHandlers()
 		this.initGlobalEventListeners();
+		this.autoUpdater.initListeners();
 	}
 
 	initHtml() {

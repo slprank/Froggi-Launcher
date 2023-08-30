@@ -10,6 +10,7 @@ import path from 'path';
 import os from 'os';
 
 import { Api } from './services/api';
+import { AutoUpdater } from './services/autoUpdater';
 import { Discord } from './services/discord';
 import { EventEmitter } from 'events';
 import { MessageHandler } from './services/messageHandler';
@@ -134,6 +135,7 @@ try {
 			container.register<boolean>("Dev", { useValue: dev });
 
 			container.resolve(Api)
+			container.resolve(AutoUpdater)
 			container.resolve(Discord)
 			container.resolve(MessageHandler)
 			container.resolve(MemoryRead)

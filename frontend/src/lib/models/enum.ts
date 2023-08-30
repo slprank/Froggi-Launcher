@@ -18,6 +18,15 @@ export enum AnimationTrigger {
 	Player2StockLost = 3,
 }
 
+export enum AutoUpdateStatus {
+	DownloadAvailable = "Download",
+	LookingForUpdate = "Looking For Update",
+	Downloading = "Downloading",
+	DownloadComplete = "Install",
+	Installing = "Installing",
+	UpToDate = "Up To Date"
+}
+
 export enum Character {
 	Falcon = 0,
 	DK = 1,

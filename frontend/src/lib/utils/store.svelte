@@ -4,7 +4,7 @@
 	import { EventEmitter } from 'events';
 	import { DolphinState, InGameState, LiveStatsScene } from '$lib/models/enum';
 	import Device from 'svelte-device-info';
-	import type { GameStats, Obs, Player, Url } from '$lib/models/types';
+	import type { AutoUpdater, GameStats, Obs, Player, Url } from '$lib/models/types';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 
 	export const eventEmitter = writable<EventEmitter>(new EventEmitter());
@@ -28,6 +28,7 @@
 			),
 	);
 
+	export const autoUpdater = writable<AutoUpdater>();
 	export const currentPlayer = writable<Player>();
 	export const currentPlayers = writable<Player[]>();
 	export const dolphinState = writable<DolphinState>();
@@ -36,12 +37,11 @@
 	export const gameState = writable<InGameState>(InGameState.None);
 	export const gameSettings = writable<GameStartType>();
 	export const postGameStats = writable<any>();
-	export const recentRankedSets = writable<any>();
+	export const recentRankedSets = writable<any[]>();
 	export const recentGames = writable<GameStats[]>();
 	export const sessionStats = writable<any>();
 	export const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 
-	// TODO: Remove object and init it from electron instead
 	export const obs = writable<Obs>();
 	export const urls = writable<Url>();
 </script>

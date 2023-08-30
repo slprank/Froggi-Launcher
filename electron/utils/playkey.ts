@@ -1,5 +1,5 @@
 import getAppDataPath from "appdata-path";
-import * as fs from "fs-extra";
+import fs from "fs";
 import os from "os";
 import path from "path";
 import { PlayKey } from "../../frontend/src/lib/models/types";

@@ -1,6 +1,6 @@
 {
 	"name": "slp-rank-client",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"private": true,
 	"description": "Slippi Client",
 	"main": "build_electron/electron/main.js",

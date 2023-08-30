@@ -146,7 +146,7 @@ export class Discord {
 const buttonBuilder = (connectCode: string | undefined, characterId: number | null | undefined, stocks: number | null | undefined = 4, percent: number | null | undefined = 0) => {
 	let label = ""
 	label += connectCode ? `${connectCode.split("#").at(0)} - ` : ""
-	label += characterId ? `${CharacterConversion[characterId ?? 0]} - ` : ""
+	label += characterId ? `${CharacterConversion[characterId]} - ` : ""
 	label += stocks ? `Stocks: ${stocks} - ` : ""
 	label += percent ? `${percent.toFixed()}%` : ""
 

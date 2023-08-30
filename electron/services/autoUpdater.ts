@@ -1,58 +1,68 @@
-export class initAutoUpdater {
-	mainWindow: any;
-	eventEmitter: any;
-	log: any;
-	constructor(mainWindow: any, eventEmitter: any, log: any) {
-		this.mainWindow = mainWindow;
-		this.eventEmitter = eventEmitter;
-		this.log = log;
-	}
-	init() {
-		this.log.info('autoUpdater');
+import { ElectronLog } from "electron-log";
+import { ProgressInfo, UpdateDownloadedEvent, UpdateInfo, autoUpdater } from "electron-updater"
+import EventEmitter from "events";
+import { delay, inject, injectable } from "tsyringe";
+import { MessageHandler } from "./messageHandler";
+import { AutoUpdateStatus } from "../../frontend/src/lib/models/enum";
 
-		const { autoUpdater } = require('electron-updater');
+@injectable()
+export class AutoUpdater {
+	constructor(
+		@inject("ElectronLog") public log: ElectronLog,
+		@inject("EventEmitter") public eventEmitter: EventEmitter,
+		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+	) { }
 
+	async initListeners() {
+		this.log.info('Initializing Auto Updater');
+		this.log.info('Current Version:', autoUpdater.currentVersion);
 		autoUpdater.autoInstallOnAppQuit = true;
 
-		this.log.info('current version', autoUpdater.currentVersion);
-
-		autoUpdater
-			.checkForUpdates()
-			.then((data) => this.log.info('update', data))
-			.catch((err) => this.log.error(err));
+		autoUpdater.checkForUpdates()
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
-			this.mainWindow.webContents.send('update-status', `Checking for update`);
+			this.messageHandler.sendMessage(
+				'autoUpdater-status',
+				AutoUpdateStatus.LookingForUpdate,
+			);
 		});
 
 		autoUpdater.on('update-not-available', () => {
-			this.log.info('update not available');
-			this.mainWindow.webContents.send('update-status', `No update available`);
+			this.log.info('Update Not Available');
+			this.messageHandler.sendMessage(
+				'autoUpdater-status',
+				AutoUpdateStatus.UpToDate,
+			);
 		});
 
-		autoUpdater.on('update-available', (data) => {
-			this.log.info(`update available: ${data.version}`);
-			this.mainWindow.webContents.send('version', data.version);
-			this.mainWindow.webContents.send('update-status', `Download`);
+		autoUpdater.on('update-available', (info: UpdateInfo) => {
+			this.log.info(`update available: ${info.version}`);
 			autoUpdater.downloadUpdate();
-		});
-
-		autoUpdater.on('download-progress', (data) => {
-			this.log.info(`Downloading: ${data.percent.toFixed()}`);
-			this.mainWindow.webContents.send(
-				'update-status',
-				`Downloading: ${data.percent.toFixed()}%`,
+			this.messageHandler.sendMessage(
+				'autoUpdater-status',
+				AutoUpdateStatus.DownloadAvailable,
 			);
 		});
 
-		autoUpdater.on('update-downloaded', (data) => {
-			this.log.info(`Download complete: ${data.version}`);
+		autoUpdater.on('download-progress', (progress: ProgressInfo) => {
+			this.log.info(`Downloading: ${progress.percent.toFixed()}`);
+			this.messageHandler.sendMessage(
+				'autoUpdater-progress',
+				`${progress.percent.toFixed()}%`,
+			);
+		});
+
+		autoUpdater.on('update-downloaded', (data: UpdateDownloadedEvent) => {
+			this.log.info(`Download Complete`);
+			this.log.info(`New Version: ${data.version}`);
 			this.log.info(
-				`Download url: https://github.com/slprank/slpRank-client/releases/download/${data.releaseName}/${data.files[0].url}`,
+				`Download Url: https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
-			this.mainWindow.webContents.send('update-status', `Install`);
-			autoUpdater.quitAndInstall(); // Should be handled manually?
+			this.messageHandler.sendMessage(
+				'autoUpdater-status',
+				AutoUpdateStatus.DownloadComplete,
+			);
 		});
 
 		this.eventEmitter.on('update-install', async () => {
