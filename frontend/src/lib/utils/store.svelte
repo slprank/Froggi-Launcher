@@ -2,7 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { browser } from '$app/environment';
 	import { EventEmitter } from 'events';
-	import { DolphinState, InGameState, LiveStatsScene } from '$lib/models/enum';
+	import { AutoUpdaterStatus, DolphinState, InGameState, LiveStatsScene } from '$lib/models/enum';
 	import Device from 'svelte-device-info';
 	import type { AutoUpdater, GameStats, Obs, Player, Url } from '$lib/models/types';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
@@ -28,7 +28,10 @@
 			),
 	);
 
-	export const autoUpdater = writable<AutoUpdater>();
+	export const autoUpdater = writable<AutoUpdater>({
+		status: AutoUpdaterStatus.LookingForUpdate,
+		progress: undefined,
+	});
 	export const currentPlayer = writable<Player>();
 	export const currentPlayers = writable<Player[]>();
 	export const dolphinState = writable<DolphinState>();

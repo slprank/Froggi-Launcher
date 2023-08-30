@@ -18,7 +18,7 @@ export enum AnimationTrigger {
 	Player2StockLost = 3,
 }
 
-export enum AutoUpdateStatus {
+export enum AutoUpdaterStatus {
 	DownloadAvailable = "Download",
 	LookingForUpdate = "Looking For Update",
 	Downloading = "Downloading",

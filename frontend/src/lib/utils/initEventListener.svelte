@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import type { DolphinState, InGameState } from '$lib/models/enum';
+	import type { AutoUpdaterStatus, DolphinState, InGameState } from '$lib/models/enum';
 	import type { AutoUpdater, Obs, Overlay, Player } from '$lib/models/types';
 	import {
 		eventEmitter,
@@ -25,16 +25,16 @@
 	export async function initEventListener() {
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
-		_eventEmitter.on('autoUpdater-status', (status: string) => {
+		_eventEmitter.on('autoUpdater-status', (status: AutoUpdaterStatus) => {
 			console.log({ status });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, status: status };
 			});
 		});
-		_eventEmitter.on('autoUpdater-progress', (progress: string) => {
+		_eventEmitter.on('autoUpdater-progress', (progress: number | undefined) => {
 			console.log({ progress });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
-				return { ...autoUpdater, status: progress };
+				return { ...autoUpdater, progress: progress };
 			});
 		});
 		_eventEmitter.on('current_player', (player: Player) => {

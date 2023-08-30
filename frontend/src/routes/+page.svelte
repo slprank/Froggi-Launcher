@@ -2,9 +2,11 @@
 	import { fade } from 'svelte/transition';
 	import Logo from '$lib/Logo.svelte';
 	import { autoUpdater, eventEmitter } from '$lib/utils/store.svelte';
+	import { AutoUpdaterStatus } from '$lib/models/enum';
 
-	const downloadUpdate = () => {
-		$eventEmitter.emit('electron', 'update-install');
+	const InstallUpdate = () => {
+		if ($autoUpdater.status === AutoUpdaterStatus.DownloadComplete)
+			$eventEmitter.emit('electron', 'update-install');
 	};
 </script>
 
@@ -18,10 +20,10 @@
 		{#if $autoUpdater?.status}
 			<button
 				class="w-52 h-20 rounded bg-green-500 transition duration-100 hover:scale-105 hover:bg-green-700 shadow-md"
-				on:click={downloadUpdate}
+				on:click={InstallUpdate}
 			>
 				{$autoUpdater?.status}
-				{$autoUpdater?.progression}
+				{$autoUpdater?.progress ? `- ${$autoUpdater.progress}%` : ''}
 			</button>
 		{/if}
 		<Logo />

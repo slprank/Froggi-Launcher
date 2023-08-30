@@ -3,7 +3,7 @@ import { ProgressInfo, UpdateDownloadedEvent, UpdateInfo, autoUpdater } from "el
 import EventEmitter from "events";
 import { delay, inject, injectable } from "tsyringe";
 import { MessageHandler } from "./messageHandler";
-import { AutoUpdateStatus } from "../../frontend/src/lib/models/enum";
+import { AutoUpdaterStatus } from "../../frontend/src/lib/models/enum";
 
 @injectable()
 export class AutoUpdater {
@@ -17,14 +17,13 @@ export class AutoUpdater {
 		this.log.info('Initializing Auto Updater');
 		this.log.info('Current Version:', autoUpdater.currentVersion);
 		autoUpdater.autoInstallOnAppQuit = true;
-
 		autoUpdater.checkForUpdates()
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
 			this.messageHandler.sendMessage(
 				'autoUpdater-status',
-				AutoUpdateStatus.LookingForUpdate,
+				AutoUpdaterStatus.LookingForUpdate,
 			);
 		});
 
@@ -32,7 +31,7 @@ export class AutoUpdater {
 			this.log.info('Update Not Available');
 			this.messageHandler.sendMessage(
 				'autoUpdater-status',
-				AutoUpdateStatus.UpToDate,
+				AutoUpdaterStatus.UpToDate,
 			);
 		});
 
@@ -41,7 +40,7 @@ export class AutoUpdater {
 			autoUpdater.downloadUpdate();
 			this.messageHandler.sendMessage(
 				'autoUpdater-status',
-				AutoUpdateStatus.DownloadAvailable,
+				AutoUpdaterStatus.DownloadAvailable,
 			);
 		});
 
@@ -49,7 +48,7 @@ export class AutoUpdater {
 			this.log.info(`Downloading: ${progress.percent.toFixed()}`);
 			this.messageHandler.sendMessage(
 				'autoUpdater-progress',
-				`${progress.percent.toFixed()}%`,
+				`${Number(progress.percent.toFixed())}`,
 			);
 		});
 
@@ -61,7 +60,11 @@ export class AutoUpdater {
 			);
 			this.messageHandler.sendMessage(
 				'autoUpdater-status',
-				AutoUpdateStatus.DownloadComplete,
+				AutoUpdaterStatus.DownloadComplete,
+			);
+			this.messageHandler.sendMessage(
+				'autoUpdater-progress',
+				undefined,
 			);
 		});
 
