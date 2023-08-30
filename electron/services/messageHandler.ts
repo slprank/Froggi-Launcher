@@ -64,17 +64,8 @@ export class MessageHandler {
 
 	initHtml() {
 		try {
-			this.app.get('/', (_: any, res: any) => {
+			this.app.get('*', (_: any, res: any) => {
 				res.resolve(this.rootDir + '/build/index.html');
-			});
-
-			this.app.get('*', (req: any, res: any) => {
-				const params = req.params[0]
-					.split('/')
-					.slice(1)
-					.map((route: string, i: number) => `route${i + 1}=${route}`)
-					.join('&');
-				res.redirect(`/?${params}`);
 			});
 
 			this.server.listen(this.port, (_: any) => {

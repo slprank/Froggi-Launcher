@@ -7,7 +7,6 @@
 	import { page } from '$app/stores';
 	import type { Page } from '@sveltejs/kit';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import { paramRedirect } from '$lib/utils/routeHandler.svelte';
 
 	export const initClient = async () => {
 		await initEventListener();
@@ -35,7 +34,6 @@
 			initNoSleep();
 			await initWebSocket();
 			initServiceWorker();
-			paramRedirect();
 		}
 
 		if (isElectronWindow) {

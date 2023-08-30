@@ -123,7 +123,7 @@ export class Discord {
 			buttons: [
 				{
 					label: `Get Froggi`,
-					url: `https://slippi.gg/user/snider-0`
+					url: `https://slippi.gg/user/${currentPlayer?.connectCode.replace("#", "-")}`
 				},
 			],
 			details: menuActivity,
