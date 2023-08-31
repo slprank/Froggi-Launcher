@@ -1,25 +1,23 @@
 // https://github.com/obs-websocket-community-projects/obs-websocket-js
 
 import EventEmitter from "events";
-import { MessageHandler } from "./messageHandler";
 import { ElectronLog } from "electron-log";
-import { delay, inject, singleton } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import OBSWebSocket from "obs-websocket-js";
 
 @singleton()
 export class ObsWebSocket {
 	constructor(
-		@inject("ElectronLog") public log: ElectronLog,
-		@inject("EventEmitter") public eventEmitter: EventEmitter,
-		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+		@inject("ElectronLog") private log: ElectronLog,
+		@inject("EventEmitter") private eventEmitter: EventEmitter,
+		//@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
+		this.log.info("Initializing OBS")
 		this.initObsWebSocket();
 	}
 
 	initObsWebSocket = () => {
 		try {
-			this.log.info('Init OBS');
-
 			// Inits scene change from svelte
 			this.eventEmitter.on('obs_switch', async (scene: any) => {
 				this.changeObsScene(scene);

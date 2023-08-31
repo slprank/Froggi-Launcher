@@ -6,7 +6,9 @@ import { PlayerType } from '@slippi/slippi-js';
 
 @injectable()
 export class Api {
-	constructor(@inject("ElectronLog") public log: ElectronLog) { }
+	constructor(@inject("ElectronLog") private log: ElectronLog) {
+		this.log.info("Initializing Api")
+	}
 
 	async getPlayerRankStats(connectCode: string): Promise<RankedNetplayProfile | undefined> {
 		this.log.info("Attempting to fetch user:", connectCode)

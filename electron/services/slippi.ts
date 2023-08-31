@@ -1,5 +1,4 @@
 import {
-	SlpParser,
 	DolphinConnection,
 	Ports,
 	ConnectionEvent,
@@ -7,9 +6,8 @@ import {
 	ConnectionStatus,
 	SlpStream,
 } from '@slippi/slippi-js';
-import { MessageHandler } from './messageHandler';
 import { IpcMain } from 'electron';
-import { delay, inject, singleton } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
@@ -23,25 +21,22 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 export class SlippiJs {
 	dolphinConnection = new DolphinConnection()
 	constructor(
-		@inject("ElectronLog") public log: ElectronLog,
-		@inject("IpcMain") public ipcMain: IpcMain,
-		@inject("SlpParser") public parser: SlpParser,
-		@inject("SlpStream") public slpStream: SlpStream,
-		@inject(delay(() => Api)) public api: Api,
-		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-		@inject(delay(() => ElectronDolphinStore)) public storeDolphin: ElectronDolphinStore,
-		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
-		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
-		@inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject("ElectronLog") private log: ElectronLog,
+		@inject("IpcMain") private ipcMain: IpcMain,
+		@inject("SlpStream") private slpStream: SlpStream,
+		@inject(Api) private api: Api,
+		@inject(ElectronDolphinStore) private storeDolphin: ElectronDolphinStore,
+		@inject(ElectronLiveStatsStore) private storeLiveStats: ElectronLiveStatsStore,
+		@inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
+		@inject(ElectronCurrentPlayerStore) private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
-		this.initSlippiJs();
+		this.initSlippiJs()
 	}
 
 	initSlippiJs() {
-		this.log.info('Init slippi-js');
-
+		this.log.info("Initializing SlippiJs")
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin)
-		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('Dolphin Connection State', status);
 			// Disconnect from Slippi server when we disconnect from Dolphin

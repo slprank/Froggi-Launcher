@@ -8,10 +8,13 @@ import { AutoUpdaterStatus } from "../../frontend/src/lib/models/enum";
 @injectable()
 export class AutoUpdater {
 	constructor(
-		@inject("ElectronLog") public log: ElectronLog,
-		@inject("EventEmitter") public eventEmitter: EventEmitter,
-		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-	) { }
+		@inject("ElectronLog") private log: ElectronLog,
+		@inject("EventEmitter") private eventEmitter: EventEmitter,
+		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+	) {
+		this.log.info("Initializing Auto Updater")
+		this.initListeners()
+	}
 
 	async initListeners() {
 		this.log.info('Initializing Auto Updater');

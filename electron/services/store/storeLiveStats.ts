@@ -15,9 +15,10 @@ export class ElectronLiveStatsStore {
     isLinux: boolean = os.platform() === 'linux';
     store: Store = new Store();
     constructor(
-        @inject("ElectronLog") public log: ElectronLog,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+        @inject("ElectronLog") private log: ElectronLog,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
+        this.log.info("Initializing Live Stats Store")
         this.initListeners();
     }
 

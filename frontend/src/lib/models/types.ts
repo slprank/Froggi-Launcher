@@ -163,7 +163,7 @@ export interface Stroke {
 	color: string;
 }
 
-export type GameStartMode = "ranked" | "unranked" | "direct" | ""; // TODO: Verify these types
+export type GameStartMode = "ranked" | "unranked" | "direct" | "local" | "recent"; // TODO: Verify these types
 
 
 export interface Player extends PlayerType {
@@ -185,6 +185,10 @@ export interface CurrentPlayerRank extends Rank {
 }
 
 export interface RankHistory { }
+
+export type Sets = {
+	[Mode in GameStartMode]: GameStats[];
+};
 
 export interface GameStats {
 	settings: GameStartType;

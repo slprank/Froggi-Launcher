@@ -11,7 +11,6 @@ import os from 'os';
 
 import { Api } from './services/api';
 import { AutoUpdater } from './services/autoUpdater';
-import { DiscordRpc } from './services/discord';
 import { EventEmitter } from 'events';
 import { MessageHandler } from './services/messageHandler';
 import { ObsWebSocket } from './services/obs';
@@ -19,6 +18,7 @@ import { StatsDisplay } from './services/statsDisplay';
 import { SlippiJs } from './services/slippi';
 import { SlpParser, SlpStream } from '@slippi/slippi-js';
 import { MemoryRead } from './services/memoryRead';
+import { DiscordRpc } from './services/discord';
 
 try {
 	const isMac = os.platform() === 'darwin';
@@ -135,19 +135,18 @@ try {
 			container.register<boolean>("Dev", { useValue: dev });
 
 			container.resolve(Api)
-			container.resolve(AutoUpdater)
 			container.resolve(DiscordRpc)
 			container.resolve(MessageHandler)
 			container.resolve(MemoryRead)
-			container.resolve(SlippiJs)
 			container.resolve(StatsDisplay)
 			container.resolve(ObsWebSocket)
+			container.resolve(SlippiJs)
+			if (!dev) container.resolve(AutoUpdater)
 		});
 
 		// Find a better solution to init autoUpdate
 		mainWindow.webContents.once('focus', () => {
 			if (dev) return;
-			//autoUpdater.initAutoUpdater(mainWindow, eventEmitter, log);
 		});
 	}
 

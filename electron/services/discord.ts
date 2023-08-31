@@ -8,20 +8,18 @@ import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
-import { ElectronSettingsStore } from './store/storeSettings';
 
 @singleton()
 export class DiscordRpc {
 	rpc: Client;
 	activity: Presence;
 	constructor(
-		@inject("ElectronLog") public log: ElectronLog,
-		@inject("EventEmitter") public eventEmitter: EventEmitter,
-		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
-		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
-		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
-		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject("ElectronLog") private log: ElectronLog,
+		@inject("EventEmitter") private eventEmitter: EventEmitter,
+		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
+		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		this.rpc = new Client({ transport: "ipc" })
 		this.rpc.login({ clientId: "1143955754643112016" }).catch(err => this.log.error("err", err))
@@ -29,9 +27,14 @@ export class DiscordRpc {
 	}
 
 	initDiscordJs() {
-		this.log.info("Initializing discord rpc")
+		this.log.info("Initializing Discord RPC")
 		this.initDiscordEvents()
 		this.setMenuActivity("Menu")
+	}
+
+	fix() {
+		const crash = undefined as unknown as any
+		console.log(crash.now)
 	}
 
 	initDiscordEvents = () => {
@@ -63,7 +66,7 @@ export class DiscordRpc {
 				largeImageKey: `stage_${settings.stageId}`,
 				largeImageText: StageConversion[settings.stageId ?? 2],
 				smallImageKey: `${currentPlayer?.rank.current?.rank.toLowerCase().replace(" ", "_")}`,
-				state: `${player1?.connectCode ?? "Player1"} - ${player2?.connectCode ?? "Player2"} (${score.join(" - ")})`,
+				state: `${player1?.connectCode ? player1?.connectCode : "Player1"} (${score.at(0)} - ${score.at(1)}) ${player2?.connectCode ? player2?.connectCode : "Player2"}`
 			}
 			this.updateActivity()
 		})
@@ -92,6 +95,7 @@ export class DiscordRpc {
 		})
 
 		this.eventEmitter.on("game_end", () => {
+			console.log("Game end event")
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
@@ -99,12 +103,13 @@ export class DiscordRpc {
 			const mode = this.storeLiveStats.getGameMode() ?? "Local"
 
 			const details = `${mode} - Menu`;
-			const state = `${player1?.connectCode ?? "Player1"} - ${player2?.connectCode ?? "Player2"} (${score.join(" - ")})`;
+			const state = `${player1?.connectCode ? player1?.connectCode : "Player1"} (${score.at(0)} - ${score.at(1)}) ${player2?.connectCode ? player2?.connectCode : "Player2"}`;
 
 			this.setMenuActivity(details, state)
 		})
 
 		this.eventEmitter.on("game_score", (score: number[]) => {
+			console.log("game_score_event")
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
@@ -127,7 +132,7 @@ export class DiscordRpc {
 			buttons: [
 				{
 					label: `Get Froggi`,
-					url: `https://slippi.gg/user/${currentPlayer?.connectCode.replace("#", "-")}`
+					url: `https://slippi.gg/user/${currentPlayer?.connectCode?.replace("#", "-")}`
 				},
 			],
 			details: menuActivity,
@@ -159,8 +164,8 @@ const futureTimerEpoch = (milliseconds: number) => {
 const buttonBuilder = (connectCode: string | undefined, characterId: number | null | undefined, stocks: number | null | undefined = 4, percent: number | null | undefined = 0) => {
 	let label = ""
 	label += connectCode ? `${connectCode.split("#").at(0)}` : "Player"
-	label += characterId ? ` - ${CharacterConversion[characterId]}` : "None"
-	label += stocks !== null ? ` - Stocks: ${stocks} ` : "0"
+	label += characterId !== null && characterId !== undefined ? ` - ${CharacterConversion[characterId]}` : " - None"
+	label += stocks !== null ? ` - Stock: ${stocks}` : "- 0"
 	label += percent !== null ? ` - ${percent.toFixed()}%` : ""
 
 	const url = `https://slippi.gg${connectCode ? `/user/${connectCode.replace("#", "-")}` : "/leaderboards"}`

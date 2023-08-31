@@ -17,10 +17,11 @@ export class ElectronSessionStore {
     listeners: Function[];
     store: Store = new Store();
     constructor(
-        @inject("ElectronLog") public log: ElectronLog,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
+        @inject("ElectronLog") private log: ElectronLog,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+        @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
+        this.log.info("Initializing Session Store")
         this.initPlayerListener()
     }
 
@@ -68,8 +69,7 @@ export class ElectronSessionStore {
         if (!player) return;
         this.listeners = [
             this.store.onDidChange(`player.${player.connectCode}.session`, (value) => {
-                console.log(value)
-                // Emit to svelte
+                this.messageHandler.sendMessage("session", value)
             }),
         ]
     }

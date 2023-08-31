@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { GameStartMode, GameStats } from '../../../frontend/src/lib/models/types';
+import type { GameStartMode, GameStats, Sets } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -19,11 +19,12 @@ export class ElectronGamesStore {
     listeners: Function[];
     store: Store = new Store();
     constructor(
-        @inject("ElectronLog") public log: ElectronLog,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
-        @inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
+        @inject("ElectronLog") private log: ElectronLog,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+        @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
+        @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
+        this.log.info("Initializing Game Store")
         this.initPlayerListener()
     }
 
@@ -111,28 +112,29 @@ export class ElectronGamesStore {
         this.store.set(`player.${connectCode}.game.recent`, [])
     }
 
-    getAllSets(): GameStats[] | undefined {
+    private getAllSets(): Sets | undefined {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        return this.store.get(`player.${connectCode}.game`) as GameStats[] | undefined;
+        return this.store.get(`player.${connectCode}.game`) as Sets | undefined;
     }
 
     getAllSetsByMode(mode: GameStartMode): GameStats[] | undefined {
         if (!mode) return;
         let sets = this.getAllSets();
         if (!sets) return;
-        return sets.filter(set => set.mode === mode)
+        return sets[mode]
     }
 
     getRecentSets(number = 10): GameStats[] {
-        const recentSets = this.getAllSets() ?? [];
-        return recentSets.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number);
+        const sets = this.getAllSets();
+        if (!sets) return []
+        return sets["recent"]?.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number) ?? [];
     }
 
-    getRecentSetsByMode(mode: GameStartMode | undefined = undefined, number = 10) {
-        const rankedSets = this.getAllSets() ?? [];
-        if (!mode) return rankedSets?.filter(set => !set.mode).sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)
-        return rankedSets?.filter(set => set.mode === mode).sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number);
+    getRecentSetsByMode(mode: GameStartMode = "recent", number = 10) {
+        const sets = this.getAllSets();
+        if (!sets) return []
+        return sets[mode ?? "recent"]?.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number) ?? [];
     }
 
     private initPlayerListener() {
@@ -152,6 +154,7 @@ export class ElectronGamesStore {
                 // Emit to svelte
             }),
             this.store.onDidChange(`stats.game.score`, async (value) => {
+                console.log("Updating score")
                 this.messageHandler.sendMessage('game_score', value);
             }),
         ]

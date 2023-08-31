@@ -5,9 +5,10 @@ import EventEmitter from 'events';
 @singleton()
 export class MemoryRead {
 	constructor(
-		@inject("ElectronLog") public log: ElectronLog,
-		@inject("EventEmitter") public eventEmitter: EventEmitter,
+		@inject("ElectronLog") private log: ElectronLog,
+		@inject("EventEmitter") private eventEmitter: EventEmitter,
 	) {
+		this.log.info("Initializing Memory Read")
 		this.initMemoryRead()
 	}
 

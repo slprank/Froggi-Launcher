@@ -3,7 +3,6 @@ import Store from 'electron-store';
 import type { CurrentPlayer, RankedNetplayProfile } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
-import { MessageHandler } from '../messageHandler';
 import os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
@@ -18,13 +17,12 @@ export class ElectronCurrentPlayerStore {
     listeners: Function[];
     store: Store = new Store();
     constructor(
-        @inject("ElectronLog") public log: ElectronLog,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
-        @inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
+        @inject("ElectronLog") private log: ElectronLog,
+        @inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
+        @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
     ) {
+        this.log.info("Initializing Current Player Store")
         this.initPlayerListener();
-
     }
 
     // Rank

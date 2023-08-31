@@ -8,7 +8,6 @@ import { MessageHandler } from '../messageHandler';
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
-import { Api } from '../api';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 @singleton()
@@ -18,12 +17,12 @@ export class ElectronSettingsStore {
     isLinux: boolean = os.platform() === 'linux';
     store: Store = new Store();
     constructor(
-        @inject("ElectronLog") public log: ElectronLog,
-        @inject("Port") public port: string,
-        @inject(delay(() => Api)) public api: Api,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-        @inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
+        @inject("ElectronLog") private log: ElectronLog,
+        @inject("Port") private port: string,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+        @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
+        this.log.info("Initializing Settings Store")
         this.initListeners();
         this.updateSlippiSettings();
     }

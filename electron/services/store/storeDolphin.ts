@@ -13,9 +13,10 @@ export class ElectronDolphinStore {
     isLinux: boolean = os.platform() === 'linux';
     store: Store = new Store();
     constructor(
-        @inject("ElectronLog") public log: ElectronLog,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+        @inject("ElectronLog") private log: ElectronLog,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
+        this.log.info("Initializing Dolphin Store")
         this.initListeners();
     }
 

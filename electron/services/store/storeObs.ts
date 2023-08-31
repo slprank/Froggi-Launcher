@@ -4,20 +4,17 @@ import type { Obs, Overlay } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
-import os from 'os';
 import { newId } from "../../utils/functions"
 
 
 @singleton()
 export class ElectronObsStore {
-    isMac: boolean = os.platform() === 'darwin';
-    isWindows: boolean = os.platform() === 'win32';
-    isLinux: boolean = os.platform() === 'linux';
     store: Store = new Store();
     constructor(
-        @inject("ElectronLog") public log: ElectronLog,
-        @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+        @inject("ElectronLog") private log: ElectronLog,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
+        this.log.info("Initializing Obs Store")
         this.initListeners();
         this.initCustom();
     }

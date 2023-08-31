@@ -16,21 +16,22 @@ import { ElectronPlayersStore } from './store/storePlayers';
 export class StatsDisplay {
 	pauseInterval: NodeJS.Timer
 	constructor(
-		@inject("ElectronLog") public log: ElectronLog,
-		@inject("SlpParser") public slpParser: SlpParser,
-		@inject("SlpStream") public slpStream: SlpStream,
-		@inject(delay(() => Api)) public api: Api,
-		@inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
-		@inject(delay(() => ElectronGamesStore)) public storeGames: ElectronGamesStore,
-		@inject(delay(() => ElectronLiveStatsStore)) public storeLiveStats: ElectronLiveStatsStore,
-		@inject(delay(() => ElectronPlayersStore)) public storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
-		@inject(delay(() => ElectronSettingsStore)) public storeSettings: ElectronSettingsStore,
+		@inject("ElectronLog") private log: ElectronLog,
+		@inject("SlpParser") private slpParser: SlpParser,
+		@inject("SlpStream") private slpStream: SlpStream,
+		@inject(delay(() => Api)) private api: Api,
+		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
+		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 	) {
 		this.initStatDisplay();
 	}
 
 	async initStatDisplay() {
+		this.log.info("Initialize Dolphin Events")
 		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: SlpRawEventPayload) => {
 			this.slpParser.handleCommand(event.command, event.payload);
 			if (event.command === 54) {
@@ -105,6 +106,7 @@ export class StatsDisplay {
 		this.storeLiveStats.setGameState(InGameState.End)
 		this.storeGames.setGameMatch(settings, gameEnd, postGameStats)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
+		this.messageHandler.sendMessage('game_end', postGameStats);
 		if (postGameStats) this.messageHandler.sendMessage('post_game_stats', postGameStats);
 		// If post set
 	}
