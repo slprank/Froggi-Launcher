@@ -4,11 +4,11 @@ import EventEmitter from 'events';
 import { Client, Presence } from "discord-rpc"
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
+import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
-import { ElectronSettingsStore } from './store/storeSettings';
 
 @singleton()
 export class DiscordRpc {
@@ -42,7 +42,8 @@ export class DiscordRpc {
 		})
 
 		this.eventEmitter.on("game_settings", (settings: GameStartType) => {
-			const mode = this.storeLiveStats.getGameMode() ?? "Local"
+			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return;
+			const mode = this.storeLiveStats.getGameMode()
 			const score = this.storeGames.getGameScore() ?? [0, 0]
 
 			const currentPlayer = this.storeCurrentPlayer.getCurrentPlayer()
@@ -50,7 +51,10 @@ export class DiscordRpc {
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
 
-			const timer = futureTimerEpoch(8 * 60 * 1000 + 2000)
+			var oldDateObj = new Date();
+			var newDateObj = new Date();
+			newDateObj.setTime(oldDateObj.getTime() + (8 * 60 * 1000 + 2000));
+			const timer = newDateObj.getTime()
 
 			this.activity = {
 				...this.activity,
@@ -63,8 +67,9 @@ export class DiscordRpc {
 				largeImageKey: `stage_${settings.stageId}`,
 				largeImageText: StageConversion[settings.stageId ?? 2],
 				smallImageKey: `${currentPlayer?.rank.current?.rank.toLowerCase().replace(" ", "_")}`,
-				state: `${player1?.connectCode ?? "Player1"} - ${player2?.connectCode ?? "Player2"} (${score.join(" - ")})`,
+				state: `${player1?.connectCode} - ${player2?.connectCode} (${score.join(" - ")})`,
 			}
+
 			this.updateActivity()
 		})
 
@@ -77,49 +82,21 @@ export class DiscordRpc {
 			const player1frame = frame.players[player1?.playerIndex ?? 0]?.post
 			const player2frame = frame.players[player2?.playerIndex ?? 0]?.post
 
-			const timer = futureTimerEpoch(8 * 60 * 1000 - (8 * 60 * 1000 * (frame.frame > 0 ? frame.frame : 0) / (60 * 60 * 8)))
-
 			this.activity = {
 				...this.activity,
 				buttons: [
 					buttonBuilder(player1?.connectCode, player1?.characterId, player1frame?.stocksRemaining, player1frame?.percent),
 					buttonBuilder(player2?.connectCode, player2?.characterId, player2frame?.stocksRemaining, player2frame?.percent),
-				],
-				endTimestamp: timer,
+				]
 			}
 
 			this.updateActivity()
-		})
 
-		this.eventEmitter.on("game_end", () => {
-			const players = this.storePlayers.getCurrentPlayers()
-			const player1 = players?.at(0)
-			const player2 = players?.at(1)
-			const score = this.storeGames.getGameScore() ?? [0, 0]
-			const mode = this.storeLiveStats.getGameMode() ?? "Local"
-
-			const details = `${mode} - Menu`;
-			const state = `${player1?.connectCode ?? "Player1"} - ${player2?.connectCode ?? "Player2"} (${score.join(" - ")})`;
-
-			this.setMenuActivity(details, state)
-		})
-
-		this.eventEmitter.on("game_score", (score: number[]) => {
-			const players = this.storePlayers.getCurrentPlayers()
-			const player1 = players?.at(0)
-			const player2 = players?.at(1)
-			const state = `${player1?.connectCode ?? "Player1"} - ${player2?.connectCode ?? "Player2"} (${score.join(" - ")})`;
-
-			this.activity = {
-				...this.activity,
-				state: state
-			}
-
-			this.updateActivity()
+			this.log.info("Updating frame:", frame)
 		})
 	};
 
-	setMenuActivity = (menuActivity: string, state: string | undefined = undefined) => {
+	setMenuActivity = (menuActivity: string) => {
 		this.log.info("Discord menu")
 		const currentPlayer = this.storeCurrentPlayer.getCurrentPlayer()
 		this.activity = {
@@ -135,7 +112,7 @@ export class DiscordRpc {
 			largeImageKey: "menu",
 			largeImageText: menuActivity,
 			smallImageKey: `${currentPlayer?.rank.current?.rank.toLowerCase().replace(" ", "_")}`,
-			state: state ?? `${currentPlayer?.rank.current?.rank || "No rank"} - ${currentPlayer?.rank.current?.rating || "No rating"}`,
+			state: `${currentPlayer?.rank.current?.rank || "No rank"} - ${currentPlayer?.rank.current?.rating || "No rating"}`,
 		}
 		this.updateActivity()
 	}
@@ -149,19 +126,14 @@ export class DiscordRpc {
 	}
 }
 
-const futureTimerEpoch = (milliseconds: number) => {
-	var oldDateObj = new Date();
-	var newDateObj = new Date();
-	newDateObj.setTime(oldDateObj.getTime() + milliseconds);
-	return newDateObj.getTime()
-}
+
 
 const buttonBuilder = (connectCode: string | undefined, characterId: number | null | undefined, stocks: number | null | undefined = 4, percent: number | null | undefined = 0) => {
 	let label = ""
-	label += connectCode ? `${connectCode.split("#").at(0)}` : "Player"
-	label += characterId ? ` - ${CharacterConversion[characterId]}` : "None"
-	label += stocks !== null ? ` - Stocks: ${stocks} ` : "0"
-	label += percent !== null ? ` - ${percent.toFixed()}%` : ""
+	label += connectCode ? `${connectCode.split("#").at(0)} - ` : ""
+	label += characterId ? `${CharacterConversion[characterId]} - ` : ""
+	label += stocks ? `Stocks: ${stocks} - ` : ""
+	label += percent ? `${percent.toFixed()}%` : ""
 
 	const url = `https://slippi.gg${connectCode ? `/user/${connectCode.replace("#", "-")}` : "/leaderboards"}`
 	return {
