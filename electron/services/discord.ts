@@ -11,22 +11,9 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 
 @singleton()
-export class Discord {
+export class DiscordRpc {
 	rpc: Client;
-	activity: Presence = {
-		details: "Menu",
-		state: "Rating",
-		startTimestamp: new Date().getTime(),
-		endTimestamp: undefined,
-		largeImageKey: "menu",
-		largeImageText: "Menu",
-		buttons: [
-			{
-				label: `Get Froggi`,
-				url: `https://slippi.gg/user/snider-0`
-			},
-		],
-	};
+	activity: Presence;
 	constructor(
 		@inject("ElectronLog") public log: ElectronLog,
 		@inject("EventEmitter") public eventEmitter: EventEmitter,
@@ -43,11 +30,6 @@ export class Discord {
 
 	initDiscordJs() {
 		this.log.info("Initializing discord rpc")
-		this.rpc.on("ready", () => {
-			setInterval(() => {
-				this.rpc.setActivity(this.activity).catch(err => this.log.error(err))
-			}, 1500)
-		})
 		this.initDiscordEvents()
 		this.setMenuActivity("Menu")
 	}
@@ -140,13 +122,12 @@ export class Discord {
 	setMenuActivity = (menuActivity: string, state: string | undefined = undefined) => {
 		this.log.info("Discord menu")
 		const currentPlayer = this.storeCurrentPlayer.getCurrentPlayer()
-		console.log("Current player", currentPlayer)
 		this.activity = {
 			...this.activity,
 			buttons: [
 				{
 					label: `Get Froggi`,
-					url: `https://slippi.gg/user/snider-0`
+					url: `https://slippi.gg/user/${currentPlayer?.connectCode.replace("#", "-")}`
 				},
 			],
 			details: menuActivity,
@@ -160,7 +141,11 @@ export class Discord {
 	}
 
 	updateActivity() {
-		this.rpc.setActivity(this.activity)
+		try {
+			this.rpc.setActivity(this.activity)
+		} catch (err) {
+			this.log.error(err)
+		}
 	}
 }
 

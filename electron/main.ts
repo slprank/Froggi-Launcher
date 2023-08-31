@@ -11,7 +11,7 @@ import os from 'os';
 
 import { Api } from './services/api';
 import { AutoUpdater } from './services/autoUpdater';
-import { Discord } from './services/discord';
+import { DiscordRpc } from './services/discord';
 import { EventEmitter } from 'events';
 import { MessageHandler } from './services/messageHandler';
 import { ObsWebSocket } from './services/obs';
@@ -136,7 +136,7 @@ try {
 
 			container.resolve(Api)
 			container.resolve(AutoUpdater)
-			container.resolve(Discord)
+			container.resolve(DiscordRpc)
 			container.resolve(MessageHandler)
 			container.resolve(MemoryRead)
 			container.resolve(SlippiJs)

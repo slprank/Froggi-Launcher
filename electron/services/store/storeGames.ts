@@ -131,8 +131,8 @@ export class ElectronGamesStore {
 
     getRecentSetsByMode(mode: GameStartMode | undefined = undefined, number = 10) {
         const rankedSets = this.getAllSets() ?? [];
-        if (!mode) return rankedSets.filter(set => !set.mode).sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)
-        return rankedSets.filter(set => set.mode === mode).sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number);
+        if (!mode) return rankedSets?.filter(set => !set.mode).sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)
+        return rankedSets?.filter(set => set.mode === mode).sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number);
     }
 
     private initPlayerListener() {
