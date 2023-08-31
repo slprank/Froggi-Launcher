@@ -9,6 +9,7 @@ import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
 import { Api } from '../api';
+import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 @singleton()
 export class ElectronSettingsStore {
@@ -21,6 +22,7 @@ export class ElectronSettingsStore {
         @inject("Port") public port: string,
         @inject(delay(() => Api)) public api: Api,
         @inject(delay(() => MessageHandler)) public messageHandler: MessageHandler,
+        @inject(delay(() => ElectronCurrentPlayerStore)) public storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
         this.initListeners();
         this.updateSlippiSettings();
@@ -87,6 +89,7 @@ export class ElectronSettingsStore {
 
     initListeners() {
         this.store.onDidChange(`settings.currentPlayer`, async (value) => {
+            this.storeCurrentPlayer.updateCurrentPlayerConnectCode()
             this.messageHandler.sendMessage('current_player', value);
         })
     }

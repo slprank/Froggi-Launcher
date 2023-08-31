@@ -40,6 +40,12 @@ export class ElectronCurrentPlayerStore {
         return this.store.get(`player.${connectCode}.rank.current`) as RankedNetplayProfile;
     }
 
+    updateCurrentPlayerConnectCode() {
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        this.store.set(`player.${connectCode}.connectCode`, connectCode);
+    }
+
     setCurrentPlayerCurrentRankStats(rankStats: RankedNetplayProfile | undefined) {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!rankStats || !connectCode) return;

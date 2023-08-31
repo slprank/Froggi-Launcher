@@ -212,6 +212,7 @@ export interface RankedNetplayProfile {
 	continent: string | undefined;
 	continentInitials: string | undefined;
 	characters: Character[];
+	displayName: string;
 	leaderboardPlacement: number | undefined;
 	dailyGlobalPlacement: number;
 	dailyRegionalPlacement: number;
