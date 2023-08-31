@@ -13,7 +13,6 @@ export class MemoryRead {
 	}
 
 	initMemoryRead() {
-		this.log.info("Initializing memory read")
 		this.runMemoryRead()
 		this.initMemoryReadEvents()
 	}
