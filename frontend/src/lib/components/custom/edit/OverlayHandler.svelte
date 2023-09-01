@@ -223,6 +223,7 @@
 
 		const index = await getOverlayIndexById(overlayId);
 		obs.update((obs) => {
+			if (!index) return obs;
 			let overlay = obs.overlays[index];
 			const layersLength = overlay[statsScene]?.layers.length;
 			overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
@@ -235,7 +236,7 @@
 		});
 		return new Promise<number>((resolve) =>
 			setTimeout(() => {
-				resolve(overlay[statsScene]?.layers.length - 1);
+				resolve(overlay![statsScene]?.layers.length - 1);
 			}),
 		);
 	}
@@ -248,22 +249,23 @@
 		let updatedOverlay = await getOverlayById(overlayId);
 		if (
 			selectedLayer === undefined ||
-			selectedLayer >= updatedOverlay[statsScene]?.layers.length - 1
+			selectedLayer >= updatedOverlay![statsScene]?.layers.length - 1
 		)
 			return 0;
 		[
-			updatedOverlay[statsScene].layers[selectedLayer],
-			updatedOverlay[statsScene].layers[selectedLayer + 1],
+			updatedOverlay![statsScene].layers[selectedLayer],
+			updatedOverlay![statsScene].layers[selectedLayer + 1],
 		] = [
-			updatedOverlay[statsScene].layers[selectedLayer + 1],
-			updatedOverlay[statsScene].layers[selectedLayer],
+			updatedOverlay![statsScene].layers[selectedLayer + 1],
+			updatedOverlay![statsScene].layers[selectedLayer],
 		];
 		const index = await getOverlayIndexById(overlayId);
 		obs.update((obs) => {
+			if (!index || !updatedOverlay) return obs;
 			obs.overlays[index] = updatedOverlay;
+			updateOverlay(updatedOverlay);
 			return obs;
 		});
-		updateOverlay(updatedOverlay);
 
 		return new Promise<number>((resolve) =>
 			setTimeout(() => {
@@ -280,18 +282,19 @@
 		let updatedOverlay = await getOverlayById(overlayId);
 		if (selectedLayer === undefined || selectedLayer === 0) return 0;
 		[
-			updatedOverlay[statsScene].layers[selectedLayer],
-			updatedOverlay[statsScene].layers[selectedLayer - 1],
+			updatedOverlay![statsScene].layers[selectedLayer],
+			updatedOverlay![statsScene].layers[selectedLayer - 1],
 		] = [
-			updatedOverlay[statsScene].layers[selectedLayer - 1],
-			updatedOverlay[statsScene].layers[selectedLayer],
+			updatedOverlay![statsScene].layers[selectedLayer - 1],
+			updatedOverlay![statsScene].layers[selectedLayer],
 		];
 		const index = await getOverlayIndexById(overlayId);
 		obs.update((obs) => {
+			if (!index || !updatedOverlay) return obs;
 			obs.overlays[index] = updatedOverlay;
+			updateOverlay(updatedOverlay);
 			return obs;
 		});
-		updateOverlay(updatedOverlay);
 		return new Promise<number>((resolve) =>
 			setTimeout(() => {
 				resolve(selectedLayer - 1);
@@ -310,6 +313,7 @@
 
 		const index = await getOverlayIndexById(overlayId);
 		obs.update((obs) => {
+			if (!index || !updatedOverlay) return obs;
 			obs.overlays[index] = updatedOverlay;
 			return obs;
 		});

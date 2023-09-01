@@ -23,12 +23,12 @@
 
 	$: defaultPreview = edit || preview;
 
-	let style: GridContentItemStyle = {
+	$: style = {
 		classValue: '',
 		cssValue: '',
 		shadow: '',
 		stroke: '',
-	};
+	} as GridContentItemStyle;
 
 	$: innerWidth,
 		(style.classValue = Object.entries(dataItem?.data.class ?? {})
@@ -42,7 +42,6 @@
 			.join('; '));
 
 	const relativeBoarderSize = ([key, value]: [string, string]) => {
-		console.log('here', key, value);
 		if (!['borderLeft', 'borderRight', 'borderTop', 'borderBottom'].includes(key))
 			return [key, value];
 		return [
@@ -54,6 +53,8 @@
 			)}${value.slice(-9)}`,
 		];
 	};
+
+	$: console.log('CSS', `${style.cssValue}`);
 
 	$: shadowSizeX = getRelativePixelSize(
 		dataItem?.data.shadow?.x,

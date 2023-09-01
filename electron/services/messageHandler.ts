@@ -105,6 +105,7 @@ export class MessageHandler {
 			}
 		});
 		socket.addEventListener('close', () => {
+			socket.removeEventListener("message")
 			this.webSockets = this.webSockets.filter((s: any) => s != socket);
 		});
 	}
