@@ -3,7 +3,7 @@
 	import type { GridContentItem, Scene } from '$lib/models/types';
 	import { fly } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
-	import { gameFrame, gameState } from '$lib/utils/store.svelte';
+	import { gameFrame, gameState, isElectron } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
 	import { createAnimation } from './element/animations/Animations.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';
