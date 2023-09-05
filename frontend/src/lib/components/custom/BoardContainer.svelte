@@ -3,7 +3,7 @@
 	import { SceneBackground } from '$lib/models/enum';
 	import type { Scene } from '$lib/models/types';
 	import { gameSettings } from '$lib/utils/store.svelte';
-	import { createAnimation } from './element/animations/AnimationExport.svelte';
+	import { createAnimation } from './element/animations/Animations.svelte';
 
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;

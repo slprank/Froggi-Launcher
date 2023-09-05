@@ -5,7 +5,7 @@
 	import { COL, ROW } from '$lib/models/const';
 	import { gameFrame, gameState } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
-	import { createAnimation } from './element/animations/AnimationExport.svelte';
+	import { createAnimation } from './element/animations/Animations.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 
@@ -108,14 +108,15 @@
 		{#if div}
 			<div
 				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
-				class={`absolute h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
+				class={`h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 					selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
 				} bg-opacity-50`}
 			>
 				{#if edit}
 					<GridElements {dataItem} {edit} />
+					<h1 class="top-0 left-0 absolute">{dataItem.data.description ?? ''}</h1>
 				{:else}
-					<div class="w-full h-full" in:animateIn out:animateOut>
+					<div class="w-full h-full relative" in:animateIn out:animateOut>
 						<AnimationLayer
 							animationTrigger={dataItem.data.animation.trigger}
 							animationIn={(node) =>
@@ -141,11 +142,6 @@
 					</div>
 				{/if}
 			</div>
-			{#if edit}
-				<div class="h-full w-full absolute">
-					<h1 class="top-0 left-0 absolute">{dataItem.data.description ?? ''}</h1>
-				</div>
-			{/if}
 		{/if}
 	</div>
 {/if}
