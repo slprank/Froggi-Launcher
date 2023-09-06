@@ -33,6 +33,31 @@
 		// 	visible: [LiveStatsScene.WaitingForDolphin].includes($statsScene),
 		// },
 		{
+			text: 'Custom UI',
+			category: ElementCategory.CustomUi,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			text: 'Players Rank',
+			category: ElementCategory.PlayersRank,
+			visible: [
+				LiveStatsScene.PreGame,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+			].includes($statsScene),
+		},
+		{
+			text: 'Current Player Rank',
+			category: ElementCategory.CurrentPlayerRank,
+			visible: [
+				LiveStatsScene.PreGame,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+			].includes($statsScene),
+		},
+		{
 			text: 'Pre Game',
 			category: ElementCategory.PreGame,
 			visible: [LiveStatsScene.PreGame].includes($statsScene),
@@ -40,11 +65,6 @@
 		{
 			text: 'In Game',
 			category: ElementCategory.InGame,
-			visible: [LiveStatsScene.InGame].includes($statsScene),
-		},
-		{
-			text: 'Custom UI',
-			category: ElementCategory.CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{

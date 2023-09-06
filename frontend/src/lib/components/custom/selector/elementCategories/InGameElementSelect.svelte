@@ -54,6 +54,20 @@
 		Player 2 Rank Icon
 	</ElementOption>
 	<ElementOption
+		description="Player 1 Slippi Rank Text"
+		customElement={CustomElement.Player1RankText}
+		on:select={select}
+	>
+		Player 1 Rank Text
+	</ElementOption>
+	<ElementOption
+		description="Player 2 Slippi Rank Text"
+		customElement={CustomElement.Player2RankText}
+		on:select={select}
+	>
+		Player 2 Rank Text
+	</ElementOption>
+	<ElementOption
 		description="Player 1 Ongoing Set Score"
 		customElement={CustomElement.Player1Score}
 		on:select={select}

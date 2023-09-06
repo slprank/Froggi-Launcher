@@ -129,6 +129,8 @@ export enum ElementCategory {
 	PostSet = 8,
 	RankChange = 10,
 	Custom = 12,
+	PlayersRank = 13,
+	CurrentPlayerRank = 14,
 }
 
 export enum ElementPauseOption {
