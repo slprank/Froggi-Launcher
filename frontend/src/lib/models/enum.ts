@@ -56,52 +56,6 @@ export enum Character {
 	Ganondorf = 25
 }
 
-export enum CustomElement {
-
-	// Custom String
-	CustomString = 100,
-	CurrentPlayerPercent = 101,
-	Player1Percent = 102,
-	Player2Percent = 103,
-	CurrentPlayerPercentDecimal = 104,
-	Player1PercentDecimal = 105,
-	Player2PercentDecimal = 106,
-
-	// Custom Image
-	CustomImage = 200,
-	CurrentPlayerCharacterRender = 201,
-	Player1CharacterRender = 202,
-	Player2CharacterRender = 203,
-
-	// Custom Box
-	CustomBox = 300,
-
-	// String
-	CurrentPlayerTag = 400,
-	Player1Tag = 401,
-	Player2Tag = 402,
-	Player1Score = 403,
-	Player2Score = 404,
-
-	GameMode = 450,
-	BestOf = 451,
-
-
-	// Box
-	// Potential Box Elements
-
-	// Image
-	CurrentPlayerRankIcon = 600,
-	Player1RankIcon = 601,
-	Player2RankIcon = 602,
-	Player1RankText = 603,
-	Player2RankText = 604,
-	CurrentPlayerCharacterIcon = 605,
-	Player1CharacterIcon = 606,
-	Player2CharacterIcon = 607,
-}
-
-
 export enum DolphinState {
 	Disconnected = 0,
 	Connected = 1,
@@ -129,8 +83,8 @@ export enum ElementCategory {
 	PostSet = 8,
 	RankChange = 10,
 	Custom = 12,
-	PlayersRank = 13,
-	CurrentPlayerRank = 14,
+	PlayersSlippiData = 13,
+	CurrentPlayerSlippiData = 14,
 }
 
 export enum ElementPauseOption {
@@ -185,3 +139,103 @@ export enum Transition {
 	CrossFade = 7,
 }
 
+export enum CustomElement {
+
+	// Custom String
+	CustomString = 1000,
+	CurrentPlayerPercent = 1001,
+	Player1Percent = 1002,
+	Player2Percent = 1003,
+	CurrentPlayerPercentDecimal = 1004,
+	Player1PercentDecimal = 1005,
+	Player2PercentDecimal = 1006,
+
+	// Custom Image
+	CustomImage = 2000,
+	CurrentPlayerCharacterRender = 2001,
+	Player1CharacterRender = 2002,
+	Player2CharacterRender = 2003,
+
+	// Custom Box
+	CustomBox = 3000,
+
+	// String
+	CurrentPlayerTag = 4000,
+	Player1Tag = 4001,
+	Player2Tag = 4002,
+	CurrentPlayerScore = 4003,
+	Player1Score = 4004,
+	Player2Score = 4005,
+	CurrentPlayerRankText = 4006,
+	Player1RankText = 4007,
+	Player2RankText = 4008,
+	CurrentPlayerRating = 4009,
+	Player1Rating = 4010,
+	Player2Rating = 4011,
+	CurrentPlayerConnectCode = 4012,
+	Player1ConnectCode = 4013,
+	Player2ConnectCode = 40140,
+	CurrentPlayerContinent = 4015,
+	Player1Continent = 4016,
+	Player2Continent = 4017,
+	CurrentPlayerContinentInitials = 4018,
+	Player1ContinentInitials = 4019,
+	Player2ContinentInitials = 4020,
+
+	CurrentPlayerDailyGlobalPlacement = 4030,
+	Player1DailyGlobalPlacement = 4031,
+	Player2DailyGlobalPlacement = 4032,
+	CurrentPlayerDailyRegionalPlacement = 4033,
+	Player1DailyRegionalPlacement = 40340,
+	Player2DailyRegionalPlacement = 4035,
+	CurrentPlayerWins = 4036,
+	Player1Wins = 4037,
+	Player2Wins = 4038,
+	CurrentPlayerWinsPercent = 4039,
+	Player1WinsPercent = 4040,
+	Player2WinsPercent = 4041,
+	CurrentPlayerLosses = 4042,
+	Player1Losses = 4043,
+	Player2Losses = 4044,
+	CurrentPlayerLossesPercent = 4045,
+	Player1LossesPercent = 4046,
+	Player2LossesPercent = 4047,
+	CurrentPlayerCharacter1 = 4048,
+	Player1Character1 = 4049,
+	Player2Character1 = 4050,
+	CurrentPlayerCharacter2 = 4051,
+	Player1Character2 = 4052,
+	Player2Character2 = 4053,
+	CurrentPlayerCharacter3 = 4054,
+	Player1Character3 = 4055,
+	Player2Character3 = 4056,
+	CurrentPlayerCharacter1Percent = 4057,
+	Player1Character1Percent = 4058,
+	Player2Character1Percent = 4059,
+	CurrentPlayerCharacter2Percent = 4060,
+	Player1Character2Percent = 4061,
+	Player2Character2Percent = 4062,
+	CurrentPlayerCharacter3Percent = 4063,
+	Player1Character3Percent = 4064,
+	Player2Character3Percent = 4065,
+
+	GameMode = 5050,
+	BestOf = 5051,
+
+	// Image
+	CurrentPlayerRankIcon = 6000,
+	Player1RankIcon = 6001,
+	Player2RankIcon = 6002,
+	CurrentPlayerCharacterIcon = 6003,
+	Player1CharacterIcon = 6004,
+	Player2CharacterIcon = 6005,
+	CurrentPlayerCharacter1Icon = 6006,
+	Player1Character1Icon = 6007,
+	Player2Character1Icon = 6008,
+	CurrentPlayerCharacter2Icon = 6009,
+	Player1Character2Icon = 6010,
+	Player2Character2Icon = 6011,
+	CurrentPlayerCharacter3Icon = 6012,
+	Player1Character3Icon = 6013,
+	Player2Character3Icon = 6014,
+}

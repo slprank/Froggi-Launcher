@@ -22,19 +22,19 @@
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
 
-	$: customStringSettings = selectedElementId >= 100 && selectedElementId < 200;
-	$: customBoxSettings = selectedElementId >= 200 && selectedElementId < 300;
-	$: customImageSettings = selectedElementId >= 300 && selectedElementId < 400;
+	$: customStringSettings = selectedElementId >= 1000 && selectedElementId < 2000;
+	$: customBoxSettings = selectedElementId >= 2000 && selectedElementId < 3000;
+	$: customImageSettings = selectedElementId >= 3000 && selectedElementId < 4000;
 	$: stringSettings =
-		(selectedElementId >= 400 && selectedElementId < 500) ||
+		(selectedElementId >= 4000 && selectedElementId < 5000) ||
 		selectedElementId === CustomElement.CustomString;
 	$: boxSettings =
-		(selectedElementId >= 500 && selectedElementId < 600) ||
+		(selectedElementId >= 5000 && selectedElementId < 6000) ||
 		selectedElementId === CustomElement.CustomBox;
 	$: imageSettings =
-		(selectedElementId >= 600 && selectedElementId < 700) ||
+		(selectedElementId >= 6000 && selectedElementId < 7000) ||
 		selectedElementId === CustomElement.CustomImage;
-	$: percentSettings = selectedElementId >= 101 && selectedElementId <= 104;
+	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1004;
 
 	const prevSelectedElementId = selectedElementId;
 

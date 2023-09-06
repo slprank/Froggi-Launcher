@@ -10,6 +10,8 @@
 	import PreGameElementSelect from './elementCategories/PreGameElementSelect.svelte';
 	import RankChangeElementSelect from './elementCategories/RankChangeElementSelect.svelte';
 	import WaitingElementSelect from './elementCategories/WaitingElementSelect.svelte';
+	import PlayersSlippiData from './elementCategories/PlayersSlippiData.svelte';
+	import CurrentPlayerSlippiData from './elementCategories/CurrentPlayerSlippiData.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -27,19 +29,14 @@
 			category: ElementCategory.Custom,
 			visible: true,
 		},
-		// {
-		// 	text: 'Waiting',
-		// 	category: ElementCategory.WaitingForDolphin,
-		// 	visible: [LiveStatsScene.WaitingForDolphin].includes($statsScene),
-		// },
 		{
 			text: 'Custom UI',
 			category: ElementCategory.CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			text: 'Players Rank',
-			category: ElementCategory.PlayersRank,
+			text: 'Players Slippi Data',
+			category: ElementCategory.PlayersSlippiData,
 			visible: [
 				LiveStatsScene.PreGame,
 				LiveStatsScene.InGame,
@@ -48,8 +45,8 @@
 			].includes($statsScene),
 		},
 		{
-			text: 'Current Player Rank',
-			category: ElementCategory.CurrentPlayerRank,
+			text: 'Current Player Slippi Data',
+			category: ElementCategory.CurrentPlayerSlippiData,
 			visible: [
 				LiveStatsScene.PreGame,
 				LiveStatsScene.InGame,
@@ -135,6 +132,12 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.RankChange}
 				<RankChangeElementSelect on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.PlayersSlippiData}
+				<PlayersSlippiData on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
+				<CurrentPlayerSlippiData on:select={select} />
 			{/if}
 		</div>
 	{/key}
