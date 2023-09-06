@@ -94,9 +94,11 @@ export enum CustomElement {
 	CurrentPlayerRankIcon = 600,
 	Player1RankIcon = 601,
 	Player2RankIcon = 602,
-	CurrentPlayerCharacterIcon = 603,
-	Player1CharacterIcon = 604,
-	Player2CharacterIcon = 605,
+	Player1RankText = 603,
+	Player2RankText = 604,
+	CurrentPlayerCharacterIcon = 605,
+	Player1CharacterIcon = 606,
+	Player2CharacterIcon = 607,
 }
 
 

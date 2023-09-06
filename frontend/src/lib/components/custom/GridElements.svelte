@@ -220,6 +220,16 @@
 							preview={defaultPreview}
 						/>
 					{/if}
+					{#if dataItem?.elementId === CustomElement.Player1RankText}
+						<TextElement {style} {dataItem} {edit}>
+							{$currentPlayers?.at(0)?.rank?.current?.rank ?? ''}
+						</TextElement>
+					{/if}
+					{#if dataItem?.elementId === CustomElement.Player2RankText}
+						<TextElement {style} {dataItem} {edit}>
+							{$currentPlayers?.at(1)?.rank?.current?.rank ?? ''}
+						</TextElement>
+					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1CharacterRender && $currentPlayers.at(0)}
 						<CharacterRender
 							{dataItem}
