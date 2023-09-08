@@ -14,7 +14,7 @@ import { ElectronPlayersStore } from './store/storePlayers';
 
 @singleton()
 export class StatsDisplay {
-	pauseInterval: NodeJS.Timer
+	pauseInterval: NodeJS.Timeout
 	constructor(
 		@inject("ElectronLog") private log: ElectronLog,
 		@inject("SlpParser") private slpParser: SlpParser,

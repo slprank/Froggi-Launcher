@@ -16,10 +16,13 @@ import { Api } from './api';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { findPlayKey } from '../utils/playkey';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
+import os from 'os';
 
 @singleton()
 export class SlippiJs {
 	dolphinConnection = new DolphinConnection()
+	dolphinProcessInterval: NodeJS.Timeout;
+	isWindows = os.platform() === 'win32';
 	constructor(
 		@inject("ElectronLog") private log: ElectronLog,
 		@inject("IpcMain") private ipcMain: IpcMain,
@@ -39,13 +42,12 @@ export class SlippiJs {
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('Dolphin Connection State', status);
-			// Disconnect from Slippi server when we disconnect from Dolphin
 			this.storeDolphin.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {
 				await this.handleDisconnected()
 			}
 			if (status === ConnectionStatus.CONNECTED) {
-				await this.handleConnect()
+				await this.handleConnected()
 			}
 			if (status === ConnectionStatus.CONNECTING) {
 				this.handleConnecting()
@@ -91,16 +93,18 @@ export class SlippiJs {
 	private async handleDisconnected() {
 		this.log.info("Dolphin Disconnected")
 		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Disconnected)
-		await this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
+		this.startProcessSearchInterval()
 	}
 
 	private handleConnecting() {
 		this.log.info("Dolphin Connecting")
 		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connecting)
+		clearInterval(this.dolphinProcessInterval)
 	}
 
-	private async handleConnect() {
+	private async handleConnected() {
 		this.log.info("Dolphin Connected")
+		clearInterval(this.dolphinProcessInterval)
 		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connected)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PreGame)
 		const connectCode = (await findPlayKey()).connectCode
@@ -108,5 +112,19 @@ export class SlippiJs {
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode)
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile)
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile)
+	}
+
+	private async startProcessSearchInterval() {
+		this.log.info("Looking for dolphin process")
+		this.dolphinProcessInterval = setInterval(async () => {
+			const exec = require('child_process').exec;
+			const command = this.isWindows ? "Get-Process" : "ps -ax | grep Dolphin"
+			exec(command, (err: Error, stdout: string, stderr: Error) => {
+				const includesDolphin = stdout.toLowerCase().includes(this.isWindows ? "dolphin" : "slippi dolphin")
+				if (err) this.log.error(err)
+				if (stderr) this.log.error(stderr);
+				if (includesDolphin) this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
+			})
+		}, 1000)
 	}
 }

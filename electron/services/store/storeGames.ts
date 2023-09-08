@@ -144,7 +144,6 @@ export class ElectronGamesStore {
         })
     }
 
-    // TODO:
     private initListeners() {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
         if (!connectCode) return;
