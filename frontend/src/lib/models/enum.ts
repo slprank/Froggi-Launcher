@@ -83,8 +83,9 @@ export enum ElementCategory {
 	PostSet = 8,
 	RankChange = 10,
 	Custom = 12,
-	PlayersSlippiData = 13,
-	CurrentPlayerSlippiData = 14,
+	CurrentPlayerSlippiData = 13,
+	Player1SlippiData = 14,
+	Player2SlippiData = 15,
 }
 
 export enum ElementPauseOption {

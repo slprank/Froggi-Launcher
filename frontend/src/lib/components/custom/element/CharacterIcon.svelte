@@ -6,18 +6,16 @@
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
 
-	const fallbackIcon = 'GOLD 2';
+	$: characterId = getCharacterId(player?.characterId);
 
-	$: playerRankIcon = player?.rank?.current?.rank?.toUpperCase();
-	$: getRankIcon = (rankIcon: string | undefined) => {
-		if (rankIcon) return rankIcon;
-		if (preview) return fallbackIcon;
-		return '';
+	const getCharacterId = (characterId: number | undefined | null) => {
+		if (preview && (characterId === undefined || characterId === null))
+			return Math.floor(Math.random() * 25);
+		return characterId;
 	};
-	$: rankIcon = getRankIcon(playerRankIcon);
 </script>
 
-{#if rankIcon}
+{#if player}
 	<div
 		class={`w-full h-full ${style.classValue}`}
 		style={`${style.cssValue}; ${
@@ -25,10 +23,10 @@
 		}; `}
 	>
 		<img
-			class="w-full h-full object-contain"
+			class="h-full aspect-video"
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/rank-icons/${rankIcon}.svg`}
-			alt="rank-icon"
+			src={`/image/characters/${characterId}/0.png`}
+			alt="custom"
 		/>
 	</div>
 {/if}

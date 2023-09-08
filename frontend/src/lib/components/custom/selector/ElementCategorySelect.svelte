@@ -10,7 +10,8 @@
 	import PreGameElementSelect from './elementCategories/PreGameElementSelect.svelte';
 	import RankChangeElementSelect from './elementCategories/RankChangeElementSelect.svelte';
 	import WaitingElementSelect from './elementCategories/WaitingElementSelect.svelte';
-	import PlayersSlippiData from './elementCategories/PlayersSlippiData.svelte';
+	import Player1SlippiData from './elementCategories/Player1SlippiData.svelte';
+	import Player2SlippiData from './elementCategories/Player2SlippiData.svelte';
 	import CurrentPlayerSlippiData from './elementCategories/CurrentPlayerSlippiData.svelte';
 
 	export let selectedElementId: CustomElement;
@@ -35,8 +36,18 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			text: 'Players Slippi Data',
-			category: ElementCategory.PlayersSlippiData,
+			text: 'Player1 Slippi Data',
+			category: ElementCategory.Player1SlippiData,
+			visible: [
+				LiveStatsScene.PreGame,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+			].includes($statsScene),
+		},
+		{
+			text: 'Player2 Slippi Data',
+			category: ElementCategory.Player2SlippiData,
 			visible: [
 				LiveStatsScene.PreGame,
 				LiveStatsScene.InGame,
@@ -60,17 +71,12 @@
 			visible: [LiveStatsScene.PreGame].includes($statsScene),
 		},
 		{
-			text: 'In Game',
-			category: ElementCategory.InGame,
-			visible: [LiveStatsScene.InGame].includes($statsScene),
-		},
-		{
-			text: 'Post Game',
+			text: 'Post Game Stats',
 			category: ElementCategory.PostGame,
 			visible: [LiveStatsScene.PostGame].includes($statsScene),
 		},
 		{
-			text: 'Post Set',
+			text: 'Post Set Stats',
 			category: ElementCategory.PostSet,
 			visible: [LiveStatsScene.PostSet].includes($statsScene),
 		},
@@ -133,11 +139,14 @@
 			{#if selectedCategory === ElementCategory.RankChange}
 				<RankChangeElementSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.PlayersSlippiData}
-				<PlayersSlippiData on:select={select} />
-			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
 				<CurrentPlayerSlippiData on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player1SlippiData}
+				<Player1SlippiData on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player2SlippiData}
+				<Player2SlippiData on:select={select} />
 			{/if}
 		</div>
 	{/key}

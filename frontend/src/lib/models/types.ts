@@ -221,10 +221,14 @@ export interface RankedNetplayProfile {
 	dailyGlobalPlacement: number;
 	dailyRegionalPlacement: number;
 	losses: number;
-	wins: number;
+	lossesPercent: number;
 	rating: number;
 	rank: string;
-	seasons: RankedNetplaySeason[]
+	seasons: RankedNetplaySeason[];
+	totalGames: number;
+	totalSets: number;
+	wins: number;
+	winsPercent: number;
 }
 
 
@@ -245,12 +249,11 @@ export interface SlippiLauncherSettings {
 }
 
 export interface Character {
-	character: string;
-	characterName: string | undefined;
+	characterName: string;
 	characterId: number;
-	characterColorId: number;
+	characterColorId: number | undefined;
 	gameCount: number;
-	icon: string;
+	gameCountPercent: number;
 }
 
 export interface PlayKey {
