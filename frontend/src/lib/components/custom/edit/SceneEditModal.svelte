@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { LiveStatsScene, SceneBackground, Transition, Animation } from '$lib/models/enum';
+	import { LiveStatsScene, SceneBackground } from '$lib/models/enum';
 	import type { Overlay } from '$lib/models/types';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import Select from '$lib/components/input/Select.svelte';

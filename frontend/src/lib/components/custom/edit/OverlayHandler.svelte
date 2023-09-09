@@ -7,15 +7,8 @@
 		ElementPauseOption,
 		LiveStatsScene,
 		SceneBackground,
-		Transition,
 	} from '$lib/models/enum';
-	import type {
-		AnimationOptions,
-		AnimationSettings,
-		ElementPayload,
-		Overlay,
-		Scene,
-	} from '$lib/models/types';
+	import type { AnimationSettings, ElementPayload, Overlay, Scene } from '$lib/models/types';
 
 	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 

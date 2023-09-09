@@ -3,7 +3,7 @@ import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
-import { Player } from '../../frontend/src/lib/models/types';
+import { Player } from '../../frontend/src/lib/models/types/slippiData';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs"
 import { ElectronGamesStore } from './store/storeGames';

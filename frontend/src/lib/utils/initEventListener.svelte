@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	import type { AutoUpdaterStatus, DolphinState, InGameState } from '$lib/models/enum';
-	import type { AutoUpdater, Obs, Overlay, Player } from '$lib/models/types';
+	import type { AutoUpdater, Obs, Overlay } from '$lib/models/types';
+	import type { CurrentPlayer, Player } from '$lib/models/types/slippiData';
 	import {
 		eventEmitter,
 		currentPlayer,
@@ -37,7 +38,7 @@
 				return { ...autoUpdater, progress: progress };
 			});
 		});
-		_eventEmitter.on('current_player', (player: Player) => {
+		_eventEmitter.on('current_player', (player: CurrentPlayer) => {
 			console.log({ player });
 			currentPlayer.set(player);
 		});

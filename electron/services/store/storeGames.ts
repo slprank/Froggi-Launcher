@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { GameStartMode, GameStats, PlayerGame, Sets } from '../../../frontend/src/lib/models/types';
+import type { GameStartMode, GameStats, PlayerGame, Sets } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -26,10 +26,6 @@ export class ElectronGamesStore {
     ) {
         this.log.info("Initializing Game Store")
         this.initPlayerListener()
-    }
-
-    getRecentOfflineSets() {
-        return this.getRecentSets();
     }
 
     getRecentDirectSets() {
@@ -129,7 +125,7 @@ export class ElectronGamesStore {
     getRecentSetsByMode(mode: GameStartMode, number = 10) {
         const sets = this.getAllSets();
         if (!sets) return []
-        return sets[mode ?? "recent"]?.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number) ?? [];
+        return sets[mode ?? "recent"]?.sort((a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number) ?? [];
     }
 
     private initPlayerListener() {

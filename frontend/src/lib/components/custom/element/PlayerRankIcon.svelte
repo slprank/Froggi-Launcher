@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { GridContentItem, GridContentItemStyle, Player } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { Player } from '$lib/models/types/slippiData';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;

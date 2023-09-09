@@ -2,7 +2,7 @@ import getAppDataPath from "appdata-path";
 import fs from "fs";
 import os from "os";
 import path from "path";
-import { PlayKey } from "../../frontend/src/lib/models/types";
+import { PlayKey } from "../../frontend/src/lib/models/types/slippiData";
 
 
 export async function findPlayKey(): Promise<PlayKey> {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Character, CustomElement } from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 	import { currentPlayer, currentPlayers, gameScore } from '$lib/utils/store.svelte';
