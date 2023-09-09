@@ -163,7 +163,7 @@ export interface Stroke {
 	color: string;
 }
 
-export type GameStartMode = "ranked" | "unranked" | "direct" | "local" | "recent"; // TODO: Verify these types
+export type GameStartMode = "ranked" | "unranked" | "direct" | "local"; // TODO: Verify these types
 
 
 export interface Player extends PlayerType {
@@ -171,8 +171,14 @@ export interface Player extends PlayerType {
 }
 
 export interface CurrentPlayer extends Player {
+	game: PlayerGame
 	rank: CurrentPlayerRank
 }
+
+export type PlayerGame = {
+	recent: GameStats[]
+} &
+	{ [mode in GameStartMode]: { [matchId: string]: GameStats[] }; }
 
 export interface Rank {
 	current: RankedNetplayProfile | undefined;
@@ -213,6 +219,7 @@ export interface RankedNetplaySeason {
 }
 
 export interface RankedNetplayProfile {
+	connectCode: string;
 	continent: string | undefined;
 	continentInitials: string | undefined;
 	characters: Character[];

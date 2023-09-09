@@ -7,6 +7,7 @@ import os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { ElectronLiveStatsStore } from './storeLiveStats';
+import { MessageHandler } from '../messageHandler';
 
 
 @singleton()
@@ -20,9 +21,11 @@ export class ElectronCurrentPlayerStore {
         @inject("ElectronLog") private log: ElectronLog,
         @inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
         @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
         this.log.info("Initializing Current Player Store")
         this.initPlayerListener();
+        this.initListeners()
     }
 
     // Rank
@@ -88,28 +91,18 @@ export class ElectronCurrentPlayerStore {
     }
 
     private initPlayerListener() {
-        this.store.onDidChange(`stats.currentPlayers`, async () => {
+        this.store.onDidChange(`settings.currentPlayer.connectCode`, async () => {
             this.unsubscribeListeners()
             this.initListeners()
         })
     }
 
-    // TODO:
     private initListeners() {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
         if (!connectCode) return;
         this.listeners = [
-            this.store.onDidChange(`player.${connectCode}.rank.prevRankedNetplayProfile`, (value) => {
-                console.log(value)
-                // Emit to svelte
-            }),
-            this.store.onDidChange(`player.${connectCode}.rank.currentRankedNetplayProfile`, (value) => {
-                console.log(value)
-                // Emit to svelte
-            }),
-            this.store.onDidChange(`player.${connectCode}.rank.newRankedNetplayProfile`, (value) => {
-                console.log(value)
-                // Emit to svelte
+            this.store.onDidChange(`player.${connectCode}`, (value) => {
+                this.messageHandler.sendMessage("current_player", value)
             }),
             this.store.onDidChange(`settings.currentPlayer.newRankedNetplayProfile`, async () => {
                 await this.handleRankChange()

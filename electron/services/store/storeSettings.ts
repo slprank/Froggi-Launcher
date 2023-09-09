@@ -4,7 +4,6 @@ import Store from 'electron-store';
 import type { SlippiLauncherSettings, Url } from '../../../frontend/src/lib/models/types';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
-import { MessageHandler } from '../messageHandler';
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
@@ -19,7 +18,6 @@ export class ElectronSettingsStore {
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject("Port") private port: string,
-        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
         @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
         this.log.info("Initializing Settings Store")
@@ -87,9 +85,8 @@ export class ElectronSettingsStore {
     }
 
     initListeners() {
-        this.store.onDidChange(`settings.currentPlayer`, async (value) => {
+        this.store.onDidChange(`settings.currentPlayer`, async () => {
             this.storeCurrentPlayer.updateCurrentPlayerConnectCode()
-            this.messageHandler.sendMessage('current_player', value);
         })
     }
 }

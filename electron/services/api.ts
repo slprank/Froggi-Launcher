@@ -16,8 +16,8 @@ export class Api {
 		if (!connectCode) return undefined;
 		try {
 			const rankData = (await axios.get(`http://slprank.com/rank/${connectCode.replace('#', '-')}?raw`)).data as RankedNetplayProfile
-			this.log.info("Fetched user:", this.enrichData(rankData))
-			return this.enrichData(rankData)
+			this.log.info("Fetched user:", this.enrichData(rankData, connectCode))
+			return this.enrichData(rankData, connectCode)
 		} catch (err) {
 			this.log.error(err);
 			return
@@ -27,16 +27,16 @@ export class Api {
 	async getPlayerWithRankStats(player: PlayerType): Promise<Player | undefined> {
 		try {
 			const rankData = (await axios.get(`http://slprank.com/rank/${player.connectCode.replace('#', '-')}?raw`)).data as RankedNetplayProfile
-			this.log.info("Fetched user:", this.enrichData(rankData))
-			return { ...player, rank: { current: this.enrichData(rankData) } }
+			this.log.info("Fetched user:", this.enrichData(rankData, player.connectCode))
+			return { ...player, rank: { current: this.enrichData(rankData, player.connectCode) } }
 		} catch (err) {
 			this.log.error(err);
 			return undefined
 		}
 	}
 
-	private enrichData(playerRank: RankedNetplayProfile): RankedNetplayProfile {
-		const totalGames = playerRank.characters?.map(c => c.gameCount).reduce((a: number, b: number) => a + b) ?? 0;
+	private enrichData(playerRank: RankedNetplayProfile, connectCode: string): RankedNetplayProfile {
+		const totalGames = playerRank.characters.length ? playerRank.characters?.map(c => c.gameCount).reduce((a: number, b: number) => a + b) : 0;
 		const totalSets = playerRank?.wins ?? 0 + playerRank.losses ?? 0;
 		const winsPercent = playerRank?.wins / (totalSets ? totalSets : 1);
 		const lossesPercent = playerRank?.losses / (totalSets ? totalSets : 1);
@@ -49,6 +49,7 @@ export class Api {
 		})
 		return {
 			...playerRank,
+			connectCode: connectCode,
 			characters: characters,
 			lossesPercent: lossesPercent,
 			totalSets: totalSets,

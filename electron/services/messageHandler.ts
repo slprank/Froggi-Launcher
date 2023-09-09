@@ -145,7 +145,7 @@ export class MessageHandler {
 		this.sendInitMessage(
 			socket,
 			'current_player',
-			this.storeCurrentPlayer.getCurrentPlayerCurrentRankStats(),
+			this.storeCurrentPlayer.getCurrentPlayer(),
 		);
 		this.sendInitMessage(
 			socket,

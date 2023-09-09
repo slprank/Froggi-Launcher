@@ -244,7 +244,7 @@
 						{#key $currentPlayers?.at(0)?.connectCode}
 							<TextElement {style} {dataItem} {edit}>
 								{$currentPlayers?.at(0)?.connectCode || defaultPreview
-									? `ABC#123`
+									? `ABCD#123`
 									: ''}
 							</TextElement>
 						{/key}
@@ -253,7 +253,7 @@
 						{#key $currentPlayers?.at(1)?.connectCode}
 							<TextElement {style} {dataItem} {edit}>
 								{$currentPlayers?.at(1)?.connectCode || defaultPreview
-									? `DEF#456`
+									? `GHIJ#456`
 									: ''}
 							</TextElement>
 						{/key}

@@ -32,11 +32,6 @@ export class DiscordRpc {
 		this.setMenuActivity("Menu")
 	}
 
-	fix() {
-		const crash = undefined as unknown as any
-		console.log(crash.now)
-	}
-
 	initDiscordEvents = () => {
 		this.eventEmitter.on("live_stats_scene", (scene: LiveStatsScene) => {
 			if ([LiveStatsScene.PreGame].includes(scene)) {
