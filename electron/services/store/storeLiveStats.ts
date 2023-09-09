@@ -6,6 +6,7 @@ import { MessageHandler } from '../messageHandler';
 import { FrameEntryType, GameEndType, GameStartType, StatsType } from '@slippi/slippi-js';
 import os from 'os';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
+import { GameStartTypeExtended } from '../../../frontend/src/lib/models/types/slippiData';
 
 
 @singleton()
@@ -47,18 +48,13 @@ export class ElectronLiveStatsStore {
         return this.store.set("stats.game.state", state)
     }
 
-    getGameSettings(): GameStartType {
-        return this.store.get('stats.game.settings') as GameStartType;
+    getGameSettings(): GameStartTypeExtended {
+        return this.store.get('stats.game.settings') as GameStartTypeExtended;
     }
 
     setGameSettings(settings: GameStartType) {
-        const regex = /mode\.(\w+)/;
-        this.setGameMode(settings?.matchInfo?.matchId?.match(regex)?.at(1) ?? "Local")
+        this.setGameMode(settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) ?? "Local")
         return this.store.set('stats.game.settings', settings);
-    }
-
-    getGameMode(): string {
-        return this.store.get('stats.game.settings.matchInfo.mode') as string;
     }
 
     setGameMode(mode: string) {

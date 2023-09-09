@@ -41,6 +41,17 @@ export interface GameStats {
     mode: GameStartMode;
 }
 
+export type GameStartTypeExtended = GameStartType & {
+    matchInfo: MatchInfoExtended;
+}
+
+export type MatchInfoExtended = {
+    matchId: string | null;
+    gameNumber: number | null;
+    tiebreakerNumber: number | null;
+    mode: GameStartMode | undefined;
+}
+
 export interface RankedNetplaySeason {
     continent: string | undefined;
     continentInitials: string | undefined;
