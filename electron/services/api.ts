@@ -44,17 +44,18 @@ export class Api {
 			return {
 				...character,
 				characterId: CHARACTERS[character.characterName] as number,
-				gameCountPercent: character.gameCount / (totalGames ? totalGames : 1),
+				gameCountPercent: Number((character.gameCount / (totalGames ? totalGames : 1)).toFixed(1)),
 			}
 		})
 		return {
 			...playerRank,
 			connectCode: connectCode,
 			characters: characters,
-			lossesPercent: lossesPercent,
+			lossesPercent: Number(lossesPercent.toFixed(1)),
+			rating: Number(playerRank.rating.toFixed(1)),
 			totalSets: totalSets,
 			totalGames: totalGames,
-			winsPercent: winsPercent,
+			winsPercent: Number(winsPercent.toFixed(1)),
 		}
 	}
 }

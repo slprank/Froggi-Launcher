@@ -176,9 +176,8 @@ export interface CurrentPlayer extends Player {
 }
 
 export type PlayerGame = {
-	recent: GameStats[]
-} &
-	{ [mode in GameStartMode]: { [matchId: string]: GameStats[] }; }
+	[mode in GameStartMode]: { [matchId: string]: GameStats[] };
+}
 
 export interface Rank {
 	current: RankedNetplayProfile | undefined;

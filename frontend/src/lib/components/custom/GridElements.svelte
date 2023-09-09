@@ -9,6 +9,7 @@
 	import { addFont } from './CustomFontHandler.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 	import CharacterIcon from './element/CharacterIcon.svelte';
+	import { CHARACTERS } from '$lib/models/const';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
@@ -21,6 +22,8 @@
 	$: boardHeight = div?.clientHeight ?? 0;
 	let innerWidth = 0;
 	let innerHeight = 0;
+
+	$: console.log('current player', $currentPlayer);
 
 	$: defaultPreview = edit || preview;
 
@@ -55,7 +58,7 @@
 		];
 	};
 
-	$: console.log('CSS', `${style.cssValue}`);
+	$: console.log('TODO Border, CSS', `${style.cssValue}`);
 
 	$: shadowSizeX = getRelativePixelSize(
 		dataItem?.data.shadow?.x,
@@ -207,52 +210,58 @@
 
 					<!-- Slippi Data -->
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerTag}
-						{#key $currentPlayers?.at(0)?.displayName}
-							<TextElement {style} {dataItem} {edit}>
-								{$currentPlayer.displayName || defaultPreview
-									? `Current Player`
-									: ''}
-							</TextElement>
-						{/key}
+						<TextElement {style} {dataItem} {edit}>
+							{$currentPlayer?.rank?.current?.displayName
+								? $currentPlayer?.rank?.current?.displayName
+								: defaultPreview
+								? `Current Player`
+								: ''}
+						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Tag}
-						{#key $currentPlayers?.at(0)?.displayName}
-							<TextElement {style} {dataItem} {edit}>
-								{$currentPlayers?.at(0)?.displayName || defaultPreview
-									? `Player1`
-									: ''}
-							</TextElement>
-						{/key}
+						<TextElement {style} {dataItem} {edit}>
+							{$currentPlayers?.at(0)?.rank?.current?.displayName
+								? $currentPlayers?.at(0)?.rank?.current?.displayName
+								: defaultPreview
+								? `Player 1`
+								: ''}
+						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Tag}
-						{#key $currentPlayers?.at(1)?.displayName}
-							<TextElement {style} {dataItem} {edit}>
-								{$currentPlayers?.at(1)?.displayName || defaultPreview
-									? `Player2`
-									: ''}
-							</TextElement>
-						{/key}
+						<TextElement {style} {dataItem} {edit}>
+							{$currentPlayers?.at(1)?.rank?.current?.displayName
+								? $currentPlayers?.at(1)?.rank?.current?.displayName
+								: defaultPreview
+								? `Player 2`
+								: ''}
+						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerConnectCode}
-						{#key $currentPlayer?.connectCode}
+						{#key $currentPlayer?.rank?.current?.connectCode}
 							<TextElement {style} {dataItem} {edit}>
-								{$currentPlayer.connectCode || defaultPreview ? `ABCDEF#0` : ''}
+								{$currentPlayer?.rank?.current?.connectCode
+									? $currentPlayer?.rank?.current?.connectCode
+									: defaultPreview
+									? `ABCDEF#0`
+									: ''}
 							</TextElement>
 						{/key}
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1ConnectCode}
-						{#key $currentPlayers?.at(0)?.connectCode}
+						{#key $currentPlayers?.at(0)?.rank?.current?.connectCode}
 							<TextElement {style} {dataItem} {edit}>
-								{$currentPlayers?.at(0)?.connectCode || defaultPreview
+								{$currentPlayers?.at(0)?.rank?.current?.connectCode ||
+								defaultPreview
 									? `ABCD#123`
 									: ''}
 							</TextElement>
 						{/key}
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2ConnectCode}
-						{#key $currentPlayers?.at(1)?.connectCode}
+						{#key $currentPlayers?.at(1)?.rank?.current?.connectCode}
 							<TextElement {style} {dataItem} {edit}>
-								{$currentPlayers?.at(1)?.connectCode || defaultPreview
+								{$currentPlayers?.at(1)?.rank?.current?.connectCode ||
+								defaultPreview
 									? `GHIJ#456`
 									: ''}
 							</TextElement>
@@ -284,162 +293,291 @@
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerRankText}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.rank ?? ''}
+							{$currentPlayer?.rank?.current?.rank
+								? $currentPlayer?.rank?.current?.rank
+								: defaultPreview
+								? `Gold 2`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1RankText}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.rank ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.rank
+								? $currentPlayers?.at(0)?.rank?.current?.rank
+								: defaultPreview
+								? `Silver 2`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2RankText}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.rank ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.rank
+								? $currentPlayers?.at(1)?.rank?.current?.rank
+								: defaultPreview
+								? `Silver 1`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerRating}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.rating ?? ''}
+							{$currentPlayer?.rank?.current?.rating
+								? $currentPlayer?.rank?.current?.rating
+								: defaultPreview
+								? `1429.3`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Rating}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.rating ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.rating
+								? $currentPlayers?.at(0)?.rank?.current?.rating
+								: defaultPreview
+								? `1174.0`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Rating}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.rating ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.rating
+								? $currentPlayers?.at(1)?.rank?.current?.rating
+								: defaultPreview
+								? `1100.0`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerContinent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.continent ?? ''}
+							{$currentPlayer?.rank?.current?.continent
+								? $currentPlayer?.rank?.current?.continent
+								: defaultPreview
+								? `North America`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Continent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.continent ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.continent
+								? $currentPlayers?.at(0)?.rank?.current?.continent
+								: defaultPreview
+								? `Europe`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Continent}
-						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.continent ?? ''}
-						</TextElement>
+						{$currentPlayers?.at(1)?.rank?.current?.continent
+							? $currentPlayers?.at(1)?.rank?.current?.continent
+							: defaultPreview
+							? `S. America`
+							: ''}
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerContinentInitials}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.continentInitials ?? ''}
+							{$currentPlayer?.rank?.current?.continentInitials
+								? $currentPlayer?.rank?.current?.continentInitials
+								: defaultPreview
+								? `NA`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1ContinentInitials}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.continentInitials ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.continentInitials
+								? $currentPlayers?.at(0)?.rank?.current?.continentInitials
+								: defaultPreview
+								? `EU`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2ContinentInitials}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.continentInitials ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.continentInitials
+								? $currentPlayers?.at(1)?.rank?.current?.continentInitials
+								: defaultPreview
+								? `SA`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerDailyGlobalPlacement}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.dailyGlobalPlacement ?? ''}
+							{$currentPlayer?.rank?.current?.dailyGlobalPlacement
+								? $currentPlayer?.rank?.current?.dailyGlobalPlacement
+								: defaultPreview
+								? `270`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1DailyGlobalPlacement}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.dailyGlobalPlacement ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.dailyGlobalPlacement
+								? $currentPlayers?.at(0)?.rank?.current?.dailyGlobalPlacement
+								: defaultPreview
+								? `243`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2DailyGlobalPlacement}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.dailyGlobalPlacement ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.dailyGlobalPlacement
+								? $currentPlayers?.at(1)?.rank?.current?.dailyGlobalPlacement
+								: defaultPreview
+								? `223`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerDailyRegionalPlacement}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.dailyRegionalPlacement ?? ''}
+							{$currentPlayer?.rank?.current?.dailyRegionalPlacement
+								? $currentPlayer?.rank?.current?.dailyRegionalPlacement
+								: defaultPreview
+								? `138`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1DailyRegionalPlacement}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.dailyRegionalPlacement ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.dailyRegionalPlacement
+								? $currentPlayers?.at(0)?.rank?.current?.dailyRegionalPlacement
+								: defaultPreview
+								? `117`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2DailyRegionalPlacement}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.dailyRegionalPlacement ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.dailyRegionalPlacement
+								? $currentPlayers?.at(1)?.rank?.current?.dailyRegionalPlacement
+								: defaultPreview
+								? `107`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerWins}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.wins ?? ''}
+							{$currentPlayer?.rank?.current?.wins
+								? $currentPlayer?.rank?.current?.wins
+								: defaultPreview
+								? `50`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Wins}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.wins ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.wins
+								? $currentPlayers?.at(0)?.rank?.current?.wins
+								: defaultPreview
+								? `40`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Wins}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.wins ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.wins
+								? $currentPlayers?.at(1)?.rank?.current?.wins
+								: defaultPreview
+								? `30`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerWinsPercent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.winsPercent ?? ''}
+							{$currentPlayer?.rank?.current?.winsPercent
+								? `${$currentPlayer?.rank?.current?.winsPercent}%`
+								: defaultPreview
+								? `66.7%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1WinsPercent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.winsPercent ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.winsPercent
+								? `${$currentPlayers?.at(0)?.rank?.current?.winsPercent}%`
+								: defaultPreview
+								? `80.0%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2WinsPercent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.winsPercent ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.winsPercent
+								? `${$currentPlayers?.at(1)?.rank?.current?.winsPercent}%`
+								: defaultPreview
+								? `90%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerLosses}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.losses ?? ''}
+							{$currentPlayer?.rank?.current?.losses
+								? $currentPlayer?.rank?.current?.losses
+								: defaultPreview
+								? `25`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Losses}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.losses ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.losses
+								? $currentPlayers?.at(0)?.rank?.current?.losses
+								: defaultPreview
+								? `10`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Losses}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.losses ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.losses
+								? $currentPlayers?.at(1)?.rank?.current?.losses
+								: defaultPreview
+								? `3`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerLossesPercent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayer?.rank?.current?.lossesPercent
+								? `${$currentPlayer?.rank?.current?.lossesPercent}%`
+								: defaultPreview
+								? `33.3%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1LossesPercent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent
+								? `${$currentPlayers?.at(0)?.rank?.current?.lossesPercent}%`
+								: defaultPreview
+								? `20.0%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2LossesPercent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent
+								? `${$currentPlayers?.at(1)?.rank?.current?.lossesPercent}%`
+								: defaultPreview
+								? `10.0%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter1}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayer?.rank?.current?.characters.at(0)?.characterName
+								? $currentPlayer?.rank?.current?.characters.at(0)?.characterName
+								: defaultPreview
+								? `Fox`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter1Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayer?.rank?.current?.characters.at(0)?.gameCountPercent
+								? `${
+										$currentPlayer?.rank?.current?.characters.at(0)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `74.3%`
+								: ''}%
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter1Icon}
@@ -448,18 +586,29 @@
 							{style}
 							player={$currentPlayer}
 							preview={defaultPreview}
-						>
-							{$currentPlayer.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={0}
+							defaultPreviewId={Number(CHARACTERS['fox'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter2}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayer?.rank?.current?.characters.at(1)?.characterName
+								? $currentPlayer?.rank?.current?.characters.at(1)?.characterName
+								: defaultPreview
+								? `Ganondorf`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter2Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayer?.rank?.current?.characters.at(1)?.gameCountPercent
+								? `${
+										$currentPlayer?.rank?.current?.characters.at(1)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `18.3%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter2Icon}
@@ -468,18 +617,29 @@
 							{style}
 							player={$currentPlayer}
 							preview={defaultPreview}
-						>
-							{$currentPlayer?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={1}
+							defaultPreviewId={Number(CHARACTERS['ganondorf'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter3}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer?.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayer?.rank?.current?.characters.at(2)?.characterName
+								? $currentPlayer?.rank?.current?.characters.at(2)?.characterName
+								: defaultPreview
+								? `Falco`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter3Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayer?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayer?.rank?.current?.characters.at(2)?.gameCountPercent
+								? `${
+										$currentPlayer?.rank?.current?.characters.at(2)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `7.4%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.CurrentPlayerCharacter3Icon}
@@ -488,18 +648,31 @@
 							{style}
 							player={$currentPlayer}
 							preview={defaultPreview}
-						>
-							{$currentPlayer?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={2}
+							defaultPreviewId={Number(CHARACTERS['falco'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character1}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.characterName
+								? $currentPlayers?.at(0)?.rank?.current?.characters.at(0)
+										?.characterName
+								: defaultPreview
+								? `Peach`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character1Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.characters.at(0)
+								?.gameCountPercent
+								? `${
+										$currentPlayers?.at(0)?.rank?.current?.characters.at(0)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `75.0%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character1Icon}
@@ -508,18 +681,31 @@
 							{style}
 							player={$currentPlayers?.at(0)}
 							preview={defaultPreview}
-						>
-							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={0}
+							defaultPreviewId={Number(CHARACTERS['peach'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character2}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.characterName
+								? $currentPlayers?.at(0)?.rank?.current?.characters.at(1)
+										?.characterName
+								: defaultPreview
+								? `Sheik`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character2Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.characters.at(1)
+								?.gameCountPercent
+								? `${
+										$currentPlayers?.at(0)?.rank?.current?.characters.at(1)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `20.4%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character2Icon}
@@ -528,18 +714,31 @@
 							{style}
 							player={$currentPlayers?.at(0)}
 							preview={defaultPreview}
-						>
-							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={1}
+							defaultPreviewId={Number(CHARACTERS['sheik'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character3}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.characterName
+								? $currentPlayers?.at(0)?.rank?.current?.characters.at(2)
+										?.characterName
+								: defaultPreview
+								? `Marth`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character3Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(0)?.rank?.current?.characters.at(2)
+								?.gameCountPercent
+								? `${
+										$currentPlayers?.at(0)?.rank?.current?.characters.at(2)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `4.6%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player1Character3Icon}
@@ -548,18 +747,31 @@
 							{style}
 							player={$currentPlayers?.at(0)}
 							preview={defaultPreview}
-						>
-							{$currentPlayers?.at(0)?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={2}
+							defaultPreviewId={Number(CHARACTERS['marth'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character1}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.characterName
+								? $currentPlayers?.at(1)?.rank?.current?.characters.at(0)
+										?.characterName
+								: defaultPreview
+								? `Marth`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character1Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.characters.at(0)
+								?.gameCountPercent
+								? `${
+										$currentPlayers?.at(1)?.rank?.current?.characters.at(0)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `82.0%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character1Icon}
@@ -568,18 +780,31 @@
 							{style}
 							player={$currentPlayers?.at(1)}
 							preview={defaultPreview}
-						>
-							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={1}
+							defaultPreviewId={Number(CHARACTERS['marth'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character2}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.characterName
+								? $currentPlayers?.at(1)?.rank?.current?.characters.at(1)
+										?.characterName
+								: defaultPreview
+								? `Samus`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character2Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.characters.at(1)
+								?.gameCountPercent
+								? `${
+										$currentPlayers?.at(1)?.rank?.current?.characters.at(1)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `13.8%`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character2Icon}
@@ -588,29 +813,42 @@
 							{style}
 							player={$currentPlayers?.at(1)}
 							preview={defaultPreview}
-						>
-							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={1}
+							defaultPreviewId={Number(CHARACTERS['samus'])}
+						/>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character3}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.characters.at(0) ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.characterName
+								? $currentPlayers?.at(1)?.rank?.current?.characters.at(2)
+										?.characterName
+								: defaultPreview
+								? `Bowser`
+								: ''}
 						</TextElement>
 					{/if}
 					{#if dataItem?.elementId === CustomElement.Player2Character3Percent}
 						<TextElement {style} {dataItem} {edit}>
-							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent ?? ''}
+							{$currentPlayers?.at(1)?.rank?.current?.characters.at(2)
+								?.gameCountPercent
+								? `${
+										$currentPlayers?.at(1)?.rank?.current?.characters.at(2)
+											?.gameCountPercent
+								  }%`
+								: defaultPreview
+								? `4.2%`
+								: ''}
 						</TextElement>
 					{/if}
-					{#if dataItem?.elementId === CustomElement.Player2Character3Icon}
+					{#if dataItem?.elementId === CustomElement.Player1Character3Icon}
 						<CharacterIcon
 							{dataItem}
 							{style}
 							player={$currentPlayers?.at(1)}
 							preview={defaultPreview}
-						>
-							{$currentPlayers?.at(1)?.rank?.current?.lossesPercent ?? ''}
-						</CharacterIcon>
+							characterNumber={2}
+							defaultPreviewId={Number(CHARACTERS['bowser'])}
+						/>
 					{/if}
 				{/key}
 			{/key}

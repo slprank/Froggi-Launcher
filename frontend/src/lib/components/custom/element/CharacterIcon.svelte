@@ -5,12 +5,15 @@
 	export let player: Player | undefined;
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
+	export let characterNumber: number;
+	export let defaultPreviewId: number;
 
-	$: characterId = getCharacterId(player?.characterId);
+	$: characterId = getCharacterId(
+		player?.rank?.current?.characters.at(characterNumber)?.characterId,
+	);
 
 	const getCharacterId = (characterId: number | undefined | null) => {
-		if (preview && (characterId === undefined || characterId === null))
-			return Math.floor(Math.random() * 25);
+		if (preview && (characterId === undefined || characterId === null)) return defaultPreviewId;
 		return characterId;
 	};
 </script>
