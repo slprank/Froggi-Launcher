@@ -12,6 +12,7 @@ import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
 import { ElectronCurrentPlayerStore } from "./store/storeCurrentPlayer";
 import { ElectronPlayersStore } from "./store/storePlayers";
 import { ElectronSessionStore } from "./store/storeSession";
+import { ElectronDolphinStore } from "./store/storeDolphin";
 
 
 @singleton()
@@ -29,6 +30,7 @@ export class MessageHandler {
 		@inject("IpcMain") private ipcMain: IpcMain,
 		@inject("Port") private port: string,
 		@inject("RootDir") private rootDir: string,
+		@inject(delay(() => ElectronDolphinStore)) private storeDolphin: ElectronDolphinStore,
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
@@ -154,6 +156,7 @@ export class MessageHandler {
 			'current_players',
 			this.storePlayers.getCurrentPlayers(),
 		);
+		this.sendInitMessage(socket, 'dolphin_connection_state', this.storeDolphin.getDolphinConnectionState());
 		this.sendInitMessage(socket, 'game_frame', this.storeLiveStats.getGameFrame());
 		this.sendInitMessage(socket, 'game_score', this.storeGames.getGameScore());
 		this.sendInitMessage(socket, 'game_settings', this.storeLiveStats.getGameSettings());

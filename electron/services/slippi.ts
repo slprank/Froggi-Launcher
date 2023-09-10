@@ -40,6 +40,7 @@ export class SlippiJs {
 		this.log.info("Initializing SlippiJs")
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin)
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
+		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connecting)
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('Dolphin Connection State', status);
 			if (status === ConnectionStatus.DISCONNECTED) {
@@ -114,7 +115,7 @@ export class SlippiJs {
 	}
 
 	private async startProcessSearchInterval() {
-		this.log.info("Looking for dolphin process")
+		this.log.info("Looking For Dolphin Process")
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Searching)
 		this.dolphinProcessInterval = setInterval(async () => {
 			const exec = require('child_process').exec;
