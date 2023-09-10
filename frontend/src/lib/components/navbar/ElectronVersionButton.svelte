@@ -63,13 +63,17 @@
 </script>
 
 {#if $isElectron}
-	<div
-		class="fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50"
+	<button
+		class="transition hover:scale-110 fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
 		transition:fly={{ duration: 150, x: -50 }}
+		on:click={installUpdate}
 	>
 		<span class={getAnimation($autoUpdater.status)} />
-		<NavButton style={`${getBorderStyle($autoUpdater.status)}`} click={installUpdate}>
+		<button
+			class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
+			style={`${getBorderStyle($autoUpdater.status)}`}
+		>
 			<TextFitMulti>{`${getContent($autoUpdater.status)}`}</TextFitMulti>
-		</NavButton>
-	</div>
+		</button>
+	</button>
 {/if}

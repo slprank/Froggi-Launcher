@@ -72,7 +72,7 @@ export class MessageHandler {
 				console.log(`listening on *:${this.port}`);
 			});
 		} catch (err) {
-			console.log(err);
+			this.log.error(err);
 		}
 	}
 
@@ -96,7 +96,7 @@ export class MessageHandler {
 				this.initData(socket);
 			});
 		} catch (err) {
-			console.log(err);
+			this.log.error(err);
 		}
 	}
 
