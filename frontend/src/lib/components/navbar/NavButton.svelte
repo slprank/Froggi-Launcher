@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let click = () => {};
-	export let style: string;
+	export let style: string = '';
 </script>
 
 <button

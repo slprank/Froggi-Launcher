@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { DolphinConnectionState } from '$lib/models/enum';
-
 	import NavButton from './NavButton.svelte';
 	import { fly } from 'svelte/transition';
 	import { dolphinState, isElectron } from '$lib/utils/store.svelte';
@@ -16,7 +15,7 @@
 			case DolphinConnectionState.Searching:
 				return 'border: 1px solid yellow';
 			default:
-				return 'border: 1px solid yellow';
+				return 'border: 1px solid red';
 		}
 	};
 </script>
@@ -26,8 +25,8 @@
 		class="fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50"
 		transition:fly={{ duration: 150, x: -50 }}
 	>
-		<NavButton style={`${getBorderStyle($dolphinState)} `}>
-			<img src="/image/button-icons/dolphin.svg" alt="back" />
+		<NavButton style={`${getBorderStyle($dolphinState)}`}>
+			<img src="/image/button-icons/dolphin.svg" alt="dolphin status" />
 		</NavButton>
 	</div>
 {/if}
