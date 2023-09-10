@@ -56,10 +56,11 @@ export enum Character {
 	Ganondorf = 25
 }
 
-export enum DolphinState {
-	Disconnected = 0,
-	Connected = 1,
-	Connecting = 2,
+export enum DolphinConnectionState {
+	Disconnected = "Disconnected",
+	Connected = "Connected",
+	Connecting = "Connecting",
+	Searching = "Searching",
 }
 
 export enum Easing {

@@ -4,6 +4,7 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import os from 'os';
+import { DolphinConnectionState } from '../../../frontend/src/lib/models/enum';
 
 
 @singleton()
@@ -20,18 +21,17 @@ export class ElectronDolphinStore {
         this.initListeners();
     }
 
-    // TODO: Add enum
-    getDolphinConnectionStatus() {
-        return this.store.get('dolphin.status');
+    getDolphinConnectionState(): DolphinConnectionState {
+        return this.store.get('dolphin.connection.state') as DolphinConnectionState;
     }
 
-    setDolphinConnectionStatus(status: any) {
-        return this.store.set('dolphin.status', status);
+    setDolphinConnectionState(state: DolphinConnectionState) {
+        return this.store.set('dolphin.connection.state', state);
     }
 
     initListeners() {
-        this.store.onDidChange(`dolphin.status`, async (value) => {
-            this.messageHandler.sendMessage('dolphin_status', value);
+        this.store.onDidChange(`dolphin.connection.state`, async (value) => {
+            this.messageHandler.sendMessage('dolphin_connection_state', value);
         })
     }
 }

@@ -88,6 +88,7 @@ export class MessageHandler {
 	private initWebSocket() {
 		try {
 			this.webSocketServer.on('connection', (socket: WebSocket) => {
+				this.log.info("New Connection:", socket)
 				this.webSockets.push(socket);
 				this.receiveMessage(socket)
 				this.initData(socket);

@@ -6,6 +6,7 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Mobile from '$lib/components/modal/electron/Mobile.svelte';
 	import BackButton from '$lib/components/navbar/BackButton.svelte';
+	import DolphinStateButton from './DolphinStateButton.svelte';
 
 	function resetVisibilityTimer() {
 		isVisible = true;
@@ -103,6 +104,7 @@
 						</NavButton>
 					{/if}
 				</div>
+				<DolphinStateButton />
 			</div>
 		{:else}
 			<div

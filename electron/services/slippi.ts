@@ -9,7 +9,7 @@ import {
 import { IpcMain } from 'electron';
 import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
-import { DolphinState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { DolphinConnectionState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { Api } from './api';
@@ -42,7 +42,6 @@ export class SlippiJs {
 		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('Dolphin Connection State', status);
-			this.storeDolphin.setDolphinConnectionStatus(status);
 			if (status === ConnectionStatus.DISCONNECTED) {
 				await this.handleDisconnected()
 			}
@@ -92,20 +91,20 @@ export class SlippiJs {
 
 	private async handleDisconnected() {
 		this.log.info("Dolphin Disconnected")
-		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Disconnected)
+		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Disconnected)
 		this.startProcessSearchInterval()
 	}
 
 	private handleConnecting() {
 		this.log.info("Dolphin Connecting")
-		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connecting)
+		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connecting)
 		clearInterval(this.dolphinProcessInterval)
 	}
 
 	private async handleConnected() {
 		this.log.info("Dolphin Connected")
 		clearInterval(this.dolphinProcessInterval)
-		this.storeDolphin.setDolphinConnectionStatus(DolphinState.Connected)
+		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connected)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PreGame)
 		const connectCode = (await findPlayKey()).connectCode
 		this.storeSettings.setCurrentPlayerConnectCode(connectCode)
@@ -116,6 +115,7 @@ export class SlippiJs {
 
 	private async startProcessSearchInterval() {
 		this.log.info("Looking for dolphin process")
+		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Searching)
 		this.dolphinProcessInterval = setInterval(async () => {
 			const exec = require('child_process').exec;
 			const command = this.isWindows ? "Get-Process" : "ps -ax | grep Dolphin"
