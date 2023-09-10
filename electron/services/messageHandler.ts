@@ -88,7 +88,7 @@ export class MessageHandler {
 	private initWebSocket() {
 		try {
 			this.webSocketServer.on('connection', (socket: WebSocket) => {
-				this.log.info("New Connection:", socket)
+				this.log.info("New WebSocket Connection")
 				this.webSockets.push(socket);
 				this.receiveMessage(socket)
 				this.initData(socket);
@@ -106,6 +106,7 @@ export class MessageHandler {
 			}
 		});
 		socket.addEventListener('close', () => {
+			this.log.info("Closed WebSocket Connection")
 			socket.removeEventListener("message")
 			this.webSockets = this.webSockets.filter((s: any) => s != socket);
 		});

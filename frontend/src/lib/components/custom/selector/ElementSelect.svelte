@@ -1,9 +1,6 @@
 <script lang="ts">
-	import WaitingDolphin from '$lib/components/live/WaitingDolphin/WaitingDolphin.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { CustomElement, LiveStatsScene } from '$lib/models/enum';
-	import { getEnumStringValues } from '$lib/utils/helper.svelte';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import { CustomElement } from '$lib/models/enum';
 	import ElementCategorySelect from './ElementCategorySelect.svelte';
 
 	// Move this to separate file
@@ -59,7 +56,7 @@
 	];
 
 	export let selectedElementId: CustomElement;
-	let open: boolean;
+	let open: boolean = !selectedElementId;
 </script>
 
 <div class="grid grid-flow-col gap-2 items-center">
