@@ -4,6 +4,7 @@ import type { COL } from './const';
 export interface AutoUpdater {
 	progress: number | undefined;
 	status: AutoUpdaterStatus;
+	version: string | undefined;
 }
 
 export interface Url {

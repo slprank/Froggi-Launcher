@@ -26,13 +26,19 @@
 	export async function initEventListener() {
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
-		_eventEmitter.on('autoUpdater-status', (status: AutoUpdaterStatus) => {
+		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
 			console.log({ status });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, status: status };
 			});
 		});
-		_eventEmitter.on('autoUpdater-progress', (progress: number | undefined) => {
+		_eventEmitter.on('auto_updater_version', (version: string | undefined) => {
+			console.log({ version });
+			autoUpdater.update((autoUpdater: AutoUpdater) => {
+				return { ...autoUpdater, version: version };
+			});
+		});
+		_eventEmitter.on('auto_updater_progress', (progress: number | undefined) => {
 			console.log({ progress });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, progress: progress };

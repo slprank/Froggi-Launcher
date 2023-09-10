@@ -7,6 +7,7 @@
 	import Mobile from '$lib/components/modal/electron/Mobile.svelte';
 	import BackButton from '$lib/components/navbar/BackButton.svelte';
 	import DolphinStateButton from './DolphinStateButton.svelte';
+	import ElectronVersionButton from './ElectronVersionButton.svelte';
 
 	function resetVisibilityTimer() {
 		isVisible = true;
@@ -82,6 +83,7 @@
 						<img src="/image/button-icons/profile.png" alt="profile" />
 					</NavButton>
 				</div>
+				<ElectronVersionButton />
 			</div>
 
 			<div

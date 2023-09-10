@@ -36,8 +36,7 @@
 
 	export const autoUpdater = writable<AutoUpdater>({
 		status: AutoUpdaterStatus.LookingForUpdate,
-		progress: undefined,
-	});
+	} as AutoUpdater);
 	export const currentPlayer = writable<CurrentPlayer>();
 	export const currentPlayers = writable<Player[]>();
 	export const dolphinState = writable<DolphinConnectionState>();
