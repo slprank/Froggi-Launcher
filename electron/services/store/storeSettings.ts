@@ -34,11 +34,11 @@ export class ElectronSettingsStore {
         this.store.set('settings.currentPlayer.connectCode', connectCode);
     }
 
-    getSlippiLauncherSettings(): SlippiLauncherSettings {
+    getSlippiLauncherSettings(): SlippiLauncherSettings | undefined {
         return this.store.get('settings.slippiLauncher') as SlippiLauncherSettings;
     }
 
-    setSlippiLauncherSettings(dir: string) {
+    setSlippiLauncherSettings(dir: SlippiLauncherSettings) {
         this.store.set('settings.slippiLauncher', dir);
     }
 
@@ -48,7 +48,7 @@ export class ElectronSettingsStore {
             const rawData = fs.readFileSync(`${slippiPath}/Settings`, 'utf-8');
             let settings = JSON.parse(rawData)?.settings as SlippiLauncherSettings;
             settings = this.verifyAndFixDefaultSettings(settings);
-            this.setSlippiLauncherSettings(settings.rootSlpPath!)
+            this.setSlippiLauncherSettings(settings)
             return settings;
         } catch (err) {
             this.log.error(err);

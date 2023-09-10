@@ -65,8 +65,6 @@ export class ElectronGamesStore {
             mode: settings.matchInfo.matchId.match(regex)![1] as GameStartMode
         }
 
-        this.setRecentGames(gameStats)
-
         if (!settings.matchInfo.matchId || !settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(settings.matchInfo.matchId);
         if (!matches) return;
@@ -104,12 +102,6 @@ export class ElectronGamesStore {
         this.store.set(`player.${connectCode}.game.recent`, games)
     }
 
-    resetRecentGames() {
-        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-        if (!connectCode) return;
-        this.store.set(`player.${connectCode}.game`, [])
-    }
-
     private getAllSets(): Sets | undefined {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
@@ -139,10 +131,6 @@ export class ElectronGamesStore {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
         if (!connectCode) return;
         this.listeners = [
-            this.store.onDidChange(`player.${connectCode}.game.recent`, (value) => {
-                console.log(value)
-                // Emit to svelte
-            }),
             this.store.onDidChange(`stats.game.score`, async (value) => {
                 console.log("Updating score")
                 this.messageHandler.sendMessage('game_score', value);
@@ -150,6 +138,6 @@ export class ElectronGamesStore {
         ]
     }
     private unsubscribeListeners() {
-        this.listeners.forEach(unsubscribe => unsubscribe())
+        this.listeners?.forEach(unsubscribe => unsubscribe())
     }
 }

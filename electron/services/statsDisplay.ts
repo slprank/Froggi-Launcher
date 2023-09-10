@@ -5,7 +5,7 @@ import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
 import { Player } from '../../frontend/src/lib/models/types/slippiData';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
-import fs from "fs"
+import fs from "fs/promises"
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
@@ -87,7 +87,6 @@ export class StatsDisplay {
 
 		if (gameNumber !== 1) return;
 		this.storeGames.setGameScore([0, 0]);
-		this.storeGames.resetRecentGames();
 
 		if (!currentPlayer.rank?.current) return
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
@@ -99,7 +98,8 @@ export class StatsDisplay {
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
-		const postGameStats = this.getRecentGameStats();
+		const postGameStats = await this.getRecentGameStats(settings);
+		// TODO: If game set, get all match games
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameEnd)
@@ -132,38 +132,58 @@ export class StatsDisplay {
 		return players.find(p => p.connectCode === connectCode);
 	}
 
-	// TODO: Consider Tie
 	private handleScore(gameEnd: GameEndType) {
 		let score: number[] = this.storeGames.getGameScore() ?? [0, 0];
 		const winnerIndex = getWinnerIndex(gameEnd)
+		if (winnerIndex === undefined) return;
 		score[winnerIndex] += 1;
 		this.storeGames.setGameScore(score);
 	}
 
 	// OTHER
 	// TODO: Complete these
-	getGameFiles() {
+	private async getGameFiles(): Promise<string[] | undefined> {
 		const re = new RegExp('^Game_.*.slp$');
 		const path = require('path');
 
-		const slippiDir = this.storeSettings.getSlippiLauncherSettings()?.rootSlpPath;
+		const slippiSettings = this.storeSettings.getSlippiLauncherSettings()
+		console.log("Settings:", slippiSettings)
 
-		if (!slippiDir) return null;
+		if (!slippiSettings?.rootSlpPath) return;
 
-		// TODO: Handle monthly sub folder
-		let files = fs
-			.readdirSync(slippiDir)
-			.map((filename: string) => `${path.parse(filename).name}.slp`);
+		let files: string[];
+		let subFolder: string;
+		if (slippiSettings.useMonthlySubfolders === false) {
+			subFolder = (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
+				.filter(dirent => dirent.isDirectory())
+				.map(dirent => dirent.name)
+				.sort((a, b) => a > b ? 1 : -1)
+				.at(0) ?? ""
+			files = (await fs
+				.readdir(`${slippiSettings.rootSlpPath}/${subFolder}`))
+				.map((filename: string) => `${path.parse(filename).name}.slp`);
+		} else {
+			files = (await fs
+				.readdir(slippiSettings.rootSlpPath))
+				.map((filename: string) => `${path.parse(filename).name}.slp`);
+		}
 
-		files = files.filter((f: string) => re.test(f)).map((f: string) => `${slippiDir}/${f}`);
-		return files.sort((a: string, b: string) => a.length - b.length); // Fix
+		files = files.filter((f: string) => re.test(f)).map((f: string) => `${slippiSettings.rootSlpPath}/${subFolder ? `${subFolder}/` : ""}${f}`);
+		return files.sort((a, b) => a > b ? -1 : 1);
 	}
 
-	getRecentGameStats() {
-		const files = this.getGameFiles();
+	async getRecentGameStats(settings: GameStartType) {
+		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
-		const game = new SlippiGame(files.at(-1)!);
-
+		const matchId = settings.matchInfo?.matchId
+		const gameNumber = settings.matchInfo?.gameNumber
+		const file = files.find(file => {
+			const settings = new SlippiGame(file).getSettings();
+			return settings?.matchInfo?.matchId === matchId && settings?.matchInfo?.gameNumber === gameNumber;
+		})
+		if (!file) return null;
+		this.log.info("Analyzing recent game file:", file)
+		const game = new SlippiGame(file)
 		return game?.getStats();
 	}
 
@@ -174,7 +194,8 @@ export class StatsDisplay {
 	}
 }
 
-const getWinnerIndex = (gameEnd: GameEndType): number => {
+// TODO: If tie, return
+const getWinnerIndex = (gameEnd: GameEndType): number | undefined => {
 	const lrasIndex = gameEnd.lrasInitiatorIndex
 	if (lrasIndex === -1) return gameEnd.placements
 		.filter((p: PlacementType) => (p.position ?? -1) >= 0)
