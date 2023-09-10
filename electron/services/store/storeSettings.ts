@@ -58,15 +58,13 @@ export class ElectronSettingsStore {
 
     verifyAndFixDefaultSettings(settings: SlippiLauncherSettings): SlippiLauncherSettings {
         const defaultPath = this.getSlippiDefaultPath()
-        if (settings?.rootSlpPath === undefined) {
+        if (settings?.rootSlpPath === undefined)
             settings.rootSlpPath = defaultPath
-        }
-        if (settings?.spectateSlpPath === undefined) {
-            settings.rootSlpPath = `${settings.rootSlpPath}/spectate`
-        }
-        if (settings?.spectateSlpPath === undefined) {
-            settings.useMonthlySubfolders = false
-        }
+        if (settings?.spectateSlpPath === undefined)
+            settings.spectateSlpPath = `${settings.rootSlpPath}/spectate`
+        if (settings?.appDataPath === undefined)
+            settings.appDataPath = getAppDataPath('Slippi Launcher');
+        settings.useMonthlySubfolders = true
         fs.writeFileSync(`${getAppDataPath('Slippi Launcher')}/Settings`, JSON.stringify({ settings: settings }))
         return settings;
     }

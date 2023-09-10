@@ -1,4 +1,4 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType } from '@slippi/slippi-js';
+import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType, StatsType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
@@ -172,7 +172,7 @@ export class StatsDisplay {
 		return files.sort((a, b) => a > b ? -1 : 1);
 	}
 
-	async getRecentGameStats(settings: GameStartType) {
+	async getRecentGameStats(settings: GameStartType): Promise<StatsType | null> {
 		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId
@@ -185,6 +185,18 @@ export class StatsDisplay {
 		this.log.info("Analyzing recent game file:", file)
 		const game = new SlippiGame(file)
 		return game?.getStats();
+	}
+
+	async getRecentMatchesGameStats(settings: GameStartType): Promise<(StatsType | null)[] | null> {
+		const files = await this.getGameFiles();
+		if (!files || !files.length) return null;
+		const matchId = settings.matchInfo?.matchId
+		const gameNumber = settings.matchInfo?.gameNumber
+		const games = files.filter(file => {
+			const settings = new SlippiGame(file).getSettings();
+			return settings?.matchInfo?.matchId === matchId && settings?.matchInfo?.gameNumber === gameNumber;
+		}).map(file => new SlippiGame(file).getStats())
+		return games
 	}
 
 	handleUndefinedPlayers(settings: GameStartType | undefined) {
