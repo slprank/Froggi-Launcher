@@ -99,7 +99,7 @@ export class StatsDisplay {
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const postGameStats = await this.getRecentGameStats(settings);
-		// TODO: If game set, get all match games
+		// TODO: If Game Set End - Get All Match Games
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameEnd)
