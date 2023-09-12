@@ -140,8 +140,7 @@ export class StatsDisplay {
 		this.storeGames.setGameScore(score);
 	}
 
-	// OTHER
-	// TODO: Complete these
+
 	private async getGameFiles(): Promise<string[] | undefined> {
 		const re = new RegExp('^Game_.*.slp$');
 		const path = require('path');
@@ -187,19 +186,21 @@ export class StatsDisplay {
 		return game?.getStats();
 	}
 
-	async getRecentMatchesGameStats(settings: GameStartType): Promise<(StatsType | null)[] | null> {
+	async getRecentSetStats(settings: GameStartType): Promise<StatsType[] | null> {
 		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId
-		const gameNumber = settings.matchInfo?.gameNumber
-		const games = files.filter(file => {
+		const setFiles = files.filter(file => {
 			const settings = new SlippiGame(file).getSettings();
-			return settings?.matchInfo?.matchId === matchId && settings?.matchInfo?.gameNumber === gameNumber;
-		}).map(file => new SlippiGame(file).getStats())
-		return games
+			return settings?.matchInfo?.matchId === matchId;
+		})
+		if (!setFiles.length) return null;
+		this.log.info("Analyzing recent set files:", files)
+		const gamesStats = setFiles.map(file => new SlippiGame(file)?.getStats()).filter((game): game is StatsType => game !== null)
+		return gamesStats
 	}
 
-	handleUndefinedPlayers(settings: GameStartType | undefined) {
+	private handleUndefinedPlayers(settings: GameStartType | undefined) {
 		if (!settings) return;
 		const players = this.storePlayers.getCurrentPlayers()
 		if (!players) this.storePlayers.setCurrentPlayers(settings.players)
