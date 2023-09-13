@@ -1,10 +1,10 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { GameStartMode, GameStats, PlayerGame, Sets } from '../../../frontend/src/lib/models/types/slippiData';
+import type { GameStartMode, GameStats, PlayerGame, Sets, StatsTypeExtended } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
-import { GameEndType, GameStartType, PlayerType, StatsType } from '@slippi/slippi-js';
+import { GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
 import os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { dateTimeNow } from '../../utils/functions';
@@ -49,7 +49,7 @@ export class ElectronGamesStore {
         this.store.set('stats.game.score', score);
     }
 
-    setGameMatch(settings: GameStartType, gameEnd: GameEndType, postGameStats: StatsType | null) {
+    setGameMatch(settings: GameStartType, gameEnd: GameEndType, postGameStats: StatsTypeExtended | null) {
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!settings?.matchInfo?.matchId || !player) return;
         if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))

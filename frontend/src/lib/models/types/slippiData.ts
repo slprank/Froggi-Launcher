@@ -1,16 +1,42 @@
-import type { GameEndType, GameStartType, PlayerType, StatsType } from "@slippi/slippi-js";
+import type { GameEndType, GameStartType, OverallType, PlayerType, StatsType } from "@slippi/slippi-js";
 
-export type GameStartMode = "ranked" | "unranked" | "direct" | "local"; // TODO: Verify these types
-
-
-export interface Player extends PlayerType {
-    rank: Rank | undefined;
+export interface Character {
+    characterName: string;
+    characterId: number;
+    characterColorId: number | undefined;
+    gameCount: number;
+    gameCountPercent: number;
 }
 
 export interface CurrentPlayer extends Player {
     game: PlayerGame
     rank: CurrentPlayerRank
 }
+
+export interface CurrentPlayerRank extends Rank {
+    prev: RankedNetplayProfile | undefined;
+    new: RankedNetplayProfile | undefined;
+    history: RankHistory;
+}
+
+export interface EdgeGuard {
+    totalAttempts: number;
+    successfulAttempts: number;
+    unsuccessfulAttempts: number;
+}
+
+export interface PlayKey {
+    uid: string;
+    playKey: string;
+    connectCode: string;
+    displayName: string;
+    latestVersion?: string;
+}
+
+export interface Player extends PlayerType {
+    rank: Rank | undefined;
+}
+
 
 export type PlayerGame = {
     [mode in GameStartMode]: { [matchId: string]: GameStats[] };
@@ -20,30 +46,35 @@ export interface Rank {
     current: RankedNetplayProfile | undefined;
 }
 
-export interface CurrentPlayerRank extends Rank {
-    prev: RankedNetplayProfile | undefined;
-    new: RankedNetplayProfile | undefined;
-    history: RankHistory;
-}
-
 export interface RankHistory { }
 
 export type Sets = {
     [Mode in GameStartMode]: GameStats[];
 };
 
+export type StatsTypeExtended = StatsType & {
+    overall: OverallTypeExtended[]
+}
+
 export interface GameStats {
     settings: GameStartType;
     gameEnd: GameEndType;
-    postGameStats: StatsType | null;
+    postGameStats: StatsTypeExtended | null;
     timestamp: Date;
     score: number[];
     mode: GameStartMode;
 }
 
+export interface OverallTypeExtended extends OverallType {
+    edgeGuard: EdgeGuard
+}
+
+
 export type GameStartTypeExtended = GameStartType & {
     matchInfo: MatchInfoExtended;
 }
+
+export type GameStartMode = "ranked" | "unranked" | "direct" | "local"; // TODO: Verify these types
 
 export type MatchInfoExtended = {
     matchId: string | null;
@@ -98,21 +129,5 @@ export interface SlippiLauncherSettings {
     useMonthlySubfolders: boolean | undefined;
     rootSlpPath: string | undefined;
     spectateSlpPath: string | undefined;
-}
-
-export interface Character {
-    characterName: string;
-    characterId: number;
-    characterColorId: number | undefined;
-    gameCount: number;
-    gameCountPercent: number;
-}
-
-export interface PlayKey {
-    uid: string;
-    playKey: string;
-    connectCode: string;
-    displayName: string;
-    latestVersion?: string;
 }
 

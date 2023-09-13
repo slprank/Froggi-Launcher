@@ -3,7 +3,7 @@ import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
-import { Player } from '../../frontend/src/lib/models/types/slippiData';
+import { Player, StatsTypeExtended } from '../../frontend/src/lib/models/types/slippiData';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs/promises"
 import { ElectronGamesStore } from './store/storeGames';
@@ -30,7 +30,7 @@ export class StatsDisplay {
 		this.initStatDisplay();
 	}
 
-	async initStatDisplay() {
+	private async initStatDisplay() {
 		this.log.info("Initialize Dolphin Events")
 		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: SlpRawEventPayload) => {
 			this.slpParser.handleCommand(event.command, event.payload);
@@ -51,14 +51,14 @@ export class StatsDisplay {
 		});
 	}
 
-	resetPauseInterval() {
+	private resetPauseInterval() {
 		this.stopPauseInterval()
 		this.pauseInterval = setTimeout(() => {
 			this.handleGamePaused(this.slpParser.getLatestFrame())
 		}, 64)
 	}
 
-	stopPauseInterval() {
+	private stopPauseInterval() {
 		clearInterval(this.pauseInterval)
 	}
 
@@ -111,7 +111,7 @@ export class StatsDisplay {
 		// If post set
 	}
 
-	async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
+	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
 		let currentPlayers = settings.players.filter(player => player)
 		if (currentPlayers.some(player => !player.connectCode))
 			return settings.players.filter(player => player).map((player, i: number) => {
@@ -126,7 +126,7 @@ export class StatsDisplay {
 		)).filter((player): player is Player => player !== undefined);
 	}
 
-	getCurrentPlayer(players: Player[]): Player | undefined {
+	private getCurrentPlayer(players: Player[]): Player | undefined {
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
 		if (!connectCode) return;
 		return players.find(p => p.connectCode === connectCode);
@@ -171,7 +171,7 @@ export class StatsDisplay {
 		return files.sort((a, b) => a > b ? -1 : 1);
 	}
 
-	async getRecentGameStats(settings: GameStartType): Promise<StatsType | null> {
+	private async getRecentGameStats(settings: GameStartType): Promise<StatsTypeExtended | null> {
 		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId
@@ -183,7 +183,7 @@ export class StatsDisplay {
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
 		const game = new SlippiGame(file)
-		return game?.getStats();
+		return enrichPostGameStats(game?.getStats());
 	}
 
 	async getRecentSetStats(settings: GameStartType): Promise<StatsType[] | null> {
@@ -205,6 +205,16 @@ export class StatsDisplay {
 		const players = this.storePlayers.getCurrentPlayers()
 		if (!players) this.storePlayers.setCurrentPlayers(settings.players)
 	}
+}
+
+const enrichPostGameStats = (stats: StatsType | null): StatsTypeExtended | null => {
+	if (!stats) return null
+	// Filter each conversion by playerIndex
+	// For analyze the start-end frame
+	// If opposing player is in hitstun off-stage or below by x units
+	// Count as an edgeguard
+	// If Did-kill - Count as successful
+	return { ...stats } as StatsTypeExtended
 }
 
 // TODO: If tie, return
