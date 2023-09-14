@@ -1,9 +1,9 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType, ConversionType, FramesType } from '@slippi/slippi-js';
+import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType, ConversionType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
-import { EdgeGuard, GameStats, Player, Recovery, StatsTypeExtended } from '../../frontend/src/lib/models/types/slippiData';
+import { EdgeGuard, GameStats, OverallTypeExtended, Player, Recovery, StatsTypeExtended } from '../../frontend/src/lib/models/types/slippiData';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs/promises"
 import { ElectronGamesStore } from './store/storeGames';
@@ -12,6 +12,7 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
+import { STAGE_DATA } from '../../frontend/src/lib/models/const';
 
 @singleton()
 export class StatsDisplay {
@@ -100,6 +101,7 @@ export class StatsDisplay {
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const gameStats = await this.getRecentGameStats(settings);
+		console.log("game stats:", gameStats?.postGameStats?.overall[0])
 		// TODO: If Game Set End - Get All Match Games
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
@@ -220,6 +222,7 @@ export class StatsDisplay {
 	private enrichPostGameStats(game: SlippiGame | null): StatsTypeExtended | null {
 		console.log("Enrich data")
 		if (!game) return null
+		console.log("P1:", this.getEdgeGuardStats(game, 0))
 		return {
 			...game.getStats(),
 			overall: [
@@ -227,24 +230,23 @@ export class StatsDisplay {
 					...game.getStats()?.overall.at(0),
 					edgeGuard: this.getEdgeGuardStats(game, 0),
 					recovery: this.getRecoveryStats(game, 0)
-				},
+				} as OverallTypeExtended,
 				{
 					...game.getStats()?.overall.at(1),
 					edgeGuard: this.getEdgeGuardStats(game, 1),
 					recovery: this.getRecoveryStats(game, 1)
-				},
+				} as OverallTypeExtended,
 			]
-		} as StatsTypeExtended
+		}
 	}
 
 	private getEdgeGuardStats(game: SlippiGame, playerIndex: number | undefined): EdgeGuard | undefined {
 		console.log("Get Edge Guard Data")
 		if (!playerIndex) return;
-		const frames = game.getFrames()
 		const stats = game.getStats()
 		const edgeGuards = stats?.conversions
 			.filter(conversion => conversion.playerIndex === playerIndex)
-			.map(conversation => this.isSuccessfulEdgeGuardAttempt(frames, conversation, playerIndex))
+			.map(conversation => this.isSuccessfulEdgeGuardAttempt(game, conversation, playerIndex))
 			.flat()
 
 		const totalAttempts = edgeGuards?.length ?? 0
@@ -273,25 +275,25 @@ export class StatsDisplay {
 		}
 	}
 
-	private isSuccessfulEdgeGuardAttempt(frames: FramesType, conversion: ConversionType, playerIndex: number): boolean[] {
+	private isSuccessfulEdgeGuardAttempt(game: SlippiGame, conversion: ConversionType, playerIndex: number): boolean[] {
 		console.log("Is successful attempt:", conversion.moves)
 		if (conversion.moves.length <= 1) return [];
 		const opponentIndex = playerIndex === 0 ? 1 : 0;
 		const opponentHitStunsOffStage = []
 		for (let i = 0; i < conversion.moves.length - 1; i++) {
 			const from = conversion.moves.at(i)?.frame
-			opponentHitStunsOffStage.push(this.hasHitStunOffStage(frames, from, opponentIndex))
+			opponentHitStunsOffStage.push(this.hasHitStunOffStage(game, from, opponentIndex))
 		}
+		console.log("Hit stun off stage", opponentHitStunsOffStage)
 		// Assuming 3 consecutive false is a missed edge guard
 		let result = [];
 		let currentSubarray = [];
 
 		let consecutiveFalse = 0;
 		for (let i = 0; i < opponentHitStunsOffStage.length; i++) {
-			if (opponentHitStunsOffStage[i]) currentSubarray.push(true)
+			currentSubarray.push(opponentHitStunsOffStage[i])
 			if (!opponentHitStunsOffStage[i]) {
 				consecutiveFalse++
-				currentSubarray.push(false)
 				if (consecutiveFalse >= 3) {
 					result.push(currentSubarray);
 					currentSubarray = [];
@@ -309,22 +311,29 @@ export class StatsDisplay {
 		return attempts
 	}
 
-	private hasHitStunOffStage(frames: FramesType, from: number | undefined, receivingPlayerIndex: number): boolean {
-		console.log("Has hit stun off stage", from)
+	// TODO: Replace `hitlag` with stun
+	private hasHitStunOffStage(game: SlippiGame, from: number | undefined, receivingPlayerIndex: number): boolean {
+		console.log("Hit stun from:", from)
+		const frames = game.getFrames()
+		const stageId = game.getSettings()?.stageId ?? 32
 		if (from === undefined) return false
 		const to = from + (frames[from + 1].players[receivingPlayerIndex]?.post.hitlagRemaining ?? 0)
+		console.log("Hit stun to:", to)
 		for (let i = from; i < to; i++) {
 			const playerPost = frames[i + 1].players[receivingPlayerIndex]?.post;
 			if (!playerPost?.hitlagRemaining) return false
-			if (this.isOffStage(playerPost?.positionX ?? 0, playerPost?.positionY ?? 0)) return true;
+			if (this.isOffStage(stageId, playerPost?.positionX ?? 0, playerPost?.positionY ?? 0)) return true;
 		}
 		return false;
 	}
 
 	// TODO: Utilize stage edge data to determine if you are off stage
-	private isOffStage(x: number, y: number): boolean {
-		console.log("position:", x, y);
-		return true
+	private isOffStage(stageId: number, x: number, y: number): boolean {
+		const { leftLedgeX, rightLedgeX, mainPlatformHeight } = STAGE_DATA[stageId]
+		if (rightLedgeX < x) return true;
+		if (x < leftLedgeX) return true;
+		if (y < mainPlatformHeight) return true;
+		return false
 	}
 }
 

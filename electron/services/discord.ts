@@ -91,7 +91,7 @@ export class DiscordRpc {
 			this.updateActivity()
 		})
 
-		this.eventEmitter.on("game_end", () => {
+		this.eventEmitter.on("post_game_stats", () => {
 			console.log("Game end event")
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)

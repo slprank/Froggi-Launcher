@@ -76,8 +76,8 @@ export interface GameStats {
 }
 
 export interface OverallTypeExtended extends OverallType {
-    edgeGuard: EdgeGuard;
-    recovery: Recovery;
+    edgeGuard: EdgeGuard | undefined;
+    recovery: Recovery | undefined;
 }
 
 
@@ -140,5 +140,18 @@ export interface SlippiLauncherSettings {
     useMonthlySubfolders: boolean | undefined;
     rootSlpPath: string | undefined;
     spectateSlpPath: string | undefined;
+}
+
+export interface StageData {
+    name: string;
+    leftXBoundary: number;
+    rightXBoundary: number;
+    upperYBoundary: number;
+    lowerYBoundary: number;
+    mainPlatformHeight: number;
+    sidePlatformHeight?: number;
+    topPlatformHeight?: number;
+    leftLedgeX: number;
+    rightLedgeX: number;
 }
 
