@@ -38,7 +38,6 @@
 
 		if (isElectronWindow) {
 			await initElectronEvents();
-			initEventListener();
 			_eventEmitter.emit('electron', 'init-data-electron');
 		}
 	};
@@ -63,7 +62,6 @@
 				_eventEmitter.emit(key, value);
 			}
 		});
-		initEventListener();
 	};
 
 	const initServiceWorker = () => {

@@ -10,6 +10,7 @@ const config = {
 		adapter: adapter({ fallback: 'index.html', pages: '../build', assets: '../build' }),
 		prerender: { entries: [] },
 	},
+	vitePlugin: { experimental: { inspector: true } },
 };
 
 export default config;

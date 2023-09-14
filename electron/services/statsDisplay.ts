@@ -212,6 +212,7 @@ const enrichPostGameStats = (stats: StatsType | null): StatsTypeExtended | null 
 	// Filter each conversion by playerIndex
 	// For analyze the start-end frame
 	// If opposing player is in hitstun off-stage or below by x units
+	// And at least one hit after going off stage
 	// Count as an edgeguard
 	// If Did-kill - Count as successful
 	return { ...stats } as StatsTypeExtended

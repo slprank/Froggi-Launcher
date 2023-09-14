@@ -10,15 +10,6 @@
 			"request": "launch",
 			"reAttach": true,
 			"url": "http://localhost:5173"
-		},
-		{
-			"name": "SWA: Run frontend",
-			"request": "launch",
-			"type": "pwa-chrome",
-			"url": "http://localhost:4280",
-			"preLaunchTask": "swa: start frontend",
-			"webRoot": "${workspaceFolder}/frontend",
-			"timeout": 30000
 		}
 	]
 }

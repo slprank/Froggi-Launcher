@@ -48,6 +48,7 @@
 		"nodemon": "^2.0.22",
 		"obs-websocket-js": "^5.0.3",
 		"reflect-metadata": "^0.1.13",
+		"run-script-os": "^1.1.6",
 		"tsyringe": "^4.8.0",
 		"ws": "^8.14.1"
 	},
