@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
 	import type { AutoUpdater, Obs, Overlay } from '$lib/models/types';
-	import type { CurrentPlayer, Player } from '$lib/models/types/slippiData';
+	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
 	import {
 		eventEmitter,
 		currentPlayer,
@@ -72,7 +72,7 @@
 			console.log({ state });
 			gameState.set(state);
 		});
-		_eventEmitter.on('post_game_stats', (stats: any) => {
+		_eventEmitter.on('post_game_stats', (stats: GameStats) => {
 			console.log({ stats });
 			postGameStats.set(stats);
 		});

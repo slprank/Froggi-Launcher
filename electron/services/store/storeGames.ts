@@ -1,13 +1,12 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { GameStartMode, GameStats, PlayerGame, Sets, StatsTypeExtended } from '../../../frontend/src/lib/models/types/slippiData';
+import type { GameStartMode, GameStats, PlayerGame, Sets } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
-import { GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
+import { PlayerType } from '@slippi/slippi-js';
 import os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
-import { dateTimeNow } from '../../utils/functions';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 
@@ -49,27 +48,18 @@ export class ElectronGamesStore {
         this.store.set('stats.game.score', score);
     }
 
-    setGameMatch(settings: GameStartType, gameEnd: GameEndType, postGameStats: StatsTypeExtended | null) {
+    setGameMatch(gameStats: GameStats | null) {
+        console.log("Set Game Match:", gameStats)
+        if (!gameStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
-        if (!settings?.matchInfo?.matchId || !player) return;
-        if (!settings.players.some((p: PlayerType) => p.connectCode === player.connectCode))
+        if (!player || !gameStats.settings.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
             return;
 
-        const regex = /mode\.(\w+)/;
-        const gameStats: GameStats = {
-            settings: settings,
-            gameEnd: gameEnd,
-            postGameStats: postGameStats,
-            timestamp: dateTimeNow(),
-            score: this.getGameScore() ?? [0, 0],
-            mode: settings.matchInfo.matchId.match(regex)![1] as GameStartMode
-        }
-
-        if (!settings.matchInfo.matchId || !settings.matchInfo.gameNumber) return;
-        const matches = this.getGameMatch(settings.matchInfo.matchId);
+        if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
+        const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
         if (!matches) return;
         matches.push(gameStats)
-        this.store.set(`player.${player.connectCode}.game.${gameStats.mode}.${settings.matchInfo.matchId}`, matches);
+        this.store.set(`player.${player.connectCode}.game.${gameStats.mode}.${gameStats.settings.matchInfo.matchId}`, matches);
     }
 
     getGameMatch(matchId: string): GameStats[] | undefined {

@@ -44,7 +44,7 @@
 	export const gameScore = writable<number[]>([0, 0]);
 	export const gameState = writable<InGameState>(InGameState.None);
 	export const gameSettings = writable<GameStartType>();
-	export const postGameStats = writable<any>();
+	export const postGameStats = writable<GameStats>();
 	export const recentRankedSets = writable<any[]>();
 	export const recentGames = writable<GameStats[]>();
 	export const sessionStats = writable<any>();

@@ -23,6 +23,16 @@ export interface EdgeGuard {
     totalAttempts: number;
     successfulAttempts: number;
     unsuccessfulAttempts: number;
+    successfulAttemptsPercent: number
+    unsuccessfulAttemptsPercent: number
+}
+
+export interface Recovery {
+    totalRecoveries: number;
+    successfulRecoveries: number;
+    unsuccessfulRecoveries: number;
+    successfulRecoveriesPercent: number;
+    unsuccessfulRecoveriesPercent: number;
 }
 
 export interface PlayKey {
@@ -52,7 +62,7 @@ export type Sets = {
     [Mode in GameStartMode]: GameStats[];
 };
 
-export type StatsTypeExtended = StatsType & {
+export type StatsTypeExtended = StatsType | {
     overall: OverallTypeExtended[]
 }
 
@@ -66,7 +76,8 @@ export interface GameStats {
 }
 
 export interface OverallTypeExtended extends OverallType {
-    edgeGuard: EdgeGuard
+    edgeGuard: EdgeGuard;
+    recovery: Recovery;
 }
 
 

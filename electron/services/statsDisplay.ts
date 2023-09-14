@@ -1,9 +1,9 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType, StatsType } from '@slippi/slippi-js';
+import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType, ConversionType, FramesType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
-import { Player, StatsTypeExtended } from '../../frontend/src/lib/models/types/slippiData';
+import { EdgeGuard, GameStats, Player, Recovery, StatsTypeExtended } from '../../frontend/src/lib/models/types/slippiData';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs/promises"
 import { ElectronGamesStore } from './store/storeGames';
@@ -11,6 +11,7 @@ import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
+import { dateTimeNow, getGameMode } from '../utils/functions';
 
 @singleton()
 export class StatsDisplay {
@@ -98,16 +99,15 @@ export class StatsDisplay {
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
-		const postGameStats = await this.getRecentGameStats(settings);
+		const gameStats = await this.getRecentGameStats(settings);
 		// TODO: If Game Set End - Get All Match Games
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameEnd)
 		this.storeLiveStats.setGameState(InGameState.End)
-		this.storeGames.setGameMatch(settings, gameEnd, postGameStats)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
-		this.messageHandler.sendMessage('game_end', postGameStats);
-		if (postGameStats) this.messageHandler.sendMessage('post_game_stats', postGameStats);
+		this.storeGames.setGameMatch(gameStats)
+		if (gameStats) this.messageHandler.sendMessage('post_game_stats', gameStats);
 		// If post set
 	}
 
@@ -171,7 +171,7 @@ export class StatsDisplay {
 		return files.sort((a, b) => a > b ? -1 : 1);
 	}
 
-	private async getRecentGameStats(settings: GameStartType): Promise<StatsTypeExtended | null> {
+	private async getRecentGameStats(settings: GameStartType): Promise<GameStats | null> {
 		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId
@@ -182,11 +182,10 @@ export class StatsDisplay {
 		})
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
-		const game = new SlippiGame(file)
-		return enrichPostGameStats(game?.getStats());
+		return this.getGameStats(new SlippiGame(file))
 	}
 
-	async getRecentSetStats(settings: GameStartType): Promise<StatsType[] | null> {
+	async getRecentSetStats(settings: GameStartType): Promise<GameStats[] | null> {
 		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId
@@ -196,7 +195,7 @@ export class StatsDisplay {
 		})
 		if (!setFiles.length) return null;
 		this.log.info("Analyzing recent set files:", files)
-		const gamesStats = setFiles.map(file => new SlippiGame(file)?.getStats()).filter((game): game is StatsType => game !== null)
+		const gamesStats = setFiles.map(file => this.getGameStats(new SlippiGame(file))).filter((game): game is GameStats => game !== null)
 		return gamesStats
 	}
 
@@ -205,18 +204,131 @@ export class StatsDisplay {
 		const players = this.storePlayers.getCurrentPlayers()
 		if (!players) this.storePlayers.setCurrentPlayers(settings.players)
 	}
+
+	private getGameStats(game: SlippiGame | null): GameStats | null {
+		if (!game) return null;
+		return {
+			settings: game.getSettings(),
+			gameEnd: game.getGameEnd(),
+			postGameStats: this.enrichPostGameStats(game),
+			timestamp: dateTimeNow(),
+			score: this.storeGames.getGameScore(),
+			mode: getGameMode(game.getSettings())
+		} as GameStats
+	}
+
+	private enrichPostGameStats(game: SlippiGame | null): StatsTypeExtended | null {
+		console.log("Enrich data")
+		if (!game) return null
+		return {
+			...game.getStats(),
+			overall: [
+				{
+					...game.getStats()?.overall.at(0),
+					edgeGuard: this.getEdgeGuardStats(game, 0),
+					recovery: this.getRecoveryStats(game, 0)
+				},
+				{
+					...game.getStats()?.overall.at(1),
+					edgeGuard: this.getEdgeGuardStats(game, 1),
+					recovery: this.getRecoveryStats(game, 1)
+				},
+			]
+		} as StatsTypeExtended
+	}
+
+	private getEdgeGuardStats(game: SlippiGame, playerIndex: number | undefined): EdgeGuard | undefined {
+		console.log("Get Edge Guard Data")
+		if (!playerIndex) return;
+		const frames = game.getFrames()
+		const stats = game.getStats()
+		const edgeGuards = stats?.conversions
+			.filter(conversion => conversion.playerIndex === playerIndex)
+			.map(conversation => this.isSuccessfulEdgeGuardAttempt(frames, conversation, playerIndex))
+			.flat()
+
+		const totalAttempts = edgeGuards?.length ?? 0
+		const successfulAttempts = edgeGuards?.map(edgeGuard => edgeGuard).length ?? 0
+		const unsuccessfulAttempts = edgeGuards?.map(edgeGuard => !edgeGuard).length ?? 0
+		return {
+			totalAttempts: totalAttempts,
+			successfulAttempts: successfulAttempts,
+			unsuccessfulAttempts: unsuccessfulAttempts,
+			successfulAttemptsPercent: Number((successfulAttempts / totalAttempts).toFixed(1)),
+			unsuccessfulAttemptsPercent: Number((unsuccessfulAttempts / totalAttempts).toFixed(1))
+		}
+	}
+
+	private getRecoveryStats(game: SlippiGame, playerIndex: number | undefined): Recovery | undefined {
+		if (!playerIndex) return;
+		const opponentIndex = playerIndex === 0 ? 1 : 0;
+		const edgeGuard = this.getEdgeGuardStats(game, opponentIndex)
+		if (!edgeGuard) return;
+		return {
+			totalRecoveries: edgeGuard.totalAttempts,
+			successfulRecoveries: edgeGuard.unsuccessfulAttempts,
+			unsuccessfulRecoveries: edgeGuard.successfulAttempts,
+			successfulRecoveriesPercent: edgeGuard.unsuccessfulAttempts,
+			unsuccessfulRecoveriesPercent: edgeGuard.successfulAttempts
+		}
+	}
+
+	private isSuccessfulEdgeGuardAttempt(frames: FramesType, conversion: ConversionType, playerIndex: number): boolean[] {
+		console.log("Is successful attempt:", conversion.moves)
+		if (conversion.moves.length <= 1) return [];
+		const opponentIndex = playerIndex === 0 ? 1 : 0;
+		const opponentHitStunsOffStage = []
+		for (let i = 0; i < conversion.moves.length - 1; i++) {
+			const from = conversion.moves.at(i)?.frame
+			opponentHitStunsOffStage.push(this.hasHitStunOffStage(frames, from, opponentIndex))
+		}
+		// Assuming 3 consecutive false is a missed edge guard
+		let result = [];
+		let currentSubarray = [];
+
+		let consecutiveFalse = 0;
+		for (let i = 0; i < opponentHitStunsOffStage.length; i++) {
+			if (opponentHitStunsOffStage[i]) currentSubarray.push(true)
+			if (!opponentHitStunsOffStage[i]) {
+				consecutiveFalse++
+				currentSubarray.push(false)
+				if (consecutiveFalse >= 3) {
+					result.push(currentSubarray);
+					currentSubarray = [];
+				}
+			}
+		}
+
+		// Assuming 2 Hits Offstage Is A Potential EdgeGuard
+		// Only last sequence is a potential kill. Other sequences are assumed to be unsuccessful
+		let attempts: boolean[] = result.slice(0, -1).map(sequence => sequence.filter(s => s).length > 2)
+		if ((result?.at(-1)?.length ?? 0) > 2) {
+			if (conversion.didKill) attempts.push(true)
+			if (!conversion.didKill) attempts.push(false)
+		}
+		return attempts
+	}
+
+	private hasHitStunOffStage(frames: FramesType, from: number | undefined, receivingPlayerIndex: number): boolean {
+		console.log("Has hit stun off stage", from)
+		if (from === undefined) return false
+		const to = from + (frames[from + 1].players[receivingPlayerIndex]?.post.hitlagRemaining ?? 0)
+		for (let i = from; i < to; i++) {
+			const playerPost = frames[i + 1].players[receivingPlayerIndex]?.post;
+			if (!playerPost?.hitlagRemaining) return false
+			if (this.isOffStage(playerPost?.positionX ?? 0, playerPost?.positionY ?? 0)) return true;
+		}
+		return false;
+	}
+
+	// TODO: Utilize stage edge data to determine if you are off stage
+	private isOffStage(x: number, y: number): boolean {
+		console.log("position:", x, y);
+		return true
+	}
 }
 
-const enrichPostGameStats = (stats: StatsType | null): StatsTypeExtended | null => {
-	if (!stats) return null
-	// Filter each conversion by playerIndex
-	// For analyze the start-end frame
-	// If opposing player is in hitstun off-stage or below by x units
-	// And at least one hit after going off stage
-	// Count as an edgeguard
-	// If Did-kill - Count as successful
-	return { ...stats } as StatsTypeExtended
-}
+
 
 // TODO: If tie, return
 const getWinnerIndex = (gameEnd: GameEndType): number | undefined => {
