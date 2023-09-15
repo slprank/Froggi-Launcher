@@ -1,5 +1,5 @@
 import { FrameEntryType } from "@slippi/slippi-js";
-import { STAGE_DATA } from "../../frontend/src/lib/models/const";
+import { STAGE_DATA } from "../../frontend/src/lib/models/constants/stageData"
 
 
 
@@ -37,6 +37,7 @@ export function isInHitStun(
     if (!actionStateId) {
         return false;
     }
+    console.log("Action State Id:", actionStateId)
     return (actionStateId >= 0x4b && actionStateId <= 0x5b) || actionStateId === 0x26
 }
 
@@ -57,7 +58,8 @@ export const isOffStage = (stageId: number, frame: FrameEntryType, playerIndex: 
     const positionX = (postFrame.positionX ?? 0)
     const positionY = postFrame.positionY ?? 0
     const { leftLedgeX, rightLedgeX, mainPlatformHeight } = STAGE_DATA[stageId]
-
+    console.log("Pos:", positionX, positionY)
+    console.log("Ledge:", leftLedgeX, rightLedgeX)
     return (
         positionY <= mainPlatformHeight - 10 ||
         positionX <= leftLedgeX ||

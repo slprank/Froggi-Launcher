@@ -1,9 +1,9 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, PlacementType, ConversionType } from '@slippi/slippi-js';
+import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
-import { EdgeGuard, GameStats, OverallTypeExtended, Player, Recovery, StatsTypeExtended } from '../../frontend/src/lib/models/types/slippiData';
+import { GameStats, Player, StatsTypeExtended } from '../../frontend/src/lib/models/types/slippiData';
 import { InGameState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import fs from "fs/promises"
 import { ElectronGamesStore } from './store/storeGames';
@@ -12,7 +12,7 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
-import { isInHitStun, isOffStage } from 'utils/framesPredicates';
+import { getWinnerIndex } from '../utils/gamePredicates';
 
 @singleton()
 export class StatsDisplay {
@@ -110,7 +110,7 @@ export class StatsDisplay {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
 		if (gameStats) this.messageHandler.sendMessage('post_game_stats', gameStats);
-		// If post set
+		// TODO: Post set - If post set
 	}
 
 	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
@@ -137,7 +137,7 @@ export class StatsDisplay {
 	private handleScore(gameEnd: GameEndType) {
 		let score: number[] = this.storeGames.getGameScore() ?? [0, 0];
 		const winnerIndex = getWinnerIndex(gameEnd)
-		if (winnerIndex === undefined) return;
+		if (winnerIndex === undefined || winnerIndex === -1) return;
 		score[winnerIndex] += 1;
 		this.storeGames.setGameScore(score);
 	}
@@ -184,7 +184,7 @@ export class StatsDisplay {
 		})
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
-		return this.getGameStats(new SlippiGame(file))
+		return this.getGameStats(new SlippiGame("/Users/sindrevatnaland/Slippi/2023-09/Game_20230708T171809.slp"))
 	}
 
 	async getRecentSetStats(settings: GameStartType): Promise<GameStats[] | null> {
@@ -219,119 +219,13 @@ export class StatsDisplay {
 		} as GameStats
 	}
 
+	// TODO: Add additional data not included in the default stats
 	private enrichPostGameStats(game: SlippiGame | null): StatsTypeExtended | null {
 		console.log("Enrich data")
 		if (!game) return null
-		console.log("P1:", this.getEdgeGuardStats(game, 0))
 		return {
 			...game.getStats(),
-			overall: [
-				{
-					...game.getStats()?.overall.at(0),
-					edgeGuard: this.getEdgeGuardStats(game, 0),
-					recovery: this.getRecoveryStats(game, 0)
-				} as OverallTypeExtended,
-				{
-					...game.getStats()?.overall.at(1),
-					edgeGuard: this.getEdgeGuardStats(game, 1),
-					recovery: this.getRecoveryStats(game, 1)
-				} as OverallTypeExtended,
-			]
-		}
+		} as StatsTypeExtended
 	}
 
-	private getEdgeGuardStats(game: SlippiGame, playerIndex: number | undefined): EdgeGuard | undefined {
-		console.log("Get Edge Guard Data")
-		if (!playerIndex) return;
-		const stats = game.getStats()
-		const edgeGuards = stats?.conversions
-			.filter(conversion => conversion.playerIndex === playerIndex)
-			.map(conversation => this.isSuccessfulEdgeGuardAttempt(game, conversation, playerIndex))
-			.flat()
-
-		const totalAttempts = edgeGuards?.length ?? 0
-		const successfulAttempts = edgeGuards?.map(edgeGuard => edgeGuard).length ?? 0
-		const unsuccessfulAttempts = edgeGuards?.map(edgeGuard => !edgeGuard).length ?? 0
-		return {
-			totalAttempts: totalAttempts,
-			successfulAttempts: successfulAttempts,
-			unsuccessfulAttempts: unsuccessfulAttempts,
-			successfulAttemptsPercent: Number((successfulAttempts / totalAttempts).toFixed(1)),
-			unsuccessfulAttemptsPercent: Number((unsuccessfulAttempts / totalAttempts).toFixed(1))
-		}
-	}
-
-	private getRecoveryStats(game: SlippiGame, playerIndex: number | undefined): Recovery | undefined {
-		if (!playerIndex) return;
-		const opponentIndex = playerIndex === 0 ? 1 : 0;
-		const edgeGuard = this.getEdgeGuardStats(game, opponentIndex)
-		if (!edgeGuard) return;
-		return {
-			totalRecoveries: edgeGuard.totalAttempts,
-			successfulRecoveries: edgeGuard.unsuccessfulAttempts,
-			unsuccessfulRecoveries: edgeGuard.successfulAttempts,
-			successfulRecoveriesPercent: edgeGuard.unsuccessfulAttempts,
-			unsuccessfulRecoveriesPercent: edgeGuard.successfulAttempts
-		}
-	}
-
-	private isSuccessfulEdgeGuardAttempt(game: SlippiGame, conversion: ConversionType, playerIndex: number): boolean[] {
-		console.log("Is successful attempt:", conversion.moves)
-		if (conversion.moves.length <= 1) return [];
-		const opponentIndex = playerIndex === 0 ? 1 : 0;
-		const opponentHitStunsOffStage = []
-		for (let i = 0; i < conversion.moves.length - 1; i++) {
-			const from = conversion.moves.at(i)?.frame
-			opponentHitStunsOffStage.push(this.hasHitStunOffStage(game, from, opponentIndex))
-		}
-		console.log("Hit stun off stage", opponentHitStunsOffStage)
-		// Assuming 3 consecutive false is a missed edge guard
-		let result = [];
-		let currentSubarray = [];
-
-		let consecutiveFalse = 0;
-		for (let i = 0; i < opponentHitStunsOffStage.length; i++) {
-			currentSubarray.push(opponentHitStunsOffStage[i])
-			if (!opponentHitStunsOffStage[i]) {
-				consecutiveFalse++
-				if (consecutiveFalse >= 3) {
-					result.push(currentSubarray);
-					currentSubarray = [];
-				}
-			}
-		}
-
-		// Assuming 2 Hits Offstage Is A Potential EdgeGuard
-		// Only last sequence is a potential kill. Other sequences are assumed to be unsuccessful
-		let attempts: boolean[] = result.slice(0, -1).map(sequence => sequence.filter(s => s).length > 2)
-		if ((result?.at(-1)?.length ?? 0) > 2) {
-			if (conversion.didKill) attempts.push(true)
-			if (!conversion.didKill) attempts.push(false)
-		}
-		return attempts
-	}
-
-	// TODO: Replace `hitlag` with stun
-	private hasHitStunOffStage(game: SlippiGame, from: number | undefined, receivingPlayerIndex: number): boolean {
-		console.log("Hit stun from:", from)
-		const frames = game.getFrames()
-		const stageId = game.getSettings()?.stageId ?? 32
-		if (from === undefined) return false
-		for (let i = from; i++;) {
-			if (!isInHitStun(receivingPlayerIndex, frames[i + 1])) return false
-			if (isOffStage(stageId, frames[i + 1], receivingPlayerIndex)) return true;
-		}
-		return false;
-	}
-
-}
-
-// TODO: If tie, return
-const getWinnerIndex = (gameEnd: GameEndType): number | undefined => {
-	const lrasIndex = gameEnd.lrasInitiatorIndex
-	if (lrasIndex === -1) return gameEnd.placements
-		.filter((p: PlacementType) => (p.position ?? -1) >= 0)
-		.sort((a: PlacementType, b: PlacementType) => a.playerIndex - b.playerIndex)
-		.findIndex(p => p.position === 0);
-	return lrasIndex === 0 ? 1 : 0
 }
