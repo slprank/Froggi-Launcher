@@ -12,7 +12,7 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
-import { STAGE_DATA } from '../../frontend/src/lib/models/const';
+import { isInHitStun, isOffStage } from 'utils/framesPredicates';
 
 @singleton()
 export class StatsDisplay {
@@ -317,27 +317,14 @@ export class StatsDisplay {
 		const frames = game.getFrames()
 		const stageId = game.getSettings()?.stageId ?? 32
 		if (from === undefined) return false
-		const to = from + (frames[from + 1].players[receivingPlayerIndex]?.post.hitlagRemaining ?? 0)
-		console.log("Hit stun to:", to)
-		for (let i = from; i < to; i++) {
-			const playerPost = frames[i + 1].players[receivingPlayerIndex]?.post;
-			if (!playerPost?.hitlagRemaining) return false
-			if (this.isOffStage(stageId, playerPost?.positionX ?? 0, playerPost?.positionY ?? 0)) return true;
+		for (let i = from; i++;) {
+			if (!isInHitStun(receivingPlayerIndex, frames[i + 1])) return false
+			if (isOffStage(stageId, frames[i + 1], receivingPlayerIndex)) return true;
 		}
 		return false;
 	}
 
-	// TODO: Utilize stage edge data to determine if you are off stage
-	private isOffStage(stageId: number, x: number, y: number): boolean {
-		const { leftLedgeX, rightLedgeX, mainPlatformHeight } = STAGE_DATA[stageId]
-		if (rightLedgeX < x) return true;
-		if (x < leftLedgeX) return true;
-		if (y < mainPlatformHeight) return true;
-		return false
-	}
 }
-
-
 
 // TODO: If tie, return
 const getWinnerIndex = (gameEnd: GameEndType): number | undefined => {
