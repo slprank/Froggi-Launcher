@@ -71,7 +71,7 @@ export class AutoUpdater {
 			);
 			this.messageHandler.sendMessage(
 				'auto_updater_progress',
-				undefined,
+				100,
 			);
 		});
 

@@ -1,4 +1,4 @@
-import type { GameEndType, GameStartType, OverallType, PlayerType, StatsType } from "@slippi/slippi-js";
+import type { FrameEntryType, GameEndType, GameStartType, OverallType, PlayerType, StatsType } from "@slippi/slippi-js";
 
 export interface Character {
     characterName: string;
@@ -67,12 +67,13 @@ export type StatsTypeExtended = StatsType | {
 }
 
 export interface GameStats {
-    settings: GameStartType;
     gameEnd: GameEndType;
-    postGameStats: StatsTypeExtended | null;
-    timestamp: Date;
-    score: number[];
+    lastFrame: FrameEntryType
     mode: GameStartMode;
+    postGameStats: StatsTypeExtended | null;
+    score: number[];
+    settings: GameStartType;
+    timestamp: Date;
 }
 
 export interface OverallTypeExtended extends OverallType {

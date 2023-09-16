@@ -210,12 +210,13 @@ export class StatsDisplay {
 	private getGameStats(game: SlippiGame | null): GameStats | null {
 		if (!game) return null;
 		return {
-			settings: game.getSettings(),
 			gameEnd: game.getGameEnd(),
+			lastFrame: game.getLatestFrame(),
+			mode: getGameMode(game.getSettings()),
 			postGameStats: this.enrichPostGameStats(game),
-			timestamp: dateTimeNow(),
 			score: this.storeGames.getGameScore(),
-			mode: getGameMode(game.getSettings())
+			settings: game.getSettings(),
+			timestamp: dateTimeNow(),
 		} as GameStats
 	}
 
