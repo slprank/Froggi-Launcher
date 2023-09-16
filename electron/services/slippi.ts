@@ -93,6 +93,7 @@ export class SlippiJs {
 	private async handleDisconnected() {
 		this.log.info("Dolphin Disconnected")
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Disconnected)
+		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin)
 		this.startProcessSearchInterval()
 	}
 
