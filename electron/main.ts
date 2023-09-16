@@ -163,8 +163,8 @@ try {
 
 	function setLoggingPath() {
 		try {
-			const appDataPath = getAppDataPath("slp-rank-client");
-			log.transports.file.resolvePath = () => path.join(`${appDataPath}/slpRankClient.log`);
+			const appDataPath = getAppDataPath("froggi");
+			log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
 		} catch (err) {
 			log.error(err)
 		}
