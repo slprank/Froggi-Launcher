@@ -121,8 +121,10 @@ export class SlippiJs {
 		this.dolphinProcessInterval = setInterval(async () => {
 			const exec = require('child_process').exec;
 			const command = this.isWindows ? "Get-Process" : "ps -ax | grep Dolphin"
-			exec(command, (err: Error, stdout: string, stderr: Error) => {
-				const includesDolphin = stdout.toLowerCase().includes(this.isWindows ? "dolphin" : "slippi dolphin")
+			const shell = this.isWindows ? 'powershell.exe' : "/bin/bash"
+			const include = this.isWindows ? "dolphin" : "slippi dolphin"
+			exec(command, { 'shell': shell }, (err: Error, stdout: string, stderr: Error) => {
+				const includesDolphin = stdout.toLowerCase().includes(include)
 				if (err) this.log.error(err)
 				if (stderr) this.log.error(stderr);
 				if (includesDolphin) this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
