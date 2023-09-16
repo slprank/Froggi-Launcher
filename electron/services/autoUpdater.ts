@@ -21,7 +21,7 @@ export class AutoUpdater {
 		this.log.info('Current Version:', autoUpdater.currentVersion);
 		this.messageHandler.sendMessage(
 			'auto_updater_version',
-			autoUpdater.currentVersion,
+			autoUpdater.currentVersion.version,
 		);
 		autoUpdater.autoInstallOnAppQuit = true;
 		autoUpdater.checkForUpdates()

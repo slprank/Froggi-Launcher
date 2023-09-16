@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { AutoUpdaterStatus } from '$lib/models/enum';
-	import NavButton from './NavButton.svelte';
 	import { fly } from 'svelte/transition';
 	import { autoUpdater, eventEmitter, isElectron } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
+	import type { AutoUpdater } from '$lib/models/types';
 
-	const getBorderStyle = (state: AutoUpdaterStatus) => {
-		switch (state) {
+	const getBorderStyle = (autoUpdater: AutoUpdater) => {
+		switch (autoUpdater.status) {
 			case AutoUpdaterStatus.LookingForUpdate:
 				return 'border: 1px solid black';
 			case AutoUpdaterStatus.DownloadAvailable:
@@ -24,8 +24,8 @@
 		}
 	};
 
-	const getAnimation = (state: AutoUpdaterStatus) => {
-		switch (state) {
+	const getAnimation = (autoUpdater: AutoUpdater) => {
+		switch (autoUpdater.status) {
 			case AutoUpdaterStatus.LookingForUpdate:
 				return 'pulse';
 			case AutoUpdaterStatus.DownloadAvailable:
@@ -37,22 +37,22 @@
 		}
 	};
 
-	const getContent = (state: AutoUpdaterStatus) => {
-		switch (state) {
+	const getContent = (autoUpdater: AutoUpdater) => {
+		switch (autoUpdater.status) {
 			case AutoUpdaterStatus.LookingForUpdate:
 				return 'Checking';
 			case AutoUpdaterStatus.DownloadAvailable:
 				return 'Update';
 			case AutoUpdaterStatus.Downloading:
-				return `${$autoUpdater.progress}%`;
+				return `${autoUpdater.progress}%`;
 			case AutoUpdaterStatus.DownloadComplete:
 				return 'Install';
 			case AutoUpdaterStatus.Installing:
 				return 'Installing';
 			case AutoUpdaterStatus.UpToDate:
-				return `v${$autoUpdater.version}`;
+				return `v${autoUpdater.version}`;
 			default:
-				return `v${$autoUpdater.version}`;
+				return `v${autoUpdater.version}`;
 		}
 	};
 
@@ -68,12 +68,12 @@
 		transition:fly={{ duration: 150, x: -50 }}
 		on:click={installUpdate}
 	>
-		<span class={getAnimation($autoUpdater.status)} />
+		<span class={getAnimation($autoUpdater)} />
 		<button
 			class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
-			style={`${getBorderStyle($autoUpdater.status)}`}
+			style={`${getBorderStyle($autoUpdater)}`}
 		>
-			<TextFitMulti>{`${getContent($autoUpdater.status)}`}</TextFitMulti>
+			<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
 		</button>
 	</button>
 {/if}
