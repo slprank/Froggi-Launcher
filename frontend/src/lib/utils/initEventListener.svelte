@@ -27,7 +27,7 @@
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.setMaxListeners(30);
-		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
+		_eventEmitter.on('auto_updater_status', (status: AutoUpdaterStatus) => {
 			console.log({ status });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, status: status };
