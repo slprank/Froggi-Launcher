@@ -76,6 +76,7 @@ try {
 		});
 
 		mainWindow.on('close', () => {
+
 			windowState.saveState(mainWindow);
 		});
 
@@ -116,6 +117,7 @@ try {
 	function createMainWindow() {
 		mainWindow = createWindow();
 		mainWindow.once('close', () => {
+			eventEmitter.emit("update-install")
 			mainWindow = null;
 		});
 
