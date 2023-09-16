@@ -1,10 +1,10 @@
 {
-	"appId": "com.slpRankClient.app",
-	"productName": "slpRank-client",
+	"appId": "com.Froggi.app",
+	"productName": "Froggi",
 	"directories": {
 		"output": "dist"
 	},
-	"artifactName": "slpRank-client-${version}-${os}.${ext}",
+	"artifactName": "Froggi-${version}-${os}.${ext}",
 	"win": {
 		"icon": "bin/static/icon.png",
 		"target": [
@@ -23,7 +23,7 @@
 		"target": ["default"],
 		"extraResources": ["res", "favicon.png"]
 	},
-	"executableName": "Slp Client",
+	"executableName": "Froggi",
 	"files": [
 		"build",
 		"build_electron",
