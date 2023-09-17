@@ -52,14 +52,14 @@ export class ElectronGamesStore {
         console.log("Set Game Match:", gameStats)
         if (!gameStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
-        if (!player || !gameStats.settings.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
+        if (!player || !gameStats?.settings?.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
             return;
 
         if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
         if (!matches) return;
         matches.push(gameStats)
-        this.store.set(`player.${player.connectCode}.game.${gameStats.mode}.${gameStats.settings.matchInfo.matchId}`, matches);
+        this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, matches);
     }
 
     getGameMatch(matchId: string): GameStats[] | undefined {
@@ -73,7 +73,7 @@ export class ElectronGamesStore {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
         const games = Object.assign(this.getAllSetsByMode("ranked") ?? {}, this.getAllSetsByMode("unranked") ?? {}, this.getAllSetsByMode("direct") ?? {})
-        return games[matchId].find(game => game.settings.matchInfo?.gameNumber === gameNumber)
+        return games[matchId].find(game => game.settings?.matchInfo?.gameNumber === gameNumber)
     }
 
     getAllSetsByMode(mode: GameStartMode): { [matchId: string]: GameStats[] } | undefined {

@@ -82,13 +82,13 @@ export class StatsDisplay {
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)!
 
-		this.storeLiveStats.setGameSettings(settings);
 		this.storeLiveStats.setGameState(InGameState.Running)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame)
 		this.storePlayers.setCurrentPlayers(currentPlayers);
 
 		if (gameNumber !== 1) return;
 		this.storeGames.setGameScore([0, 0]);
+		this.storeLiveStats.setGameSettings(settings);
 
 		if (!currentPlayer.rank?.current) return
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
@@ -209,13 +209,14 @@ export class StatsDisplay {
 
 	private getGameStats(game: SlippiGame | null): GameStats | null {
 		if (!game) return null;
+		const settings = game.getSettings()
 		return {
 			gameEnd: game.getGameEnd(),
 			lastFrame: game.getLatestFrame(),
 			mode: getGameMode(game.getSettings()),
 			postGameStats: this.enrichPostGameStats(game),
 			score: this.storeGames.getGameScore(),
-			settings: game.getSettings(),
+			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings) } },
 			timestamp: dateTimeNow(),
 		} as GameStats
 	}

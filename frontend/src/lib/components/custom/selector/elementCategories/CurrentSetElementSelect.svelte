@@ -12,10 +12,17 @@
 
 <div class="flex flex-col gap-2">
 	<ElementOption
-		description="Customizable box"
-		customElement={CustomElement.CustomBox}
+		description="Player 1 Ongoing Set Score"
+		customElement={CustomElement.CurrentSetPlayer1Score}
 		on:select={select}
 	>
-		Custom box
+		Player 1 Set Score
+	</ElementOption>
+	<ElementOption
+		description="Player 2 Ongoing Set Score"
+		customElement={CustomElement.CurrentSetPlayer2Score}
+		on:select={select}
+	>
+		Player 2 Set Score
 	</ElementOption>
 </div>

@@ -4,15 +4,12 @@
 	import { fly } from 'svelte/transition';
 	import CustomUiElementSelect from './elementCategories/CustomUiElementSelect.svelte';
 	import CustomElementSelect from './elementCategories/CustomElementSelect.svelte';
-	import InGameElementSelect from './elementCategories/InGameElementSelect.svelte';
 	import PostGameElementSelect from './elementCategories/PostGameElementSelect.svelte';
 	import PostSetElementSelect from './elementCategories/PostSetElementSelect.svelte';
-	import PreGameElementSelect from './elementCategories/PreGameElementSelect.svelte';
-	import RankChangeElementSelect from './elementCategories/RankChangeElementSelect.svelte';
-	import WaitingElementSelect from './elementCategories/WaitingElementSelect.svelte';
 	import Player1SlippiData from './elementCategories/Player1SlippiData.svelte';
 	import Player2SlippiData from './elementCategories/Player2SlippiData.svelte';
 	import CurrentPlayerSlippiData from './elementCategories/CurrentPlayerSlippiData.svelte';
+	import CurrentSetElementSelect from './elementCategories/CurrentSetElementSelect.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -26,17 +23,18 @@
 
 	$: buttons = [
 		{
-			text: 'Custom',
 			category: ElementCategory.Custom,
 			visible: true,
 		},
 		{
-			text: 'Custom UI',
 			category: ElementCategory.CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			text: 'Player1 Slippi Data',
+			category: ElementCategory.ControllerInput,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
 			category: ElementCategory.Player1SlippiData,
 			visible: [
 				LiveStatsScene.PreGame,
@@ -46,7 +44,6 @@
 			].includes($statsScene),
 		},
 		{
-			text: 'Player2 Slippi Data',
 			category: ElementCategory.Player2SlippiData,
 			visible: [
 				LiveStatsScene.PreGame,
@@ -56,34 +53,32 @@
 			].includes($statsScene),
 		},
 		{
-			text: 'Current Player Slippi Data',
 			category: ElementCategory.CurrentPlayerSlippiData,
 			visible: [
 				LiveStatsScene.PreGame,
 				LiveStatsScene.InGame,
 				LiveStatsScene.PostGame,
 				LiveStatsScene.PostSet,
+				LiveStatsScene.RankChange,
 			].includes($statsScene),
 		},
 		{
-			text: 'Pre Game',
-			category: ElementCategory.PreGame,
-			visible: [LiveStatsScene.PreGame].includes($statsScene),
+			category: ElementCategory.PostGameStats,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
-			text: 'Post Game Stats',
-			category: ElementCategory.PostGame,
-			visible: [LiveStatsScene.PostGame].includes($statsScene),
-		},
-		{
-			text: 'Post Set Stats',
-			category: ElementCategory.PostSet,
+			category: ElementCategory.PostSetStats,
 			visible: [LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
-			text: 'Rank Change',
-			category: ElementCategory.RankChange,
-			visible: [LiveStatsScene.RankChange].includes($statsScene),
+			category: ElementCategory.CurrentSetStats,
+			visible: [
+				LiveStatsScene.PreGame,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+				LiveStatsScene.RankChange,
+			].includes($statsScene),
 		},
 	];
 
@@ -103,7 +98,7 @@
 						selectedCategory = button.category;
 					}}
 				>
-					{button.text}
+					{button.category}
 				</button>
 			</div>
 		{/each}
@@ -118,26 +113,17 @@
 			{#if selectedCategory === ElementCategory.Custom}
 				<CustomElementSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.WaitingForDolphin}
-				<WaitingElementSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.PreGame}
-				<PreGameElementSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.InGame}
-				<InGameElementSelect on:select={select} />
-			{/if}
 			{#if selectedCategory === ElementCategory.CustomUi}
 				<CustomUiElementSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.PostGame}
+			{#if selectedCategory === ElementCategory.PostGameStats}
 				<PostGameElementSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.PostSet}
+			{#if selectedCategory === ElementCategory.PostSetStats}
 				<PostSetElementSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.RankChange}
-				<RankChangeElementSelect on:select={select} />
+			{#if selectedCategory === ElementCategory.CurrentSetStats}
+				<CurrentSetElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
 				<CurrentPlayerSlippiData on:select={select} />

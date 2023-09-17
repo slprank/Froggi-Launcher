@@ -1,0 +1,43 @@
+<script lang="ts">
+	import { CHARACTERS } from '$lib/models/const';
+	import { CustomElement } from '$lib/models/enum';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import { currentPlayers, currentPlayer } from '$lib/utils/store.svelte';
+	import CharacterIcon from '../element/CharacterIcon.svelte';
+	import PlayerRankIcon from '../element/PlayerRankIcon.svelte';
+	import TextElement from '../element/TextElement.svelte';
+
+	export let dataItem: GridContentItem;
+	export let edit: boolean;
+	export let style: GridContentItemStyle;
+</script>
+
+{#if dataItem?.elementId === CustomElement.CustomString}
+	<TextElement {style} {dataItem} {edit}>
+		{dataItem?.data.string}
+	</TextElement>
+{/if}
+{#if dataItem?.elementId === CustomElement.CustomBox}
+	<div
+		class={`w-full h-full ${style.classValue}`}
+		style={`${style.cssValue}; ${
+			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+		}; `}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.CustomImage}
+	<div
+		class={`w-full h-full ${style.classValue}`}
+		style={`${style.cssValue}; ${
+			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+		}; `}
+	>
+		<img
+			class="w-full h-full"
+			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+			src={dataItem?.data.image.src}
+			alt="custom"
+		/>
+	</div>
+{/if}

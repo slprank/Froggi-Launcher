@@ -57,6 +57,8 @@
 	};
 	$: payload.animation, fixAnimationInputDelay();
 
+	$: console.log('Selected id', selectedElementId);
+
 	const shuffleAnimationTriggers = () => {
 		$eventEmitter.emit('animation_test_trigger');
 	};
