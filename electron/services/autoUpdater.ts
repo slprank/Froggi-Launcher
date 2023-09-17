@@ -19,12 +19,12 @@ export class AutoUpdater {
 	async initListeners() {
 		this.log.info('Initializing Auto Updater');
 		this.log.info('Current Version:', autoUpdater.currentVersion);
+		autoUpdater.autoInstallOnAppQuit = true;
+		autoUpdater.checkForUpdates()
 		this.messageHandler.sendMessage(
 			'auto_updater_version',
 			autoUpdater.currentVersion.version,
 		);
-		autoUpdater.autoInstallOnAppQuit = true;
-		autoUpdater.checkForUpdates()
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
@@ -39,6 +39,10 @@ export class AutoUpdater {
 			this.messageHandler.sendMessage(
 				'auto_updater_status',
 				AutoUpdaterStatus.UpToDate,
+			);
+			this.messageHandler.sendMessage(
+				'auto_updater_version',
+				autoUpdater.currentVersion.version,
 			);
 		});
 

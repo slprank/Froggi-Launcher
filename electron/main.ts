@@ -58,7 +58,7 @@ try {
 				contextIsolation: true,
 				nodeIntegration: true,
 				spellcheck: false,
-				devTools: dev,
+				devTools: true ?? dev,
 				preload: path.join(__dirname, '/preload.js'),
 			},
 			x: windowState.x,
@@ -141,7 +141,7 @@ try {
 			container.resolve(StatsDisplay)
 			container.resolve(ObsWebSocket)
 			container.resolve(SlippiJs)
-			if (!dev) container.resolve(AutoUpdater)
+			container.resolve(AutoUpdater)
 		});
 
 		// Find a better solution to init autoUpdate

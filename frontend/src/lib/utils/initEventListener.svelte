@@ -34,7 +34,7 @@
 			});
 		});
 		_eventEmitter.on('auto_updater_version', (version: string | undefined) => {
-			console.log({ version });
+			console.log('version', { version });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, version: version };
 			});

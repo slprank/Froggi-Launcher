@@ -5,18 +5,18 @@
 	import TextFitMulti from '../TextFitMulti.svelte';
 	import type { AutoUpdater } from '$lib/models/types';
 
-	const getBorderStyle = (autoUpdater: AutoUpdater) => {
+	const getStyle = (autoUpdater: AutoUpdater) => {
 		switch (autoUpdater.status) {
 			case AutoUpdaterStatus.LookingForUpdate:
-				return 'border: 1px solid black';
+				return 'border: 1px solid black;';
 			case AutoUpdaterStatus.DownloadAvailable:
-				return 'border: 1px solid green';
+				return 'border: 1px solid green; background-color: green;';
 			case AutoUpdaterStatus.Downloading:
-				return 'border: 1px solid yellow';
+				return 'border: 1px solid yellow; background-color: yellow;';
 			case AutoUpdaterStatus.DownloadComplete:
-				return 'border: 1px solid green';
+				return 'border: 1px solid green; background-color: green;';
 			case AutoUpdaterStatus.Installing:
-				return 'border: 1px solid yellow';
+				return 'border: 1px solid yellow;';
 			case AutoUpdaterStatus.UpToDate:
 				return '';
 			default:
@@ -56,6 +56,8 @@
 		}
 	};
 
+	$: console.log('Electron:', $autoUpdater);
+
 	const installUpdate = () => {
 		if ($autoUpdater.status === AutoUpdaterStatus.DownloadComplete)
 			$eventEmitter.emit('electron', 'update-install');
@@ -63,17 +65,18 @@
 </script>
 
 {#if $isElectron}
-	<button
-		class="transition hover:scale-110 fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
-		transition:fly={{ duration: 150, x: -50 }}
-		on:click={installUpdate}
-	>
-		<span class={getAnimation($autoUpdater)} />
+	{#key $autoUpdater}
 		<button
-			class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
-			style={`${getBorderStyle($autoUpdater)}`}
+			class="transition hover:scale-110 fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
+			on:click={installUpdate}
 		>
-			<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
+			<span class={getAnimation($autoUpdater)} />
+			<button
+				class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
+				style={`${getStyle($autoUpdater)}`}
+			>
+				<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
+			</button>
 		</button>
-	</button>
+	{/key}
 {/if}
