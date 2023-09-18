@@ -28,7 +28,8 @@
 	>
 		<img
 			class="h-full aspect-video"
-			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={`/image/characters/${characterId}/0.png`}
 			alt="custom"
 		/>

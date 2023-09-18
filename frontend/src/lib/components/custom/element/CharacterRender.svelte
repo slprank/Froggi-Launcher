@@ -1,24 +1,23 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import type { Player } from '$lib/models/types/slippiData';
+	import { gameFrame } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
+	export let defaultPreviewId: number;
 
-	$: characterId = getCharacterId(player?.characterId);
-
-	const getCharacterId = (characterId: number | undefined | null) => {
-		if (preview && (characterId === undefined || characterId === null))
-			return Math.floor(Math.random() * 25);
-		return characterId;
+	$: getCharacterId = () => {
+		if (preview && (!$gameFrame || !player)) return defaultPreviewId;
+		return $gameFrame.players[player?.playerIndex ?? 0]?.post.internalCharacterId ?? 0;
 	};
 
 	let div: HTMLElement;
 </script>
 
-{#if player}
+{#if player && div}
 	<div
 		class={`w-full h-full ${style.classValue} grid justify-end`}
 		style={`${style.cssValue}; ${
@@ -32,7 +31,7 @@
 				div?.clientHeight
 			}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${characterId}.png`}
+			src={`/image/character-renders/${getCharacterId()}.png`}
 			alt="custom"
 		/>
 	</div>

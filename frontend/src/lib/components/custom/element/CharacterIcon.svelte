@@ -13,10 +13,7 @@
 
 	$: getCharacterId = () => {
 		if (preview && (!$gameFrame || !player)) return defaultPreviewId;
-		return (
-			$gameFrame.players[$currentPlayers.at(0)?.playerIndex ?? 0]?.post.internalCharacterId ??
-			0
-		);
+		return $gameFrame.players[player?.playerIndex ?? 0]?.post.internalCharacterId ?? 0;
 	};
 </script>
 
@@ -27,8 +24,10 @@
 	}; `}
 >
 	<img
-		class="h-full aspect-video"
-		style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+		class="h-full aspect-video contain"
+		style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'}; ${
+			dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
+		};`}
 		src={`/image/characters/${getCharacterId()}/0.png`}
 		alt="custom"
 	/>

@@ -101,7 +101,6 @@ export class StatsDisplay {
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 		const gameStats = await this.getRecentGameStats(settings);
-		console.log("game stats:", gameStats?.postGameStats?.overall[0])
 		// TODO: If Game Set End - Get All Match Games
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
@@ -110,6 +109,7 @@ export class StatsDisplay {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
 		if (gameStats) this.messageHandler.sendMessage('post_game_stats', gameStats);
+		if (gameStats?.lastFrame) this.storeLiveStats.setGameFrame(gameStats.lastFrame)
 		// TODO: Post set - If post set
 	}
 
@@ -184,7 +184,7 @@ export class StatsDisplay {
 		})
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
-		return this.getGameStats(new SlippiGame("/Users/sindrevatnaland/Slippi/2023-09/Game_20230708T171809.slp"))
+		return this.getGameStats(new SlippiGame(file))
 	}
 
 	async getRecentSetStats(settings: GameStartType): Promise<GameStats[] | null> {

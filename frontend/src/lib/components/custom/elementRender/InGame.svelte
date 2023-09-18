@@ -46,7 +46,7 @@
 		defaultPreviewId={Number(CHARACTERS['fox'])}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterIcon}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterIcon}
 	<CharacterIcon
 		{dataItem}
 		{style}
@@ -56,8 +56,20 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterRender && $currentPlayers.at(0)}
-	<CharacterRender {dataItem} {style} player={$currentPlayers.at(0)} preview={defaultPreview} />
+	<CharacterRender
+		{dataItem}
+		{style}
+		player={$currentPlayers.at(0)}
+		preview={defaultPreview}
+		defaultPreviewId={2}
+	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterRender && $currentPlayers.at(1)}
-	<CharacterRender {dataItem} {style} player={$currentPlayers.at(1)} preview={defaultPreview} />
+	<CharacterRender
+		{dataItem}
+		{style}
+		player={$currentPlayers.at(1)}
+		preview={defaultPreview}
+		defaultPreviewId={22}
+	/>
 {/if}
