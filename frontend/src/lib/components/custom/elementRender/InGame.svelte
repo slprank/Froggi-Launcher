@@ -3,8 +3,8 @@
 	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
-	import CharacterIcon from '../element/CharacterIcon.svelte';
-	import CharacterRender from '../element/CharacterRender.svelte';
+	import CharacterIcon from '../element/inGame/CharacterIcon.svelte';
+	import CharacterRender from '../element/inGame/CharacterRender.svelte';
 	import PlayerPercent from '../element/PlayerPercent.svelte';
 	import TextElement from '../element/TextElement.svelte';
 

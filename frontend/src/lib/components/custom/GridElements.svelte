@@ -1,15 +1,8 @@
 <script lang="ts">
-	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import TextElement from '$lib/components/custom/element/TextElement.svelte';
-	import { currentPlayer, currentPlayers, gameScore } from '$lib/utils/store.svelte';
-	import PlayerPercent from '$lib/components/custom/element/PlayerPercent.svelte';
-	import CharacterRender from './element/CharacterRender.svelte';
-	import PlayerRankIcon from './element/PlayerRankIcon.svelte';
+	import { currentPlayer } from '$lib/utils/store.svelte';
 	import { addFont } from './CustomFontHandler.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
-	import CharacterIcon from './element/RankedCharacterIcon.svelte';
-	import { CHARACTERS } from '$lib/models/const';
 	import SlippiRank from './elementRender/SlippiRank.svelte';
 	import Custom from './elementRender/Custom.svelte';
 	import InGame from './elementRender/InGame.svelte';
