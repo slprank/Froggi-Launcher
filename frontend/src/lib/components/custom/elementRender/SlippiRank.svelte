@@ -3,7 +3,7 @@
 	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import { currentPlayers, currentPlayer } from '$lib/utils/store.svelte';
-	import CharacterIcon from '../element/CharacterIcon.svelte';
+	import RankedCharacterIcon from '../element/RankedCharacterIcon.svelte';
 	import PlayerRankIcon from '../element/PlayerRankIcon.svelte';
 	import TextElement from '../element/TextElement.svelte';
 
@@ -361,7 +361,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter1Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayer}
@@ -389,7 +389,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter2Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayer}
@@ -417,7 +417,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter3Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayer}
@@ -445,7 +445,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character1Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayers?.at(0)}
@@ -473,7 +473,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character2Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayers?.at(0)}
@@ -501,7 +501,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character3Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayers?.at(0)}
@@ -529,7 +529,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character1Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayers?.at(1)}
@@ -557,7 +557,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character2Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayers?.at(1)}
@@ -585,7 +585,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character3Icon}
-	<CharacterIcon
+	<RankedCharacterIcon
 		{dataItem}
 		{style}
 		player={$currentPlayers?.at(1)}

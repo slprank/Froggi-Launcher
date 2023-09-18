@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { CHARACTERS } from '$lib/models/const';
 	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import { currentPlayers, gameScore } from '$lib/utils/store.svelte';
+	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
+	import CharacterIcon from '../element/CharacterIcon.svelte';
 	import CharacterRender from '../element/CharacterRender.svelte';
 	import PlayerPercent from '../element/PlayerPercent.svelte';
 	import TextElement from '../element/TextElement.svelte';
@@ -35,7 +37,24 @@
 		{$gameScore?.at(1) ?? '0'}
 	</TextElement>
 {/if}
-<!-- Icons -->
+{#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterIcon}
+	<CharacterIcon
+		{dataItem}
+		{style}
+		preview={defaultPreview}
+		player={$currentPlayers.at(1)}
+		defaultPreviewId={Number(CHARACTERS['fox'])}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterIcon}
+	<CharacterIcon
+		{dataItem}
+		{style}
+		preview={defaultPreview}
+		player={$currentPlayers.at(0)}
+		defaultPreviewId={Number(CHARACTERS['falco'])}
+	/>
+{/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterRender && $currentPlayers.at(0)}
 	<CharacterRender {dataItem} {style} player={$currentPlayers.at(0)} preview={defaultPreview} />
 {/if}

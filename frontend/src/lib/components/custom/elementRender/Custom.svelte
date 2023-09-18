@@ -1,10 +1,6 @@
 <script lang="ts">
-	import { CHARACTERS } from '$lib/models/const';
 	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import { currentPlayers, currentPlayer } from '$lib/utils/store.svelte';
-	import CharacterIcon from '../element/CharacterIcon.svelte';
-	import PlayerRankIcon from '../element/PlayerRankIcon.svelte';
 	import TextElement from '../element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;

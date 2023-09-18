@@ -1,35 +1,35 @@
 <script lang="ts">
-	import type { GridContentItem, GridContentItemStyle, Player } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { Player } from '$lib/models/types/slippiData';
+	import { currentPlayers, gameFrame } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
-	export let player: Player | undefined;
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
-	export let characterNumber: number;
+	export let player: Player | undefined;
 	export let defaultPreviewId: number;
 
-	$: characterId = getCharacterId(
-		player?.rank?.current?.characters.at(characterNumber)?.characterId,
-	);
+	$gameFrame.players[$currentPlayers.at(0)?.playerIndex ?? 0]?.post.internalCharacterId ?? 0;
 
-	const getCharacterId = (characterId: number | undefined | null) => {
-		if (preview && (characterId === undefined || characterId === null)) return defaultPreviewId;
-		return characterId;
+	$: getCharacterId = () => {
+		if (preview && (!$gameFrame || !player)) return defaultPreviewId;
+		return (
+			$gameFrame.players[$currentPlayers.at(0)?.playerIndex ?? 0]?.post.internalCharacterId ??
+			0
+		);
 	};
 </script>
 
-{#if player}
-	<div
-		class={`w-full h-full ${style.classValue}`}
-		style={`${style.cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
-		<img
-			class="h-full aspect-video"
-			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/characters/${characterId}/0.png`}
-			alt="custom"
-		/>
-	</div>
-{/if}
+<div
+	class={`w-full h-full ${style.classValue}`}
+	style={`${style.cssValue}; ${
+		dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+	}; `}
+>
+	<img
+		class="h-full aspect-video"
+		style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+		src={`/image/characters/${getCharacterId()}/0.png`}
+		alt="custom"
+	/>
+</div>

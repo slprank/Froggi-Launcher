@@ -8,7 +8,7 @@
 	import PlayerRankIcon from './element/PlayerRankIcon.svelte';
 	import { addFont } from './CustomFontHandler.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
-	import CharacterIcon from './element/CharacterIcon.svelte';
+	import CharacterIcon from './element/RankedCharacterIcon.svelte';
 	import { CHARACTERS } from '$lib/models/const';
 	import SlippiRank from './elementRender/SlippiRank.svelte';
 	import Custom from './elementRender/Custom.svelte';
