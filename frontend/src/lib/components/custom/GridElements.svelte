@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import { currentPlayer } from '$lib/utils/store.svelte';
 	import { addFont } from './CustomFontHandler.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 	import SlippiRank from './elementRender/SlippiRank.svelte';
@@ -18,8 +17,6 @@
 	$: boardHeight = div?.clientHeight ?? 0;
 	let innerWidth = 0;
 	let innerHeight = 0;
-
-	$: console.log('current player', $currentPlayer);
 
 	$: defaultPreview = edit || preview;
 
@@ -109,9 +106,9 @@
 				{#key fontTrigger}
 					<Custom {dataItem} {edit} {style} />
 
-					<InGame {dataItem} {defaultPreview} {edit} {preview} {style} />
+					<InGame {dataItem} {defaultPreview} {style} />
 
-					<SlippiRank {dataItem} {defaultPreview} {edit} {style} />
+					<SlippiRank {dataItem} {defaultPreview} {style} />
 				{/key}
 			{/key}
 		{/if}

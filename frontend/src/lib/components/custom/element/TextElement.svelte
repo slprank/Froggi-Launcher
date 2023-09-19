@@ -3,7 +3,6 @@
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 
 	export let dataItem: GridContentItem;
-	export let edit: boolean;
 	export let style: GridContentItemStyle;
 </script>
 
@@ -12,7 +11,7 @@
 		class={`h-full flex ${style.classValue}`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-		};  ${edit && 'color: black'}`}
+		};`}
 		maxFont={1000}
 	>
 		<slot />

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import type { Character, Player } from '$lib/models/types/slippiData';
+	import type { Player } from '$lib/models/types/slippiData';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;
@@ -9,12 +9,12 @@
 	export let characterNumber: number;
 	export let defaultPreviewId: number;
 
-	let characterId: number | undefined = defaultPreviewId;
-
-	$: getCharacterId = () => {
-		if (preview && !player) characterId = defaultPreviewId;
-		return player?.rank?.current?.characters.at(characterNumber);
+	const getCharacterId = () => {
+		if (preview) return defaultPreviewId;
+		return player?.rank?.current?.characters.at(characterNumber)?.characterId;
 	};
+
+	let characterId: number | undefined = getCharacterId();
 </script>
 
 {#if characterId}
@@ -29,7 +29,7 @@
 			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'}; ${
 				dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
 			};`}
-			src={`/image/characters/${getCharacterId()}/0.png`}
+			src={`/image/characters/${characterId}/0.png`}
 			alt="custom"
 		/>
 	</div>

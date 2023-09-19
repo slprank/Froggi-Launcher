@@ -5,27 +5,17 @@
 	import { gameFrame, gameState } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
-	export let edit: boolean;
-	export let preview: boolean;
+	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
 	export let playerIndex: number;
 	export let numberOfDecimals: number;
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
-	$: displayPreviewValue = edit || preview;
 
 	$: frame = $gameFrame?.players[playerIndex]?.post;
 
 	$: framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
-
-	$: console.log(
-		frame,
-		isInGame,
-		$gameState,
-		Math.floor(frame?.percent ?? 0).toFixed(),
-		framePercent,
-	);
 
 	$: decimals =
 		numberOfDecimals && isInGame
@@ -75,7 +65,7 @@
 
 {#key framePercent}
 	<div class="w-full h-full relative">
-		{#if isInGame || displayPreviewValue}
+		{#if isInGame || defaultPreview}
 			{#each Array.from(Array(2)) as _, i}
 				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
 					<TextFitMulti
@@ -91,15 +81,15 @@
 					>
 						{#if !numberOfDecimals}
 							<span class="mr-[.3em]">
-								{`${displayPreviewValue ? 300 : framePercent}`}
+								{`${defaultPreview ? 300 : framePercent}`}
 								<span class="text-[80%] mx-[-.2em]">%</span>
 							</span>
 						{/if}
 						{#if numberOfDecimals}
 							<span class="mr-[.4em]">
-								{`${displayPreviewValue ? 300 : framePercent}`}
+								{`${defaultPreview ? 300 : framePercent}`}
 								<span class="text-[55%] mx-[-.5em]">
-									{`${`.${displayPreviewValue ? 0 : decimals}`}%`}
+									{`${`.${defaultPreview ? 0 : decimals}`}%`}
 								</span>
 							</span>
 						{/if}

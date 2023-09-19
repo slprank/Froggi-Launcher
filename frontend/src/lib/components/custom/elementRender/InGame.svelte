@@ -10,30 +10,28 @@
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
-	export let preview: boolean;
-	export let edit: boolean;
 	export let style: GridContentItemStyle;
 </script>
 
 {#if dataItem?.elementId === CustomElement.InGamePlayer1Percent}
-	<PlayerPercent {style} {dataItem} {edit} {preview} numberOfDecimals={0} playerIndex={0} />
+	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={0} playerIndex={0} />
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2Percent}
-	<PlayerPercent {style} {dataItem} {edit} {preview} numberOfDecimals={0} playerIndex={1} />
+	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={0} playerIndex={1} />
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1PercentDecimal}
-	<PlayerPercent {style} {dataItem} {edit} {preview} numberOfDecimals={1} playerIndex={0} />
+	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={1} playerIndex={0} />
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2PercentDecimal}
-	<PlayerPercent {style} {dataItem} {edit} {preview} numberOfDecimals={1} playerIndex={1} />
+	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={1} playerIndex={1} />
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1Score}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$gameScore?.at(0) ?? '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2Score}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$gameScore?.at(1) ?? '0'}
 	</TextElement>
 {/if}

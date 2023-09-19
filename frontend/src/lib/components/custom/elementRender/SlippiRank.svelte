@@ -9,12 +9,11 @@
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
-	export let edit: boolean;
 	export let style: GridContentItemStyle;
 </script>
 
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerTag}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.displayName
 			? $currentPlayer?.rank?.current?.displayName
 			: defaultPreview
@@ -23,7 +22,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Tag}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.displayName
 			? $currentPlayers?.at(0)?.rank?.current?.displayName
 			: defaultPreview
@@ -32,7 +31,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Tag}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.displayName
 			? $currentPlayers?.at(1)?.rank?.current?.displayName
 			: defaultPreview
@@ -42,7 +41,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerConnectCode}
 	{#key $currentPlayer?.rank?.current?.connectCode}
-		<TextElement {style} {dataItem} {edit}>
+		<TextElement {style} {dataItem}>
 			{$currentPlayer?.rank?.current?.connectCode
 				? $currentPlayer?.rank?.current?.connectCode
 				: defaultPreview
@@ -53,14 +52,14 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1ConnectCode}
 	{#key $currentPlayers?.at(0)?.rank?.current?.connectCode}
-		<TextElement {style} {dataItem} {edit}>
+		<TextElement {style} {dataItem}>
 			{$currentPlayers?.at(0)?.rank?.current?.connectCode || defaultPreview ? `ABCD#123` : ''}
 		</TextElement>
 	{/key}
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2ConnectCode}
 	{#key $currentPlayers?.at(1)?.rank?.current?.connectCode}
-		<TextElement {style} {dataItem} {edit}>
+		<TextElement {style} {dataItem}>
 			{$currentPlayers?.at(1)?.rank?.current?.connectCode || defaultPreview ? `GHIJ#456` : ''}
 		</TextElement>
 	{/key}
@@ -75,7 +74,7 @@
 	<PlayerRankIcon {dataItem} {style} player={$currentPlayers.at(1)} preview={defaultPreview} />
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRankText}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.rank
 			? $currentPlayer?.rank?.current?.rank
 			: defaultPreview
@@ -84,7 +83,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1RankText}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.rank
 			? $currentPlayers?.at(0)?.rank?.current?.rank
 			: defaultPreview
@@ -93,7 +92,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2RankText}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.rank
 			? $currentPlayers?.at(1)?.rank?.current?.rank
 			: defaultPreview
@@ -102,7 +101,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRating}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.rating
 			? $currentPlayer?.rank?.current?.rating
 			: defaultPreview
@@ -111,7 +110,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Rating}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.rating
 			? $currentPlayers?.at(0)?.rank?.current?.rating
 			: defaultPreview
@@ -120,7 +119,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Rating}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.rating
 			? $currentPlayers?.at(1)?.rank?.current?.rating
 			: defaultPreview
@@ -129,7 +128,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerContinent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.continent
 			? $currentPlayer?.rank?.current?.continent
 			: defaultPreview
@@ -138,7 +137,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Continent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.continent
 			? $currentPlayers?.at(0)?.rank?.current?.continent
 			: defaultPreview
@@ -154,7 +153,7 @@
 		: ''}
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerContinentInitials}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.continentInitials
 			? $currentPlayer?.rank?.current?.continentInitials
 			: defaultPreview
@@ -163,7 +162,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1ContinentInitials}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.continentInitials
 			? $currentPlayers?.at(0)?.rank?.current?.continentInitials
 			: defaultPreview
@@ -172,7 +171,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2ContinentInitials}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.continentInitials
 			? $currentPlayers?.at(1)?.rank?.current?.continentInitials
 			: defaultPreview
@@ -181,7 +180,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerDailyGlobalPlacement}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.dailyGlobalPlacement
 			? $currentPlayer?.rank?.current?.dailyGlobalPlacement
 			: defaultPreview
@@ -190,7 +189,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1DailyGlobalPlacement}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.dailyGlobalPlacement
 			? $currentPlayers?.at(0)?.rank?.current?.dailyGlobalPlacement
 			: defaultPreview
@@ -199,7 +198,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2DailyGlobalPlacement}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.dailyGlobalPlacement
 			? $currentPlayers?.at(1)?.rank?.current?.dailyGlobalPlacement
 			: defaultPreview
@@ -208,7 +207,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerDailyRegionalPlacement}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.dailyRegionalPlacement
 			? $currentPlayer?.rank?.current?.dailyRegionalPlacement
 			: defaultPreview
@@ -217,7 +216,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1DailyRegionalPlacement}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.dailyRegionalPlacement
 			? $currentPlayers?.at(0)?.rank?.current?.dailyRegionalPlacement
 			: defaultPreview
@@ -226,7 +225,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2DailyRegionalPlacement}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.dailyRegionalPlacement
 			? $currentPlayers?.at(1)?.rank?.current?.dailyRegionalPlacement
 			: defaultPreview
@@ -235,7 +234,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerWins}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.wins
 			? $currentPlayer?.rank?.current?.wins
 			: defaultPreview
@@ -244,7 +243,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Wins}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.wins
 			? $currentPlayers?.at(0)?.rank?.current?.wins
 			: defaultPreview
@@ -253,7 +252,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Wins}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.wins
 			? $currentPlayers?.at(1)?.rank?.current?.wins
 			: defaultPreview
@@ -262,7 +261,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerWinsPercent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.winsPercent
 			? `${$currentPlayer?.rank?.current?.winsPercent}%`
 			: defaultPreview
@@ -271,7 +270,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1WinsPercent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.winsPercent
 			? `${$currentPlayers?.at(0)?.rank?.current?.winsPercent}%`
 			: defaultPreview
@@ -280,7 +279,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2WinsPercent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.winsPercent
 			? `${$currentPlayers?.at(1)?.rank?.current?.winsPercent}%`
 			: defaultPreview
@@ -289,7 +288,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerLosses}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.losses
 			? $currentPlayer?.rank?.current?.losses
 			: defaultPreview
@@ -298,7 +297,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Losses}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.losses
 			? $currentPlayers?.at(0)?.rank?.current?.losses
 			: defaultPreview
@@ -307,7 +306,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Losses}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.losses
 			? $currentPlayers?.at(1)?.rank?.current?.losses
 			: defaultPreview
@@ -316,7 +315,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerLossesPercent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.lossesPercent
 			? `${$currentPlayer?.rank?.current?.lossesPercent}%`
 			: defaultPreview
@@ -325,7 +324,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1LossesPercent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.lossesPercent
 			? `${$currentPlayers?.at(0)?.rank?.current?.lossesPercent}%`
 			: defaultPreview
@@ -334,7 +333,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2LossesPercent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.lossesPercent
 			? `${$currentPlayers?.at(1)?.rank?.current?.lossesPercent}%`
 			: defaultPreview
@@ -343,7 +342,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter1}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.characters.at(0)?.characterName
 			? $currentPlayer?.rank?.current?.characters.at(0)?.characterName
 			: defaultPreview
@@ -352,7 +351,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter1Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.characters.at(0)?.gameCountPercent
 			? `${$currentPlayer?.rank?.current?.characters.at(0)?.gameCountPercent}%`
 			: defaultPreview
@@ -371,7 +370,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter2}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.characters.at(1)?.characterName
 			? $currentPlayer?.rank?.current?.characters.at(1)?.characterName
 			: defaultPreview
@@ -380,7 +379,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter2Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.characters.at(1)?.gameCountPercent
 			? `${$currentPlayer?.rank?.current?.characters.at(1)?.gameCountPercent}%`
 			: defaultPreview
@@ -399,7 +398,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter3}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.characters.at(2)?.characterName
 			? $currentPlayer?.rank?.current?.characters.at(2)?.characterName
 			: defaultPreview
@@ -408,7 +407,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter3Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayer?.rank?.current?.characters.at(2)?.gameCountPercent
 			? `${$currentPlayer?.rank?.current?.characters.at(2)?.gameCountPercent}%`
 			: defaultPreview
@@ -427,7 +426,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character1}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.characterName
 			? $currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.characterName
 			: defaultPreview
@@ -436,7 +435,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character1Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.gameCountPercent
 			? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.gameCountPercent}%`
 			: defaultPreview
@@ -455,7 +454,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character2}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.characterName
 			? $currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.characterName
 			: defaultPreview
@@ -464,7 +463,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character2Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.gameCountPercent
 			? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.gameCountPercent}%`
 			: defaultPreview
@@ -483,7 +482,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character3}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.characterName
 			? $currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.characterName
 			: defaultPreview
@@ -492,7 +491,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character3Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.gameCountPercent
 			? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.gameCountPercent}%`
 			: defaultPreview
@@ -511,7 +510,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character1}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.characterName
 			? $currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.characterName
 			: defaultPreview
@@ -520,7 +519,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character1Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.gameCountPercent
 			? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.gameCountPercent}%`
 			: defaultPreview
@@ -539,7 +538,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character2}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.characterName
 			? $currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.characterName
 			: defaultPreview
@@ -548,7 +547,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character2Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.gameCountPercent
 			? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.gameCountPercent}%`
 			: defaultPreview
@@ -567,7 +566,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character3}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.characterName
 			? $currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.characterName
 			: defaultPreview
@@ -576,7 +575,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character3Percent}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.gameCountPercent
 			? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.gameCountPercent}%`
 			: defaultPreview
