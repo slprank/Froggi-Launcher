@@ -144,11 +144,11 @@ export enum CustomElement {
 	// Custom String
 	CustomString = 1000,
 	CustomCurrentPlayerPercent = 1001,
-	InGamePlayer1Percent = 1100,
-	InGamePlayer2Percent = 1101,
-	InGameCurrentPlayerPercentDecimal = 1102,
-	InGamePlayer1PercentDecimal = 1103,
-	InGamePlayer2PercentDecimal = 1104,
+	InGamePlayer1Percent = 1002,
+	InGamePlayer2Percent = 1003,
+	InGameCurrentPlayerPercentDecimal = 1004,
+	InGamePlayer1PercentDecimal = 1005,
+	InGamePlayer2PercentDecimal = 1006,
 
 	// Custom Image
 	CustomImage = 2000,

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import AttackCount from './PostGame/AttakCount/CurrentPlayerAttackCount.svelte';
+	import AttackCount from './PostGame/AttackCount.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
