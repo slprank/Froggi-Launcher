@@ -2,14 +2,15 @@
 	import { CustomElement, ElementCategory, LiveStatsScene } from '$lib/models/enum';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import CustomUiElementSelect from './elementCategories/CustomUiElementSelect.svelte';
+	import Player1CustomUiSelect from './elementCategories/CustomUi/Player1CustomUiSelect.svelte';
+	import Player2CustomUiSelect from './elementCategories/CustomUi/Player2CustomUiSelect.svelte';
 	import CustomElementSelect from './elementCategories/CustomElementSelect.svelte';
-	import PostGameElementSelect from './elementCategories/PostGame/CurrentPlayerAttackCount.svelte';
-	import PostSetElementSelect from './elementCategories/PostSetElementSelect.svelte';
 	import Player1SlippiData from './elementCategories/SlippiData/Player1SlippiData.svelte';
 	import Player2SlippiData from './elementCategories/SlippiData/Player2SlippiData.svelte';
 	import CurrentPlayerSlippiData from './elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
 	import CurrentSetElementSelect from './elementCategories/CurrentSet/CurrentSetElementSelect.svelte';
+	import CurrentPlayerAttackCount from './elementCategories/PostGame/CurrentPlayerAttackCount.svelte';
+	import CustomUiSelect from './elementCategories/CustomUi/CustomUiSelect.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -27,7 +28,11 @@
 			visible: true,
 		},
 		{
-			category: ElementCategory.CustomUi,
+			category: ElementCategory.Player1CustomUi,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player2CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
@@ -114,13 +119,16 @@
 				<CustomElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CustomUi}
-				<CustomUiElementSelect on:select={select} />
+				<CustomUiSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.PostGameStats}
-				<PostGameElementSelect on:select={select} />
+			{#if selectedCategory === ElementCategory.Player1CustomUi}
+				<Player1CustomUiSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.PostSetStats}
-				<PostSetElementSelect on:select={select} />
+			{#if selectedCategory === ElementCategory.Player2CustomUi}
+				<Player2CustomUiSelect on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameAttackCount}
+				<CurrentPlayerAttackCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentSetStats}
 				<CurrentSetElementSelect on:select={select} />
