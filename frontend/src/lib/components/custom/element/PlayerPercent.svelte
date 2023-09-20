@@ -74,9 +74,7 @@
 						}`}
 						style={`${style.cssValue}; ${
 							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						};  ${edit ? 'color: black' : ''} ${
-							i !== 0 && `color: ${percentageColor}`
-						}; ${style.stroke}`}
+						}; ${i !== 0 && `color: ${percentageColor}`}; ${style.stroke}`}
 						maxFont={1000}
 					>
 						{#if !numberOfDecimals}

@@ -4,12 +4,11 @@
 	import TextElement from '../element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
-	export let edit: boolean;
 	export let style: GridContentItemStyle;
 </script>
 
 {#if dataItem?.elementId === CustomElement.CustomString}
-	<TextElement {style} {dataItem} {edit}>
+	<TextElement {style} {dataItem}>
 		{dataItem?.data.string}
 	</TextElement>
 {/if}

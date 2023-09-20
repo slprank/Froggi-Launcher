@@ -40,29 +40,23 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerConnectCode}
-	{#key $currentPlayer?.rank?.current?.connectCode}
-		<TextElement {style} {dataItem}>
-			{$currentPlayer?.rank?.current?.connectCode
-				? $currentPlayer?.rank?.current?.connectCode
-				: defaultPreview
-				? `ABCDEF#0`
-				: ''}
-		</TextElement>
-	{/key}
+	<TextElement {style} {dataItem}>
+		{$currentPlayer?.rank?.current?.connectCode
+			? $currentPlayer?.rank?.current?.connectCode
+			: defaultPreview
+			? `ABCDEF#0`
+			: ''}
+	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1ConnectCode}
-	{#key $currentPlayers?.at(0)?.rank?.current?.connectCode}
-		<TextElement {style} {dataItem}>
-			{$currentPlayers?.at(0)?.rank?.current?.connectCode || defaultPreview ? `ABCD#123` : ''}
-		</TextElement>
-	{/key}
+	<TextElement {style} {dataItem}>
+		{$currentPlayers?.at(0)?.rank?.current?.connectCode || defaultPreview ? `ABCD#123` : ''}
+	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2ConnectCode}
-	{#key $currentPlayers?.at(1)?.rank?.current?.connectCode}
-		<TextElement {style} {dataItem}>
-			{$currentPlayers?.at(1)?.rank?.current?.connectCode || defaultPreview ? `GHIJ#456` : ''}
-		</TextElement>
-	{/key}
+	<TextElement {style} {dataItem}>
+		{$currentPlayers?.at(1)?.rank?.current?.connectCode || defaultPreview ? `GHIJ#456` : ''}
+	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRankIcon}
 	<PlayerRankIcon {dataItem} {style} player={$currentPlayer} preview={defaultPreview} />

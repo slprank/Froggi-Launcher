@@ -104,11 +104,14 @@
 		{#if div}
 			{#key dataItem}
 				{#key fontTrigger}
-					<Custom {dataItem} {edit} {style} />
+					<Custom {dataItem} {style} />
 
 					<InGame {dataItem} {defaultPreview} {style} />
 
 					<SlippiRank {dataItem} {defaultPreview} {style} />
+
+					<!-- Post Game Stats -->
+					<!-- Post Set Stats -->
 				{/key}
 			{/key}
 		{/if}

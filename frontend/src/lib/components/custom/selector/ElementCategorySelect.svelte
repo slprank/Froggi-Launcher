@@ -4,12 +4,12 @@
 	import { fly } from 'svelte/transition';
 	import CustomUiElementSelect from './elementCategories/CustomUiElementSelect.svelte';
 	import CustomElementSelect from './elementCategories/CustomElementSelect.svelte';
-	import PostGameElementSelect from './elementCategories/PostGameElementSelect.svelte';
+	import PostGameElementSelect from './elementCategories/PostGame/CurrentPlayerAttackCount.svelte';
 	import PostSetElementSelect from './elementCategories/PostSetElementSelect.svelte';
-	import Player1SlippiData from './elementCategories/Player1SlippiData.svelte';
-	import Player2SlippiData from './elementCategories/Player2SlippiData.svelte';
-	import CurrentPlayerSlippiData from './elementCategories/CurrentPlayerSlippiData.svelte';
-	import CurrentSetElementSelect from './elementCategories/CurrentSetElementSelect.svelte';
+	import Player1SlippiData from './elementCategories/SlippiData/Player1SlippiData.svelte';
+	import Player2SlippiData from './elementCategories/SlippiData/Player2SlippiData.svelte';
+	import CurrentPlayerSlippiData from './elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
+	import CurrentSetElementSelect from './elementCategories/CurrentSet/CurrentSetElementSelect.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;

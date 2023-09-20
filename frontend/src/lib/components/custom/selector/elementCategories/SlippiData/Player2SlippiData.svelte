@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/enum';
 	import { createEventDispatcher } from 'svelte';
-	import ElementOption from './ElementOption.svelte';
+	import ElementOption from '$lib/components/custom/selector/elementCategories/ElementOption.svelte';
 
 	const dispatch = createEventDispatcher();
 
