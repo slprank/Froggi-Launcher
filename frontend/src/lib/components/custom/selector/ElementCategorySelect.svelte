@@ -9,6 +9,7 @@
 	import Player2SlippiData from './elementCategories/SlippiData/Player2SlippiData.svelte';
 	import CurrentPlayerSlippiData from './elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
 	import CurrentSetElementSelect from './elementCategories/CurrentSet/CurrentSetElementSelect.svelte';
+	import CurrentPlayerActionCount from './elementCategories/PostGame/CurrentPlayerActionCount.svelte';
 	import CurrentPlayerAttackCount from './elementCategories/PostGame/CurrentPlayerAttackCount.svelte';
 	import CustomUiSelect from './elementCategories/CustomUi/CustomUiSelect.svelte';
 
@@ -68,7 +69,7 @@
 			].includes($statsScene),
 		},
 		{
-			category: ElementCategory.PostGameStats,
+			category: ElementCategory.CurrentPlayerPostGameAttackCount,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
@@ -129,6 +130,9 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameAttackCount}
 				<CurrentPlayerAttackCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameActionCount}
+				<CurrentPlayerActionCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentSetStats}
 				<CurrentSetElementSelect on:select={select} />

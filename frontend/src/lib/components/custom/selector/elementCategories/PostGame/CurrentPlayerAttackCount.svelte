@@ -12,143 +12,116 @@
 
 <div class="flex flex-col gap-2">
 	<ElementOption
-		description="Current Player Number Of Air Dodges Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountAirDodge}
+		description="Current Player Number Of Dash Attack Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountDash}
 		on:select={select}
 	>
-		Air Dodge Count
+		Dash Attack Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Dash Dances Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountDashDance}
+		description="Current Player Number Of Jab-1 Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountJab}
 		on:select={select}
 	>
-		Dash Dance Count
+		Jab-1 Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Ledge Grabs"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountLedgeGrab}
+		description="Current Player Number Of Jab-2 Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountJab2}
 		on:select={select}
 	>
-		Ledge Grab Count
+		Jab-2 Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Rolls Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountRoll}
+		description="Current Player Number Of Jab-3 Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountJab3}
 		on:select={select}
 	>
-		Roll Count
+		Jab-3 Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Spot Dodges Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountSpotDodge}
+		description="Current Player Number Of Multi Jabs Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountJabMulti}
 		on:select={select}
 	>
-		Spot Dodge Count
+		Jab-Multi Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Wave Dashes Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountWaveDash}
+		description="Current Player Number Of Back Air Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountBair}
 		on:select={select}
 	>
-		Wave Dash Count
+		Back Air Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Wave Lands Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountWaveLand}
+		description="Current Player Number Of Down Air Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountDair}
 		on:select={select}
 	>
-		Wave Land Count
+		Down Air Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Total Number Of Grabs Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGrabTotal}
+		description="Current Player Number Of Forward Air Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountFair}
 		on:select={select}
 	>
-		Grab Count
+		Forward Air Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Successful Grabs Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGrabSuccess}
+		description="Current Player Number Of Up Air Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountUair}
 		on:select={select}
 	>
-		Grab Success Count
+		Up Air Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Percentage Of Successful Grabs Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGrabSuccessPercent}
+		description="Current Player Number Of Neutral Air Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountNair}
 		on:select={select}
 	>
-		Grab Success Percent
+		Neutral Air Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Failed Grabs Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGrabFail}
+		description="Current Player Number Of Down Tilt Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountDsmash}
 		on:select={select}
 	>
-		Grab Fail Count
+		Down Smash Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Percentage Of Failed Grabs Executed"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGrabFailPercent}
+		description="Current Player Number Of Forward Smash Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountFsmash}
 		on:select={select}
 	>
-		Grab Fail Percent
+		Forward Smash Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Total Number Of Ground Techs"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechTotal}
+		description="Current Player Number Of Up Smash Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountUsmash}
 		on:select={select}
 	>
-		Total Ground Tech Count
+		Up Smash Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Ground Techs In"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechIn}
+		description="Current Player Number Of Down Tilt Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountDtilt}
 		on:select={select}
 	>
-		Ground Tech In Count
+		Down Tilt Count
 	</ElementOption>
 	<ElementOption
-		description="Current Player Number Of Ground Techs Out"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechOut}
+		description="Current Player Number Of Forward Tilt Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountFtilt}
 		on:select={select}
 	>
-		Ground Tech Out Count
+		Forward Tilt Count
 	</ElementOption>
+
 	<ElementOption
-		description="Current Player Number Of Ground Techs Neutral"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechNeutral}
+		description="Current Player Number Of Up Tilt Executed"
+		customElement={CustomElement.PostGameCurrentPlayerAttackCountUtilt}
 		on:select={select}
 	>
-		Ground Tech Neutral Count
-	</ElementOption>
-	<ElementOption
-		description="Current Player Number Of Successful Ground Techs"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechSuccess}
-		on:select={select}
-	>
-		Ground Tech Success Count
-	</ElementOption>
-	<ElementOption
-		description="Current Player Percent Of Ground Techs Success"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechSuccessPercent}
-		on:select={select}
-	>
-		Ground Tech Success Percent
-	</ElementOption>
-	<ElementOption
-		description="Current Player Number Of Failed Ground Techs"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechFail}
-		on:select={select}
-	>
-		Ground Tech Fail Count
-	</ElementOption>
-	<ElementOption
-		description="Current Player Percent Of Failed Ground Techs"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechFailPercent}
-		on:select={select}
-	>
-		Ground Tech Fail Percent
+		Up Tilt Count
 	</ElementOption>
 </div>
