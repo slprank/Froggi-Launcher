@@ -1,25 +1,20 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
-	import { currentPlayer, currentPlayers, postGame } from '$lib/utils/store.svelte';
+	import { currentPlayer, postGame } from '$lib/utils/store.svelte';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	$: currentPlayerIndex = $currentPlayer.playerIndex ?? 0;
-	$: player1Index = $currentPlayers.at(0)?.playerIndex ?? 0;
-	$: player2Index = $currentPlayers.at(1)?.playerIndex ?? 1;
-
-	$: currentPlayerActionCounts = $postGame.postGameStats?.actionCounts[currentPlayerIndex];
-	$: player1ActionCounts = $postGame.postGameStats?.actionCounts[player1Index];
-	$: player2ActionCounts = $postGame.postGameStats?.actionCounts[player2Index];
+	$: currentPlayerIndex = $currentPlayer?.playerIndex;
+	$: currentPlayerActionCounts = $postGame.postGameStats?.actionCounts[currentPlayerIndex ?? 0];
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountAirDodge}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.airDodgeCount
+		{currentPlayerActionCounts?.airDodgeCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.airDodgeCount
 			: defaultPreview
 			? `53`
@@ -28,7 +23,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountDashDance}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.dashDanceCount
+		{currentPlayerActionCounts?.dashDanceCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.dashDanceCount
 			: defaultPreview
 			? `137`
@@ -37,7 +32,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLedgeGrab}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.dashDanceCount
+		{currentPlayerActionCounts?.dashDanceCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.dashDanceCount
 			: defaultPreview
 			? `19`
@@ -46,7 +41,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountRoll}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.rollCount
+		{currentPlayerActionCounts?.rollCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.rollCount
 			: defaultPreview
 			? `13`
@@ -55,7 +50,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountSpotDodge}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.spotDodgeCount
+		{currentPlayerActionCounts?.spotDodgeCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.spotDodgeCount
 			: defaultPreview
 			? `18`
@@ -64,7 +59,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountWaveDash}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.wavedashCount
+		{currentPlayerActionCounts?.wavedashCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.wavedashCount
 			: defaultPreview
 			? `63`
@@ -73,7 +68,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountWaveLand}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.wavelandCount
+		{currentPlayerActionCounts?.wavelandCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.wavelandCount
 			: defaultPreview
 			? `37`
@@ -82,7 +77,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGrabTotal}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.grabCount
+		{currentPlayerActionCounts?.grabCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.grabCount.success + currentPlayerActionCounts.grabCount.fail
 			: defaultPreview
 			? `14`
@@ -91,7 +86,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGrabSuccess}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.grabCount.success
+		{currentPlayerActionCounts?.grabCount.success && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.grabCount.success
 			: defaultPreview
 			? `9`
@@ -100,7 +95,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGrabSuccessPercent}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.grabCount
+		{currentPlayerActionCounts?.grabCount && currentPlayerIndex !== undefined
 			? Number(
 					(
 						currentPlayerActionCounts.grabCount.success /
@@ -115,7 +110,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGrabFail}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.grabCount.fail
+		{currentPlayerActionCounts?.grabCount.fail && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.grabCount.fail
 			: defaultPreview
 			? `5`
@@ -124,7 +119,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGrabFailPercent}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.grabCount
+		{currentPlayerActionCounts?.grabCount && currentPlayerIndex !== undefined
 			? Number(
 					(
 						currentPlayerActionCounts.grabCount.fail /
@@ -139,7 +134,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechTotal}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.groundTechCount.neutral +
 			  currentPlayerActionCounts.groundTechCount.in +
 			  currentPlayerActionCounts.groundTechCount.away +
@@ -151,7 +146,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechSuccess}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.groundTechCount.neutral +
 			  currentPlayerActionCounts.groundTechCount.in +
 			  currentPlayerActionCounts.groundTechCount.away
@@ -162,7 +157,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechSuccessPercent}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? Number(
 					(
 						(currentPlayerActionCounts.groundTechCount.neutral +
@@ -181,7 +176,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechIn}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.groundTechCount.in
 			: defaultPreview
 			? `8`
@@ -190,7 +185,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechAway}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.groundTechCount.away
 			: defaultPreview
 			? `11`
@@ -199,7 +194,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechNeutral}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.groundTechCount.neutral
 			: defaultPreview
 			? `3`
@@ -208,7 +203,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechFail}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.groundTechCount.fail
 			: defaultPreview
 			? `1`
@@ -217,7 +212,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechFailPercent}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.groundTechCount
+		{currentPlayerActionCounts?.groundTechCount && currentPlayerIndex !== undefined
 			? Number(
 					(
 						currentPlayerActionCounts.groundTechCount.fail /
@@ -234,7 +229,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLCancelTotal}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.lCancelCount
+		{currentPlayerActionCounts?.lCancelCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.lCancelCount.success +
 			  currentPlayerActionCounts.lCancelCount.fail
 			: defaultPreview
@@ -244,7 +239,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLCancelSuccess}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.lCancelCount
+		{currentPlayerActionCounts?.lCancelCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.lCancelCount.success
 			: defaultPreview
 			? `42`
@@ -253,7 +248,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLCancelSuccessPercent}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.lCancelCount
+		{currentPlayerActionCounts?.lCancelCount && currentPlayerIndex !== undefined
 			? Number(
 					(
 						currentPlayerActionCounts.lCancelCount.success /
@@ -268,7 +263,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLCancelFail}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.lCancelCount
+		{currentPlayerActionCounts?.lCancelCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.lCancelCount.fail
 			: defaultPreview
 			? `12`
@@ -277,7 +272,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLCancelFailPercent}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.lCancelCount
+		{currentPlayerActionCounts?.lCancelCount && currentPlayerIndex !== undefined
 			? Number(
 					(
 						currentPlayerActionCounts.lCancelCount.fail /
@@ -292,7 +287,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountThrowTotal}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.throwCount
+		{currentPlayerActionCounts?.throwCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.throwCount.up +
 			  currentPlayerActionCounts.throwCount.forward +
 			  currentPlayerActionCounts.throwCount.back +
@@ -304,7 +299,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountThrowUp}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.throwCount
+		{currentPlayerActionCounts?.throwCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.throwCount.up
 			: defaultPreview
 			? `8`
@@ -313,7 +308,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountThrowDown}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.throwCount
+		{currentPlayerActionCounts?.throwCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.throwCount.down
 			: defaultPreview
 			? `2`
@@ -322,7 +317,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountThrowBack}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.throwCount
+		{currentPlayerActionCounts?.throwCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.throwCount.back
 			: defaultPreview
 			? `3`
@@ -331,7 +326,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountThrowForward}
 	<TextElement {style} {dataItem}>
-		{currentPlayerActionCounts?.throwCount
+		{currentPlayerActionCounts?.throwCount && currentPlayerIndex !== undefined
 			? currentPlayerActionCounts.throwCount.forward
 			: defaultPreview
 			? `4`
