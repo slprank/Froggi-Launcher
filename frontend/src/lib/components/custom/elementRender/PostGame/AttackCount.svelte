@@ -8,7 +8,7 @@
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	$: currentPlayerIndex = $currentPlayer.playerIndex ?? 0;
+	$: currentPlayerIndex = $currentPlayer?.playerIndex ?? 0;
 	$: player1Index = $currentPlayers.at(0)?.playerIndex ?? 0;
 	$: player2Index = $currentPlayers.at(1)?.playerIndex ?? 1;
 
@@ -16,6 +16,10 @@
 		$postGame.postGameStats?.actionCounts[currentPlayerIndex].attackCount;
 	$: player1AttackCount = $postGame.postGameStats?.actionCounts[player1Index].attackCount;
 	$: player2AttackCount = $postGame.postGameStats?.actionCounts[player2Index].attackCount;
+
+	$: console.log('Default', defaultPreview);
+	$: console.log('Action Counts', $postGame.postGameStats?.actionCounts);
+	$: console.log('Current Player', currentPlayerIndex, currentPlayerAttackCount);
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountBair}
@@ -83,6 +87,15 @@
 			? currentPlayerAttackCount.ftilt
 			: defaultPreview
 			? `13`
+			: ''}
+	</TextElement>
+{/if}
+{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountJab}
+	<TextElement {style} {dataItem}>
+		{currentPlayerAttackCount?.jab1
+			? currentPlayerAttackCount.jab1
+			: defaultPreview
+			? `11`
 			: ''}
 	</TextElement>
 {/if}

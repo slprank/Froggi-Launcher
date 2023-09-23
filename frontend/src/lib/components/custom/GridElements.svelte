@@ -5,6 +5,7 @@
 	import SlippiRank from './elementRender/SlippiRank.svelte';
 	import Custom from './elementRender/Custom.svelte';
 	import InGame from './elementRender/InGame.svelte';
+	import PostGame from './elementRender/PostGame.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
@@ -107,6 +108,8 @@
 					<Custom {dataItem} {style} />
 
 					<InGame {dataItem} {defaultPreview} {style} />
+
+					<PostGame {dataItem} {defaultPreview} {style} />
 
 					<SlippiRank {dataItem} {defaultPreview} {style} />
 

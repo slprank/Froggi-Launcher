@@ -8,7 +8,7 @@
 		currentPlayers,
 		gameScore,
 		gameSettings,
-		postGameStats,
+		postGame,
 		recentRankedSets,
 		sessionStats,
 		statsScene,
@@ -74,7 +74,7 @@
 		});
 		_eventEmitter.on('post_game_stats', (stats: GameStats) => {
 			console.log({ stats });
-			postGameStats.set(stats);
+			postGame.set(stats);
 		});
 		_eventEmitter.on('recent_games', (matches: any) => {
 			console.log({ matches });
