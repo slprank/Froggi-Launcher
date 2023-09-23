@@ -12,6 +12,7 @@
 	import CurrentPlayerActionCount from './elementCategories/PostGame/CurrentPlayerActionCount.svelte';
 	import CurrentPlayerAttackCount from './elementCategories/PostGame/CurrentPlayerAttackCount.svelte';
 	import CustomUiSelect from './elementCategories/CustomUi/CustomUiSelect.svelte';
+	import CurrentPlayerOverall from './elementCategories/PostGame/CurrentPlayerOverall.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -41,6 +42,16 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
+			category: ElementCategory.CurrentPlayerSlippiData,
+			visible: [
+				LiveStatsScene.PreGame,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+				LiveStatsScene.RankChange,
+			].includes($statsScene),
+		},
+		{
 			category: ElementCategory.Player1SlippiData,
 			visible: [
 				LiveStatsScene.PreGame,
@@ -59,17 +70,15 @@
 			].includes($statsScene),
 		},
 		{
-			category: ElementCategory.CurrentPlayerSlippiData,
-			visible: [
-				LiveStatsScene.PreGame,
-				LiveStatsScene.InGame,
-				LiveStatsScene.PostGame,
-				LiveStatsScene.PostSet,
-				LiveStatsScene.RankChange,
-			].includes($statsScene),
+			category: ElementCategory.CurrentPlayerPostGameAttackCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
-			category: ElementCategory.CurrentPlayerPostGameAttackCount,
+			category: ElementCategory.CurrentPlayerPostGameActionCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.CurrentPlayerPostGameOverallStats,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
@@ -133,6 +142,9 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameActionCount}
 				<CurrentPlayerActionCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameOverallStats}
+				<CurrentPlayerOverall on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentSetStats}
 				<CurrentSetElementSelect on:select={select} />

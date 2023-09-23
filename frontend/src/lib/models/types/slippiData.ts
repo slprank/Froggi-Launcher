@@ -69,7 +69,7 @@ export type StatsTypeExtended = StatsType | {
 export interface GameStats {
     gameEnd: GameEndType;
     lastFrame: FrameEntryType
-    postGameStats: StatsTypeExtended | null;
+    postGameStats: StatsType | null;
     score: number[];
     settings: GameStartTypeExtended | null;
     timestamp: Date;

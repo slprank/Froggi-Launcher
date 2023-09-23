@@ -96,11 +96,11 @@
 		Grab Fail Percent
 	</ElementOption>
 	<ElementOption
-		description="Current Player Total Number Of Ground Techs"
+		description="Current Player Total Number Of Ground Tech Situations"
 		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechTotal}
 		on:select={select}
 	>
-		Total Ground Tech Count
+		Ground Tech Attempt Count
 	</ElementOption>
 	<ElementOption
 		description="Current Player Number Of Ground Techs In"
@@ -111,7 +111,7 @@
 	</ElementOption>
 	<ElementOption
 		description="Current Player Number Of Ground Techs Out"
-		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechOut}
+		customElement={CustomElement.PostGameCurrentPlayerActionCountGroundTechAway}
 		on:select={select}
 	>
 		Ground Tech Out Count
@@ -150,5 +150,124 @@
 		on:select={select}
 	>
 		Ground Tech Fail Percent
+	</ElementOption>
+	<ElementOption
+		description="Current Player Total Number Of Potential Wall Techs"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountWallTechTotal}
+		on:select={select}
+	>
+		Wall Tech Attempt Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Successful Wall Techs"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountWallTechSuccess}
+		on:select={select}
+	>
+		Successful Wall Tech Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Successful Wall Techs"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountWallTechSuccessPercent}
+		on:select={select}
+	>
+		Successful Wall Tech Percent
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Failed Wall Techs"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountWallTechFail}
+		on:select={select}
+	>
+		Failed Wall Tech Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Failed Wall Techs"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountWallTechFailPercent}
+		on:select={select}
+	>
+		Failed Wall Tech Percent
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Failed Wall Techs"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountWallTechFailPercent}
+		on:select={select}
+	>
+		Failed Wall Tech Percent
+	</ElementOption>
+	<ElementOption
+		description="Current Player Total Number Of Potential L-Cancels"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountLCancelTotal}
+		on:select={select}
+	>
+		L-Cancel Attempt Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Successful L-Cancels"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountLCancelSuccess}
+		on:select={select}
+	>
+		Successful L-Cancel Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Successful L-Cancels"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountLCancelSuccessPercent}
+		on:select={select}
+	>
+		Successful L-Cancel Percent
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Failed L-Cancels"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountLCancelFail}
+		on:select={select}
+	>
+		Failed L-Cancel Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Failed L-Cancels"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountLCancelFailPercent}
+		on:select={select}
+	>
+		Failed L-Cancel Percent
+	</ElementOption>
+	<ElementOption
+		description="Current Player Number Of Failed L-Cancels"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountLCancelFailPercent}
+		on:select={select}
+	>
+		Failed L-Cancel Percent
+	</ElementOption>
+	<ElementOption
+		description="Current Player Total Number Of Throws"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountThrowTotal}
+		on:select={select}
+	>
+		Throw Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Total Number Of Up-Throws"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountThrowUp}
+		on:select={select}
+	>
+		Up-Throw Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Total Number Of Forward-Throws"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountThrowForward}
+		on:select={select}
+	>
+		Forward-Throw Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Total Number Of Back-Throws"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountThrowBack}
+		on:select={select}
+	>
+		Back-Throw Count
+	</ElementOption>
+	<ElementOption
+		description="Current Player Total Number Of Down-Throws"
+		customElement={CustomElement.PostGameCurrentPlayerActionCountThrowDown}
+		on:select={select}
+	>
+		Down-Throw Count
 	</ElementOption>
 </div>
