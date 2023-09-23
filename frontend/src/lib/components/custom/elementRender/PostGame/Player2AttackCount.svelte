@@ -13,7 +13,7 @@
 	$: player2AttackCounts = $postGame.postGameStats?.actionCounts[player2Index ?? 0].attackCount;
 </script>
 
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountBair}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountBair}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.bair && player2Index !== undefined
 			? player2AttackCounts.bair
@@ -22,7 +22,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountDair}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountDair}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.dair && player2Index !== undefined
 			? player2AttackCounts.dair
@@ -31,7 +31,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountDash}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountDash}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.dash && player2Index !== undefined
 			? player2AttackCounts.dash
@@ -40,7 +40,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountDsmash}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountDsmash}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.dsmash && player2Index !== undefined
 			? player2AttackCounts.dsmash
@@ -49,7 +49,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountDtilt}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountDtilt}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.dtilt && player2Index !== undefined
 			? player2AttackCounts.dtilt
@@ -58,7 +58,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountFair}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountFair}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.fair && player2Index !== undefined
 			? player2AttackCounts.fair
@@ -67,7 +67,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountFsmash}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountFsmash}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.fsmash && player2Index !== undefined
 			? player2AttackCounts.fsmash
@@ -76,7 +76,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountFtilt}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountFtilt}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.ftilt && player2Index !== undefined
 			? player2AttackCounts.ftilt
@@ -85,7 +85,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountJab}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountJab}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.jab1 && player2Index !== undefined
 			? player2AttackCounts.jab1
@@ -94,7 +94,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountJab2}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountJab2}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.jab2 && player2Index !== undefined
 			? player2AttackCounts.jab2
@@ -103,7 +103,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountJab3}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountJab3}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.jab3 && player2Index !== undefined
 			? player2AttackCounts.jab3
@@ -112,7 +112,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountJabMulti}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountJabMulti}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.jabm && player2Index !== undefined
 			? player2AttackCounts.jabm
@@ -121,7 +121,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountNair}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountNair}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.nair && player2Index !== undefined
 			? player2AttackCounts.nair
@@ -130,7 +130,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountUair}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountUair}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.uair && player2Index !== undefined
 			? player2AttackCounts.uair
@@ -139,7 +139,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountUsmash}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountUsmash}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.usmash && player2Index !== undefined
 			? player2AttackCounts.usmash
@@ -148,7 +148,7 @@
 			: ''}
 	</TextElement>
 {/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountUtilt}
+{#if dataItem?.elementId === CustomElement.PostGamePlayer2AttackCountUtilt}
 	<TextElement {style} {dataItem}>
 		{player2AttackCounts?.utilt && player2Index !== undefined
 			? player2AttackCounts.utilt
