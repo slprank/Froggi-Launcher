@@ -54,27 +54,17 @@
 
 	$: console.log('TODO Border, CSS', `${style.cssValue}`);
 
-	$: shadowSizeX = getRelativePixelSize(
-		dataItem?.data.shadow?.x,
-		boardHeight ?? innerHeight,
-		boardWidth ?? innerWidth,
-	);
-	$: shadowSizeY = getRelativePixelSize(
-		dataItem?.data.shadow?.y,
-		boardHeight ?? innerHeight,
-		boardWidth ?? innerWidth,
-	);
+	$: shadowSizeX = getRelativePixelSize(dataItem?.data.shadow?.x, innerHeight, innerWidth);
+	$: shadowSizeY = getRelativePixelSize(dataItem?.data.shadow?.y, innerHeight, innerWidth);
 	$: style.shadow = `filter: drop-shadow(${shadowSizeX}px ${shadowSizeY}px ${
 		(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0
 	}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
 
-	$: strokeSize = getRelativePixelSize(
-		dataItem.data.stroke.size,
-		boardHeight ?? innerHeight,
-		boardWidth ?? innerWidth,
-	);
-	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}rem;
+	$: strokeSize = getRelativePixelSize(dataItem.data.stroke.size, innerHeight, innerWidth);
+	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}px;
 						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
+
+	$: console.log('stroke', strokeSize, boardHeight, innerHeight);
 
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

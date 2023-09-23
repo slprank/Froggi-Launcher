@@ -40,7 +40,7 @@
 		{dataItem}
 		{style}
 		preview={defaultPreview}
-		player={$currentPlayers.at(1)}
+		player={$currentPlayers.at(0)}
 		defaultPreviewId={Number(CHARACTERS['fox'])}
 	/>
 {/if}
@@ -49,7 +49,7 @@
 		{dataItem}
 		{style}
 		preview={defaultPreview}
-		player={$currentPlayers.at(0)}
+		player={$currentPlayers.at(1)}
 		defaultPreviewId={Number(CHARACTERS['falco'])}
 	/>
 {/if}
