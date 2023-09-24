@@ -3,8 +3,8 @@
 	import { CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
-	import CharacterIcon from '../element/inGame/CharacterIcon.svelte';
-	import CharacterRender from '../element/inGame/CharacterRender.svelte';
+	import InGameCharacterIcon from '../element/inGame/InGameCharacterIcon.svelte';
+	import InGameCharacterRender from '../element/inGame/InGameCharacterRender.svelte';
 	import PlayerPercent from '../element/PlayerPercent.svelte';
 	import TextElement from '../element/TextElement.svelte';
 
@@ -36,7 +36,7 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterIcon}
-	<CharacterIcon
+	<InGameCharacterIcon
 		{dataItem}
 		{style}
 		preview={defaultPreview}
@@ -45,7 +45,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterIcon}
-	<CharacterIcon
+	<InGameCharacterIcon
 		{dataItem}
 		{style}
 		preview={defaultPreview}
@@ -54,7 +54,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterRender}
-	<CharacterRender
+	<InGameCharacterRender
 		{dataItem}
 		{style}
 		player={$currentPlayers.at(0)}
@@ -63,7 +63,7 @@
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterRender}
-	<CharacterRender
+	<InGameCharacterRender
 		{dataItem}
 		{style}
 		player={$currentPlayers.at(1)}
