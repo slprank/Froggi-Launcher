@@ -4,9 +4,9 @@
 	"type": "module",
 	"scripts": {
 		"dev": "run-script-os",
-		"dev:win32": "vite dev --host",
-		"dev:darwin": "LAUNCH_EDITOR='/Applications/Visual Studio Code.app/Contents/MacOS/Electron' vite dev --host",
-		"dev:linux": "LAUNCH_EDITOR='/usr/share/code/code' vite dev --host",
+		"dev:win32": "cross-env LAUNCH_EDITOR='C:Program FilesMicrosoft VS CodeCode.exe' vite dev --host",
+		"dev:darwin": "cross-env LAUNCH_EDITOR='/Applications/Visual Studio Code.app/Contents/MacOS/Electron' vite dev --host",
+		"dev:linux": "cross-env LAUNCH_EDITOR='/usr/share/code/code' vite dev --host",
 		"build": "vite build"
 	},
 	"dependencies": {
