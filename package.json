@@ -17,8 +17,7 @@
 		"build:mac": "npm run compile && electron-builder -m --config build.config.json",
 		"build:win": "npm run compile && electron-builder -w --config build.config.json",
 		"compile": "npm run build:svelte && npm run compile:electron && tsc --p ./electron/tsconfig.json",
-		"compile:electron": "npm run compile:electron:fix && tsc --p ./electron/tsconfig.json",
-		"compile:electron:fix": "rm -rf node_modules/@types/cacheable-request",
+		"compile:electron": "npm run && tsc --p ./electron/tsconfig.json",
 		"i": "npm i && npm i --prefix ./frontend"
 	},
 	"engines": {

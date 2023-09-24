@@ -6,6 +6,7 @@
 		"baseUrl": "./",
 		"target": "ES2015",
 		"module": "commonjs",
+		"skipLibCheck": true,
 		"sourceMap": true,
 		"stripInternal": true,
 		"lib": ["es2015", "esnext", "dom"],
