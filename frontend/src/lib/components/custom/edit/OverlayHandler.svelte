@@ -216,7 +216,7 @@
 
 		const index = await getOverlayIndexById(overlayId);
 		obs.update((obs) => {
-			if (!index) return obs;
+			if (index === undefined) return obs;
 			let overlay = obs.overlays[index];
 			const layersLength = overlay[statsScene]?.layers.length;
 			overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
