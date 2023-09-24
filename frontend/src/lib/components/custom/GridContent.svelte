@@ -26,13 +26,13 @@
 		if (!dataItem) return;
 		const y = getRelativePixelSize(
 			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
-			boardWidth ?? innerWidth,
-			boardHeight ?? innerHeight,
+			innerWidth,
+			innerHeight,
 		);
 		const x = getRelativePixelSize(
 			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
-			boardWidth ?? innerWidth,
-			boardHeight ?? innerHeight,
+			innerWidth,
+			innerHeight,
 		);
 		return fly(node, { duration: duration, x: x, y: y, delay: delay });
 	};

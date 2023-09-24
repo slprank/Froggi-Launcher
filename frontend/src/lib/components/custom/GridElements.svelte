@@ -46,8 +46,8 @@
 			key,
 			`${getRelativePixelSize(
 				Number(value.slice(0, -9)),
-				boardHeight ?? innerHeight,
-				boardWidth ?? innerWidth,
+				innerHeight,
+				innerWidth,
 			)}${value.slice(-9)}`,
 		];
 	};
@@ -63,8 +63,6 @@
 	$: strokeSize = getRelativePixelSize(dataItem.data.stroke.size, innerHeight, innerWidth);
 	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}px;
 						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
-
-	$: console.log('stroke', strokeSize, boardHeight, innerHeight);
 
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

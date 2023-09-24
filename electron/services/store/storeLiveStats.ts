@@ -3,10 +3,10 @@ import Store from 'electron-store';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
-import { FrameEntryType, GameEndType, GameStartType, StatsType } from '@slippi/slippi-js';
+import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 import os from 'os';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
-import { GameStartTypeExtended } from '../../../frontend/src/lib/models/types/slippiData';
+import { GameStartTypeExtended, GameStats } from '../../../frontend/src/lib/models/types/slippiData';
 
 
 @singleton()
@@ -35,7 +35,8 @@ export class ElectronLiveStatsStore {
         return this.store.get('stats.game.frame') as FrameEntryType
     }
 
-    setGameFrame(frameEntry: FrameEntryType) {
+    setGameFrame(frameEntry: FrameEntryType | undefined) {
+        if (!frameEntry) return;
         this.store.set('stats.game.frame', frameEntry)
     }
 
@@ -61,11 +62,12 @@ export class ElectronLiveStatsStore {
         return this.store.set('stats.game.settings.matchInfo.mode', mode);
     }
 
-    getGameStats(): StatsType {
-        return this.store.get('stats.game.stats') as StatsType;
+    getGameStats(): GameStats {
+        return this.store.get('stats.game.stats') as GameStats;
     }
 
-    setGameStats(gameStats: GameEndType) {
+    setGameStats(gameStats: GameStats | null) {
+        if (!gameStats) return
         this.store.set('stats.game.stats', gameStats);
     }
 

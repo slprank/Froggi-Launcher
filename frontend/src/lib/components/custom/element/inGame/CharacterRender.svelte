@@ -9,21 +9,22 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
-	$: getCharacterId = () => {
-		if (preview && (!$gameFrame || !player)) return defaultPreviewId;
-		return $gameFrame.players[player?.playerIndex ?? 0]?.post.internalCharacterId ?? 0;
-	};
+	$: playerPostFrame = $gameFrame.players[player?.playerIndex ?? 0]?.post;
+	$: characterId = playerPostFrame
+		? playerPostFrame.internalCharacterId
+		: preview
+		? defaultPreviewId
+		: -1;
 
 	let div: HTMLElement;
 </script>
 
-{#if player && div}
+{#if player}
 	<div
 		class={`w-full h-full ${style.classValue} grid justify-end`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
-		bind:this={div}
 	>
 		<img
 			class="h-full aspect-video"
@@ -31,7 +32,7 @@
 				div?.clientHeight
 			}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${getCharacterId()}.png`}
+			src={`/image/character-renders/${characterId}.png`}
 			alt="custom"
 		/>
 	</div>

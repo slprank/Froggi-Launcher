@@ -252,7 +252,7 @@
 						player1ActionCounts.lCancelCount.success /
 						(player1ActionCounts.lCancelCount.success +
 							player1ActionCounts.lCancelCount.fail)
-					).toFixed(1),
+					).toFixed(1) ?? 0.0,
 			  ) * 100
 			: defaultPreview
 			? `77.8`

@@ -49,15 +49,15 @@
 			? (currentPlayerOverall.counterHitRatio.ratio ?? 0) * 100
 			: defaultPreview
 			? `60.0`
-			: ''}%
+			: '0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDamageTotal}
 	<TextElement {style} {dataItem}>
 		{currentPlayerOverall?.totalDamage && currentPlayerIndex !== undefined
-			? currentPlayerOverall.totalDamage
+			? currentPlayerOverall.totalDamage.toFixed(1)
 			: defaultPreview
-			? `420`
+			? `420.7`
 			: ''}
 	</TextElement>
 {/if}
@@ -73,7 +73,7 @@
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDamagePerOpening}
 	<TextElement {style} {dataItem}>
 		{currentPlayerOverall?.damagePerOpening && currentPlayerIndex !== undefined
-			? currentPlayerOverall.damagePerOpening.ratio
+			? currentPlayerOverall.damagePerOpening.ratio?.toFixed(1)
 			: defaultPreview
 			? `15.6`
 			: ''}
@@ -82,7 +82,7 @@
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallOpeningsPerKill}
 	<TextElement {style} {dataItem}>
 		{currentPlayerOverall?.openingsPerKill && currentPlayerIndex !== undefined
-			? currentPlayerOverall.openingsPerKill.count
+			? currentPlayerOverall.openingsPerKill.count.toFixed(2) ?? '0.00'
 			: defaultPreview
 			? `6.75`
 			: ''}
@@ -156,8 +156,8 @@
 		{currentPlayerOverall?.neutralWinRatio && currentPlayerIndex !== undefined
 			? (currentPlayerOverall.neutralWinRatio?.ratio ?? 0 * 100).toFixed(1)
 			: defaultPreview
-			? `56`
-			: ''}%
+			? `56.0`
+			: '0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallStocksRemaining}

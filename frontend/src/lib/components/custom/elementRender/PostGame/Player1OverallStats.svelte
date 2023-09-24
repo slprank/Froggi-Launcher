@@ -55,9 +55,9 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1OverallDamageTotal}
 	<TextElement {style} {dataItem}>
 		{player1Overall?.totalDamage && player1Index !== undefined
-			? player1Overall.totalDamage
+			? player1Overall.totalDamage.toFixed(1)
 			: defaultPreview
-			? `420`
+			? `420.7`
 			: ''}
 	</TextElement>
 {/if}
@@ -73,7 +73,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1OverallDamagePerOpening}
 	<TextElement {style} {dataItem}>
 		{player1Overall?.damagePerOpening && player1Index !== undefined
-			? player1Overall.damagePerOpening.ratio
+			? player1Overall.damagePerOpening.ratio?.toFixed(1)
 			: defaultPreview
 			? `15.6`
 			: ''}
@@ -82,7 +82,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1OverallOpeningsPerKill}
 	<TextElement {style} {dataItem}>
 		{player1Overall?.openingsPerKill && player1Index !== undefined
-			? player1Overall.openingsPerKill.count
+			? player1Overall.openingsPerKill.count.toFixed(2) ?? '0.00'
 			: defaultPreview
 			? `6.75`
 			: ''}
@@ -156,7 +156,7 @@
 		{player1Overall?.neutralWinRatio && player1Index !== undefined
 			? (player1Overall.neutralWinRatio?.ratio ?? 0 * 100).toFixed(1)
 			: defaultPreview
-			? `56`
+			? `56.0`
 			: ''}%
 	</TextElement>
 {/if}

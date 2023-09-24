@@ -104,7 +104,8 @@ export class StatsDisplay {
 		// TODO: If Game Set End - Get All Match Games
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
-		this.storeLiveStats.setGameStats(gameEnd)
+		this.storeLiveStats.setGameStats(gameStats)
+		this.storeLiveStats.setGameFrame(gameStats?.lastFrame)
 		this.storeLiveStats.setGameState(InGameState.End)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
@@ -154,7 +155,7 @@ export class StatsDisplay {
 
 		let files: string[];
 		let subFolder: string;
-		if (slippiSettings.useMonthlySubfolders === false) {
+		if (slippiSettings.useMonthlySubfolders) {
 			subFolder = (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
 				.filter(dirent => dirent.isDirectory())
 				.map(dirent => dirent.name)
@@ -175,13 +176,15 @@ export class StatsDisplay {
 
 	private async getRecentGameStats(settings: GameStartType): Promise<GameStats | null> {
 		const files = await this.getGameFiles();
+		console.log("files", files)
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId
 		const gameNumber = settings.matchInfo?.gameNumber
-		const file = files.find(file => {
-			const settings = new SlippiGame(file).getSettings();
-			return settings?.matchInfo?.matchId === matchId && settings?.matchInfo?.gameNumber === gameNumber;
-		})
+		const file = files
+			.find(file => {
+				const settings = new SlippiGame(file).getSettings();
+				return settings?.matchInfo?.matchId === matchId && settings?.matchInfo?.gameNumber === gameNumber;
+			})
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
 		return this.getGameStats(new SlippiGame(file))

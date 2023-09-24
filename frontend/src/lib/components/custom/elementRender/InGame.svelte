@@ -53,7 +53,7 @@
 		defaultPreviewId={Number(CHARACTERS['falco'])}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterRender && $currentPlayers.at(0)}
+{#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterRender}
 	<CharacterRender
 		{dataItem}
 		{style}
@@ -62,7 +62,7 @@
 		defaultPreviewId={2}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterRender && $currentPlayers.at(1)}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterRender}
 	<CharacterRender
 		{dataItem}
 		{style}
