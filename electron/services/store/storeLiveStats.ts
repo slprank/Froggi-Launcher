@@ -49,7 +49,7 @@ export class ElectronLiveStatsStore {
         return this.store.set("stats.game.state", state)
     }
 
-    getGameSettings(): GameStartTypeExtended {
+    getGameSettings(): GameStartTypeExtended | undefined {
         return this.store.get('stats.game.settings') as GameStartTypeExtended;
     }
 

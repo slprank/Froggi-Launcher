@@ -42,7 +42,7 @@ export class DiscordRpc {
 		})
 
 		this.eventEmitter.on("game_settings", (settings: GameStartType) => {
-			const mode = this.storeLiveStats.getGameSettings().matchInfo.mode ?? "Local"
+			const mode = this.storeLiveStats.getGameSettings()?.matchInfo.mode ?? "Local"
 			const score = this.storeGames.getGameScore() ?? [0, 0]
 
 			const currentPlayer = this.storeCurrentPlayer.getCurrentPlayer()
@@ -97,7 +97,7 @@ export class DiscordRpc {
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
 			const score = this.storeGames.getGameScore() ?? [0, 0]
-			const mode = this.storeLiveStats.getGameSettings().matchInfo.mode ?? "Local"
+			const mode = this.storeLiveStats.getGameSettings()?.matchInfo.mode ?? "Local"
 
 			const details = `${mode} - Menu`;
 			const state = `${player1?.connectCode ? player1?.connectCode : "Player1"} (${score.at(0)} - ${score.at(1)}) ${player2?.connectCode ? player2?.connectCode : "Player2"}`;
@@ -110,7 +110,7 @@ export class DiscordRpc {
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)
-			const state = `${player1?.connectCode ?? "Player1"} - ${player2?.connectCode ?? "Player2"} (${score.join(" - ")})`;
+			const state = `${player1?.connectCode ?? "Player1"} - ${player2?.connectCode ?? "Player2"} (${score?.join(" - ")})`;
 
 			this.activity = {
 				...this.activity,
