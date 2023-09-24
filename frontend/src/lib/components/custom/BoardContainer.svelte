@@ -2,7 +2,7 @@
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { SceneBackground } from '$lib/models/enum';
 	import type { Scene } from '$lib/models/types';
-	import { gameSettings } from '$lib/utils/store.svelte';
+	import { gameSettings, postGame } from '$lib/utils/store.svelte';
 	import { createAnimation } from './element/animations/Animations.svelte';
 
 	export let boardHeight: number | undefined = undefined;
@@ -60,8 +60,18 @@
 						: ''
 				}
 				${
-					scene?.background.type === SceneBackground.ImageStage
+					scene?.background.type === SceneBackground.InGameImageStage &&
+					$gameSettings.stageId
 						? `background-image: url('/image/stages/${$gameSettings.stageId}.png');
+						background-size: ${scene.background.image.objectFit ?? 'cover'};`
+						: ''
+				}
+				${
+					scene?.background.type === SceneBackground.PostGameImageStage &&
+					$postGame?.settings
+						? `background-image: url('/image/stages/${
+								$postGame?.settings?.stageId
+						  }.png');
 						background-size: ${scene.background.image.objectFit ?? 'cover'};`
 						: ''
 				}

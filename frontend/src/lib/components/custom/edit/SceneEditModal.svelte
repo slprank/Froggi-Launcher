@@ -79,7 +79,7 @@
 						</div>
 
 						<FontSelectorLayer bind:font={curScene.font} fontId={'custom'} />
-						<label class="text-gray-500 text-2xl font-medium text-shadow">Scene:</label>
+						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
 						<div
 							class="w-28"
 							data-tooltip={`Selected scene will be displayed instead of disabled scenes`}
@@ -99,7 +99,7 @@
 						/>
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
 						<div class="w-full flex gap-2">
-							<div class="w-24">
+							<div class="w-48">
 								<Select bind:selected={curScene.background.type} label="Type">
 									<option value={SceneBackground.None}>None</option>
 									<option value={SceneBackground.Color}>Color</option>
@@ -107,8 +107,15 @@
 									<option value={SceneBackground.ImageCustom}>
 										Custom Image
 									</option>
-									{#if $statsScene === LiveStatsScene.InGame || $statsScene === LiveStatsScene.PostGame}
-										<option value={SceneBackground.ImageStage}>Stage</option>
+									{#if $statsScene === LiveStatsScene.InGame}
+										<option value={SceneBackground.InGameImageStage}>
+											Stage
+										</option>
+									{/if}
+									{#if [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene)}
+										<option value={SceneBackground.PostGameImageStage}>
+											Stage
+										</option>
 									{/if}
 								</Select>
 							</div>

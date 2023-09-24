@@ -12,13 +12,3 @@
 <div class="w-full">
 	<AnimationInput bind:animation isSceneAnimation={true} />
 </div>
-{#if animation.type !== Animation.None && duration !== undefined}
-	<div class="w-full">
-		<NumberInput
-			bind:value={duration}
-			label="Duration - ms"
-			max={SCENE_TRANSITION_DELAY}
-			autoFocusValue={3}
-		/>
-	</div>
-{/if}

@@ -13,6 +13,7 @@
 	import type { AnimationSettings, AnimationOptions } from '$lib/models/types';
 	import { Animation, Easing } from '$lib/models/enum';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
+	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 
 	const animationFlyRandom = (
 		node: any,

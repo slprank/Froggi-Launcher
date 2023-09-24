@@ -131,11 +131,12 @@ export enum PlayerActionState {
 }
 
 export enum SceneBackground {
-	None = 0,
-	Color = 1,
-	Image = 2,
-	ImageCustom = 3,
-	ImageStage = 4,
+	None = "None",
+	Color = "Color",
+	Image = "Image",
+	ImageCustom = "Custom Image",
+	InGameImageStage = "In Game Stage Image",
+	PostGameImageStage = "Post Game Stage Image",
 }
 
 export enum Transition {
