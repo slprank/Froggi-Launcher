@@ -3,7 +3,7 @@ import { ElectronLog } from 'electron-log';
 import { inject, injectable } from 'tsyringe';
 import { Player, RankedNetplayProfile } from '../../frontend/src/lib/models/types/slippiData';
 import { PlayerType } from '@slippi/slippi-js';
-import { CHARACTERS } from '../../frontend/src/lib/models/const';
+import { CHARACTERS } from '../../frontend/src/lib/models/constants/characterData';
 
 @injectable()
 export class Api {

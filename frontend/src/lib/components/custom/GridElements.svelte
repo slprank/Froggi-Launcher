@@ -52,8 +52,6 @@
 		];
 	};
 
-	$: console.log('TODO Border, CSS', `${style.cssValue}`);
-
 	$: shadowSizeX = getRelativePixelSize(dataItem?.data.shadow?.x, innerHeight, innerWidth);
 	$: shadowSizeY = getRelativePixelSize(dataItem?.data.shadow?.y, innerHeight, innerWidth);
 	$: style.shadow = `filter: drop-shadow(${shadowSizeX}px ${shadowSizeY}px ${

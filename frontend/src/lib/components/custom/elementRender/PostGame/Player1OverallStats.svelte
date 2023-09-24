@@ -96,10 +96,10 @@
 		{![player1Overall?.openingsPerKill.count, player1Index].some(
 			(e) => e === undefined || e === null,
 		)
-			? player1Overall?.openingsPerKill.count.toFixed(2) ?? '0.00'
+			? player1Overall?.openingsPerKill.count.toFixed(1)
 			: defaultPreview
-			? `6.75`
-			: '0.00'}
+			? `6.7`
+			: '0.0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1OverallDigitalInputsTotal}
