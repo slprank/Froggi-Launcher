@@ -34,7 +34,7 @@
 	$: imageSettings =
 		(selectedElementId >= 6000 && selectedElementId < 7000) ||
 		selectedElementId === CustomElement.CustomImage;
-	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1004;
+	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
 
 	const prevSelectedElementId = selectedElementId;
 

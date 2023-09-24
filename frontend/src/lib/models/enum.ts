@@ -153,7 +153,7 @@ export enum CustomElement {
 
 	// Custom String
 	CustomString = 1000,
-	CustomCurrentPlayerPercent = 1001,
+	InGameCurrentPlayerPercent = 1001,
 	InGamePlayer1Percent = 1002,
 	InGamePlayer2Percent = 1003,
 	InGameCurrentPlayerPercentDecimal = 1004,
