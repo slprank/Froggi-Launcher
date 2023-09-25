@@ -60,19 +60,20 @@
 
 	export function getNewOverlay(): Overlay {
 		return {
-			activeScenes: [
-				LiveStatsScene.WaitingForDolphin,
-				LiveStatsScene.PreGame,
-				LiveStatsScene.InGame,
-				LiveStatsScene.PostGame,
-				LiveStatsScene.RankChange,
-			],
+			activeScenes: {
+				[LiveStatsScene.WaitingForDolphin]: false,
+				[LiveStatsScene.Menu]: false,
+				[LiveStatsScene.InGame]: false,
+				[LiveStatsScene.PostGame]: false,
+				[LiveStatsScene.PostSet]: false,
+				[LiveStatsScene.RankChange]: false,
+			},
 			id: newId(),
 			title: 'New Title',
 			description: 'Scene Description',
-			defaultScene: LiveStatsScene.PreGame,
+			defaultScene: LiveStatsScene.Menu,
 			[LiveStatsScene.WaitingForDolphin]: getDefaultScene(newId()),
-			[LiveStatsScene.PreGame]: getDefaultScene(newId()),
+			[LiveStatsScene.Menu]: getDefaultScene(newId()),
 			[LiveStatsScene.InGame]: getDefaultScene(newId()),
 			[LiveStatsScene.PostGame]: getDefaultScene(newId()),
 			[LiveStatsScene.PostSet]: getDefaultScene(newId()),

@@ -70,7 +70,7 @@
 	}
 
 	function notifyDisabledScene() {
-		if (curOverlay.activeScenes.includes($statsScene)) return;
+		if (curOverlay.activeScenes[$statsScene]) return;
 		notifications.warning('Selected scene is disabled', 5000);
 	}
 	$: $statsScene, notifyDisabledScene();

@@ -36,7 +36,7 @@ export class DiscordRpc {
 
 	initDiscordEvents = () => {
 		this.eventEmitter.on("live_stats_scene", (scene: LiveStatsScene) => {
-			if ([LiveStatsScene.PreGame].includes(scene)) {
+			if ([LiveStatsScene.Menu].includes(scene)) {
 				this.setMenuActivity("Menu")
 			}
 		})

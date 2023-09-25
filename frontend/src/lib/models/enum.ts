@@ -103,26 +103,18 @@ export enum ElementVisibilityOption {
 }
 
 export enum InGameState {
-	None = 0,
-	Running = 1,
-	Paused = 2,
-	End = 3
-}
-
-export enum Direction {
-	Up = 1,
-	Down = 2,
-	Left = 3,
-	Right = 4
+	Inactive = "Inactive",
+	Running = "Running",
+	Paused = "Paused",
 }
 
 export enum LiveStatsScene {
-	WaitingForDolphin = 0,
-	PreGame = 2,
-	InGame = 4,
-	PostGame = 6,
-	PostSet = 8,
-	RankChange = 10,
+	WaitingForDolphin = "Waiting",
+	Menu = "Menu",
+	InGame = "In Game",
+	PostGame = "Post Game",
+	PostSet = "Post Set",
+	RankChange = "Rank Change",
 }
 
 export enum PlayerActionState {

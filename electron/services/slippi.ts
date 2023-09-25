@@ -106,7 +106,7 @@ export class SlippiJs {
 		this.log.info("Dolphin Connected")
 		clearInterval(this.dolphinProcessInterval)
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connected)
-		this.storeLiveStats.setStatsScene(LiveStatsScene.PreGame)
+		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu)
 		const connectCode = (await findPlayKey()).connectCode
 		this.storeSettings.setCurrentPlayerConnectCode(connectCode)
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode)

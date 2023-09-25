@@ -17,13 +17,13 @@ export interface Obs {
 }
 
 export interface Overlay {
-	activeScenes: LiveStatsScene[];
+	activeScenes: { [key in LiveStatsScene]: boolean };
 	defaultScene: LiveStatsScene;
 	description: string;
 	id: string;
 	title: string;
 	[LiveStatsScene.WaitingForDolphin]: Scene;
-	[LiveStatsScene.PreGame]: Scene;
+	[LiveStatsScene.Menu]: Scene;
 	[LiveStatsScene.InGame]: Scene;
 	[LiveStatsScene.PostGame]: Scene;
 	[LiveStatsScene.PostSet]: Scene;

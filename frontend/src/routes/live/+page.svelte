@@ -26,7 +26,7 @@
 			<WaitingDolphin />
 		</div>
 	{/if}
-	{#if $statsScene === LiveStatsScene.PreGame}
+	{#if $statsScene === LiveStatsScene.Menu}
 		<div
 			in:fly={{ y: -200, duration: 300, delay: SCENE_TRANSITION_DELAY }}
 			out:fly={{ y: -200, duration: 300 }}

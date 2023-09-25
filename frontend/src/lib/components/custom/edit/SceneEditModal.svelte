@@ -45,12 +45,14 @@
 		notifications.success('Overlay updated!', 3000);
 		open = false;
 		overlay.activeScenes = tempActiveScenes;
+		console.log('temp', tempActiveScenes);
+		console.log('updated', overlay.activeScenes);
 		await updateOverlay(overlay);
 	}
 
 	function enableDefault() {
-		if (overlay.activeScenes?.includes(overlay.defaultScene)) return;
-		overlay.activeScenes?.push(overlay.defaultScene);
+		if (tempActiveScenes[overlay.defaultScene]) return;
+		tempActiveScenes[overlay.defaultScene] = true;
 	}
 	$: overlay.defaultScene, enableDefault();
 
@@ -86,7 +88,7 @@
 						>
 							<Select bind:selected={overlay.defaultScene} label="Default scene">
 								<option value={LiveStatsScene.WaitingForDolphin}>Waiting</option>
-								<option selected value={LiveStatsScene.PreGame}>Pre Game</option>
+								<option selected value={LiveStatsScene.Menu}>Menu</option>
 								<option value={LiveStatsScene.InGame}>In Game</option>
 								<option value={LiveStatsScene.PostGame}>Post Game</option>
 								<option value={LiveStatsScene.RankChange}>Rank Change</option>
@@ -181,7 +183,6 @@
 									<div class="w-48">
 										<SceneAnimationSelect
 											bind:animation={curScene.background.animation.in}
-											isInAnimation={true}
 										/>
 									</div>
 								</div>
@@ -219,10 +220,7 @@
 									Element Transition - In
 								</h1>
 								<div class="w-48">
-									<SceneAnimationSelect
-										bind:animation={curScene.animation.in}
-										bind:duration={curScene.animation.duration}
-									/>
+									<SceneAnimationSelect bind:animation={curScene.animation.in} />
 								</div>
 							</div>
 							<div class="w-full">
@@ -269,7 +267,12 @@
 								: ''
 						}
 						${
-							previewBackgroundType === SceneBackground.ImageStage
+							previewBackgroundType === SceneBackground.InGameImageStage
+								? `background-image: url('/image/stages/8.png');`
+								: ''
+						}
+						${
+							previewBackgroundType === SceneBackground.PostGameImageStage
 								? `background-image: url('/image/stages/8.png');`
 								: ''
 						}

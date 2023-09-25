@@ -50,7 +50,7 @@
 		{
 			category: ElementCategory.CurrentPlayerSlippiData,
 			visible: [
-				LiveStatsScene.PreGame,
+				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
 				LiveStatsScene.PostGame,
 				LiveStatsScene.PostSet,
@@ -60,7 +60,7 @@
 		{
 			category: ElementCategory.Player1SlippiData,
 			visible: [
-				LiveStatsScene.PreGame,
+				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
 				LiveStatsScene.PostGame,
 				LiveStatsScene.PostSet,
@@ -69,7 +69,7 @@
 		{
 			category: ElementCategory.Player2SlippiData,
 			visible: [
-				LiveStatsScene.PreGame,
+				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
 				LiveStatsScene.PostGame,
 				LiveStatsScene.PostSet,
@@ -118,7 +118,7 @@
 		{
 			category: ElementCategory.CurrentSetStats,
 			visible: [
-				LiveStatsScene.PreGame,
+				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
 				LiveStatsScene.PostGame,
 				LiveStatsScene.PostSet,

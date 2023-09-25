@@ -21,7 +21,7 @@
 		} else {
 			curStatsScene = curOverlay?.activeScenes?.includes($statsScene)
 				? $statsScene
-				: curOverlay?.defaultScene ?? LiveStatsScene.PreGame;
+				: curOverlay?.defaultScene ?? LiveStatsScene.Menu;
 		}
 		updateFixedLayerItems(curOverlay[curStatsScene].layers);
 	}

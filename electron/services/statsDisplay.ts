@@ -106,7 +106,7 @@ export class StatsDisplay {
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameStats)
 		this.storeLiveStats.setGameFrame(gameStats?.lastFrame)
-		this.storeLiveStats.setGameState(InGameState.End)
+		this.storeLiveStats.setGameState(InGameState.Inactive)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
 		if (gameStats) this.messageHandler.sendMessage('post_game_stats', gameStats);

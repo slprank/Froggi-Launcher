@@ -1,26 +1,15 @@
 <script lang="ts">
-	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 
-	export let selected: LiveStatsScene[] | undefined = undefined;
 	export let defaultValue: LiveStatsScene | undefined = undefined;
+	export let selected: { [key in LiveStatsScene]: boolean } | undefined = undefined;
 
-	let tempSelected: boolean[] = [];
-	selected?.forEach((s) => {
-		tempSelected[s] = true;
-	});
-
-	function updateSelected() {
-		if (selected === undefined) return;
-		selected = tempSelected
-			.map((s, i) => {
-				if (s === undefined || s === false) return;
-				return i;
-			})
-			.filter((s) => s !== undefined) as LiveStatsScene[];
-	}
-	$: tempSelected, updateSelected();
+	const updateDefault = (value: LiveStatsScene | undefined) => {
+		if (!value || !selected) return;
+		selected[value] = true;
+	};
+	$: updateDefault(defaultValue);
 
 	function updateLiveScene(scene: LiveStatsScene) {
 		$eventEmitter.emit('electron', 'update-live-scene', scene);
@@ -33,7 +22,7 @@
 		},
 		{
 			text: 'Pre Game',
-			liveScene: LiveStatsScene.PreGame,
+			liveScene: LiveStatsScene.Menu,
 		},
 		{
 			text: 'In Game',
@@ -58,12 +47,12 @@
 	{#each buttons as button}
 		<div class="grid gap-2 justify-start items-start">
 			{#if selected}
-				<div title="test" class="w-4 h-4">
+				<div class="w-4 h-4">
 					<input
 						disabled={button.liveScene === defaultValue}
 						type="checkbox"
 						value={button.liveScene}
-						bind:checked={tempSelected[button.liveScene]}
+						bind:checked={selected[button.liveScene]}
 					/>
 				</div>
 			{/if}
