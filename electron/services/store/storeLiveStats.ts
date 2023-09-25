@@ -23,7 +23,7 @@ export class ElectronLiveStatsStore {
         this.initListeners();
     }
 
-    getStatsScene(): LiveStatsScene {
+    getStatsScene(): LiveStatsScene | undefined {
         return this.store.get('stats.scene') as LiveStatsScene ?? 0;
     }
 
@@ -31,7 +31,7 @@ export class ElectronLiveStatsStore {
         this.store.set('stats.scene', scene ?? 0);
     }
 
-    getGameFrame(): FrameEntryType {
+    getGameFrame(): FrameEntryType | undefined {
         return this.store.get('stats.game.frame') as FrameEntryType
     }
 
@@ -40,8 +40,8 @@ export class ElectronLiveStatsStore {
         this.store.set('stats.game.frame', frameEntry)
     }
 
-    getGameState() {
-        return this.store.get("stats.game.state")
+    getGameState(): InGameState | undefined {
+        return this.store.get("stats.game.state") as InGameState
     }
 
     setGameState(state: InGameState) {
@@ -62,7 +62,7 @@ export class ElectronLiveStatsStore {
         return this.store.set('stats.game.settings.matchInfo.mode', mode);
     }
 
-    getGameStats(): GameStats {
+    getGameStats(): GameStats | undefined {
         return this.store.get('stats.game.stats') as GameStats;
     }
 

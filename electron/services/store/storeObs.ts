@@ -16,10 +16,15 @@ export class ElectronObsStore {
     ) {
         this.log.info("Initializing Obs Store")
         this.initListeners();
-        this.initCustom();
+        this.createCustom();
     }
 
-    getCustom(): Obs {
+    createCustom() {
+        if (this.store.get('obs.custom.overlays') === undefined)
+            this.store.set('obs.custom.overlays', []);
+    }
+
+    getCustom(): Obs | undefined {
         return this.store.get('obs.custom') as Obs;
     }
 
@@ -28,9 +33,10 @@ export class ElectronObsStore {
         this.store.set('obs.custom', value);
     }
 
-    initCustom() {
-        if (this.store.get('obs.custom.overlays') === undefined)
-            this.store.set('obs.custom.overlays', []);
+    getOverlays(): Overlay[] {
+        const overlays = this.store.get('obs.custom.overlays') as Overlay[];
+        if (!overlays) throw new Error("Overlays not found")
+        return overlays
     }
 
     getCustomOverlayById(overlayId: string): Overlay {
@@ -39,13 +45,14 @@ export class ElectronObsStore {
     }
 
     getCustomOverlayIndex(overlayId: string): number {
-        const overlays = this.getCustom().overlays;
+        const overlays = this.getOverlays();
         return overlays?.findIndex((overlay: any) => overlay.id == overlayId) ?? undefined;
     }
 
     updateCustomOverlay(overlay: Overlay): void {
         if (!overlay) return;
         let custom = this.getCustom();
+        if (!custom) return;
         const overlayIndex = this.getCustomOverlayIndex(overlay.id);
         overlayIndex === undefined || overlayIndex === -1
             ? custom.overlays.push(overlay)
@@ -54,8 +61,8 @@ export class ElectronObsStore {
     }
 
     uploadCustomOverlay(overlay: Overlay): void {
-        if (!overlay) return;
         let custom = this.getCustom();
+        if (!custom) return
         overlay.id = newId();
         custom.overlays.push(overlay);
         this.setCustom(custom);
@@ -64,6 +71,7 @@ export class ElectronObsStore {
     deleteCustomOverlay(overlayId: string): void {
         if (!overlayId) return;
         let custom = this.getCustom();
+        if (!custom) return;
         custom.overlays = custom.overlays.filter((overlay: any) => overlay.id !== overlayId);
         this.setCustom(custom);
     }

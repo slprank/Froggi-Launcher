@@ -76,10 +76,11 @@ export class ElectronGamesStore {
         return games[matchId].find(game => game.settings?.matchInfo?.gameNumber === gameNumber)
     }
 
-    getAllSetsByMode(mode: GameStartMode): { [matchId: string]: GameStats[] } | undefined {
+    getAllSetsByMode(mode: GameStartMode): { [matchId: string]: GameStats[] } {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-        if (!connectCode) return;
+        if (!connectCode) return {};
         const playerGame = this.store.get(`player.${connectCode}.game`) as PlayerGame;
+        if (!playerGame) return {}
         return playerGame[mode]
     }
 
@@ -98,16 +99,16 @@ export class ElectronGamesStore {
         return this.store.get(`player.${connectCode}.game`) as Sets | undefined;
     }
 
-    getRecentSets(number = 10): GameStats[] {
+    getRecentSets(number = 10): GameStats[] | undefined {
         const sets = this.getAllSetsByMode("ranked"); // TODO: Fix
         if (!sets) return []
         return sets["recent"]?.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number) ?? [];
     }
 
-    getRecentSetsByMode(mode: GameStartMode, number = 10) {
+    getRecentSetsByMode(mode: GameStartMode, number = 10): GameStats[] {
         const sets = this.getAllSets();
         if (!sets) return []
-        return sets[mode ?? "recent"]?.sort((a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number) ?? [];
+        return (sets[mode ?? "recent"]?.sort((a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)) ?? [];
     }
 
     private initPlayerListener() {

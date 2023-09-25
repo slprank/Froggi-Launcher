@@ -21,7 +21,7 @@ export class ElectronDolphinStore {
         this.initListeners();
     }
 
-    getDolphinConnectionState(): DolphinConnectionState {
+    getDolphinConnectionState(): DolphinConnectionState | undefined {
         return this.store.get('dolphin.connection.state') as DolphinConnectionState;
     }
 
