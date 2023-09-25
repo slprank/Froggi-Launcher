@@ -21,7 +21,7 @@
 			liveScene: LiveStatsScene.WaitingForDolphin,
 		},
 		{
-			text: 'Pre Game',
+			text: 'Menu',
 			liveScene: LiveStatsScene.Menu,
 		},
 		{

@@ -19,11 +19,11 @@
 		Player 2 Stock Icon
 	</ElementOption>
 	<ElementOption
-		description="Player 2 Stock Render"
+		description="Player 2 Render"
 		customElement={CustomElement.InGamePlayer2CharacterRender}
 		on:select={select}
 	>
-		Player 2 Stock Render
+		Player 2 Render
 	</ElementOption>
 	<ElementOption
 		description="Player 2 Live In-Game Percent - 24%"

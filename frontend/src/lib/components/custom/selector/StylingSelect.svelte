@@ -170,7 +170,7 @@
 							bind:valueConcat={payload.css.borderLeft}
 							min={0}
 							max={100}
-							step={1}
+							step={0.1}
 							stringFormat={'{0}rem solid'}
 							label={'Left'}
 						/>
@@ -179,7 +179,7 @@
 							bind:valueConcat={payload.css.borderRight}
 							min={0}
 							max={100}
-							step={1}
+							step={0.1}
 							stringFormat={'{0}rem solid'}
 							label={'Right'}
 						/>
@@ -188,7 +188,7 @@
 							bind:valueConcat={payload.css.borderTop}
 							min={0}
 							max={100}
-							step={1}
+							step={0.1}
 							stringFormat={'{0}rem solid'}
 							label={'Top'}
 						/>
@@ -197,7 +197,7 @@
 							bind:valueConcat={payload.css.borderBottom}
 							min={0}
 							max={100}
-							step={1}
+							step={0.1}
 							stringFormat={'{0}rem solid'}
 							label={'Bottom'}
 						/>

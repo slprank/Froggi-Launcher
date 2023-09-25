@@ -142,7 +142,6 @@ export enum Transition {
 }
 
 export enum CustomElement {
-
 	// Custom String
 	CustomString = 1000,
 	InGameCurrentPlayerPercent = 1001,

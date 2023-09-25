@@ -16,20 +16,20 @@
 		customElement={CustomElement.CustomBox}
 		on:select={select}
 	>
-		Custom box
+		Custom Box
 	</ElementOption>
 	<ElementOption
 		description="Upload and utilize a custom image"
 		customElement={CustomElement.CustomImage}
 		on:select={select}
 	>
-		Custom image
+		Custom Image
 	</ElementOption>
 	<ElementOption
 		description="Customizable text"
 		customElement={CustomElement.CustomString}
 		on:select={select}
 	>
-		Custom text
+		Custom Text
 	</ElementOption>
 </div>

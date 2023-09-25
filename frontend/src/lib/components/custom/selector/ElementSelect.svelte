@@ -14,9 +14,6 @@
 	>
 		Select
 	</button>
-	<h1 class="text-gray-500 text-md font-medium text-shadow">
-		{CustomElement[selectedElementId] ?? ''}
-	</h1>
 </div>
 
 <Modal bind:open on:close={() => (open = false)} class="w-[70vw] h-[70vh]">

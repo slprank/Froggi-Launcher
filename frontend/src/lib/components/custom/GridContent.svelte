@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Animation } from '$lib/models/enum';
+	import { Animation, CustomElement } from '$lib/models/enum';
 	import type { GridContentItem, Scene } from '$lib/models/types';
 	import { fly } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
@@ -66,6 +66,10 @@
 		);
 	};
 
+	$: strokeSize = getRelativePixelSize(1, innerHeight, innerWidth);
+	$: stroke = `-webkit-text-stroke-width: ${strokeSize}px;
+						-webkit-text-stroke-color: white;`;
+
 	let div: HTMLElement;
 	$: boardWidth = div?.clientWidth ?? 0;
 	$: boardHeight = div?.clientHeight ?? 0;
@@ -84,7 +88,12 @@
 			>
 				{#if edit}
 					<GridElements {dataItem} {edit} />
-					<h1 class="top-0 left-0 absolute">{dataItem.data.description ?? ''}</h1>
+					<h1
+						class="top-0 left-0 absolute text-black text-lg"
+						style={`filter: drop-shadow(1.2px 1.2px 0.8px white `}
+					>
+						{CustomElement[dataItem?.elementId] ?? ''}
+					</h1>
 				{:else}
 					<div class="w-full h-full relative" in:animateIn out:animateOut>
 						<VisibilityAnimationLayer

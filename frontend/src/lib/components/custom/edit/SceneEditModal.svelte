@@ -45,8 +45,6 @@
 		notifications.success('Overlay updated!', 3000);
 		open = false;
 		overlay.activeScenes = tempActiveScenes;
-		console.log('temp', tempActiveScenes);
-		console.log('updated', overlay.activeScenes);
 		await updateOverlay(overlay);
 	}
 
