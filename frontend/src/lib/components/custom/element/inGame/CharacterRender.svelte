@@ -19,13 +19,14 @@
 	let div: HTMLElement;
 </script>
 
-{#if player}
-	<div
-		class={`w-full h-full ${style.classValue} grid justify-end`}
-		style={`${style.cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
+<div
+	class={`w-full h-full ${style.classValue} grid justify-end`}
+	style={`${style.cssValue}; ${
+		dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+	}; `}
+	bind:this={div}
+>
+	{#if player && div}
 		<img
 			class="h-full aspect-video"
 			style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
@@ -35,5 +36,5 @@
 			src={`/image/character-renders/${characterId}.png`}
 			alt="custom"
 		/>
-	</div>
-{/if}
+	{/if}
+</div>

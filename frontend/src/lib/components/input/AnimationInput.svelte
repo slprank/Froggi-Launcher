@@ -5,7 +5,7 @@
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { notifications } from '../notification/Notifications.svelte';
 
-	const max = 1000;
+	const max = SCENE_TRANSITION_DELAY;
 	export let animation: AnimationSettings;
 	export let label: string | undefined = undefined;
 	export let isSceneAnimation: boolean = false;

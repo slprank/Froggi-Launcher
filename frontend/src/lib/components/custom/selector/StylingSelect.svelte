@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
 	import type { Class, ElementPayload } from '$lib/models/types';
-	import { Animation, AnimationTrigger, Easing } from '$lib/models/enum';
+	import { Animation, AnimationTrigger, Easing, ElementVisibilityOption } from '$lib/models/enum';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
-	import { CustomElement, ElementPauseOption, LiveStatsScene } from '$lib/models/enum';
+	import { CustomElement, LiveStatsScene } from '$lib/models/enum';
 	import CodeInput from '$lib/components/input/CodeInput.svelte';
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
@@ -61,6 +61,9 @@
 
 	const shuffleAnimationTriggers = () => {
 		$eventEmitter.emit('animation_test_trigger');
+	};
+	const shuffleAnimationVisibility = () => {
+		$eventEmitter.emit('animation_test_visibility');
 	};
 </script>
 
@@ -299,39 +302,34 @@
 				class="text-gray-500 text-lg font-medium text-shadow mb-2"
 				data-tooltip="Animations that triggers on in-game events such as taking damage"
 			>
-				Animations
+				Animation Triggers
 			</h1>
 		</div>
-		{#if payload.animation.in || payload.animation.out}
-			<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
-			<div class="relative w-[50%] bg-white rounded-md">
-				<Select bind:selected={payload.animation.trigger}>
-					<option selected value={AnimationTrigger.None}>None</option>
-					<option selected value={AnimationTrigger.Visibility}>Visible</option>
-					{#if $statsScene === LiveStatsScene.InGame}
-						<option selected value={AnimationTrigger.Player1Percent}>
-							Player1 Percent Increase
-						</option>
-						<option value={AnimationTrigger.Player2Percent}>
-							Player2 Percent Increase
-						</option>
-						<option selected value={AnimationTrigger.Player1StockLost}>
-							Player1 Stock Lost
-						</option>
-						<option selected value={AnimationTrigger.Player2StockLost}>
-							Player2 Stock Lost
-						</option>
-					{/if}
-				</Select>
-			</div>
-			{#if payload.animation.trigger}
-				<div class="w-full flex gap-4">
-					<AnimationInput bind:animation={payload.animation.in} label="In" />
-					<AnimationInput bind:animation={payload.animation.out} label="Out" />
-				</div>
-			{/if}
-		{/if}
+		<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
+		<div class="relative w-[50%] bg-white rounded-md">
+			<Select bind:selected={payload.animation.trigger}>
+				<option selected value={AnimationTrigger.None}>None</option>
+				{#if $statsScene === LiveStatsScene.InGame}
+					<option selected value={AnimationTrigger.Player1Percent}>
+						Player1 Percent Increase
+					</option>
+					<option value={AnimationTrigger.Player2Percent}>
+						Player2 Percent Increase
+					</option>
+					<option selected value={AnimationTrigger.Player1StockLost}>
+						Player1 Stock Lost
+					</option>
+					<option selected value={AnimationTrigger.Player2StockLost}>
+						Player2 Stock Lost
+					</option>
+				{/if}
+			</Select>
+		</div>
 		{#if payload.animation.trigger !== AnimationTrigger.None}
+			<div class="w-full flex gap-4">
+				<AnimationInput bind:animation={payload.animation.in} label="In" />
+				<AnimationInput bind:animation={payload.animation.out} label="Out" />
+			</div>
 			<button
 				on:click={shuffleAnimationTriggers}
 				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
@@ -341,11 +339,40 @@
 			</button>
 		{/if}
 
-		<Select bind:selected={payload.pauseOption} label="Display">
-			<option selected value={ElementPauseOption.Always}>Always</option>
-			<option value={ElementPauseOption.OnlyActive}>Only While Playing</option>
-			<option value={ElementPauseOption.OnlyPaused}>Only While Paused</option>
+		<div class="items-center gap-2 flex">
+			<h1
+				class="text-gray-500 text-lg font-medium text-shadow mb-2"
+				data-tooltip="Animations that triggers on in-game events such as taking damage"
+			>
+				Visibility
+			</h1>
+		</div>
+
+		<Select bind:selected={payload.visibility.key}>
+			<option selected value={ElementVisibilityOption.Always}>
+				{ElementVisibilityOption.Always}
+			</option>
+			<option value={ElementVisibilityOption.GameRunning}>
+				{ElementVisibilityOption.GameRunning}
+			</option>
+			<option value={ElementVisibilityOption.GamePaused}>
+				{ElementVisibilityOption.GamePaused}
+			</option>
 		</Select>
+
+		{#if payload.visibility.key !== ElementVisibilityOption.Always}
+			<div class="w-full flex gap-4">
+				<AnimationInput bind:animation={payload.visibility.in} label="In" />
+				<AnimationInput bind:animation={payload.visibility.out} label="Out" />
+			</div>
+			<button
+				on:click={shuffleAnimationVisibility}
+				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+			>
+				Test animation
+			</button>
+		{/if}
 		<div class="items-center gap-2 flex">
 			<h1 class="text-gray-500 text-lg font-medium text-shadow mb-2">Advanced styling</h1>
 			<div class="mb-2">

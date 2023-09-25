@@ -10,12 +10,11 @@ export enum Animation {
 }
 
 export enum AnimationTrigger {
-	None = 0,
-	Visibility = 1,
-	Player1Percent = 2,
-	Player2Percent = 3,
-	Player1StockLost = 2,
-	Player2StockLost = 3,
+	None = "None",
+	Player1Percent = "Player1 Percent Increase",
+	Player2Percent = "Player2 Percent Increase",
+	Player1StockLost = "Player1 Stock Loss",
+	Player2StockLost = "Player2 Stock Loss",
 }
 
 export enum AutoUpdaterStatus {
@@ -97,10 +96,10 @@ export enum ElementCategory {
 	ControllerInput = "Controller Input",
 }
 
-export enum ElementPauseOption {
-	Always = 1,
-	OnlyActive = 2,
-	OnlyPaused = 3,
+export enum ElementVisibilityOption {
+	Always = "Always",
+	GameRunning = "GameRunning",
+	GamePaused = "GamePaused",
 }
 
 export enum InGameState {

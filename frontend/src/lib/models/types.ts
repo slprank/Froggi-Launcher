@@ -1,4 +1,4 @@
-import type { Animation, AnimationTrigger, AutoUpdaterStatus, CustomElement, Easing, ElementPauseOption, LiveStatsScene, SceneBackground } from './enum';
+import type { Animation, AnimationTrigger, AutoUpdaterStatus, CustomElement, Easing, ElementVisibilityOption, LiveStatsScene, SceneBackground } from './enum';
 import type { COL } from './const';
 
 export interface AutoUpdater {
@@ -73,7 +73,7 @@ export interface ElementPayload {
 	css: Css;
 	description: string;
 	font: Font
-	pauseOption: ElementPauseOption;
+	visibility: VisibilityAnimations;
 	percent: Percent
 	shadow: Shadow;
 	stroke: Stroke;
@@ -90,6 +90,12 @@ export interface Animations {
 	in: AnimationSettings
 	out: AnimationSettings
 	trigger: AnimationTrigger
+}
+
+export interface VisibilityAnimations {
+	in: AnimationSettings
+	out: AnimationSettings
+	key: ElementVisibilityOption
 }
 
 export interface SceneAnimation extends Animations {

@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { AnimationTrigger, ElementPauseOption, InGameState, Animation } from '$lib/models/enum';
+	import { Animation } from '$lib/models/enum';
 	import type { GridContentItem, Scene } from '$lib/models/types';
 	import { fly } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
-	import { gameFrame, gameState, isElectron } from '$lib/utils/store.svelte';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
 	import { createAnimation } from './element/animations/Animations.svelte';
 	import GridElements from '$lib/components/custom/GridElements.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
+	import VisibilityAnimationLayer from './element/animations/VisibilityAnimationLayer.svelte';
 
 	export let additionalDelay: number = 0;
 	export let curScene: Scene | undefined = undefined;
@@ -66,36 +66,6 @@
 		);
 	};
 
-	let key: any = undefined;
-	const updateKeyValue = () => {
-		if (!dataItem) return;
-		switch (dataItem.data.animation.trigger) {
-			case AnimationTrigger.Player1Percent:
-				key = $gameFrame?.players[0]?.pre.percent;
-				return;
-			case AnimationTrigger.Player2Percent:
-				key = $gameFrame?.players[1]?.pre.percent;
-				return;
-			case AnimationTrigger.Player1StockLost:
-				key = $gameFrame?.players[0]?.post.stocksRemaining;
-				return;
-			case AnimationTrigger.Player2StockLost:
-				key = $gameFrame?.players[1]?.post.stocksRemaining;
-				return;
-		}
-	};
-	$: $gameFrame, updateKeyValue();
-
-	$: isGameRunning = $gameState === InGameState.Running;
-	$: isGamePaused = $gameState === InGameState.Paused;
-
-	$: display =
-		edit ||
-		preview ||
-		dataItem?.data.pauseOption === ElementPauseOption.Always ||
-		(isGameRunning && dataItem?.data.pauseOption === ElementPauseOption.OnlyActive) ||
-		(isGamePaused && dataItem?.data.pauseOption === ElementPauseOption.OnlyPaused);
-
 	let div: HTMLElement;
 	$: boardWidth = div?.clientWidth ?? 0;
 	$: boardHeight = div?.clientHeight ?? 0;
@@ -117,28 +87,46 @@
 					<h1 class="top-0 left-0 absolute">{dataItem.data.description ?? ''}</h1>
 				{:else}
 					<div class="w-full h-full relative" in:animateIn out:animateOut>
-						<AnimationLayer
-							animationTrigger={dataItem.data.animation.trigger}
+						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(
 									node,
-									dataItem?.data.animation.in,
+									dataItem?.data.visibility.in,
 									boardHeight,
 									boardWidth,
 								)}
 							animationOut={(node) =>
 								createAnimation(
 									node,
-									dataItem?.data.animation.out,
+									dataItem?.data.visibility.out,
 									boardHeight,
 									boardWidth,
 								)}
-							{display}
+							{dataItem}
 							{edit}
-							bind:key
+							{preview}
 						>
-							<GridElements {dataItem} {preview} />
-						</AnimationLayer>
+							<AnimationLayer
+								animationIn={(node) =>
+									createAnimation(
+										node,
+										dataItem?.data.animation.in,
+										boardHeight,
+										boardWidth,
+									)}
+								animationOut={(node) =>
+									createAnimation(
+										node,
+										dataItem?.data.animation.out,
+										boardHeight,
+										boardWidth,
+									)}
+								{dataItem}
+								{edit}
+							>
+								<GridElements {dataItem} {preview} />
+							</AnimationLayer>
+						</VisibilityAnimationLayer>
 					</div>
 				{/if}
 			</div>

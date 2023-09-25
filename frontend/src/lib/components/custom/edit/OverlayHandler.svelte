@@ -4,7 +4,7 @@
 		AnimationTrigger,
 		CustomElement,
 		Easing,
-		ElementPauseOption,
+		ElementVisibilityOption,
 		LiveStatsScene,
 		SceneBackground,
 	} from '$lib/models/enum';
@@ -177,7 +177,11 @@
 				src: undefined,
 				objectFit: undefined,
 			},
-			pauseOption: ElementPauseOption.Always,
+			visibility: {
+				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
+				out: getDefaultAnimations(),
+				key: ElementVisibilityOption.Always,
+			},
 			shadow: {
 				x: 0,
 				y: 0,
