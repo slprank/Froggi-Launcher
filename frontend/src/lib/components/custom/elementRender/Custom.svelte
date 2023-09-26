@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CustomElement } from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import TextElement from '../element/TextElement.svelte';
 

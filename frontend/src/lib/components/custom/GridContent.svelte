@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Animation, CustomElement } from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/constants/customElement';
+	import { Animation } from '$lib/models/enum';
 	import type { GridContentItem, Scene } from '$lib/models/types';
 	import { fly } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';

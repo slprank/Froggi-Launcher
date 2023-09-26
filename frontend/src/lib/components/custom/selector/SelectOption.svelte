@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CustomElement } from '$lib/models/enum';
+	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();

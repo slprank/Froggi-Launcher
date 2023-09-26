@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
-	import type { Class, ElementPayload } from '$lib/models/types';
-	import { Animation, AnimationTrigger, Easing, ElementVisibilityOption } from '$lib/models/enum';
+	import type { ElementPayload } from '$lib/models/types';
+	import { Animation, AnimationTrigger } from '$lib/models/enum';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
-	import { CustomElement, LiveStatsScene } from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/constants/customElement';
+	import { LiveStatsScene } from '$lib/models/enum';
 	import CodeInput from '$lib/components/input/CodeInput.svelte';
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';

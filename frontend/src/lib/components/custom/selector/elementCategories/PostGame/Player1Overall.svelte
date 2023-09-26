@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CustomElement } from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/constants/customElement';
 	import { createEventDispatcher } from 'svelte';
 	import SelectOption from '../../SelectOption.svelte';
 

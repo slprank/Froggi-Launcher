@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { CustomElement } from '$lib/models/enum';
+	import type { CustomElement } from '$lib/models/constants/customElement';
 	import ElementCategorySelect from './elementCategories/ElementCategorySelect.svelte';
 
 	export let selectedElementId: CustomElement;

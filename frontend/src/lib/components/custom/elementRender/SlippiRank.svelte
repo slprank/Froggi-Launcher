@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CHARACTERS } from '$lib/models/constants/characterData';
-	import { CustomElement } from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
 	import { currentPlayers, currentPlayer } from '$lib/utils/store.svelte';
 	import RankedCharacterIcon from '../element/RankedCharacterIcon.svelte';

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { CustomElement, ElementCategory, LiveStatsScene } from '$lib/models/enum';
+	import { ElementCategory, LiveStatsScene } from '$lib/models/enum';
+	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import Player1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';

@@ -13,7 +13,7 @@
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/models/const';
 	import ElementSelect from '../selector/ElementSelect.svelte';
-	import type { CustomElement } from '$lib/models/enum';
+	import type { CustomElement } from '$lib/models/constants/customElement';
 
 	const overlayId = $page.params.overlay;
 

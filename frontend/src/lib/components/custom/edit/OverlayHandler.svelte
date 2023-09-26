@@ -2,12 +2,11 @@
 	import {
 		Animation,
 		AnimationTrigger,
-		CustomElement,
 		Easing,
-		ElementVisibilityOption,
 		LiveStatsScene,
 		SceneBackground,
 	} from '$lib/models/enum';
+	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { AnimationSettings, ElementPayload, Overlay, Scene } from '$lib/models/types';
 
 	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
