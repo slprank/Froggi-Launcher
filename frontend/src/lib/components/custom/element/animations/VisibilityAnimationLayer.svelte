@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AnimationTrigger, ElementVisibilityOption, InGameState } from '$lib/models/enum';
+	import { VisibilityOption, InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
 	import { eventEmitter, gameState } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
@@ -17,13 +17,13 @@
 		}
 		if (!dataItem) return;
 		switch (dataItem.data.visibility.key) {
-			case ElementVisibilityOption.Always:
+			case VisibilityOption.Always:
 				visible = true;
 				return;
-			case ElementVisibilityOption.GameRunning:
+			case VisibilityOption.Running:
 				visible = $gameState === InGameState.Running;
 				return;
-			case ElementVisibilityOption.GamePaused:
+			case VisibilityOption.Paused:
 				visible = $gameState === InGameState.Paused;
 				return;
 		}

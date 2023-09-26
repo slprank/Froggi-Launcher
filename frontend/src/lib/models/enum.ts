@@ -107,9 +107,11 @@ export enum VisibilityCategory {
 }
 
 export enum VisibilityOption {
-	Inactive = "Inactive",
+	Always = "Always",
+
 	Running = "Running",
 	Paused = "Paused",
+	StartInactionable = "Inactionable",
 	Ready = "Ready",
 	Go = "Go",
 	Countdown = "Countdown",

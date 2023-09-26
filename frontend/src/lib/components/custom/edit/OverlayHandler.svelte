@@ -5,8 +5,9 @@
 		Easing,
 		LiveStatsScene,
 		SceneBackground,
+		VisibilityOption,
 	} from '$lib/models/enum';
-	import { CustomElement } from '$lib/models/constants/customElement';
+	import type { CustomElement } from '$lib/models/constants/customElement';
 	import type { AnimationSettings, ElementPayload, Overlay, Scene } from '$lib/models/types';
 
 	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
@@ -180,7 +181,7 @@
 			visibility: {
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
-				key: ElementVisibilityOption.Always,
+				key: VisibilityOption.Always,
 			},
 			shadow: {
 				x: 0,

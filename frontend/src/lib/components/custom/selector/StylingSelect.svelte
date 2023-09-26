@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
 	import type { ElementPayload } from '$lib/models/types';
-	import { Animation, AnimationTrigger } from '$lib/models/enum';
+	import { Animation, AnimationTrigger, VisibilityOption } from '$lib/models/enum';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
 	import { CustomElement } from '$lib/models/constants/customElement';
@@ -352,7 +352,7 @@
 
 		<VisibilitySelect bind:selectedVisibilityOption={payload.visibility.key} />
 
-		{#if payload.visibility.key !== ElementVisibilityOption.Always}
+		{#if payload.visibility.key !== VisibilityOption.Always}
 			<div class="w-full flex gap-4">
 				<AnimationInput bind:animation={payload.visibility.in} label="In" />
 				<AnimationInput bind:animation={payload.visibility.out} label="Out" />

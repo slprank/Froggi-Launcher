@@ -1,5 +1,6 @@
-import type { Animation, AnimationTrigger, AutoUpdaterStatus, CustomElement, Easing, ElementVisibilityOption, LiveStatsScene, SceneBackground } from './enum';
+import type { Animation, AnimationTrigger, AutoUpdaterStatus, Easing, LiveStatsScene, SceneBackground, VisibilityOption } from './enum';
 import type { COL } from './const';
+import type { CustomElement } from './constants/customElement';
 
 export interface AutoUpdater {
 	progress: number | undefined;
@@ -95,7 +96,7 @@ export interface Animations {
 export interface VisibilityAnimations {
 	in: AnimationSettings
 	out: AnimationSettings
-	key: ElementVisibilityOption
+	key: VisibilityOption
 }
 
 export interface SceneAnimation extends Animations {

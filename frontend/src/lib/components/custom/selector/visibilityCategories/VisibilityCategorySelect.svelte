@@ -1,11 +1,5 @@
 <script lang="ts">
-	import {
-		CustomElement,
-		ElementCategory,
-		LiveStatsScene,
-		VisibilityCategory,
-		VisibilityOption,
-	} from '$lib/models/enum';
+	import { LiveStatsScene, VisibilityCategory, VisibilityOption } from '$lib/models/enum';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import GameStateVisibilitySelect from './GameStateVisibilitySelect.svelte';
@@ -49,7 +43,7 @@
 			</div>
 		{/each}
 	</div>
-	<h1 class="text-gray-500 text-lg font-medium text-shadow">Element</h1>
+	<h1 class="text-gray-500 text-lg font-medium text-shadow">Options</h1>
 	{#key selectedCategory}
 		<div
 			in:fly={{ duration: 250, x: 50, delay: 250 }}
