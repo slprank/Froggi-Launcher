@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/enum';
 	import { createEventDispatcher } from 'svelte';
-	import ElementOption from '../ElementOption.svelte';
+	import SelectOption from '../../SelectOption.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -11,158 +11,158 @@
 </script>
 
 <div class="flex flex-col gap-2">
-	<ElementOption
+	<SelectOption
 		description="Current Player Slippi Tag"
-		customElement={CustomElement.SlippiRankCurrentPlayerTag}
+		value={CustomElement.SlippiRankCurrentPlayerTag}
 		on:select={select}
 	>
 		Tag
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Connect Code"
-		customElement={CustomElement.SlippiRankCurrentPlayerConnectCode}
+		value={CustomElement.SlippiRankCurrentPlayerConnectCode}
 		on:select={select}
 	>
 		Connect Code
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Slippi Rank Icon"
-		customElement={CustomElement.SlippiRankCurrentPlayerRankIcon}
+		value={CustomElement.SlippiRankCurrentPlayerRankIcon}
 		on:select={select}
 	>
 		Rank Icon
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Slippi Rank Text"
-		customElement={CustomElement.SlippiRankCurrentPlayerRankText}
+		value={CustomElement.SlippiRankCurrentPlayerRankText}
 		on:select={select}
 	>
 		Rank Text
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Slippi Rank Text"
-		customElement={CustomElement.SlippiRankCurrentPlayerRating}
+		value={CustomElement.SlippiRankCurrentPlayerRating}
 		on:select={select}
 	>
 		Rating
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Continent"
-		customElement={CustomElement.SlippiRankCurrentPlayerContinent}
+		value={CustomElement.SlippiRankCurrentPlayerContinent}
 		on:select={select}
 	>
 		Continent
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Continent Initials"
-		customElement={CustomElement.SlippiRankCurrentPlayerContinentInitials}
+		value={CustomElement.SlippiRankCurrentPlayerContinentInitials}
 		on:select={select}
 	>
 		Continent Initials
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Global Placement"
-		customElement={CustomElement.SlippiRankCurrentPlayerDailyGlobalPlacement}
+		value={CustomElement.SlippiRankCurrentPlayerDailyGlobalPlacement}
 		on:select={select}
 	>
 		Global Placement
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Regional Placement"
-		customElement={CustomElement.SlippiRankCurrentPlayerDailyRegionalPlacement}
+		value={CustomElement.SlippiRankCurrentPlayerDailyRegionalPlacement}
 		on:select={select}
 	>
 		Regional Placement
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Ranked Wins"
-		customElement={CustomElement.SlippiRankCurrentPlayerWins}
+		value={CustomElement.SlippiRankCurrentPlayerWins}
 		on:select={select}
 	>
 		Rank Wins
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Ranked Wins - Percent"
-		customElement={CustomElement.SlippiRankCurrentPlayerWinsPercent}
+		value={CustomElement.SlippiRankCurrentPlayerWinsPercent}
 		on:select={select}
 	>
 		Rank Wins - Percent
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Ranked Losses"
-		customElement={CustomElement.SlippiRankCurrentPlayerLosses}
+		value={CustomElement.SlippiRankCurrentPlayerLosses}
 		on:select={select}
 	>
 		Rank Losses
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Ranked Losses - Percent"
-		customElement={CustomElement.SlippiRankCurrentPlayerLossesPercent}
+		value={CustomElement.SlippiRankCurrentPlayerLossesPercent}
 		on:select={select}
 	>
 		Rank Losses - Percent
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Most Played Character - Text"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter1}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter1}
 		on:select={select}
 	>
 		Most Played Character - Text
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Most Played Character - Percent"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter1Percent}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter1Percent}
 		on:select={select}
 	>
 		Most Played Character - Percent
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player Most Played Character - Icon"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter1Icon}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter1Icon}
 		on:select={select}
 	>
 		Most Played Character - Icon
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player 2nd Most Player Character - Text"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter2}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter2}
 		on:select={select}
 	>
 		2nd Most Played Character - Text
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player 2nd Most Player Character - Percent"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter2Percent}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter2Percent}
 		on:select={select}
 	>
 		2nd Most Played Character - Percent
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player 2nd Most Player Character - Icon"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter2Icon}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter2Icon}
 		on:select={select}
 	>
 		Most Played Character 2 - Icon
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player 3rd Most Player Character"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter3}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter3}
 		on:select={select}
 	>
 		3rd Most Played Character - Text
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player 3rd Most Player Character"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter3Percent}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter3Percent}
 		on:select={select}
 	>
 		3rd Most Played Character - Percent
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Current Player 3rd Most Player Character"
-		customElement={CustomElement.SlippiRankCurrentPlayerCharacter3Icon}
+		value={CustomElement.SlippiRankCurrentPlayerCharacter3Icon}
 		on:select={select}
 	>
 		3rd Most Played Character - Icon
-	</ElementOption>
+	</SelectOption>
 </div>

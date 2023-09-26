@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/enum';
 	import { createEventDispatcher } from 'svelte';
-	import ElementOption from './ElementOption.svelte';
+	import SelectOption from '../../SelectOption.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -11,25 +11,21 @@
 </script>
 
 <div class="flex flex-col gap-2">
-	<ElementOption
-		description="Customizable box"
-		customElement={CustomElement.CustomBox}
-		on:select={select}
-	>
+	<SelectOption description="Customizable box" value={CustomElement.CustomBox} on:select={select}>
 		Custom Box
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Upload and utilize a custom image"
-		customElement={CustomElement.CustomImage}
+		value={CustomElement.CustomImage}
 		on:select={select}
 	>
 		Custom Image
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Customizable text"
-		customElement={CustomElement.CustomString}
+		value={CustomElement.CustomString}
 		on:select={select}
 	>
 		Custom Text
-	</ElementOption>
+	</SelectOption>
 </div>

@@ -96,16 +96,23 @@ export enum ElementCategory {
 	ControllerInput = "Controller Input",
 }
 
-export enum ElementVisibilityOption {
-	Always = "Always",
-	GameRunning = "GameRunning",
-	GamePaused = "GamePaused",
+export enum VisibilityCategory {
+	CurrentPlayerState = "Current Player State",
+	Player1State = "Player1 State",
+	Player2State = "Player2 State",
+	OngoingGame = "Ongoing Game",
+	GameState = "Game State",
+	Session = "Session",
+	ResetGames = "Recent Games"
 }
 
-export enum InGameState {
+export enum VisibilityOption {
 	Inactive = "Inactive",
 	Running = "Running",
 	Paused = "Paused",
+	Ready = "Ready",
+	Go = "Go",
+	Countdown = "Countdown",
 }
 
 export enum LiveStatsScene {

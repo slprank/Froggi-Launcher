@@ -15,6 +15,7 @@
 	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';
 	import { getDefaultElementPayload } from '../edit/OverlayHandler.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
+	import VisibilitySelect from './VisibilitySelect.svelte';
 
 	// TODO: Animation options and sliders
 
@@ -348,17 +349,7 @@
 			</h1>
 		</div>
 
-		<Select bind:selected={payload.visibility.key}>
-			<option selected value={ElementVisibilityOption.Always}>
-				{ElementVisibilityOption.Always}
-			</option>
-			<option value={ElementVisibilityOption.GameRunning}>
-				{ElementVisibilityOption.GameRunning}
-			</option>
-			<option value={ElementVisibilityOption.GamePaused}>
-				{ElementVisibilityOption.GamePaused}
-			</option>
-		</Select>
+		<VisibilitySelect bind:selectedVisibilityOption={payload.visibility.key} />
 
 		{#if payload.visibility.key !== ElementVisibilityOption.Always}
 			<div class="w-full flex gap-4">

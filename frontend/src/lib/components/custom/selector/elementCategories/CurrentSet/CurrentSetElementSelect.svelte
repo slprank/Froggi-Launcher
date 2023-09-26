@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/enum';
 	import { createEventDispatcher } from 'svelte';
-	import ElementOption from '../ElementOption.svelte';
+	import SelectOption from '../../SelectOption.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -11,18 +11,18 @@
 </script>
 
 <div class="flex flex-col gap-2">
-	<ElementOption
+	<SelectOption
 		description="Player 1 Ongoing Set Score"
-		customElement={CustomElement.CurrentSetPlayer1Score}
+		value={CustomElement.CurrentSetPlayer1Score}
 		on:select={select}
 	>
 		Player 1 Set Score
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Player 2 Ongoing Set Score"
-		customElement={CustomElement.CurrentSetPlayer2Score}
+		value={CustomElement.CurrentSetPlayer2Score}
 		on:select={select}
 	>
 		Player 2 Set Score
-	</ElementOption>
+	</SelectOption>
 </div>

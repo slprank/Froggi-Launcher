@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/enum';
 	import { createEventDispatcher } from 'svelte';
-	import ElementOption from '../ElementOption.svelte';
+	import SelectOption from '../../SelectOption.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -11,32 +11,32 @@
 </script>
 
 <div class="flex flex-col gap-2">
-	<ElementOption
+	<SelectOption
 		description="Player 1 Stock Icon"
-		customElement={CustomElement.InGamePlayer1CharacterIcon}
+		value={CustomElement.InGamePlayer1CharacterIcon}
 		on:select={select}
 	>
 		Player 1 Stock Icon
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Player 1 Render"
-		customElement={CustomElement.InGamePlayer1CharacterRender}
+		value={CustomElement.InGamePlayer1CharacterRender}
 		on:select={select}
 	>
 		Player 1 Render
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Player 1 Live In-Game Percent - 24%"
-		customElement={CustomElement.InGamePlayer1Percent}
+		value={CustomElement.InGamePlayer1Percent}
 		on:select={select}
 	>
 		Player 1 Percent
-	</ElementOption>
-	<ElementOption
+	</SelectOption>
+	<SelectOption
 		description="Player 1 Live In-Game Percent With Decimals - 24.6% "
-		customElement={CustomElement.InGamePlayer1PercentDecimal}
+		value={CustomElement.InGamePlayer1PercentDecimal}
 		on:select={select}
 	>
 		Player 1 Percent Decimal
-	</ElementOption>
+	</SelectOption>
 </div>
