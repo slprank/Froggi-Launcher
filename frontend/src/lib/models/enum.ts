@@ -109,12 +109,11 @@ export enum VisibilityCategory {
 export enum VisibilityOption {
 	Always = "Always",
 
-	Running = "Running",
-	Paused = "Paused",
-	StartInactionable = "Inactionable",
-	Ready = "Ready",
-	Go = "Go",
-	Countdown = "Countdown",
+	GameRunning = "Running",
+	GamePaused = "Paused",
+	GameReady = "Ready",
+	GameGo = "Go",
+	GameCountdown = "Countdown",
 }
 
 export enum InGameState {

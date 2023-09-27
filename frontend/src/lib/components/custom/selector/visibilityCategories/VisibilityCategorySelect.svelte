@@ -3,15 +3,18 @@
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import GameStateVisibilitySelect from './GameStateVisibilitySelect.svelte';
+	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
 
-	// TODO: Update To Handle Array
-	export let selectedVisibilityOption: VisibilityOption;
+	export let selectedVisibilityOptions: SelectedVisibilityOption;
 	export let open: boolean;
 
-	function select(event: CustomEvent<VisibilityOption>) {
-		selectedVisibilityOption = event.detail;
-		open = false;
+	function select(event: CustomEvent<SelectedVisibilityOption>) {
+		selectedVisibilityOptions = event.detail;
 	}
+
+	const handleUpdate = () => {
+		open = false;
+	};
 
 	let selectedCategory: VisibilityCategory;
 
@@ -51,8 +54,16 @@
 			class="overflow-scroll"
 		>
 			{#if selectedCategory === VisibilityCategory.GameState}
-				<GameStateVisibilitySelect on:select={select} />
+				<GameStateVisibilitySelect on:select={select} {selectedVisibilityOptions} />
 			{/if}
 		</div>
 	{/key}
+	<div class="w-48 flex items-end">
+		<button
+			class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+			on:click={handleUpdate}
+		>
+			Update
+		</button>
+	</div>
 </div>

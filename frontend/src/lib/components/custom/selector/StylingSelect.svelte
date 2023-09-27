@@ -76,7 +76,7 @@
 		out:fly={{ duration: 250, x: 150 }}
 	>
 		{#if selectedElementId === CustomElement.CustomString}
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Custom text</h1>
+			<h1 class="text-gray-500 text-xl font-medium text-shadow">Custom text</h1>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 h-10">
 					<input
@@ -84,7 +84,7 @@
 						id="default-input"
 						placeholder="Text"
 						bind:value={payload.string}
-						class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 dark:bg-gray-700 dark:text-white"
+						class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg block p-2.5 dark:bg-gray-700 dark:text-white"
 					/>
 				</div>
 			</div>
@@ -94,11 +94,11 @@
 			<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
 		{/if}
 		{#if percentSettings}
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Percent Colors</h1>
+			<h1 class="text-gray-500 text-xl font-medium text-shadow">Percent Colors</h1>
 			<div>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-36 h-12">
-						<h1 class="text-gray-500 text-sm font-medium text-shadow">
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
 							Start Color - 0%
 						</h1>
 						<ColorInput bind:value={payload.percent.startColor} />
@@ -108,7 +108,7 @@
 			<div>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-36 h-12">
-						<h1 class="text-gray-500 text-sm font-medium text-shadow">
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
 							End Color - 300%
 						</h1>
 						<ColorInput bind:value={payload.percent.endColor} />
@@ -118,10 +118,10 @@
 		{/if}
 		{#if stringSettings}
 			<div>
-				<h1 class="text-gray-500 text-lg font-medium text-shadow">Alignment</h1>
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Alignment</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-36 h-24">
-						<h1 class="text-gray-500 text-sm font-medium text-shadow">Horizontal</h1>
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">Horizontal</h1>
 						<Select bind:selected={payload.class.alignment}>
 							<option value="justify-start">Left</option>
 							<option selected value="justify-center">Center</option>
@@ -131,7 +131,7 @@
 				</div>
 			</div>
 			<div>
-				<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Color</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-36 h-12">
 						<ColorInput bind:value={payload.css.color} />
@@ -142,7 +142,7 @@
 		{#if stringSettings || percentSettings}
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
 			<div>
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">
 					Size - ({payload.stroke.size})
 				</h1>
 				<div class="w-full h-fit flex flex-wrap">
@@ -150,7 +150,7 @@
 						<NumberInput bind:value={payload.stroke.size} min={0} max={5} step={0.1} />
 					</div>
 				</div>
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Color</h1>
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-36">
 						<ColorInput bind:value={payload.stroke.color} />
@@ -160,9 +160,9 @@
 		{/if}
 		{#if boxSettings}
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36">
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">Border</h1>
-					<h1 class="text-gray-500 text-md font-medium text-shadow">Color</h1>
+				<div class="w-36 grid grid-flow-row gap-2">
+					<h1 class="text-gray-500 text-xl font-medium text-shadow">Border</h1>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
 					<div class="w-full h-fit flex flex-wrap">
 						<ColorInput bind:value={payload.css.borderColor} />
 					</div>
@@ -208,7 +208,7 @@
 			</div>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 h-24">
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Rounded corner</h1>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Rounded corner</h1>
 					<Select bind:selected={payload.class.rounded}>
 						<option value="" selected>None</option>
 						<option value="rounded-sm">Small</option>
@@ -218,7 +218,7 @@
 					</Select>
 				</div>
 			</div>
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Background color</h1>
+			<h1 class="text-gray-500 text-xl font-medium text-shadow">Background color</h1>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 h-12">
 					<ColorInput bind:value={payload.css.background} />
@@ -226,7 +226,7 @@
 			</div>
 		{/if}
 		{#if selectedElementId === CustomElement.CustomImage}
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Select Image</h1>
+			<h1 class="text-gray-500 text-xl font-medium text-shadow">Select Image</h1>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 h-24">
 					<FileToBase64Input
@@ -236,13 +236,13 @@
 					/>
 				</div>
 			</div>
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Image Positioning</h1>
+			<h1 class="text-gray-500 text-xl font-medium text-shadow">Image Positioning</h1>
 		{/if}
 		{#if imageSettings}
 			{#if selectedElementId >= 100}
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-36 h-24">
-						<h1 class="text-gray-500 text-sm font-medium text-shadow">Fit</h1>
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">Fit</h1>
 						<Select bind:selected={payload.image.objectFit}>
 							<option value="contain">Contain</option>
 							<option selected value="cover">Cover</option>
@@ -251,10 +251,10 @@
 				</div>
 			{/if}
 		{/if}
-		<h1 class="text-gray-500 text-lg font-medium text-shadow">Transformation</h1>
+		<h1 class="text-gray-500 text-xl font-medium text-shadow">Transformation</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-36 h-24">
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Flip</h1>
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Flip</h1>
 				<Select bind:selected={payload.css.scale}>
 					<option selected value={undefined}>Default</option>
 					<option value={'-1 1;'}>Horizontal</option>
@@ -265,7 +265,7 @@
 		</div>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-44 h-24">
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">
 					Rotate - ({payload.css.rotate ?? '0deg'})
 				</h1>
 				<SliderInput
@@ -301,13 +301,13 @@
 		</div>
 		<div class="items-center gap-2 flex">
 			<h1
-				class="text-gray-500 text-lg font-medium text-shadow mb-2"
+				class="text-gray-500 text-xl font-medium text-shadow mb-2"
 				data-tooltip="Animations that triggers on in-game events such as taking damage"
 			>
 				Animation Triggers
 			</h1>
 		</div>
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">Trigger</h1>
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Trigger</h1>
 		<div class="relative w-[50%] bg-white rounded-md">
 			<Select bind:selected={payload.animation.trigger}>
 				<option selected value={AnimationTrigger.None}>None</option>
@@ -335,7 +335,7 @@
 			<button
 				on:click={shuffleAnimationTriggers}
 				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 			>
 				Test animation
 			</button>
@@ -343,16 +343,16 @@
 
 		<div class="items-center gap-2 flex">
 			<h1
-				class="text-gray-500 text-lg font-medium text-shadow mb-2"
+				class="text-gray-500 text-xl font-medium text-shadow mb-2"
 				data-tooltip="Animations that triggers on in-game events such as taking damage"
 			>
 				Visibility
 			</h1>
 		</div>
 
-		<VisibilitySelect bind:selectedVisibilityOption={payload.visibility.key} />
+		<VisibilitySelect bind:selectedVisibilityOptions={payload.visibility.selectedOption} />
 
-		{#if payload.visibility.key !== VisibilityOption.Always}
+		{#if !payload.visibility.selectedOption[VisibilityOption.Always]}
 			<div class="w-full flex gap-4">
 				<AnimationInput bind:animation={payload.visibility.in} label="In" />
 				<AnimationInput bind:animation={payload.visibility.out} label="Out" />
@@ -360,13 +360,13 @@
 			<button
 				on:click={shuffleAnimationVisibility}
 				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 			>
 				Test animation
 			</button>
 		{/if}
 		<div class="items-center gap-2 flex">
-			<h1 class="text-gray-500 text-lg font-medium text-shadow mb-2">Advanced styling</h1>
+			<h1 class="text-gray-500 text-xl font-medium text-shadow mb-2">Advanced styling</h1>
 			<div class="mb-2">
 				<BooleanInput bind:checked={payload.advancedStyling} />
 			</div>

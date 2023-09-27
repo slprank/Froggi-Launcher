@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { VisibilityOption, InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
-	import { eventEmitter, gameState } from '$lib/utils/store.svelte';
+	import { eventEmitter, gameFrame, gameState } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
@@ -16,15 +16,25 @@
 			return;
 		}
 		if (!dataItem) return;
-		switch (dataItem.data.visibility.key) {
-			case VisibilityOption.Always:
+		const options = dataItem.data.visibility.selectedOption;
+		switch (true) {
+			case options[VisibilityOption.Always]:
 				visible = true;
 				return;
-			case VisibilityOption.Running:
+			case options[VisibilityOption.GameRunning]:
 				visible = $gameState === InGameState.Running;
 				return;
-			case VisibilityOption.Paused:
+			case options[VisibilityOption.GamePaused]:
 				visible = $gameState === InGameState.Paused;
+				return;
+			case options[VisibilityOption.GameReady]:
+				visible = $gameFrame.frame <= -36;
+				return;
+			case options[VisibilityOption.GameGo]:
+				visible = $gameFrame.frame <= 0;
+				return;
+			case options[VisibilityOption.GameCountdown]:
+				visible = false; // TODO: Finish this
 				return;
 		}
 	};

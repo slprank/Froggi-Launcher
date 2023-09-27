@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { VisibilityOption } from '$lib/models/enum';
+	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
 	import VisibilityCategorySelect from './visibilityCategories/VisibilityCategorySelect.svelte';
 
-	export let selectedVisibilityOption: VisibilityOption;
+	export let selectedVisibilityOptions: SelectedVisibilityOption;
 	let open: boolean = false;
+
+	$: console.log('selected', selectedVisibilityOptions);
 </script>
 
 <div class="grid grid-flow-col gap-2 items-center">
@@ -21,6 +23,6 @@
 		class="w-full h-full bg-cover bg-center p-16"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
-		<VisibilityCategorySelect bind:selectedVisibilityOption bind:open />
+		<VisibilityCategorySelect bind:selectedVisibilityOptions bind:open />
 	</div>
 </Modal>
