@@ -10,7 +10,7 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
-	$: playerPostFrame = $gameFrame.players[player?.playerIndex ?? 0]?.post;
+	$: playerPostFrame = $gameFrame?.players[player?.playerIndex ?? 0]?.post;
 	$: characterId = playerPostFrame
 		? playerPostFrame.internalCharacterId
 		: preview

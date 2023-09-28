@@ -24,12 +24,12 @@
 			case options[VisibilityOption.GamePaused]:
 				if ($gameState === InGameState.Paused) return true;
 			case options[VisibilityOption.GameReady]:
-				if ($gameFrame.frame <= -36) return true;
+				if (($gameFrame?.frame ?? 0) <= -36) return true;
 			case options[VisibilityOption.GameGo]:
-				if ($gameFrame.frame >= -36 && $gameFrame.frame <= 0) return true;
+				if (($gameFrame?.frame ?? 0) >= -36 && ($gameFrame?.frame ?? 0) < 0) return true;
 			case options[VisibilityOption.GameCountdown]:
 				const seconds =
-					($gameSettings?.startingTimerSeconds ?? 480) - $gameFrame.frame / 60;
+					($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60;
 				if (seconds > 0 && seconds < 6) return true;
 			case options[VisibilityOption.GameEnd]:
 				if ($gameState === InGameState.Inactive) return true;
@@ -52,6 +52,8 @@
 			});
 		});
 	});
+
+	$: console.log('visible', visible);
 </script>
 
 {#if edit}

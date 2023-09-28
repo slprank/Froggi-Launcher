@@ -14,7 +14,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.CustomBox}
 	<div
-		class={`w-full h-full ${style.classValue} absolute`}
+		class={`w-full h-full ${style.classValue}`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
@@ -22,7 +22,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.CustomImage}
 	<div
-		class={`w-full h-full ${style.classValue} absolute`}
+		class={`w-full h-full ${style.classValue}`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}

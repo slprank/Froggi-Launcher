@@ -40,7 +40,7 @@
 	export const currentPlayer = writable<CurrentPlayer>();
 	export const currentPlayers = writable<Player[]>();
 	export const dolphinState = writable<DolphinConnectionState>();
-	export const gameFrame = writable<FrameEntryType>();
+	export const gameFrame = writable<FrameEntryType | null>();
 	export const gameScore = writable<number[]>([0, 0]);
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const gameSettings = writable<GameStartType>();

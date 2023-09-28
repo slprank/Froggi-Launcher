@@ -57,7 +57,7 @@
 			console.log({ state });
 			dolphinState.set(state);
 		});
-		_eventEmitter.on('game_frame', (frame: FrameEntryType) => {
+		_eventEmitter.on('game_frame', (frame: FrameEntryType | null) => {
 			console.log('frame', frame);
 			gameFrame.set(frame);
 		});

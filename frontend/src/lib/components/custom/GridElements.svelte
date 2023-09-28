@@ -92,7 +92,7 @@
 		{#if div}
 			{#key dataItem}
 				{#key fontTrigger}
-					<div class="w-full h-full relative">
+					<div class="w-full h-full">
 						<Custom {dataItem} {style} />
 
 						<InGame {dataItem} {defaultPreview} {style} />
