@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { VisibilityOption, InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
-	import { eventEmitter, gameFrame, gameState } from '$lib/utils/store.svelte';
+	import { eventEmitter, gameFrame, gameSettings, gameState } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
@@ -28,7 +28,8 @@
 			case options[VisibilityOption.GameGo]:
 				if ($gameFrame.frame >= -36 && $gameFrame.frame <= 0) return true;
 			case options[VisibilityOption.GameCountdown]:
-				return true; // TODO: Figure out
+				if (($gameSettings?.startingTimerSeconds ?? 480) - $gameFrame.frame / 60 < 6)
+					return true;
 			case options[VisibilityOption.GameEnd]:
 				if ($gameState === InGameState.Inactive) return true;
 			default:
@@ -37,7 +38,7 @@
 		return false;
 	};
 	$: {
-		$gameState, (visible = updateVisibilityValue());
+		$gameState, $gameFrame, (visible = updateVisibilityValue());
 	}
 
 	onMount(() => {

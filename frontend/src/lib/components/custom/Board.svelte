@@ -19,7 +19,7 @@
 			curStatsScene = $statsScene;
 			return;
 		} else {
-			curStatsScene = curOverlay?.activeScenes?.includes($statsScene)
+			curStatsScene = curOverlay?.activeScenes[$statsScene]
 				? $statsScene
 				: curOverlay?.defaultScene ?? LiveStatsScene.Menu;
 		}
