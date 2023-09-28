@@ -114,6 +114,7 @@ export enum VisibilityOption {
 	GameReady = "Ready",
 	GameGo = "Go",
 	GameCountdown = "Countdown",
+	GameEnd = "End",
 }
 
 export enum InGameState {

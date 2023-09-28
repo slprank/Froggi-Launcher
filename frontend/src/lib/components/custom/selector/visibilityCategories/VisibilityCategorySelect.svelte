@@ -4,12 +4,13 @@
 	import { fly } from 'svelte/transition';
 	import GameStateVisibilitySelect from './GameStateVisibilitySelect.svelte';
 	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
+	import SelectOption from '../SelectOption.svelte';
 
 	export let selectedVisibilityOptions: SelectedVisibilityOption;
 	export let open: boolean;
 
-	function select(event: CustomEvent<SelectedVisibilityOption>) {
-		selectedVisibilityOptions = event.detail;
+	function select(event: CustomEvent<VisibilityOption>) {
+		selectedVisibilityOptions[event.detail] = !selectedVisibilityOptions[event.detail];
 	}
 
 	const handleUpdate = () => {
@@ -24,8 +25,6 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 	];
-
-	$: console.log($statsScene);
 </script>
 
 <div class="w-full h-full flex flex-col gap-2">
@@ -54,7 +53,17 @@
 			class="overflow-scroll"
 		>
 			{#if selectedCategory === VisibilityCategory.GameState}
-				<GameStateVisibilitySelect on:select={select} {selectedVisibilityOptions} />
+				<div class="flex flex-col gap-2">
+					<SelectOption
+						description="Always Visible"
+						value={VisibilityOption.Always}
+						bind:selected={selectedVisibilityOptions[VisibilityOption.Always]}
+						on:select={select}
+					>
+						Always Visible
+					</SelectOption>
+					<GameStateVisibilitySelect on:select={select} {selectedVisibilityOptions} />
+				</div>
 			{/if}
 		</div>
 	{/key}

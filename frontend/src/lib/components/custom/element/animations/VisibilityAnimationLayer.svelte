@@ -10,37 +10,38 @@
 	export let edit: boolean = false;
 
 	let visible = true;
-	const updateVisibilityValue = () => {
-		if (edit || preview) {
-			visible = true;
-			return;
-		}
-		if (!dataItem) return;
+	const updateVisibilityValue = (): boolean => {
+		if (edit || preview) return true;
+		if (!dataItem) return false;
+
 		const options = dataItem.data.visibility.selectedOption;
+
 		switch (true) {
 			case options[VisibilityOption.Always]:
-				visible = true;
-				return;
+				return true;
 			case options[VisibilityOption.GameRunning]:
-				visible = $gameState === InGameState.Running;
-				return;
+				if ($gameState === InGameState.Running) return true;
 			case options[VisibilityOption.GamePaused]:
-				visible = $gameState === InGameState.Paused;
-				return;
+				if ($gameState === InGameState.Paused) return true;
 			case options[VisibilityOption.GameReady]:
-				visible = $gameFrame.frame <= -36;
-				return;
+				if ($gameFrame.frame <= -36) return true;
 			case options[VisibilityOption.GameGo]:
-				visible = $gameFrame.frame <= 0;
-				return;
+				if ($gameFrame.frame >= -36 && $gameFrame.frame <= 0) return true;
 			case options[VisibilityOption.GameCountdown]:
-				visible = false; // TODO: Finish this
-				return;
+				return true; // TODO: Figure out
+			case options[VisibilityOption.GameEnd]:
+				if ($gameState === InGameState.Inactive) return true;
+			default:
+				visible = false;
 		}
+		return false;
 	};
-	$: $gameState, updateVisibilityValue();
+	$: {
+		$gameState, (visible = updateVisibilityValue());
+	}
 
 	onMount(() => {
+		if (!edit && !preview) return;
 		$eventEmitter.on('animation_test_visibility', () => {
 			const tempVisible = visible;
 			visible = !visible;

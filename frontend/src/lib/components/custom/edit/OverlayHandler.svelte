@@ -62,12 +62,12 @@
 	export function getNewOverlay(): Overlay {
 		return {
 			activeScenes: {
-				[LiveStatsScene.WaitingForDolphin]: false,
-				[LiveStatsScene.Menu]: false,
-				[LiveStatsScene.InGame]: false,
-				[LiveStatsScene.PostGame]: false,
+				[LiveStatsScene.WaitingForDolphin]: true,
+				[LiveStatsScene.Menu]: true,
+				[LiveStatsScene.InGame]: true,
+				[LiveStatsScene.PostGame]: true,
 				[LiveStatsScene.PostSet]: false,
-				[LiveStatsScene.RankChange]: false,
+				[LiveStatsScene.RankChange]: true,
 			},
 			id: newId(),
 			title: 'New Title',
