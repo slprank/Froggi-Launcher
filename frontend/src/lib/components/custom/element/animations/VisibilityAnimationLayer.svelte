@@ -28,8 +28,9 @@
 			case options[VisibilityOption.GameGo]:
 				if ($gameFrame.frame >= -36 && $gameFrame.frame <= 0) return true;
 			case options[VisibilityOption.GameCountdown]:
-				if (($gameSettings?.startingTimerSeconds ?? 480) - $gameFrame.frame / 60 < 6)
-					return true;
+				const seconds =
+					($gameSettings?.startingTimerSeconds ?? 480) - $gameFrame.frame / 60;
+				if (seconds > 0 && seconds < 6) return true;
 			case options[VisibilityOption.GameEnd]:
 				if ($gameState === InGameState.Inactive) return true;
 			default:

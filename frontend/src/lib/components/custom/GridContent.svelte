@@ -79,7 +79,7 @@
 <svelte:window />
 
 {#if dataItem}
-	<div class="h-full w-full relative" bind:this={div}>
+	<div class="h-full w-full" bind:this={div}>
 		{#if div}
 			<div
 				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
@@ -96,7 +96,7 @@
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
 				{:else}
-					<div class="w-full h-full relative" in:animateIn out:animateOut>
+					<div class="w-full h-full" in:animateIn out:animateOut>
 						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(

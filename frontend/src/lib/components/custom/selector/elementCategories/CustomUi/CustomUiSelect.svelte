@@ -12,31 +12,45 @@
 
 <div class="flex flex-col gap-2">
 	<SelectOption
-		description="Player 2 Stock Icon"
-		value={CustomElement.InGamePlayer2CharacterIcon}
+		description="In Game Timer Minutes - 08:"
+		value={CustomElement.InGameTimerMinutes}
 		on:select={select}
 	>
-		Player 2 Stock Icon
+		Timer Minutes
 	</SelectOption>
 	<SelectOption
-		description="Player 2 Render"
-		value={CustomElement.InGamePlayer2CharacterRender}
+		description="In Game Timer Seconds - :00."
+		value={CustomElement.InGameTimerSeconds}
 		on:select={select}
 	>
-		Player 2 Render
+		Timer Seconds
 	</SelectOption>
 	<SelectOption
-		description="Player 2 Live In-Game Percent - 24%"
-		value={CustomElement.InGamePlayer2Percent}
+		description="In Game Timer Milliseconds 3 Decimals - .000"
+		value={CustomElement.InGameTimerMilliseconds3}
 		on:select={select}
 	>
-		Player 2 Percent
+		Timer Milliseconds 3
 	</SelectOption>
 	<SelectOption
-		description="Player 2 Live In-Game Percent With Decimals - 24.6%"
-		value={CustomElement.InGamePlayer2PercentDecimal}
+		description="In Game Timer Milliseconds 2 Decimals - .00"
+		value={CustomElement.InGameTimerMilliseconds2}
 		on:select={select}
 	>
-		Player 2 Percent Decimal
+		Timer Milliseconds 2
+	</SelectOption>
+	<SelectOption
+		description="In Game Timer Milliseconds 1 Decimal - .0"
+		value={CustomElement.InGameTimerMilliseconds1}
+		on:select={select}
+	>
+		Timer Milliseconds 1
+	</SelectOption>
+	<SelectOption
+		description="In Game Time Second Count Down - 480 - 0"
+		value={CustomElement.InGameTimerSecondsCountdown}
+		on:select={select}
+	>
+		Timer Countdown
 	</SelectOption>
 </div>

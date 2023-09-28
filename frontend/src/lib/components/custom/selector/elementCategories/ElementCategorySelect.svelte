@@ -37,6 +37,10 @@
 			visible: true,
 		},
 		{
+			category: ElementCategory.GameCustomUi,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
 			category: ElementCategory.Player1CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
@@ -159,7 +163,7 @@
 			{#if selectedCategory === ElementCategory.Custom}
 				<CustomElementSelect on:select={select} />
 			{/if}
-			{#if selectedCategory === ElementCategory.CustomUi}
+			{#if selectedCategory === ElementCategory.GameCustomUi}
 				<CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1CustomUi}

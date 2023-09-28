@@ -6,6 +6,7 @@
 	import Custom from './elementRender/Custom.svelte';
 	import InGame from './elementRender/InGame.svelte';
 	import PostGame from './elementRender/PostGame.svelte';
+	import Session from './elementRender/Session.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
@@ -91,16 +92,20 @@
 		{#if div}
 			{#key dataItem}
 				{#key fontTrigger}
-					<Custom {dataItem} {style} />
+					<div class="w-full h-full relative">
+						<Custom {dataItem} {style} />
 
-					<InGame {dataItem} {defaultPreview} {style} />
+						<InGame {dataItem} {defaultPreview} {style} />
 
-					<PostGame {dataItem} {defaultPreview} {style} />
+						<PostGame {dataItem} {defaultPreview} {style} />
 
-					<SlippiRank {dataItem} {defaultPreview} {style} />
+						<SlippiRank {dataItem} {defaultPreview} {style} />
 
-					<!-- Post Game Stats -->
-					<!-- Post Set Stats -->
+						<Session {dataItem} {defaultPreview} {style} />
+
+						<!-- Post Game Stats -->
+						<!-- Post Set Stats -->
+					</div>
 				{/key}
 			{/key}
 		{/if}

@@ -42,7 +42,7 @@
 	export const dolphinState = writable<DolphinConnectionState>();
 	export const gameFrame = writable<FrameEntryType>();
 	export const gameScore = writable<number[]>([0, 0]);
-	export const gameState = writable<InGameState>(InGameState.None);
+	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const gameSettings = writable<GameStartType>();
 	export const postGame = writable<GameStats>();
 	export const recentRankedSets = writable<any[]>();

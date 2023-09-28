@@ -76,8 +76,14 @@ export enum CustomElement {
     SlippiRankPlayer2Character3Percent = 4135,
 
     // In Game
-    InGamePlayer1Score = 4200,
-    InGamePlayer2Score = 4201,
+    InGameTimerMinutes = 4200,
+    InGameTimerSeconds = 4201,
+    InGameTimerMilliseconds3 = 4202,
+    InGameTimerMilliseconds2 = 4203,
+    InGameTimerMilliseconds1 = 4204,
+    InGameTimerSecondsCountdown = 4205,
+    InGamePlayer1Score = 4206,
+    InGamePlayer2Score = 4207,
 
     // Post Game
     PostGameCurrentPlayerAttackCountBair = 4400,
@@ -353,8 +359,8 @@ export enum CustomElement {
 
     // In Game
     InGameStage = 6200,
-    InGamePlayer1CharacterIcon = 6202,
-    InGamePlayer2CharacterIcon = 6203,
+    InGamePlayer1CharacterIcon = 6201,
+    InGamePlayer2CharacterIcon = 6202,
 
     // Post Game
     PostGameStage = 6300,

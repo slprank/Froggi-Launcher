@@ -75,7 +75,7 @@ export enum Easing {
 }
 
 export enum ElementCategory {
-	CustomUi = "Custom UI",
+	GameCustomUi = "Custom UI",
 	Player1CustomUi = "Player1 Custom UI",
 	Player2CustomUi = "Player2 Custom UI",
 	CurrentPlayerPostGameAttackCount = "Current Player Attack Count",

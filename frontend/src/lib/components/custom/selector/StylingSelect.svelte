@@ -147,7 +147,12 @@
 				</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-36">
-						<NumberInput bind:value={payload.stroke.size} min={0} max={5} step={0.1} />
+						<NumberInput
+							bind:value={payload.stroke.size}
+							min={0}
+							max={100}
+							step={0.1}
+						/>
 					</div>
 				</div>
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
