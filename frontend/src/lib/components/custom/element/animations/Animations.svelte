@@ -14,6 +14,7 @@
 	import { Animation, Easing } from '$lib/models/enum';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
+	import type { AnimationConfig } from 'svelte/animate';
 
 	const animationFlyRandom = (
 		node: any,
@@ -70,7 +71,11 @@
 			easing: getEasing(option.easing),
 		});
 	};
-	const animationScale = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
+	const animationScale = (
+		node: any,
+		option: AnimationOptions | any,
+		additionalDelay = 0,
+	): AnimationConfig => {
 		// TODO: Optional start value
 		return {
 			delay: option.delay + additionalDelay,
@@ -81,7 +86,11 @@
 			},
 		};
 	};
-	const animationSlide = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
+	const animationSlide = (
+		node: any,
+		option: AnimationOptions | any,
+		additionalDelay = 0,
+	): AnimationConfig => {
 		// TODO: Optional start value
 		return slide(node, {
 			delay: option.delay + additionalDelay,
@@ -90,7 +99,7 @@
 		});
 	};
 
-	const emptyAnimation = (node: any, delay: number) => {
+	const emptyAnimation = (node: any, delay: number): AnimationConfig => {
 		// TODO: Optional start value
 		return fly(node, { delay: delay, duration: 0 });
 	};
@@ -124,7 +133,7 @@
 		windowHeight: number,
 		windowWidth: number,
 		additionalDelay: number = 0,
-	) => {
+	): AnimationConfig => {
 		console.log('animation type', animation?.type);
 		switch (animation?.type) {
 			case Animation.Blur:

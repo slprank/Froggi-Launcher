@@ -2,7 +2,7 @@
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import { Animation } from '$lib/models/enum';
 	import type { GridContentItem, Scene } from '$lib/models/types';
-	import { fly } from 'svelte/transition';
+	import { fly, type TransitionConfig } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';
 	import { createAnimation } from './element/animations/Animations.svelte';
@@ -23,8 +23,8 @@
 	}
 	$: demoItem, updateDemoData();
 
-	const flyAutomatic = (node: any, delay: number = 0, duration: number) => {
-		if (!dataItem) return;
+	const flyAutomatic = (node: any, delay: number = 0, duration: number): TransitionConfig => {
+		if (!dataItem) return fly(node, { duration: 0 });
 		const y = getRelativePixelSize(
 			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
 			innerWidth,
@@ -38,8 +38,8 @@
 		return fly(node, { duration: duration, x: x, y: y, delay: delay });
 	};
 
-	const animateIn = (node: Element) => {
-		if (edit || !dataItem || !curScene) return;
+	const animateIn = (node: Element): TransitionConfig => {
+		if (edit || !dataItem || !curScene) return fly(node, { duration: 0 });
 		const delay =
 			dataItem[COL]?.y +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
@@ -55,8 +55,8 @@
 		);
 	};
 
-	const animateOut = (node: Element) => {
-		if (edit || !curScene) return;
+	const animateOut = (node: Element): TransitionConfig => {
+		if (edit || !curScene) return fly(node, { duration: 0 });
 		if (curScene.animation.out.type === Animation.FlyAutomatic)
 			return flyAutomatic(node, 0, curScene.animation.out.options.duration);
 		return createAnimation(
@@ -85,7 +85,7 @@
 				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
 				class={`h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 					selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
-				} bg-opacity-50`}
+				} bg-opacity-50 relative`}
 			>
 				{#if edit}
 					<GridElements {dataItem} {edit} />
@@ -96,7 +96,11 @@
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
 				{:else}
-					<div class="w-full h-full" in:animateIn out:animateOut>
+					<div
+						class="w-full h-full absolute top-0 left-0"
+						in:animateIn|local
+						out:animateOut|local
+					>
 						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(
