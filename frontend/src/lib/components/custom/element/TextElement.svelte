@@ -8,7 +8,7 @@
 
 {#key dataItem}
 	<TextFitMulti
-		class={`h-full flex ${style.classValue} `}
+		class={`h-full w-full flex ${style.classValue} `}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
 		};`}

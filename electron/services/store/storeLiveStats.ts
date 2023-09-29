@@ -35,7 +35,7 @@ export class ElectronLiveStatsStore {
         return this.store.get('stats.game.frame') as FrameEntryType
     }
 
-    setGameFrame(frameEntry: FrameEntryType | undefined) {
+    setGameFrame(frameEntry: FrameEntryType | undefined | null) {
         if (!frameEntry) return;
         this.store.set('stats.game.frame', frameEntry)
     }

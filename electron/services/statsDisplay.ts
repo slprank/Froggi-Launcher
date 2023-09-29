@@ -88,6 +88,7 @@ export class StatsDisplay {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame)
 		this.storePlayers.setCurrentPlayers(currentPlayers);
 		this.storeLiveStats.setGameSettings(settings);
+		this.storeLiveStats.setGameFrame(null)
 
 		if (gameNumber !== 1) return;
 		this.storeGames.setGameScore([0, 0]);
@@ -113,7 +114,6 @@ export class StatsDisplay {
 		this.storeGames.setGameMatch(gameStats)
 		if (gameStats?.lastFrame) this.storeLiveStats.setGameFrame(gameStats.lastFrame)
 		if (gameStats) this.messageHandler.sendMessage('post_game_stats', gameStats);
-		this.messageHandler.sendMessage('game_frame', null);
 		// TODO: Post set - If post set
 	}
 

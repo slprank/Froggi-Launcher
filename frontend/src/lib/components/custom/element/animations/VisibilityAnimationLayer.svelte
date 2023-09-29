@@ -35,7 +35,7 @@
 		if (options[VisibilityOption.GameCountdown]) {
 			const seconds =
 				($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60;
-			if (seconds > 0 && seconds < 6) visible = true;
+			if (seconds > 0 && seconds < 5) visible = true;
 		}
 
 		if (options[VisibilityOption.GameEnd])

@@ -26,15 +26,20 @@
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
+		bind:this={div}
 	>
-		<img
-			class="h-full aspect-video"
-			style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
-				div?.clientHeight
-			}px;
+		{#if div}
+			<img
+				class="h-full aspect-video"
+				style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
+					div?.clientHeight
+				}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${CHARACTERS_INTERNAL_EXTERNAL[characterId ?? -1]}.png`}
-			alt="custom"
-		/>
+				src={`/image/character-renders/${
+					CHARACTERS_INTERNAL_EXTERNAL[characterId ?? -1]
+				}.png`}
+				alt="custom"
+			/>
+		{/if}
 	</div>
 {/if}

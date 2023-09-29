@@ -85,7 +85,7 @@
 				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
 				class={`h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 					selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
-				} bg-opacity-50 relative overflow-hidden`}
+				} bg-opacity-50`}
 			>
 				{#if edit}
 					<GridElements {dataItem} {edit} />
@@ -96,7 +96,7 @@
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
 				{:else}
-					<div class="w-full h-full" in:animateIn|local out:animateOut|local>
+					<div class="w-full h-full" in:animateIn out:animateOut>
 						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(

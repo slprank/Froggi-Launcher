@@ -22,7 +22,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2Score}
 	<TextElement {style} {dataItem}>
-		{$gameScore?.at(0) ?? '0'}
+		{$gameScore?.at(1) ?? '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterIcon}
@@ -30,16 +30,16 @@
 		{dataItem}
 		{style}
 		preview={defaultPreview}
-		player={$currentPlayers.at(0)}
-		defaultPreviewId={Number(CHARACTERS['fox'])}
+		player={$currentPlayers.at(1)}
+		defaultPreviewId={Number(CHARACTERS['falco'])}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterRender}
 	<InGameCharacterRender
 		{dataItem}
 		{style}
-		player={$currentPlayers.at(0)}
+		player={$currentPlayers.at(1)}
 		preview={defaultPreview}
-		defaultPreviewId={2}
+		defaultPreviewId={Number(CHARACTERS['falco'])}
 	/>
 {/if}

@@ -77,7 +77,7 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? '480'
-			: Math.floor(
+			: Math.ceil(
 					getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame),
 			  ).toFixed(0)}
 	</TextElement>

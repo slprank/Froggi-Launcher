@@ -30,7 +30,6 @@
 
 	onMount(() => {
 		$eventEmitter.on('animation_test_trigger', () => {
-			if (!edit) return;
 			const tempKey = key;
 			key = Math.random();
 			setTimeout(() => {

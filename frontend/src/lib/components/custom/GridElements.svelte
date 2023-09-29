@@ -80,7 +80,7 @@
 
 {#await updateFont() then}
 	<div
-		class="w-full h-full"
+		class="w-full h-full hide-siblings"
 		style={`${
 			dataItem.data?.font?.family !== undefined &&
 			`font-family: ${dataItem.data?.font?.family};
@@ -111,3 +111,9 @@
 		{/if}
 	</div>
 {/await}
+
+<style>
+	.hide-siblings :not(:first-child) {
+		display: none;
+	}
+</style>

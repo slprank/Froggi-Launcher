@@ -39,6 +39,6 @@
 		{style}
 		player={$currentPlayers.at(0)}
 		preview={defaultPreview}
-		defaultPreviewId={2}
+		defaultPreviewId={Number(CHARACTERS['fox'])}
 	/>
 {/if}
