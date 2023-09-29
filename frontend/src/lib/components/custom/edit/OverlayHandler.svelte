@@ -14,7 +14,10 @@
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';
-	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
+	import {
+		VisibilityToggle,
+		type SelectedVisibilityOption,
+	} from '$lib/models/types/animationOption';
 
 	export function newId() {
 		return `c${Math.random().toString(36).slice(-8)}`;
@@ -183,7 +186,7 @@
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
 				selectedOption: {
-					[VisibilityOption.Always]: true,
+					[VisibilityOption.Always]: VisibilityToggle.True,
 				} as SelectedVisibilityOption,
 			},
 			shadow: {

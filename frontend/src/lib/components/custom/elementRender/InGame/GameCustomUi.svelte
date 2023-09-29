@@ -12,7 +12,8 @@
 		startingTimer: number | null | undefined,
 		frame: number | undefined,
 	): number => {
-		if (!startingTimer || !frame || frame <= 0) return 480;
+		if (!startingTimer) return 480;
+		if (!frame || frame <= 0) return startingTimer;
 		return startingTimer - frame / 60;
 	};
 

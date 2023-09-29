@@ -5,12 +5,25 @@
 	import GameStateVisibilitySelect from './GameStateVisibilitySelect.svelte';
 	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
 	import SelectOption from '../SelectOption.svelte';
+	import { VisibilityToggle } from '$lib/models/types/animationOption';
 
 	export let selectedVisibilityOptions: SelectedVisibilityOption;
 	export let open: boolean;
 
 	function select(event: CustomEvent<VisibilityOption>) {
-		selectedVisibilityOptions[event.detail] = !selectedVisibilityOptions[event.detail];
+		switch (selectedVisibilityOptions[event.detail]) {
+			case VisibilityToggle.Disabled:
+				selectedVisibilityOptions[event.detail] = VisibilityToggle.True;
+				return;
+			case VisibilityToggle.True:
+				selectedVisibilityOptions[event.detail] = VisibilityToggle.False;
+				return;
+			case VisibilityToggle.False:
+				selectedVisibilityOptions[event.detail] = VisibilityToggle.Disabled;
+				return;
+			default:
+				selectedVisibilityOptions[event.detail] = VisibilityToggle.Disabled;
+		}
 	}
 
 	const handleUpdate = () => {

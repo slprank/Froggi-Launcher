@@ -75,7 +75,6 @@ export class StatsDisplay {
 
 	async handleGamePaused(frameEntry: FrameEntryType | null) {
 		if (!frameEntry) return;
-		if (this.storeLiveStats.getGameState() === InGameState.Inactive) return
 		this.storeLiveStats.setGameFrame(frameEntry)
 		this.storeLiveStats.setGameState(InGameState.Paused)
 	}
