@@ -53,10 +53,13 @@
 	let innerWidth = 0;
 	$: rowHeight = innerHeight / ROW;
 	$: curScene = curOverlay[curStatsScene];
+	let font: string;
 
 	const updateFont = async () => {
 		if (!curScene) return;
 		await addFont(curScene.font?.base64);
+		console.log('font', curScene.font.family);
+		setTimeout(() => (font = curScene.font.family ?? 'sans-serif'), SCENE_TRANSITION_DELAY);
 	};
 	$: curScene, updateFont();
 
@@ -69,10 +72,7 @@
 
 {#if curScene && rowHeight && fixedLayers}
 	{#await updateFont() then}
-		<div
-			class="w-full h-full overflow-hidden relative"
-			style={`font-family: ${curScene?.font?.family};`}
-		>
+		<div class="w-full h-full overflow-hidden relative" style={`font-family: ${font};`}>
 			{#key curScene && curStatsScene}
 				<BoardContainer
 					scene={curScene}

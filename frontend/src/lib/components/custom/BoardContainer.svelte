@@ -3,7 +3,9 @@
 	import { SceneBackground } from '$lib/models/enum';
 	import type { Scene } from '$lib/models/types';
 	import { gameSettings, postGame } from '$lib/utils/store.svelte';
+	import type { AnimationConfig } from 'svelte/animate';
 	import { createAnimation } from './element/animations/Animations.svelte';
+	import { fly } from 'svelte/transition';
 
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;
@@ -14,8 +16,8 @@
 	let innerHeight: number;
 	let innerWidth: number;
 
-	const animateIn = (node: Element) => {
-		if (preview || edit || !scene) return;
+	const animateIn = (node: Element): AnimationConfig => {
+		if (preview || edit || !scene) return fly(node, { duration: 0 });
 		return createAnimation(
 			node,
 			scene.background.animation.in,
@@ -24,8 +26,9 @@
 			SCENE_TRANSITION_DELAY,
 		);
 	};
-	const animateOut = (node: Element) => {
-		if (preview || edit || !scene) return;
+	const animateOut = (node: Element): AnimationConfig => {
+		console.log('scene', scene);
+		if (preview || edit || !scene) return fly(node, { duration: 0 });
 		return createAnimation(
 			node,
 			scene.background.animation.out,
@@ -40,8 +43,8 @@
 <svelte:window bind:innerHeight bind:innerWidth />
 
 <div
-	in:animateIn
-	out:animateOut
+	in:animateIn|local
+	out:animateOut|local
 	class={`w-full h-full bg-center absolute z-0`}
 	style={`
 				${scene?.background.type === SceneBackground.Color ? `background: ${scene.background.color};` : ''};

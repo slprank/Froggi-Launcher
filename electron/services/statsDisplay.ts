@@ -13,6 +13,7 @@ import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
 import { getWinnerIndex } from '../utils/gamePredicates';
+import { SCENE_TRANSITION_DELAY } from '../../frontend/src/lib/models/const';
 
 @singleton()
 export class StatsDisplay {
@@ -66,6 +67,7 @@ export class StatsDisplay {
 
 	async handleGameFrame(frameEntry: FrameEntryType) {
 		if (frameEntry.frame < 0) return
+		if (this.storeLiveStats.getGameState() === InGameState.Inactive) return;
 		this.resetPauseInterval()
 		await this.messageHandler.sendMessage('game_frame', frameEntry);
 		this.storeLiveStats.setGameState(InGameState.Running)
@@ -88,7 +90,6 @@ export class StatsDisplay {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame)
 		this.storePlayers.setCurrentPlayers(currentPlayers);
 		this.storeLiveStats.setGameSettings(settings);
-		this.storeLiveStats.setGameFrame(null)
 
 		if (gameNumber !== 1) return;
 		this.storeGames.setGameScore([0, 0]);
@@ -108,12 +109,12 @@ export class StatsDisplay {
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameStats)
-		this.storeLiveStats.setGameFrame(gameStats?.lastFrame)
 		this.storeLiveStats.setGameState(InGameState.Inactive)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
-		if (gameStats?.lastFrame) this.storeLiveStats.setGameFrame(gameStats.lastFrame)
 		if (gameStats) this.messageHandler.sendMessage('post_game_stats', gameStats);
+		this.storeLiveStats.setGameFrame(null)
+		setTimeout(() => this.messageHandler.sendMessage('game_frame', null), SCENE_TRANSITION_DELAY);
 		// TODO: Post set - If post set
 	}
 

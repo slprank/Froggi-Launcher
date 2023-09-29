@@ -2,18 +2,19 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { InGameState } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame, gameState } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	export let playerIndex: number;
+	export let player: Player | undefined;
 	export let numberOfDecimals: number;
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
 
-	$: frame = $gameFrame?.players[playerIndex]?.post;
+	$: frame = $gameFrame?.players[player?.playerIndex ?? -1]?.post;
 
 	$: framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
 

@@ -14,10 +14,22 @@
 </script>
 
 {#if dataItem?.elementId === CustomElement.InGamePlayer1Percent}
-	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={0} playerIndex={0} />
+	<PlayerPercent
+		{style}
+		{dataItem}
+		{defaultPreview}
+		numberOfDecimals={0}
+		player={$currentPlayers.at(0)}
+	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1PercentDecimal}
-	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={1} playerIndex={0} />
+	<PlayerPercent
+		{style}
+		{dataItem}
+		{defaultPreview}
+		numberOfDecimals={1}
+		player={$currentPlayers.at(0)}
+	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1Score}
 	<TextElement {style} {dataItem}>
