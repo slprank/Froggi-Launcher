@@ -61,7 +61,7 @@
 		<slot />
 	</div>
 {:else if visible}
-	<div class="w-full h-full" in:animationIn out:animationOut>
+	<div class="w-full h-full" in:animationIn|local out:animationOut|local>
 		<slot />
 	</div>
 {/if}

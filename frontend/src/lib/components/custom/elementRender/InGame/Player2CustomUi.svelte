@@ -16,7 +16,6 @@
 {#if dataItem?.elementId === CustomElement.InGamePlayer2Percent}
 	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={0} playerIndex={0} />
 {/if}
-
 {#if dataItem?.elementId === CustomElement.InGamePlayer2PercentDecimal}
 	<PlayerPercent {style} {dataItem} {defaultPreview} numberOfDecimals={1} playerIndex={0} />
 {/if}

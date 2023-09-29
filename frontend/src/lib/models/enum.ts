@@ -1,12 +1,12 @@
 export enum Animation {
-	None = 0,
-	Blur = 1,
-	Fade = 2,
-	Fly = 3,
-	FlyRandom = 4,
-	FlyAutomatic = 5,
-	Scale = 6,
-	Slide = 7,
+	None = "None",
+	Blur = "Blur",
+	Fade = "Fade",
+	Fly = "Fly",
+	FlyRandom = "Fly Random",
+	FlyAutomatic = "Fly Automatic",
+	Scale = "Scale",
+	Slide = "Slide",
 }
 
 export enum AnimationTrigger {
