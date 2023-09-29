@@ -85,22 +85,18 @@
 				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
 				class={`h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
 					selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
-				} bg-opacity-50 relative`}
+				} bg-opacity-50 relative overflow-hidden`}
 			>
 				{#if edit}
 					<GridElements {dataItem} {edit} />
 					<h1
-						class="top-0 left-0 absolute text-black text-lg"
+						class="text-black text-lg"
 						style={`filter: drop-shadow(1.2px 1.2px 0.8px white `}
 					>
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
 				{:else}
-					<div
-						class="w-full h-full absolute top-0 left-0"
-						in:animateIn|local
-						out:animateOut|local
-					>
+					<div class="w-full h-full" in:animateIn|local out:animateOut|local>
 						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(
@@ -115,6 +111,7 @@
 									dataItem?.data.visibility.out,
 									boardHeight,
 									boardWidth,
+									20,
 								)}
 							{dataItem}
 							{edit}

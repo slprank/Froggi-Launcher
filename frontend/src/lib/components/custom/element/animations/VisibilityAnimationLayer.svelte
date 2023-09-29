@@ -2,7 +2,7 @@
 	import { VisibilityOption, InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
 	import { eventEmitter, gameFrame, gameSettings, gameState } from '$lib/utils/store.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -61,13 +61,7 @@
 		<slot />
 	</div>
 {:else if visible}
-	<div class="w-full h-full relative">
-		<div
-			class="w-full h-full absolute top-0 left-0"
-			in:animationIn|local
-			out:animationOut|local
-		>
-			<slot />
-		</div>
+	<div class="w-full h-full" in:animationIn out:animationOut>
+		<slot />
 	</div>
 {/if}

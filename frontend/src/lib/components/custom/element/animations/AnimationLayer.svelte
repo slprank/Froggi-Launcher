@@ -30,6 +30,7 @@
 
 	onMount(() => {
 		$eventEmitter.on('animation_test_trigger', () => {
+			if (!edit) return;
 			const tempKey = key;
 			key = Math.random();
 			setTimeout(() => {
@@ -45,14 +46,12 @@
 	</div>
 {:else}
 	{#key key}
-		<div class="w-full h-full relative">
-			<div
-				class="w-full h-full absolute top-0 left-0"
-				in:animationIn|local
-				out:animationOut|local
-			>
-				<slot />
-			</div>
+		<div
+			class="w-full h-full absolute top-0 left-0"
+			in:animationIn|local
+			out:animationOut|local
+		>
+			<slot />
 		</div>
 	{/key}
 {/if}
