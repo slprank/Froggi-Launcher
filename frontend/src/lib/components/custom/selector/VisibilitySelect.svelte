@@ -9,8 +9,11 @@
 	let tempVisibilityOptions = selectedVisibilityOptions;
 	let open: boolean = false;
 
+	$: console.log('temp', tempVisibilityOptions);
+
 	const addNewOption = () => {
 		tempVisibilityOptions.push({} as SelectedVisibilityOption);
+		console.log('new', tempVisibilityOptions);
 	};
 
 	const dispatch = createEventDispatcher();
@@ -37,10 +40,7 @@
 	>
 		{#each tempVisibilityOptions as option, i (i)}
 			<div animate:flip={{ duration: 250 }}>
-				<VisibilityCategorySelect
-					bind:selectedVisibilityOption={option}
-					on:newOption={addNewOption}
-				/>
+				<VisibilityCategorySelect bind:selectedVisibilityOption={option} />
 			</div>
 		{/each}
 		<div class="w-48 flex items-end">
