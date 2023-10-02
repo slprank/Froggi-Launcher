@@ -97,7 +97,7 @@ export interface Animations {
 export interface VisibilityAnimations {
 	in: AnimationSettings
 	out: AnimationSettings
-	selectedOption: SelectedVisibilityOption // TODO: rename
+	selectedOptions: SelectedVisibilityOption[] // TODO: rename
 }
 
 export interface SceneAnimation extends Animations {

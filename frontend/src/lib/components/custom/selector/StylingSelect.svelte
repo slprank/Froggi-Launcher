@@ -17,6 +17,7 @@
 	import { getDefaultElementPayload } from '../edit/OverlayHandler.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import VisibilitySelect from './VisibilitySelect.svelte';
+	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
 
 	// TODO: Animation options and sliders
 
@@ -66,6 +67,10 @@
 	};
 	const shuffleAnimationVisibility = () => {
 		$eventEmitter.emit('animation_test_visibility');
+	};
+
+	const handleUpdate = (event: CustomEvent<SelectedVisibilityOption[]>) => {
+		payload.visibility.selectedOptions = event.detail;
 	};
 </script>
 
@@ -333,11 +338,12 @@
 			</Select>
 		</div>
 		{#if payload.animation.trigger !== AnimationTrigger.None}
-			<div class="w-full flex gap-4">
+			<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
 				<AnimationInput bind:animation={payload.animation.in} label="In" />
 				<AnimationInput bind:animation={payload.animation.out} label="Out" />
 			</div>
 			<button
+				in:fly={{ duration: 250, x: 100 }}
 				on:click={shuffleAnimationTriggers}
 				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
@@ -355,14 +361,18 @@
 			</h1>
 		</div>
 
-		<VisibilitySelect bind:selectedVisibilityOptions={payload.visibility.selectedOption} />
+		<VisibilitySelect
+			bind:selectedVisibilityOptions={payload.visibility.selectedOptions}
+			on:update={handleUpdate}
+		/>
 
-		{#if !payload.visibility.selectedOption[VisibilityOption.Always]}
-			<div class="w-full flex gap-4">
+		{#if payload.visibility.selectedOptions.length}
+			<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
 				<AnimationInput bind:animation={payload.visibility.in} label="In" />
 				<AnimationInput bind:animation={payload.visibility.out} label="Out" />
 			</div>
 			<button
+				in:fly={{ duration: 250, x: 100 }}
 				on:click={shuffleAnimationVisibility}
 				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"

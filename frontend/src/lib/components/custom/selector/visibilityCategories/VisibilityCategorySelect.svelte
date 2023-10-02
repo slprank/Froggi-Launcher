@@ -4,33 +4,27 @@
 	import { fly } from 'svelte/transition';
 	import GameStateVisibilitySelect from './GameStateVisibilitySelect.svelte';
 	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
-	import SelectOption from '../SelectOption.svelte';
 	import { VisibilityToggle } from '$lib/models/types/animationOption';
 
-	export let selectedVisibilityOptions: SelectedVisibilityOption;
-	export let open: boolean;
+	export let selectedVisibilityOption: SelectedVisibilityOption;
 
 	function select(event: CustomEvent<VisibilityOption>) {
-		switch (selectedVisibilityOptions[event.detail]) {
+		switch (selectedVisibilityOption[event.detail]) {
 			case VisibilityToggle.Disabled:
-				selectedVisibilityOptions[event.detail] = VisibilityToggle.True;
+				selectedVisibilityOption[event.detail] = VisibilityToggle.True;
 				return;
 			case VisibilityToggle.True:
-				selectedVisibilityOptions[event.detail] = VisibilityToggle.False;
+				selectedVisibilityOption[event.detail] = VisibilityToggle.False;
 				return;
 			case VisibilityToggle.False:
-				selectedVisibilityOptions[event.detail] = VisibilityToggle.Disabled;
+				selectedVisibilityOption[event.detail] = VisibilityToggle.Disabled;
 				return;
 			default:
-				selectedVisibilityOptions[event.detail] = VisibilityToggle.Disabled;
+				selectedVisibilityOption[event.detail] = VisibilityToggle.Disabled;
 		}
 	}
 
-	const handleUpdate = () => {
-		open = false;
-	};
-
-	let selectedCategory: VisibilityCategory;
+	let selectedCategory: VisibilityCategory = VisibilityCategory.GameState;
 
 	$: buttons = [
 		{
@@ -40,7 +34,7 @@
 	];
 </script>
 
-<div class="w-full h-full flex flex-col gap-2">
+<div class="w-full h-full flex flex-col gap-4">
 	<h1 class="text-gray-500 text-lg font-medium text-shadow">Category</h1>
 	<div class="w-lg 3xl:w-full flex flex-wrap gap-2">
 		{#each buttons.filter((b) => b.visible) as button}
@@ -67,25 +61,10 @@
 		>
 			{#if selectedCategory === VisibilityCategory.GameState}
 				<div class="flex flex-col gap-2">
-					<SelectOption
-						description="Always Visible"
-						value={VisibilityOption.Always}
-						bind:selected={selectedVisibilityOptions[VisibilityOption.Always]}
-						on:select={select}
-					>
-						Always Visible
-					</SelectOption>
-					<GameStateVisibilitySelect on:select={select} {selectedVisibilityOptions} />
+					<GameStateVisibilitySelect on:select={select} {selectedVisibilityOption} />
 				</div>
 			{/if}
 		</div>
+		<br />
 	{/key}
-	<div class="w-48 flex items-end">
-		<button
-			class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
-			on:click={handleUpdate}
-		>
-			Update
-		</button>
-	</div>
 </div>

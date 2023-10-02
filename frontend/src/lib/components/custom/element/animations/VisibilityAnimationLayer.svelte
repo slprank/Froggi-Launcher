@@ -16,47 +16,42 @@
 		if (edit || preview) return true;
 		if (!dataItem) return false;
 
-		const options = dataItem.data.visibility.selectedOption;
+		const options = dataItem.data.visibility.selectedOptions;
+		return options.every((option) => {
+			if (option[VisibilityOption.GameRunning] === VisibilityToggle.True)
+				if ($gameState === InGameState.Running) return true;
+			if (option[VisibilityOption.GameRunning] === VisibilityToggle.False)
+				if ($gameState !== InGameState.Running) return true;
 
-		let visible = false;
+			if (option[VisibilityOption.GamePaused] === VisibilityToggle.True)
+				if ($gameState === InGameState.Paused) return true;
+			if (option[VisibilityOption.GamePaused] === VisibilityToggle.False)
+				if ($gameState !== InGameState.Paused) return true;
 
-		if (options[VisibilityOption.Always] === VisibilityToggle.True) visible = true;
+			if (option[VisibilityOption.GameReady] === VisibilityToggle.True)
+				if (isGameReady($gameFrame)) return true;
+			if (option[VisibilityOption.GameReady] === VisibilityToggle.False)
+				if (!isGameReady($gameFrame)) return true;
 
-		if (options[VisibilityOption.GameRunning] === VisibilityToggle.True)
-			if ($gameState === InGameState.Running) visible = true;
-		if (options[VisibilityOption.GameRunning] === VisibilityToggle.False)
-			if ($gameState !== InGameState.Running) visible = true;
+			if (option[VisibilityOption.GameGo] === VisibilityToggle.True)
+				if (isGameGo($gameFrame)) return true;
+			if (option[VisibilityOption.GameGo] === VisibilityToggle.False)
+				if (!isGameGo($gameFrame)) return true;
 
-		if (options[VisibilityOption.GamePaused] === VisibilityToggle.True)
-			if ($gameState === InGameState.Paused) visible = true;
-		if (options[VisibilityOption.GamePaused] === VisibilityToggle.False)
-			if ($gameState !== InGameState.Paused) visible = true;
+			const seconds =
+				($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60;
+			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.True) {
+				if (isGameCountdown($gameState, seconds)) visible = true;
+			}
+			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.False) {
+				if (!isGameCountdown($gameState, seconds)) visible = true;
+			}
 
-		if (options[VisibilityOption.GameReady] === VisibilityToggle.True)
-			if (isGameReady($gameFrame)) visible = true;
-		if (options[VisibilityOption.GameReady] === VisibilityToggle.False)
-			if (!isGameReady($gameFrame)) visible = true;
-
-		if (options[VisibilityOption.GameGo] === VisibilityToggle.True)
-			if (isGameGo($gameFrame)) visible = true;
-		if (options[VisibilityOption.GameGo] === VisibilityToggle.False)
-			if (!isGameGo($gameFrame)) visible = true;
-
-		const seconds =
-			($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60;
-		if (options[VisibilityOption.GameCountdown] === VisibilityToggle.True) {
-			if (isGameCountdown($gameState, seconds)) visible = true;
-		}
-		if (options[VisibilityOption.GameCountdown] === VisibilityToggle.False) {
-			if (!isGameCountdown($gameState, seconds)) visible = true;
-		}
-
-		if (options[VisibilityOption.GameEnd] === VisibilityToggle.True)
-			if ($gameState === InGameState.Inactive) visible = true;
-		if (options[VisibilityOption.GameEnd] === VisibilityToggle.False)
-			if ($gameState !== InGameState.Inactive) visible = true;
-
-		return visible;
+			if (option[VisibilityOption.GameEnd] === VisibilityToggle.True)
+				if ($gameState === InGameState.Inactive) visible = true;
+			if (option[VisibilityOption.GameEnd] === VisibilityToggle.False)
+				if ($gameState !== InGameState.Inactive) visible = true;
+		});
 	};
 
 	const isGameReady = (gameFrame: FrameEntryType | null) => {

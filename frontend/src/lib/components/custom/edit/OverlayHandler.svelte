@@ -185,9 +185,7 @@
 			visibility: {
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
-				selectedOption: {
-					[VisibilityOption.Always]: VisibilityToggle.True,
-				} as SelectedVisibilityOption,
+				selectedOptions: [],
 			},
 			shadow: {
 				x: 0,

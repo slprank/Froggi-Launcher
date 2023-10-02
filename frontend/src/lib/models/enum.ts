@@ -107,8 +107,6 @@ export enum VisibilityCategory {
 }
 
 export enum VisibilityOption {
-	Always = "Always",
-
 	GameRunning = "Running",
 	GamePaused = "Paused",
 	GameReady = "Ready",

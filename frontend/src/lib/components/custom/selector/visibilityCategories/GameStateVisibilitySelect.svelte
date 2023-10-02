@@ -4,7 +4,7 @@
 	import { VisibilityOption } from '$lib/models/enum';
 	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
 
-	export let selectedVisibilityOptions: SelectedVisibilityOption;
+	export let selectedVisibilityOption: SelectedVisibilityOption;
 	const dispatch = createEventDispatcher();
 
 	function select(event: CustomEvent<VisibilityOption>) {
@@ -15,7 +15,7 @@
 <SelectOption
 	description="While Game Is Running"
 	value={VisibilityOption.GameRunning}
-	bind:selected={selectedVisibilityOptions[VisibilityOption.GameRunning]}
+	bind:selected={selectedVisibilityOption[VisibilityOption.GameRunning]}
 	on:select={select}
 >
 	Game Active
@@ -23,7 +23,7 @@
 <SelectOption
 	description="While Game Is Paused"
 	value={VisibilityOption.GamePaused}
-	bind:selected={selectedVisibilityOptions[VisibilityOption.GamePaused]}
+	bind:selected={selectedVisibilityOption[VisibilityOption.GamePaused]}
 	on:select={select}
 >
 	Game Paused
@@ -31,7 +31,7 @@
 <SelectOption
 	description="When 'Ready' Is Being Displayed Before Game Starts"
 	value={VisibilityOption.GameReady}
-	bind:selected={selectedVisibilityOptions[VisibilityOption.GameReady]}
+	bind:selected={selectedVisibilityOption[VisibilityOption.GameReady]}
 	on:select={select}
 >
 	Ready
@@ -39,7 +39,7 @@
 <SelectOption
 	description="When 'Go' Is Being Displayed Before Game Starts"
 	value={VisibilityOption.GameGo}
-	bind:selected={selectedVisibilityOptions[VisibilityOption.GameGo]}
+	bind:selected={selectedVisibilityOption[VisibilityOption.GameGo]}
 	on:select={select}
 >
 	Go
@@ -47,7 +47,7 @@
 <SelectOption
 	description="When The Timer Has 5 Seconds Remaining"
 	value={VisibilityOption.GameCountdown}
-	bind:selected={selectedVisibilityOptions[VisibilityOption.GameCountdown]}
+	bind:selected={selectedVisibilityOption[VisibilityOption.GameCountdown]}
 	on:select={select}
 >
 	Countdown
@@ -55,7 +55,7 @@
 <SelectOption
 	description="When Game Ends"
 	value={VisibilityOption.GameEnd}
-	bind:selected={selectedVisibilityOptions[VisibilityOption.GameEnd]}
+	bind:selected={selectedVisibilityOption[VisibilityOption.GameEnd]}
 	on:select={select}
 >
 	Game
