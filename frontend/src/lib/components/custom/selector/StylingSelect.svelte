@@ -53,16 +53,16 @@
 	$: selectedElementId, clearStyle();
 
 	const fixAnimationInputDelay = () => {
-		if (payload.animation.in.type === Animation.None) {
-			payload.animation.in.options.delay = 0;
-			payload.animation.in.options.duration = 0;
+		if (payload.animationTrigger.in.type === Animation.None) {
+			payload.animationTrigger.in.options.delay = 0;
+			payload.animationTrigger.in.options.duration = 0;
 		}
-		if (payload.animation.out.type === Animation.None) {
-			payload.animation.out.options.delay = 0;
-			payload.animation.out.options.duration = 0;
+		if (payload.animationTrigger.out.type === Animation.None) {
+			payload.animationTrigger.out.options.delay = 0;
+			payload.animationTrigger.out.options.duration = 0;
 		}
 	};
-	$: payload.animation, fixAnimationInputDelay();
+	$: payload.animationTrigger, fixAnimationInputDelay();
 
 	$: console.log('Selected id', selectedElementId);
 
@@ -323,13 +323,13 @@
 		</div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Trigger</h1>
 		<AnimationTriggerSelect
-			bind:selectedOption={payload.animation.trigger}
+			bind:selectedOption={payload.animationTrigger.selectedOptions}
 			on:update={handleUpdate}
 		/>
-		{#if payload.animation.trigger}
+		{#if payload.animationTrigger.selectedOptions}
 			<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
-				<AnimationInput bind:animation={payload.animation.in} label="In" />
-				<AnimationInput bind:animation={payload.animation.out} label="Out" />
+				<AnimationInput bind:animation={payload.animationTrigger.in} label="In" />
+				<AnimationInput bind:animation={payload.animationTrigger.out} label="Out" />
 			</div>
 			<button
 				in:fly={{ duration: 250, x: 100 }}
