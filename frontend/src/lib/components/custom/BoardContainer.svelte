@@ -43,8 +43,8 @@
 <svelte:window bind:innerHeight bind:innerWidth />
 
 <div
-	in:animateIn|local
-	out:animateOut|local
+	in:animateIn|global
+	out:animateOut|global
 	class={`w-full h-full bg-center absolute z-0`}
 	style={`
 				${scene?.background.type === SceneBackground.Color ? `background: ${scene.background.color};` : ''};
