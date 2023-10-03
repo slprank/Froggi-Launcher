@@ -60,3 +60,11 @@
 >
 	Game
 </SelectOption>
+<SelectOption
+	description="When Game Ends On Time"
+	value={VisibilityOption.GameTime}
+	bind:selected={selectedVisibilityOption[VisibilityOption.GameTime]}
+	on:select={select}
+>
+	Time
+</SelectOption>

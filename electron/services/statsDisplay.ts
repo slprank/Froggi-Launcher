@@ -1,4 +1,4 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType } from '@slippi/slippi-js';
+import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, GameEndMethod } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
@@ -100,6 +100,8 @@ export class StatsDisplay {
 	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
 		this.stopPauseInterval()
 		this.handleScore(gameEnd)
+		if (gameEnd.gameEndMethod === GameEndMethod.TIME) this.storeLiveStats.setGameState(InGameState.Time)
+		if (gameEnd.gameEndMethod === GameEndMethod.GAME) this.storeLiveStats.setGameState(InGameState.End)
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
@@ -108,7 +110,6 @@ export class StatsDisplay {
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameStats)
-		this.storeLiveStats.setGameState(InGameState.Inactive)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
 		if (gameStats) this.messageHandler.sendMessage('post-game-stats', gameStats);

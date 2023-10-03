@@ -107,18 +107,21 @@ export enum VisibilityCategory {
 }
 
 export enum VisibilityOption {
-	GameRunning = "Running",
-	GamePaused = "Paused",
-	GameReady = "Ready",
-	GameGo = "Go",
-	GameCountdown = "Countdown",
-	GameEnd = "End",
+	GameRunning = "GameRunning",
+	GamePaused = "GamePaused",
+	GameReady = "GameReady",
+	GameGo = "GameGo",
+	GameCountdown = "GameCountdown",
+	GameEnd = "GameEnd",
+	GameTime = "GameTime",
 }
 
 export enum InGameState {
 	Inactive = "Inactive",
 	Running = "Running",
 	Paused = "Paused",
+	End = "Game End",
+	Time = "Time",
 }
 
 export enum LiveStatsScene {

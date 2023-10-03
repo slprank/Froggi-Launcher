@@ -42,16 +42,21 @@
 			const seconds =
 				($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60;
 			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.True) {
-				if (isGameCountdown($gameState, seconds)) return true;
+				if (isGameCountdown(seconds)) return true;
 			}
 			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.False) {
-				if (!isGameCountdown($gameState, seconds)) return true;
+				if (!isGameCountdown(seconds)) return true;
 			}
 
 			if (option[VisibilityOption.GameEnd] === VisibilityToggle.True)
-				if ($gameState === InGameState.Inactive) return true;
+				if (isGameEnd($gameState, seconds)) return true;
 			if (option[VisibilityOption.GameEnd] === VisibilityToggle.False)
-				if ($gameState !== InGameState.Inactive) return true;
+				if (!isGameEnd($gameState, seconds)) return true;
+
+			if (option[VisibilityOption.GameTime] === VisibilityToggle.True)
+				if (isGameTime($gameState, seconds)) return true;
+			if (option[VisibilityOption.GameTime] === VisibilityToggle.False)
+				if (!isGameTime($gameState, seconds)) return true;
 
 			return false;
 		});
@@ -64,8 +69,17 @@
 	const isGameGo = (gameFrame: FrameEntryType | null) => {
 		return (gameFrame?.frame ?? 0) >= -36 && (gameFrame?.frame ?? 0) < 0;
 	};
-	const isGameCountdown = (gameState: InGameState, seconds: number) => {
-		return gameState !== InGameState.Inactive && seconds > 0 && seconds < 5;
+
+	const isGameCountdown = (seconds: number) => {
+		return seconds > 0 && seconds < 5;
+	};
+
+	const isGameEnd = (gameState: InGameState, seconds: number) => {
+		return gameState === InGameState.End && seconds <= 0;
+	};
+
+	const isGameTime = (gameState: InGameState, seconds: number) => {
+		return gameState === InGameState.Time && seconds <= 0;
 	};
 
 	$: {
