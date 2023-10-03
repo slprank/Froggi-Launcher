@@ -2,31 +2,64 @@
 	import type { GridContentItem } from '$lib/models/types';
 	import { AnimationTrigger } from '$lib/models/types/animationOption';
 	import { eventEmitter, gameFrame } from '$lib/utils/store.svelte';
+	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
 
-	let key: any = undefined;
-	const updateKeyValue = () => {
+	let key: number | undefined = 0;
+	let prevFrame: FrameEntryType | null;
+	let prevSecond: number | undefined;
+	const updateKeyValue = (): number | undefined => {
 		if (!dataItem) return;
-		switch (dataItem.data.animation.trigger) {
-			case AnimationTrigger.Player1Percent:
-				key = $gameFrame?.players[0]?.pre.percent;
-				return;
-			case AnimationTrigger.Player2Percent:
-				key = $gameFrame?.players[1]?.pre.percent;
-				return;
-			case AnimationTrigger.Player1StockLost:
-				key = $gameFrame?.players[0]?.post.stocksRemaining;
-				return;
-			case AnimationTrigger.Player2StockLost:
-				key = $gameFrame?.players[1]?.post.stocksRemaining;
-				return;
+		if (!prevFrame) {
+			prevFrame = $gameFrame;
+			return;
 		}
+
+		const currentSecond = Math.ceil((($gameFrame?.frame ?? 0) * 16) / 1000);
+		const option = dataItem.data.animation.trigger;
+
+		if (option[AnimationTrigger.GameCountdown])
+			if (currentSecond > (prevSecond ?? 0)) return Math.random();
+
+		if (option[AnimationTrigger.Player1Percent]) {
+			if (
+				($gameFrame?.players[0]?.pre.percent ?? 0) >
+				(prevFrame?.players[0]?.pre.percent ?? 0)
+			)
+				return Math.random();
+		}
+
+		if (option[AnimationTrigger.Player2Percent])
+			if (
+				($gameFrame?.players[1]?.pre.percent ?? 0) >
+				(prevFrame?.players[1]?.pre.percent ?? 0)
+			)
+				return Math.random();
+
+		if (option[AnimationTrigger.Player1StockLost])
+			if (
+				($gameFrame?.players[0]?.post.stocksRemaining ?? 0) >
+				(prevFrame?.players[0]?.post.stocksRemaining ?? 0)
+			)
+				return Math.random();
+
+		if (option[AnimationTrigger.Player2StockLost])
+			if (
+				($gameFrame?.players[0]?.post.stocksRemaining ?? 0) >
+				(prevFrame?.players[0]?.post.stocksRemaining ?? 0)
+			)
+				return Math.random();
+
+		prevSecond = currentSecond;
+		prevFrame = $gameFrame;
+		return key;
 	};
-	$: $gameFrame, updateKeyValue();
+
+	$: $gameFrame, (key = updateKeyValue());
 
 	onMount(() => {
 		$eventEmitter.on('animation-test-trigger', () => {
