@@ -124,7 +124,7 @@ export class ElectronGamesStore {
         this.listeners = [
             this.store.onDidChange(`stats.game.score`, async (value) => {
                 console.log("Updating score")
-                this.messageHandler.sendMessage('game_score', value);
+                this.messageHandler.sendMessage('game-score', value);
             }),
         ]
     }

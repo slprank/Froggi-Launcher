@@ -17,6 +17,7 @@
 		if (!dataItem) return false;
 
 		const options = dataItem.data.visibility.selectedOptions;
+
 		return options.every((option) => {
 			if (option[VisibilityOption.GameRunning] === VisibilityToggle.True)
 				if ($gameState === InGameState.Running) return true;
@@ -41,16 +42,18 @@
 			const seconds =
 				($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60;
 			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.True) {
-				if (isGameCountdown($gameState, seconds)) visible = true;
+				if (isGameCountdown($gameState, seconds)) return true;
 			}
 			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.False) {
-				if (!isGameCountdown($gameState, seconds)) visible = true;
+				if (!isGameCountdown($gameState, seconds)) return true;
 			}
 
 			if (option[VisibilityOption.GameEnd] === VisibilityToggle.True)
-				if ($gameState === InGameState.Inactive) visible = true;
+				if ($gameState === InGameState.Inactive) return true;
 			if (option[VisibilityOption.GameEnd] === VisibilityToggle.False)
-				if ($gameState !== InGameState.Inactive) visible = true;
+				if ($gameState !== InGameState.Inactive) return true;
+
+			return false;
 		});
 	};
 
@@ -71,7 +74,7 @@
 
 	onMount(() => {
 		if (!edit && !preview) return;
-		$eventEmitter.on('animation_test_visibility', () => {
+		$eventEmitter.on('animation-test-visibility', () => {
 			visible = !visible;
 		});
 	});

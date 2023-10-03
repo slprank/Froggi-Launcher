@@ -22,14 +22,14 @@ export class AutoUpdater {
 		autoUpdater.autoInstallOnAppQuit = true;
 		autoUpdater.checkForUpdates()
 		this.messageHandler.sendMessage(
-			'auto_updater_version',
+			'auto-updater-version',
 			autoUpdater.currentVersion.version,
 		);
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
 			this.messageHandler.sendMessage(
-				'auto_updater_status',
+				'auto-updater-status',
 				AutoUpdaterStatus.LookingForUpdate,
 			);
 		});
@@ -37,11 +37,11 @@ export class AutoUpdater {
 		autoUpdater.on('update-not-available', () => {
 			this.log.info('Update Not Available');
 			this.messageHandler.sendMessage(
-				'auto_updater_status',
+				'auto-updater-status',
 				AutoUpdaterStatus.UpToDate,
 			);
 			this.messageHandler.sendMessage(
-				'auto_updater_version',
+				'auto-updater-version',
 				autoUpdater.currentVersion.version,
 			);
 		});
@@ -50,7 +50,7 @@ export class AutoUpdater {
 			this.log.info(`update available: ${info.version}`);
 			autoUpdater.downloadUpdate();
 			this.messageHandler.sendMessage(
-				'auto_updater_status',
+				'auto-updater-status',
 				AutoUpdaterStatus.DownloadAvailable,
 			);
 		});
@@ -58,7 +58,7 @@ export class AutoUpdater {
 		autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 			this.log.info(`Downloading: ${progress.percent.toFixed()}`);
 			this.messageHandler.sendMessage(
-				'auto_updater_progress',
+				'auto-updater-progress',
 				`${Number(progress.percent.toFixed())}`,
 			);
 		});
@@ -70,11 +70,11 @@ export class AutoUpdater {
 				`Download Url: https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
 			this.messageHandler.sendMessage(
-				'auto_updater_status',
+				'auto-updater-status',
 				AutoUpdaterStatus.DownloadComplete,
 			);
 			this.messageHandler.sendMessage(
-				'auto_updater_progress',
+				'auto-updater-progress',
 				100,
 			);
 		});

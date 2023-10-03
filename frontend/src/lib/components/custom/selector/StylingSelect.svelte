@@ -63,10 +63,10 @@
 	$: console.log('Selected id', selectedElementId);
 
 	const shuffleAnimationTriggers = () => {
-		$eventEmitter.emit('animation_test_trigger');
+		$eventEmitter.emit('animation-test-trigger');
 	};
 	const shuffleAnimationVisibility = () => {
-		$eventEmitter.emit('animation_test_visibility');
+		$eventEmitter.emit('animation-test-visibility');
 	};
 
 	const handleUpdate = (event: CustomEvent<SelectedVisibilityOption[]>) => {

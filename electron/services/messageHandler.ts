@@ -114,7 +114,7 @@ export class MessageHandler {
 		});
 	}
 
-	async sendMessage(topic: string, payload: any) {
+	sendMessage(topic: string, payload: any) {
 		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
@@ -128,7 +128,7 @@ export class MessageHandler {
 				}),
 			);
 		});
-		this.eventEmitter.emit(topic, payload)
+		this.eventEmitter.emit(`electron-${topic}`, payload)
 	}
 
 	private sendInitMessage(socket: any, topic: string, payload: any) {
@@ -148,42 +148,42 @@ export class MessageHandler {
 	private initData(socket: WebSocket | undefined = undefined) {
 		this.sendInitMessage(
 			socket,
-			'current_player',
+			'current-player',
 			this.storeCurrentPlayer.getCurrentPlayer(),
 		);
 		this.sendInitMessage(
 			socket,
-			'current_players',
+			'current-players',
 			this.storePlayers.getCurrentPlayers(),
 		);
-		this.sendInitMessage(socket, 'dolphin_connection_state', this.storeDolphin.getDolphinConnectionState());
-		this.sendInitMessage(socket, 'game_frame', this.storeLiveStats.getGameFrame());
-		this.sendInitMessage(socket, 'game_score', this.storeGames.getGameScore());
-		this.sendInitMessage(socket, 'game_settings', this.storeLiveStats.getGameSettings());
-		this.sendInitMessage(socket, 'game_state', this.storeLiveStats.getGameState());
-		this.sendInitMessage(socket, 'live_stats_scene', this.storeLiveStats.getStatsScene());
-		this.sendInitMessage(socket, 'obs_custom', this.storeObs.getCustom());
-		this.sendInitMessage(socket, 'post_game_stats', this.storeLiveStats.getGameStats());
-		this.sendInitMessage(socket, 'recent_set_matches', this.storeGames.getRecentRankedSets());
-		this.sendInitMessage(socket, 'recent_ranked_sets', this.storeGames.getRecentRankedSets());
+		this.sendInitMessage(socket, 'dolphin-connection-state', this.storeDolphin.getDolphinConnectionState());
+		this.sendInitMessage(socket, 'game-frame', this.storeLiveStats.getGameFrame());
+		this.sendInitMessage(socket, 'game-score', this.storeGames.getGameScore());
+		this.sendInitMessage(socket, 'game-settings', this.storeLiveStats.getGameSettings());
+		this.sendInitMessage(socket, 'game-state', this.storeLiveStats.getGameState());
+		this.sendInitMessage(socket, 'live-stats-scene', this.storeLiveStats.getStatsScene());
+		this.sendInitMessage(socket, 'obs-custom', this.storeObs.getCustom());
+		this.sendInitMessage(socket, 'post-game-stats', this.storeLiveStats.getGameStats());
+		this.sendInitMessage(socket, 'recent-set-matches', this.storeGames.getRecentRankedSets());
+		this.sendInitMessage(socket, 'recent-ranked-sets', this.storeGames.getRecentRankedSets());
 		this.sendInitMessage(socket, 'urls', this.storeSettings.getLocalUrl());
-		this.sendInitMessage(socket, 'session_stats', this.storeSession.getSessionStats());
+		this.sendInitMessage(socket, 'session-stats', this.storeSession.getSessionStats());
 	}
 
 	private initEventHandlers() {
 		this.eventEmitter.on('update-custom-overlay', async (overlay) => {
 			this.storeObs.updateCustomOverlay(overlay);
 			this.sendMessage(
-				'obs_custom_overlay',
+				'obs-custom-overlay',
 				this.storeObs.getCustomOverlayById(overlay.id),
 			);
 		});
 
-		this.eventEmitter.on('delete-custom-overlay', async (overlayId) => {
+		this.eventEmitter.on('delete-custom-overlay', (overlayId) => {
 			this.storeObs.deleteCustomOverlay(overlayId);
 		});
 
-		this.eventEmitter.on('update-live-scene', async (value: LiveStatsScene) => {
+		this.eventEmitter.on('update-live-scene', (value: LiveStatsScene) => {
 			this.storeLiveStats.setStatsScene(value);
 		});
 
@@ -210,8 +210,8 @@ export class MessageHandler {
 	}
 
 	private initGlobalEventListeners() {
-		this.eventEmitter.on('edit_layer_preview', async (layerIndex: number) => {
-			this.sendMessage("edit_layer_preview", layerIndex)
+		this.eventEmitter.on('edit-layer-preview', (layerIndex: number) => {
+			this.sendMessage("edit-layer-preview", layerIndex)
 		});
 	}
 }

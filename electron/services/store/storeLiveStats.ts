@@ -73,22 +73,22 @@ export class ElectronLiveStatsStore {
 
     initListeners() {
         this.store.onDidChange("stats.scene", (value) => {
-            this.messageHandler.sendMessage("live_stats_scene", value)
+            this.messageHandler.sendMessage("live-stats-scene", value)
         })
         this.store.onDidChange(`stats.currentPlayers`, async (value) => {
-            this.messageHandler.sendMessage('current_players', value);
+            this.messageHandler.sendMessage('current-players', value);
         })
         this.store.onDidChange(`stats.game.frame`, async (value) => {
-            this.messageHandler.sendMessage('game_frame', value);
+            this.messageHandler.sendMessage('game-frame', value);
         })
         this.store.onDidChange(`stats.game.settings`, async (value) => {
-            this.messageHandler.sendMessage('game_settings', value);
+            this.messageHandler.sendMessage('game-settings', value);
         })
         this.store.onDidChange(`stats.game.state`, async (value) => {
-            this.messageHandler.sendMessage('game_state', value);
+            this.messageHandler.sendMessage('game-state', value);
         })
         this.store.onDidChange(`stats.game.stats`, async (value) => {
-            this.messageHandler.sendMessage('post_game_stats', value);
+            this.messageHandler.sendMessage('post-game-stats', value);
         })
     }
 }

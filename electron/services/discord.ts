@@ -35,13 +35,13 @@ export class DiscordRpc {
 	}
 
 	initDiscordEvents = () => {
-		this.eventEmitter.on("live_stats_scene", (scene: LiveStatsScene) => {
+		this.eventEmitter.on("electron-live-stats-scene", (scene: LiveStatsScene) => {
 			if ([LiveStatsScene.Menu].includes(scene)) {
 				this.setMenuActivity("Menu")
 			}
 		})
 
-		this.eventEmitter.on("game_settings", (settings: GameStartType) => {
+		this.eventEmitter.on("electron-game-settings", (settings: GameStartType) => {
 			const mode = this.storeLiveStats.getGameSettings()?.matchInfo.mode ?? "Local"
 			const score = this.storeGames.getGameScore() ?? [0, 0]
 
@@ -68,7 +68,7 @@ export class DiscordRpc {
 			this.updateActivity()
 		})
 
-		this.eventEmitter.on("game_frame", (frame: FrameEntryType) => {
+		this.eventEmitter.on("electron-game-frame", (frame: FrameEntryType) => {
 			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
@@ -91,7 +91,7 @@ export class DiscordRpc {
 			this.updateActivity()
 		})
 
-		this.eventEmitter.on("post_game_stats", () => {
+		this.eventEmitter.on("electron-post-game-stats", () => {
 			console.log("Game end event")
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
@@ -105,8 +105,8 @@ export class DiscordRpc {
 			this.setMenuActivity(details, state)
 		})
 
-		this.eventEmitter.on("game_score", (score: number[]) => {
-			console.log("game_score_event")
+		this.eventEmitter.on("electron-game-score", (score: number[]) => {
+			console.log("game-score_event")
 			const players = this.storePlayers.getCurrentPlayers()
 			const player1 = players?.at(0)
 			const player2 = players?.at(1)

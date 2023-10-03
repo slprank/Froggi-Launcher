@@ -40,7 +40,7 @@
 		$eventEmitter.emit('electron', 'download-overlay', overlayId);
 	}
 
-	$eventEmitter.on('edit_layer_preview', (layerIndex: number) => {
+	$eventEmitter.on('edit-layer-preview', (layerIndex: number) => {
 		selectedLayer = layerIndex;
 	});
 

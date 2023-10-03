@@ -69,7 +69,7 @@ export class StatsDisplay {
 		if (frameEntry.frame < 0) return
 		if (this.storeLiveStats.getGameState() === InGameState.Inactive) return;
 		this.resetPauseInterval()
-		await this.messageHandler.sendMessage('game_frame', frameEntry);
+		await this.messageHandler.sendMessage('game-frame', frameEntry);
 		this.storeLiveStats.setGameState(InGameState.Running)
 	}
 
@@ -111,9 +111,9 @@ export class StatsDisplay {
 		this.storeLiveStats.setGameState(InGameState.Inactive)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
-		if (gameStats) this.messageHandler.sendMessage('post_game_stats', gameStats);
+		if (gameStats) this.messageHandler.sendMessage('post-game-stats', gameStats);
 		this.storeLiveStats.setGameFrame(null)
-		setTimeout(() => this.messageHandler.sendMessage('game_frame', null), SCENE_TRANSITION_DELAY);
+		setTimeout(() => this.messageHandler.sendMessage('game-frame', null), SCENE_TRANSITION_DELAY);
 		// TODO: Post set - If post set
 	}
 

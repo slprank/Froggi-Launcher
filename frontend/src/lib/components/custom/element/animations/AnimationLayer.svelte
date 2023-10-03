@@ -11,7 +11,6 @@
 	let key: any = undefined;
 	const updateKeyValue = () => {
 		if (!dataItem) return;
-		console.log('frame', $gameFrame);
 		switch (dataItem.data.animation.trigger) {
 			case AnimationTrigger.Player1Percent:
 				key = $gameFrame?.players[0]?.pre.percent;
@@ -30,7 +29,7 @@
 	$: $gameFrame, updateKeyValue();
 
 	onMount(() => {
-		$eventEmitter.on('animation_test_trigger', () => {
+		$eventEmitter.on('animation-test-trigger', () => {
 			const tempKey = key;
 			key = Math.random();
 			setTimeout(() => {

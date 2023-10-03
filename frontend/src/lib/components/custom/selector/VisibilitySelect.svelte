@@ -9,11 +9,12 @@
 	let tempVisibilityOptions = selectedVisibilityOptions;
 	let open: boolean = false;
 
-	$: console.log('temp', tempVisibilityOptions);
-
 	const addNewOption = () => {
-		tempVisibilityOptions.push({} as SelectedVisibilityOption);
-		console.log('new', tempVisibilityOptions);
+		tempVisibilityOptions = [...tempVisibilityOptions, {} as SelectedVisibilityOption];
+	};
+
+	const removeOption = (index: number) => {
+		tempVisibilityOptions = tempVisibilityOptions.filter((_, i: number) => i !== index);
 	};
 
 	const dispatch = createEventDispatcher();
@@ -40,7 +41,21 @@
 	>
 		{#each tempVisibilityOptions as option, i (i)}
 			<div animate:flip={{ duration: 250 }}>
-				<VisibilityCategorySelect bind:selectedVisibilityOption={option} />
+				<div>
+					<VisibilityCategorySelect bind:selectedVisibilityOption={option} />
+				</div>
+
+				{#if tempVisibilityOptions.length}
+					<div class="w-48 flex items-end">
+						<button
+							class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+							on:click={() => removeOption(i)}
+						>
+							Delete
+						</button>
+					</div>
+				{/if}
+				<br />
 			</div>
 		{/each}
 		<div class="w-48 flex items-end">
