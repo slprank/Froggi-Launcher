@@ -1,7 +1,7 @@
 import type { Animation, AutoUpdaterStatus, Easing, LiveStatsScene, SceneBackground } from './enum';
 import type { COL } from './const';
 import type { CustomElement } from './constants/customElement';
-import type { SelectedAnimationTriggerOption, SelectedVisibilityOption } from './types/animationOption';
+import type { AnimationTrigger, SelectedAnimationTriggerOption, SelectedVisibilityOption } from './types/animationOption';
 
 export interface AutoUpdater {
 	progress: number | undefined;
@@ -70,7 +70,7 @@ export interface GridContentItemStyle {
 
 export interface ElementPayload {
 	advancedStyling: boolean;
-	animation: Animations;
+	animationTrigger: TriggerAnimation;
 	class: Class;
 	css: Css;
 	description: string;
@@ -91,13 +91,18 @@ export interface Percent {
 export interface Animations {
 	in: AnimationSettings
 	out: AnimationSettings
-	trigger: SelectedAnimationTriggerOption
 }
 
 export interface VisibilityAnimations {
 	in: AnimationSettings
 	out: AnimationSettings
-	selectedOptions: SelectedVisibilityOption[] // TODO: rename
+	selectedOptions: SelectedVisibilityOption[]
+}
+
+export interface TriggerAnimation {
+	in: AnimationSettings
+	out: AnimationSettings
+	selectedOptions: SelectedAnimationTriggerOption
 }
 
 export interface SceneAnimation extends Animations {

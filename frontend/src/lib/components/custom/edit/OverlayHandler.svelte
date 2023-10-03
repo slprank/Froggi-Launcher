@@ -7,10 +7,7 @@
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';
-	import {
-		AnimationTrigger,
-		type SelectedAnimationTriggerOption,
-	} from '$lib/models/types/animationOption';
+	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
 
 	export function newId() {
 		return `c${Math.random().toString(36).slice(-8)}`;
@@ -22,7 +19,6 @@
 				duration: 250,
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
-				trigger: AnimationTrigger.None,
 				layerRenderDelay: 250,
 			},
 			background: {
@@ -38,7 +34,6 @@
 				animation: {
 					in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 					out: getDefaultAnimations(),
-					trigger: AnimationTrigger.None,
 				},
 			},
 			font: {
@@ -133,10 +128,10 @@
 	export function getDefaultElementPayload(): ElementPayload {
 		return {
 			advancedStyling: false,
-			animation: {
+			animationTrigger: {
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
-				trigger: {} as SelectedAnimationTriggerOption,
+				selectedOptions: {} as SelectedAnimationTriggerOption,
 			},
 			class: {
 				border: undefined,
