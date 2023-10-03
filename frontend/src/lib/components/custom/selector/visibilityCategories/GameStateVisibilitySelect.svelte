@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import SelectOption from '../SelectOption.svelte';
-	import { VisibilityOption } from '$lib/models/enum';
-	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
+	import SelectOption from './SelectVisibilityOption.svelte';
+	import {
+		VisibilityOption,
+		type SelectedVisibilityOption,
+	} from '$lib/models/types/animationOption';
 
 	export let selectedVisibilityOption: SelectedVisibilityOption;
 	const dispatch = createEventDispatcher();

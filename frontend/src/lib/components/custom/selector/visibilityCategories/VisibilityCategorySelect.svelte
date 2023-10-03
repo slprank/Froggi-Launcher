@@ -1,9 +1,13 @@
 <script lang="ts">
-	import { LiveStatsScene, VisibilityCategory, VisibilityOption } from '$lib/models/enum';
+	import { LiveStatsScene } from '$lib/models/enum';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import GameStateVisibilitySelect from './GameStateVisibilitySelect.svelte';
-	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
+	import {
+		VisibilityCategory,
+		type SelectedVisibilityOption,
+		type VisibilityOption,
+	} from '$lib/models/types/animationOption';
 	import { VisibilityToggle } from '$lib/models/types/animationOption';
 
 	export let selectedVisibilityOption: SelectedVisibilityOption;

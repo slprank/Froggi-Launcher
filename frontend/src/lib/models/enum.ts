@@ -9,14 +9,6 @@ export enum Animation {
 	Slide = "Slide",
 }
 
-export enum AnimationTrigger {
-	None = "None",
-	Player1Percent = "Player1 Percent Increase",
-	Player2Percent = "Player2 Percent Increase",
-	Player1StockLost = "Player1 Stock Loss",
-	Player2StockLost = "Player2 Stock Loss",
-}
-
 export enum AutoUpdaterStatus {
 	DownloadAvailable = "Download",
 	LookingForUpdate = "Looking For Update",
@@ -94,26 +86,6 @@ export enum ElementCategory {
 	Player1SlippiData = "Player1 Slippi Data",
 	Player2SlippiData = "Player2 Slippi Data",
 	ControllerInput = "Controller Input",
-}
-
-export enum VisibilityCategory {
-	CurrentPlayerState = "Current Player State",
-	Player1State = "Player1 State",
-	Player2State = "Player2 State",
-	OngoingGame = "Ongoing Game",
-	GameState = "Game State",
-	Session = "Session",
-	ResetGames = "Recent Games"
-}
-
-export enum VisibilityOption {
-	GameRunning = "GameRunning",
-	GamePaused = "GamePaused",
-	GameReady = "GameReady",
-	GameGo = "GameGo",
-	GameCountdown = "GameCountdown",
-	GameEnd = "GameEnd",
-	GameTime = "GameTime",
 }
 
 export enum InGameState {

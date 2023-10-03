@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import { createEventDispatcher } from 'svelte';
-	import SelectOption from '$lib/components/custom/selector/SelectOption.svelte';
+	import SelectOption from '$lib/components/custom/selector/visibilityCategories/SelectVisibilityOption.svelte';
 
 	const dispatch = createEventDispatcher();
 

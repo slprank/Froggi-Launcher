@@ -1,7 +1,7 @@
-import type { Animation, AnimationTrigger, AutoUpdaterStatus, Easing, LiveStatsScene, SceneBackground } from './enum';
+import type { Animation, AutoUpdaterStatus, Easing, LiveStatsScene, SceneBackground } from './enum';
 import type { COL } from './const';
 import type { CustomElement } from './constants/customElement';
-import type { SelectedVisibilityOption } from './types/animationOption';
+import type { SelectedAnimationTriggerOption, SelectedVisibilityOption } from './types/animationOption';
 
 export interface AutoUpdater {
 	progress: number | undefined;
@@ -91,7 +91,7 @@ export interface Percent {
 export interface Animations {
 	in: AnimationSettings
 	out: AnimationSettings
-	trigger: AnimationTrigger
+	trigger: SelectedAnimationTriggerOption
 }
 
 export interface VisibilityAnimations {

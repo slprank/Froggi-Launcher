@@ -1,12 +1,5 @@
 <script lang="ts" context="module">
-	import {
-		Animation,
-		AnimationTrigger,
-		Easing,
-		LiveStatsScene,
-		SceneBackground,
-		VisibilityOption,
-	} from '$lib/models/enum';
+	import { Animation, Easing, LiveStatsScene, SceneBackground } from '$lib/models/enum';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import type { AnimationSettings, ElementPayload, Overlay, Scene } from '$lib/models/types';
 
@@ -15,8 +8,8 @@
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { eventEmitter, obs } from '$lib/utils/store.svelte';
 	import {
-		VisibilityToggle,
-		type SelectedVisibilityOption,
+		AnimationTrigger,
+		type SelectedAnimationTriggerOption,
 	} from '$lib/models/types/animationOption';
 
 	export function newId() {
@@ -143,7 +136,7 @@
 			animation: {
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
-				trigger: AnimationTrigger.None,
+				trigger: {} as SelectedAnimationTriggerOption,
 			},
 			class: {
 				border: undefined,

@@ -6,21 +6,21 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let selectedVisibilityOptions: SelectedVisibilityOption[] = [];
-	let tempVisibilityOptions = selectedVisibilityOptions;
+	let tempSelectedOptions = selectedVisibilityOptions;
 	let open: boolean = false;
 
 	const addNewOption = () => {
-		tempVisibilityOptions = [...tempVisibilityOptions, {} as SelectedVisibilityOption];
+		tempSelectedOptions = [...tempSelectedOptions, {} as SelectedVisibilityOption];
 	};
 
 	const removeOption = (index: number) => {
-		tempVisibilityOptions = tempVisibilityOptions.filter((_, i: number) => i !== index);
+		tempSelectedOptions = tempSelectedOptions.filter((_, i: number) => i !== index);
 	};
 
 	const dispatch = createEventDispatcher();
 
 	function handleUpdate() {
-		dispatch('update', tempVisibilityOptions);
+		dispatch('update', tempSelectedOptions);
 		open = false;
 	}
 </script>
@@ -36,16 +36,16 @@
 
 <Modal bind:open on:close={() => (open = false)} class="w-[70vw] h-[70vh]">
 	<div
-		class="w-full h-full bg-cover bg-center p-16 overflow-auto grid gap-8"
+		class="w-full h-full bg-cover bg-center p-16 overflow-auto grid gap-8 divide-y-1"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
-		{#each tempVisibilityOptions as option, i (i)}
+		{#each tempSelectedOptions as option, i (i)}
 			<div animate:flip={{ duration: 250 }}>
 				<div>
 					<VisibilityCategorySelect bind:selectedVisibilityOption={option} />
 				</div>
 
-				{#if tempVisibilityOptions.length}
+				{#if tempSelectedOptions.length}
 					<div class="w-48 flex items-end">
 						<button
 							class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"

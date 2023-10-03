@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { AnimationTrigger } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
+	import { AnimationTrigger } from '$lib/models/types/animationOption';
 	import { eventEmitter, gameFrame } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;

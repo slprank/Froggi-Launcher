@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
 	import type { ElementPayload } from '$lib/models/types';
-	import { Animation, AnimationTrigger, VisibilityOption } from '$lib/models/enum';
+	import { Animation } from '$lib/models/enum';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
 	import { CustomElement } from '$lib/models/constants/customElement';
@@ -17,7 +17,11 @@
 	import { getDefaultElementPayload } from '../edit/OverlayHandler.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import VisibilitySelect from './VisibilitySelect.svelte';
-	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
+	import {
+		AnimationTrigger,
+		type SelectedVisibilityOption,
+	} from '$lib/models/types/animationOption';
+	import AnimationTriggerSelect from './AnimationTriggerSelect.svelte';
 
 	// TODO: Animation options and sliders
 
@@ -318,26 +322,11 @@
 			</h1>
 		</div>
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Trigger</h1>
-		<div class="relative w-[50%] bg-white rounded-md">
-			<Select bind:selected={payload.animation.trigger}>
-				<option selected value={AnimationTrigger.None}>None</option>
-				{#if $statsScene === LiveStatsScene.InGame}
-					<option selected value={AnimationTrigger.Player1Percent}>
-						Player1 Percent Increase
-					</option>
-					<option value={AnimationTrigger.Player2Percent}>
-						Player2 Percent Increase
-					</option>
-					<option selected value={AnimationTrigger.Player1StockLost}>
-						Player1 Stock Lost
-					</option>
-					<option selected value={AnimationTrigger.Player2StockLost}>
-						Player2 Stock Lost
-					</option>
-				{/if}
-			</Select>
-		</div>
-		{#if payload.animation.trigger !== AnimationTrigger.None}
+		<AnimationTriggerSelect
+			bind:selectedOption={payload.animation.trigger}
+			on:update={handleUpdate}
+		/>
+		{#if payload.animation.trigger}
 			<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
 				<AnimationInput bind:animation={payload.animation.in} label="In" />
 				<AnimationInput bind:animation={payload.animation.out} label="Out" />

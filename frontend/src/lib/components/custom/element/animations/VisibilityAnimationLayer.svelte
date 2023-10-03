@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { VisibilityOption, InGameState } from '$lib/models/enum';
+	import { InGameState } from '$lib/models/enum';
 	import type { GridContentItem } from '$lib/models/types';
-	import { VisibilityToggle } from '$lib/models/types/animationOption';
+	import { VisibilityOption, VisibilityToggle } from '$lib/models/types/animationOption';
 	import { eventEmitter, gameFrame, gameSettings, gameState } from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { onMount } from 'svelte';
