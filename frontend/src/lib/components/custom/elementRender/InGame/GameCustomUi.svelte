@@ -14,7 +14,8 @@
 	): number => {
 		if (!startingTimer) return 480;
 		if (!frame || frame <= 0) return startingTimer;
-		return startingTimer - frame / 60;
+		const seconds = startingTimer - frame / 60;
+		return seconds ? seconds : 1;
 	};
 
 	const addZero = (time: number) => {

@@ -3,7 +3,7 @@
 	import type { GridContentItem } from '$lib/models/types';
 	import { VisibilityToggle } from '$lib/models/types/animationOption';
 	import { eventEmitter, gameFrame, gameSettings, gameState } from '$lib/utils/store.svelte';
-	import type { FrameEntryType, FrameStartType } from '@slippi/slippi-js';
+	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
@@ -71,7 +71,7 @@
 	};
 
 	const isGameCountdown = (seconds: number) => {
-		return seconds > 0 && seconds < 5;
+		return seconds >= 0 && seconds < 5;
 	};
 
 	const isGameEnd = (gameState: InGameState, seconds: number) => {
