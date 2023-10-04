@@ -36,7 +36,6 @@
 	};
 
 	const emptyAnimation = (node: any, delay: number): AnimationConfig => {
-		// TODO: Optional start value
 		return fly(node, { delay: delay, duration: 0 });
 	};
 
@@ -58,8 +57,6 @@
 		windowWidth: number,
 		additionalDelay: number = 0,
 	): AnimationConfig => {
-		console.log('animation', animation);
-
 		const transition = getTransition(animation?.type);
 		if (transition)
 			return transition(node, {
@@ -70,6 +67,7 @@
 				easing: getEasing(animation?.options.easing ?? ''),
 			});
 
+		// Custom Transitions
 		switch (animation?.type) {
 			case Animation.FlyRandom:
 				return animationFlyRandom(

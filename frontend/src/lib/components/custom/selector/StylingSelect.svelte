@@ -5,23 +5,19 @@
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
 	import { CustomElement } from '$lib/models/constants/customElement';
-	import { LiveStatsScene } from '$lib/models/enum';
 	import CodeInput from '$lib/components/input/CodeInput.svelte';
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
-	import { statsScene, eventEmitter } from '$lib/utils/store.svelte';
+	import { eventEmitter } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';
 	import { getDefaultElementPayload } from '../edit/OverlayHandler.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import VisibilitySelect from './VisibilitySelect.svelte';
-	import {
-		AnimationTrigger,
-		type SelectedVisibilityOption,
-	} from '$lib/models/types/animationOption';
 	import AnimationTriggerSelect from './AnimationTriggerSelect.svelte';
+	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
 
 	// TODO: Animation options and sliders
 

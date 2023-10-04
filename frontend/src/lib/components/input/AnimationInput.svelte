@@ -121,17 +121,15 @@
 						bind:value={animation.options.delay}
 					/>
 				</div>
-				{#if ![Animation.FlyAutomatic].includes(animation.type)}
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Easing</h1>
-					<div class="relative w-full bg-white rounded-md">
-						<Select bind:selected={animation.options.easing}>
-							<option selected value={undefined}>None</option>
-							{#each Object.keys(easingFunctions) as easingName}
-								<option value={easingName}>{easingName}</option>
-							{/each}
-						</Select>
-					</div>
-				{/if}
+				<h1 class="text-gray-500 text-sm font-medium text-shadow">Easing</h1>
+				<div class="relative w-full bg-white rounded-md">
+					<Select bind:selected={animation.options.easing}>
+						<option selected value={undefined}>None</option>
+						{#each Object.keys(easingFunctions) as easingName}
+							<option value={easingName}>{easingName}</option>
+						{/each}
+					</Select>
+				</div>
 			{/if}
 		</div>
 	</div>

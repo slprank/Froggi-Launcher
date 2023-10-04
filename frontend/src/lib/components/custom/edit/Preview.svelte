@@ -21,14 +21,6 @@
 		currentOverlay = await getOverlayById(overlayId);
 	}
 	getOverlay();
-
-	const refreshTrigger = () => {
-		clearTimeout(timeout);
-		timeout = setTimeout(() => {
-			keyTrigger = Math.random();
-		}, 1500);
-	};
-	$: boardWidth, refreshTrigger();
 </script>
 
 <div class="w-full h-full">
