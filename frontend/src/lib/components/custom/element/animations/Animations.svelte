@@ -1,19 +1,10 @@
 <script lang="ts" context="module">
 	import { fly, blur, type EasingFunction, fade, scale, slide } from 'svelte/transition';
-	import {
-		sineOut,
-		bounceIn,
-		bounceOut,
-		bounceInOut,
-		backInOut,
-		elasticOut,
-		elasticIn,
-		elasticInOut,
-	} from 'svelte/easing';
+	import * as transitionFunctions from 'svelte/transition';
+	import * as easingFunctions from 'svelte/easing';
 	import type { AnimationSettings, AnimationOptions } from '$lib/models/types';
-	import { Animation, Easing } from '$lib/models/enum';
+	import { Animation } from '$lib/models/enum';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
-	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import type { AnimationConfig } from 'svelte/animate';
 
 	const animationFlyRandom = (
@@ -43,88 +34,22 @@
 			easing: getEasing(option.easing),
 		});
 	};
-	const animationBlur = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
-		return blur(node, {
-			delay: option.delay + additionalDelay,
-			duration: option.duration,
-		});
-	};
-	const animationFade = (node: any, option: AnimationOptions | any, additionalDelay = 0) => {
-		return fade(node, {
-			delay: option.delay + additionalDelay,
-			duration: option.duration,
-			easing: getEasing(option.easing),
-		});
-	};
-	const animationFly = (
-		node: any,
-		option: AnimationOptions | any,
-		additionalDelay = 0,
-		windowHeight: number,
-		windowWidth: number,
-	) => {
-		return fly(node, {
-			delay: option.delay + additionalDelay,
-			duration: option.duration,
-			y: getRelativePixelSize(option.y, windowHeight, windowWidth),
-			x: getRelativePixelSize(option.x, windowHeight, windowWidth),
-			easing: getEasing(option.easing),
-		});
-	};
-	const animationScale = (
-		node: any,
-		option: AnimationOptions | any,
-		additionalDelay = 0,
-	): AnimationConfig => {
-		// TODO: Optional start value
-		return {
-			delay: option.delay + additionalDelay,
-			duration: option.duration,
-			css: (t) => {
-				const eased = getEasing(option.easing)(t);
-				return `opacity: ${eased}; transform: scale(${eased})`;
-			},
-		};
-	};
-	const animationSlide = (
-		node: any,
-		option: AnimationOptions | any,
-		additionalDelay = 0,
-	): AnimationConfig => {
-		// TODO: Optional start value
-		return slide(node, {
-			delay: option.delay + additionalDelay,
-			duration: option.duration,
-			easing: getEasing(option.easing),
-		});
-	};
 
 	const emptyAnimation = (node: any, delay: number): AnimationConfig => {
 		// TODO: Optional start value
 		return fly(node, { delay: delay, duration: 0 });
 	};
 
-	const getEasing = (easing: Easing): EasingFunction => {
-		switch (easing) {
-			case Easing.BackInOut:
-				return backInOut;
-			case Easing.BounceIn:
-				return bounceIn;
-			case Easing.BounceInOut:
-				return bounceInOut;
-			case Easing.BounceOut:
-				return bounceOut;
-			case Easing.ElasticInOut:
-				return elasticInOut;
-			case Easing.ElasticIn:
-				return elasticIn;
-			case Easing.ElasticOut:
-				return elasticOut;
-			case Easing.SineOut:
-				return sineOut;
-			default:
-				return elasticOut;
-		}
+	const getEasing = (easing: string): EasingFunction => {
+		console.log('easing', easing);
+		return easingFunctions[easing];
+	};
+
+	const getTransition = (
+		transitionName: string | Animation | undefined,
+	): transitionFunctions.TransitionConfig | undefined => {
+		if (!transitionName) return;
+		return transitionFunctions[transitionName];
 	};
 
 	export const createAnimation = (
@@ -134,22 +59,19 @@
 		windowWidth: number,
 		additionalDelay: number = 0,
 	): AnimationConfig => {
-		console.log('animation type', animation?.type);
+		console.log('animation', animation);
+
+		const transition = getTransition(animation?.type);
+		if (transition)
+			return transition(node, {
+				...animation?.options,
+				x: getRelativePixelSize(animation?.options.x ?? 0, windowHeight, windowWidth),
+				y: getRelativePixelSize(animation?.options.y ?? 0, windowHeight, windowWidth),
+				delay: (animation?.options.delay ?? 0) + additionalDelay,
+				easing: getEasing(animation?.options.easing ?? ''),
+			});
+
 		switch (animation?.type) {
-			case Animation.Blur:
-				return animationBlur(node, animation.options, additionalDelay);
-			case Animation.Fade:
-				return animationFade(node, animation.options, additionalDelay);
-			case Animation.Fly:
-				return animationFly(
-					node,
-					animation.options,
-					additionalDelay,
-					windowHeight,
-					windowWidth,
-				);
-			case Animation.Scale:
-				return animationScale(node, animation.options, additionalDelay);
 			case Animation.FlyRandom:
 				return animationFlyRandom(
 					node,
@@ -158,8 +80,6 @@
 					windowHeight,
 					windowWidth,
 				);
-			case Animation.Slide:
-				return animationSlide(node, animation.options, additionalDelay);
 			default:
 				return emptyAnimation(node, additionalDelay + 5);
 		}

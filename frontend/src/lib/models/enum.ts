@@ -1,12 +1,12 @@
 export enum Animation {
-	None = "None",
-	Blur = "Blur",
-	Fade = "Fade",
-	Fly = "Fly",
-	FlyRandom = "Fly Random",
-	FlyAutomatic = "Fly Automatic",
-	Scale = "Scale",
-	Slide = "Slide",
+	None = "none",
+	Blur = "blur",
+	Fade = "fade",
+	Fly = "fly",
+	FlyRandom = "fly random",
+	FlyAutomatic = "fly automatic",
+	Scale = "scale",
+	Slide = "slide",
 }
 
 export enum AutoUpdaterStatus {
@@ -52,18 +52,6 @@ export enum DolphinConnectionState {
 	Connected = "Connected",
 	Connecting = "Connecting",
 	Searching = "Searching",
-}
-
-export enum Easing {
-	None = 0,
-	BackInOut = 1,
-	BounceInOut = 2,
-	BounceIn = 3,
-	BounceOut = 4,
-	ElasticInOut = 5,
-	ElasticIn = 6,
-	ElasticOut = 7,
-	SineOut = 8
 }
 
 export enum ElementCategory {

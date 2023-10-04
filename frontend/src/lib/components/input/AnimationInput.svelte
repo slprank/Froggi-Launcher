@@ -1,14 +1,15 @@
 <script lang="ts">
 	import type { AnimationSettings } from '$lib/models/types';
-	import { Animation, Easing } from '$lib/models/enum';
+	import { Animation } from '$lib/models/enum';
 	import Select from './Select.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { notifications } from '../notification/Notifications.svelte';
+	import * as easingFunctions from 'svelte/easing';
 
 	const max = SCENE_TRANSITION_DELAY;
 	export let animation: AnimationSettings;
 	export let label: string | undefined = undefined;
-	export let isSceneAnimation: boolean = false;
+	export let isSceneElementAnimation: boolean = false;
 
 	const fixAnimationInputDelay = () => {
 		if (animation?.options.duration > SCENE_TRANSITION_DELAY) {
@@ -46,7 +47,7 @@
 					<option value={Animation.Fly}>Fly</option>
 					<option value={Animation.Scale}>Scale</option>
 					<option value={Animation.FlyRandom}>Fly Random</option>
-					{#if isSceneAnimation}
+					{#if isSceneElementAnimation}
 						<option value={Animation.FlyAutomatic}>Fly Automatic</option>
 					{/if}
 					<option value={Animation.Slide}>Slide</option>
@@ -125,11 +126,9 @@
 					<div class="relative w-full bg-white rounded-md">
 						<Select bind:selected={animation.options.easing}>
 							<option selected value={undefined}>None</option>
-							<option value={Easing.BackInOut}>Back In Out</option>
-							<option value={Easing.BounceIn}>Bounce In</option>
-							<option value={Easing.BounceInOut}>Bounce In-Out</option>
-							<option value={Easing.BounceOut}>Bounce Out</option>
-							<option value={Easing.SineOut}>Sine Out</option>
+							{#each Object.keys(easingFunctions) as easingName}
+								<option value={easingName}>{easingName}</option>
+							{/each}
 						</Select>
 					</div>
 				{/if}

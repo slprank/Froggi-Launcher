@@ -20,7 +20,7 @@
 		}
 
 		const currentSecond = Math.ceil((($gameFrame?.frame ?? 0) * 16) / 1000);
-		const option = dataItem.data.animation.trigger;
+		const option = dataItem.data.animationTrigger.selectedOptions;
 
 		if (option[AnimationTrigger.GameCountdown])
 			if (currentSecond > (prevSecond ?? 0)) return Math.random();

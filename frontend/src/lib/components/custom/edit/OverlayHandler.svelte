@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { Animation, Easing, LiveStatsScene, SceneBackground } from '$lib/models/enum';
+	import { Animation, LiveStatsScene, SceneBackground } from '$lib/models/enum';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import type { AnimationSettings, ElementPayload, Overlay, Scene } from '$lib/models/types';
 
@@ -194,7 +194,7 @@
 			options: {
 				delay: delay,
 				duration: 0,
-				easing: Easing.None,
+				easing: '',
 				start: 0,
 				x: 0,
 				y: 0,

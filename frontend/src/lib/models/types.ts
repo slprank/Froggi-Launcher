@@ -1,4 +1,4 @@
-import type { Animation, AutoUpdaterStatus, Easing, LiveStatsScene, SceneBackground } from './enum';
+import type { Animation, AutoUpdaterStatus, LiveStatsScene, SceneBackground } from './enum';
 import type { COL } from './const';
 import type { CustomElement } from './constants/customElement';
 import type { SelectedAnimationTriggerOption, SelectedVisibilityOption } from './types/animationOption';
@@ -118,8 +118,8 @@ export interface AnimationSettings {
 export interface AnimationOptions {
 	delay: number;
 	duration: number;
-	easing: Easing;
-	start: number;
+	easing: string;
+	scaleFrom: number;
 	x: number;
 	y: number;
 }

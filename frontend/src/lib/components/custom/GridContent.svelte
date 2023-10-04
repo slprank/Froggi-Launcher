@@ -121,14 +121,14 @@
 								animationIn={(node) =>
 									createAnimation(
 										node,
-										dataItem?.data.animation.in,
+										dataItem?.data.animationTrigger.in,
 										boardHeight,
 										boardWidth,
 									)}
 								animationOut={(node) =>
 									createAnimation(
 										node,
-										dataItem?.data.animation.out,
+										dataItem?.data.animationTrigger.out,
 										boardHeight,
 										boardWidth,
 									)}
