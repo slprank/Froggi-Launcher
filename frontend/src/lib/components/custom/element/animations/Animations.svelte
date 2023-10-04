@@ -41,7 +41,6 @@
 	};
 
 	const getEasing = (easing: string): EasingFunction => {
-		console.log('easing', easing);
 		return easingFunctions[easing];
 	};
 

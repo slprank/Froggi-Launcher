@@ -13,7 +13,7 @@
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import FontSelectorLayer from '../selector/FontSelectLayer.svelte';
-	import SceneAnimationSelect from '../selector/SceneAnimationSelect.svelte';
+	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -179,7 +179,7 @@
 										Background Transition - In
 									</h1>
 									<div class="w-48">
-										<SceneAnimationSelect
+										<AnimationInput
 											bind:animation={curScene.background.animation.in}
 										/>
 									</div>
@@ -189,7 +189,7 @@
 										Background Transition - Out
 									</h1>
 									<div class="w-48">
-										<SceneAnimationSelect
+										<AnimationInput
 											bind:animation={curScene.background.animation.out}
 										/>
 									</div>
@@ -218,7 +218,10 @@
 									Element Transition - In
 								</h1>
 								<div class="w-48">
-									<SceneAnimationSelect bind:animation={curScene.animation.in} />
+									<AnimationInput
+										bind:animation={curScene.animation.in}
+										isSceneElementAnimation={true}
+									/>
 								</div>
 							</div>
 							<div class="w-full">
@@ -226,7 +229,10 @@
 									Element Transition - Out
 								</h1>
 								<div class="w-48">
-									<SceneAnimationSelect bind:animation={curScene.animation.out} />
+									<AnimationInput
+										bind:animation={curScene.animation.out}
+										isSceneElementAnimation={true}
+									/>
 								</div>
 							</div>
 						</div>

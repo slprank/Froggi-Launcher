@@ -93,7 +93,7 @@
 							step={0.01}
 							min={0}
 							max={5}
-							bind:value={animation.options.start}
+							bind:value={animation.options.scaleFrom}
 						/>
 					</div>
 				{/if}
