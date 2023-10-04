@@ -84,7 +84,7 @@
 				{/if}
 
 				{#if animation.type === Animation.Scale}
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale From - 1x</h1>
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale From x</h1>
 					<div class="relative w-full h-11 bg-white rounded-md">
 						<input
 							type="number"
@@ -93,7 +93,7 @@
 							step={0.01}
 							min={0}
 							max={5}
-							bind:value={animation.options.scaleFrom}
+							bind:value={animation.options.start}
 						/>
 					</div>
 				{/if}

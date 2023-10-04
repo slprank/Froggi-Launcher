@@ -119,7 +119,7 @@ export interface AnimationOptions {
 	delay: number;
 	duration: number;
 	easing: string;
-	scaleFrom: number;
+	start: number;
 	x: number;
 	y: number;
 }

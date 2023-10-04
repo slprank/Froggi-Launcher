@@ -63,6 +63,7 @@
 				...animation?.options,
 				x: getRelativePixelSize(animation?.options.x ?? 0, windowHeight, windowWidth),
 				y: getRelativePixelSize(animation?.options.y ?? 0, windowHeight, windowWidth),
+				scale: 0,
 				delay: (animation?.options.delay ?? 0) + additionalDelay,
 				easing: getEasing(animation?.options.easing ?? ''),
 			});
@@ -77,6 +78,7 @@
 					windowHeight,
 					windowWidth,
 				);
+
 			default:
 				return emptyAnimation(node, additionalDelay + 5);
 		}
