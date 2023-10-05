@@ -23,52 +23,31 @@
 	}
 	$: demoItem, updateDemoData();
 
-	const flyAutomatic = (node: any, delay: number = 0, duration: number): TransitionConfig => {
-		if (!dataItem) return fly(node, { duration: 0 });
-		const y = getRelativePixelSize(
-			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
-			innerWidth,
-			innerHeight,
-		);
-		const x = getRelativePixelSize(
-			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
-			innerWidth,
-			innerHeight,
-		);
-		return fly(node, { duration: duration, x: x, y: y, delay: delay });
-	};
-
 	const animateIn = (node: Element): TransitionConfig => {
 		if (edit || !dataItem || !curScene) return fly(node, { duration: 0 });
 		const delay =
 			dataItem[COL]?.y +
-				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
-				additionalDelay ?? 0;
-		if (curScene.animation.in.type === Animation.FlyAutomatic)
-			return flyAutomatic(node, delay, curScene.animation.in.options.duration);
+			Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
+			(additionalDelay ?? 0);
 		return createAnimation(
 			node,
 			curScene.animation.in,
 			boardHeight ?? innerHeight,
 			boardWidth ?? innerWidth,
 			delay,
+			dataItem,
 		);
 	};
 
 	const animateOut = (node: Element): TransitionConfig => {
 		if (edit || !curScene) return fly(node, { duration: 0 });
-		if (curScene.animation.out.type === Animation.FlyAutomatic)
-			return flyAutomatic(
-				node,
-				curScene.animation.out.options.delay,
-				curScene.animation.out.options.duration,
-			);
 		return createAnimation(
 			node,
 			curScene.animation.out,
 			boardHeight ?? innerHeight,
 			boardWidth ?? innerWidth,
 			curScene.animation.out.options.delay,
+			dataItem,
 		);
 	};
 
@@ -105,6 +84,8 @@
 									dataItem?.data.visibility.in,
 									boardHeight,
 									boardWidth,
+									dataItem?.data.visibility.in.options.delay,
+									dataItem,
 								)}
 							animationOut={(node) =>
 								createAnimation(
@@ -112,6 +93,8 @@
 									dataItem?.data.visibility.out,
 									boardHeight,
 									boardWidth,
+									dataItem?.data.visibility.out.options.delay,
+									dataItem,
 								)}
 							{dataItem}
 							{edit}
@@ -121,9 +104,11 @@
 								animationIn={(node) =>
 									createAnimation(
 										node,
-										dataItem?.data.animationTrigger.in,
+										dataItem?.data.visibility.in,
 										boardHeight,
 										boardWidth,
+										dataItem?.data.visibility.in.options.delay,
+										dataItem,
 									)}
 								animationOut={(node) =>
 									createAnimation(
@@ -131,6 +116,8 @@
 										dataItem?.data.animationTrigger.out,
 										boardHeight,
 										boardWidth,
+										dataItem?.data.visibility.out.options.delay,
+										dataItem,
 									)}
 								{dataItem}
 								{edit}
