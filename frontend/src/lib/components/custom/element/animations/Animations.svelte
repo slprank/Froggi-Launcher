@@ -1,11 +1,12 @@
 <script lang="ts" context="module">
-	import { fly, blur, type EasingFunction, fade, scale, slide } from 'svelte/transition';
+	import { fly, type EasingFunction } from 'svelte/transition';
 	import * as transitionFunctions from 'svelte/transition';
 	import * as easingFunctions from 'svelte/easing';
-	import type { AnimationSettings, AnimationOptions } from '$lib/models/types';
+	import type { AnimationSettings, AnimationOptions, GridContentItem } from '$lib/models/types';
 	import { Animation } from '$lib/models/enum';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 	import type { AnimationConfig } from 'svelte/animate';
+	import { COL, ROW } from '$lib/models/const';
 
 	const animationFlyRandom = (
 		node: any,
@@ -35,6 +36,30 @@
 		});
 	};
 
+	const animationFlyAutomatic = (
+		node: any,
+		duration: number,
+		additionalDelay: number,
+		dataItem: GridContentItem | undefined,
+	): transitionFunctions.TransitionConfig => {
+		if (!dataItem) return fly(node, { duration: 0 });
+		const delay =
+			dataItem[COL]?.y +
+				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
+				additionalDelay ?? 0;
+		const y = getRelativePixelSize(
+			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
+			innerWidth,
+			innerHeight,
+		);
+		const x = getRelativePixelSize(
+			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
+			innerWidth,
+			innerHeight,
+		);
+		return fly(node, { duration: duration, x: x, y: y, delay: delay });
+	};
+
 	const emptyAnimation = (node: any, delay: number): AnimationConfig => {
 		return fly(node, { delay: delay, duration: 0 });
 	};
@@ -56,6 +81,7 @@
 		windowHeight: number,
 		windowWidth: number,
 		additionalDelay: number = 0,
+		dataItem: GridContentItem | undefined = undefined,
 	): AnimationConfig => {
 		const transition = getTransition(animation?.type);
 		if (transition)
@@ -79,8 +105,16 @@
 					windowWidth,
 				);
 
+			case Animation.FlyAutomatic:
+				return animationFlyAutomatic(
+					node,
+					animation.options.duration,
+					additionalDelay,
+					dataItem,
+				);
+
 			default:
-				return emptyAnimation(node, additionalDelay + 5);
+				return emptyAnimation(node, animation?.options.delay ?? 0);
 		}
 	};
 </script>

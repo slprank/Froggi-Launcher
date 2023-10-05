@@ -195,7 +195,7 @@
 				delay: delay,
 				duration: 0,
 				easing: '',
-				scale: 0,
+				start: 0,
 				x: 0,
 				y: 0,
 			},
