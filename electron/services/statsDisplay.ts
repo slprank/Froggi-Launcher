@@ -14,6 +14,7 @@ import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
 import { getWinnerIndex } from '../utils/gamePredicates';
 import { SCENE_TRANSITION_DELAY } from '../../frontend/src/lib/models/const';
+import { analyzeMatch } from '../utils/analyzeMatch';
 
 @singleton()
 export class StatsDisplay {
@@ -112,10 +113,17 @@ export class StatsDisplay {
 		this.storeLiveStats.setGameStats(gameStats)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
-		if (gameStats) this.messageHandler.sendMessage('post-game-stats', gameStats);
 		this.storeLiveStats.setGameFrame(null)
 		setTimeout(() => this.messageHandler.sendMessage('game-frame', null), SCENE_TRANSITION_DELAY);
-		// TODO: Post set - If post set
+		this.handleGameSet(settings.matchInfo?.matchId)
+	}
+
+	private handleGameSet(matchId: string | undefined | null) {
+		if (!matchId) return;
+		const games = this.storeGames.getGameMatch(matchId)
+		if (!games || !games?.length) return;
+		const matchStats = analyzeMatch(games)
+		this.storeLiveStats.setMatchStats(matchStats)
 	}
 
 	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
@@ -220,7 +228,7 @@ export class StatsDisplay {
 		return {
 			gameEnd: game.getGameEnd(),
 			lastFrame: game.getLatestFrame(),
-			mode: getGameMode(game.getSettings()),
+			mode: getGameMode(settings),
 			postGameStats: this.enrichPostGameStats(game),
 			score: this.storeGames.getGameScore(),
 			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings) } },

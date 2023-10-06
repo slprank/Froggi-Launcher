@@ -49,7 +49,6 @@ export class ElectronGamesStore {
     }
 
     setGameMatch(gameStats: GameStats | null) {
-        console.log("Set Game Match:", gameStats)
         if (!gameStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player || !gameStats?.settings?.players.some((p: PlayerType) => p.connectCode === player?.connectCode))

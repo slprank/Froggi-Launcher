@@ -72,7 +72,7 @@ export class ElectronObsStore {
         if (!overlayId) return;
         let custom = this.getCustom();
         if (!custom) return;
-        custom.overlays = custom.overlays.filter((overlay: any) => overlay.id !== overlayId);
+        custom.overlays = custom.overlays.filter((overlay: Overlay) => overlay.id !== overlayId);
         this.setCustom(custom);
     }
 

@@ -6,7 +6,7 @@ import { MessageHandler } from '../messageHandler';
 import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 import os from 'os';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
-import { GameStartTypeExtended, GameStats } from '../../../frontend/src/lib/models/types/slippiData';
+import { GameStartTypeExtended, GameStats, MatchStats } from '../../../frontend/src/lib/models/types/slippiData';
 
 
 @singleton()
@@ -71,6 +71,11 @@ export class ElectronLiveStatsStore {
         this.store.set('stats.game.stats', gameStats);
     }
 
+    setMatchStats(matchStats: MatchStats | undefined | null) {
+        if (!matchStats) return
+        this.store.set('stats.match.stats', matchStats);
+    }
+
     initListeners() {
         this.store.onDidChange("stats.scene", (value) => {
             this.messageHandler.sendMessage("live-stats-scene", value)
@@ -89,6 +94,9 @@ export class ElectronLiveStatsStore {
         })
         this.store.onDidChange(`stats.game.stats`, async (value) => {
             this.messageHandler.sendMessage('post-game-stats', value);
+        })
+        this.store.onDidChange(`stats.match.stats`, async (value) => {
+            this.messageHandler.sendMessage('post-match-stats', value);
         })
     }
 }

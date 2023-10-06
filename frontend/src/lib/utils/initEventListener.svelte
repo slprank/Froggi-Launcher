@@ -76,6 +76,10 @@
 			console.log({ stats });
 			postGame.set(stats);
 		});
+		_eventEmitter.on('post-match-stats', (stats: GameStats) => {
+			console.log({ stats });
+			postGame.set(stats);
+		});
 		_eventEmitter.on('recent-games', (matches: any) => {
 			console.log({ matches });
 			recentGames.set(matches);
