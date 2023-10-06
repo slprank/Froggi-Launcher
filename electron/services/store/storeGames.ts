@@ -57,8 +57,8 @@ export class ElectronGamesStore {
         if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
         if (!matches) return;
-        matches.push(gameStats)
-        this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, matches);
+        this.addRecentGames(gameStats)
+        this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, [...matches, gameStats]);
     }
 
     getGameMatch(matchId: string): GameStats[] | undefined {
@@ -83,13 +83,23 @@ export class ElectronGamesStore {
         return playerGame[mode]
     }
 
-    setRecentGames(game: GameStats) {
+    getRecentGames() {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        let games = this.store.get(`player.${connectCode}.game.recent`) as GameStats[];
-        if (!games) return;
-        games.push(game)
-        this.store.set(`player.${connectCode}.game.recent`, games)
+        this.store.get(`player.${connectCode}.game.recent`)
+    }
+
+    addRecentGames(game: GameStats) {
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        const games = this.store.get(`player.${connectCode}.game.recent`) as GameStats[] ?? [];
+        this.store.set(`player.${connectCode}.game.recent`, [...games, game])
+    }
+
+    clearRecentGames() {
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        if (!connectCode) return;
+        this.store.set(`player.${connectCode}.game.recent`, [])
     }
 
     private getAllSets(): Sets | undefined {

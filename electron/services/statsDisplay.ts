@@ -92,6 +92,7 @@ export class StatsDisplay {
 		this.storeLiveStats.setGameSettings(settings);
 
 		if (gameNumber !== 1) return;
+		this.storeGames.clearRecentGames()
 		this.storeGames.setGameScore([0, 0]);
 
 		if (!currentPlayer.rank?.current) return
@@ -111,10 +112,10 @@ export class StatsDisplay {
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameStats)
-		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeGames.setGameMatch(gameStats)
-		this.storeLiveStats.setGameFrame(null)
-		setTimeout(() => this.messageHandler.sendMessage('game-frame', null), SCENE_TRANSITION_DELAY);
+		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
+		this.storeLiveStats.deleteGameFrame()
+		setTimeout(() => this.messageHandler.sendMessage('game-frame', undefined), SCENE_TRANSITION_DELAY);
 		this.handleGameSet(settings.matchInfo?.matchId)
 	}
 

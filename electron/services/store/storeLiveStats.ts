@@ -40,6 +40,10 @@ export class ElectronLiveStatsStore {
         this.store.set('stats.game.frame', frameEntry)
     }
 
+    deleteGameFrame() {
+        this.store.delete('stats.game.frame')
+    }
+
     getGameState(): InGameState | undefined {
         return this.store.get("stats.game.state") as InGameState
     }
