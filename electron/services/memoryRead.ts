@@ -1,9 +1,11 @@
 import { ElectronLog } from 'electron-log';
 import { inject, singleton } from 'tsyringe';
 import EventEmitter from 'events';
+declare function require(name: string): any;
 
 @singleton()
 export class MemoryRead {
+	node_memory_reader = require("node_memory_reader");
 	constructor(
 		@inject("ElectronLog") private log: ElectronLog,
 		@inject("EventEmitter") private eventEmitter: EventEmitter,
@@ -18,10 +20,8 @@ export class MemoryRead {
 	}
 
 	runMemoryRead() {
-		this.log.info('Starting MemoryRead.cs');
-		// Run C# script that 
-		// Connects to: ws://localhost:3100
-		// Start memory reads
+		const memory: number[] = this.node_memory_reader.read_memory(1237, 0x000000016fdff3c0, 20);
+		console.log("memory", memory)
 	}
 
 	initMemoryReadEvents = () => {
