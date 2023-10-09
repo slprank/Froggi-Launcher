@@ -14,13 +14,9 @@ export class MemoryRead {
 		@inject('EventEmitter') private eventEmitter: EventEmitter,
 	) { }
 
-	async initMemoryRead() {
+	async runMemoryRead() {
 		if (this.isMac) return;
 		this.log.info('Initializing Memory Read');
-		this.runMemoryRead();
-	}
-
-	async runMemoryRead() {
 		const pid = await this.getPid()
 		if (!pid) return;
 		this.memoryReadInterval = setInterval(() => {
@@ -45,7 +41,7 @@ export class MemoryRead {
 		clearInterval(this.memoryReadInterval)
 	}
 
-	async getPid(): Promise<number> {
+	private async getPid(): Promise<number> {
 		this.log.info("Looking for PID")
 		const exec = require('child_process').exec;
 		const command = this.isWindows
