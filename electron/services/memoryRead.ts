@@ -3,11 +3,11 @@ import { inject, singleton } from 'tsyringe';
 import EventEmitter from 'events';
 import { readMemoryWithDataSize, DataTypeSize } from "node_memory_reader";
 import os from 'os';
+import { getProcessPid } from '../utils/dolphinProcess';
 
 @singleton()
 export class MemoryRead {
 	private memoryReadInterval: NodeJS.Timeout
-	private isWindows = os.platform() === 'win32';
 	private isMac = os.platform() === 'darwin';
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
@@ -43,24 +43,15 @@ export class MemoryRead {
 
 	private async getPid(): Promise<number> {
 		this.log.info("Looking for PID")
-		const exec = require('child_process').exec;
-		const command = this.isWindows
-			? `(Get-Process | Where-Object { $_.ProcessName.ToLower() -like "*dolphin*".ToLower() }).Id`
-			: `pgrep -o Dolphin`
-		const shell = this.isWindows ? 'powershell.exe' : "/bin/bash"
-
 		let pidInterval: NodeJS.Timeout;
-		const pid = await new Promise<number>(resolve => pidInterval = setInterval(() => {
-			return exec(command, { 'shell': shell }, (err: Error, stdout: string, stderr: Error) => {
-				if (err) this.log.error(err)
-				if (stderr) this.log.error(stderr);
-				if (stdout) {
-					clearInterval(pidInterval)
-					resolve(Number(stdout))
-				}
-			})
+		const pid = await new Promise<number>(resolve => pidInterval = setInterval(async () => {
+			const pid = await getProcessPid()
+			if (!pid) return;
+			clearInterval(pidInterval)
+			resolve(pid)
+
 		}, 1000))
-		this.log.info("Found PID:", pid)
+		this.log.info("PID Found:", pid)
 		return pid
 	}
 }
