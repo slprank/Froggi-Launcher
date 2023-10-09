@@ -24,12 +24,12 @@ export class MemoryRead {
 
 	async runMemoryRead() {
 		const pid = await this.getPid()
-		console.log("pid", pid)
 		if (!pid) return;
 		this.memoryReadInterval = setInterval(() => {
+			// TODO: Create .ts file with controller inputs and addresses
 			try {
 				const memory: number[] = readMemoryWithDataSize(
-					Number(pid),
+					pid,
 					0x804c1fac + 0x44 * 0,
 					20,
 					DataTypeSize.B32
@@ -43,7 +43,7 @@ export class MemoryRead {
 	}
 
 	async getPid(): Promise<number> {
-
+		this.log.info("Looking for PID")
 		const exec = require('child_process').exec;
 		const command = this.isWindows
 			? `(Get-Process | Where-Object { $_.ProcessName.ToLower() -like "*dolphin*".ToLower() }).Id`
@@ -66,6 +66,7 @@ export class MemoryRead {
 				this.log.error(err)
 			}
 		}, 1000))
+		this.log.info("Found PID:", pid)
 		return pid
 	}
 }
