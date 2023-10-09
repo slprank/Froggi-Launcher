@@ -17,6 +17,7 @@ import { ElectronSettingsStore } from './store/storeSettings';
 import { findPlayKey } from '../utils/playkey';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import os from 'os';
+import { MemoryRead } from './memoryRead';
 
 @singleton()
 export class SlippiJs {
@@ -32,6 +33,7 @@ export class SlippiJs {
 		@inject(ElectronLiveStatsStore) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
 		@inject(ElectronCurrentPlayerStore) private storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject(MemoryRead) private memoryRead: MemoryRead,
 	) {
 		this.initSlippiJs()
 	}
@@ -94,17 +96,16 @@ export class SlippiJs {
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Disconnected)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin)
 		this.startProcessSearchInterval()
+		this.memoryRead.stopMemoryRead()
 	}
 
 	private handleConnecting() {
 		this.log.info("Dolphin Connecting")
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connecting)
-		clearInterval(this.dolphinProcessInterval)
 	}
 
 	private async handleConnected() {
 		this.log.info("Dolphin Connected")
-		clearInterval(this.dolphinProcessInterval)
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connected)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu)
 		const connectCode = (await findPlayKey()).connectCode
@@ -112,21 +113,23 @@ export class SlippiJs {
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode)
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile)
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile)
+		this.memoryRead.initMemoryRead()
 	}
 
 	private async startProcessSearchInterval() {
-		this.log.info("Looking For Dolphin Process")
+		const exec = require('child_process').exec;
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Searching)
-		this.dolphinProcessInterval = setInterval(async () => {
-			const exec = require('child_process').exec;
-			const command = this.isWindows ? "Get-Process" : "ps -ax | grep Dolphin"
+		this.log.info("Looking For Dolphin Process")
+		const dolphinProcessInterval = setInterval(async () => {
+			const command = this.isWindows
+				? `(Get-Process | Where-Object { $_.ProcessName.ToLower() -like "*dolphin*".ToLower() }).Id`
+				: `pgrep -o Dolphin`
 			const shell = this.isWindows ? 'powershell.exe' : "/bin/bash"
-			const include = this.isWindows ? "dolphin" : "slippi dolphin"
-			exec(command, { 'shell': shell }, (err: Error, stdout: string, stderr: Error) => {
-				const includesDolphin = stdout.toLowerCase().includes(include)
-				if (err) this.log.error(err)
-				if (stderr) this.log.error(stderr);
-				if (includesDolphin) this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
+			exec(command, { 'shell': shell }, (_: Error, stdout: string) => {
+				if (stdout) {
+					this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
+					clearInterval(dolphinProcessInterval)
+				}
 			})
 		}, 1000)
 	}

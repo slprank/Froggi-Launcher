@@ -6,15 +6,13 @@ import os from 'os';
 
 @singleton()
 export class MemoryRead {
-	memoryReadInterval: NodeJS.Timeout
-	isWindows = os.platform() === 'win32';
-	isMac = os.platform() === 'darwin';
+	private memoryReadInterval: NodeJS.Timeout
+	private isWindows = os.platform() === 'win32';
+	private isMac = os.platform() === 'darwin';
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('EventEmitter') private eventEmitter: EventEmitter,
-	) {
-		this.initMemoryRead();
-	}
+	) { }
 
 	async initMemoryRead() {
 		if (this.isMac) return;
@@ -42,6 +40,11 @@ export class MemoryRead {
 		}, 8);
 	}
 
+	stopMemoryRead() {
+		this.log.info("Stopping memory read")
+		clearInterval(this.memoryReadInterval)
+	}
+
 	async getPid(): Promise<number> {
 		this.log.info("Looking for PID")
 		const exec = require('child_process').exec;
@@ -52,19 +55,14 @@ export class MemoryRead {
 
 		let pidInterval: NodeJS.Timeout;
 		const pid = await new Promise<number>(resolve => pidInterval = setInterval(() => {
-			try {
-				return exec(command, { 'shell': shell }, (err: Error, stdout: string, stderr: Error) => {
-					console.log("stdout", stdout)
-					if (err) this.log.error(err)
-					if (stderr) this.log.error(stderr);
-					if (stdout) {
-						clearInterval(pidInterval)
-						resolve(Number(stdout))
-					}
-				})
-			} catch (err) {
-				this.log.error(err)
-			}
+			return exec(command, { 'shell': shell }, (err: Error, stdout: string, stderr: Error) => {
+				if (err) this.log.error(err)
+				if (stderr) this.log.error(stderr);
+				if (stdout) {
+					clearInterval(pidInterval)
+					resolve(Number(stdout))
+				}
+			})
 		}, 1000))
 		this.log.info("Found PID:", pid)
 		return pid

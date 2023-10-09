@@ -16,7 +16,6 @@ import { ObsWebSocket } from './services/obs';
 import { StatsDisplay } from './services/statsDisplay';
 import { SlippiJs } from './services/slippi';
 import { SlpParser, SlpStream } from '@slippi/slippi-js';
-import { MemoryRead } from './services/memoryRead';
 import { DiscordRpc } from './services/discord';
 
 try {
@@ -137,7 +136,6 @@ try {
 
 			container.resolve(DiscordRpc)
 			container.resolve(MessageHandler)
-			container.resolve(MemoryRead)
 			container.resolve(StatsDisplay)
 			container.resolve(ObsWebSocket)
 			container.resolve(SlippiJs)
