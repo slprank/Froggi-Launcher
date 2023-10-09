@@ -45,6 +45,7 @@ export class DiscordRpc {
 		});
 
 		this.eventEmitter.on('electron-game-settings', (settings: GameStartType) => {
+			if (!settings) return;
 			const mode = this.storeLiveStats.getGameSettings()?.matchInfo.mode ?? 'Local';
 			const score = this.storeGames.getGameScore() ?? [0, 0];
 
@@ -86,7 +87,7 @@ export class DiscordRpc {
 
 			const timer = futureTimerEpoch(
 				8 * 60 * 1000 -
-					(8 * 60 * 1000 * (frame.frame > 0 ? frame.frame : 0)) / (60 * 60 * 8),
+				(8 * 60 * 1000 * (frame.frame > 0 ? frame.frame : 0)) / (60 * 60 * 8),
 			);
 
 			this.activity = {
@@ -132,9 +133,8 @@ export class DiscordRpc {
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);
 			const player2 = players?.at(1);
-			const state = `${player1?.connectCode ?? 'Player1'} - ${
-				player2?.connectCode ?? 'Player2'
-			} (${score?.join(' - ')})`;
+			const state = `${player1?.connectCode ?? 'Player1'} - ${player2?.connectCode ?? 'Player2'
+				} (${score?.join(' - ')})`;
 
 			this.activity = {
 				...this.activity,
@@ -163,8 +163,7 @@ export class DiscordRpc {
 			smallImageKey: `${currentPlayer?.rank?.current?.rank.toLowerCase().replace(' ', '_')}`,
 			state:
 				state ??
-				`${currentPlayer?.rank?.current?.rank || 'No rank'} - ${
-					currentPlayer?.rank?.current?.rating || 'No rating'
+				`${currentPlayer?.rank?.current?.rank || 'No rank'} - ${currentPlayer?.rank?.current?.rating || 'No rating'
 				}`,
 		};
 		this.updateActivity();
@@ -201,9 +200,8 @@ const buttonBuilder = (
 	label += stocks !== null ? ` - Stock: ${stocks}` : '- 0';
 	label += percent !== null ? ` - ${percent.toFixed()}%` : '';
 
-	const url = `https://slippi.gg${
-		connectCode ? `/user/${connectCode.replace('#', '-')}` : '/leaderboards'
-	}`;
+	const url = `https://slippi.gg${connectCode ? `/user/${connectCode.replace('#', '-')}` : '/leaderboards'
+		}`;
 	return {
 		label: label,
 		url: url,
