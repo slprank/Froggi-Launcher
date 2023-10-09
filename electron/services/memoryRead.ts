@@ -24,6 +24,7 @@ export class MemoryRead {
 
 	async runMemoryRead() {
 		const pid = await this.getPid()
+		console.log("pid", pid)
 		if (!pid) return;
 		this.memoryReadInterval = setInterval(() => {
 			try {
@@ -42,27 +43,24 @@ export class MemoryRead {
 	}
 
 	async getPid(): Promise<number> {
-		const dolphinProcessNames = ["Dolphin", "dolphin", "Slippi Dolphin", "slippi dolphin"]
 
 		const exec = require('child_process').exec;
-		const commands = dolphinProcessNames.map((name) => this.isWindows
-			? `(Get-Process | Where-Object { $_.ProcessName -eq "${name}" }).Id`
-			: `pgrep -o ${name}`)
+		const command = this.isWindows
+			? `(Get-Process | Where-Object { $_.ProcessName.ToLower() -like "*dolphin*".ToLower() }).Id`
+			: `pgrep -o Dolphin`
 		const shell = this.isWindows ? 'powershell.exe' : "/bin/bash"
 
 		let pidInterval: NodeJS.Timeout;
 		const pid = await new Promise<number>(resolve => pidInterval = setInterval(() => {
 			try {
-				commands.forEach((command: string) => {
-					return exec(command, { 'shell': shell }, (err: Error, stdout: string, stderr: Error) => {
-						console.log("stdout", stdout)
-						if (err) this.log.error(err)
-						if (stderr) this.log.error(stderr);
-						if (stdout) {
-							clearInterval(pidInterval)
-							resolve(Number(stdout))
-						}
-					})
+				return exec(command, { 'shell': shell }, (err: Error, stdout: string, stderr: Error) => {
+					console.log("stdout", stdout)
+					if (err) this.log.error(err)
+					if (stderr) this.log.error(stderr);
+					if (stdout) {
+						clearInterval(pidInterval)
+						resolve(Number(stdout))
+					}
 				})
 			} catch (err) {
 				this.log.error(err)
