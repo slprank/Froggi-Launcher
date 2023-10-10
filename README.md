@@ -5,7 +5,7 @@
 ## Installation
 
 1. Make sure to have [Node](https://nodejs.org/en) installed
-2. Run `npm run install` in root directory (Custom command for installing svelte+electron dependencies)
+2. Run `npm run install:all` in root directory (Custom command for installing svelte+electron dependencies)
 3. Run `npm run dev` to run the application
 
 ## Electron
