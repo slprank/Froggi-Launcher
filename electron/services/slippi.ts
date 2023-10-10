@@ -18,6 +18,7 @@ import { findPlayKey } from '../utils/playkey';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import os from 'os';
 import { MemoryRead } from './memoryRead';
+import { isDolphinRunning } from '../utils/dolphinProcess';
 
 @singleton()
 export class SlippiJs {
@@ -117,20 +118,13 @@ export class SlippiJs {
 	}
 
 	private async startProcessSearchInterval() {
-		const exec = require('child_process').exec;
 		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Searching)
 		this.log.info("Looking For Dolphin Process")
 		const dolphinProcessInterval = setInterval(async () => {
-			const command = this.isWindows
-				? `(Get-Process | Where-Object { $_.ProcessName.ToLower() -like "*dolphin*".ToLower() }).Id`
-				: `pgrep -o Dolphin`
-			const shell = this.isWindows ? 'powershell.exe' : "/bin/bash"
-			exec(command, { 'shell': shell }, (_: Error, stdout: string) => {
-				if (stdout) {
-					this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
-					clearInterval(dolphinProcessInterval)
-				}
-			})
+			if (await isDolphinRunning()) {
+				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT)
+				clearInterval(dolphinProcessInterval)
+			}
 		}, 1000)
 	}
 }
