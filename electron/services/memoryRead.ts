@@ -17,16 +17,17 @@ export class MemoryRead {
 	async runMemoryRead() {
 		if (!this.isWindows) return;
 		this.log.info('Initializing Memory Read');
-		try {
-			const memory = new DolphinMemory();
-			this.memoryReadInterval = setInterval(() => {
+		const memory = new DolphinMemory();
+		this.memoryReadInterval = setInterval(() => {
+			try {
 				const value = memory.read(0x8049e6c8 + 0x88 + 0x03, ByteSize.U8);
 				this.messageHandler.sendMessage('test-css-value', value);
 				console.log('memory', value);
-			}, 1000);
-		} catch (err) {
-			clearInterval(this.memoryReadInterval);
-		}
+			} catch (err) {
+				this.log.error(err);
+				clearInterval(this.memoryReadInterval);
+			}
+		}, 1000);
 	}
 
 	stopMemoryRead() {
