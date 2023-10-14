@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { app, BrowserWindow, IpcMain, ipcMain } from 'electron';
 import contextMenu from 'electron-context-menu';
-import { container } from 'tsyringe'
+import { container } from 'tsyringe';
 import getAppDataPath from 'appdata-path';
 import log, { ElectronLog } from 'electron-log';
 import serve from 'electron-serve';
@@ -29,7 +29,7 @@ try {
 	const slpStream = new SlpStream();
 	const eventEmitter = new EventEmitter();
 
-	setLoggingPath()
+	setLoggingPath();
 
 	try {
 		require('electron-reloader')(module);
@@ -38,7 +38,7 @@ try {
 	}
 	const serveURL = serve({ directory: '.' });
 	const dev = !app.isPackaged;
-	const port = dev ? "5173" : `3200`;
+	const port = dev ? '5173' : `3200`;
 
 	let mainWindow: any;
 
@@ -74,7 +74,6 @@ try {
 		});
 
 		mainWindow.on('close', () => {
-
 			windowState.saveState(mainWindow);
 		});
 
@@ -97,7 +96,7 @@ try {
 			{
 				label: 'Dev',
 				click: () => {
-					mainWindow.openDevTools()
+					mainWindow.openDevTools();
 				},
 			},
 		],
@@ -115,7 +114,7 @@ try {
 	function createMainWindow() {
 		mainWindow = createWindow();
 		mainWindow.once('close', () => {
-			eventEmitter.emit("update-install")
+			eventEmitter.emit('update-install');
 			mainWindow = null;
 		});
 
@@ -123,23 +122,23 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', async () => {
-			container.register<BrowserWindow>("BrowserWindow", { useValue: mainWindow });
-			container.register<ElectronLog>("ElectronLog", { useValue: log });
-			container.register<EventEmitter>("EventEmitter", { useValue: eventEmitter });
-			container.register<IpcMain>("IpcMain", { useValue: ipcMain });
-			container.register<SlpParser>("SlpParser", { useValue: slpParser });
-			container.register<SlpStream>("SlpStream", { useValue: slpStream });
+			container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
+			container.register<ElectronLog>('ElectronLog', { useValue: log });
+			container.register<EventEmitter>('EventEmitter', { useValue: eventEmitter });
+			container.register<IpcMain>('IpcMain', { useValue: ipcMain });
+			container.register<SlpParser>('SlpParser', { useValue: slpParser });
+			container.register<SlpStream>('SlpStream', { useValue: slpStream });
 
-			container.register<string>("RootDir", { useValue: `${__dirname}/../..` });
-			container.register<string>("Port", { useValue: port });
-			container.register<boolean>("Dev", { useValue: dev });
+			container.register<string>('RootDir', { useValue: `${__dirname}/../..` });
+			container.register<string>('Port', { useValue: port });
+			container.register<boolean>('Dev', { useValue: dev });
 
-			container.resolve(DiscordRpc)
-			container.resolve(MessageHandler)
-			container.resolve(StatsDisplay)
-			container.resolve(ObsWebSocket)
-			container.resolve(SlippiJs)
-			container.resolve(AutoUpdater)
+			container.resolve(DiscordRpc);
+			container.resolve(MessageHandler);
+			container.resolve(StatsDisplay);
+			container.resolve(ObsWebSocket);
+			container.resolve(SlippiJs);
+			container.resolve(AutoUpdater);
 		});
 
 		// Find a better solution to init autoUpdate
@@ -150,7 +149,7 @@ try {
 
 	app.once('ready', createMainWindow);
 	app.on('activate', () => {
-		console.log("active")
+		console.log('active');
 		if (!mainWindow) {
 			createMainWindow();
 		}
@@ -161,10 +160,10 @@ try {
 
 	function setLoggingPath() {
 		try {
-			const appDataPath = getAppDataPath("froggi");
+			const appDataPath = getAppDataPath('froggi');
 			log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
 		} catch (err) {
-			log.error(err)
+			log.error(err);
 		}
 	}
 } catch (err) {

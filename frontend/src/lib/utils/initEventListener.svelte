@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
 	import type { AutoUpdater, Obs, Overlay } from '$lib/models/types';
 	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
@@ -27,6 +28,9 @@
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.setMaxListeners(30);
+		_eventEmitter.on('test-css-value', (value: number) => {
+			notifications.warning('CSS Value', 1000);
+		});
 		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
 			console.log({ status });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
