@@ -54,7 +54,7 @@ export class MessageHandler {
 		this.webSockets = [];
 
 		this.initElectronMessageHandler();
-		if (!this.dev) this.initHtml();
+		if (!dev) this.initHtml();
 		this.initWebSocket();
 		this.initEventHandlers();
 		this.initGlobalEventListeners();
@@ -62,12 +62,14 @@ export class MessageHandler {
 
 	initHtml() {
 		this.log.info('Initializing HTML');
+		console.log(this.dev);
+		console.log(this.rootDir);
 		try {
 			this.app.get('*', (_: any, res: any) => {
-				res.sendFiles(this.rootDir + '/build/index.html');
+				res.resolve(this.rootDir + '/build/index.html');
 			});
 
-			this.server.listen(this.port, (_: any) => {
+			this.server.listen(3200, (_: any) => {
 				console.log(`listening on *:${this.port}`);
 			});
 		} catch (err) {

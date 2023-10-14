@@ -29,6 +29,7 @@
 		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.setMaxListeners(30);
 		_eventEmitter.on('test-css-value', (value: number) => {
+			console.log('memory value:', value);
 			notifications.warning('CSS Value', 1000);
 		});
 		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {

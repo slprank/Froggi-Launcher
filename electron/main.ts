@@ -128,8 +128,9 @@ try {
 			container.register<IpcMain>('IpcMain', { useValue: ipcMain });
 			container.register<SlpParser>('SlpParser', { useValue: slpParser });
 			container.register<SlpStream>('SlpStream', { useValue: slpStream });
-
-			container.register<string>('RootDir', { useValue: `${__dirname}/../..` });
+			container.register<string>('RootDir', {
+				useValue: `${__dirname}/../..`.replaceAll('\\', '/'),
+			});
 			container.register<string>('Port', { useValue: port });
 			container.register<boolean>('Dev', { useValue: dev });
 
