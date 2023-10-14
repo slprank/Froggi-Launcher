@@ -10,7 +10,7 @@
 
 	$: player1Index = $currentPlayers.at(0)?.playerIndex;
 
-	$: player1ActionCounts = $postGame.postGameStats?.actionCounts[player1Index ?? 0];
+	$: player1ActionCounts = $postGame?.postGameStats?.actionCounts[player1Index ?? 0];
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountAirDodge}

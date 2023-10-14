@@ -37,17 +37,17 @@
 	export const autoUpdater = writable<AutoUpdater>({
 		status: AutoUpdaterStatus.LookingForUpdate,
 	} as AutoUpdater);
-	export const currentPlayer = writable<CurrentPlayer>();
+	export const currentPlayer = writable<CurrentPlayer>({} as CurrentPlayer);
 	export const currentPlayers = writable<Player[]>();
-	export const dolphinState = writable<DolphinConnectionState>();
-	export const gameFrame = writable<FrameEntryType | null>();
+	export const dolphinState = writable<DolphinConnectionState>(DolphinConnectionState.Searching);
+	export const gameFrame = writable<FrameEntryType | null>({} as FrameEntryType);
 	export const gameScore = writable<number[]>([0, 0]);
 	export const gameState = writable<InGameState>(InGameState.Inactive);
-	export const gameSettings = writable<GameStartType>();
-	export const postGame = writable<GameStats>();
-	export const recentRankedSets = writable<any[]>();
-	export const recentGames = writable<GameStats[]>();
-	export const sessionStats = writable<any>();
+	export const gameSettings = writable<GameStartType>({} as GameStartType);
+	export const postGame = writable<GameStats>({} as GameStats);
+	export const recentRankedSets = writable<any[]>(); // TODO
+	export const recentGames = writable<GameStats[]>([]);
+	export const sessionStats = writable<any>(); // TODO
 	export const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 
 	export const obs = writable<Obs>();
