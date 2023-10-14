@@ -19,13 +19,13 @@ export class MemoryRead {
 		this.log.info('Initializing Memory Read');
 		try {
 			const memory = new DolphinMemory();
-			setInterval(() => {
-				const value = memory.read(0x8043208b, ByteSize.U8);
+			this.memoryReadInterval = setInterval(() => {
+				const value = memory.read(0x8049e6c8 + 0x88 + 0x03, ByteSize.U8);
 				this.messageHandler.sendMessage('test-css-value', value);
 				console.log('memory', value);
 			}, 1000);
 		} catch (err) {
-			console.log(err);
+			clearInterval(this.memoryReadInterval);
 		}
 	}
 
