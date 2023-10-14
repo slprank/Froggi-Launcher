@@ -66,7 +66,7 @@ export class MessageHandler {
 		console.log(this.rootDir);
 		try {
 			this.app.get('*', (_: any, res: any) => {
-				res.resolve(this.rootDir + '/build/index.html');
+				res.sendFile(this.rootDir + '/build/index.html');
 			});
 
 			this.server.listen(3200, (_: any) => {
