@@ -13,10 +13,12 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronSessionStore } from './store/storeSession';
 import { ElectronDolphinStore } from './store/storeDolphin';
+import path from 'path';
 
 @singleton()
 export class MessageHandler {
 	app: any;
+	express: any;
 	server: any;
 	webSocketServer: any;
 	webSockets: WebSocket[];
@@ -40,14 +42,13 @@ export class MessageHandler {
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 	) {
 		this.log.info('Initializing Message Handler');
-		const path = require('path');
-		const express = require('express');
+		this.express = require('express');
 		const cors = require('cors');
 		const http = require('http');
 		const { WebSocketServer } = require('ws');
 
-		this.app = express();
-		this.app.use(express.static(path.join(this.rootDir + '/build')));
+		this.app = this.express();
+
 		this.app.use(cors());
 		this.server = http.createServer(this.app);
 		this.webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
@@ -64,10 +65,10 @@ export class MessageHandler {
 		this.log.info('Initializing HTML');
 		console.log(this.dev);
 		console.log(this.rootDir);
+		const staticServe = this.express.static(path.join(this.rootDir + '/build'));
 		try {
-			this.app.get('*', (_: any, res: any) => {
-				res.sendFile(this.rootDir + '/build/index.html');
-			});
+			this.app.use('/', staticServe);
+			this.app.use('*', staticServe);
 
 			this.server.listen(3200, (_: any) => {
 				console.log(`listening on *:${this.port}`);
