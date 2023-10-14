@@ -1,19 +1,18 @@
-import { BrowserWindow, IpcMain, dialog } from "electron";
-import { ElectronLog } from "electron-log";
-import EventEmitter from "events";
-import { delay, inject, singleton } from "tsyringe";
-import { ElectronGamesStore } from "./store/storeGames";
-import { ElectronLiveStatsStore } from "./store/storeLiveStats";
-import { ElectronSettingsStore } from "./store/storeSettings";
-import { ElectronObsStore } from "./store/storeObs";
+import { BrowserWindow, IpcMain, dialog } from 'electron';
+import { ElectronLog } from 'electron-log';
+import EventEmitter from 'events';
+import { delay, inject, singleton } from 'tsyringe';
+import { ElectronGamesStore } from './store/storeGames';
+import { ElectronLiveStatsStore } from './store/storeLiveStats';
+import { ElectronSettingsStore } from './store/storeSettings';
+import { ElectronObsStore } from './store/storeObs';
 import fs from 'fs';
-import { LiveStatsScene } from "../../frontend/src/lib/models/enum";
+import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
-import { ElectronCurrentPlayerStore } from "./store/storeCurrentPlayer";
-import { ElectronPlayersStore } from "./store/storePlayers";
-import { ElectronSessionStore } from "./store/storeSession";
-import { ElectronDolphinStore } from "./store/storeDolphin";
-
+import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
+import { ElectronPlayersStore } from './store/storePlayers';
+import { ElectronSessionStore } from './store/storeSession';
+import { ElectronDolphinStore } from './store/storeDolphin';
 
 @singleton()
 export class MessageHandler {
@@ -23,22 +22,22 @@ export class MessageHandler {
 	webSockets: WebSocket[];
 
 	constructor(
-		@inject("Dev") private dev: boolean,
-		@inject("BrowserWindow") private mainWindow: BrowserWindow,
-		@inject("ElectronLog") private log: ElectronLog,
-		@inject("EventEmitter") private eventEmitter: EventEmitter,
-		@inject("IpcMain") private ipcMain: IpcMain,
-		@inject("Port") private port: string,
-		@inject("RootDir") private rootDir: string,
+		@inject('Dev') private dev: boolean,
+		@inject('BrowserWindow') private mainWindow: BrowserWindow,
+		@inject('ElectronLog') private log: ElectronLog,
+		@inject('EventEmitter') private eventEmitter: EventEmitter,
+		@inject('IpcMain') private ipcMain: IpcMain,
+		@inject('Port') private port: string,
+		@inject('RootDir') private rootDir: string,
 		@inject(delay(() => ElectronDolphinStore)) private storeDolphin: ElectronDolphinStore,
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
 		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject(delay(() => ElectronCurrentPlayerStore))
+		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(delay(() => ElectronSessionStore)) private storeSession: ElectronSessionStore,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
-
 	) {
 		this.log.info('Initializing Message Handler');
 		const path = require('path');
@@ -57,15 +56,15 @@ export class MessageHandler {
 		this.initElectronMessageHandler();
 		if (!this.dev) this.initHtml();
 		this.initWebSocket();
-		this.initEventHandlers()
+		this.initEventHandlers();
 		this.initGlobalEventListeners();
 	}
 
 	initHtml() {
-		this.log.info("Initializing HTML")
+		this.log.info('Initializing HTML');
 		try {
 			this.app.get('*', (_: any, res: any) => {
-				res.resolve(this.rootDir + '/build/index.html');
+				res.sendFiles(this.rootDir + '/build/index.html');
 			});
 
 			this.server.listen(this.port, (_: any) => {
@@ -78,7 +77,8 @@ export class MessageHandler {
 
 	private initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
-			let parse = JSON.parse(data); for (const [key, value] of Object.entries(parse)) {
+			let parse = JSON.parse(data);
+			for (const [key, value] of Object.entries(parse)) {
 				this.eventEmitter.emit(key, value);
 			}
 		});
@@ -90,9 +90,9 @@ export class MessageHandler {
 	private initWebSocket() {
 		try {
 			this.webSocketServer.on('connection', (socket: WebSocket) => {
-				this.log.info("New WebSocket Connection")
+				this.log.info('New WebSocket Connection');
 				this.webSockets.push(socket);
-				this.receiveMessage(socket)
+				this.receiveMessage(socket);
 				this.initData(socket);
 			});
 		} catch (err) {
@@ -108,11 +108,11 @@ export class MessageHandler {
 			}
 		});
 		socket.addEventListener('close', () => {
-			this.log.info("Closed WebSocket Connection")
-			socket.removeEventListener("message")
+			this.log.info('Closed WebSocket Connection');
+			socket.removeEventListener('message');
 			this.webSockets = this.webSockets.filter((s: any) => s != socket);
 		});
-	}
+	};
 
 	sendMessage(topic: string, payload: any) {
 		this.mainWindow.webContents.send(
@@ -128,7 +128,7 @@ export class MessageHandler {
 				}),
 			);
 		});
-		this.eventEmitter.emit(`electron-${topic}`, payload)
+		this.eventEmitter.emit(`electron-${topic}`, payload);
 	}
 
 	private sendInitMessage(socket: any, topic: string, payload: any) {
@@ -146,17 +146,13 @@ export class MessageHandler {
 	// Any data sent to frontend should be saved and initialized
 	// Leaderboard data should be stored as well
 	private initData(socket: WebSocket | undefined = undefined) {
+		this.sendInitMessage(socket, 'current-player', this.storeCurrentPlayer.getCurrentPlayer());
+		this.sendInitMessage(socket, 'current-players', this.storePlayers.getCurrentPlayers());
 		this.sendInitMessage(
 			socket,
-			'current-player',
-			this.storeCurrentPlayer.getCurrentPlayer(),
+			'dolphin-connection-state',
+			this.storeDolphin.getDolphinConnectionState(),
 		);
-		this.sendInitMessage(
-			socket,
-			'current-players',
-			this.storePlayers.getCurrentPlayers(),
-		);
-		this.sendInitMessage(socket, 'dolphin-connection-state', this.storeDolphin.getDolphinConnectionState());
 		this.sendInitMessage(socket, 'game-frame', this.storeLiveStats.getGameFrame());
 		this.sendInitMessage(socket, 'game-score', this.storeGames.getGameScore());
 		this.sendInitMessage(socket, 'game-settings', this.storeLiveStats.getGameSettings());
@@ -173,10 +169,7 @@ export class MessageHandler {
 	private initEventHandlers() {
 		this.eventEmitter.on('update-custom-overlay', async (overlay) => {
 			this.storeObs.updateCustomOverlay(overlay);
-			this.sendMessage(
-				'obs-custom-overlay',
-				this.storeObs.getCustomOverlayById(overlay.id),
-			);
+			this.sendMessage('obs-custom-overlay', this.storeObs.getCustomOverlayById(overlay.id));
 		});
 
 		this.eventEmitter.on('delete-custom-overlay', (overlayId) => {
@@ -211,7 +204,7 @@ export class MessageHandler {
 
 	private initGlobalEventListeners() {
 		this.eventEmitter.on('edit-layer-preview', (layerIndex: number) => {
-			this.sendMessage("edit-layer-preview", layerIndex)
+			this.sendMessage('edit-layer-preview', layerIndex);
 		});
 	}
 }
