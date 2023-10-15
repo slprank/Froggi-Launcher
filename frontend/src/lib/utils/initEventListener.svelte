@@ -28,7 +28,7 @@
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.setMaxListeners(30);
-		_eventEmitter.on('test-memory-value', (value: number) => {
+		_eventEmitter.on('test-memory-controller-value', (value: number) => {
 			console.log('memory value:', value);
 			notifications.warning(`Memory Value: ${value}`, 1000);
 		});

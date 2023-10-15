@@ -21,8 +21,11 @@ export class MemoryRead {
 		this.memoryReadInterval = setInterval(() => {
 			try {
 				const controllers = getControllerInputs(memory);
-				console.log(controllers);
-				this.messageHandler.sendMessage('test-css-value', controllers);
+				console.log(controllers[0].buttonsPressed.toString(2));
+				this.messageHandler.sendMessage(
+					'test-memory-controller-value',
+					controllers[0].buttonsPressed.toString(2),
+				);
 			} catch (err) {
 				this.log.error(err);
 				clearInterval(this.memoryReadInterval);
