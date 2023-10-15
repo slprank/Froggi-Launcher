@@ -31,12 +31,12 @@ const controllerValues = [
 	{ offset: 0x10, type: ByteSize.U32, name: ControllerInputType.ButtonsReleased },
 	{ offset: 0x1c, type: ByteSize.U8, name: ControllerInputType.AnalogByteL },
 	{ offset: 0x1d, type: ByteSize.U8, name: ControllerInputType.AnalogByteR },
-	{ offset: 0x20, type: ByteSize.U32, name: ControllerInputType.AnalogJoystickX },
-	{ offset: 0x24, type: ByteSize.U32, name: ControllerInputType.AnalogJoystickY },
-	{ offset: 0x28, type: ByteSize.U32, name: ControllerInputType.AnalogCStickX },
-	{ offset: 0x2c, type: ByteSize.U32, name: ControllerInputType.AnalogCStickY },
-	{ offset: 0x30, type: ByteSize.U32, name: ControllerInputType.AnalogL },
-	{ offset: 0x34, type: ByteSize.U32, name: ControllerInputType.AnalogR },
+	{ offset: 0x20, type: ByteSize.U32Float, name: ControllerInputType.AnalogJoystickX },
+	{ offset: 0x24, type: ByteSize.U32Float, name: ControllerInputType.AnalogJoystickY },
+	{ offset: 0x28, type: ByteSize.U32Float, name: ControllerInputType.AnalogCStickX },
+	{ offset: 0x2c, type: ByteSize.U32Float, name: ControllerInputType.AnalogCStickY },
+	{ offset: 0x30, type: ByteSize.U32Float, name: ControllerInputType.AnalogL },
+	{ offset: 0x34, type: ByteSize.U32Float, name: ControllerInputType.AnalogR },
 	{ offset: 0x41, type: ByteSize.U8, name: ControllerInputType.IsPlugged },
 ];
 
