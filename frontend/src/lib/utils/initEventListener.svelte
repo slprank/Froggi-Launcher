@@ -28,9 +28,9 @@
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.setMaxListeners(30);
-		_eventEmitter.on('test-css-value', (value: number) => {
+		_eventEmitter.on('test-memory-value', (value: number) => {
 			console.log('memory value:', value);
-			notifications.warning(`CSS Value: ${value}`, 1000);
+			notifications.warning(`Memory Value: ${value}`, 1000);
 		});
 		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
 			console.log({ status });

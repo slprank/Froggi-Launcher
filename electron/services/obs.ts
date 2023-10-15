@@ -1,18 +1,18 @@
 // https://github.com/obs-websocket-community-projects/obs-websocket-js
 
-import EventEmitter from "events";
-import { ElectronLog } from "electron-log";
-import { inject, singleton } from "tsyringe";
-import OBSWebSocket from "obs-websocket-js";
+import EventEmitter from 'events';
+import { ElectronLog } from 'electron-log';
+import { inject, singleton } from 'tsyringe';
+import OBSWebSocket from 'obs-websocket-js';
 
 @singleton()
 export class ObsWebSocket {
 	constructor(
-		@inject("ElectronLog") private log: ElectronLog,
-		@inject("EventEmitter") private eventEmitter: EventEmitter,
-		//@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) {
-		this.log.info("Initializing OBS")
+		@inject('ElectronLog') private log: ElectronLog,
+		@inject('EventEmitter') private eventEmitter: EventEmitter,
+	) //@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+	{
+		this.log.info('Initializing OBS');
 		this.initObsWebSocket();
 	}
 

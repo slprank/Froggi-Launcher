@@ -18,156 +18,143 @@ import { SlippiJs } from './services/slippi';
 import { SlpParser, SlpStream } from '@slippi/slippi-js';
 import { DiscordRpc } from './services/discord';
 
+app.disableHardwareAcceleration();
+const isMac = os.platform() === 'darwin';
+const isWindows = os.platform() === 'win32';
+const isLinux = os.platform() === 'linux';
+
+log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
+
+const slpParser = new SlpParser();
+const slpStream = new SlpStream();
+const eventEmitter = new EventEmitter();
+
+setLoggingPath();
+
 try {
-	app.disableHardwareAcceleration();
-	const isMac = os.platform() === 'darwin';
-	const isWindows = os.platform() === 'win32';
-	const isLinux = os.platform() === 'linux';
+	require('electron-reloader')(module);
+} catch (e) {
+	log.error(e);
+}
+const serveURL = serve({ directory: '.' });
+const dev = !app.isPackaged;
+const port = dev ? '5173' : `3200`;
 
-	log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
+let mainWindow: any;
 
-	const slpParser = new SlpParser();
-	const slpStream = new SlpStream();
-	const eventEmitter = new EventEmitter();
+function createWindow() {
+	let windowState = windowStateManager({
+		defaultWidth: 800,
+		defaultHeight: 600,
+	});
 
-	setLoggingPath();
+	const mainWindow = new BrowserWindow({
+		backgroundColor: 'whitesmoke',
+		titleBarStyle: 'default',
+		minHeight: 600,
+		minWidth: 800,
+		webPreferences: {
+			contextIsolation: true,
+			nodeIntegration: true,
+			spellcheck: false,
+			devTools: true ?? dev,
+			preload: path.join(__dirname.replace(`\\`, '/'), '/preload.js'),
+		},
+		x: windowState.x,
+		y: windowState.y,
+		width: windowState.width,
+		height: windowState.height,
+	});
 
+	windowState.manage(mainWindow);
+
+	mainWindow.once('ready-to-show', () => {
+		mainWindow.show();
+		mainWindow.focus();
+	});
+
+	mainWindow.on('close', () => {
+		windowState.saveState(mainWindow);
+	});
+
+	return mainWindow;
+}
+
+contextMenu({
+	showLookUpSelection: false,
+	showSearchWithGoogle: false,
+	showCopyImage: false,
+	prepend: (defaultActions, params, browserWindow) => [
+		{
+			label: 'Run function',
+			click: () => {
+				mainWindow.webContents.send('reset-score');
+				log.info('Right click: 1');
+				console.log(defaultActions, params, browserWindow);
+			},
+		},
+		{
+			label: 'Dev',
+			click: () => {
+				mainWindow.openDevTools();
+			},
+		},
+	],
+});
+
+function loadVite(port: string) {
+	mainWindow.loadURL(`http://localhost:${port}`).catch((e: any) => {
+		log.error('Error loading URL, retrying', e);
+		setTimeout(() => {
+			loadVite(port);
+		}, 200);
+	});
+}
+
+function createMainWindow() {
+	mainWindow = createWindow();
+	mainWindow.once('close', () => {
+		eventEmitter.emit('update-install');
+		mainWindow = null;
+	});
+
+	if (dev) loadVite(port);
+	if (!dev) serveURL(mainWindow);
+
+	mainWindow.webContents.once('dom-ready', async () => {
+		container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
+		container.register<ElectronLog>('ElectronLog', { useValue: log });
+		container.register<EventEmitter>('EventEmitter', { useValue: eventEmitter });
+		container.register<IpcMain>('IpcMain', { useValue: ipcMain });
+		container.register<SlpParser>('SlpParser', { useValue: slpParser });
+		container.register<SlpStream>('SlpStream', { useValue: slpStream });
+		container.register<string>('RootDir', {
+			useValue: `${__dirname}/../..`.replaceAll('\\', '/'),
+		});
+		container.register<string>('Port', { useValue: port });
+		container.register<boolean>('Dev', { useValue: dev });
+
+		container.resolve(DiscordRpc);
+		container.resolve(MessageHandler);
+		container.resolve(StatsDisplay);
+		container.resolve(ObsWebSocket);
+		container.resolve(SlippiJs);
+		container.resolve(AutoUpdater);
+	});
+}
+
+mainWindow.openDevTools();
+
+app.once('ready', createMainWindow);
+app.on('window-all-closed', () => {
+	if (process.platform !== 'darwin') app.quit();
+});
+
+function setLoggingPath() {
 	try {
-		require('electron-reloader')(module);
-	} catch (e) {
-		log.error(e);
+		const appDataPath = getAppDataPath('froggi');
+		log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
+	} catch (err) {
+		log.error(err);
 	}
-	const serveURL = serve({ directory: '.' });
-	const dev = !app.isPackaged;
-	const port = dev ? '5173' : `3200`;
-
-	let mainWindow: any;
-
-	function createWindow() {
-		let windowState = windowStateManager({
-			defaultWidth: 800,
-			defaultHeight: 600,
-		});
-
-		const mainWindow = new BrowserWindow({
-			backgroundColor: 'whitesmoke',
-			titleBarStyle: 'default',
-			minHeight: 600,
-			minWidth: 800,
-			webPreferences: {
-				contextIsolation: true,
-				nodeIntegration: true,
-				spellcheck: false,
-				devTools: true ?? dev,
-				preload: path.join(__dirname, '/preload.js'),
-			},
-			x: windowState.x,
-			y: windowState.y,
-			width: windowState.width,
-			height: windowState.height,
-		});
-
-		windowState.manage(mainWindow);
-
-		mainWindow.once('ready-to-show', () => {
-			mainWindow.show();
-			mainWindow.focus();
-		});
-
-		mainWindow.on('close', () => {
-			windowState.saveState(mainWindow);
-		});
-
-		return mainWindow;
-	}
-
-	contextMenu({
-		showLookUpSelection: false,
-		showSearchWithGoogle: false,
-		showCopyImage: false,
-		prepend: (defaultActions, params, browserWindow) => [
-			{
-				label: 'Run function',
-				click: () => {
-					mainWindow.webContents.send('reset-score');
-					log.info('Right click: 1');
-					console.log(defaultActions, params, browserWindow);
-				},
-			},
-			{
-				label: 'Dev',
-				click: () => {
-					mainWindow.openDevTools();
-				},
-			},
-		],
-	});
-
-	function loadVite(port: string) {
-		mainWindow.loadURL(`http://localhost:${port}`).catch((e: any) => {
-			log.error('Error loading URL, retrying', e);
-			setTimeout(() => {
-				loadVite(port);
-			}, 200);
-		});
-	}
-
-	function createMainWindow() {
-		mainWindow = createWindow();
-		mainWindow.once('close', () => {
-			eventEmitter.emit('update-install');
-			mainWindow = null;
-		});
-
-		if (dev) loadVite(port);
-		if (!dev) serveURL(mainWindow);
-
-		mainWindow.webContents.once('dom-ready', async () => {
-			container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
-			container.register<ElectronLog>('ElectronLog', { useValue: log });
-			container.register<EventEmitter>('EventEmitter', { useValue: eventEmitter });
-			container.register<IpcMain>('IpcMain', { useValue: ipcMain });
-			container.register<SlpParser>('SlpParser', { useValue: slpParser });
-			container.register<SlpStream>('SlpStream', { useValue: slpStream });
-			container.register<string>('RootDir', {
-				useValue: `${__dirname}/../..`.replaceAll('\\', '/'),
-			});
-			container.register<string>('Port', { useValue: port });
-			container.register<boolean>('Dev', { useValue: dev });
-
-			container.resolve(DiscordRpc);
-			container.resolve(MessageHandler);
-			container.resolve(StatsDisplay);
-			container.resolve(ObsWebSocket);
-			container.resolve(SlippiJs);
-			container.resolve(AutoUpdater);
-		});
-
-		// Find a better solution to init autoUpdate
-		mainWindow.webContents.once('focus', () => {
-			if (dev) return;
-		});
-	}
-
-	app.once('ready', createMainWindow);
-	app.on('activate', () => {
-		console.log('active');
-		if (!mainWindow) {
-			createMainWindow();
-		}
-	});
-	app.on('window-all-closed', () => {
-		if (process.platform !== 'darwin') app.quit();
-	});
-
-	function setLoggingPath() {
-		try {
-			const appDataPath = getAppDataPath('froggi');
-			log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
-		} catch (err) {
-			log.error(err);
-		}
-	}
-} catch (err) {
-	log.error(err);
 }

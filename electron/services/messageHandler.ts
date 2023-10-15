@@ -17,11 +17,11 @@ import path from 'path';
 
 @singleton()
 export class MessageHandler {
-	app: any;
-	express: any;
-	server: any;
-	webSocketServer: any;
-	webSockets: WebSocket[];
+	private app: any;
+	private express: any;
+	private server: any;
+	private webSocketServer: any;
+	private webSockets: WebSocket[];
 
 	constructor(
 		@inject('Dev') private dev: boolean,
@@ -61,7 +61,7 @@ export class MessageHandler {
 		this.initGlobalEventListeners();
 	}
 
-	initHtml() {
+	private initHtml() {
 		this.log.info('Initializing HTML');
 		console.log(this.dev);
 		console.log(this.rootDir);
@@ -103,7 +103,7 @@ export class MessageHandler {
 		}
 	}
 
-	receiveMessage = (socket: any) => {
+	private receiveMessage = (socket: any) => {
 		socket.addEventListener('message', (value: any) => {
 			let parse = JSON.parse(value.data);
 			for (const [key, value] of Object.entries(parse)) {

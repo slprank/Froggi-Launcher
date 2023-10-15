@@ -2,7 +2,7 @@ import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import os from 'os';
 import DolphinMemory from 'dolphin-memory-reader';
-import { ByteSize } from 'dolphin-memory-reader/dist/types/enum';
+import { getControllerInputs } from './memoryRead/controllerInputs';
 import { MessageHandler } from './messageHandler';
 
 @singleton()
@@ -20,9 +20,9 @@ export class MemoryRead {
 		const memory = new DolphinMemory();
 		this.memoryReadInterval = setInterval(() => {
 			try {
-				const value = memory.read(0x8049e6c8 + 0x88 + 0x03, ByteSize.U8);
-				this.messageHandler.sendMessage('test-css-value', value);
-				console.log('memory', value);
+				const controllers = getControllerInputs(memory);
+				console.log(controllers);
+				this.messageHandler.sendMessage('test-css-value', controllers);
 			} catch (err) {
 				this.log.error(err);
 				clearInterval(this.memoryReadInterval);
