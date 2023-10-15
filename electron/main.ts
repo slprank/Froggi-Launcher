@@ -143,8 +143,6 @@ function createMainWindow() {
 	});
 }
 
-mainWindow.openDevTools();
-
 app.once('ready', createMainWindow);
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') app.quit();

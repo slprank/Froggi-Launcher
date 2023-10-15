@@ -1,5 +1,9 @@
 import DolphinMemory from 'dolphin-memory-reader';
 import { ByteSize } from 'dolphin-memory-reader/dist/types/enum';
+import {
+	ControllerInputs,
+	PlayerController,
+} from '../../../frontend/src/lib/models/types/controller';
 
 enum ControllerInputType {
 	ButtonsPressed = 'buttonsPressed',
@@ -40,23 +44,18 @@ const controllerValues = [
 	{ offset: 0x41, type: ByteSize.U8, name: ControllerInputType.IsPlugged },
 ];
 
-export type ControllerInputs = {
-	[option in ControllerInputType]: number;
-} & {
-	controllerIndex: number;
-};
-
-export const getControllerInputs = (memory: DolphinMemory): ControllerInputs[] => {
-	const controllerInputs: ControllerInputs[] = controllers.map((controller, i) => {
-		const playerController = {
-			...controllerValues.reduce((input: ControllerInputs, { offset, type, name }) => {
-				input[name] = memory.read(controller + offset, type);
-				return input;
-			}, {} as ControllerInputs),
-			controllerIndex: i,
-		};
-		return playerController;
-	});
-
+export const getControllerInputs = (memory: DolphinMemory): PlayerController => {
+	const controllerInputs: PlayerController = controllers.reduce(
+		(playerController: PlayerController, controller: number, i: number) => {
+			playerController[i] = {
+				...controllerValues.reduce((input: ControllerInputs, { offset, type, name }) => {
+					input[name] = memory.read(controller + offset, type);
+					return input;
+				}, {} as ControllerInputs),
+			};
+			return playerController;
+		},
+		{} as PlayerController,
+	);
 	return controllerInputs;
 };
