@@ -33,11 +33,7 @@ export type ControllerInputs = {
 	[option in ControllerInputType]: number;
 } & {
 	controllerIndex: number;
-	buttons: ControllerButtons
-};
-
-export type PlayerControllerBytes = {
-	[index: number]: ControllerInputs;
+	buttons: ControllerButtons;
 };
 
 export type PlayerController = {
