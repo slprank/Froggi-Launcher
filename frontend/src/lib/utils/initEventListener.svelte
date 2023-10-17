@@ -21,6 +21,7 @@
 		gameState,
 		recentGames,
 		autoUpdater,
+		memoryReadController,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type EventEmitter from 'events';
@@ -29,6 +30,9 @@
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.setMaxListeners(30);
+		_eventEmitter.on('memory-controller', (controllers: ControllerInputs[]) => {
+			memoryReadController.set(controllers);
+		});
 		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
 			console.log({ status });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {

@@ -12,6 +12,7 @@
 	import type { AutoUpdater, Obs, Url } from '$lib/models/types';
 	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
+	import type { ControllerInputs } from '$lib/models/types/controller';
 
 	export const eventEmitter = writable<EventEmitter>(new EventEmitter());
 
@@ -44,6 +45,7 @@
 	export const gameScore = writable<number[]>([0, 0]);
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const gameSettings = writable<GameStartType>({} as GameStartType);
+	export const memoryReadController = writable<ControllerInputs[]>([]);
 	export const postGame = writable<GameStats>({} as GameStats);
 	export const recentRankedSets = writable<any[]>(); // TODO
 	export const recentGames = writable<GameStats[]>([]);

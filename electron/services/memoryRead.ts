@@ -18,17 +18,13 @@ export class MemoryRead {
 		if (!this.isWindows) return;
 		this.log.info('Initializing Memory Read');
 		const memory = new DolphinMemory();
+		await memory.init();
 		this.memoryReadInterval = setInterval(() => {
-			try {
-				const controllers = getControllerInputs(memory);
-				this.messageHandler.sendMessage('memory-controller', controllers);
-				// TODO: Get Pause
-				// TODO: Get Menu Location
-			} catch (err) {
-				this.log.error(err);
-				clearInterval(this.memoryReadInterval);
-			}
-		}, 1000);
+			const controllers = getControllerInputs(memory);
+			this.messageHandler.sendMessage('memory-controller', controllers);
+			// TODO: Get Pause
+			// TODO: Get Menu Location
+		}, 16);
 	}
 
 	stopMemoryRead() {

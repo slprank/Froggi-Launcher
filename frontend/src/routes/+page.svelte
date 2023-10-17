@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Logo from '$lib/Logo.svelte';
+	import { memoryReadController } from '$lib/utils/store.svelte';
 </script>
 
 <main
@@ -9,6 +10,9 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
+	<div>
+		{JSON.stringify($memoryReadController[0])}
+	</div>
 	<div class="fixed place-items-center grid h-screen w-screen bg-gradient-to-t from-black z-40">
 		<Logo />
 	</div>
