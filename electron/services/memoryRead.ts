@@ -21,11 +21,9 @@ export class MemoryRead {
 		this.memoryReadInterval = setInterval(() => {
 			try {
 				const controllers = getControllerInputs(memory);
-				console.log(controllers[0].buttonsPressed.toString(2));
-				this.messageHandler.sendMessage(
-					'test-memory-controller-value',
-					controllers[0].buttonsPressed.toString(2),
-				);
+				this.messageHandler.sendMessage('memory-controller', controllers);
+				// TODO: Get Pause
+				// TODO: Get Menu Location
 			} catch (err) {
 				this.log.error(err);
 				clearInterval(this.memoryReadInterval);

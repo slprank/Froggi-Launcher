@@ -82,7 +82,7 @@ export class ElectronSettingsStore {
 
 	getLocalUrl(): Url {
 		return {
-			local: `http://localhost:${this.port}`,
+			local: `http://127.0.0.1:${this.port}`,
 			external: `http://${ip.address()}:${this.port}`,
 		};
 	}

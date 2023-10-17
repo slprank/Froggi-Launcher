@@ -2,6 +2,7 @@
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
 	import type { AutoUpdater, Obs, Overlay } from '$lib/models/types';
+	import type { ControllerInputs } from '$lib/models/types/controller';
 	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
 	import {
 		eventEmitter,
@@ -28,10 +29,6 @@
 		console.log('Initializing listeners');
 		const _eventEmitter = await getEventEmitter();
 		_eventEmitter.setMaxListeners(30);
-		_eventEmitter.on('test-memory-controller-value', (value: number) => {
-			console.log('memory value:', value);
-			notifications.warning(`Memory Value: ${value}`, 1000);
-		});
 		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
 			console.log({ status });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {

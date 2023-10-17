@@ -11,7 +11,7 @@
 		"dev": "cross-env NODE_ENV=dev && nodemon",
 		"dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
 		"dev:svelte": "cd frontend && npm run dev",
-		"dev:electron": "npm run compile:electron && electron build_electron/electron/main.js --no-sandbox",
+		"dev:electron": "npm run compile:electron && electron build_electron/electron/main.js",
 		"build:svelte": "cd frontend && npm run build",
 		"build:linux": "npm run compile && electron-builder -l --config build.config.json",
 		"build:mac": "npm run compile && electron-builder -m --config build.config.json",
