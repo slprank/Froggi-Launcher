@@ -1,9 +1,9 @@
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import os from 'os';
-import DolphinMemory from 'dolphin-memory-reader';
 import { getControllerInputs } from './memoryRead/controllerInputs';
 import { MessageHandler } from './messageHandler';
+import DolphinMemory from 'dolphin-memory-reader';
 
 @singleton()
 export class MemoryRead {
@@ -12,12 +12,16 @@ export class MemoryRead {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) {}
+	) { }
 
-	async runMemoryRead() {
+	initMemoryRead() {
+		this.initMemoryReadWin()
+	}
+
+	async initMemoryReadWin() {
 		if (!this.isWindows) return;
 		this.log.info('Initializing Memory Read');
-		const memory = new DolphinMemory();
+		const memory: DolphinMemory = require('dolphin-memory-reader');
 		await memory.init();
 		this.memoryReadInterval = setInterval(() => {
 			const controllers = getControllerInputs(memory);

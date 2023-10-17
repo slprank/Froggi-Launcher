@@ -113,7 +113,7 @@ export class SlippiJs {
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode);
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile);
-		this.memoryRead.runMemoryRead();
+		this.memoryRead.initMemoryRead();
 	}
 
 	private async startProcessSearchInterval() {
