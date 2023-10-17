@@ -12,22 +12,27 @@ export class MemoryRead {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) { }
+	) {}
 
 	initMemoryRead() {
-		this.initMemoryReadWin()
+		this.initMemoryReadWin();
 	}
 
-	async initMemoryReadWin() {
+	private async initMemoryReadWin() {
 		if (!this.isWindows) return;
 		this.log.info('Initializing Memory Read');
-		const memory: DolphinMemory = require('dolphin-memory-reader');
+		const memory = new DolphinMemory();
 		await memory.init();
 		this.memoryReadInterval = setInterval(() => {
-			const controllers = getControllerInputs(memory);
-			this.messageHandler.sendMessage('memory-controller', controllers);
-			// TODO: Get Pause
-			// TODO: Get Menu Location
+			try {
+				const controllers = getControllerInputs(memory);
+				this.messageHandler.sendMessage('memory-controller', controllers);
+				// TODO: Get Pause
+				// TODO: Get Menu Location
+			} catch (err) {
+				console.error(err);
+				clearInterval(this.memoryReadInterval);
+			}
 		}, 16);
 	}
 

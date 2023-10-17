@@ -30,10 +30,10 @@ export interface ControllerButtons {
 }
 
 export type ControllerInputs = {
-	[option in ControllerInputType]: number;
+	[option in ControllerInputType]: number | undefined;
 } & {
-	controllerIndex: number;
-	buttons: ControllerButtons;
+	controllerIndex: number | undefined;
+	buttons: ControllerButtons | undefined;
 };
 
 export type PlayerController = {

@@ -45,7 +45,8 @@ const controllerValues = [
 	{ offset: 0x41, type: ByteSize.U8, name: ControllerInputType.IsPlugged },
 ];
 
-const getButtonPresses = (buttonPresses: number): ControllerButtons => {
+const getButtonPresses = (buttonPresses: number | undefined): ControllerButtons | undefined => {
+	if (!buttonPresses) return;
 	return {
 		isAPressed: Boolean(buttonPresses & (1 << 8)),
 		isBPressed: Boolean(buttonPresses & (1 << 9)),
@@ -67,8 +68,12 @@ export const getControllerInputs = (memory: DolphinMemory): PlayerController => 
 		(playerController: PlayerController, controller: number, i: number) => {
 			playerController[i] = {
 				...controllerValues.reduce((input: ControllerInputs, { offset, type, name }) => {
-					const inputs = memory.read(controller + offset, type);
-					input[name] = inputs;
+					try {
+						const inputs = memory.read(controller + offset, type);
+						input[name] = inputs;
+					} catch (err) {
+						console.error(err);
+					}
 					return input;
 				}, {} as ControllerInputs),
 			};
