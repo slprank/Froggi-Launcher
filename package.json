@@ -33,7 +33,7 @@
 		"axios": "^1.5.1",
 		"cors": "^2.8.5",
 		"discord-rpc": "^4.0.1",
-		"dolphin-memory-reader": "^0.4.0",
+		"dolphin-memory-reader": "^0.4.1",
 		"electron-context-menu": "^3.6.1",
 		"electron-log": "^4.4.8",
 		"electron-reloader": "^1.2.3",
