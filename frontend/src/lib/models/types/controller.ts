@@ -14,10 +14,30 @@ enum ControllerInputType {
 	IsPlugged = 'isPlugged',
 }
 
+export interface ControllerButtons {
+	isAPressed: boolean;
+	isBPressed: boolean;
+	isDPadLeftPressed: boolean;
+	isDPadRightPressed: boolean;
+	isDPadUpPressed: boolean;
+	isDPadDownPressed: boolean;
+	isLPressed: boolean;
+	isRPressed: boolean;
+	isStartPressed: boolean;
+	isXPressed: boolean;
+	isYPressed: boolean;
+	isZPressed: boolean;
+}
+
 export type ControllerInputs = {
 	[option in ControllerInputType]: number;
 } & {
 	controllerIndex: number;
+	buttons: ControllerButtons
+};
+
+export type PlayerControllerBytes = {
+	[index: number]: ControllerInputs;
 };
 
 export type PlayerController = {
