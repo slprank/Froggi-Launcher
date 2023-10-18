@@ -19,9 +19,9 @@
 			curStatsScene = $statsScene;
 			return;
 		} else {
-			curStatsScene = curOverlay?.activeScenes[$statsScene]
+			curStatsScene = curOverlay?.[$statsScene].active
 				? $statsScene
-				: curOverlay?.defaultScene ?? LiveStatsScene.Menu;
+				: curOverlay?.[$statsScene].fallback ?? LiveStatsScene.Menu;
 		}
 		updateFixedLayerItems(curOverlay[curStatsScene].layers);
 	}

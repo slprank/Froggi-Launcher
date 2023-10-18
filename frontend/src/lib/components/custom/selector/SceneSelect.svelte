@@ -2,15 +2,6 @@
 	import { LiveStatsScene } from '$lib/models/enum';
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 
-	export let defaultValue: LiveStatsScene | undefined = undefined;
-	export let selected: { [key in LiveStatsScene]: boolean } | undefined = undefined;
-
-	const updateDefault = (value: LiveStatsScene | undefined) => {
-		if (!value || !selected) return;
-		selected[value] = true;
-	};
-	$: updateDefault(defaultValue);
-
 	function updateLiveScene(scene: LiveStatsScene) {
 		$eventEmitter.emit('electron', 'update-live-scene', scene);
 	}
@@ -46,16 +37,6 @@
 <div class="w-lg 3xl:w-full flex flex-wrap gap-2">
 	{#each buttons as button}
 		<div class="grid gap-2 justify-start items-start">
-			{#if selected}
-				<div class="w-4 h-4">
-					<input
-						disabled={button.liveScene === defaultValue}
-						type="checkbox"
-						value={button.liveScene}
-						bind:checked={selected[button.liveScene]}
-					/>
-				</div>
-			{/if}
 			<button
 				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
 					$statsScene === button.liveScene ? 'border-red-500' : 'border-white'

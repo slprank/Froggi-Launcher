@@ -15,6 +15,7 @@
 
 	const getDefaultScene = (sceneId: string): Scene => {
 		return {
+			active: true,
 			animation: {
 				duration: 250,
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
@@ -36,6 +37,7 @@
 					out: getDefaultAnimations(),
 				},
 			},
+			fallback: LiveStatsScene.Menu,
 			font: {
 				family: undefined,
 				base64: undefined,
@@ -52,14 +54,6 @@
 
 	export function getNewOverlay(): Overlay {
 		return {
-			activeScenes: {
-				[LiveStatsScene.WaitingForDolphin]: true,
-				[LiveStatsScene.Menu]: true,
-				[LiveStatsScene.InGame]: true,
-				[LiveStatsScene.PostGame]: true,
-				[LiveStatsScene.PostSet]: false,
-				[LiveStatsScene.RankChange]: true,
-			},
 			id: newId(),
 			title: 'New Title',
 			description: 'Scene Description',

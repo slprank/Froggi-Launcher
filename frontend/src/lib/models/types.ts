@@ -19,8 +19,6 @@ export interface Obs {
 }
 
 export interface Overlay {
-	activeScenes: { [key in LiveStatsScene]: boolean };
-	defaultScene: LiveStatsScene;
 	description: string;
 	id: string;
 	title: string;
@@ -33,8 +31,10 @@ export interface Overlay {
 }
 
 export interface Scene {
+	active: boolean;
 	animation: SceneAnimation;
 	background: Background;
+	fallback: LiveStatsScene;
 	font: Font;
 	previewLayers: string[];
 	layers: Layer[];

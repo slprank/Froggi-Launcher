@@ -14,13 +14,13 @@
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import FontSelectorLayer from '../selector/FontSelectLayer.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
+	import SceneSelectOptions from '../selector/SceneSelectOptions.svelte';
 
 	export let open: boolean;
 	export let overlay: Overlay;
 
 	$: curScene = overlay[$statsScene];
 	$: previewBackgroundType = curScene.background.type;
-	let tempActiveScenes = overlay?.activeScenes;
 
 	let imageOptions: string[] = [];
 
@@ -44,15 +44,8 @@
 	async function handleUpdate() {
 		notifications.success('Overlay updated!', 3000);
 		open = false;
-		overlay.activeScenes = tempActiveScenes;
 		await updateOverlay(overlay);
 	}
-
-	function enableDefault() {
-		if (tempActiveScenes[overlay.defaultScene]) return;
-		tempActiveScenes[overlay.defaultScene] = true;
-	}
-	$: overlay.defaultScene, enableDefault();
 
 	let autofocus: number = 0;
 </script>
@@ -80,23 +73,9 @@
 
 						<FontSelectorLayer bind:font={curScene.font} fontId={'custom'} />
 						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
-						<div
-							class="w-28"
-							data-tooltip={`Selected scene will be displayed instead of disabled scenes`}
-						>
-							<Select bind:selected={overlay.defaultScene} label="Default scene">
-								<option value={LiveStatsScene.WaitingForDolphin}>Waiting</option>
-								<option selected value={LiveStatsScene.Menu}>Menu</option>
-								<option value={LiveStatsScene.InGame}>In Game</option>
-								<option value={LiveStatsScene.PostGame}>Post Game</option>
-								<option value={LiveStatsScene.RankChange}>Rank Change</option>
-							</Select>
-						</div>
+
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Active scenes</h1>
-						<SceneSelect
-							bind:selected={tempActiveScenes}
-							bind:defaultValue={overlay.defaultScene}
-						/>
+						<SceneSelectOptions bind:overlay />
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
 						<div class="w-full flex gap-2">
 							<div class="w-48">
