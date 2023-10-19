@@ -6,10 +6,6 @@
 
 	export let overlay: Overlay;
 
-	function updateLiveScene(scene: LiveStatsScene) {
-		$eventEmitter.emit('electron', 'update-live-scene', scene);
-	}
-
 	let buttons = [
 		{
 			text: 'Waiting',
@@ -50,12 +46,7 @@
 					/>
 				</div>
 				<button
-					class={`w-32 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
-						$statsScene === button.liveScene ? 'border-red-500' : 'border-white'
-					}`}
-					on:click={() => {
-						updateLiveScene(button.liveScene);
-					}}
+					class={`w-32 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded border-white`}
 				>
 					{button.text}
 				</button>
@@ -66,6 +57,7 @@
 							<option selected value={LiveStatsScene.Menu}>Menu</option>
 							<option value={LiveStatsScene.InGame}>In Game</option>
 							<option value={LiveStatsScene.PostGame}>Post Game</option>
+							<option value={LiveStatsScene.PostSet}>Post Set</option>
 							<option value={LiveStatsScene.RankChange}>Rank Change</option>
 						</Select>
 					</div>
