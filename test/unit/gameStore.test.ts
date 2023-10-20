@@ -32,6 +32,8 @@ describe('ElectnronGamesStore', () => {
         { file: "ranked-set-1/Game_20231018T220639.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked" },
         { file: "ranked-set-1/Game_20231018T220924.slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked" },
         { file: "ranked-set-1/Game_20231018T221143.slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked" },
+        { file: "unranked-set-1/Game_20230924T231007.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked" },
+        { file: "unranked-set-2/Game_20230924T231242.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked" },
     ]
 
     beforeAll(() => {
@@ -57,7 +59,6 @@ describe('ElectnronGamesStore', () => {
         }
 
         storeSettings = new ElectronSettingsStore(log, "", store, {} as any);
-
         storeSettings.getCurrentPlayerConnectCode = () => connectCode
         storeSettings.getSlippiLauncherSettings = (): SlippiLauncherSettings => {
             return {
@@ -89,18 +90,24 @@ describe('ElectnronGamesStore', () => {
         statsDisplay["getCurrentPlayersWithRankStats"] = async (): Promise<Player[]> => (new Promise<Player[]>(resolve => {
             resolve([{ connectCode: connectCode, rank: {} } as Player])
         }));
+        statsDisplay["getGameFiles"] = async (): Promise<string[]> => (new Promise<string[]>(resolve => {
+            resolve(rankedGameTest.map(test => `${__dirname}/../sample-games/${test.file}`))
+        }));
     });
-
+    // TODO: Include all games
     test('Test Match Game Length', async () => {
         for (const test of rankedGameTest) {
             const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+            console.log("current file", test.file)
             const gameEnd = game.getGameEnd();
             const settings = game.getSettings();
             if (!gameEnd || !settings) return;
             await statsDisplay.handleGameStart(settings)
             await statsDisplay.handleGameEnd(gameEnd, settings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)
+            console.log("recent game", recentGame)
             const gameFromStore = electronGamesStore.getGameMatch(recentGame?.settings?.matchInfo.matchId)
+            console.log("gameFromStore", gameFromStore.length)
             expect(gameFromStore).toHaveLength(test.expectedLength);
         }
     })
