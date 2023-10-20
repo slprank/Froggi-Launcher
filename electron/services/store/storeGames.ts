@@ -51,13 +51,10 @@ export class ElectronGamesStore {
     setGameMatch(gameStats: GameStats | null) {
         if (!gameStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
-        console.log("player", player)
         if (!player || !gameStats?.settings?.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
             return;
-
         if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
-        console.log("matches", matches)
         if (!matches) return;
         this.addRecentGames(gameStats)
         this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, [...matches, gameStats]);
@@ -67,7 +64,7 @@ export class ElectronGamesStore {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode || !matchId) return;
         const games = Object.assign(this.getAllSetsByMode("ranked") ?? {}, this.getAllSetsByMode("unranked") ?? {}, this.getAllSetsByMode("direct") ?? {})
-        return games[matchId]
+        return games[matchId] ?? []
     }
 
     getGameMatchGame(matchId: string, gameNumber: number): GameStats | undefined {

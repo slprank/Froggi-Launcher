@@ -191,7 +191,7 @@ export class StatsDisplay {
 		const files = await this.getGameFiles();
 		console.log("files", files)
 		if (!files || !files.length) return null;
-		const matchId = settings.matchInfo?.matchId
+		const matchId = settings.matchInfo?.matchId;
 		const gameNumber = settings.matchInfo?.gameNumber
 		const file = files
 			.find(file => {
@@ -200,7 +200,8 @@ export class StatsDisplay {
 			})
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
-		return this.getGameStats(new SlippiGame(file))
+		const game = new SlippiGame(file)
+		return this.getGameStats(game)
 	}
 
 	async getRecentSetStats(settings: GameStartType): Promise<GameStats[] | null> {
@@ -232,7 +233,7 @@ export class StatsDisplay {
 			mode: getGameMode(settings),
 			postGameStats: this.enrichPostGameStats(game),
 			score: this.storeGames.getGameScore(),
-			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings) } },
+			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings), matchId: settings?.matchInfo?.matchId?.replaceAll(".", "-").replaceAll(":", "-") } },
 			timestamp: dateTimeNow(),
 		} as GameStats
 	}

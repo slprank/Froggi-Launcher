@@ -44,12 +44,11 @@ describe('ElectnronGamesStore', () => {
     });
 
     test('Test Game Save', () => {
-        const game = new SlippiGame("/Users/sindrevatnaland/VSCode/slpRank-client/test/sample-games/ranked-set-1/Game_20231018T220639.slp")
+        const game = new SlippiGame(`${__dirname}/../sample-games/ranked-set-1/Game_20231018T220639.slp`)
         const gameStats = statsDisplay["getGameStats"](game)
         electronGamesStore.setGameMatch(gameStats)
         const gameFromStore = electronGamesStore.getGameMatch(gameStats?.settings?.matchInfo.matchId)
-        console.log(gameFromStore)
-        expect(gameFromStore);
+        expect(gameFromStore).toHaveLength(1);
 
         // Add more test cases as needed.
     });

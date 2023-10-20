@@ -19,7 +19,8 @@
 		"compile": "npm run build:svelte && npm run compile:electron && tsc --p ./electron/tsconfig.json",
 		"compile:electron": "npm run && tsc --p ./electron/tsconfig.json",
 		"install:all": "npm i && npm i --prefix ./frontend",
-		"test": "npm run compile:electron && jest"
+		"test": "npm run compile:electron && npm run test:copy && jest",
+		"test:copy": "mkdir -p ./build_electron/test/sample-games/ && cp -rv ./test/sample-games/* ./build_electron/test/sample-games/"
 	},
 	"engines": {
 		"npm": ">=7",

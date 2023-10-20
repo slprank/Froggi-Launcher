@@ -25,6 +25,6 @@
 		"experimentalDecorators": true,
 		"isolatedModules": true
 	},
-	"include": [".", "../test/**/*"],
+	"include": [".", "../test/**/*", "../test/sample-games/**/*"],
 	"exclude": ["node_modules", "services"]
 }
