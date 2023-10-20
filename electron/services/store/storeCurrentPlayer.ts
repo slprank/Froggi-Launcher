@@ -16,9 +16,9 @@ export class ElectronCurrentPlayerStore {
     isWindows: boolean = os.platform() === 'win32';
     isLinux: boolean = os.platform() === 'linux';
     listeners: Function[];
-    store: Store = new Store();
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
+        @inject("ElectronStore") private store: Store,
         @inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
         @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,

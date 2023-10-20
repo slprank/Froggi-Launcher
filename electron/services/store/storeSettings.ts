@@ -15,10 +15,10 @@ export class ElectronSettingsStore {
 	isMac: boolean = os.platform() === 'darwin';
 	isWindows: boolean = os.platform() === 'win32';
 	isLinux: boolean = os.platform() === 'linux';
-	store: Store = new Store();
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('Port') private port: string,
+		@inject("ElectronStore") private store: Store,
 		@inject(delay(() => ElectronCurrentPlayerStore))
 		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {

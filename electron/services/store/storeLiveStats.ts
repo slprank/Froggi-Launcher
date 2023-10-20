@@ -17,9 +17,9 @@ export class ElectronLiveStatsStore {
 	isMac: boolean = os.platform() === 'darwin';
 	isWindows: boolean = os.platform() === 'win32';
 	isLinux: boolean = os.platform() === 'linux';
-	store: Store = new Store();
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
+		@inject("ElectronStore") private store: Store,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
 		this.log.info('Initializing Live Stats Store');

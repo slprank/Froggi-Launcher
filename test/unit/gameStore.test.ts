@@ -3,14 +3,17 @@ import { ElectronGamesStore } from '../../electron/services/store/storeGames';
 import { StatsDisplay } from '../../electron/services/statsDisplay';
 import { SlippiGame } from '@slippi/slippi-js';
 import { InGameState } from "../../frontend/src/lib/models/enum";
+import ElectronStore from "electron-store";
 
-
+jest.mock("electron-store")
 describe('ElectnronGamesStore', () => {
     let electronGamesStore: ElectronGamesStore;
     let statsDisplay: StatsDisplay;
 
     beforeAll(() => {
-        // Create a mock ElectronLog instance
+        const connectCode = "PRML#682"
+        const store = new ElectronStore()
+
         const log: any = {
             info: (_: string) => { },
         };
@@ -20,7 +23,7 @@ describe('ElectnronGamesStore', () => {
         const storeCurrentPlayer: any = {
             getCurrentPlayer: () => {
                 return {
-                    connectCode: "PRML#682"
+                    connectCode: connectCode
                 }
             }
         };
@@ -32,15 +35,16 @@ describe('ElectnronGamesStore', () => {
             on: () => { }
         }
         const storeSettings: any = {
-            getCurrentPlayerConnectCode: () => "PRML#682"
+            getCurrentPlayerConnectCode: () => connectCode
         };
         const storeLiveStats: any = {
             getGameState: () => InGameState.Inactive
         }
         const storePlayers: any = {}
 
-        electronGamesStore = new ElectronGamesStore(log, messageHandler, storeSettings, storeCurrentPlayer);
+        electronGamesStore = new ElectronGamesStore(log, store, messageHandler, storeSettings, storeCurrentPlayer);
         statsDisplay = new StatsDisplay(log, slpParser, slpStream, api, messageHandler, electronGamesStore, storeLiveStats, storePlayers, storeCurrentPlayer, storeSettings)
+
     });
 
     test('Test Game Save', () => {

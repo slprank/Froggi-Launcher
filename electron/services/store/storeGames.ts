@@ -16,9 +16,9 @@ export class ElectronGamesStore {
     isWindows: boolean = os.platform() === 'win32';
     isLinux: boolean = os.platform() === 'linux';
     listeners: Function[];
-    store: Store = new Store();
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
+        @inject("ElectronStore") private store: Store,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
         @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
         @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
@@ -57,6 +57,7 @@ export class ElectronGamesStore {
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
         if (!matches) return;
         this.addRecentGames(gameStats)
+        console.log(gameStats)
         this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, [...matches, gameStats]);
     }
 

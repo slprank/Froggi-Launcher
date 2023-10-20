@@ -17,11 +17,13 @@ import { StatsDisplay } from './services/statsDisplay';
 import { SlippiJs } from './services/slippi';
 import { SlpParser, SlpStream } from '@slippi/slippi-js';
 import { DiscordRpc } from './services/discord';
+import Store from 'electron-store';
 
-app.disableHardwareAcceleration();
 const isMac = os.platform() === 'darwin';
 const isWindows = os.platform() === 'win32';
 const isLinux = os.platform() === 'linux';
+
+const store = new Store()
 
 log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
@@ -123,11 +125,12 @@ function createMainWindow() {
 
 	mainWindow.webContents.once('dom-ready', async () => {
 		container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
-		container.register<ElectronLog>('ElectronLog', { useValue: log });
 		container.register<EventEmitter>('EventEmitter', { useValue: eventEmitter });
+		container.register<ElectronLog>('ElectronLog', { useValue: log });
 		container.register<IpcMain>('IpcMain', { useValue: ipcMain });
 		container.register<SlpParser>('SlpParser', { useValue: slpParser });
 		container.register<SlpStream>('SlpStream', { useValue: slpStream });
+		container.register<Store>('ElectronStore', { useValue: store });
 		container.register<string>('RootDir', {
 			useValue: `${__dirname}/../..`.replaceAll('\\', '/'),
 		});

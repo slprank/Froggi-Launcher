@@ -4,12 +4,12 @@
 		"outDir": "../build_electron",
 		"paths": {},
 		"baseUrl": "./",
-		"target": "ES6",
+		"target": "ES2015",
 		"module": "commonjs",
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"stripInternal": true,
-		"lib": ["es6", "esnext", "dom"],
+		"lib": ["es2015", "esnext", "dom"],
 		"moduleResolution": "node",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
@@ -25,6 +25,6 @@
 		"experimentalDecorators": true,
 		"isolatedModules": true
 	},
-	"include": [".", "../test/**/*", "../test/sample-games/**/*"],
+	"include": [".", "../test/**/*"],
 	"exclude": ["node_modules", "services"]
 }
