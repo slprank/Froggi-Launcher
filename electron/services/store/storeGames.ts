@@ -5,7 +5,7 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { PlayerType } from '@slippi/slippi-js';
-import os from 'os';
+import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
@@ -51,19 +51,21 @@ export class ElectronGamesStore {
     setGameMatch(gameStats: GameStats | null) {
         if (!gameStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
+        console.log("player", player)
         if (!player || !gameStats?.settings?.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
             return;
 
         if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
+        console.log("matches", matches)
         if (!matches) return;
         this.addRecentGames(gameStats)
         this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, [...matches, gameStats]);
     }
 
-    getGameMatch(matchId: string): GameStats[] | undefined {
+    getGameMatch(matchId: string | undefined | null): GameStats[] | undefined {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-        if (!connectCode) return;
+        if (!connectCode || !matchId) return;
         const games = Object.assign(this.getAllSetsByMode("ranked") ?? {}, this.getAllSetsByMode("unranked") ?? {}, this.getAllSetsByMode("direct") ?? {})
         return games[matchId]
     }

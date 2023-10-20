@@ -70,7 +70,7 @@ export class StatsDisplay {
 		if (frameEntry.frame < 0) return
 		if (this.storeLiveStats.getGameState() === InGameState.Inactive) return;
 		this.resetPauseInterval()
-		await this.messageHandler.sendMessage('game-frame', frameEntry);
+		this.messageHandler.sendMessage('game-frame', frameEntry);
 		this.storeLiveStats.setGameState(InGameState.Running)
 	}
 

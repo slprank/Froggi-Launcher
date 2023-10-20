@@ -4,12 +4,12 @@
 		"outDir": "../build_electron",
 		"paths": {},
 		"baseUrl": "./",
-		"target": "ES2015",
+		"target": "ES6",
 		"module": "commonjs",
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"stripInternal": true,
-		"lib": ["es2015", "esnext", "dom"],
+		"lib": ["es6", "esnext", "dom"],
 		"moduleResolution": "node",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
@@ -23,9 +23,8 @@
 		"allowSyntheticDefaultImports": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"esModuleInterop": true,
 		"isolatedModules": true
 	},
-	"include": ["."],
+	"include": [".", "../test/**/*"],
 	"exclude": ["node_modules", "services"]
 }

@@ -33,5 +33,6 @@
 			"from": "build",
 			"to": ""
 		}
-	]
+	],
+	"exclude": ["build_electron/test"]
 }
