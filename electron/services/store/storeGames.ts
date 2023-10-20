@@ -40,8 +40,8 @@ export class ElectronGamesStore {
     }
 
     // GAME
-    getGameScore(): number[] | undefined {
-        return this.store.get('stats.game.score') as number[];
+    getGameScore(): number[] {
+        return (this.store.get('stats.game.score') ?? [0, 0]) as number[];
     }
 
     setGameScore(score: number[]) {
@@ -51,19 +51,19 @@ export class ElectronGamesStore {
     setGameMatch(gameStats: GameStats | null) {
         if (!gameStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
+        console.log(player, gameStats)
         if (!player || !gameStats?.settings?.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
             return;
         if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
-        if (!matches) return;
+        console.log(matches)
         this.addRecentGames(gameStats)
-        console.log(gameStats)
         this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, [...matches, gameStats]);
     }
 
-    getGameMatch(matchId: string | undefined | null): GameStats[] | undefined {
+    getGameMatch(matchId: string | undefined | null): GameStats[] {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-        if (!connectCode || !matchId) return;
+        if (!connectCode || !matchId) return [];
         const games = Object.assign(this.getAllSetsByMode("ranked") ?? {}, this.getAllSetsByMode("unranked") ?? {}, this.getAllSetsByMode("direct") ?? {})
         return games[matchId] ?? []
     }
@@ -83,14 +83,15 @@ export class ElectronGamesStore {
         return playerGame[mode]
     }
 
-    getRecentGames() {
+    getRecentGames(): GameStats[] | undefined {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        this.store.get(`player.${connectCode}.game.recent`)
+        return this.store.get(`player.${connectCode}.game.recent`) as GameStats[]
     }
 
     addRecentGames(game: GameStats) {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        console.log("Adding recent")
         if (!connectCode) return;
         const games = this.store.get(`player.${connectCode}.game.recent`) as GameStats[] ?? [];
         this.store.set(`player.${connectCode}.game.recent`, [...games, game])

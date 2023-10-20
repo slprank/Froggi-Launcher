@@ -110,6 +110,7 @@ export class StatsDisplay {
 		const gameStats = await this.getRecentGameStats(settings);
 		// TODO: If Game Set End - Get All Match Games
 
+		console.log("game stats", gameStats)
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.storeLiveStats.setGameStats(gameStats)
 		this.storeGames.setGameMatch(gameStats)
@@ -193,6 +194,7 @@ export class StatsDisplay {
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId;
 		const gameNumber = settings.matchInfo?.gameNumber
+		console.log("files", files)
 		const file = files
 			.find(file => {
 				const settings = new SlippiGame(file).getSettings();
