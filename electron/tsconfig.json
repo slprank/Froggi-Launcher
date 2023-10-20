@@ -23,8 +23,9 @@
 		"allowSyntheticDefaultImports": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
+		"esModuleInterop": true,
 		"isolatedModules": true
 	},
-	"include": [".", "../test/**/*"],
+	"include": ["."],
 	"exclude": ["node_modules", "services"]
 }
