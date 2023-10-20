@@ -26,6 +26,6 @@
 		"esModuleInterop": true,
 		"isolatedModules": true
 	},
-	"include": ["."],
+	"include": [".", "../test"],
 	"exclude": ["node_modules", "services"]
 }

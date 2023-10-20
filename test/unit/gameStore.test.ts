@@ -3,16 +3,18 @@ import { ElectronGamesStore } from '../../electron/services/store/storeGames';
 import { StatsDisplay } from '../../electron/services/statsDisplay';
 import { SlippiGame } from '@slippi/slippi-js';
 import { InGameState } from "../../frontend/src/lib/models/enum";
-import ElectronStore from "electron-store";
+import Store from "electron-store";
 
-jest.mock("electron-store")
 describe('ElectnronGamesStore', () => {
     let electronGamesStore: ElectronGamesStore;
     let statsDisplay: StatsDisplay;
 
+    let store: Store;
+
     beforeAll(() => {
         const connectCode = "PRML#682"
-        const store = new ElectronStore()
+        store = new Store({ cwd: `${__dirname}/..` })
+        store.delete("player")
 
         const log: any = {
             info: (_: string) => { },
@@ -52,6 +54,7 @@ describe('ElectnronGamesStore', () => {
         const gameStats = statsDisplay["getGameStats"](game)
         electronGamesStore.setGameMatch(gameStats)
         const gameFromStore = electronGamesStore.getGameMatch(gameStats?.settings?.matchInfo.matchId)
+        console.log("player", store.get(`player`))
         expect(gameFromStore).toHaveLength(1);
 
         // Add more test cases as needed.

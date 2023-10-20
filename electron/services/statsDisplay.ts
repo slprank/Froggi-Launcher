@@ -240,7 +240,6 @@ export class StatsDisplay {
 
 	// TODO: Add additional data not included in the default stats
 	private enrichPostGameStats(game: SlippiGame | null): StatsTypeExtended | null {
-		console.log("Enrich data")
 		if (!game) return null
 		return {
 			...game.getStats(),
