@@ -32,8 +32,8 @@ describe('ElectnronGamesStore', () => {
         { file: "ranked-set-1/Game_20231018T220639.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked" },
         { file: "ranked-set-1/Game_20231018T220924.slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked" },
         { file: "ranked-set-1/Game_20231018T221143.slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked" },
-        { file: "unranked-set-1/Game_20230924T231007.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked" },
-        { file: "unranked-set-2/Game_20230924T231242.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked" },
+        { file: "ranked-set-2/Game_20230924T231007.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked" },
+        { file: "ranked-set-2/Game_20230924T231242.slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "ranked" },
     ]
 
     beforeAll(() => {
@@ -94,25 +94,73 @@ describe('ElectnronGamesStore', () => {
             resolve(rankedGameTest.map(test => `${__dirname}/../sample-games/${test.file}`))
         }));
     });
+
+    afterEach(() => {
+        store.delete("player")
+        store.delete("stats")
+    })
+
     // TODO: Include all games
-    test('Test Match Game Length', async () => {
+    test('Is New Game The Same As Recent Game', async () => {
         for (const test of rankedGameTest) {
             const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
-            console.log("current file", test.file)
-            const gameEnd = game.getGameEnd();
-            const settings = game.getSettings();
-            if (!gameEnd || !settings) return;
-            await statsDisplay.handleGameStart(settings)
-            await statsDisplay.handleGameEnd(gameEnd, settings)
+            const currentGameEnd = game.getGameEnd();
+            const currentGameSettings = game.getSettings();
+            if (!currentGameEnd || !currentGameSettings) return;
+            await statsDisplay.handleGameStart(currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)
-            console.log("recent game", recentGame)
-            const gameFromStore = electronGamesStore.getGameMatch(recentGame?.settings?.matchInfo.matchId)
-            console.log("gameFromStore", gameFromStore.length)
-            expect(gameFromStore).toHaveLength(test.expectedLength);
+            expect(currentGameSettings.matchInfo?.matchId?.replace(/[.:]/g, '-')).toStrictEqual(recentGame?.settings?.matchInfo?.matchId)
+            expect(currentGameSettings.matchInfo?.gameNumber).toStrictEqual(recentGame?.settings?.matchInfo?.gameNumber);
+        }
+    })
+
+    test('Is Returned Match Games A Match As Expected', async () => {
+        for (const test of rankedGameTest) {
+            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+            const currentGameEnd = game.getGameEnd();
+            const currentGameSettings = game.getSettings();
+            if (!currentGameEnd || !currentGameSettings) return;
+            await statsDisplay.handleGameStart(currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            const recentGame = electronGamesStore.getRecentGames()?.at(0)
+            const matchGames = electronGamesStore.getGameMatch(recentGame?.settings?.matchInfo.matchId)
+            expect(matchGames).toHaveLength(test.expectedLength);
+        }
+    })
+
+    test('Set Score Is As Expected', async () => {
+        for (const test of rankedGameTest) {
+            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+            const currentGameEnd = game.getGameEnd();
+            const currentGameSettings = game.getSettings();
+            if (!currentGameEnd || !currentGameSettings) return;
+            await statsDisplay.handleGameStart(currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            const gameScore = electronGamesStore.getGameScore()
+            expect(gameScore).toStrictEqual(test.expectedScore)
+            //expect(gameScore.reduce((value, score) => value + score, 0)).toStrictEqual(currentGameSettings.matchInfo?.gameNumber)
+        }
+    })
+
+    test('Set Score Is As Expected', async () => {
+        for (const test of rankedGameTest) {
+            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+            const currentGameEnd = game.getGameEnd();
+            const currentGameSettings = game.getSettings();
+            if (!currentGameEnd || !currentGameSettings) return;
+            await statsDisplay.handleGameStart(currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            const gameScore = electronGamesStore.getGameScore()
+            expect(gameScore).toStrictEqual(test.expectedScore)
+            //expect(gameScore.reduce((value, score) => value + score, 0)).toStrictEqual(currentGameSettings.matchInfo?.gameNumber)
         }
     })
 
 
+    // TODO: Test Current Game Id === Recent Game (Game number)
+
+    // TODO: Test Score
 
     // test('Test Match Game Length', () => {
     //     let gameScore = electronGamesStore.getGameScore()

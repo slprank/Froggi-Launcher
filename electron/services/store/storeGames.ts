@@ -51,13 +51,10 @@ export class ElectronGamesStore {
     setGameMatch(gameStats: GameStats | null) {
         if (!gameStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
-        console.log("player", player)
-        console.log("game", !!gameStats)
         if (!player || !gameStats?.settings?.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
             return;
         if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
-        console.log("matches no", matches.length)
         this.addRecentGames(gameStats)
         this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, [...matches, gameStats]);
     }
@@ -73,6 +70,7 @@ export class ElectronGamesStore {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
         const games = Object.assign(this.getAllSetsByMode("ranked") ?? {}, this.getAllSetsByMode("unranked") ?? {}, this.getAllSetsByMode("direct") ?? {})
+        console.log("all games", games)
         return games[matchId].find(game => game.settings?.matchInfo?.gameNumber === gameNumber)
     }
 
@@ -133,7 +131,6 @@ export class ElectronGamesStore {
         if (!connectCode) return;
         this.listeners = [
             this.store.onDidChange(`stats.game.score`, async (value) => {
-                console.log("Updating score")
                 this.messageHandler.sendMessage('game-score', value);
             }),
         ]

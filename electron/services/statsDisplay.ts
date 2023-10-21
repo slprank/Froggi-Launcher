@@ -82,7 +82,6 @@ export class StatsDisplay {
 
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
-		const gameNumber = settings.matchInfo?.gameNumber
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)!
 
@@ -91,7 +90,9 @@ export class StatsDisplay {
 		this.storePlayers.setCurrentPlayers(currentPlayers);
 		this.storeLiveStats.setGameSettings(settings);
 
-		if (gameNumber !== 1) return;
+		const previousGame = this.storeGames.getRecentGames()?.at(0)
+
+		if (previousGame?.settings?.matchInfo.matchId === settings?.matchInfo?.matchId?.replace(/[.:]/g, '-')) return;
 		this.storeGames.clearRecentGames()
 		this.storeGames.setGameScore([0, 0]);
 
@@ -116,7 +117,7 @@ export class StatsDisplay {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 		this.storeLiveStats.deleteGameFrame()
 		setTimeout(() => this.messageHandler.sendMessage('game-frame', undefined), SCENE_TRANSITION_DELAY);
-		this.handleGameSet(settings.matchInfo?.matchId)
+		this.handleGameSet(gameStats?.settings?.matchInfo?.matchId)
 	}
 
 	private handleGameSet(matchId: string | undefined | null) {
@@ -232,7 +233,7 @@ export class StatsDisplay {
 			mode: getGameMode(settings),
 			postGameStats: this.enrichPostGameStats(game),
 			score: this.storeGames.getGameScore(),
-			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings), matchId: settings?.matchInfo?.matchId?.replaceAll(".", "-").replaceAll(":", "-") } },
+			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings), matchId: settings?.matchInfo?.matchId?.replace(/[.:]/g, '-') } },
 			timestamp: dateTimeNow(),
 		} as GameStats
 	}
