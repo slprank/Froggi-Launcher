@@ -13,6 +13,7 @@ import log from 'electron-log';
 
 jest.mock("../../electron/services/api")
 describe('ElectnronGamesStore', () => {
+    let connectCode: string;
     let electronGamesStore: ElectronGamesStore;
     let statsDisplay: StatsDisplay;
     let storeLiveStats: ElectronLiveStatsStore;
@@ -23,6 +24,7 @@ describe('ElectnronGamesStore', () => {
     let store: Store;
 
     interface TestFile {
+        connectCode: string,
         file: string,
         expectedLength: number,
         expectedScore: number[],
@@ -30,17 +32,41 @@ describe('ElectnronGamesStore', () => {
     }
 
     const rankedGameTest: TestFile[] = [
-        { file: "ranked-set-1/Game_20231018T220639.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked" },
-        { file: "ranked-set-1/Game_20231018T220924.slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked" },
-        { file: "ranked-set-1/Game_20231018T221143.slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked" },
-        { file: "ranked-set-2/Game_20230924T231007.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked" },
-        { file: "ranked-set-2/Game_20230924T231242.slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "ranked" },
+        { file: "ranked-set-1/Game_20231018T220639.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked", connectCode: "PRML#682" },
+        { file: "ranked-set-1/Game_20231018T220924.slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked", connectCode: "PRML#682" },
+        { file: "ranked-set-1/Game_20231018T221143.slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked", connectCode: "PRML#682" },
+
+        { file: "ranked-set-2/Game_20230924T231007.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked", connectCode: "PRML#682" },
+
+        { file: "ranked-set-2/Game_20230924T231242.slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "ranked", connectCode: "PRML#682" },
+
+        { file: "unranked-set-1/Replay 1 [L].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked", connectCode: "FLCD#507" },
+        { file: "unranked-set-1/Replay 2 [W].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "unranked", connectCode: "FLCD#507" },
+        { file: "unranked-set-1/Replay 3 [L].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "unranked", connectCode: "FLCD#507" },
+        { file: "unranked-set-1/Replay 4 [W].slp", expectedLength: 4, expectedScore: [2, 2], expectedMode: "unranked", connectCode: "FLCD#507" },
+        { file: "unranked-set-1/Replay 5 [W].slp", expectedLength: 5, expectedScore: [2, 3], expectedMode: "unranked", connectCode: "FLCD#507" },
+
+        { file: "unranked-set-2/Replay 1 [L].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked", connectCode: "YBRD#855" },
+        { file: "unranked-set-2/Replay 2 [W].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "unranked", connectCode: "YBRD#855" },
+        { file: "unranked-set-2/Replay 3 [L].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "unranked", connectCode: "YBRD#855" },
+        { file: "unranked-set-2/Replay 4 [L].slp", expectedLength: 4, expectedScore: [3, 1], expectedMode: "unranked", connectCode: "YBRD#855" },
+
+        { file: "direct-set-1/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507" },
+        { file: "direct-set-1/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507" },
+        { file: "direct-set-1/Replay 3 [L].slp", expectedLength: 3, expectedScore: [1, 2], expectedMode: "direct", connectCode: "FLCD#507" },
+        { file: "direct-set-1/Replay 4 [W].slp", expectedLength: 4, expectedScore: [1, 3], expectedMode: "direct", connectCode: "FLCD#507" },
+
+        { file: "direct-set-2/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507" },
+        { file: "direct-set-2/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507" },
+
+        { file: "direct-set-3/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507" },
+        { file: "direct-set-3/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507" },
+        { file: "direct-set-3/Replay 3 [W].slp", expectedLength: 3, expectedScore: [0, 3], expectedMode: "direct", connectCode: "FLCD#507" },
         // TODO: Add unranked/direct and local games
         // TODO: Add local games with different port positions
     ]
 
     beforeAll(() => {
-        const connectCode = "PRML#682"
         store = new Store({ cwd: `${__dirname}/..` })
         store.delete("player")
         store.delete("stats")
@@ -101,8 +127,9 @@ describe('ElectnronGamesStore', () => {
 
     // TODO: Include all games
     test('Is New Game The Same As Recent Game', async () => {
-        for (const test of rankedGameTest) {
-            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+        for (const gameTest of rankedGameTest) {
+            connectCode = gameTest.connectCode
+            const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
@@ -116,6 +143,7 @@ describe('ElectnronGamesStore', () => {
 
     test('Is Returned Match Games A Match As Expected', async () => {
         for (const test of rankedGameTest) {
+            connectCode = test.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
@@ -130,6 +158,7 @@ describe('ElectnronGamesStore', () => {
 
     test('Set Score Is As Expected', async () => {
         for (const test of rankedGameTest) {
+            connectCode = test.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
@@ -144,6 +173,7 @@ describe('ElectnronGamesStore', () => {
 
     test('Set Score Is As Expected', async () => {
         for (const test of rankedGameTest) {
+            connectCode = test.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
@@ -158,6 +188,7 @@ describe('ElectnronGamesStore', () => {
 
     test('Game Mode As Expected', async () => {
         for (const test of rankedGameTest) {
+            connectCode = test.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
