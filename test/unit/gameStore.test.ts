@@ -9,6 +9,7 @@ import { ElectronCurrentPlayerStore } from "../../electron/services/store/storeC
 import { GameStartMode, Player, SlippiLauncherSettings } from "../../frontend/src/lib/models/types/slippiData";
 import { ElectronLiveStatsStore } from "../../electron/services/store/storeLiveStats";
 import { ElectronSettingsStore } from "../../electron/services/store/storeSettings";
+import log from 'electron-log';
 
 jest.mock("../../electron/services/api")
 describe('ElectnronGamesStore', () => {
@@ -41,10 +42,6 @@ describe('ElectnronGamesStore', () => {
         store = new Store({ cwd: `${__dirname}/..` })
         store.delete("player")
         store.delete("stats")
-
-        const log: any = {
-            info: (_: string) => { },
-        };
 
         const api: Api = new Api(log)
         const messageHandler: any = {
