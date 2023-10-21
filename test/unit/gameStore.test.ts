@@ -35,6 +35,8 @@ describe('ElectnronGamesStore', () => {
         { file: "ranked-set-1/Game_20231018T221143.slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked" },
         { file: "ranked-set-2/Game_20230924T231007.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked" },
         { file: "ranked-set-2/Game_20230924T231242.slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "ranked" },
+        // TODO: Add unranked/direct and local games
+        // TODO: Add local games with different port positions
     ]
 
     beforeAll(() => {
@@ -154,31 +156,20 @@ describe('ElectnronGamesStore', () => {
         }
     })
 
+    test('Game Mode As Expected', async () => {
+        for (const test of rankedGameTest) {
+            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+            const currentGameEnd = game.getGameEnd();
+            const currentGameSettings = game.getSettings();
+            if (!currentGameEnd || !currentGameSettings) return;
+            await statsDisplay.handleGameStart(currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            const recentGame = electronGamesStore.getRecentGames()?.at(0)
+            expect(recentGame?.settings?.matchInfo.mode).toStrictEqual(test.expectedMode)
+            //expect(gameScore.reduce((value, score) => value + score, 0)).toStrictEqual(currentGameSettings.matchInfo?.gameNumber)
+        }
+    })
 
-    // TODO: Test Current Game Id === Recent Game (Game number)
 
-    // TODO: Test Score
-
-    // test('Test Match Game Length', () => {
-    //     let gameScore = electronGamesStore.getGameScore()
-    //     console.log("score", gameScore)
-    //     expect(gameScore).toStrictEqual([0, 0]);
-    //     rankedGameTest.forEach((test) => {
-    //         const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
-    //         const gameEnd = game.getGameEnd();
-    //         const settings = game.getSettings();
-    //         if (!gameEnd || !settings) return;
-    //         statsDisplay.handleGameStart(settings)
-    //         statsDisplay.handleGameEnd(gameEnd, settings)
-    //         const gameStats = statsDisplay["getGameStats"](game)
-    //         electronGamesStore.setGameMatch(gameStats)
-    //         const gameFromStore = electronGamesStore.getGameMatch(gameStats?.settings?.matchInfo.matchId)
-    //         gameScore = electronGamesStore.getGameScore()
-    //         expect(gameScore).toStrictEqual(test.expectedScore)
-    //         expect(gameStats?.settings?.matchInfo.mode).toStrictEqual(test.expectedMode)
-    //         expect(gameFromStore).toHaveLength(test.expectedLength);
-    //     })
-
-    //     // Add more test cases as needed.
-    // });
+    // TODO: Test analyzed match stats
 });
