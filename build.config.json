@@ -38,6 +38,5 @@
 			"to": "test",
 			"filter": ["**/*", "!**/test/**/*"]
 		}
-	],
-	"exclude": ["build_electron/test"]
+	]
 }
