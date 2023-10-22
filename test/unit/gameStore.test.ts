@@ -167,7 +167,7 @@ describe('ElectnronGamesStore', () => {
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)
             const matchGames = electronGamesStore.getGameMatch(recentGame?.settings?.matchInfo.matchId)
-            expect(matchGames.length).toHaveLength(gameTest.expectedLength);
+            expect(matchGames).toHaveLength(gameTest.expectedLength);
         }
     })
 

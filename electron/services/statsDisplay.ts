@@ -177,23 +177,19 @@ export class StatsDisplay {
 		if (!slippiSettings?.rootSlpPath) return;
 
 		let files: string[];
-		let subFolder: string;
-		if (slippiSettings.useMonthlySubfolders) {
-			subFolder = (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
-				.filter(dirent => dirent.isDirectory())
-				.map(dirent => dirent.name)
-				.sort((a, b) => a > b ? 1 : -1)
-				.at(0) ?? ""
-			files = (await fs
-				.readdir(`${slippiSettings.rootSlpPath}/${subFolder}`))
-				.map((filename: string) => `${path.parse(filename).name}.slp`);
-		} else {
-			files = (await fs
-				.readdir(slippiSettings.rootSlpPath))
-				.map((filename: string) => `${path.parse(filename).name}.slp`);
-		}
+		let subFolder = slippiSettings.useMonthlySubfolders ? (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
+			.filter(dirent => dirent.isDirectory())
+			.map(dirent => dirent.name)
+			.sort((a, b) => a > b ? 1 : -1)
+			.at(0) : ""
 
-		files = files.filter((f: string) => re.test(f)).map((f: string) => `${slippiSettings.rootSlpPath}/${subFolder ? `${subFolder}/` : ""}${f}`);
+		files = (await fs
+			.readdir(`${slippiSettings.rootSlpPath}${subFolder ? `/${subFolder}` : ""}`))
+			.map((filename: string) => `${path.parse(filename).name}.slp`)
+			.filter((f: string) => re.test(f)).map((f: string) => `${slippiSettings.rootSlpPath}/${subFolder ? `${subFolder}/` : ""}${f}`);
+
+		console.log("files", files)
+
 		return files.sort((a, b) => a > b ? -1 : 1);
 	}
 
