@@ -121,7 +121,7 @@ export class StatsDisplay {
 	private handlePostGameScene() {
 		const score = this.storeGames.getGameScore();
 		const bestOf = this.storeLiveStats.getBestOf();
-		const isPostSet = score.some(score => score === Math.ceil(bestOf / 2))
+		const isPostSet = score.some(score => score >= Math.ceil(bestOf / 2))
 		if (isPostSet) this.storeLiveStats.setStatsScene(LiveStatsScene.PostSet)
 		else this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
 	}
