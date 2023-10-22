@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import { Animation } from '$lib/models/enum';
-	import type { GridContentItem, Scene } from '$lib/models/types';
+	import type { GridContentItem, Scene } from '$lib/models/types/overlay';
 	import { fly, type TransitionConfig } from 'svelte/transition';
 	import { COL, ROW } from '$lib/models/const';
 	import AnimationLayer from './element/animations/AnimationLayer.svelte';

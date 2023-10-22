@@ -2,7 +2,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import Select from '$lib/components/input/Select.svelte';
-	import type { Font } from '$lib/models/types';
+	import type { Font } from '$lib/models/types/overlay';
 
 	export let font: Font;
 	export let fontId: string;

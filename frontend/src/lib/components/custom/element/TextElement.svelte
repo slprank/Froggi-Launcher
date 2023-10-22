@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 
 	export let dataItem: GridContentItem;
 	export let style: GridContentItemStyle;

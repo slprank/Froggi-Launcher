@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
-	import type { ElementPayload } from '$lib/models/types';
+	import type { ElementPayload } from '$lib/models/types/overlay';
 	import { Animation } from '$lib/models/enum';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';

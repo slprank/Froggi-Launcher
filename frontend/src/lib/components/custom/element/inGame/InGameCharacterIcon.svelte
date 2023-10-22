@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CHARACTERS_INTERNAL_EXTERNAL } from '$lib/models/constants/characterData';
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame } from '$lib/utils/store.svelte';
 

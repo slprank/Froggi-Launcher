@@ -2,7 +2,7 @@
 	import { LiveStatsScene } from '$lib/models/enum';
 	import Select from '$lib/components/input/Select.svelte';
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
-	import type { Overlay } from '$lib/models/types';
+	import type { Overlay } from '$lib/models/types/overlay';
 
 	export let overlay: Overlay;
 

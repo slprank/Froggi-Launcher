@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame } from '$lib/utils/store.svelte';
 

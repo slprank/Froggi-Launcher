@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { InGameState } from '$lib/models/enum';
-	import type { GridContentItem } from '$lib/models/types';
+	import type { GridContentItem } from '$lib/models/types/overlay';
 	import { VisibilityOption, VisibilityToggle } from '$lib/models/types/animationOption';
 	import { eventEmitter, gameFrame, gameSettings, gameState } from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';

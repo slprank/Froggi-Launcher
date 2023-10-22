@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AnimationSettings } from '$lib/models/types';
+	import type { AnimationSettings } from '$lib/models/types/overlay';
 	import { Animation } from '$lib/models/enum';
 	import Select from './Select.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';

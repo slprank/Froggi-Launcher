@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Logo from '$lib/Logo.svelte';
-	import { memoryReadController } from '$lib/utils/store.svelte';
+	import { gameFrame, memoryReadController } from '$lib/utils/store.svelte';
 </script>
 
 <main
@@ -10,8 +10,15 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div>
-		{JSON.stringify($memoryReadController[0])}
+	<div class="grid grid-flow-row gap-4 justify-center">
+		<h1>Memory:</h1>
+		<div class="w-[80vw]">
+			{JSON.stringify($memoryReadController[0])}
+		</div>
+		<h1>Player1 Percent - Slippi-Js</h1>
+		<div class="w-[80vw]">
+			{JSON.stringify($gameFrame?.players)}
+		</div>
 	</div>
 	<div class="fixed place-items-center grid h-screen w-screen bg-gradient-to-t from-black z-40">
 		<Logo />

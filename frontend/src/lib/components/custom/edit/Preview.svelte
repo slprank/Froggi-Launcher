@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { getOverlayById } from './OverlayHandler.svelte';
-	import type { Overlay } from '$lib/models/types';
+	import type { Overlay } from '$lib/models/types/overlay';
 	import { isElectron, urls } from '$lib/utils/store.svelte';
 	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
 

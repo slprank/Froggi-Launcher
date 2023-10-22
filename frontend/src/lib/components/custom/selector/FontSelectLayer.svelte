@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Font } from '$lib/models/types';
+	import type { Font } from '$lib/models/types/overlay';
 	import { addFont } from '../CustomFontHandler.svelte';
 	import FontSelect from './FontSelect.svelte';
 

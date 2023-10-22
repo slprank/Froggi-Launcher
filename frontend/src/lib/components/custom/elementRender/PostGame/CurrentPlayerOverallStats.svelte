@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { currentPlayer, postGame } from '$lib/utils/store.svelte';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 

@@ -2,7 +2,7 @@
 	import { isElectron, obs, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
-	import type { Layer, Overlay, Scene } from '$lib/models/types';
+	import type { Layer, Overlay, Scene } from '$lib/models/types/overlay';
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/custom/BoardContainer.svelte';

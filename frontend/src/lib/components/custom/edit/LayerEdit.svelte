@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Overlay } from '$lib/models/types';
+	import type { Overlay } from '$lib/models/types/overlay';
 	import Select from '$lib/components/input/Select.svelte';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';

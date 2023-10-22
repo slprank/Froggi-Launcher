@@ -7,7 +7,7 @@
 	import Preview from './Preview.svelte';
 	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';
-	import type { Overlay } from '$lib/models/types';
+	import type { Overlay } from '$lib/models/types/overlay';
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
 	import SceneSelect from '../selector/SceneSelect.svelte';
 	import SceneEditModal from './SceneEditModal.svelte';

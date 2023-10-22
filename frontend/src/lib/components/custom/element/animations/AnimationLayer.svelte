@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GridContentItem } from '$lib/models/types';
+	import type { GridContentItem } from '$lib/models/types/overlay';
 	import { AnimationTrigger } from '$lib/models/types/animationOption';
 	import { eventEmitter, gameFrame } from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';

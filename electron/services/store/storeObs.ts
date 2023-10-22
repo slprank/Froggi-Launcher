@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { Obs, Overlay } from '../../../frontend/src/lib/models/types/types';
+import type { Obs, Overlay } from '../../../frontend/src/lib/models/types/overlay';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';

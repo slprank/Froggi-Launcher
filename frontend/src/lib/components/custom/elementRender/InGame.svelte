@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import GameCustomUi from './InGame/GameCustomUi.svelte';
 	import Player1CustomUi from './InGame/Player1CustomUi.svelte';
 	import Player2CustomUi from './InGame/Player2CustomUi.svelte';

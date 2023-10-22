@@ -6,7 +6,7 @@
 	import LayerToggle from '$lib/components/custom/preview/LayerToggle.svelte';
 	import NonInteractiveIFrame from '$lib/components/custom/preview/NonInteractiveIFrame.svelte';
 	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
-	import type { Overlay } from '$lib/models/types';
+	import type { Overlay } from '$lib/models/types/overlay';
 	import { isElectron, isMobile, urls } from '$lib/utils/store.svelte';
 
 	const overlayId: string | undefined = $page.params.overlay;

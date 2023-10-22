@@ -3,7 +3,7 @@
 	import { initElectronEvents, initEventListener } from '$lib/utils/initEventListener.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import { eventEmitter, isBrowser, isElectron, obs } from '$lib/utils/store.svelte';
-	import type { Obs } from '$lib/models/types';
+	import type { Obs } from '$lib/models/types/overlay';
 	import { page } from '$app/stores';
 	import type { Page } from '@sveltejs/kit';
 	import { WEBSOCKET_PORT } from '$lib/models/const';

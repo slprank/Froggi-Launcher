@@ -3,7 +3,7 @@
 	import { fly } from 'svelte/transition';
 	import { autoUpdater, eventEmitter, isElectron } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
-	import type { AutoUpdater } from '$lib/models/types';
+	import type { AutoUpdater } from '$lib/models/types/overlay';
 
 	const getStyle = (autoUpdater: AutoUpdater) => {
 		switch (autoUpdater.status) {

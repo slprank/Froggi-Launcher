@@ -2,7 +2,11 @@
 	import { fly, type EasingFunction } from 'svelte/transition';
 	import * as transitionFunctions from 'svelte/transition';
 	import * as easingFunctions from 'svelte/easing';
-	import type { AnimationSettings, AnimationOptions, GridContentItem } from '$lib/models/types';
+	import type {
+		AnimationSettings,
+		AnimationOptions,
+		GridContentItem,
+	} from '$lib/models/types/overlay';
 	import { Animation } from '$lib/models/enum';
 	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
 	import type { AnimationConfig } from 'svelte/animate';

@@ -1,7 +1,12 @@
 <script lang="ts" context="module">
 	import { Animation, LiveStatsScene, SceneBackground } from '$lib/models/enum';
 	import type { CustomElement } from '$lib/models/constants/customElement';
-	import type { AnimationSettings, ElementPayload, Overlay, Scene } from '$lib/models/types';
+	import type {
+		AnimationSettings,
+		ElementPayload,
+		Overlay,
+		Scene,
+	} from '$lib/models/types/overlay';
 
 	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 

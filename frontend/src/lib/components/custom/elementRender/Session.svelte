@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import CurrentGameSession from './Session/CurrentGameSession.svelte';
 
 	export let dataItem: GridContentItem;

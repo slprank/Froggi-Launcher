@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { SceneBackground } from '$lib/models/enum';
-	import type { Scene } from '$lib/models/types';
+	import type { Scene } from '$lib/models/types/overlay';
 	import { gameSettings, postGame } from '$lib/utils/store.svelte';
 	import type { AnimationConfig } from 'svelte/animate';
 	import { createAnimation } from './element/animations/Animations.svelte';

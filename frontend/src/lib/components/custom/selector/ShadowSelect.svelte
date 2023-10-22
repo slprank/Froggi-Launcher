@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
-	import type { Shadow } from '$lib/models/types';
+	import type { Shadow } from '$lib/models/types/overlay';
 
 	export let label: string | undefined = undefined;
 

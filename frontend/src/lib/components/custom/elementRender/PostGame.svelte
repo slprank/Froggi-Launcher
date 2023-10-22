@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import CurrentPlayerActionCount from './PostGame/CurrentPlayerActionCount.svelte';
 	import CurrentPlayerAttackCount from './PostGame/CurrentPlayerAttackCount.svelte';
 	import CurrentPlayerOverallStats from './PostGame/CurrentPlayerOverallStats.svelte';

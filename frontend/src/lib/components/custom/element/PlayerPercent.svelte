@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { InGameState } from '$lib/models/enum';
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame, gameState } from '$lib/utils/store.svelte';
 
