@@ -1,7 +1,7 @@
-import type { Animation, AutoUpdaterStatus, LiveStatsScene, SceneBackground } from './enum';
-import type { COL } from './const';
-import type { CustomElement } from './constants/customElement';
-import type { SelectedAnimationTriggerOption, SelectedVisibilityOption } from './types/animationOption';
+import type { Animation, AutoUpdaterStatus, LiveStatsScene, SceneBackground } from '../enum';
+import type { COL } from '../const';
+import type { CustomElement } from '../constants/customElement';
+import type { SelectedAnimationTriggerOption, SelectedVisibilityOption } from './animationOption';
 
 export interface AutoUpdater {
 	progress: number | undefined;

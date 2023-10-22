@@ -1,7 +1,7 @@
 // https://www.npmjs.com/package/electron-store
 import ip from 'ip';
 import Store from 'electron-store';
-import type { Url } from '../../../frontend/src/lib/models/types';
+import type { Url } from '../../../frontend/src/lib/models/types/types';
 import type { SlippiLauncherSettings } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';

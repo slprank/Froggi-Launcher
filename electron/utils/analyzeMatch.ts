@@ -1,3 +1,4 @@
+import { ActionCountsType, OverallType } from "@slippi/slippi-js";
 import { GameStats, MatchStats } from "../../frontend/src/lib/models/types/slippiData";
 
 export const analyzeMatch = (gameStats: GameStats[] | undefined): MatchStats | undefined => {
@@ -5,10 +6,10 @@ export const analyzeMatch = (gameStats: GameStats[] | undefined): MatchStats | u
     const stats = gameStats.map(stats => stats.postGameStats)
     const player1Index = stats.at(0)?.actionCounts.at(0)?.playerIndex ?? 0
     const player2Index = stats.at(1)?.actionCounts.at(1)?.playerIndex ?? 1
-    const player1ActionCounts = stats.map(stats => stats?.actionCounts).filter(Boolean)[0]
-    const player2ActionCounts = stats.map(stats => stats?.actionCounts).filter(Boolean)[1]
-    const player1Overall = stats.map(stats => stats?.overall).filter(Boolean)[0]
-    const player2Overall = stats.map(stats => stats?.overall).filter(Boolean)[1]
+    const player1ActionCounts = stats.map(stats => stats?.actionCounts[0]).filter(actionCounts => actionCounts !== undefined) as ActionCountsType[];
+    const player2ActionCounts = stats.map(stats => stats?.actionCounts[1]).filter(actionCounts => actionCounts !== undefined) as ActionCountsType[]
+    const player1Overall = stats.map(stats => stats?.overall[0]).filter(overall => overall !== undefined) as OverallType[];
+    const player2Overall = stats.map(stats => stats?.overall[1]).filter(overall => overall !== undefined) as OverallType[];
 
     return {
         actionCounts: [
@@ -133,42 +134,42 @@ export const analyzeMatch = (gameStats: GameStats[] | undefined): MatchStats | u
                 successfulConversions: {
                     count: player1Overall?.map(overall => overall.successfulConversions.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.successfulConversions.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.successfulConversions.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.successfulConversions.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.successfulConversions.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.successfulConversions.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 inputsPerMinute: {
                     count: player1Overall?.map(overall => overall.inputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.inputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.inputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.inputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.inputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.inputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 digitalInputsPerMinute: {
                     count: player1Overall?.map(overall => overall.digitalInputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.digitalInputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.digitalInputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.digitalInputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.digitalInputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.digitalInputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 openingsPerKill: {
                     count: player1Overall?.map(overall => overall.openingsPerKill.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.openingsPerKill.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.openingsPerKill.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.openingsPerKill.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.openingsPerKill.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.openingsPerKill.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 damagePerOpening: {
                     count: player1Overall?.map(overall => overall.damagePerOpening.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.damagePerOpening.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.damagePerOpening.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.damagePerOpening.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.damagePerOpening.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.damagePerOpening.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 neutralWinRatio: {
                     count: player1Overall?.map(overall => overall.neutralWinRatio.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.neutralWinRatio.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.neutralWinRatio.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.neutralWinRatio.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.neutralWinRatio.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.neutralWinRatio.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 counterHitRatio: {
                     count: player1Overall?.map(overall => overall.counterHitRatio.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.counterHitRatio.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.counterHitRatio.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.counterHitRatio.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.counterHitRatio.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.counterHitRatio.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 beneficialTradeRatio: {
                     count: player1Overall?.map(overall => overall.beneficialTradeRatio.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player1Overall?.map(overall => overall.beneficialTradeRatio.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player1Overall?.map(overall => overall.beneficialTradeRatio.total).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.beneficialTradeRatio.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player1Overall?.map(overall => overall.beneficialTradeRatio.count).reduce((i, j) => i + j, 0) ?? 0) / (player1Overall?.map(overall => overall.beneficialTradeRatio.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
             },
             {
@@ -186,42 +187,42 @@ export const analyzeMatch = (gameStats: GameStats[] | undefined): MatchStats | u
                 successfulConversions: {
                     count: player2Overall?.map(overall => overall.successfulConversions.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.successfulConversions.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.successfulConversions.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.successfulConversions.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.successfulConversions.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.successfulConversions.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 inputsPerMinute: {
                     count: player2Overall?.map(overall => overall.inputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.inputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.inputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.inputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.inputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.inputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 digitalInputsPerMinute: {
                     count: player2Overall?.map(overall => overall.digitalInputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.digitalInputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.digitalInputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.digitalInputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.digitalInputsPerMinute.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.digitalInputsPerMinute.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 openingsPerKill: {
                     count: player2Overall?.map(overall => overall.openingsPerKill.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.openingsPerKill.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.openingsPerKill.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.openingsPerKill.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.openingsPerKill.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.openingsPerKill.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 damagePerOpening: {
                     count: player2Overall?.map(overall => overall.damagePerOpening.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.damagePerOpening.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.damagePerOpening.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.damagePerOpening.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.damagePerOpening.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.damagePerOpening.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 neutralWinRatio: {
                     count: player2Overall?.map(overall => overall.neutralWinRatio.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.neutralWinRatio.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.neutralWinRatio.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.neutralWinRatio.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.neutralWinRatio.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.neutralWinRatio.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 counterHitRatio: {
                     count: player2Overall?.map(overall => overall.counterHitRatio.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.counterHitRatio.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.counterHitRatio.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.counterHitRatio.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.counterHitRatio.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.counterHitRatio.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
                 beneficialTradeRatio: {
                     count: player2Overall?.map(overall => overall.beneficialTradeRatio.count).reduce((i, j) => i + j, 0) ?? 0,
                     total: player2Overall?.map(overall => overall.beneficialTradeRatio.total).reduce((i, j) => i + j, 0) ?? 0,
-                    ratio: ((player2Overall?.map(overall => overall.beneficialTradeRatio.total).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.beneficialTradeRatio.count).reduce((i, j) => i + j, 0) ?? 1)),
+                    ratio: ((player2Overall?.map(overall => overall.beneficialTradeRatio.count).reduce((i, j) => i + j, 0) ?? 0) / (player2Overall?.map(overall => overall.beneficialTradeRatio.total).reduce((i, j) => i + j, 0) ?? 1)),
                 },
             }
         ],

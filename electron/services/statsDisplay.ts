@@ -18,7 +18,7 @@ import { analyzeMatch } from '../utils/analyzeMatch';
 
 @singleton()
 export class StatsDisplay {
-	pauseInterval: NodeJS.Timeout
+	private pauseInterval: NodeJS.Timeout
 	constructor(
 		@inject("ElectronLog") private log: ElectronLog,
 		@inject("SlpParser") private slpParser: SlpParser,
@@ -112,15 +112,24 @@ export class StatsDisplay {
 		// TODO: If Game Set End - Get All Match Games
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
-		this.storeLiveStats.setGameStats(gameStats)
-		this.storeGames.setGameMatch(gameStats)
-		this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
+		this.handleGameSetStats(gameStats)
+		this.handlePostGameScene()
 		this.storeLiveStats.deleteGameFrame()
 		setTimeout(() => this.messageHandler.sendMessage('game-frame', undefined), SCENE_TRANSITION_DELAY);
-		this.handleGameSet(gameStats?.settings?.matchInfo?.matchId)
 	}
 
-	private handleGameSet(matchId: string | undefined | null) {
+	private handlePostGameScene() {
+		const score = this.storeGames.getGameScore();
+		const bestOf = this.storeLiveStats.getBestOf();
+		const isPostSet = score.some(score => score === Math.ceil(bestOf / 2))
+		if (isPostSet) this.storeLiveStats.setStatsScene(LiveStatsScene.PostSet)
+		else this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
+	}
+
+	private handleGameSetStats(gameStats: GameStats | null) {
+		this.storeLiveStats.setGameStats(gameStats)
+		this.storeGames.setGameMatch(gameStats)
+		const matchId = gameStats?.settings?.matchInfo?.matchId
 		if (!matchId) return;
 		const games = this.storeGames.getGameMatch(matchId)
 		if (!games || !games?.length) return;
@@ -150,7 +159,7 @@ export class StatsDisplay {
 	}
 
 	private handleScore(gameEnd: GameEndType) {
-		let score: number[] = this.storeGames.getGameScore() ?? [0, 0];
+		let score: number[] = this.storeGames.getGameScore();
 		const winnerIndex = getWinnerIndex(gameEnd)
 		if (winnerIndex === undefined || winnerIndex === -1) return;
 		score[winnerIndex] += 1;

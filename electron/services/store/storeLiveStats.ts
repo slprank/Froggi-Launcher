@@ -5,8 +5,9 @@ import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 import os from 'os';
-import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
+import { BestOf, InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import {
+	GameStartMode,
 	GameStartTypeExtended,
 	GameStats,
 	MatchStats,
@@ -61,11 +62,13 @@ export class ElectronLiveStatsStore {
 	}
 
 	setGameSettings(settings: GameStartType) {
-		this.setGameMode(settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) ?? 'Local');
-		return this.store.set('stats.game.settings', settings);
+		const gameMode = settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) as GameStartMode ?? 'local'
+		if (gameMode === "ranked") this.setBestOf(BestOf.BestOf3)
+		this.setGameMode(gameMode);
 	}
 
-	setGameMode(mode: string) {
+	setGameMode(mode: GameStartMode) {
+
 		return this.store.set('stats.game.settings.matchInfo.mode', mode);
 	}
 
@@ -81,6 +84,15 @@ export class ElectronLiveStatsStore {
 	setMatchStats(matchStats: MatchStats | undefined | null) {
 		if (!matchStats) return;
 		this.store.set('stats.match.stats', matchStats);
+	}
+
+	setBestOf(bestOf: BestOf | undefined) {
+		if (!bestOf) return;
+		this.store.set("stats.bestOf", bestOf)
+	}
+
+	getBestOf(): BestOf {
+		return this.store.get("stats.bestOf") as BestOf
 	}
 
 	initListeners() {

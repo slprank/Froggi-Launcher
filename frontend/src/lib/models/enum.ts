@@ -18,6 +18,13 @@ export enum AutoUpdaterStatus {
 	UpToDate = "Up To Date"
 }
 
+export enum BestOf {
+	BestOf3 = 3,
+	BestOf5 = 5,
+	BestOf7 = 7,
+	BestOf9 = 9,
+}
+
 export enum Character {
 	Falcon = 0,
 	DK = 1,

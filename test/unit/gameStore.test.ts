@@ -10,6 +10,7 @@ import { GameStartMode, Player, SlippiLauncherSettings } from "../../frontend/sr
 import { ElectronLiveStatsStore } from "../../electron/services/store/storeLiveStats";
 import { ElectronSettingsStore } from "../../electron/services/store/storeSettings";
 import log from 'electron-log';
+import { BestOf, LiveStatsScene } from "../../frontend/src/lib/models/enum";
 
 jest.mock("../../electron/services/api")
 describe('ElectnronGamesStore', () => {
@@ -28,41 +29,38 @@ describe('ElectnronGamesStore', () => {
         file: string,
         expectedLength: number,
         expectedScore: number[],
-        expectedMode: GameStartMode;
+        expectedMode: GameStartMode,
+        expectedScene: LiveStatsScene,
+        setBestOf: BestOf | undefined,
     }
 
     const rankedGameTest: TestFile[] = [
-        { file: "ranked-set-1/Game_20231018T220639.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked", connectCode: "PRML#682" },
-        { file: "ranked-set-1/Game_20231018T220924.slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked", connectCode: "PRML#682" },
-        { file: "ranked-set-1/Game_20231018T221143.slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked", connectCode: "PRML#682" },
+        { file: "ranked-set-1/Replay 1 [W].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "ranked-set-1/Replay 2 [L].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "ranked-set-1/Replay 3 [W].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
 
-        { file: "ranked-set-2/Game_20230924T231007.slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked", connectCode: "PRML#682" },
+        { file: "unranked-set-1/Replay 1 [L].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: BestOf.BestOf3 },
+        { file: "unranked-set-1/Replay 2 [W].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "unranked", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "unranked-set-1/Replay 3 [L].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "unranked", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
+        { file: "unranked-set-1/Replay 4 [W].slp", expectedLength: 4, expectedScore: [2, 2], expectedMode: "unranked", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "unranked-set-1/Replay 5 [W].slp", expectedLength: 5, expectedScore: [2, 3], expectedMode: "unranked", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
 
-        { file: "ranked-set-2/Game_20230924T231242.slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "ranked", connectCode: "PRML#682" },
+        { file: "direct-set-1/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: BestOf.BestOf5 },
+        { file: "direct-set-1/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "direct-set-1/Replay 3 [L].slp", expectedLength: 3, expectedScore: [1, 2], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "direct-set-1/Replay 4 [W].slp", expectedLength: 4, expectedScore: [1, 3], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
 
-        { file: "unranked-set-1/Replay 1 [L].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked", connectCode: "FLCD#507" },
-        { file: "unranked-set-1/Replay 2 [W].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "unranked", connectCode: "FLCD#507" },
-        { file: "unranked-set-1/Replay 3 [L].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "unranked", connectCode: "FLCD#507" },
-        { file: "unranked-set-1/Replay 4 [W].slp", expectedLength: 4, expectedScore: [2, 2], expectedMode: "unranked", connectCode: "FLCD#507" },
-        { file: "unranked-set-1/Replay 5 [W].slp", expectedLength: 5, expectedScore: [2, 3], expectedMode: "unranked", connectCode: "FLCD#507" },
+        { file: "direct-set-2/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: BestOf.BestOf3 },
+        { file: "direct-set-2/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
 
-        { file: "unranked-set-2/Replay 1 [L].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "unranked", connectCode: "YBRD#855" },
-        { file: "unranked-set-2/Replay 2 [W].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "unranked", connectCode: "YBRD#855" },
-        { file: "unranked-set-2/Replay 3 [L].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "unranked", connectCode: "YBRD#855" },
-        { file: "unranked-set-2/Replay 4 [L].slp", expectedLength: 4, expectedScore: [3, 1], expectedMode: "unranked", connectCode: "YBRD#855" },
+        { file: "direct-set-3/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: BestOf.BestOf3 },
+        { file: "direct-set-3/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "direct-set-3/Replay 3 [W].slp", expectedLength: 3, expectedScore: [0, 3], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
 
-        { file: "direct-set-1/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507" },
-        { file: "direct-set-1/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507" },
-        { file: "direct-set-1/Replay 3 [L].slp", expectedLength: 3, expectedScore: [1, 2], expectedMode: "direct", connectCode: "FLCD#507" },
-        { file: "direct-set-1/Replay 4 [W].slp", expectedLength: 4, expectedScore: [1, 3], expectedMode: "direct", connectCode: "FLCD#507" },
-
-        { file: "direct-set-2/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507" },
-        { file: "direct-set-2/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507" },
-
-        { file: "direct-set-3/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507" },
-        { file: "direct-set-3/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507" },
-        { file: "direct-set-3/Replay 3 [W].slp", expectedLength: 3, expectedScore: [0, 3], expectedMode: "direct", connectCode: "FLCD#507" },
-        // TODO: Add unranked/direct and local games
+        { file: "direct-set-4/Replay 1 [L].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "direct", connectCode: "YBRD#855", expectedScene: LiveStatsScene.PostGame, setBestOf: BestOf.BestOf5 },
+        { file: "direct-set-4/Replay 2 [W].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "direct", connectCode: "YBRD#855", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "direct-set-4/Replay 3 [L].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "direct", connectCode: "YBRD#855", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "direct-set-4/Replay 4 [L].slp", expectedLength: 4, expectedScore: [3, 1], expectedMode: "direct", connectCode: "YBRD#855", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
         // TODO: Add local games with different port positions
     ]
 
@@ -130,6 +128,7 @@ describe('ElectnronGamesStore', () => {
     test('Is New Game The Same As Recent Game', async () => {
         for (const gameTest of rankedGameTest) {
             connectCode = gameTest.connectCode
+            storeLiveStats.setBestOf(gameTest.setBestOf)
             const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
@@ -142,7 +141,21 @@ describe('ElectnronGamesStore', () => {
         }
     })
 
-    test('Is Returned Match Games A Match As Expected', async () => {
+    test('Is Post Game Scene As Expected', async () => {
+        for (const gameTest of rankedGameTest) {
+            connectCode = gameTest.connectCode
+            const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
+            const currentGameEnd = game.getGameEnd();
+            const currentGameSettings = game.getSettings();
+            if (!currentGameEnd || !currentGameSettings) return;
+            await statsDisplay.handleGameStart(currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            const liveScene = storeLiveStats.getStatsScene();
+            expect(liveScene).toStrictEqual(gameTest.expectedScene);
+        }
+    })
+
+    test('Is Returned Match Games Length As Expected', async () => {
         for (const test of rankedGameTest) {
             connectCode = test.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
@@ -198,10 +211,10 @@ describe('ElectnronGamesStore', () => {
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)
             expect(recentGame?.settings?.matchInfo.mode).toStrictEqual(test.expectedMode)
-            //expect(gameScore.reduce((value, score) => value + score, 0)).toStrictEqual(currentGameSettings.matchInfo?.gameNumber)
         }
     })
 
+    // TODO: Test current player controller port
 
     // TODO: Test analyzed match stats
 });
