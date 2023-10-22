@@ -32,6 +32,11 @@
 		{
 			"from": "build",
 			"to": ""
+		},
+		{
+			"from": "build_electron/test",
+			"to": "test",
+			"filter": ["**/*", "!**/test/**/*"]
 		}
 	],
 	"exclude": ["build_electron/test"]

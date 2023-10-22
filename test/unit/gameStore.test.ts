@@ -125,7 +125,8 @@ describe('ElectnronGamesStore', () => {
         store.delete("stats")
     })
 
-    // TODO: Include all games
+    // TODO: Include local games - different port
+    // TODO: All tests in one loop
     test('Is New Game The Same As Recent Game', async () => {
         for (const gameTest of rankedGameTest) {
             connectCode = gameTest.connectCode
