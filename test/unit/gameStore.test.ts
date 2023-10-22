@@ -144,6 +144,7 @@ describe('ElectnronGamesStore', () => {
     test('Is Post Game Scene As Expected', async () => {
         for (const gameTest of rankedGameTest) {
             connectCode = gameTest.connectCode
+            storeLiveStats.setBestOf(gameTest.setBestOf)
             const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
@@ -151,14 +152,14 @@ describe('ElectnronGamesStore', () => {
             await statsDisplay.handleGameStart(currentGameSettings)
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
             const liveScene = storeLiveStats.getStatsScene();
-            expect(liveScene).toStrictEqual(gameTest.expectedScene);
+            expect(gameTest.expectedScene).toStrictEqual(liveScene);
         }
     })
 
     test('Is Returned Match Games Length As Expected', async () => {
-        for (const test of rankedGameTest) {
-            connectCode = test.connectCode
-            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+        for (const gameTest of rankedGameTest) {
+            connectCode = gameTest.connectCode
+            const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
@@ -166,51 +167,36 @@ describe('ElectnronGamesStore', () => {
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)
             const matchGames = electronGamesStore.getGameMatch(recentGame?.settings?.matchInfo.matchId)
-            expect(matchGames).toHaveLength(test.expectedLength);
+            expect(matchGames.length).toHaveLength(gameTest.expectedLength);
         }
     })
 
     test('Set Score Is As Expected', async () => {
-        for (const test of rankedGameTest) {
-            connectCode = test.connectCode
-            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+        for (const gameTest of rankedGameTest) {
+            connectCode = gameTest.connectCode
+            const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
             const gameScore = electronGamesStore.getGameScore()
-            expect(gameScore).toStrictEqual(test.expectedScore)
-            //expect(gameScore.reduce((value, score) => value + score, 0)).toStrictEqual(currentGameSettings.matchInfo?.gameNumber)
-        }
-    })
-
-    test('Set Score Is As Expected', async () => {
-        for (const test of rankedGameTest) {
-            connectCode = test.connectCode
-            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
-            const currentGameEnd = game.getGameEnd();
-            const currentGameSettings = game.getSettings();
-            if (!currentGameEnd || !currentGameSettings) return;
-            await statsDisplay.handleGameStart(currentGameSettings)
-            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
-            const gameScore = electronGamesStore.getGameScore()
-            expect(gameScore).toStrictEqual(test.expectedScore)
+            expect(gameTest.expectedScore).toStrictEqual(gameScore)
             //expect(gameScore.reduce((value, score) => value + score, 0)).toStrictEqual(currentGameSettings.matchInfo?.gameNumber)
         }
     })
 
     test('Game Mode As Expected', async () => {
-        for (const test of rankedGameTest) {
-            connectCode = test.connectCode
-            const game = new SlippiGame(`${__dirname}/../sample-games/${test.file}`)
+        for (const gameTest of rankedGameTest) {
+            connectCode = gameTest.connectCode
+            const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)
-            expect(recentGame?.settings?.matchInfo.mode).toStrictEqual(test.expectedMode)
+            expect(gameTest.expectedMode).toStrictEqual(recentGame?.settings?.matchInfo.mode)
         }
     })
 
