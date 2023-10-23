@@ -85,20 +85,20 @@ export class ElectronGamesStore {
     getRecentGames(): GameStats[] | undefined {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        return this.store.get(`player.${connectCode}.game.recent`) as GameStats[]
+        return this.store.get(`player.any.game.recent`) as GameStats[]
     }
 
     addRecentGames(game: GameStats) {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        const games = this.store.get(`player.${connectCode}.game.recent`) as GameStats[] ?? [];
-        this.store.set(`player.${connectCode}.game.recent`, [game, ...games])
+        const games = this.store.get(`player.any.game.recent`) as GameStats[] ?? [];
+        this.store.set(`player.any.game.recent`, [game, ...games])
     }
 
     clearRecentGames() {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        this.store.set(`player.${connectCode}.game.recent`, [])
+        this.store.set(`player.any.game.recent`, [])
     }
 
     private getAllSets(): Sets | undefined {
