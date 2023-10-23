@@ -26,6 +26,7 @@
 			if (currentSecond > (prevSecond ?? 0)) return Math.random();
 
 		if (option[AnimationTrigger.Player1Percent]) {
+			console.log($gameFrame?.players[0]?.pre.percent, prevFrame?.players[0]?.pre.percent);
 			if (
 				($gameFrame?.players[0]?.pre.percent ?? 0) >
 				(prevFrame?.players[0]?.pre.percent ?? 0)
@@ -49,17 +50,21 @@
 
 		if (option[AnimationTrigger.Player2StockLost])
 			if (
-				($gameFrame?.players[0]?.post.stocksRemaining ?? 0) >
-				(prevFrame?.players[0]?.post.stocksRemaining ?? 0)
+				($gameFrame?.players[1]?.post.stocksRemaining ?? 0) >
+				(prevFrame?.players[1]?.post.stocksRemaining ?? 0)
 			)
 				return Math.random();
 
-		prevSecond = currentSecond;
-		prevFrame = $gameFrame;
 		return key;
 	};
 
-	$: $gameFrame, (key = updateKeyValue());
+	const updateTriggerValues = () => {
+		key = updateKeyValue();
+		prevFrame = $gameFrame;
+		prevSecond = Math.ceil((($gameFrame?.frame ?? 0) * 16) / 1000);
+	};
+
+	$: $gameFrame, updateTriggerValues();
 
 	onMount(() => {
 		$eventEmitter.on('animation-test-trigger', () => {

@@ -70,7 +70,7 @@
 	setInterval(() => (lockOut = false), 100);
 
 	function handleKeydown(e: KeyboardEvent) {
-		if (lockOut || !selectedId) return;
+		if (lockOut || !selectedId || !selectedItem) return;
 		if (e.shiftKey) {
 			if (e.key === 'ArrowDown') {
 				selectedItem[COL].h += 1;

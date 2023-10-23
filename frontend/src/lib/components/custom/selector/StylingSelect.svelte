@@ -17,7 +17,10 @@
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import VisibilitySelect from './VisibilitySelect.svelte';
 	import AnimationTriggerSelect from './AnimationTriggerSelect.svelte';
-	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
+	import type {
+		SelectedAnimationTriggerOption,
+		SelectedVisibilityOption,
+	} from '$lib/models/types/animationOption';
 
 	// TODO: Animation options and sliders
 
@@ -69,8 +72,11 @@
 		$eventEmitter.emit('animation-test-visibility');
 	};
 
-	const handleUpdate = (event: CustomEvent<SelectedVisibilityOption[]>) => {
+	const handleVisibilityUpdate = (event: CustomEvent<SelectedVisibilityOption[]>) => {
 		payload.visibility.selectedOptions = event.detail;
+	};
+	const handleTriggerUpdate = (event: CustomEvent<SelectedAnimationTriggerOption>) => {
+		payload.animationTrigger.selectedOptions = event.detail;
 	};
 </script>
 
@@ -320,7 +326,7 @@
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Trigger</h1>
 		<AnimationTriggerSelect
 			bind:selectedOption={payload.animationTrigger.selectedOptions}
-			on:update={handleUpdate}
+			on:update={handleTriggerUpdate}
 		/>
 		{#if payload.animationTrigger.selectedOptions}
 			<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
@@ -348,7 +354,7 @@
 
 		<VisibilitySelect
 			bind:selectedVisibilityOptions={payload.visibility.selectedOptions}
-			on:update={handleUpdate}
+			on:update={handleVisibilityUpdate}
 		/>
 
 		{#if payload.visibility.selectedOptions.length}

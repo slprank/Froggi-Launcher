@@ -6,7 +6,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let selectedVisibilityOptions: SelectedVisibilityOption[] = [];
-	let tempSelectedOptions = selectedVisibilityOptions;
+	let tempSelectedOptions: SelectedVisibilityOption[] = selectedVisibilityOptions;
 	let open: boolean = false;
 
 	const addNewOption = () => {

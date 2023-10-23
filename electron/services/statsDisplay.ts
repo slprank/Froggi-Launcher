@@ -131,9 +131,9 @@ export class StatsDisplay {
 		this.storeGames.setGameMatch(gameStats)
 		const matchId = gameStats?.settings?.matchInfo?.matchId
 		if (!matchId) return;
-		const games = this.storeGames.getGameMatch(matchId)
+		const games = this.storeGames.getRecentGames()
 		if (!games || !games?.length) return;
-		const matchStats = analyzeMatch(games)
+		const matchStats = analyzeMatch(games.slice(0, 5))
 		this.storeLiveStats.setMatchStats(matchStats)
 	}
 
