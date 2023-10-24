@@ -25,6 +25,7 @@
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type EventEmitter from 'events';
+	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');
@@ -80,6 +81,9 @@
 		});
 		_eventEmitter.on('post-game-stats', (stats: GameStats) => {
 			console.log({ stats });
+			setTimeout(() => {
+				gameFrame.set({} as FrameEntryType);
+			}, SCENE_TRANSITION_DELAY);
 			postGame.set(stats);
 		});
 		_eventEmitter.on('post-match-stats', (stats: GameStats) => {

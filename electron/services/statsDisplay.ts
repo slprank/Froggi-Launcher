@@ -13,7 +13,6 @@ import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
 import { getWinnerIndex } from '../utils/gamePredicates';
-import { SCENE_TRANSITION_DELAY } from '../../frontend/src/lib/models/const';
 import { analyzeMatch } from '../utils/analyzeMatch';
 
 @singleton()
@@ -115,7 +114,6 @@ export class StatsDisplay {
 		this.handleGameSetStats(gameStats)
 		this.handlePostGameScene()
 		this.storeLiveStats.deleteGameFrame()
-		setTimeout(() => this.messageHandler.sendMessage('game-frame', undefined), SCENE_TRANSITION_DELAY);
 	}
 
 	private handlePostGameScene() {

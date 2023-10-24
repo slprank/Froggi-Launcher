@@ -14,7 +14,7 @@
 
 	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
 
-	$: frame = $gameFrame?.players[player?.playerIndex ?? -1]?.post;
+	$: frame = $gameFrame?.players?.[player?.playerIndex ?? -1]?.post;
 
 	$: framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
 

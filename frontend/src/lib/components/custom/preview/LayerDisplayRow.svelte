@@ -43,7 +43,7 @@
 	};
 
 	const updateCheck = () => {
-		isChecked = previewLayers.includes(layer.id) ?? false;
+		isChecked = previewLayers.includes(layer.id);
 	};
 	$: $statsScene, previewLayers, updateCheck();
 </script>
