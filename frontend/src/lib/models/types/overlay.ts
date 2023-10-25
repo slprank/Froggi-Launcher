@@ -155,7 +155,7 @@ export interface Css {
 	customBox: string | undefined;
 	customText: string | undefined;
 	customImage: string | undefined;
-	opacity: string;
+	opacity: number;
 	rotate: string | undefined;
 	scale: string | undefined;
 }

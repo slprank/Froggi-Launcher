@@ -42,13 +42,14 @@
 
 	const animationFlyAutomatic = (
 		node: any,
-		duration: number,
+		option: AnimationOptions | any,
 		additionalDelay: number,
 		dataItem: GridContentItem | undefined,
 	): transitionFunctions.TransitionConfig => {
 		if (!dataItem) return fly(node, { duration: 0 });
 		const delay =
 			dataItem[COL]?.y +
+				option.delay +
 				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
 				additionalDelay ?? 0;
 		const y = getRelativePixelSize(
@@ -61,7 +62,7 @@
 			innerWidth,
 			innerHeight,
 		);
-		return fly(node, { duration: duration, x: x, y: y, delay: delay });
+		return fly(node, { duration: option.duration, x: x, y: y, delay: delay });
 	};
 
 	const emptyAnimation = (node: any, delay: number): AnimationConfig => {
@@ -72,7 +73,7 @@
 		return easingFunctions[easing];
 	};
 
-	const getTransition = (
+	const getTransition: Function = (
 		transitionName: string | Animation | undefined,
 	): transitionFunctions.TransitionConfig | undefined => {
 		if (!transitionName) return;
@@ -110,12 +111,7 @@
 				);
 
 			case Animation.FlyAutomatic:
-				return animationFlyAutomatic(
-					node,
-					animation.options.duration,
-					additionalDelay,
-					dataItem,
-				);
+				return animationFlyAutomatic(node, animation.options, additionalDelay, dataItem);
 
 			default:
 				return emptyAnimation(node, animation?.options.delay ?? 0);

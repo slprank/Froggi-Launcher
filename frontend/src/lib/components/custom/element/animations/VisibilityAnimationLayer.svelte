@@ -11,6 +11,8 @@
 	export let preview: boolean;
 	export let edit: boolean = false;
 
+	$: console.log($gameState);
+
 	let visible = true;
 	const updateVisibilityValue = (): boolean => {
 		if (edit || preview) return true;
@@ -49,14 +51,14 @@
 			}
 
 			if (option[VisibilityOption.GameEnd] === VisibilityToggle.True)
-				if (isGameEnd($gameState, seconds)) return true;
+				if (isGameEnd($gameState)) return true;
 			if (option[VisibilityOption.GameEnd] === VisibilityToggle.False)
-				if (!isGameEnd($gameState, seconds)) return true;
+				if (!isGameEnd($gameState)) return true;
 
 			if (option[VisibilityOption.GameTime] === VisibilityToggle.True)
-				if (isGameTime($gameState, seconds)) return true;
+				if (isGameTime($gameState)) return true;
 			if (option[VisibilityOption.GameTime] === VisibilityToggle.False)
-				if (!isGameTime($gameState, seconds)) return true;
+				if (!isGameTime($gameState)) return true;
 
 			return false;
 		});
@@ -74,12 +76,12 @@
 		return seconds >= 0 && seconds < 5;
 	};
 
-	const isGameEnd = (gameState: InGameState, seconds: number) => {
-		return gameState === InGameState.End && seconds <= 0;
+	const isGameEnd = (gameState: InGameState) => {
+		return gameState === InGameState.End;
 	};
 
-	const isGameTime = (gameState: InGameState, seconds: number) => {
-		return gameState === InGameState.Time && seconds <= 0;
+	const isGameTime = (gameState: InGameState) => {
+		return gameState === InGameState.Time;
 	};
 
 	$: {

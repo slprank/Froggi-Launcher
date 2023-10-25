@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { GridContentItem } from '$lib/models/types/overlay';
 	import { AnimationTrigger } from '$lib/models/types/animationOption';
-	import { eventEmitter, gameFrame } from '$lib/utils/store.svelte';
+	import { eventEmitter, gameFrame, gameSettings } from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;
@@ -19,39 +19,41 @@
 			return;
 		}
 
-		const currentSecond = Math.ceil((($gameFrame?.frame ?? 0) * 16) / 1000);
+		const currentSecond = Math.ceil(
+			($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60,
+		);
 		const option = dataItem.data.animationTrigger.selectedOptions;
 
 		if (option[AnimationTrigger.GameCountdown])
-			if (currentSecond > (prevSecond ?? 0)) return Math.random();
+			if (currentSecond > 0 && currentSecond < 6 && currentSecond < (prevSecond ?? 0))
+				return Math.random();
 
 		if (option[AnimationTrigger.Player1Percent]) {
-			console.log($gameFrame?.players[0]?.pre.percent, prevFrame?.players[0]?.pre.percent);
 			if (
-				($gameFrame?.players[0]?.pre.percent ?? 0) >
-				(prevFrame?.players[0]?.pre.percent ?? 0)
+				($gameFrame?.players?.[0]?.pre.percent ?? 0) >
+				(prevFrame?.players?.[0]?.pre.percent ?? 0)
 			)
 				return Math.random();
 		}
 
 		if (option[AnimationTrigger.Player2Percent])
 			if (
-				($gameFrame?.players[1]?.pre.percent ?? 0) >
-				(prevFrame?.players[1]?.pre.percent ?? 0)
+				($gameFrame?.players?.[1]?.pre.percent ?? 0) >
+				(prevFrame?.players?.[1]?.pre.percent ?? 0)
 			)
 				return Math.random();
 
 		if (option[AnimationTrigger.Player1StockLost])
 			if (
-				($gameFrame?.players[0]?.post.stocksRemaining ?? 0) >
-				(prevFrame?.players[0]?.post.stocksRemaining ?? 0)
+				($gameFrame?.players?.[0]?.post.stocksRemaining ?? 0) >
+				(prevFrame?.players?.[0]?.post.stocksRemaining ?? 0)
 			)
 				return Math.random();
 
 		if (option[AnimationTrigger.Player2StockLost])
 			if (
-				($gameFrame?.players[1]?.post.stocksRemaining ?? 0) >
-				(prevFrame?.players[1]?.post.stocksRemaining ?? 0)
+				($gameFrame?.players?.[1]?.post.stocksRemaining ?? 0) >
+				(prevFrame?.players?.[1]?.post.stocksRemaining ?? 0)
 			)
 				return Math.random();
 
@@ -61,7 +63,9 @@
 	const updateTriggerValues = () => {
 		key = updateKeyValue();
 		prevFrame = $gameFrame;
-		prevSecond = Math.ceil((($gameFrame?.frame ?? 0) * 16) / 1000);
+		prevSecond = Math.ceil(
+			($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60,
+		);
 	};
 
 	$: $gameFrame, updateTriggerValues();

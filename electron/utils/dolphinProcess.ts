@@ -50,7 +50,9 @@ const getValidProcesses = (): string[] => {
         "slippi-r10-netplay"]
     if (os.platform() === "darwin") validProcess = [
         "Slippi Dolphin.app",
-        "Slippi Dolphin"
+        "Slippi Dolphin",
+        "Slippi_Dolphin.app",
+        "Slippi_Dolphin",
     ]
     return validProcess
 }

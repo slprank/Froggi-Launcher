@@ -307,10 +307,7 @@
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Transparency</h1>
 			<div class="w-full h-fit flex flex-wrap items-start">
 				<div class="w-36 h-24">
-					<SliderInput
-						value={parseInt(payload.css.opacity)}
-						bind:valueConcat={payload.css.opacity}
-					/>
+					<SliderInput bind:value={payload.css.opacity} />
 				</div>
 				<h1 class="text-white text-center capitalize">{payload.css.opacity}</h1>
 			</div>

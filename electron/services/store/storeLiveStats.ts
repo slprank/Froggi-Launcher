@@ -62,6 +62,7 @@ export class ElectronLiveStatsStore {
 	}
 
 	setGameSettings(settings: GameStartType) {
+		this.store.set('stats.game.settings', settings);
 		const gameMode = settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) as GameStartMode ?? 'local'
 		if (gameMode === "ranked") this.setBestOf(BestOf.BestOf3)
 		this.setGameMode(gameMode);
