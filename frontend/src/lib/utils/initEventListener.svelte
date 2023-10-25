@@ -82,7 +82,7 @@
 		_eventEmitter.on('post-game-stats', (stats: GameStats) => {
 			console.log({ stats });
 			setTimeout(() => {
-				gameFrame.set({} as FrameEntryType);
+				gameFrame.set(null);
 			}, SCENE_TRANSITION_DELAY);
 			postGame.set(stats);
 		});

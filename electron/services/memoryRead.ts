@@ -2,8 +2,12 @@ import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import os from 'os';
 import { getControllerInputs } from './memoryRead/controllerInputs';
+import { getPause } from './memoryRead/gameState';
 import { MessageHandler } from './messageHandler';
 import DolphinMemory from 'dolphin-memory-reader';
+import { ElectronLiveStatsStore } from './store/storeLiveStats';
+import { InGameState } from '../../frontend/src/lib/models/enum';
+import { SlpParser } from '@slippi/slippi-js';
 
 @singleton()
 export class MemoryRead {
@@ -11,8 +15,10 @@ export class MemoryRead {
 	private isWindows = os.platform() === 'win32';
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
+		@inject("SlpParser") private slpParser: SlpParser,
+		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) {}
+	) { }
 
 	initMemoryRead() {
 		this.initMemoryReadWin();
@@ -25,8 +31,8 @@ export class MemoryRead {
 		await memory.init();
 		this.memoryReadInterval = setInterval(() => {
 			try {
-				const controllers = getControllerInputs(memory);
-				this.messageHandler.sendMessage('memory-controller', controllers);
+				this.handleController(memory)
+				this.handleGameState(memory)
 				// TODO: Get Pause
 				// TODO: Get Menu Location
 			} catch (err) {
@@ -34,6 +40,19 @@ export class MemoryRead {
 				clearInterval(this.memoryReadInterval);
 			}
 		}, 16);
+	}
+
+	private handleController = (memory: DolphinMemory) => {
+		const controllers = getControllerInputs(memory);
+		this.messageHandler.sendMessage('memory-controller', controllers);
+	}
+
+	private handleGameState = (memory: DolphinMemory) => {
+		const isPaused = getPause(memory)
+		if (!isPaused) return;
+		const frameEntry = this.slpParser.getLatestFrame()
+		this.storeLiveStats.setGameFrame(frameEntry)
+		this.storeLiveStats.setGameState(InGameState.Paused)
 	}
 
 	stopMemoryRead() {

@@ -14,10 +14,12 @@ import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
 import { getWinnerIndex } from '../utils/gamePredicates';
 import { analyzeMatch } from '../utils/analyzeMatch';
+import os from "os"
 
 @singleton()
 export class StatsDisplay {
-	private pauseInterval: NodeJS.Timeout
+	private pauseInterval: NodeJS.Timeout;
+	private isWin: boolean = os.platform() === "win32";
 	constructor(
 		@inject("ElectronLog") private log: ElectronLog,
 		@inject("SlpParser") private slpParser: SlpParser,
@@ -55,6 +57,7 @@ export class StatsDisplay {
 	}
 
 	private resetPauseInterval() {
+		if (this.isWin) return;
 		this.stopPauseInterval()
 		this.pauseInterval = setTimeout(() => {
 			this.handleGamePaused(this.slpParser.getLatestFrame())
@@ -74,7 +77,6 @@ export class StatsDisplay {
 	}
 
 	async handleGamePaused(frameEntry: FrameEntryType | null) {
-		if (!frameEntry) return;
 		this.storeLiveStats.setGameFrame(frameEntry)
 		this.storeLiveStats.setGameState(InGameState.Paused)
 	}
