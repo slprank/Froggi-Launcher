@@ -21,11 +21,11 @@ export class AutoUpdater {
 		this.log.info('Initializing Auto Updater');
 		this.log.info('Current Version:', autoUpdater.currentVersion);
 		autoUpdater.autoInstallOnAppQuit = true;
-		autoUpdater.checkForUpdates();
 		this.messageHandler.sendMessage('auto-updater-version', autoUpdater.currentVersion.version);
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
+			autoUpdater.checkForUpdates();
 			this.messageHandler.sendMessage(
 				'auto-updater-status',
 				AutoUpdaterStatus.LookingForUpdate,

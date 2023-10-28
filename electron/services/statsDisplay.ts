@@ -57,11 +57,11 @@ export class StatsDisplay {
 	}
 
 	private resetPauseInterval() {
-		if (this.isWin) return;
+		if (this.isWin) return; // Windows utilized memory reads
 		this.stopPauseInterval()
 		this.pauseInterval = setTimeout(() => {
 			this.handleGamePaused(this.slpParser.getLatestFrame())
-		}, 64)
+		}, 160)
 	}
 
 	private stopPauseInterval() {
