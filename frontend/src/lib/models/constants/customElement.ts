@@ -82,8 +82,14 @@ export enum CustomElement {
     InGameTimerMilliseconds2 = 4203,
     InGameTimerMilliseconds1 = 4204,
     InGameTimerSecondsCountdown = 4205,
-    InGamePlayer1Score = 4206,
-    InGamePlayer2Score = 4207,
+
+    InGameStage = 4206,
+    InGamePlayer1Score = 4207,
+    InGamePlayer2Score = 4208,
+    InGamePlayer1CharacterIcon = 4209,
+    InGamePlayer2CharacterIcon = 4210,
+    // Character Render Under Custom Image
+
 
     // Post Game
     PostGameCurrentPlayerAttackCountBair = 4400,
@@ -302,6 +308,9 @@ export enum CustomElement {
     PostGamePlayer1OverallStocksRemaining = 4606,
     PostGamePlayer2OverallStocksRemaining = 4607,
 
+
+    // TODO: Create Components For Post Match
+
     // Post Match
     PostGameMatchCurrentPlayerAttackCountBair = 5000,
     PostGameMatchPlayer1AttackCountBair = 5001,
@@ -515,40 +524,73 @@ export enum CustomElement {
     PostGameMatchPlayer1OverallOpeningsPerKill = 5203,
     PostGameMatchPlayer2OverallOpeningsPerKill = 5204,
 
-    // TODO: Finish below
+    // TODO: Create components for enums below
 
     // Set
     CurrentSetGameMode = 5400,
     CurrentSetGameBestOf = 5401,
-    CurrentSetPlayer1Score = 5402,
-    CurrentSetPlayer2Score = 5403,
 
-    CurrentSetGame1Player1Score = 5410,
-    CurrentSetGame1Player2Score = 5411,
-    CurrentSetGame1Player1StocksRemaining = 5412,
-    CurrentSetGame1Player2StocksRemaining = 5413,
+    CurrentSetGameRecentStage = 5410,
+    CurrentSetGameRecentPlayer1Score = 5411,
+    CurrentSetGameRecentPlayer2Score = 5412,
+    CurrentSetGameRecentPlayer1CharacterIcon = 5413,
+    CurrentSetGameRecentPlayer2CharacterIcon = 5414,
+    CurrentSetGameRecentPlayer1CharacterRender = 5415,
+    CurrentSetGameRecentPlayer2CharacterRender = 5416,
+    CurrentSetGameRecentPlayer1StocksRemaining = 5417,
+    CurrentSetGameRecentPlayer2StocksRemaining = 5418,
 
-    CurrentSetGame2Player1Score = 5420,
-    CurrentSetGame2Player2Score = 5421,
-    CurrentSetGame2Player1StocksRemaining = 5422,
-    CurrentSetGame2Player2StocksRemaining = 5423,
+    CurrentSetGame1Stage = 5410,
+    CurrentSetGame1Player1Score = 5411,
+    CurrentSetGame1Player2Score = 5412,
+    CurrentSetGame1Player1CharacterIcon = 5413,
+    CurrentSetGame1Player2CharacterIcon = 5414,
+    CurrentSetGame1Player1CharacterRender = 5415,
+    CurrentSetGame1Player2CharacterRender = 5416,
+    CurrentSetGame1Player1StocksRemaining = 5417,
+    CurrentSetGame1Player2StocksRemaining = 5418,
 
-    CurrentSetGame3Player1Score = 5430,
-    CurrentSetGame3Player2Score = 5431,
-    CurrentSetGame3Player1StocksRemaining = 5432,
-    CurrentSetGame3Player2StocksRemaining = 5433,
+    CurrentSetGame2Stage = 5410,
+    CurrentSetGame2Player1Score = 5411,
+    CurrentSetGame2Player2Score = 5412,
+    CurrentSetGame2Player1CharacterIcon = 5413,
+    CurrentSetGame2Player2CharacterIcon = 5414,
+    CurrentSetGame2Player1CharacterRender = 5415,
+    CurrentSetGame2Player2CharacterRender = 5416,
+    CurrentSetGame2Player1StocksRemaining = 5417,
+    CurrentSetGame2Player2StocksRemaining = 5418,
 
-    CurrentSetGame4Player1Score = 5440,
-    CurrentSetGame4Player2Score = 5441,
-    CurrentSetGame4Player1StocksRemaining = 5442,
-    CurrentSetGame4Player2StocksRemaining = 5443,
+    CurrentSetGame3Stage = 5410,
+    CurrentSetGame3Player1Score = 5411,
+    CurrentSetGame3Player2Score = 5412,
+    CurrentSetGame3Player1CharacterIcon = 5413,
+    CurrentSetGame3Player2CharacterIcon = 5414,
+    CurrentSetGame3Player1CharacterRender = 5415,
+    CurrentSetGame3Player2CharacterRender = 5416,
+    CurrentSetGame3Player1StocksRemaining = 5417,
+    CurrentSetGame3Player2StocksRemaining = 5418,
 
-    CurrentSetGame5Player1Score = 5450,
-    CurrentSetGame5Player2Score = 5451,
-    CurrentSetGame5Player1StocksRemaining = 5452,
-    CurrentSetGame5Player2StocksRemaining = 5453,
+    CurrentSetGame4Stage = 5410,
+    CurrentSetGame4Player1Score = 5411,
+    CurrentSetGame4Player2Score = 5412,
+    CurrentSetGame4Player1CharacterIcon = 5413,
+    CurrentSetGame4Player2CharacterIcon = 5414,
+    CurrentSetGame4Player1CharacterRender = 5415,
+    CurrentSetGame4Player2CharacterRender = 5416,
+    CurrentSetGame4Player1StocksRemaining = 5417,
+    CurrentSetGame4Player2StocksRemaining = 5418,
 
-    // Session
+    CurrentSetGame5Stage = 5410,
+    CurrentSetGame5Player1Score = 5411,
+    CurrentSetGame5Player2Score = 5412,
+    CurrentSetGame5Player1CharacterIcon = 5413,
+    CurrentSetGame5Player2CharacterIcon = 5414,
+    CurrentSetGame5Player1CharacterRender = 5415,
+    CurrentSetGame5Player2CharacterRender = 5416,
+    CurrentSetGame5Player1StocksRemaining = 5417,
+    CurrentSetGame5Player2StocksRemaining = 5418,
+
+
 
     // Image
     // Rank Data
@@ -568,50 +610,5 @@ export enum CustomElement {
     SlippiRankPlayer1Character3Icon = 6013,
     SlippiRankPlayer2Character3Icon = 6014,
 
-    // In Game
-    InGameStage = 6200,
-    InGamePlayer1CharacterIcon = 6201,
-    InGamePlayer2CharacterIcon = 6202,
-
-    // Post Game
-    PostGameStage = 6300,
-    PostGameCurrentPlayerCharacterIcon = 6301,
-    PostGamePlayer1CharacterIcon = 6302,
-    PostGamePlayer2CharacterIcon = 6303,
-    PostGameCurrentPlayerCharacterRender = 6304,
-    PostGamePlayer1CharacterRender = 6305,
-    PostGamePlayer2CharacterRender = 6306,
-
-    // Post Set
-
-    // Current Set
-    CurrentSetGame1Stage = 6310,
-    CurrentSetGame1Player1CharacterIcon = 6311,
-    CurrentSetGame1Player2CharacterIcon = 6312,
-    CurrentSetGame1Player1CharacterRender = 6313,
-    CurrentSetGame1Player2CharacterRender = 6314,
-
-    CurrentSetGame2Stage = 6320,
-    CurrentSetGame2Player1CharacterIcon = 6321,
-    CurrentSetGame2Player2CharacterIcon = 6322,
-    CurrentSetGame2Player1CharacterRender = 6323,
-    CurrentSetGame2Player2CharacterRender = 6324,
-
-    CurrentSetGame3Stage = 6330,
-    CurrentSetGame3Player1CharacterIcon = 6331,
-    CurrentSetGame3Player2CharacterIcon = 6332,
-    CurrentSetGame3Player1CharacterRender = 6333,
-    CurrentSetGame3Player2CharacterRender = 6334,
-
-    CurrentSetGame4Stage = 6340,
-    CurrentSetGame4Player1CharacterIcon = 6341,
-    CurrentSetGame4Player2CharacterIcon = 6342,
-    CurrentSetGame4Player1CharacterRender = 6343,
-    CurrentSetGame4Player2CharacterRender = 6344,
-
-    CurrentSetGame5Stage = 6350,
-    CurrentSetGame5Player1CharacterIcon = 6351,
-    CurrentSetGame5Player2CharacterIcon = 6352,
-    CurrentSetGame5Player1CharacterRender = 6353,
-    CurrentSetGame5Player2CharacterRender = 6354,
+    // Session
 }
