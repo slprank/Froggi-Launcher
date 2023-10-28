@@ -3,23 +3,33 @@
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import Player1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
-	import Player2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
-	import CustomElementSelect from '$lib/components/custom/selector/elementCategories/Custom/CustomElementSelect.svelte';
-	import Player1SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player1SlippiData.svelte';
-	import Player2SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player2SlippiData.svelte';
-	import CurrentPlayerSlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
-	import CurrentSetElementSelect from '$lib/components/custom/selector/elementCategories/CurrentSet/CurrentSetElementSelect.svelte';
-	import CurrentPlayerActionCount from '$lib/components/custom/selector/elementCategories/PostGame/CurrentPlayerActionCount.svelte';
-	import CurrentPlayerAttackCount from '$lib/components/custom/selector/elementCategories/PostGame/CurrentPlayerAttackCount.svelte';
-	import CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
-	import CurrentPlayerOverall from '$lib/components/custom/selector//elementCategories/PostGame/CurrentPlayerOverall.svelte';
-	import Player1AttackCount from '$lib/components/custom/selector/elementCategories/PostGame/Player1AttackCount.svelte';
-	import Player1ActionCount from '$lib/components/custom/selector/elementCategories/PostGame/Player1ActionCount.svelte';
-	import Player1Overall from '$lib/components/custom/selector/elementCategories/PostGame/Player1Overall.svelte';
-	import Player2AttackCount from '$lib/components/custom/selector/elementCategories/PostGame/Player2AttackCount.svelte';
-	import Player2ActionCount from '$lib/components/custom/selector/elementCategories/PostGame/Player2ActionCount.svelte';
-	import Player2Overall from '$lib/components/custom/selector/elementCategories/PostGame/Player2Overall.svelte';
+	import RecentGamePlayer1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
+	import RecentGamePlayer2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
+	import RecentGameCustomElementSelect from '$lib/components/custom/selector/elementCategories/Custom/CustomElementSelect.svelte';
+	import RecentGamePlayer1SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player1SlippiData.svelte';
+	import RecentGamePlayer2SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player2SlippiData.svelte';
+	import RecentGameCurrentPlayerSlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
+	import RecentGameCurrentSetElementSelect from '$lib/components/custom/selector/elementCategories/CurrentSet/CurrentSetElementSelect.svelte';
+	import RecentGameCustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
+	import RecentGameCurrentPlayerActionCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGameCurrentPlayerActionCount.svelte';
+	import RecentGameCurrentPlayerAttackCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGameCurrentPlayerAttackCount.svelte';
+	import RecentGameCurrentPlayerOverall from '$lib/components/custom/selector/elementCategories/PostGame/RecentGameCurrentPlayerOverall.svelte';
+	import RecentGamePlayer1AttackCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGamePlayer1AttackCount.svelte';
+	import RecentGamePlayer1ActionCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGamePlayer1ActionCount.svelte';
+	import RecentGamePlayer1Overall from '$lib/components/custom/selector/elementCategories/PostGame/RecentGamePlayer1Overall.svelte';
+	import RecentGamePlayer2AttackCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGamePlayer2AttackCount.svelte';
+	import RecentGamePlayer2ActionCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGamePlayer2ActionCount.svelte';
+	import RecentGamePlayer2Overall from '$lib/components/custom/selector/elementCategories/PostGame/RecentGamePlayer2Overall.svelte';
+
+	import CurrentMatchCurrentPlayerActionCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchCurrentPlayerActionCount.svelte';
+	import CurrentMatchCurrentPlayerAttackCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchCurrentPlayerAttackCount.svelte';
+	import CurrentMatchCurrentPlayerOverall from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchCurrentPlayerOverall.svelte';
+	import CurrentMatchPlayer1AttackCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer1AttackCount.svelte';
+	import CurrentMatchPlayer1ActionCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer1ActionCount.svelte';
+	import CurrentMatchPlayer1Overall from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer1Overall.svelte';
+	import CurrentMatchPlayer2AttackCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2AttackCount.svelte';
+	import CurrentMatchPlayer2ActionCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2ActionCount.svelte';
+	import CurrentMatchPlayer2Overall from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2Overall.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -117,6 +127,42 @@
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
+			category: ElementCategory.CurrentPlayerPostGameMatchAttackCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.CurrentPlayerPostGameMatchActionCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.CurrentPlayerPostGameMatchOverallStats,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player1PostGameMatchAttackCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player1PostGameMatchActionCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player1PostGameMatchOverallStats,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player2PostGameMatchAttackCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player2PostGameMatchActionCount,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player2PostGameMatchOverallStats,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
 			category: ElementCategory.PostSetStats,
 			visible: [LiveStatsScene.PostSet].includes($statsScene),
 		},
@@ -161,55 +207,83 @@
 			class="overflow-scroll"
 		>
 			{#if selectedCategory === ElementCategory.Custom}
-				<CustomElementSelect on:select={select} />
+				<RecentGameCustomElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.GameCustomUi}
-				<CustomUiSelect on:select={select} />
+				<RecentGameCustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1CustomUi}
-				<Player1CustomUiSelect on:select={select} />
+				<RecentGamePlayer1CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2CustomUi}
-				<Player2CustomUiSelect on:select={select} />
+				<RecentGamePlayer2CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameAttackCount}
-				<CurrentPlayerAttackCount on:select={select} />
+				<RecentGameCurrentPlayerAttackCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameActionCount}
-				<CurrentPlayerActionCount on:select={select} />
+				<RecentGameCurrentPlayerActionCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameOverallStats}
-				<CurrentPlayerOverall on:select={select} />
+				<RecentGameCurrentPlayerOverall on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1PostGameAttackCount}
-				<Player1AttackCount on:select={select} />
+				<RecentGamePlayer1AttackCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1PostGameActionCount}
-				<Player1ActionCount on:select={select} />
+				<RecentGamePlayer1ActionCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1PostGameOverallStats}
-				<Player1Overall on:select={select} />
+				<RecentGamePlayer1Overall on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2PostGameAttackCount}
-				<Player2AttackCount on:select={select} />
+				<RecentGamePlayer2AttackCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2PostGameActionCount}
-				<Player2ActionCount on:select={select} />
+				<RecentGamePlayer2ActionCount on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2PostGameOverallStats}
-				<Player2Overall on:select={select} />
+				<RecentGamePlayer2Overall on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentSetStats}
-				<CurrentSetElementSelect on:select={select} />
+				<RecentGameCurrentSetElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
-				<CurrentPlayerSlippiData on:select={select} />
+				<RecentGameCurrentPlayerSlippiData on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1SlippiData}
-				<Player1SlippiData on:select={select} />
+				<RecentGamePlayer1SlippiData on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2SlippiData}
-				<Player2SlippiData on:select={select} />
+				<RecentGamePlayer2SlippiData on:select={select} />
+			{/if}
+
+			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchAttackCount}
+				<CurrentMatchCurrentPlayerAttackCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchActionCount}
+				<CurrentMatchCurrentPlayerActionCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchOverallStats}
+				<CurrentMatchCurrentPlayerOverall on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player1PostGameMatchAttackCount}
+				<CurrentMatchPlayer1AttackCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player1PostGameMatchActionCount}
+				<CurrentMatchPlayer1ActionCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player1PostGameMatchOverallStats}
+				<CurrentMatchPlayer1Overall on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player2PostGameMatchAttackCount}
+				<CurrentMatchPlayer2AttackCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player2PostGameMatchActionCount}
+				<CurrentMatchPlayer2ActionCount on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player2PostGameMatchOverallStats}
+				<CurrentMatchPlayer2Overall on:select={select} />
 			{/if}
 		</div>
 	{/key}

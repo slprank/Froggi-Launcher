@@ -74,6 +74,17 @@ export enum ElementCategory {
 	CurrentPlayerPostGameOverallStats = "Current Player Overall Stats",
 	Player1PostGameOverallStats = "Player1 Overall Stats",
 	Player2PostGameOverallStats = "Player2 Overall Stats",
+
+	CurrentPlayerPostGameMatchAttackCount = "Current Player Match Attack Count",
+	Player1PostGameMatchAttackCount = "Player1 Match Attack Count",
+	Player2PostGameMatchAttackCount = "Player2 Match Attack Count",
+	CurrentPlayerPostGameMatchActionCount = "Current Player Match Action Count",
+	Player1PostGameMatchActionCount = "Player1 Match Action Count",
+	Player2PostGameMatchActionCount = "Player2 Match Action Count",
+	CurrentPlayerPostGameMatchOverallStats = "Current Player Overall Match Stats",
+	Player1PostGameMatchOverallStats = "Player1 Overall Match Stats",
+	Player2PostGameMatchOverallStats = "Player2 Overall Match Stats",
+
 	PostSetStats = "Post Set Stats",
 	CurrentSetStats = "Current Set Stats",
 	Custom = "Custom",
