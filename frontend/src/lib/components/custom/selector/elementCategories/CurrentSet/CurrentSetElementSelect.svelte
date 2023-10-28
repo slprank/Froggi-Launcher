@@ -13,14 +13,14 @@
 <div class="flex flex-col gap-2">
 	<SelectOption
 		description="Player 1 Ongoing Set Score"
-		value={CustomElement.CurrentSetPlayer1Score}
+		value={CustomElement.CurrentSetGameRecentPlayer1Score}
 		on:select={select}
 	>
 		Player 1 Set Score
 	</SelectOption>
 	<SelectOption
 		description="Player 2 Ongoing Set Score"
-		value={CustomElement.CurrentSetPlayer2Score}
+		value={CustomElement.CurrentSetGameRecentPlayer2Score}
 		on:select={select}
 	>
 		Player 2 Set Score
