@@ -8,7 +8,7 @@
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	$: player1Index = $currentPlayers.at(0)?.playerIndex;
+	$: player1Index = $currentPlayers?.at(0)?.playerIndex;
 
 	$: player1AttackCount = $postGame?.postGameStats?.actionCounts[player1Index ?? 0].attackCount;
 </script>
