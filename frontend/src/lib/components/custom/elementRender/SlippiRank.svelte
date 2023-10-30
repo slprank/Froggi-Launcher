@@ -65,7 +65,7 @@
 	<PlayerRankIcon {dataItem} {style} player={$currentPlayers.at(0)} preview={defaultPreview} />
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2RankIcon}
-	<PlayerRankIcon {dataItem} {style} player={$currentPlayers.at(1)} preview={defaultPreview} />
+	<PlayerRankIcon {dataItem} {style} player={$currentPlayers?.at(1)} preview={defaultPreview} />
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRankText}
 	<TextElement {style} {dataItem}>

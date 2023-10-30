@@ -1,6 +1,6 @@
 {
-	"short_name": "Slp Rank Client",
-	"name": "Slp Rank Client",
+	"short_name": "Froggi",
+	"name": "Froggi",
 	"Scope": "/",
 	"start_url": "/",
 	"icons": [
@@ -14,5 +14,5 @@
 	"display": "standalone",
 	"scope": "/",
 	"theme_color": "#ffffffbf",
-	"description": "Slippi Rank Client"
+	"description": "Slippi"
 }

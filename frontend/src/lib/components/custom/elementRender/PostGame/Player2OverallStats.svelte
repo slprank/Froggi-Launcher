@@ -8,7 +8,7 @@
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	$: player2Index = $currentPlayers.at(1)?.playerIndex ?? 1;
+	$: player2Index = $currentPlayers?.at(1)?.playerIndex ?? 1;
 
 	$: player2Overall = $postGame?.postGameStats?.overall[player2Index];
 	$: player2Stocks = $postGame?.postGameStats?.stocks.find(

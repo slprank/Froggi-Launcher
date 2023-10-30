@@ -19,7 +19,7 @@
 		{dataItem}
 		{defaultPreview}
 		numberOfDecimals={0}
-		player={$currentPlayers.at(1)}
+		player={$currentPlayers?.at(1)}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2PercentDecimal}
@@ -28,7 +28,7 @@
 		{dataItem}
 		{defaultPreview}
 		numberOfDecimals={1}
-		player={$currentPlayers.at(1)}
+		player={$currentPlayers?.at(1)}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2Score}
@@ -41,7 +41,7 @@
 		{dataItem}
 		{style}
 		preview={defaultPreview}
-		player={$currentPlayers.at(1)}
+		player={$currentPlayers?.at(1)}
 		defaultPreviewId={Number(CHARACTERS['falco'])}
 	/>
 {/if}
@@ -49,7 +49,7 @@
 	<InGameCharacterRender
 		{dataItem}
 		{style}
-		player={$currentPlayers.at(1)}
+		player={$currentPlayers?.at(1)}
 		preview={defaultPreview}
 		defaultPreviewId={Number(CHARACTERS['falco'])}
 	/>

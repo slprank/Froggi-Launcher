@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { app, BrowserWindow, IpcMain, ipcMain } from 'electron';
+import { app, BrowserWindow, IpcMain, ipcMain, Menu, nativeImage, Tray } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { container } from 'tsyringe';
 import getAppDataPath from 'appdata-path';
@@ -42,9 +42,11 @@ const serveURL = serve({ directory: '.' });
 const dev = !app.isPackaged;
 const port = dev ? '5173' : `3200`;
 
-let mainWindow: any;
+let mainWindow: BrowserWindow | any;
+let tray: Tray;
 
-function createWindow() {
+function createWindow(): BrowserWindow {
+
 	let windowState = windowStateManager({
 		defaultWidth: 800,
 		defaultHeight: 600,
@@ -82,6 +84,31 @@ function createWindow() {
 	return mainWindow;
 }
 
+function createTray(): Tray {
+	const icon = path.join(__dirname, '../frontend/static/icon.png') // required.
+	const trayicon = nativeImage.createFromPath(icon)
+	tray = new Tray(trayicon.resize({ width: 16 }))
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: 'Show App',
+			click: () => {
+				createWindow()
+			}
+		},
+		{
+			label: 'Quit',
+			click: () => {
+				eventEmitter.emit('update-install');
+				app.quit() // actually quit the app.
+			}
+		},
+	])
+
+	tray.setContextMenu(contextMenu)
+	tray.setToolTip("Froggi")
+	return tray
+}
+
 contextMenu({
 	showLookUpSelection: false,
 	showSearchWithGoogle: false,
@@ -115,10 +142,7 @@ function loadVite(port: string) {
 
 function createMainWindow() {
 	mainWindow = createWindow();
-	mainWindow.once('close', () => {
-		eventEmitter.emit('update-install');
-		mainWindow = null;
-	});
+	createTray();
 
 	if (dev) loadVite(port);
 	if (!dev) serveURL(mainWindow);
@@ -147,8 +171,12 @@ function createMainWindow() {
 }
 
 app.once('ready', createMainWindow);
+
 app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') app.quit();
+	if (process.platform === 'darwin') app.dock.hide()
+	if (process.platform === 'win32') app.hide()
+	if (process.platform === 'linux') app.hide()
+	mainWindow = null
 });
 
 function setLoggingPath() {

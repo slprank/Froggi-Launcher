@@ -11,7 +11,7 @@
 	$: currentPlayerIndex = $currentPlayer?.playerIndex;
 
 	$: currentPlayerAttackCount =
-		$postGame.postGameStats?.actionCounts[currentPlayerIndex ?? 0].attackCount;
+		$postGame.postGameStats?.actionCounts?.[currentPlayerIndex ?? 0]?.attackCount;
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountBair}
