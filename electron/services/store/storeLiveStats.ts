@@ -69,7 +69,6 @@ export class ElectronLiveStatsStore {
 	}
 
 	setGameMode(mode: GameStartMode) {
-
 		return this.store.set('stats.game.settings.matchInfo.mode', mode);
 	}
 

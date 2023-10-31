@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayer, currentPlayers, postGame } from '$lib/utils/store.svelte';
+	import { currentPlayers, postMatch } from '$lib/utils/store.svelte';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
@@ -10,10 +10,7 @@
 
 	$: player1Index = $currentPlayers.at(0)?.playerIndex;
 
-	$: player1Overall = $postGame?.postGameStats?.overall[player1Index ?? 0];
-	$: player1Stocks = $postGame?.postGameStats?.stocks.find(
-		(stock) => stock.playerIndex === player1Index,
-	);
+	$: player1Overall = $postMatch?.overall[player1Index ?? 0];
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1OverallBeneficialTradeCount}
@@ -129,7 +126,7 @@
 		{![player1Overall?.digitalInputsPerMinute.count, player1Index].some(
 			(e) => e === undefined || e === null,
 		)
-			? (player1Overall?.digitalInputsPerMinute.count ?? 0 / 60).toFixed(2)
+			? ((player1Overall?.digitalInputsPerMinute.count ?? 0) / 60).toFixed(2)
 			: defaultPreview
 			? `5.25`
 			: '0.00'}
@@ -162,7 +159,7 @@
 		{![player1Overall?.inputsPerMinute.count, player1Index].some(
 			(e) => e === undefined || e === null,
 		)
-			? (player1Overall?.inputsPerMinute.count ?? 0 / 60).toFixed(2)
+			? ((player1Overall?.inputsPerMinute.count ?? 0) / 60).toFixed(2)
 			: defaultPreview
 			? `6.67`
 			: '0'}
@@ -182,18 +179,9 @@
 		{![player1Overall?.neutralWinRatio.ratio, player1Index].some(
 			(e) => e === undefined || e === null,
 		)
-			? (player1Overall?.neutralWinRatio?.ratio ?? 0 * 100).toFixed(1)
+			? ((player1Overall?.neutralWinRatio?.ratio ?? 0) * 100).toFixed(1)
 			: defaultPreview
 			? `56.0`
 			: '0.0'}%
-	</TextElement>
-{/if}
-{#if dataItem?.elementId === CustomElement.PostGamePlayer1OverallStocksRemaining}
-	<TextElement {style} {dataItem}>
-		{![player1Stocks?.count && player1Index].some((e) => e === undefined || e === null)
-			? player1Stocks?.count ?? 0
-			: defaultPreview
-			? `2`
-			: '0'}
 	</TextElement>
 {/if}

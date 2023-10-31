@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import CurrentPlayerActionCount from './PostGame/CurrentPlayerActionCount.svelte';
-	import CurrentPlayerAttackCount from './PostGame/CurrentPlayerAttackCount.svelte';
-	import CurrentPlayerOverallStats from './PostGame/CurrentPlayerOverallStats.svelte';
-	import Player1ActionCount from './PostGame/Player1ActionCount.svelte';
-	import Player1AttackCount from './PostGame/Player1AttackCount.svelte';
-	import Player1OverallStats from './PostGame/Player1OverallStats.svelte';
-	import Player2ActionCount from './PostGame/Player2ActionCount.svelte';
-	import Player2AttackCount from './PostGame/Player2AttackCount.svelte';
-	import Player2OverallStats from './PostGame/Player2OverallStats.svelte';
+	import CurrentPlayerActionCount from './PostGame/RecentGameCurrentPlayerActionCount.svelte';
+	import CurrentPlayerAttackCount from './PostGame/RecentGameCurrentPlayerAttackCount.svelte';
+	import CurrentPlayerOverallStats from './PostGame/RecentGameCurrentPlayerOverallStats.svelte';
+	import Player1ActionCount from './PostGame/RecentGamePlayer1ActionCount.svelte';
+	import Player1AttackCount from './PostGame/RecentGamePlayer1AttackCount.svelte';
+	import Player1OverallStats from './PostGame/RecentGamePlayer1OverallStats.svelte';
+	import Player2ActionCount from './PostGame/RecentGamePlayer2ActionCount.svelte';
+	import Player2AttackCount from './PostGame/RecentGamePlayer2AttackCount.svelte';
+	import Player2OverallStats from './PostGame/RecentGamePlayer2OverallStats.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;

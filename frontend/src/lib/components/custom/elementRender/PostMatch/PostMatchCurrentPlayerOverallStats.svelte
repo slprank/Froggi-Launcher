@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayer, postGame } from '$lib/utils/store.svelte';
+	import { currentPlayer, postGame, postMatch } from '$lib/utils/store.svelte';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
@@ -10,10 +10,7 @@
 
 	$: currentPlayerIndex = $currentPlayer?.playerIndex;
 
-	$: currentPlayerOverall = $postGame.postGameStats?.overall[currentPlayerIndex ?? 0];
-	$: currentPlayerStocks = $postGame.postGameStats?.stocks.find(
-		(stock) => stock.playerIndex === currentPlayerIndex,
-	);
+	$: currentPlayerOverall = $postMatch?.overall[currentPlayerIndex ?? 0];
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallBeneficialTradeCount}
@@ -106,9 +103,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDigitalInputsTotal}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.digitalInputsPerMinute.total, currentPlayerIndex].includes(
-			undefined,
-		)
+		{currentPlayerOverall?.digitalInputsPerMinute.total !== undefined
 			? currentPlayerOverall?.digitalInputsPerMinute.total
 			: defaultPreview
 			? `945`
@@ -117,9 +112,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDigitalInputsPerMinute}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.digitalInputsPerMinute.count, currentPlayerIndex].includes(
-			undefined,
-		)
+		{currentPlayerOverall?.digitalInputsPerMinute.count !== undefined
 			? currentPlayerOverall?.digitalInputsPerMinute.count.toFixed(0)
 			: defaultPreview
 			? `315`
@@ -128,10 +121,8 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDigitalInputsPerSecond}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.digitalInputsPerMinute.count, currentPlayerIndex].includes(
-			undefined,
-		)
-			? (currentPlayerOverall?.digitalInputsPerMinute?.count ?? 0 / 60).toFixed(2)
+		{currentPlayerOverall?.digitalInputsPerMinute.count !== undefined
+			? ((currentPlayerOverall?.digitalInputsPerMinute?.count ?? 0) / 60).toFixed(2)
 			: defaultPreview
 			? `5.25`
 			: '0'}
@@ -164,7 +155,7 @@
 		{![currentPlayerOverall?.inputsPerMinute.count, currentPlayerIndex].some(
 			(e) => e === undefined || e === null,
 		)
-			? (currentPlayerOverall?.inputsPerMinute.count ?? 0 / 60).toFixed(2)
+			? ((currentPlayerOverall?.inputsPerMinute.count ?? 0) / 60).toFixed(2)
 			: defaultPreview
 			? `6.67`
 			: '0'}
@@ -190,16 +181,5 @@
 			: defaultPreview
 			? `56.0`
 			: '0'}%
-	</TextElement>
-{/if}
-{#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallStocksRemaining}
-	<TextElement {style} {dataItem}>
-		{![currentPlayerStocks?.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerStocks?.count ?? 0
-			: defaultPreview
-			? `2`
-			: '0'}
 	</TextElement>
 {/if}

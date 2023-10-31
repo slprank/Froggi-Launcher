@@ -3,7 +3,12 @@
 	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
 	import type { AutoUpdater, Obs, Overlay } from '$lib/models/types/overlay';
 	import type { ControllerInputs } from '$lib/models/types/controller';
-	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
+	import type {
+		CurrentPlayer,
+		GameStats,
+		MatchStats,
+		Player,
+	} from '$lib/models/types/slippiData';
 	import {
 		eventEmitter,
 		currentPlayer,
@@ -11,6 +16,7 @@
 		gameScore,
 		gameSettings,
 		postGame,
+		postMatch,
 		recentRankedSets,
 		sessionStats,
 		statsScene,
@@ -86,9 +92,9 @@
 			}, SCENE_TRANSITION_DELAY);
 			postGame.set(stats);
 		});
-		_eventEmitter.on('post-match-stats', (stats: GameStats) => {
+		_eventEmitter.on('post-match-stats', (stats: MatchStats) => {
 			console.log({ stats });
-			postGame.set(stats);
+			postMatch.set(stats);
 		});
 		_eventEmitter.on('recent-games', (matches: any) => {
 			console.log({ matches });
