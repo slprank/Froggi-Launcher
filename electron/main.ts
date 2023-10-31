@@ -92,7 +92,7 @@ function createTray(): Tray {
 		{
 			label: 'Show App',
 			click: () => {
-				createWindow()
+				mainWindow.show()
 			}
 		},
 		{
@@ -168,16 +168,16 @@ function createMainWindow() {
 		container.resolve(SlippiJs);
 		container.resolve(AutoUpdater);
 	});
+
+	mainWindow.on('close', (event: Event) => {
+		event.preventDefault()
+		app.hide()
+	})
 }
 
 app.once('ready', createMainWindow);
 
-app.on('window-all-closed', () => {
-	if (process.platform === 'darwin') app.dock.hide()
-	if (process.platform === 'win32') app.hide()
-	if (process.platform === 'linux') app.hide()
-	mainWindow = null
-});
+app.on('activate', () => { mainWindow.show() })
 
 function setLoggingPath() {
 	try {
