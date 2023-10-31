@@ -85,9 +85,13 @@ function createWindow(): BrowserWindow {
 }
 
 function createTray(): Tray {
-	const icon = path.join(__dirname, '../frontend/static/icon.png') // required.
-	const trayicon = nativeImage.createFromPath(icon)
-	tray = new Tray(trayicon.resize({ width: 16 }))
+	const image = nativeImage.createFromPath(
+		path.join(__dirname, "../frontend/static/icon.png")
+	);
+	console.log("test", image.isMacTemplateImage, image.getSize())
+	tray = new Tray(image.resize({ width: 16, height: 16 }))
+	tray.setToolTip("Froggi")
+
 	const contextMenu = Menu.buildFromTemplate([
 		{
 			label: 'Show App',
@@ -99,13 +103,12 @@ function createTray(): Tray {
 			label: 'Quit',
 			click: () => {
 				eventEmitter.emit('update-install');
-				app.quit() // actually quit the app.
+				app.exit()
 			}
 		},
 	])
 
 	tray.setContextMenu(contextMenu)
-	tray.setToolTip("Froggi")
 	return tray
 }
 
