@@ -5,7 +5,8 @@
 	import SlippiRank from './elementRender/SlippiRank.svelte';
 	import Custom from './elementRender/Custom.svelte';
 	import InGame from './elementRender/InGame.svelte';
-	import PostGame from './elementRender/PostGame.svelte';
+	import RecentGame from './elementRender/RecentGame.svelte';
+	import RecentMatch from './elementRender/RecentMatch.svelte';
 	import Session from './elementRender/Session.svelte';
 
 	export let dataItem: GridContentItem;
@@ -97,7 +98,9 @@
 
 						<InGame {dataItem} {defaultPreview} {style} />
 
-						<PostGame {dataItem} {defaultPreview} {style} />
+						<RecentGame {dataItem} {defaultPreview} {style} />
+
+						<RecentMatch {dataItem} {defaultPreview} {style} />
 
 						<SlippiRank {dataItem} {defaultPreview} {style} />
 

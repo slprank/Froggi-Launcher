@@ -8,6 +8,7 @@
 	function select(customElement: CustomEvent<CustomElement>) {
 		dispatch('select', customElement.detail);
 	}
+	console.log('here');
 </script>
 
 <div class="flex flex-col gap-2">

@@ -218,6 +218,20 @@
 			{#if selectedCategory === ElementCategory.Player2CustomUi}
 				<RecentGamePlayer2CustomUiSelect on:select={select} />
 			{/if}
+
+			{#if selectedCategory === ElementCategory.CurrentSetStats}
+				<RecentGameCurrentSetElementSelect on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
+				<RecentGameCurrentPlayerSlippiData on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player1SlippiData}
+				<RecentGamePlayer1SlippiData on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player2SlippiData}
+				<RecentGamePlayer2SlippiData on:select={select} />
+			{/if}
+
 			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameAttackCount}
 				<RecentGameCurrentPlayerAttackCount on:select={select} />
 			{/if}
@@ -244,18 +258,6 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2PostGameOverallStats}
 				<RecentGamePlayer2Overall on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentSetStats}
-				<RecentGameCurrentSetElementSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
-				<RecentGameCurrentPlayerSlippiData on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1SlippiData}
-				<RecentGamePlayer1SlippiData on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2SlippiData}
-				<RecentGamePlayer2SlippiData on:select={select} />
 			{/if}
 
 			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchAttackCount}

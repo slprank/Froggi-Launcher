@@ -15,7 +15,7 @@
 		<div class="w-[80vw]">
 			{JSON.stringify($memoryReadController[0])}
 		</div>
-		<h1>Player1 Percent - Slippi-Js</h1>
+		<h1>Player 1 - Slippi-Js</h1>
 		<div class="w-[80vw]">
 			{JSON.stringify($gameFrame?.players)}
 		</div>

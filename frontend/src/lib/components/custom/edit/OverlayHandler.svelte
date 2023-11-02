@@ -18,9 +18,9 @@
 		return `c${Math.random().toString(36).slice(-8)}`;
 	}
 
-	const getDefaultScene = (sceneId: string): Scene => {
+	const getDefaultScene = (sceneId: string, active: boolean = true): Scene => {
 		return {
-			active: true,
+			active: active,
 			animation: {
 				duration: 250,
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
@@ -67,7 +67,7 @@
 			[LiveStatsScene.Menu]: getDefaultScene(newId()),
 			[LiveStatsScene.InGame]: getDefaultScene(newId()),
 			[LiveStatsScene.PostGame]: getDefaultScene(newId()),
-			[LiveStatsScene.PostSet]: getDefaultScene(newId()),
+			[LiveStatsScene.PostSet]: getDefaultScene(newId(), false),
 			[LiveStatsScene.RankChange]: getDefaultScene(newId()),
 		} as Overlay;
 	}
@@ -151,7 +151,7 @@
 				customBox: undefined,
 				customText: undefined,
 				customImage: undefined,
-				opacity: '1',
+				opacity: 1,
 				rotate: undefined,
 				scale: undefined,
 			},
