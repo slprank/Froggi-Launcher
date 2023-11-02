@@ -10,7 +10,7 @@
 
 	$: currentPlayerIndex = $currentPlayer?.playerIndex;
 
-	$: currentPlayerOverall = $postGame.postGameStats?.overall[currentPlayerIndex ?? 0];
+	$: currentPlayerOverall = $postGame.postGameStats?.overall?.[currentPlayerIndex ?? 0];
 	$: currentPlayerStocks = $postGame.postGameStats?.stocks.find(
 		(stock) => stock.playerIndex === currentPlayerIndex,
 	);

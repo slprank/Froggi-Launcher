@@ -10,7 +10,7 @@
 
 	$: player2Index = $currentPlayers?.at(1)?.playerIndex ?? 1;
 
-	$: player2Overall = $postMatch?.overall[player2Index];
+	$: player2Overall = $postMatch?.overall?.[player2Index];
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2OverallBeneficialTradeCount}

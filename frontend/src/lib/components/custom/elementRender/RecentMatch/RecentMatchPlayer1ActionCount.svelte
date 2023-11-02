@@ -10,7 +10,7 @@
 
 	$: player1Index = $currentPlayers.at(0)?.playerIndex;
 
-	$: player1ActionCounts = $postMatch.actionCounts[player1Index ?? 0];
+	$: player1ActionCounts = $postMatch?.actionCounts?.[player1Index ?? 0];
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountAirDodge}

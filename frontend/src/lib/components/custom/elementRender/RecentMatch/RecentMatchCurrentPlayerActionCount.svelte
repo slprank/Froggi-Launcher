@@ -9,7 +9,7 @@
 	export let style: GridContentItemStyle;
 
 	$: currentPlayerIndex = $currentPlayer?.playerIndex;
-	$: currentPlayerActionCounts = $postMatch?.actionCounts[currentPlayerIndex ?? 0];
+	$: currentPlayerActionCounts = $postMatch?.actionCounts?.[currentPlayerIndex ?? 0];
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameMatchCurrentPlayerActionCountAirDodge}
