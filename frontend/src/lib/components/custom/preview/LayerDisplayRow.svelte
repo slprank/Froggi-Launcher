@@ -124,7 +124,7 @@
 			</button>
 		</div>
 	</div>
-	<div class="w-full items-center">
+	<div class="w-full items-center overflow-hidden">
 		<button
 			class="w-full h-full justify-center bg-black hover:scale-110 bg-opacity-40 hover:bg-opacity-60"
 			on:click={async () => {

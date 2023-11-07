@@ -65,7 +65,7 @@
 			</div>
 		</div>
 		<div class={`w-full max-h-full overflow-y-scroll`} bind:this={scrollElement}>
-			<div class="w-full h-6 items-center">
+			<div class="w-full h-6 items-center overflow-hidden">
 				<button
 					class="w-full h-full justify-center bg-black hover:scale-110 bg-opacity-40 hover:bg-opacity-60"
 					on:click={async () => {

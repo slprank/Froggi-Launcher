@@ -94,7 +94,7 @@ function createTray(): Tray {
 
 	const contextMenu = Menu.buildFromTemplate([
 		{
-			label: 'Show App',
+			label: 'Open',
 			click: () => {
 				mainWindow.show()
 			}
