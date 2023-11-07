@@ -30,6 +30,7 @@
 	import CurrentMatchPlayer2AttackCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2AttackCount.svelte';
 	import CurrentMatchPlayer2ActionCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2ActionCount.svelte';
 	import CurrentMatchPlayer2Overall from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2Overall.svelte';
+	import RecentGame from './RecentMatchSummary/RecentGame.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -167,6 +168,30 @@
 			visible: [LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
+			category: ElementCategory.RecentGameSummary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Game1Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Game2Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Game3Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Game4Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Game5Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
 			category: ElementCategory.CurrentSetStats,
 			visible: [
 				LiveStatsScene.Menu,
@@ -286,6 +311,9 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2PostGameMatchOverallStats}
 				<CurrentMatchPlayer2Overall on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.RecentGameSummary}
+				<RecentGame on:select={select} />
 			{/if}
 		</div>
 	{/key}

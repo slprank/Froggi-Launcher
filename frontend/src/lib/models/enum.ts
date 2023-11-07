@@ -92,6 +92,13 @@ export enum ElementCategory {
 	Player1SlippiData = "Player1 Slippi Data",
 	Player2SlippiData = "Player2 Slippi Data",
 	ControllerInput = "Controller Input",
+
+	RecentGameSummary = "Recent Game Summary",
+	Game1Summary = "Game 1 Summary",
+	Game2Summary = "Game 2 Summary",
+	Game3Summary = "Game 3 Summary",
+	Game4Summary = "Game 4 Summary",
+	Game5Summary = "Game 5 Summary",
 }
 
 export enum InGameState {
