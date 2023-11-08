@@ -57,6 +57,35 @@ export const CHARACTERS: CharacterMap = {
     25: "Ganondorf"
 }
 
+export enum Character {
+    "Captain Falcon" = 0,
+    "donkey kong" = 1,
+    "Fox" = 2,
+    "Game and Watch" = 3,
+    "Kirby" = 4,
+    "Bowser" = 5,
+    "Link" = 6,
+    "Luigi" = 7,
+    "Mario" = 8,
+    "Marth" = 9,
+    "Mewtwo" = 10,
+    "Ness" = 11,
+    "Peach" = 12,
+    "Pikachu" = 13,
+    "Ice climbers" = 14,
+    "Jigglypuff" = 15,
+    "Samus" = 16,
+    "Yoshi" = 17,
+    "Zelda" = 18,
+    "Sheik" = 19,
+    "Falco" = 20,
+    "Young Link" = 21,
+    "Dr Mario" = 22,
+    "Roy" = 23,
+    "Pichu" = 24,
+    "Ganondorf" = 25,
+}
+
 interface CharacterInternalExternalMap {
     [key: number]: number
 }

@@ -1,10 +1,20 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import RecentGame1 from './RecentMatchSummary/Game1.svelte';
+	import RecentGame from './RecentMatchSummary/RecentGame.svelte';
+	import Game1 from './RecentMatchSummary/Game1.svelte';
+	import Game2 from './RecentMatchSummary/Game2.svelte';
+	import Game3 from './RecentMatchSummary/Game3.svelte';
+	import Game4 from './RecentMatchSummary/Game4.svelte';
+	import Game5 from './RecentMatchSummary/Game5.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 </script>
 
-<RecentGame1 {dataItem} {defaultPreview} {style} />
+<RecentGame {dataItem} {defaultPreview} {style} />
+<Game1 {dataItem} {defaultPreview} {style} />
+<Game2 {dataItem} {defaultPreview} {style} />
+<Game3 {dataItem} {defaultPreview} {style} />
+<Game4 {dataItem} {defaultPreview} {style} />
+<Game5 {dataItem} {defaultPreview} {style} />

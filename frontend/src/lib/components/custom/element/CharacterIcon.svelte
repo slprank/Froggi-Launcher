@@ -1,23 +1,19 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import type { Player } from '$lib/models/types/slippiData';
-	import { gameFrame } from '$lib/utils/store.svelte';
+	import type { Character } from '$lib/models/enum';
 
 	export let dataItem: GridContentItem;
-	export let player: Player | undefined;
-	export let preview: boolean = false;
+	export let characterId: Character | undefined | null;
+	export let defaultPreview: boolean = false;
+	export let defaultPreviewId: Character;
 	export let style: GridContentItemStyle;
-	export let defaultPreviewId: number;
 
-	$: playerPostFrame = $gameFrame?.players[player?.playerIndex ?? 0]?.post;
-	$: characterId = playerPostFrame
-		? playerPostFrame.internalCharacterId
-		: preview
-		? defaultPreviewId
-		: -1;
+	$: character = characterId ? characterId : defaultPreview ? defaultPreviewId : -1;
+
+	// TODO: Include colors
 </script>
 
-{#if player}
+{#if character}
 	<div
 		class={`w-full h-full ${style.classValue}`}
 		style={`${style.cssValue}; ${
@@ -28,7 +24,7 @@
 			class="h-full aspect-video"
 			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/characters/${characterId}/0.png`}
+			src={`/image/characters/${character}/0.png`}
 			alt="custom"
 		/>
 	</div>

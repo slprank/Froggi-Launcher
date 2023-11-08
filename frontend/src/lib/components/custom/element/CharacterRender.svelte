@@ -1,20 +1,16 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import type { Player } from '$lib/models/types/slippiData';
-	import { gameFrame } from '$lib/utils/store.svelte';
+	import type { Character } from '$lib/models/enum';
 
 	export let dataItem: GridContentItem;
-	export let player: Player | undefined;
-	export let preview: boolean = false;
+	export let characterId: Character | undefined | null;
+	export let defaultPreview: boolean = false;
+	export let defaultPreviewId: Character;
 	export let style: GridContentItemStyle;
-	export let defaultPreviewId: number;
 
-	$: playerPostFrame = $gameFrame?.players[player?.playerIndex ?? 0]?.post;
-	$: characterId = playerPostFrame
-		? playerPostFrame.internalCharacterId
-		: preview
-		? defaultPreviewId
-		: -1;
+	$: character = characterId ? characterId : defaultPreview ? defaultPreviewId : -1;
+
+	// TODO: Include colors
 
 	let div: HTMLElement;
 </script>
@@ -26,14 +22,14 @@
 	}; `}
 	bind:this={div}
 >
-	{#if player && div}
+	{#if div}
 		<img
 			class="h-full aspect-video"
 			style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
 				div?.clientHeight
 			}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${characterId}.png`}
+			src={`/image/character-renders/${character}.png`}
 			alt="custom"
 		/>
 	{/if}

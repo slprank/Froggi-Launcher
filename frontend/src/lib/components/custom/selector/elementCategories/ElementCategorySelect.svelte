@@ -31,6 +31,11 @@
 	import CurrentMatchPlayer2ActionCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2ActionCount.svelte';
 	import CurrentMatchPlayer2Overall from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2Overall.svelte';
 	import RecentGame from './RecentMatchSummary/RecentGame.svelte';
+	import Game1 from './RecentMatchSummary/Game1.svelte';
+	import Game2 from './RecentMatchSummary/Game2.svelte';
+	import Game3 from './RecentMatchSummary/Game3.svelte';
+	import Game4 from './RecentMatchSummary/Game4.svelte';
+	import Game5 from './RecentMatchSummary/Game5.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -314,6 +319,21 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.RecentGameSummary}
 				<RecentGame on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Game1Summary}
+				<Game1 on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Game2Summary}
+				<Game2 on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Game3Summary}
+				<Game3 on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Game4Summary}
+				<Game4 on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Game5Summary}
+				<Game5 on:select={select} />
 			{/if}
 		</div>
 	{/key}

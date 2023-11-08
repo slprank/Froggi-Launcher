@@ -13,11 +13,12 @@
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	const game = $recentGames.at(-1);
+	let gameNumber = $recentGames.length > 5 ? -1 : 4;
+	$: game = $recentGames.at(gameNumber);
 </script>
 
 {#if game}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentStage}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Stage}
 		<GameStage
 			{style}
 			{dataItem}
@@ -26,17 +27,17 @@
 			fallbackStageId={Stage.YOSHIS_ISLAND}
 		/>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1Score}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player1Score}
 		<TextElement {style} {dataItem}>
-			{game.score.at(0) ? game.score[0] : defaultPreview ? `1` : '0'}
+			{game.score.at(0) ? game.score[0] : defaultPreview ? `3` : '0'}
 		</TextElement>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer2Score}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player2Score}
 		<TextElement {style} {dataItem}>
-			{game.score.at(1) ? game.score[1] : defaultPreview ? `0` : '0'}
+			{game.score.at(1) ? game.score[1] : defaultPreview ? `2` : '0'}
 		</TextElement>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1CharacterIcon}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player1CharacterIcon}
 		<CharacterIcon
 			{style}
 			{dataItem}
@@ -46,7 +47,7 @@
 			defaultPreviewId={Character.Ganondorf}
 		/>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer2CharacterIcon}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player2CharacterIcon}
 		<CharacterIcon
 			{style}
 			{dataItem}
@@ -56,7 +57,7 @@
 			defaultPreviewId={Character.Falcon}
 		/>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1CharacterRender}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player1CharacterRender}
 		<CharacterRender
 			{style}
 			{dataItem}
@@ -66,7 +67,7 @@
 			defaultPreviewId={Character.Ganondorf}
 		/>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer2CharacterRender}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player2CharacterRender}
 		<CharacterRender
 			{style}
 			{dataItem}
@@ -76,17 +77,17 @@
 			defaultPreviewId={Character.Falcon}
 		/>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1StocksRemaining}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player1StocksRemaining}
 		<TextElement {style} {dataItem}>
 			{game
 				? game?.lastFrame?.players[$currentPlayers.at(0)?.playerIndex ?? 0]?.post
 						.stocksRemaining
 				: defaultPreview
-				? `2`
+				? `1`
 				: '0'}
 		</TextElement>
 	{/if}
-	{#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer2StocksRemaining}
+	{#if dataItem?.elementId === CustomElement.CurrentSetGame5Player2StocksRemaining}
 		<TextElement {style} {dataItem}>
 			{game
 				? game?.lastFrame?.players[$currentPlayers.at(1)?.playerIndex ?? 1]?.post
