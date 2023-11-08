@@ -8,6 +8,7 @@
 	import RecentGame from './elementRender/RecentGame.svelte';
 	import RecentMatch from './elementRender/RecentMatch.svelte';
 	import Session from './elementRender/Session.svelte';
+	import RecentMatchSummary from './elementRender/RecentMatchSummary.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
@@ -101,6 +102,8 @@
 						<RecentGame {dataItem} {defaultPreview} {style} />
 
 						<RecentMatch {dataItem} {defaultPreview} {style} />
+
+						<RecentMatchSummary {dataItem} {defaultPreview} {style} />
 
 						<SlippiRank {dataItem} {defaultPreview} {style} />
 

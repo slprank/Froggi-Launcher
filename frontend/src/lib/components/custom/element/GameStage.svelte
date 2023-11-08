@@ -14,13 +14,13 @@
 
 {#if stage}
 	<div
-		class={`w-full h-full bg-cover`}
+		class={`w-full h-full ${style.classValue} overflow-hidden`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
 	>
 		<img
-			class="w-full h-full object-contain"
+			class="w-full h-full object-cover"
 			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={`/image/stages/${stage}.png`}
 			alt="stage"

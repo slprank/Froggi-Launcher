@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers, postGame, recentGames } from '$lib/utils/store.svelte';
-	import TextElement from '$lib/components/custom/element/TextElement.svelte';
+	import { currentPlayers, recentGames } from '$lib/utils/store.svelte';
 	import GameStage from '../../element/GameStage.svelte';
-	import { Stage } from '@slippi/slippi-js';
 	import CharacterIcon from '../../element/CharacterIcon.svelte';
 	import CharacterRender from '../../element/CharacterRender.svelte';
 	import { Character } from '$lib/models/enum';
+	import { Stage } from '$lib/models/constants/stageData';
+	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -22,7 +22,7 @@
 		{dataItem}
 		{defaultPreview}
 		stageId={game?.settings?.stageId}
-		fallbackStageId={Stage.YOSHIS_ISLAND}
+		fallbackStageId={Stage.YOSHIS_ISLAND_N64}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1Score}
