@@ -121,8 +121,9 @@ export enum CustomElement {
     InGameStage = 4406,
     InGamePlayer1Score = 4407,
     InGamePlayer2Score = 4408,
-    InGamePlayer1CharacterIcon = 4409,
-    InGamePlayer2CharacterIcon = 4410,
+    InGameCurrentPlayerCharacterIcon = 4410,
+    InGamePlayer1CharacterIcon = 4411,
+    InGamePlayer2CharacterIcon = 4412,
     // Character Render Under Custom Image
 
 

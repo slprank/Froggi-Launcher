@@ -3,14 +3,15 @@
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import RecentGamePlayer1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
-	import RecentGamePlayer2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
-	import RecentGameCustomElementSelect from '$lib/components/custom/selector/elementCategories/Custom/CustomElementSelect.svelte';
+	import InGamePlayer1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
+	import InGamePlayer2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
+	import InGameCustomElementSelect from '$lib/components/custom/selector/elementCategories/Custom/CustomElementSelect.svelte';
+	import Session from '$lib/components/custom/selector/elementCategories/SlippiData/Session.svelte';
+	import InGameCustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
 	import RecentGamePlayer1SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player1SlippiData.svelte';
 	import RecentGamePlayer2SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player2SlippiData.svelte';
 	import RecentGameCurrentPlayerSlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
 	import RecentGameCurrentSetElementSelect from '$lib/components/custom/selector/elementCategories/CurrentSet/CurrentSetElementSelect.svelte';
-	import RecentGameCustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
 	import RecentGameCurrentPlayerActionCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGameCurrentPlayerActionCount.svelte';
 	import RecentGameCurrentPlayerAttackCount from '$lib/components/custom/selector/elementCategories/PostGame/RecentGameCurrentPlayerAttackCount.svelte';
 	import RecentGameCurrentPlayerOverall from '$lib/components/custom/selector/elementCategories/PostGame/RecentGameCurrentPlayerOverall.svelte';
@@ -36,6 +37,9 @@
 	import Game3 from './RecentMatchSummary/Game3.svelte';
 	import Game4 from './RecentMatchSummary/Game4.svelte';
 	import Game5 from './RecentMatchSummary/Game5.svelte';
+	import CurrentPlayerControllerInput from './CustomUi/CurrentPlayerControllerInput.svelte';
+	import Player1ControllerInput from './CustomUi/Player1ControllerInput.svelte';
+	import Player2ControllerInput from './CustomUi/Player2ControllerInput.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -61,11 +65,23 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
+			category: ElementCategory.CurrentPlayerCustomUi,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
 			category: ElementCategory.Player2CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			category: ElementCategory.ControllerInput,
+			category: ElementCategory.CurrentPlayerControllerInput,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player1ControllerInput,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: ElementCategory.Player2ControllerInput,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
@@ -248,20 +264,35 @@
 			class="overflow-scroll"
 		>
 			{#if selectedCategory === ElementCategory.Custom}
-				<RecentGameCustomElementSelect on:select={select} />
+				<InGameCustomElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.GameCustomUi}
-				<RecentGameCustomUiSelect on:select={select} />
+				<InGameCustomUiSelect on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerCustomUi}
+				<InGamePlayer1CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1CustomUi}
-				<RecentGamePlayer1CustomUiSelect on:select={select} />
+				<InGamePlayer1CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2CustomUi}
-				<RecentGamePlayer2CustomUiSelect on:select={select} />
+				<InGamePlayer2CustomUiSelect on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.CurrentPlayerControllerInput}
+				<CurrentPlayerControllerInput on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player1ControllerInput}
+				<Player1ControllerInput on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Player2ControllerInput}
+				<Player1ControllerInput on:select={select} />
 			{/if}
 
 			{#if selectedCategory === ElementCategory.CurrentSetStats}
 				<RecentGameCurrentSetElementSelect on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.Session}
+				<Session on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
 				<RecentGameCurrentPlayerSlippiData on:select={select} />

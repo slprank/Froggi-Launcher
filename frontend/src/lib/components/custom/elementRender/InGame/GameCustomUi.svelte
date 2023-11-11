@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
+	import { Stage } from '$lib/models/constants/stageData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { gameFrame, gameScore, gameSettings } from '$lib/utils/store.svelte';
+	import GameStage from '../../element/GameStage.svelte';
 	import TextElement from '../../element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
@@ -83,4 +85,13 @@
 					getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame),
 			  ).toFixed(0)}
 	</TextElement>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGameStage}
+	<GameStage
+		{style}
+		{dataItem}
+		{defaultPreview}
+		stageId={$gameSettings?.stageId}
+		fallbackStageId={Stage.BATTLEFIELD}
+	/>
 {/if}

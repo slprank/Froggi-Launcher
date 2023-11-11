@@ -62,8 +62,9 @@ export enum DolphinConnectionState {
 }
 
 export enum ElementCategory {
-	Session = "Current Player Slippi Current Session",
+	Session = "Current Player Session",
 	GameCustomUi = "Custom UI",
+	CurrentPlayerCustomUi = "Current Player Custom UI",
 	Player1CustomUi = "Player1 Custom UI",
 	Player2CustomUi = "Player2 Custom UI",
 	CurrentPlayerPostGameAttackCount = "Current Player Attack Count",
@@ -92,7 +93,9 @@ export enum ElementCategory {
 	CurrentPlayerSlippiData = "Current Player Slippi Data",
 	Player1SlippiData = "Player1 Slippi Data",
 	Player2SlippiData = "Player2 Slippi Data",
-	ControllerInput = "Controller Input",
+	CurrentPlayerControllerInput = "Current Player Controller Inputs",
+	Player1ControllerInput = "Player1 Controller Input",
+	Player2ControllerInput = "Player2 Controller Input",
 
 	RecentGameSummary = "Recent Game Summary",
 	Game1Summary = "Game 1 Summary",

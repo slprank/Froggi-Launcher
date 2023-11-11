@@ -53,4 +53,11 @@
 	>
 		Timer Countdown
 	</SelectOption>
+	<SelectOption
+		description="Current Stage Image"
+		value={CustomElement.InGameStage}
+		on:select={select}
+	>
+		Stage
+	</SelectOption>
 </div>
