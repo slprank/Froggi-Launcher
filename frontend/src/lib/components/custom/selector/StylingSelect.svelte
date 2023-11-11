@@ -174,7 +174,7 @@
 				</div>
 			</div>
 		{/if}
-		{#if boxSettings}
+		{#if boxSettings || imageSettings}
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-36 grid grid-flow-row gap-2">
 					<h1 class="text-gray-500 text-xl font-medium text-shadow">Border</h1>

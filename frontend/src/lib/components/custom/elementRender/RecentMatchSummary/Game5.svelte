@@ -23,7 +23,7 @@
 		{dataItem}
 		{defaultPreview}
 		stageId={game?.settings?.stageId}
-		fallbackStageId={Stage.YOSHIS_ISLAND_N64}
+		fallbackStageId={Stage.FINAL_DESTINATION}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame5Player1Score}
@@ -43,7 +43,7 @@
 		characterId={game?.settings?.players.at($currentPlayers.at(0)?.playerIndex ?? 0)
 			?.characterId}
 		{defaultPreview}
-		defaultPreviewId={Character.Ganondorf}
+		defaultPreviewId={Character.Fox}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame5Player2CharacterIcon}
@@ -53,7 +53,7 @@
 		characterId={game?.settings?.players.at($currentPlayers.at(1)?.playerIndex ?? 1)
 			?.characterId}
 		{defaultPreview}
-		defaultPreviewId={Character.Falcon}
+		defaultPreviewId={Character.Falco}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame5Player1CharacterRender}

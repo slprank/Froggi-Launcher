@@ -9,13 +9,7 @@
 	export let style: GridContentItemStyle;
 </script>
 
-{#if dataItem?.elementId === CustomElement.InGamePlayer1Score}
-	<TextElement {style} {dataItem}>
-		{$gameScore?.at(0) ?? '0'}
-	</TextElement>
-{/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer2Score}
-	<TextElement {style} {dataItem}>
-		{$gameScore?.at(1) ?? '0'}
-	</TextElement>
-{/if}
+<!-- Session Data -->
+<!-- Rank Change -->
+<!-- Win/Loss -->
+<!-- Number of Games -->

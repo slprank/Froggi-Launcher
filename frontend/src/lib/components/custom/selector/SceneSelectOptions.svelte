@@ -6,6 +6,10 @@
 
 	export let overlay: Overlay;
 
+	function updateLiveScene(scene: LiveStatsScene) {
+		$eventEmitter.emit('electron', 'update-live-scene', scene);
+	}
+
 	let buttons = [
 		{
 			text: 'Waiting',
@@ -46,7 +50,12 @@
 					/>
 				</div>
 				<button
-					class={`w-32 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded border-white`}
+					class={`w-32 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
+						$statsScene === button.liveScene ? 'border-red-500' : 'border-white'
+					}`}
+					on:click={() => {
+						updateLiveScene(button.liveScene);
+					}}
 				>
 					{button.text}
 				</button>

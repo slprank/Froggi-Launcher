@@ -23,7 +23,7 @@
 		{dataItem}
 		{defaultPreview}
 		stageId={game?.settings?.stageId}
-		fallbackStageId={Stage.YOSHIS_ISLAND_N64}
+		fallbackStageId={Stage.POKEMON_STADIUM}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame4Player1Score}
@@ -43,7 +43,7 @@
 		characterId={game?.settings?.players.at($currentPlayers.at(0)?.playerIndex ?? 0)
 			?.characterId}
 		{defaultPreview}
-		defaultPreviewId={Character.Ganondorf}
+		defaultPreviewId={Character.Fox}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame4Player2CharacterIcon}

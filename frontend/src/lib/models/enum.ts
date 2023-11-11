@@ -62,6 +62,7 @@ export enum DolphinConnectionState {
 }
 
 export enum ElementCategory {
+	Session = "Current Player Slippi Current Session",
 	GameCustomUi = "Custom UI",
 	Player1CustomUi = "Player1 Custom UI",
 	Player2CustomUi = "Player2 Custom UI",

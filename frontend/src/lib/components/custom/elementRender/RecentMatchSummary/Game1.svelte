@@ -23,7 +23,7 @@
 		{dataItem}
 		{defaultPreview}
 		stageId={game?.settings?.stageId}
-		fallbackStageId={Stage.YOSHIS_ISLAND_N64}
+		fallbackStageId={Stage.BATTLEFIELD}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame1Player1Score}

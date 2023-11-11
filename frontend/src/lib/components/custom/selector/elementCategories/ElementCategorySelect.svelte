@@ -97,6 +97,17 @@
 			].includes($statsScene),
 		},
 		{
+			category: ElementCategory.Session,
+			visible: [
+				LiveStatsScene.WaitingForDolphin,
+				LiveStatsScene.Menu,
+				LiveStatsScene.InGame,
+				LiveStatsScene.RankChange,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+			].includes($statsScene),
+		},
+		{
 			category: ElementCategory.CurrentPlayerPostGameAttackCount,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
@@ -213,7 +224,7 @@
 
 <div class="w-full h-full flex flex-col gap-2">
 	<h1 class="text-gray-500 text-lg font-medium text-shadow">Category</h1>
-	<div class="w-lg 3xl:w-full flex flex-wrap gap-2">
+	<div class="w-lg 3xl:w-full flex flex-wrap gap-2 max-h-[13rem] overflow-auto">
 		{#each buttons.filter((b) => b.visible) as button}
 			<div class="grid gap-2 justify-start items-start">
 				<button

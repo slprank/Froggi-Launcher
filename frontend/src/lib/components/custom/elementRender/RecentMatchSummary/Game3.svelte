@@ -23,7 +23,7 @@
 		{dataItem}
 		{defaultPreview}
 		stageId={game?.settings?.stageId}
-		fallbackStageId={Stage.YOSHIS_ISLAND_N64}
+		fallbackStageId={Stage.YOSHIS_STORY}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame3Player1Score}
@@ -53,7 +53,7 @@
 		characterId={game?.settings?.players.at($currentPlayers.at(1)?.playerIndex ?? 1)
 			?.characterId}
 		{defaultPreview}
-		defaultPreviewId={Character.Falcon}
+		defaultPreviewId={Character.Falco}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame3Player1CharacterRender}
