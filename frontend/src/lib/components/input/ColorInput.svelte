@@ -1,6 +1,23 @@
 <script lang="ts">
-	export let value: string = '#000000';
+	export let value: string = '#ffffff';
 	export let label: string | undefined = undefined;
+
+	export let opacity: boolean = false;
+	export let valueConcat: string = '';
+
+	let sliderValue: number = 255;
+	const updateConcatValue = (value: string, sliderValue: number) => {
+		valueConcat = String.format(`${value}${rgbToHex(sliderValue)}`, value);
+	};
+	$: updateConcatValue(value, sliderValue);
+
+	var rgbToHex = function (rgb: number) {
+		var hex = Number(rgb).toString(16);
+		if (hex.length < 2) {
+			hex = '0' + hex;
+		}
+		return hex;
+	};
 
 	// TODO: Add color picker that includes opacity
 </script>
@@ -8,4 +25,23 @@
 {#if label}
 	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
 {/if}
-<input class="w-full h-11 rounded-md" type="color" id="head" name="head" bind:value />
+<div class="w-full h-12 grid grid-flow-col gap-4 grid-cols-2">
+	<input
+		class="w-full h-11 rounded-md col-span-1 dark:bg-gray-700"
+		type="color"
+		id="head"
+		name="head"
+		bind:value
+	/>
+	{#if opacity}
+		<input
+			class="w-full h-11 rounded-md col-span-1 dark:bg-gray-700"
+			type="range"
+			id="head"
+			name="head"
+			min={0}
+			max={255}
+			bind:value={sliderValue}
+		/>
+	{/if}
+</div>

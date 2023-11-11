@@ -82,14 +82,14 @@
 
 {#key selectedElementId}
 	<div
-		class="w-full my-4 grid gap-4"
+		class="w-full my-4 grid grid-flow-row gap-8"
 		in:fly={{ duration: 250, x: 150, delay: 250 }}
 		out:fly={{ duration: 250, x: 150 }}
 	>
 		{#if selectedElementId === CustomElement.CustomString}
 			<h1 class="text-gray-500 text-xl font-medium text-shadow">Custom text</h1>
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36 h-10">
+				<div class="w-full h-10">
 					<input
 						type="text"
 						id="default-input"
@@ -105,24 +105,26 @@
 			<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
 		{/if}
 		{#if percentSettings}
-			<h1 class="text-gray-500 text-xl font-medium text-shadow">Percent Colors</h1>
-			<div>
-				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-36 h-12">
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Start Color - 0%
-						</h1>
-						<ColorInput bind:value={payload.percent.startColor} />
+			<div class="w-full h-44 flex flex-col gap-2">
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Percent Colors</h1>
+				<div>
+					<div class="w-full flex flex-wrap">
+						<div class="w-full">
+							<h1 class="text-gray-500 text-lg font-medium text-shadow">
+								Start Color - 0% - {payload.percent.startColor}
+							</h1>
+							<ColorInput bind:value={payload.percent.startColor} />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div>
-				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-36 h-12">
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							End Color - 300%
-						</h1>
-						<ColorInput bind:value={payload.percent.endColor} />
+				<div>
+					<div class="w-full flex flex-wrap">
+						<div class="w-full">
+							<h1 class="text-gray-500 text-lg font-medium text-shadow">
+								End Color - 300% - {payload.percent.startColor}
+							</h1>
+							<ColorInput bind:value={payload.percent.endColor} />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -131,7 +133,7 @@
 			<div>
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Alignment</h1>
 				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-36 h-24">
+					<div class="w-full h-24">
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Horizontal</h1>
 						<Select bind:selected={payload.class.alignment}>
 							<option value="justify-start">Left</option>
@@ -141,11 +143,13 @@
 					</div>
 				</div>
 			</div>
+		{/if}
+		{#if stringSettings && !percentSettings}
 			<div>
-				<h1 class="text-gray-500 text-xl font-medium text-shadow">Color</h1>
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Text Color</h1>
 				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-36 h-12">
-						<ColorInput bind:value={payload.css.color} />
+					<div class="w-full h-12">
+						<ColorInput bind:valueConcat={payload.css.color} opacity={true} />
 					</div>
 				</div>
 			</div>
@@ -157,7 +161,7 @@
 					Size - ({payload.stroke.size})
 				</h1>
 				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-36">
+					<div class="w-full">
 						<NumberInput
 							bind:value={payload.stroke.size}
 							min={0}
@@ -168,19 +172,19 @@
 				</div>
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
 				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-36">
-						<ColorInput bind:value={payload.stroke.color} />
+					<div class="w-full">
+						<ColorInput bind:valueConcat={payload.stroke.color} opacity={true} />
 					</div>
 				</div>
 			</div>
 		{/if}
 		{#if boxSettings || imageSettings}
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36 grid grid-flow-row gap-2">
+				<div class="w-full grid grid-flow-row gap-2">
 					<h1 class="text-gray-500 text-xl font-medium text-shadow">Border</h1>
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
 					<div class="w-full h-fit flex flex-wrap">
-						<ColorInput bind:value={payload.css.borderColor} />
+						<ColorInput bind:valueConcat={payload.css.borderColor} opacity={true} />
 					</div>
 					<div class="grid grid-flow-row gap-2">
 						<NumberInput
@@ -223,7 +227,7 @@
 				</div>
 			</div>
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36 h-24">
+				<div class="w-full h-24">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Rounded corner</h1>
 					<Select bind:selected={payload.class.rounded}>
 						<option value="" selected>None</option>
@@ -236,15 +240,15 @@
 			</div>
 			<h1 class="text-gray-500 text-xl font-medium text-shadow">Background color</h1>
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36 h-12">
-					<ColorInput bind:value={payload.css.background} />
+				<div class="w-full h-12">
+					<ColorInput bind:valueConcat={payload.css.background} opacity={true} />
 				</div>
 			</div>
 		{/if}
 		{#if selectedElementId === CustomElement.CustomImage}
 			<h1 class="text-gray-500 text-xl font-medium text-shadow">Select Image</h1>
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36 h-24">
+				<div class="w-full h-24">
 					<FileToBase64Input
 						bind:base64={payload.image.src}
 						label="upload"
@@ -257,7 +261,7 @@
 		{#if imageSettings}
 			{#if selectedElementId >= 100}
 				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-36 h-24">
+					<div class="w-full h-24">
 						<h1 class="text-gray-500 text-lg font-medium text-shadow">Fit</h1>
 						<Select bind:selected={payload.image.objectFit}>
 							<option value="contain">Contain</option>
@@ -269,7 +273,7 @@
 		{/if}
 		<h1 class="text-gray-500 text-xl font-medium text-shadow">Transformation</h1>
 		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-36 h-24">
+			<div class="w-full h-24">
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Flip</h1>
 				<Select bind:selected={payload.css.scale}>
 					<option selected value={undefined}>Default</option>
@@ -295,21 +299,22 @@
 			</div>
 		</div>
 
-		<div>
+		<div class="w-full">
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-36">
+				<div class="w-full">
 					<ShadowSelect bind:value={payload.shadow} />
 				</div>
 			</div>
 		</div>
 		<div>
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Transparency</h1>
-			<div class="w-full h-fit flex flex-wrap items-start">
-				<div class="w-36 h-24">
+			<h1 class="text-gray-500 text-lg font-medium text-shadow">
+				Transparency - {payload.css.opacity}
+			</h1>
+			<div class="w-full flex flex-nowrap items-center">
+				<div class="w-full h-24">
 					<SliderInput bind:value={payload.css.opacity} />
 				</div>
-				<h1 class="text-white text-center capitalize">{payload.css.opacity}</h1>
 			</div>
 		</div>
 		<div class="items-center gap-2 flex">
