@@ -15,7 +15,7 @@
 
 {#if character}
 	<div
-		class={`w-full h-full ${style.classValue}`}
+		class={`w-full h-full grid ${style.classValue}`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}

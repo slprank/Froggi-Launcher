@@ -129,7 +129,7 @@
 				</div>
 			</div>
 		{/if}
-		{#if stringSettings}
+		{#if stringSettings || imageSettings}
 			<div>
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Alignment</h1>
 				<div class="w-full h-fit flex flex-wrap">
@@ -141,6 +141,17 @@
 							<option value="justify-end">Right</option>
 						</Select>
 					</div>
+				</div>
+			</div>
+		{/if}
+		{#if imageSettings}
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-full h-24">
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Fit</h1>
+					<Select bind:selected={payload.image.objectFit}>
+						<option value="contain">Contain</option>
+						<option selected value="cover">Cover</option>
+					</Select>
 				</div>
 			</div>
 		{/if}
@@ -258,19 +269,7 @@
 			</div>
 			<h1 class="text-gray-500 text-xl font-medium text-shadow">Image Positioning</h1>
 		{/if}
-		{#if imageSettings}
-			{#if selectedElementId >= 100}
-				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-full h-24">
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">Fit</h1>
-						<Select bind:selected={payload.image.objectFit}>
-							<option value="contain">Contain</option>
-							<option selected value="cover">Cover</option>
-						</Select>
-					</div>
-				</div>
-			{/if}
-		{/if}
+
 		<h1 class="text-gray-500 text-xl font-medium text-shadow">Transformation</h1>
 		<div class="w-full h-fit flex flex-wrap">
 			<div class="w-full h-24">

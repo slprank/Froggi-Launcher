@@ -135,7 +135,7 @@
 			class: {
 				border: undefined,
 				rounded: undefined,
-				alignment: undefined,
+				alignment: 'justify-center',
 				textShadow: undefined,
 				boxShadow: undefined,
 			},
@@ -145,8 +145,8 @@
 				borderRight: '0rem',
 				borderTop: '0rem',
 				borderBottom: '0rem',
-				borderColor: '#ffffff00',
-				color: '#ffffff00',
+				borderColor: '#ffffffff',
+				color: '#ffffffff',
 				customParent: undefined,
 				customBox: undefined,
 				customText: undefined,
@@ -167,7 +167,7 @@
 			image: {
 				name: undefined,
 				src: undefined,
-				objectFit: undefined,
+				objectFit: 'contain',
 			},
 			visibility: {
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),

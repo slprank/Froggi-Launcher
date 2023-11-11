@@ -10,7 +10,7 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
-	$: playerPostFrame = $gameFrame?.players[player?.playerIndex ?? 0]?.post;
+	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: characterId = playerPostFrame
 		? playerPostFrame.internalCharacterId
 		: preview
@@ -20,7 +20,7 @@
 
 {#if player}
 	<div
-		class={`w-full h-full ${style.classValue}`}
+		class={`w-full h-full grid ${style.classValue}`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}

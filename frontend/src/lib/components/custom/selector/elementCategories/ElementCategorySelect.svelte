@@ -61,11 +61,11 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			category: ElementCategory.Player1CustomUi,
+			category: ElementCategory.CurrentPlayerCustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			category: ElementCategory.CurrentPlayerCustomUi,
+			category: ElementCategory.Player1CustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{

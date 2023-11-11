@@ -1,11 +1,12 @@
 <script lang="ts">
-	export let value: string = '#ffffff';
 	export let label: string | undefined = undefined;
 
 	export let opacity: boolean = false;
 	export let valueConcat: string = '';
 
-	let sliderValue: number = 255;
+	export let value: string = valueConcat.length < 8 ? valueConcat : valueConcat.slice(0, -2);
+	export let sliderValue: number = parseInt(valueConcat.slice(-2), 16);
+
 	const updateConcatValue = (value: string, sliderValue: number) => {
 		valueConcat = String.format(`${value}${rgbToHex(sliderValue)}`, value);
 	};

@@ -118,12 +118,9 @@ export enum CustomElement {
     InGameTimerMilliseconds1 = 4304,
     InGameTimerSecondsCountdown = 4305,
 
-    InGameStage = 4406,
     InGamePlayer1Score = 4407,
     InGamePlayer2Score = 4408,
-    InGameCurrentPlayerCharacterIcon = 4410,
-    InGamePlayer1CharacterIcon = 4411,
-    InGamePlayer2CharacterIcon = 4412,
+
     // Character Render Under Custom Image
 
 
@@ -614,6 +611,11 @@ export enum CustomElement {
     CurrentSetGame5Player2CharacterIcon = 6152,
     CurrentSetGame5Player1CharacterRender = 6153,
     CurrentSetGame5Player2CharacterRender = 6154,
+
+    InGameStage = 6200,
+    InGameCurrentPlayerCharacterIcon = 6100,
+    InGamePlayer1CharacterIcon = 6101,
+    InGamePlayer2CharacterIcon = 6102,
 
     // Session
 }

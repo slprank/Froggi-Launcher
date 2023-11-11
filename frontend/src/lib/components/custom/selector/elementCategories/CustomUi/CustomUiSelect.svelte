@@ -12,6 +12,13 @@
 
 <div class="flex flex-col gap-2">
 	<SelectOption
+		description="Current Stage Image"
+		value={CustomElement.InGameStage}
+		on:select={select}
+	>
+		Stage
+	</SelectOption>
+	<SelectOption
 		description="In Game Timer Minutes - 08:"
 		value={CustomElement.InGameTimerMinutes}
 		on:select={select}
@@ -52,12 +59,5 @@
 		on:select={select}
 	>
 		Timer Countdown
-	</SelectOption>
-	<SelectOption
-		description="Current Stage Image"
-		value={CustomElement.InGameStage}
-		on:select={select}
-	>
-		Stage
 	</SelectOption>
 </div>
