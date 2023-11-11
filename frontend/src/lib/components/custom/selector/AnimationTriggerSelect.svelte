@@ -2,7 +2,6 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
 	import AnimationTriggerCategorySelect from './animationTriggerCategories/AnimationTriggerCategorySelect.svelte';
-	import VisibilityCategorySelect from './visibilityCategories/VisibilityCategorySelect.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let selectedOption: SelectedAnimationTriggerOption;
