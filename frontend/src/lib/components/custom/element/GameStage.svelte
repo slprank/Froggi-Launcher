@@ -20,8 +20,10 @@
 		}; `}
 	>
 		<img
-			class="w-full h-full object-cover"
-			style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+			class="w-full h-full aspect-video"
+			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'}; ${
+				dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
+			};`}
 			src={`/image/stages/${stage}.png`}
 			alt="stage"
 		/>
