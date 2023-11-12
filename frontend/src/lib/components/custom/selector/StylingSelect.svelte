@@ -71,6 +71,7 @@
 				...payload.font,
 				base64: '',
 			},
+			string: payload.string,
 		};
 		localStorage.setItem(settingsType, JSON.stringify(savedStyle));
 		notifications.success('Styles Saved', 3000);
