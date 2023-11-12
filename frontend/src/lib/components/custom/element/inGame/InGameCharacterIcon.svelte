@@ -20,13 +20,13 @@
 
 {#if player}
 	<div
-		class={`w-full h-full grid ${style.classValue}`}
+		class={`w-full h-full flex ${style.classValue}`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
 	>
 		<img
-			class="h-full aspect-video"
+			class="h-full w-full aspect-video"
 			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={`/image/characters/${CHARACTERS_INTERNAL_EXTERNAL[characterId ?? -1]}/0.png`}

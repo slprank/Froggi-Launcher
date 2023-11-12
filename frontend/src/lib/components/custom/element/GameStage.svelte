@@ -14,7 +14,7 @@
 
 {#if stage}
 	<div
-		class={`w-full h-full ${style.classValue} overflow-hidden`}
+		class={`w-full h-full flex ${style.classValue} overflow-hidden`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}

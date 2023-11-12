@@ -22,8 +22,6 @@
 		SelectedVisibilityOption,
 	} from '$lib/models/types/animationOption';
 
-	// TODO: Animation options and sliders
-
 	export let selectedId: string;
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
@@ -44,12 +42,26 @@
 
 	const prevSelectedElementId = selectedElementId;
 
+	const savedStyleJson = localStorage.getItem('payload');
+	let savedStyle: null | ElementPayload = savedStyleJson && JSON.parse(savedStyleJson);
+
 	function clearStyle() {
 		if (selectedElementId === prevSelectedElementId) return;
 		payload = getDefaultElementPayload();
 	}
-
 	$: selectedElementId, clearStyle();
+
+	const saveStyling = () => {
+		localStorage.setItem('payload', JSON.stringify(payload));
+		savedStyle = payload;
+	};
+
+	const loadStyling = () => {
+		if (!savedStyle) return;
+		payload = { ...savedStyle };
+	};
+
+	$: console.log('payload', payload);
 
 	const fixAnimationInputDelay = () => {
 		if (payload.animationTrigger.in.type === Animation.None) {
@@ -62,8 +74,6 @@
 		}
 	};
 	$: payload.animationTrigger, fixAnimationInputDelay();
-
-	$: console.log('Selected id', selectedElementId);
 
 	const shuffleAnimationTriggers = () => {
 		$eventEmitter.emit('animation-test-trigger');
@@ -86,6 +96,16 @@
 		in:fly={{ duration: 250, x: 150, delay: 250 }}
 		out:fly={{ duration: 250, x: 150 }}
 	>
+		{#if savedStyle}
+			<div>
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					on:click={loadStyling}
+				>
+					Load Saved Styling and Animation
+				</button>
+			</div>
+		{/if}
 		{#if selectedElementId === CustomElement.CustomString}
 			<h1 class="text-gray-500 text-xl font-medium text-shadow">Custom text</h1>
 			<div class="w-full h-fit flex flex-wrap">
@@ -121,7 +141,7 @@
 					<div class="w-full flex flex-wrap">
 						<div class="w-full">
 							<h1 class="text-gray-500 text-lg font-medium text-shadow">
-								End Color - 300% - {payload.percent.startColor}
+								End Color - 300% - {payload.percent.endColor}
 							</h1>
 							<ColorInput bind:value={payload.percent.endColor} />
 						</div>
@@ -189,73 +209,71 @@
 				</div>
 			</div>
 		{/if}
-		{#if boxSettings || imageSettings}
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-full grid grid-flow-row gap-2">
-					<h1 class="text-gray-500 text-xl font-medium text-shadow">Border</h1>
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
-					<div class="w-full h-fit flex flex-wrap">
-						<ColorInput bind:valueConcat={payload.css.borderColor} opacity={true} />
-					</div>
-					<div class="grid grid-flow-row gap-2">
-						<NumberInput
-							value={Number(payload.css.borderLeft?.slice(0, -9) ?? 0)}
-							bind:valueConcat={payload.css.borderLeft}
-							min={0}
-							max={100}
-							step={0.1}
-							stringFormat={'{0}rem solid'}
-							label={'Left'}
-						/>
-						<NumberInput
-							value={Number(payload.css.borderRight?.slice(0, -9) ?? 0)}
-							bind:valueConcat={payload.css.borderRight}
-							min={0}
-							max={100}
-							step={0.1}
-							stringFormat={'{0}rem solid'}
-							label={'Right'}
-						/>
-						<NumberInput
-							value={Number(payload.css.borderTop?.slice(0, -9) ?? 0)}
-							bind:valueConcat={payload.css.borderTop}
-							min={0}
-							max={100}
-							step={0.1}
-							stringFormat={'{0}rem solid'}
-							label={'Top'}
-						/>
-						<NumberInput
-							value={Number(payload.css.borderBottom?.slice(0, -9) ?? 0)}
-							bind:valueConcat={payload.css.borderBottom}
-							min={0}
-							max={100}
-							step={0.1}
-							stringFormat={'{0}rem solid'}
-							label={'Bottom'}
-						/>
-					</div>
+		<div class="w-full h-fit flex flex-wrap">
+			<div class="w-full grid grid-flow-row gap-2">
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Border</h1>
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
+				<div class="w-full h-fit flex flex-wrap">
+					<ColorInput bind:valueConcat={payload.css.borderColor} opacity={true} />
+				</div>
+				<div class="grid grid-flow-row gap-2">
+					<NumberInput
+						value={Number(payload.css.borderLeft?.slice(0, -9) ?? 0)}
+						bind:valueConcat={payload.css.borderLeft}
+						min={0}
+						max={100}
+						step={0.1}
+						stringFormat={'{0}rem solid'}
+						label={'Left'}
+					/>
+					<NumberInput
+						value={Number(payload.css.borderRight?.slice(0, -9) ?? 0)}
+						bind:valueConcat={payload.css.borderRight}
+						min={0}
+						max={100}
+						step={0.1}
+						stringFormat={'{0}rem solid'}
+						label={'Right'}
+					/>
+					<NumberInput
+						value={Number(payload.css.borderTop?.slice(0, -9) ?? 0)}
+						bind:valueConcat={payload.css.borderTop}
+						min={0}
+						max={100}
+						step={0.1}
+						stringFormat={'{0}rem solid'}
+						label={'Top'}
+					/>
+					<NumberInput
+						value={Number(payload.css.borderBottom?.slice(0, -9) ?? 0)}
+						bind:valueConcat={payload.css.borderBottom}
+						min={0}
+						max={100}
+						step={0.1}
+						stringFormat={'{0}rem solid'}
+						label={'Bottom'}
+					/>
 				</div>
 			</div>
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-full h-24">
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">Rounded corner</h1>
-					<Select bind:selected={payload.class.rounded}>
-						<option value="" selected>None</option>
-						<option value="rounded-sm">Small</option>
-						<option value="rounded-md">Medium</option>
-						<option value="rounded-lg">Large</option>
-						<option value="rounded-full">Full</option>
-					</Select>
-				</div>
+		</div>
+		<div class="w-full h-fit flex flex-wrap">
+			<div class="w-full h-24">
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Rounded corner</h1>
+				<Select bind:selected={payload.class.rounded}>
+					<option value="" selected>None</option>
+					<option value="rounded-sm">Small</option>
+					<option value="rounded-md">Medium</option>
+					<option value="rounded-lg">Large</option>
+					<option value="rounded-full">Full</option>
+				</Select>
 			</div>
-			<h1 class="text-gray-500 text-xl font-medium text-shadow">Background color</h1>
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-full h-12">
-					<ColorInput bind:valueConcat={payload.css.background} opacity={true} />
-				</div>
+		</div>
+		<h1 class="text-gray-500 text-xl font-medium text-shadow">Background color</h1>
+		<div class="w-full h-fit flex flex-wrap">
+			<div class="w-full h-12">
+				<ColorInput bind:valueConcat={payload.css.background} opacity={true} />
 			</div>
-		{/if}
+		</div>
 		{#if selectedElementId === CustomElement.CustomImage}
 			<h1 class="text-gray-500 text-xl font-medium text-shadow">Select Image</h1>
 			<div class="w-full h-fit flex flex-wrap">
@@ -409,5 +427,13 @@
 				</div>
 			{/if}
 		{/if}
+		<div>
+			<button
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				on:click={saveStyling}
+			>
+				Save Styling and Animation
+			</button>
+		</div>
 	</div>
 {/key}

@@ -133,11 +133,11 @@
 				selectedOptions: {} as SelectedAnimationTriggerOption,
 			},
 			class: {
-				border: undefined,
-				rounded: undefined,
+				border: '',
+				rounded: '',
 				alignment: 'justify-center',
-				textShadow: undefined,
-				boxShadow: undefined,
+				textShadow: '',
+				boxShadow: '',
 			},
 			css: {
 				background: '#ffffff00',
@@ -178,12 +178,12 @@
 				x: 0,
 				y: 0,
 				spread: 0,
-				color: '#000000',
+				color: '#000000ff',
 			},
 			string: '',
 			stroke: {
 				size: 0,
-				color: '#000000',
+				color: '#000000ff',
 			},
 		};
 	}
