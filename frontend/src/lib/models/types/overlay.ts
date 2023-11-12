@@ -136,11 +136,8 @@ export interface Font {
 }
 
 export interface Class {
-	border: string | undefined;
 	rounded: string | undefined;
 	alignment: string | undefined;
-	textShadow: string | undefined;
-	boxShadow: string | undefined;
 }
 
 export interface Css {

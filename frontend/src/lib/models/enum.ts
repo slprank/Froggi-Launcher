@@ -135,6 +135,15 @@ export enum SceneBackground {
 	PostGameImageStage = "Post Game Stage Image",
 }
 
+export enum StyleSetting {
+	CustomStringSettings = "Custom String",
+	CustomBoxSettings = "Custom Box",
+	CustomImageSettings = "Custom Image",
+	StringSettings = "String",
+	BoxSettings = "Box",
+	ImageSettings = "Image"
+}
+
 export enum Transition {
 	None = 0,
 	Fade = 1,

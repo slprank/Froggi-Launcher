@@ -133,11 +133,8 @@
 				selectedOptions: {} as SelectedAnimationTriggerOption,
 			},
 			class: {
-				border: '',
 				rounded: '',
 				alignment: 'justify-center',
-				textShadow: '',
-				boxShadow: '',
 			},
 			css: {
 				background: '#ffffff00',

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Select from '$lib/components/input/Select.svelte';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { ElementPayload } from '$lib/models/types/overlay';
-	import { Animation } from '$lib/models/enum';
+	import { Animation, StyleSetting } from '$lib/models/enum';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
 	import { CustomElement } from '$lib/models/constants/customElement';
@@ -40,26 +41,57 @@
 		selectedElementId === CustomElement.CustomImage;
 	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
 
+	const getSettingsType = (): StyleSetting | undefined => {
+		if (stringSettings || customStringSettings) return StyleSetting.StringSettings;
+		if (boxSettings || customBoxSettings) return StyleSetting.BoxSettings;
+		if (imageSettings || customImageSettings) return StyleSetting.ImageSettings;
+	};
+
 	const prevSelectedElementId = selectedElementId;
 
-	const savedStyleJson = localStorage.getItem('payload');
-	let savedStyle: null | ElementPayload = savedStyleJson && JSON.parse(savedStyleJson);
+	let savedStyle: null | ElementPayload;
+
+	const updateSavedStyle = () => {
+		const savedStyleJson = localStorage.getItem(getSettingsType() ?? '');
+		savedStyle = savedStyleJson && JSON.parse(savedStyleJson);
+	};
+	$: selectedElementId, updateSavedStyle();
+
+	const saveStyling = () => {
+		const settingsType = getSettingsType();
+		console.log(settingsType);
+		if (!settingsType) return;
+		savedStyle = {
+			...JSON.parse(JSON.stringify(payload)),
+			image: {
+				...payload.image,
+				src: '',
+			},
+			font: {
+				...payload.font,
+				base64: '',
+			},
+		};
+		localStorage.setItem(settingsType, JSON.stringify(savedStyle));
+		notifications.success('Styles Saved', 3000);
+	};
+
+	let loadTrigger: number;
+	const loadStyling = () => {
+		const settingsType = getSettingsType();
+		console.log(settingsType);
+		console.log('savedStyle', savedStyle);
+		if (!settingsType || !savedStyle) return;
+		payload = JSON.parse(JSON.stringify(savedStyle));
+		loadTrigger = Math.random();
+		notifications.success('Styles Loaded', 3000);
+	};
 
 	function clearStyle() {
 		if (selectedElementId === prevSelectedElementId) return;
 		payload = getDefaultElementPayload();
 	}
 	$: selectedElementId, clearStyle();
-
-	const saveStyling = () => {
-		localStorage.setItem('payload', JSON.stringify(payload));
-		savedStyle = payload;
-	};
-
-	const loadStyling = () => {
-		if (!savedStyle) return;
-		payload = { ...savedStyle };
-	};
 
 	$: console.log('payload', payload);
 
@@ -91,66 +123,78 @@
 </script>
 
 {#key selectedElementId}
-	<div
-		class="w-full my-4 grid grid-flow-row gap-8"
-		in:fly={{ duration: 250, x: 150, delay: 250 }}
-		out:fly={{ duration: 250, x: 150 }}
-	>
-		{#if savedStyle}
-			<div>
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-					on:click={loadStyling}
-				>
-					Load Saved Styling and Animation
-				</button>
-			</div>
-		{/if}
-		{#if selectedElementId === CustomElement.CustomString}
-			<h1 class="text-gray-500 text-xl font-medium text-shadow">Custom text</h1>
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-full h-10">
-					<input
-						type="text"
-						id="default-input"
-						placeholder="Text"
-						bind:value={payload.string}
-						class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg block p-2.5 dark:bg-gray-700 dark:text-white"
-					/>
+	{#key loadTrigger}
+		<div
+			class="w-full my-4 grid grid-flow-row gap-8"
+			in:fly={{ duration: 250, x: 150, delay: 250 }}
+			out:fly={{ duration: 250, x: 150 }}
+		>
+			{#if savedStyle}
+				<div class="flex gap-4">
+					<button
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+						on:click={loadStyling}
+					>
+						Load Style and Animation Settings
+					</button>
 				</div>
-			</div>
-		{/if}
+			{/if}
+			{#if selectedElementId === CustomElement.CustomString}
+				<div class="w-full h-fit flex flex-wrap">
+					<h1 class="text-gray-500 text-xl font-medium text-shadow">Custom text</h1>
+					<div class="w-full h-10">
+						<input
+							type="text"
+							id="default-input"
+							placeholder="Text"
+							bind:value={payload.string}
+							class="w-full h-full bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg block p-2.5 dark:bg-gray-700 dark:text-white"
+						/>
+					</div>
+				</div>
+			{/if}
 
-		{#if stringSettings || customStringSettings}
-			<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
-		{/if}
-		{#if percentSettings}
-			<div class="w-full h-44 flex flex-col gap-2">
+			{#if selectedElementId === CustomElement.CustomImage}
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Select Image</h1>
+				<div class="w-full h-fit flex flex-wrap">
+					<div class="w-full h-24">
+						<FileToBase64Input
+							bind:base64={payload.image.src}
+							label="Upload"
+							acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
+						/>
+					</div>
+				</div>
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Image Positioning</h1>
+			{/if}
+
+			{#if stringSettings || customStringSettings}
+				{#if savedStyle}
+					<div class="gap-4">
+						<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
+					</div>
+				{/if}
+			{/if}
+			{#if percentSettings}
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Percent Colors</h1>
-				<div>
-					<div class="w-full flex flex-wrap">
-						<div class="w-full">
-							<h1 class="text-gray-500 text-lg font-medium text-shadow">
-								Start Color - 0% - {payload.percent.startColor}
-							</h1>
-							<ColorInput bind:value={payload.percent.startColor} />
-						</div>
+				<div class="w-full flex flex-wrap">
+					<div class="w-full">
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Start Color - 0% - {payload.percent.startColor}
+						</h1>
+						<ColorInput bind:value={payload.percent.startColor} />
 					</div>
 				</div>
-				<div>
-					<div class="w-full flex flex-wrap">
-						<div class="w-full">
-							<h1 class="text-gray-500 text-lg font-medium text-shadow">
-								End Color - 300% - {payload.percent.endColor}
-							</h1>
-							<ColorInput bind:value={payload.percent.endColor} />
-						</div>
+				<div class="w-full flex flex-wrap">
+					<div class="w-full">
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							End Color - 300% - {payload.percent.endColor}
+						</h1>
+						<ColorInput bind:value={payload.percent.endColor} />
 					</div>
 				</div>
-			</div>
-		{/if}
-		{#if stringSettings || imageSettings}
-			<div>
+			{/if}
+			{#if stringSettings || imageSettings}
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Alignment</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-full h-24">
@@ -162,278 +206,266 @@
 						</Select>
 					</div>
 				</div>
-			</div>
-		{/if}
-		{#if imageSettings}
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-full h-24">
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">Fit</h1>
-					<Select bind:selected={payload.image.objectFit}>
-						<option value="contain">Contain</option>
-						<option selected value="cover">Cover</option>
-					</Select>
+			{/if}
+			{#if imageSettings}
+				<div class="w-full h-fit flex flex-wrap">
+					<div class="w-full h-24">
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">Fit</h1>
+						<Select bind:selected={payload.image.objectFit}>
+							<option value="contain">Contain</option>
+							<option selected value="cover">Cover</option>
+						</Select>
+					</div>
 				</div>
-			</div>
-		{/if}
-		{#if stringSettings && !percentSettings}
-			<div>
-				<h1 class="text-gray-500 text-xl font-medium text-shadow">Text Color</h1>
+			{/if}
+			{#if stringSettings && !percentSettings}
+				<h1 class="text-gray-500 text-xl font-medium text-shadow">Custom text</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-full h-12">
 						<ColorInput bind:valueConcat={payload.css.color} opacity={true} />
 					</div>
 				</div>
-			</div>
-		{/if}
-		{#if stringSettings || percentSettings}
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
-			<div>
-				<h1 class="text-gray-500 text-lg font-medium text-shadow">
-					Size - ({payload.stroke.size})
-				</h1>
-				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-full">
+			{/if}
+			{#if stringSettings || percentSettings}
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
+				<div>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">
+						Size - ({payload.stroke.size})
+					</h1>
+					<div class="w-full h-fit flex flex-wrap">
+						<div class="w-full">
+							<NumberInput
+								bind:value={payload.stroke.size}
+								min={0}
+								max={100}
+								step={0.1}
+							/>
+						</div>
+					</div>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
+					<div class="w-full h-fit flex flex-wrap">
+						<div class="w-full">
+							<ColorInput bind:valueConcat={payload.stroke.color} opacity={true} />
+						</div>
+					</div>
+				</div>
+			{/if}
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-full grid grid-flow-row gap-2">
+					<h1 class="text-gray-500 text-xl font-medium text-shadow">Border</h1>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
+					<div class="w-full h-fit flex flex-wrap">
+						<ColorInput bind:valueConcat={payload.css.borderColor} opacity={true} />
+					</div>
+					<div class="grid grid-flow-row gap-2">
 						<NumberInput
-							bind:value={payload.stroke.size}
+							value={Number(payload.css.borderLeft?.slice(0, -9) ?? 0)}
+							bind:valueConcat={payload.css.borderLeft}
 							min={0}
 							max={100}
 							step={0.1}
+							stringFormat={'{0}rem solid'}
+							label={'Left'}
+						/>
+						<NumberInput
+							value={Number(payload.css.borderRight?.slice(0, -9) ?? 0)}
+							bind:valueConcat={payload.css.borderRight}
+							min={0}
+							max={100}
+							step={0.1}
+							stringFormat={'{0}rem solid'}
+							label={'Right'}
+						/>
+						<NumberInput
+							value={Number(payload.css.borderTop?.slice(0, -9) ?? 0)}
+							bind:valueConcat={payload.css.borderTop}
+							min={0}
+							max={100}
+							step={0.1}
+							stringFormat={'{0}rem solid'}
+							label={'Top'}
+						/>
+						<NumberInput
+							value={Number(payload.css.borderBottom?.slice(0, -9) ?? 0)}
+							bind:valueConcat={payload.css.borderBottom}
+							min={0}
+							max={100}
+							step={0.1}
+							stringFormat={'{0}rem solid'}
+							label={'Bottom'}
 						/>
 					</div>
 				</div>
-				<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
+			</div>
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-full h-24">
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Rounded corner</h1>
+					<Select bind:selected={payload.class.rounded}>
+						<option value="" selected>None</option>
+						<option value="rounded-sm">Small</option>
+						<option value="rounded-md">Medium</option>
+						<option value="rounded-lg">Large</option>
+						<option value="rounded-full">Full</option>
+					</Select>
+				</div>
+			</div>
+			<h1 class="text-gray-500 text-xl font-medium text-shadow">Background color</h1>
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-full h-12">
+					<ColorInput bind:valueConcat={payload.css.background} opacity={true} />
+				</div>
+			</div>
+
+			<h1 class="text-gray-500 text-xl font-medium text-shadow">Transformation</h1>
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-full h-24">
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Flip</h1>
+					<Select bind:selected={payload.css.scale}>
+						<option selected value={undefined}>Default</option>
+						<option value={'-1 1;'}>Horizontal</option>
+						<option value={'1 -1'}>Vertical</option>
+						<option value={'-1 -1'}>Horizontal & Vertical</option>
+					</Select>
+				</div>
+			</div>
+			<div class="w-full h-fit flex flex-wrap">
+				<div class="w-44 h-24">
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">
+						Rotate - ({payload.css.rotate ?? '0deg'})
+					</h1>
+					<SliderInput
+						value={payload.css.rotate ? parseInt(payload.css.rotate.slice(0, -3)) : 0}
+						stringFormat={'{0}deg'}
+						bind:valueConcat={payload.css.rotate}
+						min={-180}
+						max={180}
+						step={1}
+					/>
+				</div>
+			</div>
+
+			<div class="w-full">
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-full">
-						<ColorInput bind:valueConcat={payload.stroke.color} opacity={true} />
+						<ShadowSelect bind:value={payload.shadow} />
 					</div>
 				</div>
 			</div>
-		{/if}
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-full grid grid-flow-row gap-2">
-				<h1 class="text-gray-500 text-xl font-medium text-shadow">Border</h1>
-				<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
-				<div class="w-full h-fit flex flex-wrap">
-					<ColorInput bind:valueConcat={payload.css.borderColor} opacity={true} />
-				</div>
-				<div class="grid grid-flow-row gap-2">
-					<NumberInput
-						value={Number(payload.css.borderLeft?.slice(0, -9) ?? 0)}
-						bind:valueConcat={payload.css.borderLeft}
-						min={0}
-						max={100}
-						step={0.1}
-						stringFormat={'{0}rem solid'}
-						label={'Left'}
-					/>
-					<NumberInput
-						value={Number(payload.css.borderRight?.slice(0, -9) ?? 0)}
-						bind:valueConcat={payload.css.borderRight}
-						min={0}
-						max={100}
-						step={0.1}
-						stringFormat={'{0}rem solid'}
-						label={'Right'}
-					/>
-					<NumberInput
-						value={Number(payload.css.borderTop?.slice(0, -9) ?? 0)}
-						bind:valueConcat={payload.css.borderTop}
-						min={0}
-						max={100}
-						step={0.1}
-						stringFormat={'{0}rem solid'}
-						label={'Top'}
-					/>
-					<NumberInput
-						value={Number(payload.css.borderBottom?.slice(0, -9) ?? 0)}
-						bind:valueConcat={payload.css.borderBottom}
-						min={0}
-						max={100}
-						step={0.1}
-						stringFormat={'{0}rem solid'}
-						label={'Bottom'}
-					/>
-				</div>
-			</div>
-		</div>
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-full h-24">
-				<h1 class="text-gray-500 text-lg font-medium text-shadow">Rounded corner</h1>
-				<Select bind:selected={payload.class.rounded}>
-					<option value="" selected>None</option>
-					<option value="rounded-sm">Small</option>
-					<option value="rounded-md">Medium</option>
-					<option value="rounded-lg">Large</option>
-					<option value="rounded-full">Full</option>
-				</Select>
-			</div>
-		</div>
-		<h1 class="text-gray-500 text-xl font-medium text-shadow">Background color</h1>
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-full h-12">
-				<ColorInput bind:valueConcat={payload.css.background} opacity={true} />
-			</div>
-		</div>
-		{#if selectedElementId === CustomElement.CustomImage}
-			<h1 class="text-gray-500 text-xl font-medium text-shadow">Select Image</h1>
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-full h-24">
-					<FileToBase64Input
-						bind:base64={payload.image.src}
-						label="upload"
-						acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
-					/>
-				</div>
-			</div>
-			<h1 class="text-gray-500 text-xl font-medium text-shadow">Image Positioning</h1>
-		{/if}
-
-		<h1 class="text-gray-500 text-xl font-medium text-shadow">Transformation</h1>
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-full h-24">
-				<h1 class="text-gray-500 text-lg font-medium text-shadow">Flip</h1>
-				<Select bind:selected={payload.css.scale}>
-					<option selected value={undefined}>Default</option>
-					<option value={'-1 1;'}>Horizontal</option>
-					<option value={'1 -1'}>Vertical</option>
-					<option value={'-1 -1'}>Horizontal & Vertical</option>
-				</Select>
-			</div>
-		</div>
-		<div class="w-full h-fit flex flex-wrap">
-			<div class="w-44 h-24">
+			<div>
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">
-					Rotate - ({payload.css.rotate ?? '0deg'})
+					Opacity - {payload.css.opacity}
 				</h1>
-				<SliderInput
-					value={payload.css.rotate ? parseInt(payload.css.rotate.slice(0, -3)) : 0}
-					stringFormat={'{0}deg'}
-					bind:valueConcat={payload.css.rotate}
-					min={-180}
-					max={180}
-					step={1}
-				/>
-			</div>
-		</div>
-
-		<div class="w-full">
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
-			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-full">
-					<ShadowSelect bind:value={payload.shadow} />
+				<div class="w-full flex flex-nowrap items-center">
+					<div class="w-full h-24">
+						<SliderInput bind:value={payload.css.opacity} />
+					</div>
 				</div>
 			</div>
-		</div>
-		<div>
-			<h1 class="text-gray-500 text-lg font-medium text-shadow">
-				Transparency - {payload.css.opacity}
-			</h1>
-			<div class="w-full flex flex-nowrap items-center">
-				<div class="w-full h-24">
-					<SliderInput bind:value={payload.css.opacity} />
+			<div class="items-center gap-2 flex">
+				<h1
+					class="text-gray-500 text-xl font-medium text-shadow mb-2"
+					data-tooltip="Animations that triggers on in-game events such as taking damage"
+				>
+					Animation Triggers
+				</h1>
+			</div>
+			<h1 class="text-gray-500 text-lg font-medium text-shadow">Trigger</h1>
+			<AnimationTriggerSelect
+				bind:selectedOption={payload.animationTrigger.selectedOptions}
+				on:update={handleTriggerUpdate}
+			/>
+			{#if payload.animationTrigger.selectedOptions}
+				<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
+					<AnimationInput bind:animation={payload.animationTrigger.in} label="In" />
+					<AnimationInput bind:animation={payload.animationTrigger.out} label="Out" />
 				</div>
-			</div>
-		</div>
-		<div class="items-center gap-2 flex">
-			<h1
-				class="text-gray-500 text-xl font-medium text-shadow mb-2"
-				data-tooltip="Animations that triggers on in-game events such as taking damage"
-			>
-				Animation Triggers
-			</h1>
-		</div>
-		<h1 class="text-gray-500 text-lg font-medium text-shadow">Trigger</h1>
-		<AnimationTriggerSelect
-			bind:selectedOption={payload.animationTrigger.selectedOptions}
-			on:update={handleTriggerUpdate}
-		/>
-		{#if payload.animationTrigger.selectedOptions}
-			<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
-				<AnimationInput bind:animation={payload.animationTrigger.in} label="In" />
-				<AnimationInput bind:animation={payload.animationTrigger.out} label="Out" />
-			</div>
-			<button
-				in:fly={{ duration: 250, x: 100 }}
-				on:click={shuffleAnimationTriggers}
-				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-			>
-				Test animation
-			</button>
-		{/if}
-
-		<div class="items-center gap-2 flex">
-			<h1
-				class="text-gray-500 text-xl font-medium text-shadow mb-2"
-				data-tooltip="Animations that triggers on in-game events such as taking damage"
-			>
-				Visibility
-			</h1>
-		</div>
-
-		<VisibilitySelect
-			bind:selectedVisibilityOptions={payload.visibility.selectedOptions}
-			on:update={handleVisibilityUpdate}
-		/>
-
-		{#if payload.visibility.selectedOptions.length}
-			<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
-				<AnimationInput bind:animation={payload.visibility.in} label="In" />
-				<AnimationInput bind:animation={payload.visibility.out} label="Out" />
-			</div>
-			<button
-				in:fly={{ duration: 250, x: 100 }}
-				on:click={shuffleAnimationVisibility}
-				data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-			>
-				Test animation
-			</button>
-		{/if}
-		<div class="items-center gap-2 flex">
-			<h1 class="text-gray-500 text-xl font-medium text-shadow mb-2">Advanced styling</h1>
-			<div class="mb-2">
-				<BooleanInput bind:checked={payload.advancedStyling} />
-			</div>
-		</div>
-		{#if payload.advancedStyling}
-			{#if stringSettings || imageSettings}
-				<div in:fly={{ duration: 250, delay: 0 }}>
-					<CodeInput
-						bind:value={payload.css.customParent}
-						label="Custom Inline CSS Parent - Default: width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"
-					/>
-				</div>
+				<button
+					in:fly={{ duration: 250, x: 100 }}
+					on:click={shuffleAnimationTriggers}
+					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				>
+					Test animation
+				</button>
 			{/if}
-			{#if boxSettings || imageSettings}
-				<div in:fly={{ duration: 250, delay: 50 }}>
-					<CodeInput
-						bind:value={payload.css.customBox}
-						label="Custom Inline CSS Box - Default: width: 100%; height: 100%;"
-					/>
+
+			<div class="items-center gap-2 flex">
+				<h1
+					class="text-gray-500 text-xl font-medium text-shadow mb-2"
+					data-tooltip="Animations that triggers on in-game events such as taking damage"
+				>
+					Visibility
+				</h1>
+			</div>
+
+			<VisibilitySelect
+				bind:selectedVisibilityOptions={payload.visibility.selectedOptions}
+				on:update={handleVisibilityUpdate}
+			/>
+
+			{#if payload.visibility.selectedOptions.length}
+				<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
+					<AnimationInput bind:animation={payload.visibility.in} label="In" />
+					<AnimationInput bind:animation={payload.visibility.out} label="Out" />
 				</div>
+				<button
+					in:fly={{ duration: 250, x: 100 }}
+					on:click={shuffleAnimationVisibility}
+					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				>
+					Test animation
+				</button>
 			{/if}
-			{#if stringSettings}
-				<div in:fly={{ duration: 250, delay: 100 }}>
-					<CodeInput bind:value={payload.css.customText} label="Custom Inline CSS Text" />
+			<div class="items-center gap-2 flex">
+				<h1 class="text-gray-500 text-xl font-medium text-shadow mb-2">Advanced styling</h1>
+				<div class="mb-2">
+					<BooleanInput bind:checked={payload.advancedStyling} />
 				</div>
+			</div>
+			{#if payload.advancedStyling}
+				{#if stringSettings || imageSettings}
+					<div in:fly={{ duration: 250, delay: 0 }}>
+						<CodeInput
+							bind:value={payload.css.customParent}
+							label="Custom Inline CSS Parent - Default: width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"
+						/>
+					</div>
+				{/if}
+				{#if boxSettings || imageSettings}
+					<div in:fly={{ duration: 250, delay: 50 }}>
+						<CodeInput
+							bind:value={payload.css.customBox}
+							label="Custom Inline CSS Box - Default: width: 100%; height: 100%;"
+						/>
+					</div>
+				{/if}
+				{#if stringSettings}
+					<div in:fly={{ duration: 250, delay: 100 }}>
+						<CodeInput
+							bind:value={payload.css.customText}
+							label="Custom Inline CSS Text"
+						/>
+					</div>
+				{/if}
+				{#if imageSettings}
+					<div in:fly={{ duration: 250, delay: 150 }}>
+						<CodeInput
+							bind:value={payload.css.customImage}
+							label="Custom Inline CSS Image - Default: width: 100%; height: 100%; object-fit: contain;"
+						/>
+					</div>
+				{/if}
 			{/if}
-			{#if imageSettings}
-				<div in:fly={{ duration: 250, delay: 150 }}>
-					<CodeInput
-						bind:value={payload.css.customImage}
-						label="Custom Inline CSS Image - Default: width: 100%; height: 100%; object-fit: contain;"
-					/>
-				</div>
-			{/if}
-		{/if}
-		<div>
-			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-				on:click={saveStyling}
-			>
-				Save Styling and Animation
-			</button>
+			<div>
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					on:click={saveStyling}
+				>
+					Save Styling and Animation
+				</button>
+			</div>
 		</div>
-	</div>
+	{/key}
 {/key}

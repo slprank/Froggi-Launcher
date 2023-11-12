@@ -24,12 +24,7 @@
 
 	$: defaultPreview = edit || preview;
 
-	$: style = {
-		classValue: '',
-		cssValue: '',
-		shadow: '',
-		stroke: '',
-	} as GridContentItemStyle;
+	$: style = {} as GridContentItemStyle;
 
 	$: innerWidth,
 		(style.classValue = Object.entries(dataItem?.data.class ?? {})
