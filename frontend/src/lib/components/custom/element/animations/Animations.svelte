@@ -73,7 +73,7 @@
 		return easingFunctions[easing];
 	};
 
-	const getTransition: Function = (
+	const getTransition = (
 		transitionName: string | Animation | undefined,
 	): transitionFunctions.TransitionConfig | undefined => {
 		if (!transitionName) return;

@@ -201,7 +201,7 @@ export class StatsDisplay {
 		const file = files
 			.find(file => {
 				const settings = new SlippiGame(file).getSettings();
-				return settings?.matchInfo?.matchId === matchId && settings?.matchInfo?.gameNumber === gameNumber;
+				return settings?.matchInfo?.matchId === matchId && settings?.matchInfo?.gameNumber === gameNumber && settings?.matchInfo?.tiebreakerNumber === 0;
 			})
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
