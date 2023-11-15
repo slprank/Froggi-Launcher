@@ -2,7 +2,8 @@
 	import { LiveStatsScene } from '$lib/models/enum';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import GameStateVisibilitySelect from './GameStateVisibilitySelect.svelte';
+	import InGameStateVisibilitySelect from './InGameStateVisibilitySelect.svelte';
+	import RecentGameStateVisibilitySelect from './RecentGameStateVisibilitySelect.svelte';
 	import {
 		VisibilityCategory,
 		type SelectedVisibilityOption,
@@ -28,12 +29,16 @@
 		}
 	}
 
-	let selectedCategory: VisibilityCategory = VisibilityCategory.GameState;
+	let selectedCategory: VisibilityCategory = VisibilityCategory.InGameState;
 
 	$: buttons = [
 		{
-			category: VisibilityCategory.GameState,
+			category: VisibilityCategory.InGameState,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.RecentGame,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 	];
 </script>
@@ -63,9 +68,17 @@
 			out:fly={{ duration: 250, x: 50 }}
 			class="overflow-scroll"
 		>
-			{#if selectedCategory === VisibilityCategory.GameState}
+			{#if selectedCategory === VisibilityCategory.InGameState}
 				<div class="flex flex-col gap-2">
-					<GameStateVisibilitySelect on:select={select} {selectedVisibilityOption} />
+					<InGameStateVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.RecentGame}
+				<div class="flex flex-col gap-2">
+					<RecentGameStateVisibilitySelect
+						on:select={select}
+						{selectedVisibilityOption}
+					/>
 				</div>
 			{/if}
 		</div>

@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
 	import type { AutoUpdater, Obs, Overlay } from '$lib/models/types/overlay';
 	import type { ControllerInputs } from '$lib/models/types/controller';
