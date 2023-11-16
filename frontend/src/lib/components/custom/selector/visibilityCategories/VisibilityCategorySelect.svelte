@@ -3,7 +3,12 @@
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import InGameStateVisibilitySelect from './InGameStateVisibilitySelect.svelte';
-	import RecentGameStateVisibilitySelect from './RecentGameStateVisibilitySelect.svelte';
+	import RecentGameVisibilitySelect from './RecentGameVisibilitySelect.svelte';
+	import Game1SummaryVisibilitySelect from './Game1SummaryVisibilitySelect.svelte';
+	import Game2SummaryVisibilitySelect from './Game2SummaryVisibilitySelect.svelte';
+	import Game3SummaryVisibilitySelect from './Game3SummaryVisibilitySelect.svelte';
+	import Game4SummaryVisibilitySelect from './Game4SummaryVisibilitySelect.svelte';
+	import Game5SummaryVisibilitySelect from './Game5SummaryVisibilitySelect.svelte';
 	import {
 		VisibilityCategory,
 		type SelectedVisibilityOption,
@@ -29,9 +34,7 @@
 		}
 	}
 
-	let selectedCategory: VisibilityCategory = VisibilityCategory.InGameState;
-
-	$: buttons = [
+	const buttons = [
 		{
 			category: VisibilityCategory.InGameState,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
@@ -40,7 +43,30 @@
 			category: VisibilityCategory.RecentGame,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
+		{
+			category: VisibilityCategory.RecentGame1Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.RecentGame2Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.RecentGame3Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.RecentGame4Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.RecentGame5Summary,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
 	];
+
+	let selectedCategory: VisibilityCategory =
+		buttons.find((button) => button.visible)?.category ?? VisibilityCategory.InGameState;
 </script>
 
 <div class="w-full h-full flex flex-col gap-4">
@@ -75,10 +101,32 @@
 			{/if}
 			{#if selectedCategory === VisibilityCategory.RecentGame}
 				<div class="flex flex-col gap-2">
-					<RecentGameStateVisibilitySelect
-						on:select={select}
-						{selectedVisibilityOption}
-					/>
+					<RecentGameVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.RecentGame1Summary}
+				<div class="flex flex-col gap-2">
+					<Game1SummaryVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.RecentGame2Summary}
+				<div class="flex flex-col gap-2">
+					<Game2SummaryVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.RecentGame3Summary}
+				<div class="flex flex-col gap-2">
+					<Game3SummaryVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.RecentGame4Summary}
+				<div class="flex flex-col gap-2">
+					<Game4SummaryVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.RecentGame5Summary}
+				<div class="flex flex-col gap-2">
+					<Game5SummaryVisibilitySelect on:select={select} {selectedVisibilityOption} />
 				</div>
 			{/if}
 		</div>

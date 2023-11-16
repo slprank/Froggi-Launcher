@@ -8,53 +8,50 @@
 	import { gameFrame, gameSettings, gameState } from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 
-	export const inGameVisibilityOption = async (option: SelectedVisibilityOption[]) => {
+	export const inGameVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const gameFrame = await getGameFrame();
 		const gameSettings = await getGameSettings();
 		const gameState = await getGameState();
 
-		return option.every((option) => {
-			if (option[VisibilityOption.GameRunning] === VisibilityToggle.True)
-				if (gameState === InGameState.Running) return true;
-			if (option[VisibilityOption.GameRunning] === VisibilityToggle.False)
-				if (gameState !== InGameState.Running) return true;
+		if (option[VisibilityOption.GameRunning] === VisibilityToggle.True)
+			if (gameState === InGameState.Running) return true;
+		if (option[VisibilityOption.GameRunning] === VisibilityToggle.False)
+			if (gameState !== InGameState.Running) return true;
 
-			if (option[VisibilityOption.GamePaused] === VisibilityToggle.True)
-				if (gameState === InGameState.Paused) return true;
-			if (option[VisibilityOption.GamePaused] === VisibilityToggle.False)
-				if (gameState !== InGameState.Paused) return true;
+		if (option[VisibilityOption.GamePaused] === VisibilityToggle.True)
+			if (gameState === InGameState.Paused) return true;
+		if (option[VisibilityOption.GamePaused] === VisibilityToggle.False)
+			if (gameState !== InGameState.Paused) return true;
 
-			if (option[VisibilityOption.GameReady] === VisibilityToggle.True)
-				if (isGameReady(gameFrame)) return true;
-			if (option[VisibilityOption.GameReady] === VisibilityToggle.False)
-				if (!isGameReady(gameFrame)) return true;
+		if (option[VisibilityOption.GameReady] === VisibilityToggle.True)
+			if (isGameReady(gameFrame)) return true;
+		if (option[VisibilityOption.GameReady] === VisibilityToggle.False)
+			if (!isGameReady(gameFrame)) return true;
 
-			if (option[VisibilityOption.GameGo] === VisibilityToggle.True)
-				if (isGameGo(gameFrame)) return true;
-			if (option[VisibilityOption.GameGo] === VisibilityToggle.False)
-				if (!isGameGo(gameFrame)) return true;
+		if (option[VisibilityOption.GameGo] === VisibilityToggle.True)
+			if (isGameGo(gameFrame)) return true;
+		if (option[VisibilityOption.GameGo] === VisibilityToggle.False)
+			if (!isGameGo(gameFrame)) return true;
 
-			const seconds =
-				(gameSettings?.startingTimerSeconds ?? 480) - (gameFrame?.frame ?? 0) / 60;
-			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.True) {
-				if (isGameCountdown(seconds)) return true;
-			}
-			if (option[VisibilityOption.GameCountdown] === VisibilityToggle.False) {
-				if (!isGameCountdown(seconds)) return true;
-			}
+		const seconds = (gameSettings?.startingTimerSeconds ?? 480) - (gameFrame?.frame ?? 0) / 60;
+		if (option[VisibilityOption.GameCountdown] === VisibilityToggle.True) {
+			if (isGameCountdown(seconds)) return true;
+		}
+		if (option[VisibilityOption.GameCountdown] === VisibilityToggle.False) {
+			if (!isGameCountdown(seconds)) return true;
+		}
 
-			if (option[VisibilityOption.GameEnd] === VisibilityToggle.True)
-				if (isGameEnd(gameState)) return true;
-			if (option[VisibilityOption.GameEnd] === VisibilityToggle.False)
-				if (!isGameEnd(gameState)) return true;
+		if (option[VisibilityOption.GameEnd] === VisibilityToggle.True)
+			if (isGameEnd(gameState)) return true;
+		if (option[VisibilityOption.GameEnd] === VisibilityToggle.False)
+			if (!isGameEnd(gameState)) return true;
 
-			if (option[VisibilityOption.GameTime] === VisibilityToggle.True)
-				if (isGameTime(gameState)) return true;
-			if (option[VisibilityOption.GameTime] === VisibilityToggle.False)
-				if (!isGameTime(gameState)) return true;
+		if (option[VisibilityOption.GameTime] === VisibilityToggle.True)
+			if (isGameTime(gameState)) return true;
+		if (option[VisibilityOption.GameTime] === VisibilityToggle.False)
+			if (!isGameTime(gameState)) return true;
 
-			return false;
-		});
+		return false;
 	};
 
 	const isGameReady = (gameFrame: FrameEntryType | null) => {

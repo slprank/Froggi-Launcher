@@ -30,6 +30,7 @@ export enum VisibilityOption {
     PostGamePlayer2Stock3 = "PostGamePlayer1Stock3",
     PostGamePlayer2Stock4 = "PostGamePlayer1Stock4",
 
+    PostGame1SummaryCompleted = "PostGame1SummaryCompleted",
     PostGame1SummaryCurrentPlayerWin = "PostGame1SummaryCurrentPlayerWin",
     PostGame1SummaryCurrentPlayerLoss = "PostGame1SummaryCurrentPlayerLoss",
     PostGame1SummaryPlayer1Win = "PostGame1SummaryPlayer1Win",
@@ -43,6 +44,7 @@ export enum VisibilityOption {
     PostGame1SummaryPlayer2Stock3 = "PostGame1SummaryPlayer1Stock3",
     PostGame1SummaryPlayer2Stock4 = "PostGame1SummaryPlayer1Stock4",
 
+    PostGame2SummaryCompleted = "PostGame2SummaryCompleted",
     PostGame2SummaryCurrentPlayerWin = "PostGame2SummaryCurrentPlayerWin",
     PostGame2SummaryCurrentPlayerLoss = "PostGame2SummaryCurrentPlayerLoss",
     PostGame2SummaryPlayer1Win = "PostGame2SummaryPlayer1Win",
@@ -56,6 +58,7 @@ export enum VisibilityOption {
     PostGame2SummaryPlayer2Stock3 = "PostGame2SummaryPlayer1Stock3",
     PostGame2SummaryPlayer2Stock4 = "PostGame2SummaryPlayer1Stock4",
 
+    PostGame3SummaryCompleted = "PostGame3SummaryCompleted",
     PostGame3SummaryCurrentPlayerWin = "PostGame3SummaryCurrentPlayerWin",
     PostGame3SummaryCurrentPlayerLoss = "PostGame3SummaryCurrentPlayerLoss",
     PostGame3SummaryPlayer1Win = "PostGame3SummaryPlayer1Win",
@@ -69,6 +72,7 @@ export enum VisibilityOption {
     PostGame3SummaryPlayer2Stock3 = "PostGame3SummaryPlayer1Stock3",
     PostGame3SummaryPlayer2Stock4 = "PostGame3SummaryPlayer1Stock4",
 
+    PostGame4SummaryCompleted = "PostGame4SummaryCompleted",
     PostGame4SummaryCurrentPlayerWin = "PostGame4SummaryCurrentPlayerWin",
     PostGame4SummaryCurrentPlayerLoss = "PostGame4SummaryCurrentPlayerLoss",
     PostGame4SummaryPlayer1Win = "PostGame4SummaryPlayer1Win",
@@ -82,6 +86,7 @@ export enum VisibilityOption {
     PostGame4SummaryPlayer2Stock3 = "PostGame4SummaryPlayer1Stock3",
     PostGame4SummaryPlayer2Stock4 = "PostGame4SummaryPlayer1Stock4",
 
+    PostGame5SummaryCompleted = "PostGame5SummaryCompleted",
     PostGame5SummaryCurrentPlayerWin = "PostGame5SummaryCurrentPlayerWin",
     PostGame5SummaryCurrentPlayerLoss = "PostGame5SummaryCurrentPlayerLoss",
     PostGame5SummaryPlayer1Win = "PostGame5SummaryPlayer1Win",
@@ -104,11 +109,11 @@ export enum VisibilityCategory {
     Session = "Session",
     InGameState = "Game State",
     RecentGame = "Recent Game",
-    RecentGame1Summary = "Recent Game1 Summary",
-    RecentGame2Summary = "Recent Game2 Summary",
-    RecentGame3Summary = "Recent Game3 Summary",
-    RecentGame4Summary = "Recent Game4 Summary",
-    RecentGame5Summary = "Recent Game5 Summary",
+    RecentGame1Summary = "Recent Game 1 Summary",
+    RecentGame2Summary = "Recent Game 2 Summary",
+    RecentGame3Summary = "Recent Game 3 Summary",
+    RecentGame4Summary = "Recent Game 4 Summary",
+    RecentGame5Summary = "Recent Game 5 Summary",
 }
 
 export enum AnimationTriggerCategory {

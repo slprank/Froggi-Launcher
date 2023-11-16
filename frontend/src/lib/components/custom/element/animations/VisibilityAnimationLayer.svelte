@@ -4,14 +4,16 @@
 	import { onMount } from 'svelte';
 	import { inGameVisibilityOption } from './InGameVisibilityOptions.svelte';
 	import { postGameVisibilityOption } from './PostGameVisibilityOptions.svelte';
-	import { postGameMatchVisibilityOption } from './PostGameMatchVisibilityOptions.svelte';
+	import { postGame1SummaryVisibilityOption } from './PostGame1SummaryVisibilityOptions.svelte';
+	import { postGame2SummaryVisibilityOption } from './PostGame2SummaryVisibilityOptions.svelte';
+	import { postGame3SummaryVisibilityOption } from './PostGame3SummaryVisibilityOptions.svelte';
+	import { postGame4SummaryVisibilityOption } from './PostGame4SummaryVisibilityOptions.svelte';
+	import { postGame5SummaryVisibilityOption } from './PostGame5SummaryVisibilityOptions.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
 	export let preview: boolean;
 	export let edit: boolean = false;
-
-	$: console.log($gameState);
 
 	let visible = true;
 	const updateVisibilityValue = async () => {
@@ -20,11 +22,25 @@
 
 		const options = dataItem.data.visibility.selectedOptions;
 
-		const inGameOptions = await inGameVisibilityOption(options);
-		const postGameOptions = await postGameVisibilityOption(options);
-		const postGameMatchOptions = await postGameMatchVisibilityOption(options);
+		visible = options.every(async (option) => {
+			const inGameOptions = await inGameVisibilityOption(option);
+			const postGameOptions = await postGameVisibilityOption(option);
+			const postGame1SummaryOptions = await postGame1SummaryVisibilityOption(option);
+			const postGame2SummaryOptions = await postGame2SummaryVisibilityOption(option);
+			const postGame3SummaryOptions = await postGame3SummaryVisibilityOption(option);
+			const postGame4SummaryOptions = await postGame4SummaryVisibilityOption(option);
+			const postGame5SummaryOptions = await postGame5SummaryVisibilityOption(option);
 
-		visible = inGameOptions || postGameOptions || postGameMatchOptions;
+			return (
+				inGameOptions ||
+				postGameOptions ||
+				postGame1SummaryOptions ||
+				postGame2SummaryOptions ||
+				postGame3SummaryOptions ||
+				postGame4SummaryOptions ||
+				postGame5SummaryOptions
+			);
+		});
 	};
 
 	$: {
