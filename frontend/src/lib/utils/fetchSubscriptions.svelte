@@ -1,15 +1,20 @@
 <script lang="ts" context="module">
 	import { page } from '$app/stores';
+	import type { InGameState } from '$lib/models/enum';
 	import type { Obs } from '$lib/models/types/overlay';
 	import type { GameStats, Player } from '$lib/models/types/slippiData';
 	import {
 		currentPlayer,
 		currentPlayers,
 		eventEmitter,
+		gameFrame,
+		gameSettings,
+		gameState,
 		obs,
 		postGame,
 		recentGames,
 	} from '$lib/utils/store.svelte';
+	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
 	import type EventEmitter from 'events';
 
@@ -36,6 +41,28 @@
 			});
 		});
 	};
+
+	export async function getGameFrame(): Promise<FrameEntryType | null> {
+		return await new Promise<FrameEntryType | null>((resolve) => {
+			gameFrame.subscribe((gameFrame) => {
+				resolve(gameFrame);
+			});
+		});
+	}
+	export async function getGameSettings(): Promise<GameStartType> {
+		return await new Promise<GameStartType>((resolve) => {
+			gameSettings.subscribe((gameSettings) => {
+				resolve(gameSettings);
+			});
+		});
+	}
+	export async function getGameState(): Promise<InGameState> {
+		return await new Promise<InGameState>((resolve) => {
+			gameState.subscribe((gameState) => {
+				resolve(gameState);
+			});
+		});
+	}
 
 	export async function getGameStats(): Promise<GameStats> {
 		return await new Promise<GameStats>((resolve) => {

@@ -3,6 +3,8 @@
 	import { eventEmitter, gameFrame, gameState } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	import { inGameVisibilityOption } from './InGameVisibilityOptions.svelte';
+	import { inGamePlayer1VisibilityOption } from './InGamePlayer1VisibilityOptions.svelte';
+	import { inGamePlayer2VisibilityOption } from './InGamePlayer2VisibilityOptions.svelte';
 	import { postGameVisibilityOption } from './PostGameVisibilityOptions.svelte';
 	import { postGame1SummaryVisibilityOption } from './PostGame1SummaryVisibilityOptions.svelte';
 	import { postGame2SummaryVisibilityOption } from './PostGame2SummaryVisibilityOptions.svelte';
@@ -24,6 +26,8 @@
 
 		visible = options.every(async (option) => {
 			const inGameOptions = await inGameVisibilityOption(option);
+			const inGamePlayer1Options = await inGamePlayer1VisibilityOption(option);
+			const inGamePlayer2Options = await inGamePlayer2VisibilityOption(option);
 			const postGameOptions = await postGameVisibilityOption(option);
 			const postGame1SummaryOptions = await postGame1SummaryVisibilityOption(option);
 			const postGame2SummaryOptions = await postGame2SummaryVisibilityOption(option);
@@ -33,6 +37,8 @@
 
 			return (
 				inGameOptions ||
+				inGamePlayer1Options ||
+				inGamePlayer2Options ||
 				postGameOptions ||
 				postGame1SummaryOptions ||
 				postGame2SummaryOptions ||

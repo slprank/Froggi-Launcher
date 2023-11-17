@@ -2,7 +2,10 @@
 	import { LiveStatsScene } from '$lib/models/enum';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
+	import SessionStateVisibilitySelect from './SessionStateVisibilitySelect.svelte';
 	import InGameStateVisibilitySelect from './InGameStateVisibilitySelect.svelte';
+	import InGamePlayer1StateVisibilitySelect from './InGamePlayer1StateVisibilitySelect.svelte';
+	import InGamePlayer2StateVisibilitySelect from './InGamePlayer2StateVisibilitySelect.svelte';
 	import RecentGameVisibilitySelect from './RecentGameVisibilitySelect.svelte';
 	import Game1SummaryVisibilitySelect from './Game1SummaryVisibilitySelect.svelte';
 	import Game2SummaryVisibilitySelect from './Game2SummaryVisibilitySelect.svelte';
@@ -35,6 +38,16 @@
 	}
 
 	const buttons = [
+		{
+			category: VisibilityCategory.Session,
+			visible: [
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+				LiveStatsScene.Menu,
+				LiveStatsScene.RankChange,
+			].includes($statsScene),
+		},
 		{
 			category: VisibilityCategory.InGameState,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
@@ -94,9 +107,30 @@
 			out:fly={{ duration: 250, x: 50 }}
 			class="overflow-scroll"
 		>
+			{#if selectedCategory === VisibilityCategory.Session}
+				<div class="flex flex-col gap-2">
+					<SessionStateVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
 			{#if selectedCategory === VisibilityCategory.InGameState}
 				<div class="flex flex-col gap-2">
 					<InGameStateVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.InGameState}
+				<div class="flex flex-col gap-2">
+					<InGamePlayer1StateVisibilitySelect
+						on:select={select}
+						{selectedVisibilityOption}
+					/>
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.InGameState}
+				<div class="flex flex-col gap-2">
+					<InGamePlayer2StateVisibilitySelect
+						on:select={select}
+						{selectedVisibilityOption}
+					/>
 				</div>
 			{/if}
 			{#if selectedCategory === VisibilityCategory.RecentGame}

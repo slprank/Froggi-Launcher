@@ -9,6 +9,7 @@
 		getCurrentPlayer,
 		getPlayers,
 	} from '../../../../utils/fetchSubscriptions.svelte';
+	import { getWinnerIndex } from '$lib/utils/gamePredicates';
 
 	export const postGame1SummaryVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const recentGames = await getRecentGames();
@@ -19,9 +20,7 @@
 		const gameIndex = recentGames.length > 5 ? -5 : 0;
 		const game = recentGames.at(gameIndex);
 
-		const winnerIndex = game?.gameEnd.placements.findIndex(
-			(placement) => placement.position === 0,
-		);
+		const winnerIndex = getWinnerIndex(game?.gameEnd);
 
 		if (option[VisibilityOption.PostGame1SummaryCompleted] === VisibilityToggle.True)
 			if (game) return true;

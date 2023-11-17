@@ -12,7 +12,7 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
-import { getWinnerIndex } from '../utils/gamePredicates';
+import { getWinnerIndex } from '../../frontend/src/lib/utils/gamePredicates';
 import { analyzeMatch } from '../utils/analyzeMatch';
 import os from "os"
 

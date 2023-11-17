@@ -26,6 +26,6 @@
 		"esModuleInterop": true,
 		"isolatedModules": true
 	},
-	"include": [".", "../test"],
+	"include": [".", "../test", "../frontend/src/lib/utils/gamePredicates.ts"],
 	"exclude": ["node_modules", "services"]
 }

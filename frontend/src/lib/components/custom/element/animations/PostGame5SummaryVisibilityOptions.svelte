@@ -4,6 +4,7 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
+	import { getWinnerIndex } from '$lib/utils/gamePredicates';
 	import {
 		getRecentGames,
 		getCurrentPlayer,
@@ -19,9 +20,7 @@
 		const gameIndex = recentGames.length > 5 ? -1 : 4;
 		const game = recentGames.at(gameIndex);
 
-		const winnerIndex = game?.gameEnd.placements.findIndex(
-			(placement) => placement.position === 0,
-		);
+		const winnerIndex = getWinnerIndex(game?.gameEnd);
 
 		if (option[VisibilityOption.PostGame5SummaryCompleted] === VisibilityToggle.True)
 			if (game) return true;
