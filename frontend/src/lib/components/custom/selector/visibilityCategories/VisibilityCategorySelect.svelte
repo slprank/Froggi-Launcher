@@ -53,6 +53,14 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
+			category: VisibilityCategory.Player1State,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.Player2State,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
 			category: VisibilityCategory.RecentGame,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
@@ -117,7 +125,7 @@
 					<InGameStateVisibilitySelect on:select={select} {selectedVisibilityOption} />
 				</div>
 			{/if}
-			{#if selectedCategory === VisibilityCategory.InGameState}
+			{#if selectedCategory === VisibilityCategory.Player1State}
 				<div class="flex flex-col gap-2">
 					<InGamePlayer1StateVisibilitySelect
 						on:select={select}
@@ -125,7 +133,7 @@
 					/>
 				</div>
 			{/if}
-			{#if selectedCategory === VisibilityCategory.InGameState}
+			{#if selectedCategory === VisibilityCategory.Player2State}
 				<div class="flex flex-col gap-2">
 					<InGamePlayer2StateVisibilitySelect
 						on:select={select}

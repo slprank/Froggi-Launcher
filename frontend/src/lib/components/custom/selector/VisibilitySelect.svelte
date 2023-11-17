@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
-	import { flip } from 'svelte/animate';
 	import VisibilityCategorySelect from './visibilityCategories/VisibilityCategorySelect.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { fly } from 'svelte/transition';
 
 	export let selectedVisibilityOptions: SelectedVisibilityOption[] = [];
 	let tempSelectedOptions: SelectedVisibilityOption[] = selectedVisibilityOptions;
@@ -40,7 +40,7 @@
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
 		{#each tempSelectedOptions as option, i (i)}
-			<div animate:flip={{ duration: 250 }}>
+			<div transition:fly={{ duration: 250, x: 150 }}>
 				<div>
 					<VisibilityCategorySelect bind:selectedVisibilityOption={option} />
 				</div>

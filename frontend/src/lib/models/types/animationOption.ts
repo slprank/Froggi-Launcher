@@ -108,8 +108,8 @@ export enum VisibilityOption {
 
 export enum VisibilityCategory {
     CurrentPlayerState = "Current Player State",
-    Player1State = "Player1 State",
-    Player2State = "Player2 State",
+    Player1State = "Player 1 State",
+    Player2State = "Player 2 State",
     OngoingGame = "Ongoing Game",
     Session = "Session",
     InGameState = "Game State",
