@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
-	import type { AutoUpdater, Obs, Overlay } from '$lib/models/types/overlay';
+	import type { AutoUpdater, Overlay } from '$lib/models/types/overlay';
 	import type { ControllerInputs } from '$lib/models/types/controller';
 	import type {
 		CurrentPlayer,
@@ -9,7 +9,6 @@
 		Player,
 	} from '$lib/models/types/slippiData';
 	import {
-		eventEmitter,
 		currentPlayer,
 		currentPlayers,
 		gameScore,
@@ -29,8 +28,8 @@
 		memoryReadController,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
-	import type EventEmitter from 'events';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
+	import { getEventEmitter, getObs } from './FetchSubscriptions.svelte';
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');
@@ -146,20 +145,4 @@
 			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
 		});
 	};
-
-	async function getEventEmitter(): Promise<EventEmitter> {
-		return await new Promise<EventEmitter>((resolve) => {
-			eventEmitter.subscribe((eventEmitter) => {
-				resolve(eventEmitter);
-			});
-		});
-	}
-
-	async function getObs(): Promise<Obs> {
-		return await new Promise<Obs>((resolve) => {
-			obs.subscribe((obs) => {
-				resolve(obs);
-			});
-		});
-	}
 </script>

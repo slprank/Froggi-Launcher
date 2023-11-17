@@ -4,7 +4,11 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import { getRecentGames, getCurrentPlayer, getPlayers } from './FetchSubscriptions.svelte';
+	import {
+		getRecentGames,
+		getCurrentPlayer,
+		getPlayers,
+	} from '../../../../utils/fetchSubscriptions.svelte';
 
 	export const postGame3SummaryVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const recentGames = await getRecentGames();

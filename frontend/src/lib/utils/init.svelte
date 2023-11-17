@@ -1,25 +1,16 @@
 <script lang="ts" context="module">
-	import type EventEmitter from 'events';
 	import { initElectronEvents, initEventListener } from '$lib/utils/initEventListener.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
-	import { eventEmitter, isBrowser, isElectron, obs } from '$lib/utils/store.svelte';
-	import type { Obs } from '$lib/models/types/overlay';
-	import { page } from '$app/stores';
-	import type { Page } from '@sveltejs/kit';
+	import { isBrowser, isElectron } from '$lib/utils/store.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
+	import { getEventEmitter, getPage } from './FetchSubscriptions.svelte';
+	import { extendStringFormat } from './extendString';
 
 	export const initClient = async () => {
 		await initEventListener();
 		await initDevices();
 
-		if (!String.format) {
-			String.format = function (format) {
-				var args = Array.prototype.slice.call(arguments, 1);
-				return format.replace(/{(\d+)}/g, function (match: string, number: number) {
-					return typeof args[number] != 'undefined' ? args[number] : match;
-				});
-			};
-		}
+		extendStringFormat();
 	};
 
 	const initDevices = async () => {
@@ -70,30 +61,6 @@
 				navigator.serviceWorker.register('./../../../service-worker.js');
 			});
 		}
-	};
-
-	export const getEventEmitter = async (): Promise<EventEmitter> => {
-		return await new Promise<EventEmitter>((resolve) => {
-			eventEmitter.subscribe((eventEmitter) => {
-				resolve(eventEmitter);
-			});
-		});
-	};
-
-	export const getObs = async (): Promise<Obs> => {
-		return await new Promise<Obs>((resolve) => {
-			obs.subscribe((o) => {
-				resolve(o);
-			});
-		});
-	};
-
-	export const getPage = async () => {
-		return await new Promise<Page>((resolve) => {
-			page.subscribe((p) => {
-				resolve(p);
-			});
-		});
 	};
 
 	const reload = () => {
