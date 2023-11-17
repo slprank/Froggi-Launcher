@@ -20,5 +20,5 @@
 	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer2Combo]}
 	on:select={select}
 >
-	Player 2 Combo*
+	Player 2 Combo
 </SelectOption>

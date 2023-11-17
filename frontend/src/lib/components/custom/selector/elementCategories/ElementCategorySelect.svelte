@@ -115,7 +115,6 @@
 		{
 			category: ElementCategory.Session,
 			visible: [
-				LiveStatsScene.WaitingForDolphin,
 				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
 				LiveStatsScene.RankChange,

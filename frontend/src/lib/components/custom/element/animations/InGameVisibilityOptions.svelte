@@ -55,6 +55,11 @@
 		if (option[VisibilityOption.InGameTime] === VisibilityToggle.False)
 			if (!isGameTime(gameState)) return true;
 
+		if (option[VisibilityOption.InGamePlayerOffStage] === VisibilityToggle.True)
+			if (isOffStage(gameFrame)) return true;
+		if (option[VisibilityOption.InGamePlayerOffStage] === VisibilityToggle.False)
+			if (!isOffStage(gameFrame)) return true;
+
 		return false;
 	};
 
@@ -76,5 +81,10 @@
 
 	const isGameTime = (gameState: InGameState) => {
 		return gameState === InGameState.Time;
+	};
+
+	const isOffStage = (gameFrame: FrameEntryType | null): boolean => {
+		// TODO: Complete
+		return true;
 	};
 </script>

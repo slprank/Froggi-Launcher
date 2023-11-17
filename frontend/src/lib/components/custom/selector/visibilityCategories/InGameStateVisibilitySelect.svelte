@@ -47,6 +47,14 @@
 	Go
 </SelectOption>
 <SelectOption
+	description="When Either Player Is Far Off Stage"
+	value={VisibilityOption.InGamePlayerOffStage}
+	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayerOffStage]}
+	on:select={select}
+>
+	Player Off Stage*
+</SelectOption>
+<SelectOption
 	description="When The Timer Has 5 Seconds Remaining"
 	value={VisibilityOption.InGameCountdown}
 	bind:selected={selectedVisibilityOption[VisibilityOption.InGameCountdown]}
