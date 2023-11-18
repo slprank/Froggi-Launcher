@@ -31,14 +31,14 @@
 	$: customBoxSettings = selectedElementId >= 2000 && selectedElementId < 3000;
 	$: customImageSettings = selectedElementId >= 3000 && selectedElementId < 4000;
 	$: stringSettings =
-		(selectedElementId >= 4000 && selectedElementId < 5000) ||
+		(selectedElementId >= 4000 && selectedElementId < 6000) ||
 		selectedElementId === CustomElement.CustomString;
-	$: boxSettings =
-		(selectedElementId >= 5000 && selectedElementId < 6000) ||
-		selectedElementId === CustomElement.CustomBox;
 	$: imageSettings =
 		(selectedElementId >= 6000 && selectedElementId < 7000) ||
 		selectedElementId === CustomElement.CustomImage;
+	$: boxSettings =
+		(selectedElementId >= 7000 && selectedElementId < 8000) ||
+		selectedElementId === CustomElement.CustomBox;
 	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
 
 	const getSettingsType = (): StyleSetting | undefined => {
@@ -170,11 +170,9 @@
 			{/if}
 
 			{#if stringSettings || customStringSettings}
-				{#if savedStyle}
-					<div class="gap-4">
-						<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
-					</div>
-				{/if}
+				<div class="gap-4">
+					<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
+				</div>
 			{/if}
 			{#if percentSettings}
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Percent Colors</h1>

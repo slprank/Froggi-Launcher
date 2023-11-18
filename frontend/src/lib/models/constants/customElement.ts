@@ -557,6 +557,10 @@ export enum CustomElement {
     PostGameMatchPlayer1OverallOpeningsPerKill = 5203,
     PostGameMatchPlayer2OverallOpeningsPerKill = 5204,
 
+    SessionWins = 5300,
+    SessionLosses = 5301,
+    SessionRating = 5302,
+    SessionGameNumber = 5303,
     // TODO: Create components for enums below
 
 
@@ -617,8 +621,5 @@ export enum CustomElement {
     InGamePlayer1CharacterIcon = 6101,
     InGamePlayer2CharacterIcon = 6102,
 
-    SessionWins = 6200,
-    SessionLosses = 6201,
-    SessionRating = 6202,
-    SessionGameNumber = 6203
+
 }
