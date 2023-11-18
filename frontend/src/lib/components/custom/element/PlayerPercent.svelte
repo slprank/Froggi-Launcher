@@ -3,7 +3,7 @@
 	import { InGameState } from '$lib/models/enum';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
-	import { gameFrame, gameState } from '$lib/utils/store.svelte';
+	import { gameFrame, gameState } from '$lib/utils/Store.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;

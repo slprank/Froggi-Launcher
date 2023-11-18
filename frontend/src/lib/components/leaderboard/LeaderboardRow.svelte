@@ -1,6 +1,6 @@
 <script>
 	import CharacterIcon from '$lib/components/leaderboard/CharacterIcon.svelte';
-	import { isMobile } from '$lib/utils/store.svelte';
+	import { isMobile } from '$lib/utils/Store.svelte';
 	import LazyLoad from '@dimfeld/svelte-lazyload';
 	import { fade, fly } from 'svelte/transition';
 

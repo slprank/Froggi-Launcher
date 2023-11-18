@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { eventEmitter } from '$lib/utils/store.svelte';
+	import { eventEmitter } from '$lib/utils/Store.svelte';
 	import { getNewOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	function uploadOverlay() {

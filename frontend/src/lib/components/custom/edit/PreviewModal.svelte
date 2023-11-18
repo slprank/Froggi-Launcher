@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import { urls } from '$lib/utils/store.svelte';
+	import { urls } from '$lib/utils/Store.svelte';
 	import Clipboard from 'svelte-clipboard';
 	import QrCode from 'svelte-qrcode';
 

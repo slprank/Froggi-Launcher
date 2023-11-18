@@ -7,7 +7,7 @@
 	import NonInteractiveIFrame from '$lib/components/custom/preview/NonInteractiveIFrame.svelte';
 	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
-	import { isElectron, isMobile, urls } from '$lib/utils/store.svelte';
+	import { isElectron, isMobile, urls } from '$lib/utils/Store.svelte';
 
 	const overlayId: string | undefined = $page.params.overlay;
 	let curOverlay: Overlay | undefined = undefined;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isIframe } from '$lib/utils/store.svelte';
+	import { isIframe } from '$lib/utils/Store.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	export let open = false;

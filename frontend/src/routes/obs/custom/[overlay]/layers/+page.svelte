@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
 	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
-	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { obs, statsScene } from '$lib/utils/Store.svelte';
 
 	$: overlayId = $page.params.overlay;
 	let layerIds: string[] = [];

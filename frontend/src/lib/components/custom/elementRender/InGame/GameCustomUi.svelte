@@ -2,7 +2,7 @@
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import { Stage } from '$lib/models/constants/stageData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { gameFrame, gameScore, gameSettings } from '$lib/utils/store.svelte';
+	import { gameFrame, gameScore, gameSettings } from '$lib/utils/Store.svelte';
 	import GameStage from '../../element/GameStage.svelte';
 	import TextElement from '../../element/TextElement.svelte';
 

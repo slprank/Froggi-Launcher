@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isMobile } from '$lib/utils/store.svelte';
+	import { isMobile } from '$lib/utils/Store.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 </script>
 

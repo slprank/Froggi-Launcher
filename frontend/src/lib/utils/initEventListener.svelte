@@ -33,7 +33,7 @@
 		recentGames,
 		autoUpdater,
 		memoryReadController,
-	} from '$lib/utils/store.svelte';
+	} from '$lib/utils/Store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { getEventEmitter, getObs } from '$lib/utils/FetchSubscriptions.svelte';
 

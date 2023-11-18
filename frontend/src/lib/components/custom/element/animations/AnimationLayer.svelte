@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { GridContentItem } from '$lib/models/types/overlay';
 	import { AnimationTrigger } from '$lib/models/types/animationOption';
-	import { eventEmitter, gameFrame, gameSettings } from '$lib/utils/store.svelte';
+	import { eventEmitter, gameFrame, gameSettings } from '$lib/utils/Store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { onMount } from 'svelte';
 	export let animationIn: Function;

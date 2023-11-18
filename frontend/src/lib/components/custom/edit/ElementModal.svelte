@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import type { ElementPayload, GridContentItem, Overlay } from '$lib/models/types/overlay';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/Store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import {
 		generateNewItem,

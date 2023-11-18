@@ -10,7 +10,7 @@
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, statsScene } from '$lib/utils/Store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';

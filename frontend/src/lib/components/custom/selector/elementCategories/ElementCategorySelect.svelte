@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ElementCategory, LiveStatsScene } from '$lib/models/enum';
 	import type { CustomElement } from '$lib/models/constants/customElement';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import { statsScene } from '$lib/utils/Store.svelte';
 	import { fly } from 'svelte/transition';
 	import InGamePlayer1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
 	import InGamePlayer2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';

@@ -2,7 +2,7 @@
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { notifications } from './Notifications.svelte';
-	import { isBrowser } from '$lib/utils/store.svelte';
+	import { isBrowser } from '$lib/utils/Store.svelte';
 
 	export let themes = {
 		danger: '#E26D69',

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
-	import { eventEmitter, obs, statsScene, urls } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene, urls } from '$lib/utils/Store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import { getOverlayById, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';

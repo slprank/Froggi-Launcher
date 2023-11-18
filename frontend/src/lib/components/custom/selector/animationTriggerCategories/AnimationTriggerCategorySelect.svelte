@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import { statsScene } from '$lib/utils/Store.svelte';
 	import { fly } from 'svelte/transition';
 	import GameStateAnimationTriggerSelect from './GameStateAnimationTriggerSelect.svelte';
 	import Player1StateAnimationTriggerSelect from './Player1StateAnimationTriggerSelect.svelte';

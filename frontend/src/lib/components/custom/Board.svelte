@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isElectron, obs, statsScene } from '$lib/utils/store.svelte';
+	import { isElectron, obs, statsScene } from '$lib/utils/Store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import type { Layer, Overlay, Scene } from '$lib/models/types/overlay';

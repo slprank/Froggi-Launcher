@@ -3,7 +3,7 @@
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import { Stage } from '$lib/models/constants/stageData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers, gameFrame, gameScore, gameSettings } from '$lib/utils/store.svelte';
+	import { currentPlayers, gameFrame, gameScore, gameSettings } from '$lib/utils/Store.svelte';
 	import GameStage from '../../element/GameStage.svelte';
 	import PlayerRankIcon from '../../element/PlayerRankIcon.svelte';
 	import RankedCharacterIcon from '../../element/RankedCharacterIcon.svelte';

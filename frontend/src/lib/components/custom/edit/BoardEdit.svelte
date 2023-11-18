@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { eventEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs, statsScene } from '$lib/utils/Store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import type { GridContentItem, Overlay } from '$lib/models/types/overlay';

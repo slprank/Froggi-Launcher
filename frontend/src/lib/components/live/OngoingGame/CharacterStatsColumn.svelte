@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CharacterIcon from '$lib/components/live/OngoingGame/CharacterIcon.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import { isMobile } from '$lib/utils/store.svelte';
+	import { isMobile } from '$lib/utils/Store.svelte';
 
 	// TODO: use character typing and figure out if using Id or object
 	export let charactersLeft: any[];

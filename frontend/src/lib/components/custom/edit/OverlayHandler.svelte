@@ -11,7 +11,7 @@
 	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { eventEmitter, obs } from '$lib/utils/store.svelte';
+	import { eventEmitter, obs } from '$lib/utils/Store.svelte';
 	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
 
 	export function newId() {

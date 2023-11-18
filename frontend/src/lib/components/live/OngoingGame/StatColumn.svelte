@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import { isMobile } from '$lib/utils/store.svelte';
+	import { isMobile } from '$lib/utils/Store.svelte';
 
 	export let textLeft: string;
 	export let textCenter: string;

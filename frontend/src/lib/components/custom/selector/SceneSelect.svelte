@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, statsScene } from '$lib/utils/Store.svelte';
 
 	function updateLiveScene(scene: LiveStatsScene) {
 		$eventEmitter.emit('electron', 'update-live-scene', scene);

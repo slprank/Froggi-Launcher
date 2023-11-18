@@ -6,10 +6,10 @@
 	import '$lib/styles/tooltip.css';
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import { isElectron } from '$lib/utils/store.svelte';
+	import { isElectron } from '$lib/utils/Store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import { initClient } from '$lib/utils/init.svelte';
+	import { initClient } from '$lib/utils/Init.svelte';
 
 	let ready: boolean = false;
 

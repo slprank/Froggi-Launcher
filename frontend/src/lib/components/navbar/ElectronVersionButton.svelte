@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { AutoUpdaterStatus } from '$lib/models/enum';
 	import { fly } from 'svelte/transition';
-	import { autoUpdater, eventEmitter, isElectron } from '$lib/utils/store.svelte';
+	import { autoUpdater, eventEmitter, isElectron } from '$lib/utils/Store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
 	import type { AutoUpdater } from '$lib/models/types/overlay';
 

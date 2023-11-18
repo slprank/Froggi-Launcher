@@ -14,7 +14,7 @@
 		postGame,
 		recentGames,
 		sessionStats,
-	} from '$lib/utils/store.svelte';
+	} from '$lib/utils/Store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
 	import type EventEmitter from 'events';
@@ -96,8 +96,8 @@
 		});
 	}
 
-	export async function getSession(): Promise<Session> {
-		return await new Promise<Session>((resolve) => {
+	export async function getSession(): Promise<Session | undefined> {
+		return await new Promise<Session | undefined>((resolve) => {
 			sessionStats.subscribe((stats) => {
 				resolve(stats);
 			});

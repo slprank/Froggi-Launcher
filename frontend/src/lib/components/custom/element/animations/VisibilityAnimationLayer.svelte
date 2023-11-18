@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { GridContentItem } from '$lib/models/types/overlay';
-	import { eventEmitter, gameFrame, gameState } from '$lib/utils/store.svelte';
+	import { eventEmitter, gameFrame, gameState } from '$lib/utils/Store.svelte';
 	import { onMount } from 'svelte';
 	import { inGameVisibilityOption } from './InGameVisibilityOptions.svelte';
 	import { inGamePlayer1VisibilityOption } from './InGamePlayer1VisibilityOptions.svelte';

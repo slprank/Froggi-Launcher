@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { DolphinConnectionState } from '$lib/models/enum';
 	import { fly } from 'svelte/transition';
-	import { dolphinState, isElectron } from '$lib/utils/store.svelte';
+	import { dolphinState, isElectron } from '$lib/utils/Store.svelte';
 
 	const getBorderStyle = (state: DolphinConnectionState) => {
 		switch (state) {

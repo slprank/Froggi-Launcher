@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers, recentGames } from '$lib/utils/store.svelte';
+	import { currentPlayers, recentGames } from '$lib/utils/Store.svelte';
 	import GameStage from '../../element/GameStage.svelte';
 	import CharacterIcon from '../../element/CharacterIcon.svelte';
 	import CharacterRender from '../../element/CharacterRender.svelte';

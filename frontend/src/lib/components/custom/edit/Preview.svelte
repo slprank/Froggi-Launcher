@@ -3,7 +3,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { getOverlayById } from './OverlayHandler.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
-	import { isElectron, urls } from '$lib/utils/store.svelte';
+	import { isElectron, urls } from '$lib/utils/Store.svelte';
 	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
 
 	export let boardHeight: number;

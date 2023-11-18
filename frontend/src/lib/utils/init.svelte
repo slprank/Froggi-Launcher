@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-	import { initElectronEvents, initEventListener } from '$lib/utils/initEventListener.svelte';
-	import { initNoSleep } from '$lib/utils/noSleep.svelte';
-	import { isBrowser, isElectron } from '$lib/utils/store.svelte';
+	import { initElectronEvents, initEventListener } from '$lib/utils/InitEventListener.svelte';
+	import { initNoSleep } from '$lib/utils/NoSleep.svelte';
+	import { isBrowser, isElectron } from '$lib/utils/Store.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { getEventEmitter, getPage } from '$lib/utils/FetchSubscriptions.svelte';
 	import { extendStringFormat } from './extendString';

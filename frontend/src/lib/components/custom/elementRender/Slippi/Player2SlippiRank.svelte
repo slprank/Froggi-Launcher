@@ -2,7 +2,7 @@
 	import { CHARACTERS } from '$lib/models/constants/characterData';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers } from '$lib/utils/store.svelte';
+	import { currentPlayers } from '$lib/utils/Store.svelte';
 	import PlayerRankIcon from '../../element/PlayerRankIcon.svelte';
 	import RankedCharacterIcon from '../../element/RankedCharacterIcon.svelte';
 	import TextElement from '../../element/TextElement.svelte';

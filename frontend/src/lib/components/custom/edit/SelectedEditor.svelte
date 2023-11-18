@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/models/const';
-	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { obs, statsScene } from '$lib/utils/Store.svelte';
 	import { fly } from 'svelte/transition';
 	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';

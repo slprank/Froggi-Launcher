@@ -2,7 +2,7 @@
 	import type { Layer, Overlay } from '$lib/models/types/overlay';
 	import { fly } from 'svelte/transition';
 	import NonInteractiveIFrame from './NonInteractiveIFrame.svelte';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { eventEmitter, statsScene } from '$lib/utils/Store.svelte';
 	import {
 		deleteLayer,
 		moveLayerDown,

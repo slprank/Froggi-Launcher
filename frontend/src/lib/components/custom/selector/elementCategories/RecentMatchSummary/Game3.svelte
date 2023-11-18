@@ -2,7 +2,7 @@
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import { createEventDispatcher } from 'svelte';
 	import SelectOption from '../../visibilityCategories/SelectVisibilityOption.svelte';
-	import { recentGames } from '$lib/utils/store.svelte';
+	import { recentGames } from '$lib/utils/Store.svelte';
 
 	const dispatch = createEventDispatcher();
 

@@ -6,7 +6,7 @@
 	import RankChange from '$lib/components/live/RankChange/RankChange.svelte';
 	import WaitingDolphin from '$lib/components/live/WaitingDolphin/WaitingDolphin.svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import { statsScene } from '$lib/utils/Store.svelte';
 
 	import { fly } from 'svelte/transition';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
