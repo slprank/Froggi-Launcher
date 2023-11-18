@@ -121,8 +121,8 @@ export class StatsDisplay {
 		const score = this.storeGames.getGameScore();
 		const bestOf = this.storeLiveStats.getBestOf();
 		const isPostSet = score.some(score => score >= Math.ceil(bestOf / 2))
-		if (isPostSet) this.storeLiveStats.setStatsScene(LiveStatsScene.PostSet)
-		else this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
+		if (isPostSet) this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostSet, LiveStatsScene.Menu, 60000)
+		else this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostGame, LiveStatsScene.Menu, 60000)
 	}
 
 	private handleGameSetStats(gameStats: GameStats | null) {

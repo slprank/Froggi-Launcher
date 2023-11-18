@@ -15,6 +15,7 @@
 		GameStats,
 		MatchStats,
 		Player,
+		Session,
 	} from '$lib/models/types/slippiData';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { ControllerInputs } from '$lib/models/types/controller';
@@ -53,9 +54,9 @@
 	export const memoryReadController = writable<ControllerInputs[]>([]);
 	export const postGame = writable<GameStats>({} as GameStats);
 	export const postMatch = writable<MatchStats>({} as MatchStats);
-	export const recentRankedSets = writable<any[]>([]); // TODO
+	export const recentRankedSets = writable<GameStats[]>([]); // TODO
 	export const recentGames = writable<GameStats[]>([]);
-	export const sessionStats = writable<any>(); // TODO
+	export const sessionStats = writable<Session>();
 	export const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 
 	export const obs = writable<Obs>();

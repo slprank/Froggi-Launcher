@@ -1,9 +1,10 @@
 <script lang="ts" context="module">
 	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
-	import type { AutoUpdater, Overlay } from '$lib/models/types/overlay';
+	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
 	import type { ControllerInputs } from '$lib/models/types/controller';
 	import type {
 		CurrentPlayer,
+		GameStartTypeExtended,
 		GameStats,
 		MatchStats,
 		Player,
@@ -27,7 +28,7 @@
 		autoUpdater,
 		memoryReadController,
 	} from '$lib/utils/store.svelte';
-	import type { FrameEntryType } from '@slippi/slippi-js';
+	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { getEventEmitter, getObs } from './FetchSubscriptions.svelte';
 
@@ -39,7 +40,7 @@
 			memoryReadController.set(controllers);
 		});
 		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
-			console.log({ status });
+			console.log('update status', status);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, status: status };
 			});
@@ -51,67 +52,65 @@
 			});
 		});
 		_eventEmitter.on('auto-updater-progress', (progress: number | undefined) => {
-			console.log({ progress });
+			console.log('update progress', progress);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, progress: progress };
 			});
 		});
 		_eventEmitter.on('current-player', (player: CurrentPlayer) => {
-			console.log({ player });
+			console.log('player', player);
 			currentPlayer.set(player);
 		});
 		_eventEmitter.on('current-players', (players: Player[]) => {
-			console.log({ players });
+			console.log('players', players);
 			currentPlayers.set(players);
 		});
 		_eventEmitter.on('dolphin-connection-state', (state: DolphinConnectionState) => {
-			console.log({ state });
+			console.log('dolphin state', state);
 			dolphinState.set(state);
 		});
 		_eventEmitter.on('game-frame', (frame: FrameEntryType | null) => {
 			gameFrame.set(frame);
 		});
-		_eventEmitter.on('game-settings', (settings: any) => {
-			console.log({ settings });
+		_eventEmitter.on('game-settings', (settings: GameStartTypeExtended) => {
+			console.log('game settings', settings);
 			gameSettings.set(settings);
 		});
-		_eventEmitter.on('game-score', (score: any) => {
-			console.log({ score });
+		_eventEmitter.on('game-score', (score: number[]) => {
+			console.log('score', score);
 			gameScore.set(score);
 		});
 		_eventEmitter.on('game-state', (state: InGameState) => {
-			console.log({ state });
+			console.log('game state', state);
 			gameState.set(state);
 		});
 		_eventEmitter.on('post-game-stats', (stats: GameStats) => {
-			console.log({ stats });
-			setTimeout(() => {
-				gameFrame.set(null);
-			}, SCENE_TRANSITION_DELAY);
+			console.log('game stats', stats);
 			postGame.set(stats);
+			gameFrame.set(null);
 		});
 		_eventEmitter.on('post-match-stats', (stats: MatchStats) => {
-			console.log({ stats });
+			console.log('match stats', stats);
 			postMatch.set(stats);
 		});
-		_eventEmitter.on('recent-games', (matches: any) => {
-			console.log({ matches });
-			recentGames.set(matches);
+		_eventEmitter.on('recent-games', (games: GameStats[]) => {
+			console.log('recent games', games);
+			recentGames.set(games);
 		});
 		_eventEmitter.on('recent-ranked-sets', (recentSets: any) => {
-			console.log({ recentSets });
+			console.log('recent ranked sets', recentSets);
 			recentRankedSets.set(recentSets);
 		});
 		_eventEmitter.on('session-stats', (session: any) => {
-			console.log({ session });
+			console.log('session', session);
 			sessionStats.set(session);
 		});
 		_eventEmitter.on('live-stats-scene', (scene: any) => {
-			console.log({ scene });
+			console.log('live scene', scene);
 			statsScene.set(scene);
 		});
-		_eventEmitter.on('urls', (url: any) => {
-			console.log(url);
+		_eventEmitter.on('urls', (url: Url) => {
+			console.log('url', url);
 			urls.set(url);
 		});
 

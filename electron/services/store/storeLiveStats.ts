@@ -4,7 +4,6 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
-import os from 'os';
 import { BestOf, InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import {
 	GameStartMode,
@@ -15,9 +14,7 @@ import {
 
 @singleton()
 export class ElectronLiveStatsStore {
-	isMac: boolean = os.platform() === 'darwin';
-	isWindows: boolean = os.platform() === 'win32';
-	isLinux: boolean = os.platform() === 'linux';
+	private sceneTimeout: NodeJS.Timeout
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject("ElectronStore") private store: Store,
@@ -33,6 +30,14 @@ export class ElectronLiveStatsStore {
 
 	setStatsScene(scene: LiveStatsScene) {
 		this.store.set('stats.scene', scene ?? 0);
+	}
+
+	setStatsSceneTimeout(firstScene: LiveStatsScene, secondScene: LiveStatsScene, ms: number) {
+		this.store.set('stats.scene', firstScene);
+
+		this.sceneTimeout = setTimeout(() => {
+			this.store.set('stats.scene', secondScene);
+		}, ms)
 	}
 
 	getGameFrame(): FrameEntryType | undefined {
@@ -97,6 +102,7 @@ export class ElectronLiveStatsStore {
 
 	initListeners() {
 		this.store.onDidChange('stats.scene', (value) => {
+			clearTimeout(this.sceneTimeout)
 			this.messageHandler.sendMessage('live-stats-scene', value);
 		});
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {

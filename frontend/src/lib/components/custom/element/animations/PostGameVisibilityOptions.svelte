@@ -4,8 +4,11 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import type { GameStats, Player } from '$lib/models/types/slippiData';
-	import { currentPlayer, currentPlayers, postGame } from '$lib/utils/store.svelte';
+	import {
+		getCurrentPlayer,
+		getGameStats,
+		getPlayers,
+	} from '$lib/utils/FetchSubscriptions.svelte';
 
 	export const postGameVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const gameStats = await getGameStats();
@@ -126,27 +129,4 @@
 
 		return false;
 	};
-
-	async function getGameStats(): Promise<GameStats> {
-		return await new Promise<GameStats>((resolve) => {
-			postGame.subscribe((stats) => {
-				resolve(stats);
-			});
-		});
-	}
-
-	async function getCurrentPlayer(): Promise<Player> {
-		return await new Promise<Player>((resolve) => {
-			currentPlayer.subscribe((player) => {
-				resolve(player);
-			});
-		});
-	}
-	async function getPlayers(): Promise<Player[]> {
-		return await new Promise<Player[]>((resolve) => {
-			currentPlayers.subscribe((players) => {
-				resolve(players);
-			});
-		});
-	}
 </script>

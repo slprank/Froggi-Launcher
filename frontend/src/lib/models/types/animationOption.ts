@@ -9,6 +9,9 @@ export enum AnimationTrigger {
 }
 
 export enum VisibilityOption {
+    SessionPositiveWinRate = "Session Positive Win Rate",
+    SessionPositiveNetRating = "Session Positive Net Rating",
+
     InGameRunning = "Game Running",
     InGamePaused = "Game Paused",
     InGameReady = "Game Ready",

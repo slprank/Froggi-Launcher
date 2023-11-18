@@ -15,34 +15,18 @@
 </script>
 
 <SelectOption
-	description="Placeholder"
-	value={VisibilityOption.InGameRunning}
-	bind:selected={selectedVisibilityOption[VisibilityOption.InGameRunning]}
+	description="When You Have A Even Or Positive Win Rate The Current Session"
+	value={VisibilityOption.SessionPositiveWinRate}
+	bind:selected={selectedVisibilityOption[VisibilityOption.SessionPositiveWinRate]}
 	on:select={select}
 >
-	Positive Win Rate*
+	Positive Win Rate
 </SelectOption>
 <SelectOption
-	description="Placeholder"
-	value={VisibilityOption.InGameRunning}
-	bind:selected={selectedVisibilityOption[VisibilityOption.InGameRunning]}
+	description="When You Have A Even Or Positive Net Rating The Current Session"
+	value={VisibilityOption.SessionPositiveNetRating}
+	bind:selected={selectedVisibilityOption[VisibilityOption.SessionPositiveNetRating]}
 	on:select={select}
 >
-	Negative Win Rate*
-</SelectOption>
-<SelectOption
-	description="Placeholder"
-	value={VisibilityOption.InGameRunning}
-	bind:selected={selectedVisibilityOption[VisibilityOption.InGameRunning]}
-	on:select={select}
->
-	Positive Rating*
-</SelectOption>
-<SelectOption
-	description="Placeholder"
-	value={VisibilityOption.InGameRunning}
-	bind:selected={selectedVisibilityOption[VisibilityOption.InGameRunning]}
-	on:select={select}
->
-	Negative Rating*
+	Positive Rating
 </SelectOption>

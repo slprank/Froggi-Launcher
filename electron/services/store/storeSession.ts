@@ -66,7 +66,7 @@ export class ElectronSessionStore {
         if (!player) return;
         this.listeners = [
             this.store.onDidChange(`player.${player.connectCode}.session`, (value) => {
-                this.messageHandler.sendMessage("session", value)
+                this.messageHandler.sendMessage("session-stats", value)
             }),
         ]
     }

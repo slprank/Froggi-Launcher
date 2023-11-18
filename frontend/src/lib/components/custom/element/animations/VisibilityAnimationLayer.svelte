@@ -11,6 +11,7 @@
 	import { postGame3SummaryVisibilityOption } from './PostGame3SummaryVisibilityOptions.svelte';
 	import { postGame4SummaryVisibilityOption } from './PostGame4SummaryVisibilityOptions.svelte';
 	import { postGame5SummaryVisibilityOption } from './PostGame5SummaryVisibilityOptions.svelte';
+	import { sessionVisibilityOption } from './SessionVisibilityOptions.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -34,6 +35,7 @@
 			const postGame3SummaryOptions = await postGame3SummaryVisibilityOption(option);
 			const postGame4SummaryOptions = await postGame4SummaryVisibilityOption(option);
 			const postGame5SummaryOptions = await postGame5SummaryVisibilityOption(option);
+			const sessionOptions = await sessionVisibilityOption(option);
 
 			return (
 				inGameOptions ||
@@ -44,7 +46,8 @@
 				postGame2SummaryOptions ||
 				postGame3SummaryOptions ||
 				postGame4SummaryOptions ||
-				postGame5SummaryOptions
+				postGame5SummaryOptions ||
+				sessionOptions
 			);
 		});
 	};

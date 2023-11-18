@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import type { InGameState } from '$lib/models/enum';
 	import type { Obs } from '$lib/models/types/overlay';
-	import type { GameStats, Player } from '$lib/models/types/slippiData';
+	import type { GameStats, Player, Session } from '$lib/models/types/slippiData';
 	import {
 		currentPlayer,
 		currentPlayers,
@@ -13,10 +13,19 @@
 		obs,
 		postGame,
 		recentGames,
+		sessionStats,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
 	import type EventEmitter from 'events';
+
+	export async function getCurrentPlayer(): Promise<Player> {
+		return await new Promise<Player>((resolve) => {
+			currentPlayer.subscribe((player) => {
+				resolve(player);
+			});
+		});
+	}
 
 	export async function getEventEmitter(): Promise<EventEmitter> {
 		return await new Promise<EventEmitter>((resolve) => {
@@ -42,17 +51,18 @@
 		});
 	};
 
+	export async function getPlayers(): Promise<Player[]> {
+		return await new Promise<Player[]>((resolve) => {
+			currentPlayers.subscribe((players) => {
+				resolve(players);
+			});
+		});
+	}
+
 	export async function getGameFrame(): Promise<FrameEntryType | null> {
 		return await new Promise<FrameEntryType | null>((resolve) => {
 			gameFrame.subscribe((gameFrame) => {
 				resolve(gameFrame);
-			});
-		});
-	}
-	export async function getGameSettings(): Promise<GameStartType> {
-		return await new Promise<GameStartType>((resolve) => {
-			gameSettings.subscribe((gameSettings) => {
-				resolve(gameSettings);
 			});
 		});
 	}
@@ -63,11 +73,17 @@
 			});
 		});
 	}
-
 	export async function getGameStats(): Promise<GameStats> {
 		return await new Promise<GameStats>((resolve) => {
 			postGame.subscribe((stats) => {
 				resolve(stats);
+			});
+		});
+	}
+	export async function getGameSettings(): Promise<GameStartType> {
+		return await new Promise<GameStartType>((resolve) => {
+			gameSettings.subscribe((gameSettings) => {
+				resolve(gameSettings);
 			});
 		});
 	}
@@ -80,17 +96,10 @@
 		});
 	}
 
-	export async function getCurrentPlayer(): Promise<Player> {
-		return await new Promise<Player>((resolve) => {
-			currentPlayer.subscribe((player) => {
-				resolve(player);
-			});
-		});
-	}
-	export async function getPlayers(): Promise<Player[]> {
-		return await new Promise<Player[]>((resolve) => {
-			currentPlayers.subscribe((players) => {
-				resolve(players);
+	export async function getSession(): Promise<Session> {
+		return await new Promise<Session>((resolve) => {
+			sessionStats.subscribe((stats) => {
+				resolve(stats);
 			});
 		});
 	}
