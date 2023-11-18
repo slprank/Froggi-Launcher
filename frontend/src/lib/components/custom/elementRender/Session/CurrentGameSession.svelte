@@ -8,10 +8,15 @@
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	$: wins = $sessionStats.currentRankStats.wins - $sessionStats.startRankStats.wins;
-	$: losses = $sessionStats.currentRankStats.losses - $sessionStats.startRankStats.losses;
-	$: numberOfGames = wins + losses;
-	$: rating = $sessionStats.currentRankStats.rating - $sessionStats.startRankStats.rating;
+	$: wins =
+		$sessionStats && $sessionStats.currentRankStats.wins - $sessionStats.startRankStats.wins;
+	$: losses =
+		$sessionStats &&
+		$sessionStats.currentRankStats.losses - $sessionStats.startRankStats.losses;
+	$: numberOfGames = (wins ?? 0) + (losses ?? 0);
+	$: rating =
+		$sessionStats &&
+		$sessionStats.currentRankStats.rating - $sessionStats.startRankStats.rating;
 </script>
 
 {#if dataItem?.elementId === CustomElement.SessionWins}

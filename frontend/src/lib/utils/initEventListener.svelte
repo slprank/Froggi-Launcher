@@ -1,5 +1,10 @@
 <script lang="ts" context="module">
-	import type { AutoUpdaterStatus, DolphinConnectionState, InGameState } from '$lib/models/enum';
+	import type {
+		AutoUpdaterStatus,
+		DolphinConnectionState,
+		InGameState,
+		LiveStatsScene,
+	} from '$lib/models/enum';
 	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
 	import type { ControllerInputs } from '$lib/models/types/controller';
 	import type {
@@ -8,6 +13,7 @@
 		GameStats,
 		MatchStats,
 		Player,
+		Session,
 	} from '$lib/models/types/slippiData';
 	import {
 		currentPlayer,
@@ -97,15 +103,15 @@
 			console.log('recent games', games);
 			recentGames.set(games);
 		});
-		_eventEmitter.on('recent-ranked-sets', (recentSets: any) => {
+		_eventEmitter.on('recent-ranked-sets', (recentSets: GameStats[]) => {
 			console.log('recent ranked sets', recentSets);
 			recentRankedSets.set(recentSets);
 		});
-		_eventEmitter.on('session-stats', (session: any) => {
+		_eventEmitter.on('session-stats', (session: Session | undefined) => {
 			console.log('session', session);
 			sessionStats.set(session);
 		});
-		_eventEmitter.on('live-stats-scene', (scene: any) => {
+		_eventEmitter.on('live-stats-scene', (scene: LiveStatsScene) => {
 			console.log('live scene', scene);
 			statsScene.set(scene);
 		});

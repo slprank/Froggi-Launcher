@@ -52,7 +52,8 @@
 	let savedStyle: null | ElementPayload;
 
 	const updateSavedStyle = () => {
-		const savedStyleJson = localStorage.getItem(getSettingsType() ?? '');
+		const settingsType = getSettingsType();
+		const savedStyleJson = localStorage.getItem(`${$statsScene}-${settingsType}`);
 		savedStyle = savedStyleJson && JSON.parse(savedStyleJson);
 	};
 	$: selectedElementId, updateSavedStyle();

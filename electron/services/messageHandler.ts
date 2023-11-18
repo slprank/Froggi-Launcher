@@ -149,6 +149,7 @@ export class MessageHandler {
 	// Any data sent to frontend should be saved and initialized
 	// Leaderboard data should be stored as well
 	private initData(socket: WebSocket | undefined = undefined) {
+		console.log("init")
 		this.sendInitMessage(socket, 'current-player', this.storeCurrentPlayer.getCurrentPlayer());
 		this.sendInitMessage(socket, 'current-players', this.storePlayers.getCurrentPlayers());
 		this.sendInitMessage(

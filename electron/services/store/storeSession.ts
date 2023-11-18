@@ -4,7 +4,7 @@ import type { RankedNetplayProfile, Session } from '../../../frontend/src/lib/mo
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
-import { dateTimeNow } from '../../utils/functions';
+import { dateTimeNow, getHoursDifference } from '../../utils/functions';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 
@@ -43,12 +43,12 @@ export class ElectronSessionStore {
     }
 
     updateSessionStats(rankStats: RankedNetplayProfile | undefined) {
+        console.log("update")
         if (!rankStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
         let session = this.getSessionStats();
-        if (!session) return;
-        if ((session.latestUpdate.getHours() + 6) < dateTimeNow().getHours()) {
+        if (!session || (getHoursDifference(new Date(session?.latestUpdate), dateTimeNow()) > 6)) {
             this.resetSessionStats();
             return
         }

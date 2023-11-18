@@ -10,6 +10,13 @@ export const dateTimeNow = (): Date => {
     return d;
 }
 
+export const getHoursDifference = (date1: Date, date2: Date): number => {
+    const timeDifference = date1.getTime() - date2.getTime();
+    const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+    return hoursDifference;
+}
+
 export const getGameMode = (settings: GameStartType | null): GameStartMode => {
     const regex = /mode\.(\w+)/;
     if (!settings) return "local"
