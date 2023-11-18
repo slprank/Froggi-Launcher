@@ -8,7 +8,7 @@
 		getRecentGames,
 		getCurrentPlayer,
 		getPlayers,
-	} from '../../../../utils/fetchSubscriptions.svelte';
+	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { getWinnerIndex } from '$lib/utils/gamePredicates';
 
 	export const postGame1SummaryVisibilityOption = async (option: SelectedVisibilityOption) => {

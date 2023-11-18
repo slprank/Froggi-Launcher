@@ -9,7 +9,7 @@
 		getRecentGames,
 		getCurrentPlayer,
 		getPlayers,
-	} from '../../../../utils/fetchSubscriptions.svelte';
+	} from '$lib/utils/fetchSubscriptions.svelte';
 
 	export const postGame4SummaryVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const recentGames = await getRecentGames();
