@@ -9,7 +9,7 @@
 		getGameFrame,
 		getGameSettings,
 		getGameState,
-	} from '$lib/utils/FetchSubscriptions.svelte';
+	} from '$lib/utils/fetchSubscriptions.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	export const inGameVisibilityOption = async (option: SelectedVisibilityOption) => {

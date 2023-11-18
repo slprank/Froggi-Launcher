@@ -4,7 +4,7 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import { getGameFrame, getPlayers } from '$lib/utils/FetchSubscriptions.svelte';
+	import { getGameFrame, getPlayers } from '$lib/utils/fetchSubscriptions.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	export const inGamePlayer2VisibilityOption = async (option: SelectedVisibilityOption) => {

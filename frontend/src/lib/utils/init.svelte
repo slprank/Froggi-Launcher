@@ -3,7 +3,7 @@
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import { isBrowser, isElectron } from '$lib/utils/store.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import { getEventEmitter, getPage } from './FetchSubscriptions.svelte';
+	import { getEventEmitter, getPage } from './fetchSubscriptions.svelte';
 	import { extendStringFormat } from './extendString';
 
 	export const initClient = async () => {

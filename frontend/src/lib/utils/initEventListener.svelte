@@ -36,7 +36,7 @@
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
-	import { getEventEmitter, getObs } from './FetchSubscriptions.svelte';
+	import { getEventEmitter, getObs } from './fetchSubscriptions.svelte';
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');

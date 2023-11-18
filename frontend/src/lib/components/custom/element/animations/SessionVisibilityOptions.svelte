@@ -4,7 +4,7 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import { getSession } from '$lib/utils/FetchSubscriptions.svelte';
+	import { getSession } from '$lib/utils/fetchSubscriptions.svelte';
 
 	export const sessionVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const session = await getSession();

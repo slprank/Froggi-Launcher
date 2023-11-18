@@ -8,7 +8,7 @@
 		getCurrentPlayer,
 		getGameStats,
 		getPlayers,
-	} from '$lib/utils/FetchSubscriptions.svelte';
+	} from '$lib/utils/fetchSubscriptions.svelte';
 
 	export const postGameVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const gameStats = await getGameStats();
