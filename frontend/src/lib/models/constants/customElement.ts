@@ -617,5 +617,8 @@ export enum CustomElement {
     InGamePlayer1CharacterIcon = 6101,
     InGamePlayer2CharacterIcon = 6102,
 
-    // Session
+    SessionWins = 6200,
+    SessionLosses = 6201,
+    SessionRating = 6202,
+    SessionGameNumber = 6203
 }

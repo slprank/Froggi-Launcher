@@ -27,7 +27,7 @@ export class ElectronSessionStore {
         return this.store.get(`player.${player.connectCode}.session`) as Session;
     }
 
-    resetSessionStats(): Session | undefined {
+    resetSessionStats() {
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
         const currentRankedStats = player.rank.current;
@@ -48,7 +48,10 @@ export class ElectronSessionStore {
         if (!player) return;
         let session = this.getSessionStats();
         if (!session) return;
-        if ((session.latestUpdate.getHours() + 6) < dateTimeNow().getHours()) session.startRankStats = rankStats;
+        if ((session.latestUpdate.getHours() + 6) < dateTimeNow().getHours()) {
+            this.resetSessionStats();
+            return
+        }
         session.latestUpdate = dateTimeNow();
         session.currentRankStats = rankStats;
         this.store.set(`player.${player.connectCode}.session`, session);

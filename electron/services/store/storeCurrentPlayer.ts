@@ -82,13 +82,10 @@ export class ElectronCurrentPlayerStore {
     private async handleRankChange() {
         const player = this.getCurrentPlayer()
         if (!player) return
-        if (player.rank.current !== player.rank.new) this.storeLiveStats.setStatsScene(LiveStatsScene.RankChange)
+        this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.RankChange, LiveStatsScene.PostSet, 10000)
         setTimeout(() => {
             this.setCurrentPlayerCurrentRankStats(player.rank.new);
         }, 5000)
-        this.sceneTimeout = setTimeout(() => {
-            this.storeLiveStats.setStatsScene(LiveStatsScene.PostSet)
-        }, 10000)
     }
 
     private initPlayerListener() {

@@ -6,7 +6,7 @@
 	import InGamePlayer1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
 	import InGamePlayer2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
 	import InGameCustomElementSelect from '$lib/components/custom/selector/elementCategories/Custom/CustomElementSelect.svelte';
-	import Session from '$lib/components/custom/selector/elementCategories/SlippiData/Session.svelte';
+	import Session from '$lib/components/custom/selector/elementCategories/Session/Session.svelte';
 	import InGameCustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
 	import RecentGamePlayer1SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player1SlippiData.svelte';
 	import RecentGamePlayer2SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player2SlippiData.svelte';
@@ -233,8 +233,6 @@
 			].includes($statsScene),
 		},
 	];
-
-	$: console.log($statsScene);
 </script>
 
 <div class="w-full h-full flex flex-col gap-2">

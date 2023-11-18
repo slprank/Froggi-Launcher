@@ -10,7 +10,7 @@
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
-	import { eventEmitter } from '$lib/utils/store.svelte';
+	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';
@@ -59,7 +59,6 @@
 
 	const saveStyling = () => {
 		const settingsType = getSettingsType();
-		console.log(settingsType);
 		if (!settingsType) return;
 		savedStyle = {
 			...JSON.parse(JSON.stringify(payload)),
@@ -73,7 +72,7 @@
 			},
 			string: payload.string,
 		};
-		localStorage.setItem(settingsType, JSON.stringify(savedStyle));
+		localStorage.setItem(`${$statsScene}-${settingsType}`, JSON.stringify(savedStyle));
 		notifications.success('Styles Saved', 3000);
 	};
 
@@ -396,7 +395,7 @@
 					class="text-gray-500 text-xl font-medium text-shadow mb-2"
 					data-tooltip="Animations that triggers on in-game events such as taking damage"
 				>
-					Visibility
+					Visibility conditions
 				</h1>
 			</div>
 
