@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { addFont } from './CustomFontHandler.svelte';
-	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
+	import { getRelativePixelSize } from '$lib/utils/helper';
 	import SlippiRank from './elementRender/SlippiRank.svelte';
 	import Custom from './elementRender/Custom.svelte';
 	import InGame from './elementRender/InGame.svelte';

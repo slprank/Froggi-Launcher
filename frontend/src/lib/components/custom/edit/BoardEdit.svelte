@@ -8,7 +8,7 @@
 	import BoardContainer from '../BoardContainer.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { addFont } from '../CustomFontHandler.svelte';
-	import { asyncForEach } from '$lib/utils/helper.svelte';
+	import { asyncForEach } from '$lib/utils/helper';
 
 	const overlayId = $page.params.overlay;
 

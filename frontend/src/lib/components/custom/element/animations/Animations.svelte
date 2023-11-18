@@ -8,7 +8,7 @@
 		GridContentItem,
 	} from '$lib/models/types/overlay';
 	import { Animation } from '$lib/models/enum';
-	import { getRelativePixelSize } from '$lib/utils/helper.svelte';
+	import { getRelativePixelSize } from '$lib/utils/helper';
 	import type { AnimationConfig } from 'svelte/animate';
 	import { COL, ROW } from '$lib/models/const';
 

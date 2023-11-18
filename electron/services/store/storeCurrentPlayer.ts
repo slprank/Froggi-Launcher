@@ -3,23 +3,22 @@ import Store from 'electron-store';
 import type { CurrentPlayer, RankedNetplayProfile } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
-import os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { ElectronLiveStatsStore } from './storeLiveStats';
 import { MessageHandler } from '../messageHandler';
+import { ElectronSessionStore } from './storeSession';
 
 
 @singleton()
 export class ElectronCurrentPlayerStore {
-    isMac: boolean = os.platform() === 'darwin';
-    isWindows: boolean = os.platform() === 'win32';
-    isLinux: boolean = os.platform() === 'linux';
-    listeners: Function[];
+    private sceneTimeout: NodeJS.Timeout;
+    private listeners: Function[];
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject("ElectronStore") private store: Store,
         @inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
+        @inject(delay(() => ElectronSessionStore)) private storeSession: ElectronSessionStore,
         @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
@@ -57,6 +56,7 @@ export class ElectronCurrentPlayerStore {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         const currentRankedNetplayProfile = this.getCurrentPlayerCurrentRankStats()
         if (!rankStats || !connectCode) return;
+        this.storeSession.updateSessionStats(rankStats)
         this.store.set(`player.${connectCode}.rank.prev`, currentRankedNetplayProfile ?? rankStats)
         this.store.set(`player.${connectCode}.rank.new`, rankStats);
         this.updateCurrentPlayerRankHistory(rankStats);
@@ -82,12 +82,13 @@ export class ElectronCurrentPlayerStore {
     private async handleRankChange() {
         const player = this.getCurrentPlayer()
         if (!player) return
-        await new Promise((resolve) => {
-            if (player.rank.current !== player.rank.new) this.storeLiveStats.setStatsScene(LiveStatsScene.RankChange)
-            setTimeout(resolve, 10000);
-        });
-        this.setCurrentPlayerCurrentRankStats(player.rank.new);
-        this.storeLiveStats.setStatsScene(LiveStatsScene.PostGame)
+        if (player.rank.current !== player.rank.new) this.storeLiveStats.setStatsScene(LiveStatsScene.RankChange)
+        setTimeout(() => {
+            this.setCurrentPlayerCurrentRankStats(player.rank.new);
+        }, 5000)
+        this.sceneTimeout = setTimeout(() => {
+            this.storeLiveStats.setStatsScene(LiveStatsScene.PostSet)
+        }, 10000)
     }
 
     private initPlayerListener() {
@@ -106,6 +107,9 @@ export class ElectronCurrentPlayerStore {
             }),
             this.store.onDidChange(`settings.currentPlayer.newRankedNetplayProfile`, async () => {
                 await this.handleRankChange()
+            }),
+            this.store.onDidChange('stats.scene', () => {
+                clearTimeout(this.sceneTimeout)
             })
         ]
     }

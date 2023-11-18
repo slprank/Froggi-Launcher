@@ -11,8 +11,10 @@ import { ElectronLiveStatsStore } from "../../electron/services/store/storeLiveS
 import { ElectronSettingsStore } from "../../electron/services/store/storeSettings";
 import log from 'electron-log';
 import { BestOf, LiveStatsScene } from "../../frontend/src/lib/models/enum";
+import { ElectronSessionStore } from "services/store/storeSession";
 
 jest.mock("../../electron/services/api")
+jest.mock("../../electron/services/store/storeSession")
 describe('ElectnronGamesStore', () => {
     let connectCode: string;
     let electronGamesStore: ElectronGamesStore;
@@ -80,6 +82,7 @@ describe('ElectnronGamesStore', () => {
         const slpStream: any = {
             on: () => { }
         }
+        const storeSession: ElectronSessionStore = new ElectronSessionStore(log, store, messageHandler, storeCurrentPlayer)
 
         storeSettings = new ElectronSettingsStore(log, "", store, {} as any);
         storeSettings.getCurrentPlayerConnectCode = () => connectCode
@@ -95,7 +98,7 @@ describe('ElectnronGamesStore', () => {
 
         storeLiveStats = new ElectronLiveStatsStore(log, store, messageHandler)
 
-        storeCurrentPlayer = new ElectronCurrentPlayerStore(log, store, storeLiveStats, storeSettings, messageHandler)
+        storeCurrentPlayer = new ElectronCurrentPlayerStore(log, store, storeLiveStats, storeSession, storeSettings, messageHandler)
         storeCurrentPlayer.getCurrentPlayer = (): any => {
             return {
                 connectCode: connectCode,

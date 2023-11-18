@@ -19,6 +19,7 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import os from 'os';
 import { MemoryRead } from './memoryRead';
 import { isDolphinRunning } from '../utils/dolphinProcess';
+import { ElectronSessionStore } from './store/storeSession';
 
 @singleton()
 export class SlippiJs {
@@ -30,10 +31,11 @@ export class SlippiJs {
 		@inject('IpcMain') private ipcMain: IpcMain,
 		@inject('SlpStream') private slpStream: SlpStream,
 		@inject(Api) private api: Api,
+		@inject(ElectronCurrentPlayerStore) private storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(ElectronDolphinStore) private storeDolphin: ElectronDolphinStore,
 		@inject(ElectronLiveStatsStore) private storeLiveStats: ElectronLiveStatsStore,
+		@inject(ElectronSessionStore) private storeSession: ElectronSessionStore,
 		@inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
-		@inject(ElectronCurrentPlayerStore) private storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(MemoryRead) private memoryRead: MemoryRead,
 	) {
 		this.initSlippiJs();
@@ -113,6 +115,7 @@ export class SlippiJs {
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode);
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile);
+		this.storeSession.updateSessionStats(rankedNetplayProfile)
 		this.memoryRead.initMemoryRead();
 	}
 

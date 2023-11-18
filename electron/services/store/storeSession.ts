@@ -4,17 +4,13 @@ import type { RankedNetplayProfile, Session } from '../../../frontend/src/lib/mo
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
-import os from 'os';
 import { dateTimeNow } from '../../utils/functions';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 
 @singleton()
 export class ElectronSessionStore {
-    isMac: boolean = os.platform() === 'darwin';
-    isWindows: boolean = os.platform() === 'win32';
-    isLinux: boolean = os.platform() === 'linux';
-    listeners: Function[];
+    private listeners: Function[];
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject("ElectronStore") private store: Store,
@@ -31,12 +27,12 @@ export class ElectronSessionStore {
         return this.store.get(`player.${player.connectCode}.session`) as Session;
     }
 
-    resetSessionStats() {
+    resetSessionStats(): Session | undefined {
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
-        let currentRankedStats = player.rank.current;
+        const currentRankedStats = player.rank.current;
         if (!currentRankedStats) return;
-        let session: Session = {
+        const session: Session = {
             startRankStats: currentRankedStats,
             startTime: dateTimeNow(),
             currentRankStats: currentRankedStats,
@@ -46,11 +42,13 @@ export class ElectronSessionStore {
         return session;
     }
 
-    updateSessionStats(rankStats: RankedNetplayProfile) {
+    updateSessionStats(rankStats: RankedNetplayProfile | undefined) {
+        if (!rankStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
-        let session = this.getSessionStats() ?? this.resetSessionStats();
+        let session = this.getSessionStats();
         if (!session) return;
+        if ((session.latestUpdate.getHours() + 6) < dateTimeNow().getHours()) session.startRankStats = rankStats;
         session.latestUpdate = dateTimeNow();
         session.currentRankStats = rankStats;
         this.store.set(`player.${player.connectCode}.session`, session);
@@ -63,7 +61,6 @@ export class ElectronSessionStore {
         })
     }
 
-    // TODO:
     private initListeners() {
         const player = this.storeCurrentPlayer.getCurrentPlayer()
         if (!player) return;

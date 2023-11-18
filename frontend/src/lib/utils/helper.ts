@@ -25,3 +25,9 @@ export const getRelativePixelSize = (
 		? size * (windowWidth / 1920)
 		: size * (windowHeight / 1080);
 };
+
+export const asyncTimeout = async (ms: number) => {
+	await new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
+}
