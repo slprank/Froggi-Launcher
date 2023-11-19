@@ -180,11 +180,39 @@ export class StatsDisplay {
 			.at(0) : ""
 
 		const root = slippiSettings.rootSlpPath
-		const replayFiles = ([...await fs.readdir(`${root}${subFolder ? `/${subFolder}` : ""}`), ...await fs.readdir(`${root}/Spectate`)])
+
+		const replayFolders = await this.getReplayDirs(root, subFolder)
+
+		const replayFiles = replayFolders
 			.map((filename: string) => `${path.parse(filename).name}.slp`)
 			.filter((f: string) => re.test(f)).map((f: string) => `${slippiSettings.rootSlpPath}/${subFolder ? `${subFolder}/` : ""}${f}`);
 
 		return replayFiles.sort((a, b) => a > b ? -1 : 1);
+	}
+
+	private getReplayDirs = async (root: string, subFolder: string | undefined) => {
+		let filesFromRoot: string[] = []
+		let filesFromSpectate: string[] = [];
+		try {
+			filesFromRoot = await fs.readdir((`${root}${subFolder ? `/${subFolder}` : ""}`));
+		} catch (error) {
+			if (error.code !== 'ENOENT') {
+				console.error('Error reading files from root:', error);
+			}
+		}
+
+		try {
+			filesFromSpectate = await fs.readdir(`${root}/Spectate`);
+		} catch (error) {
+			if (error.code !== 'ENOENT') {
+				console.error('Error reading files from Spectate:', error);
+			}
+		}
+
+		return [
+			...(filesFromRoot || []),
+			...(filesFromSpectate || [])
+		];
 	}
 
 	private async getRecentGameStats(settings: GameStartType): Promise<GameStats | null> {
