@@ -173,19 +173,18 @@ export class StatsDisplay {
 
 		if (!slippiSettings?.rootSlpPath) return;
 
-		let files: string[];
-		let subFolder = slippiSettings.useMonthlySubfolders ? (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
+		const subFolder = slippiSettings.useMonthlySubfolders ? (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
 			.filter(dirent => dirent.isDirectory())
 			.map(dirent => dirent.name)
 			.sort((a, b) => a > b ? 1 : -1)
 			.at(0) : ""
 
-		files = (await fs
-			.readdir(`${slippiSettings.rootSlpPath}${subFolder ? `/${subFolder}` : ""}`))
+		const root = slippiSettings.rootSlpPath
+		const replayFiles = ([...await fs.readdir(`${root}${subFolder ? `/${subFolder}` : ""}`), ...await fs.readdir(`${root}/Spectate`)])
 			.map((filename: string) => `${path.parse(filename).name}.slp`)
 			.filter((f: string) => re.test(f)).map((f: string) => `${slippiSettings.rootSlpPath}/${subFolder ? `${subFolder}/` : ""}${f}`);
 
-		return files.sort((a, b) => a > b ? -1 : 1);
+		return replayFiles.sort((a, b) => a > b ? -1 : 1);
 	}
 
 	private async getRecentGameStats(settings: GameStartType): Promise<GameStats | null> {
