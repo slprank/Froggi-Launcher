@@ -11,8 +11,10 @@
 	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { eventEmitter, obs } from '$lib/utils/store.svelte';
+	import { electronEmitter, localEmitter, obs } from '$lib/utils/store.svelte';
 	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
+	import { getObs } from '$lib/utils/fetchSubscriptions.svelte';
+	import isNil from 'lodash/isNil';
 
 	export function newId() {
 		return `c${Math.random().toString(36).slice(-8)}`;
@@ -109,8 +111,8 @@
 
 	export async function updateOverlay(overlay: Overlay) {
 		await new Promise(() =>
-			eventEmitter.subscribe((eventEmitter) =>
-				eventEmitter.emit('CustomOverlayUpdate', overlay),
+			electronEmitter.subscribe((electronEmitter) =>
+				electronEmitter.emit('ObsCustomOverlayUpdate', overlay),
 			),
 		);
 	}
@@ -118,8 +120,8 @@
 	export async function deleteOverlay(overlayId: string | undefined) {
 		if (!overlayId) return;
 		await new Promise(() =>
-			eventEmitter.subscribe((eventEmitter) =>
-				eventEmitter.emit('CustomOverlayDelete', overlayId),
+			electronEmitter.subscribe((electronEmitter) =>
+				electronEmitter.emit('ObsCustomOverlayDelete', overlayId),
 			),
 		);
 	}
@@ -204,27 +206,22 @@
 		statsScene: LiveStatsScene,
 		indexPlacement: number | undefined = undefined,
 	): Promise<number> {
-		let overlay = await getOverlayById(overlayId);
 		const newLayerId = newId();
 
 		const index = await getOverlayIndexById(overlayId);
-		obs.update((obs) => {
-			if (index === undefined) return obs;
-			let overlay = obs.overlays[index];
-			const layersLength = overlay[statsScene]?.layers.length;
-			overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
-				id: newLayerId,
-				items: [],
-			});
-			overlay[statsScene]?.previewLayers.push(newLayerId);
-			updateOverlay(overlay);
-			return obs;
+		const obs = await getObs();
+
+		if (index === undefined) return 0;
+		const overlay = obs.overlays[index];
+		const layersLength = overlay[statsScene]?.layers.length;
+		overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
+			id: newLayerId,
+			items: [],
 		});
-		return new Promise<number>((resolve) =>
-			setTimeout(() => {
-				resolve(overlay![statsScene]?.layers.length - 1);
-			}),
-		);
+		overlay[statsScene]?.previewLayers.push(newLayerId);
+		updateOverlay(overlay);
+
+		return overlay![statsScene]?.layers.length - 1;
 	}
 
 	export async function moveLayerDown(
@@ -246,18 +243,10 @@
 			updatedOverlay![statsScene].layers[selectedLayer],
 		];
 		const index = await getOverlayIndexById(overlayId);
-		obs.update((obs) => {
-			if (!index || !updatedOverlay) return obs;
-			obs.overlays[index] = updatedOverlay;
-			updateOverlay(updatedOverlay);
-			return obs;
-		});
+		if (isNil(index) || isNil(updatedOverlay)) return 0;
+		updateOverlay(updatedOverlay);
 
-		return new Promise<number>((resolve) =>
-			setTimeout(() => {
-				resolve(selectedLayer + 1);
-			}),
-		);
+		return selectedLayer + 1;
 	}
 
 	export async function moveLayerUp(
@@ -275,17 +264,10 @@
 			updatedOverlay![statsScene].layers[selectedLayer],
 		];
 		const index = await getOverlayIndexById(overlayId);
-		obs.update((obs) => {
-			if (!index || !updatedOverlay) return obs;
-			obs.overlays[index] = updatedOverlay;
-			updateOverlay(updatedOverlay);
-			return obs;
-		});
-		return new Promise<number>((resolve) =>
-			setTimeout(() => {
-				resolve(selectedLayer - 1);
-			}),
-		);
+		if (isNil(index) || isNil(updatedOverlay)) return 0;
+		updateOverlay(updatedOverlay);
+
+		return selectedLayer - 1;
 	}
 
 	export async function deleteLayer(
@@ -293,21 +275,13 @@
 		statsScene: LiveStatsScene,
 		selectedLayer: number,
 	): Promise<number> {
-		let updatedOverlay = await getOverlayById(overlayId);
-		if (!updatedOverlay || selectedLayer === undefined) return 0;
-		updatedOverlay[statsScene].layers.splice(selectedLayer, 1);
+		let overlay = await getOverlayById(overlayId);
+		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayer;
+		if (isNil(selectedLayer)) return selectedLayer;
 
-		const index = await getOverlayIndexById(overlayId);
-		obs.update((obs) => {
-			if (!index || !updatedOverlay) return obs;
-			obs.overlays[index] = updatedOverlay;
-			return obs;
-		});
-		updateOverlay(updatedOverlay);
-		return new Promise<number>((resolve) =>
-			setTimeout(() => {
-				resolve(selectedLayer - 1);
-			}),
-		);
+		overlay[statsScene].layers.splice(selectedLayer, 1);
+		updateOverlay(overlay);
+
+		return selectedLayer - 1;
 	}
 </script>

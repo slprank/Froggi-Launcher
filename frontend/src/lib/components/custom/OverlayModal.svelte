@@ -1,16 +1,16 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { eventEmitter } from '$lib/utils/store.svelte';
+	import { electronEmitter } from '$lib/utils/store.svelte';
 	import { getNewOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	function uploadOverlay() {
-		$eventEmitter.emit('CustomOverlayUpload');
+		$electronEmitter.emit('ObsCustomOverlayUpload');
 		open = false;
 	}
 
 	function createBlankOverlay() {
 		const overlay = getNewOverlay();
-		$eventEmitter.emit('CustomOverlayUpdate', overlay);
+		$electronEmitter.emit('ObsCustomOverlayUpdate', overlay);
 		open = false;
 	}
 

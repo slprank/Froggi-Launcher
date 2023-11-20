@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { AutoUpdaterStatus } from '$lib/models/enum';
-	import { fly } from 'svelte/transition';
-	import { autoUpdater, eventEmitter, isElectron } from '$lib/utils/store.svelte';
+	import { autoUpdater, electronEmitter, isElectron } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
 	import type { AutoUpdater } from '$lib/models/types/overlay';
 
@@ -56,11 +55,9 @@
 		}
 	};
 
-	$: console.log('Electron:', $autoUpdater);
-
 	const installUpdate = () => {
 		if ($autoUpdater.status === AutoUpdaterStatus.DownloadComplete)
-			$eventEmitter.emit('AutoUpdaterInstall');
+			$electronEmitter.emit('AutoUpdaterInstall');
 	};
 </script>
 

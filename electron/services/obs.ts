@@ -9,7 +9,7 @@ import OBSWebSocket from 'obs-websocket-js';
 export class ObsWebSocket {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('EventEmitter') private eventEmitter: EventEmitter,
+		@inject('LocalEmitter') private localEmitter: EventEmitter,
 	) //@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	{
 		this.log.info('Initializing OBS');
@@ -19,7 +19,7 @@ export class ObsWebSocket {
 	initObsWebSocket = () => {
 		try {
 			// Inits scene change from svelte
-			this.eventEmitter.on('obs_switch', async (scene: any) => {
+			this.localEmitter.on('obs_switch', async (scene: any) => {
 				this.changeObsScene(scene);
 			});
 		} catch (err) {

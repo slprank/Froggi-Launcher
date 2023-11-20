@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { eventEmitter } from '$lib/utils/store.svelte';
+	import { localEmitter } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 

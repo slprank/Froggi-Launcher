@@ -9,7 +9,7 @@ import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 export class AutoUpdater {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('EventEmitter') private eventEmitter: TypedEmitter,
+		@inject('LocalEmitter') private localEmitter: TypedEmitter,
 		@inject('Dev') private dev: boolean,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
@@ -71,7 +71,7 @@ export class AutoUpdater {
 			this.messageHandler.sendMessage("AutoUpdaterProgress", "100");
 		});
 
-		this.eventEmitter.on("AutoUpdaterInstall", async () => {
+		this.localEmitter.on("AutoUpdaterInstall", async () => {
 			autoUpdater.quitAndInstall();
 		});
 	}

@@ -6,8 +6,7 @@
 	} from '$lib/utils/initEventListener.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import { isBrowser, isElectron } from '$lib/utils/store.svelte';
-	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import { getEventEmitter, getPage } from '$lib/utils/fetchSubscriptions.svelte';
+	import { getElectronEmitter } from '$lib/utils/fetchSubscriptions.svelte';
 	import { extendStringFormat } from './extendString';
 
 	export const initClient = async () => {
@@ -18,7 +17,7 @@
 	};
 
 	const initDevices = async () => {
-		const _eventEmitter = await getEventEmitter();
+		const _electronEmitter = await getElectronEmitter();
 		const isBrowserWindow = await new Promise<boolean>((resolve) =>
 			isBrowser.subscribe((x: boolean) => resolve(x)),
 		);
@@ -33,7 +32,7 @@
 
 		if (isElectronWindow) {
 			await initElectronEvents();
-			_eventEmitter.emit('InitElectron');
+			_electronEmitter.emit('InitElectron');
 		}
 	};
 

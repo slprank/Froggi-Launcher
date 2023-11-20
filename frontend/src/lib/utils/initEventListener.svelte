@@ -37,7 +37,7 @@
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import {
 		getElectronEmitter,
-		getEventEmitter,
+		getLocalEmitter,
 		getObs,
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
@@ -45,97 +45,94 @@
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');
-		const _electronEmitter = await getElectronEmitter();
-		_electronEmitter.setMaxListeners(30);
-		_electronEmitter.on('MemoryControllerInput', (controllers: PlayerController) => {
+		const _localEmitter = await getLocalEmitter();
+		_localEmitter.setMaxListeners(30);
+		_localEmitter.on('MemoryControllerInput', (controllers: PlayerController) => {
 			memoryReadController.set(controllers);
 		});
-		_electronEmitter.on('AutoUpdaterStatus', (status: AutoUpdaterStatus) => {
+		_localEmitter.on('AutoUpdaterStatus', (status: AutoUpdaterStatus) => {
 			console.log('update status', status);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, status: status };
 			});
 		});
-		_electronEmitter.on('AutoUpdaterVersion', (version: string | undefined) => {
+		_localEmitter.on('AutoUpdaterVersion', (version: string | undefined) => {
 			console.log('version', { version });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, version: version };
 			});
 		});
-		_electronEmitter.on('AutoUpdaterProgress', (progress: string | undefined) => {
+		_localEmitter.on('AutoUpdaterProgress', (progress: string | undefined) => {
 			console.log('update progress', progress);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, progress: progress };
 			});
 		});
-		_electronEmitter.on('CurrentPlayer', (player: CurrentPlayer | undefined) => {
+		_localEmitter.on('CurrentPlayer', (player: CurrentPlayer | undefined) => {
 			console.log('player', player);
 			currentPlayer.set(player);
 		});
-		_electronEmitter.on('CurrentPlayers', (players: Player[] | undefined) => {
+		_localEmitter.on('CurrentPlayers', (players: Player[] | undefined) => {
 			console.log('players', players);
 			currentPlayers.set(players);
 		});
-		_electronEmitter.on(
-			'DolphinConnectionState',
-			(state: DolphinConnectionState | undefined) => {
-				if (!state) return;
-				console.log('dolphin state', state);
-				dolphinState.set(state);
-			},
-		);
-		_electronEmitter.on('GameFrame', (frame: FrameEntryType | undefined | null) => {
+		_localEmitter.on('DolphinConnectionState', (state: DolphinConnectionState | undefined) => {
+			if (!state) return;
+			console.log('dolphin state', state);
+			dolphinState.set(state);
+		});
+		_localEmitter.on('GameFrame', (frame: FrameEntryType | undefined | null) => {
 			if (!frame) return;
 			gameFrame.set(frame);
 		});
-		_electronEmitter.on('GameSettings', (settings: GameStartTypeExtended | undefined) => {
+		_localEmitter.on('GameSettings', (settings: GameStartTypeExtended | undefined) => {
 			if (!settings) return;
 			console.log('game settings', settings);
 			gameSettings.set(settings);
 		});
-		_electronEmitter.on('GameScore', (score: number[]) => {
+		_localEmitter.on('GameScore', (score: number[]) => {
 			console.log('score', score);
 			gameScore.set(score);
 		});
-		_electronEmitter.on('GameState', (state: InGameState | undefined) => {
+		_localEmitter.on('GameState', (state: InGameState | undefined) => {
 			if (!state) return;
 			console.log('game state', state);
 			gameState.set(state);
 		});
-		_electronEmitter.on('PostGameStats', (stats: GameStats | undefined) => {
+		_localEmitter.on('PostGameStats', (stats: GameStats | undefined) => {
 			if (!stats) return;
 			console.log('game stats', stats);
 			postGame.set(stats);
 			gameFrame.set(null);
 		});
-		_electronEmitter.on('PostMatchStats', (stats: MatchStats | undefined) => {
+		_localEmitter.on('PostMatchStats', (stats: MatchStats | undefined) => {
 			if (!stats) return;
 			console.log('match stats', stats);
 			postMatch.set(stats);
 		});
-		_electronEmitter.on('RecentGames', (games: GameStats[]) => {
+		_localEmitter.on('RecentGames', (games: GameStats[]) => {
 			console.log('recent games', games);
 			recentGames.set(games);
 		});
-		_electronEmitter.on('RecentRankedSets', (recentSets: GameStats[]) => {
+		_localEmitter.on('RecentRankedSets', (recentSets: GameStats[]) => {
 			console.log('recent ranked sets', recentSets);
 			recentRankedSets.set(recentSets);
 		});
-		_electronEmitter.on('SessionStats', (session: Session | undefined) => {
+		_localEmitter.on('SessionStats', (session: Session | undefined) => {
 			console.log('session', session);
 			sessionStats.set(session);
 		});
-		_electronEmitter.on('LiveStatsSceneChange', (scene: LiveStatsScene | undefined) => {
+		_localEmitter.on('LiveStatsSceneChange', (scene: LiveStatsScene | undefined) => {
 			if (!scene) return;
 			console.log('live scene', scene);
 			statsScene.set(scene);
 		});
-		_electronEmitter.on('Url', (url: Url) => {
+		_localEmitter.on('Url', (url: Url) => {
 			console.log('url', url);
 			urls.set(url);
 		});
 
-		_electronEmitter.on('ObsCustomOverlay', async (overlay: Overlay) => {
+		_localEmitter.on('ObsCustomOverlay', async (overlay: Overlay) => {
 			let _obs = await getObs();
 			const overlayIndex = _obs.overlays.findIndex((overlay) => overlay.id == overlay.id);
 			overlayIndex === undefined || overlayIndex === -1
@@ -145,7 +142,7 @@
 			obs.set(_obs);
 		});
 
-		_electronEmitter.on('ObsCustom', (value: Obs | undefined) => {
+		_localEmitter.on('ObsCustom', (value: Obs | undefined) => {
 			console.log('custom value', value);
 			if (!value) return;
 			console.log('obs', value);
@@ -154,39 +151,37 @@
 	}
 
 	export const initElectronEvents = async () => {
-		const _electronEmitter = await getElectronEmitter();
 		console.log('Initializing electron');
+		const _localEmitter = await getLocalEmitter();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
 				console.log('ipcMain', key, value);
-				_electronEmitter.emit(key as any, value);
+				_localEmitter.emit(key as any, value);
 			}
 		});
 
-		const _eventEmitter = await getEventEmitter();
-		_eventEmitter.onAny((event, data) => {
-			//console.log('Sending electron message..', event, data);
+		const _electronEmitter = await getElectronEmitter();
+		_electronEmitter.onAny((event, data) => {
 			window.electron.send('message', JSON.stringify({ [event as string]: data ?? '' }));
 		});
 	};
 
 	export const initWebSocket = async () => {
-		const _electronEmitter = await getElectronEmitter();
+		const _localEmitter = await getLocalEmitter();
 		const _page = await getPage();
 		console.log('Initializing websocket');
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }) => {
 			const parse = JSON.parse(data);
 			for (const [key, value] of Object.entries<any[]>(parse)) {
-				console.log('ws', key, value);
-				_electronEmitter.emit(key as any, value);
+				_localEmitter.emit(key as any, value);
 			}
 		});
 
-		const _eventEmitter = await getEventEmitter();
+		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = () => {
-			_eventEmitter.onAny((event, data) => {
+			_electronEmitter.onAny((event, data) => {
 				console.log('Sending electron message..', event, data);
 				socket.send(JSON.stringify({ [event as string]: data }));
 			});

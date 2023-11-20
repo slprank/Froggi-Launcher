@@ -2,7 +2,7 @@
 	import LeaderboardRow from '$lib/components/leaderboard/LeaderboardRow.svelte';
 	import MultiSelect from '$lib/components/input/MultiSelect.svelte';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import { eventEmitter, isMobile } from '$lib/utils/store.svelte';
+	import { localEmitter, isMobile } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import LazyLoad from '@dimfeld/svelte-lazyload';
 

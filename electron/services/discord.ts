@@ -15,7 +15,7 @@ export class DiscordRpc {
 	activity: Presence;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('EventEmitter') private eventEmitter: TypedEmitter,
+		@inject('LocalEmitter') private localEmitter: TypedEmitter,
 		@inject('Dev') private dev: boolean,
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
@@ -40,14 +40,14 @@ export class DiscordRpc {
 	}
 
 	initDiscordEvents = () => {
-		this.eventEmitter.on("LiveStatsSceneChange", (scene: LiveStatsScene | undefined) => {
+		this.localEmitter.on("LiveStatsSceneChange", (scene: LiveStatsScene | undefined) => {
 			if (!scene) return;
 			if ([LiveStatsScene.Menu].includes(scene)) {
 				this.setMenuActivity('Menu');
 			}
 		});
 
-		this.eventEmitter.on("GameSettings", (settings: GameStartType | undefined) => {
+		this.localEmitter.on("GameSettings", (settings: GameStartType | undefined) => {
 			if (!settings) return;
 			const mode = this.storeLiveStats.getGameSettings()?.matchInfo.mode ?? 'Local';
 			const score = this.storeGames.getGameScore() ?? [0, 0];
@@ -79,7 +79,7 @@ export class DiscordRpc {
 			this.updateActivity();
 		});
 
-		this.eventEmitter.on("GameFrame", (frame) => {
+		this.localEmitter.on("GameFrame", (frame) => {
 			if (!frame) return;
 			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return;
 			const players = this.storePlayers.getCurrentPlayers();
@@ -116,7 +116,7 @@ export class DiscordRpc {
 			this.updateActivity();
 		});
 
-		this.eventEmitter.on("PostGameStats", () => {
+		this.localEmitter.on("PostGameStats", () => {
 			console.log('Game end event');
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);
@@ -132,7 +132,7 @@ export class DiscordRpc {
 			this.setMenuActivity(details, state);
 		});
 
-		this.eventEmitter.on("GameScore", (score: number[]) => {
+		this.localEmitter.on("GameScore", (score: number[]) => {
 			console.log('game-score_event');
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);

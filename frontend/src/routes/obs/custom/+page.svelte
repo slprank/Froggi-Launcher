@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { eventEmitter, isElectron, obs } from '$lib/utils/store.svelte';
+	import { localEmitter, isElectron, obs } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import OverlayModal from '$lib/components/custom/OverlayModal.svelte';

@@ -23,12 +23,12 @@ export class MessageHandler {
 	private server: any;
 	private webSocketServer: any;
 	private webSockets: WebSocket[];
-
+	private svelteEmitter: TypedEmitter = new TypedEmitter();
 	constructor(
 		@inject('Dev') private dev: boolean,
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('EventEmitter') private eventEmitter: TypedEmitter,
+		@inject('LocalEmitter') private localEmitter: TypedEmitter,
 		@inject('IpcMain') private ipcMain: IpcMain,
 		@inject('Port') private port: string,
 		@inject('RootDir') private rootDir: string,
@@ -59,7 +59,6 @@ export class MessageHandler {
 		if (!dev) this.initHtml();
 		this.initWebSocket();
 		this.initEventHandlers();
-		this.initGlobalEventListeners();
 	}
 
 	private initHtml() {
@@ -81,13 +80,12 @@ export class MessageHandler {
 
 	private initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
-			console.log("Message", data)
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				this.eventEmitter.emit(key as any, value);
+				this.svelteEmitter.emit(key as any, value);
 			}
 		});
-		this.eventEmitter.on("InitElectron", () => {
+		this.svelteEmitter.on("InitElectron", () => {
 			this.initData();
 		});
 	}
@@ -109,7 +107,7 @@ export class MessageHandler {
 		socket.addEventListener('message', (value: any) => {
 			let parse = JSON.parse(value.data);
 			for (const [key, value] of Object.entries(parse)) {
-				this.eventEmitter.emit(key as any, value);
+				this.svelteEmitter.emit(key as any, value);
 			}
 		});
 		socket.addEventListener('close', () => {
@@ -127,14 +125,13 @@ export class MessageHandler {
 			}),
 		);
 		this.webSockets.forEach((socket: any) => {
-			console.log("ws", topic, payload[0])
 			socket.send(
 				JSON.stringify({
 					[topic]: payload[0],
 				}),
 			);
 		});
-		//this.eventEmitter.emit(`electron-${topic}`, payload);
+		this.localEmitter.emit(topic, ...payload);
 	}
 
 	private sendInitMessage<J extends keyof MessageEvents>(socket: any, topic: J, ...payload: Parameters<MessageEvents[J]>) {
@@ -142,7 +139,6 @@ export class MessageHandler {
 			this.sendMessage(topic, ...payload);
 			return;
 		}
-		console.log(topic, payload)
 		socket.send(
 			JSON.stringify({
 				[topic]: payload[0],
@@ -171,21 +167,18 @@ export class MessageHandler {
 	}
 
 	private initEventHandlers() {
-		this.eventEmitter.on("CustomOverlayUpdate", async (overlay) => {
+		this.svelteEmitter.on("ObsCustomOverlayUpdate", async (overlay) => {
+			console.log(overlay)
 			this.storeObs.updateCustomOverlay(overlay);
 			this.sendMessage("ObsCustomOverlay", this.storeObs.getCustomOverlayById(overlay.id));
 		});
 
-		this.eventEmitter.on('CustomOverlayDelete', (overlayId) => {
+		this.svelteEmitter.on('ObsCustomOverlayDelete', (overlayId) => {
 			this.storeObs.deleteCustomOverlay(overlayId);
 		});
 
-		this.eventEmitter.on("LiveStatsSceneChange", (value: LiveStatsScene | undefined) => {
-			if (!value) return
-			this.storeLiveStats.setStatsScene(value);
-		});
 
-		this.eventEmitter.on('CustomOverlayDownload', async (overlayId) => {
+		this.svelteEmitter.on('ObsCustomOverlayDownload', async (overlayId) => {
 			const overlay = this.storeObs.getCustomOverlayById(overlayId);
 			if (!overlay) return;
 			const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, {
@@ -196,7 +189,7 @@ export class MessageHandler {
 			fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
 		});
 
-		this.eventEmitter.on("CustomOverlayUpload", async () => {
+		this.svelteEmitter.on("ObsCustomOverlayUpload", async () => {
 			const { canceled, filePaths } = await dialog.showOpenDialog(this.mainWindow, {
 				properties: ['openFile'],
 				filters: [{ name: 'json', extensions: ['json'] }],
@@ -205,11 +198,15 @@ export class MessageHandler {
 			const overlay = fs.readFileSync(filePaths[0], 'utf8');
 			this.storeObs.uploadCustomOverlay(JSON.parse(overlay));
 		});
-	}
 
-	private initGlobalEventListeners() {
-		this.eventEmitter.on('LayerPreviewChange', (layerIndex: number) => {
+		this.svelteEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 			this.sendMessage('LayerPreviewChange', layerIndex);
 		});
+
+		this.svelteEmitter.on("LiveStatsSceneChange", (value: LiveStatsScene | undefined) => {
+			if (!value) return
+			this.storeLiveStats.setStatsScene(value);
+		});
 	}
+
 }

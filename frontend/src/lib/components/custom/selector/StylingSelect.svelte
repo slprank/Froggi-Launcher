@@ -10,7 +10,7 @@
 	import { fly } from 'svelte/transition';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { localEmitter, statsScene } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 	import FontSelectorLayer from '$lib/components/custom/selector/FontSelectLayer.svelte';
@@ -109,10 +109,10 @@
 	$: payload.animationTrigger, fixAnimationInputDelay();
 
 	const shuffleAnimationTriggers = () => {
-		$eventEmitter.emit('animation-test-trigger');
+		$localEmitter.emit('TestAnimationTrigger');
 	};
 	const shuffleAnimationVisibility = () => {
-		$eventEmitter.emit('animation-test-visibility');
+		$localEmitter.emit('TestVisibilityTrigger');
 	};
 
 	const handleVisibilityUpdate = (event: CustomEvent<SelectedVisibilityOption[]>) => {

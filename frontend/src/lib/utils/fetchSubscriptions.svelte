@@ -7,7 +7,7 @@
 		currentPlayer,
 		currentPlayers,
 		electronEmitter,
-		eventEmitter,
+		localEmitter,
 		gameFrame,
 		gameSettings,
 		gameState,
@@ -18,7 +18,6 @@
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
-	import type EventEmitter from 'events';
 	import type { TypedEmitter } from './customEventEmitter';
 
 	export async function getCurrentPlayer(): Promise<CurrentPlayer | undefined> {
@@ -29,18 +28,18 @@
 		});
 	}
 
-	export async function getEventEmitter(): Promise<TypedEmitter> {
+	export async function getLocalEmitter(): Promise<TypedEmitter> {
 		return await new Promise<TypedEmitter>((resolve) => {
-			eventEmitter.subscribe((eventEmitter) => {
-				resolve(eventEmitter);
+			localEmitter.subscribe((localEmitter) => {
+				resolve(localEmitter);
 			});
 		});
 	}
 
 	export async function getElectronEmitter(): Promise<TypedEmitter> {
 		return await new Promise<TypedEmitter>((resolve) => {
-			electronEmitter.subscribe((eventEmitter) => {
-				resolve(eventEmitter);
+			electronEmitter.subscribe((localEmitter) => {
+				resolve(localEmitter);
 			});
 		});
 	}

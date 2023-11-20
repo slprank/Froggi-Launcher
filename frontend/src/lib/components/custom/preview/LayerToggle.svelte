@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { isElectron, obs, statsScene, urls } from '$lib/utils/store.svelte';
+	import { isElectron, localEmitter, obs, statsScene, urls } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import LayerDisplayRow from '$lib/components/custom/preview/LayerDisplayRow.svelte';
 	import { newLayer } from '$lib/components/custom/edit/OverlayHandler.svelte';
@@ -15,6 +15,10 @@
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay?.[$statsScene]?.layers : undefined;
 	$: previewLayers = curOverlay ? curOverlay[$statsScene]?.previewLayers : undefined;
+
+	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
+		selectedLayer = layerIndex;
+	});
 
 	let scrollElement: HTMLElement;
 	const scrollToBottom = () => {

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { LiveStatsScene } from '$lib/models/enum';
 	import Select from '$lib/components/input/Select.svelte';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { localEmitter, statsScene } from '$lib/utils/store.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
 
 	export let overlay: Overlay;
 
 	function updateLiveScene(scene: LiveStatsScene) {
-		$eventEmitter.emit('LiveStatsSceneChange', scene);
+		$localEmitter.emit('LiveStatsSceneChange', scene);
 	}
 
 	let buttons = [

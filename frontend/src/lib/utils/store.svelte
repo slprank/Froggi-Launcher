@@ -20,7 +20,7 @@
 	import type { ControllerInputs, PlayerController } from '$lib/models/types/controller';
 	import { TypedEmitter } from './customEventEmitter';
 
-	export const eventEmitter = writable<TypedEmitter>(new TypedEmitter());
+	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());
 	export const electronEmitter = writable<TypedEmitter>(new TypedEmitter());
 
 	export const isBrowser = writable<boolean>(!window.electron && browser);

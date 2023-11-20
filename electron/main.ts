@@ -29,7 +29,7 @@ log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 const slpParser = new SlpParser();
 const slpStream = new SlpStream();
-const eventEmitter = new TypedEmitter();
+const localEmitter = new TypedEmitter();
 
 setLoggingPath();
 
@@ -102,7 +102,7 @@ function createTray(): Tray {
 		{
 			label: 'Quit',
 			click: () => {
-				eventEmitter.emit("AutoUpdaterInstall");
+				localEmitter.emit("AutoUpdaterInstall");
 				app.exit()
 			}
 		},
@@ -152,7 +152,7 @@ function createMainWindow() {
 
 	mainWindow.webContents.once('dom-ready', async () => {
 		container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
-		container.register<TypedEmitter>('EventEmitter', { useValue: eventEmitter });
+		container.register<TypedEmitter>('LocalEmitter', { useValue: localEmitter });
 		container.register<ElectronLog>('ElectronLog', { useValue: log });
 		container.register<IpcMain>('IpcMain', { useValue: ipcMain });
 		container.register<SlpParser>('SlpParser', { useValue: slpParser });

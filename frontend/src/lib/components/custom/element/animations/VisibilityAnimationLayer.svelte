@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { GridContentItem } from '$lib/models/types/overlay';
-	import { eventEmitter, gameFrame, gameState } from '$lib/utils/store.svelte';
+	import { localEmitter, gameFrame, gameState } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	import { inGameVisibilityOption } from './InGameVisibilityOptions.svelte';
 	import { inGamePlayer1VisibilityOption } from './InGamePlayer1VisibilityOptions.svelte';
@@ -58,7 +58,7 @@
 
 	onMount(() => {
 		if (!edit && !preview) return;
-		$eventEmitter.on('animation-test-visibility', () => {
+		$localEmitter.on('TestVisibilityTrigger', () => {
 			visible = !visible;
 		});
 	});

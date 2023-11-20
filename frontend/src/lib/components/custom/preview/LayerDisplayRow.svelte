@@ -2,7 +2,7 @@
 	import type { Layer, Overlay } from '$lib/models/types/overlay';
 	import { fly } from 'svelte/transition';
 	import NonInteractiveIFrame from './NonInteractiveIFrame.svelte';
-	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, localEmitter, statsScene } from '$lib/utils/store.svelte';
 	import {
 		deleteLayer,
 		moveLayerDown,
@@ -27,7 +27,7 @@
 	let deleteLayerModalOpen = false;
 
 	const changeEditLayer = (layerIndex: number) => {
-		$eventEmitter.emit('LayerPreviewChange', layerIndex);
+		$electronEmitter.emit('LayerPreviewChange', layerIndex);
 		selectedLayer = layerIndex;
 	};
 

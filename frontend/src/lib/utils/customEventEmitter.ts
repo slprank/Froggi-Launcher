@@ -3,7 +3,7 @@ import type { PlayerController } from "../models/types/controller"
 import type { Obs, Overlay, Url } from "../models/types/overlay"
 import type { CurrentPlayer, GameStartTypeExtended, GameStats, MatchStats, Player, Session } from "../models/types/slippiData"
 import type { FrameEntryType } from "@slippi/slippi-js"
-import EventEmitter from "eventemitter2"
+import localEmitter from "eventemitter2"
 
 export interface MessageEvents {
     AutoUpdaterProgress: (progress: string | undefined) => void
@@ -29,13 +29,16 @@ export interface MessageEvents {
     Url: (url: Url) => void
     ObsCustom: (obs: Obs | undefined) => void
     ObsCustomOverlay: (url: Overlay) => void
-    CustomOverlayDelete: (overlayId: string) => void
-    CustomOverlayDownload: (overlayId: string) => void
-    CustomOverlayUpdate: (overlay: Overlay) => void
-    CustomOverlayUpload: () => void
+    ObsCustomOverlayDelete: (overlayId: string) => void
+    ObsCustomOverlayDownload: (overlayId: string) => void
+    ObsCustomOverlayUpdate: (overlay: Overlay) => void
+    ObsCustomOverlayUpload: () => void
+
+    TestAnimationTrigger: () => void
+    TestVisibilityTrigger: () => void
 }
 
-export class TypedEmitter extends EventEmitter {
+export class TypedEmitter extends localEmitter {
     private _untypedOn = this.on
     private _untypedEmit = this.emit
     public on = <K extends keyof MessageEvents>(event: K, listener: MessageEvents[K]): this =>

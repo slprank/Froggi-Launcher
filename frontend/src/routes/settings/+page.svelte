@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { eventEmitter } from '$lib/utils/store.svelte';
+	import { localEmitter } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 
