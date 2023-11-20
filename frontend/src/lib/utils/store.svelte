@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
 	import { writable } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { EventEmitter } from 'events';
 	import {
 		AutoUpdaterStatus,
 		DolphinConnectionState,
@@ -18,9 +17,11 @@
 		Session,
 	} from '$lib/models/types/slippiData';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
-	import type { ControllerInputs } from '$lib/models/types/controller';
+	import type { ControllerInputs, PlayerController } from '$lib/models/types/controller';
+	import { TypedEmitter } from './customEventEmitter';
 
-	export const eventEmitter = writable<EventEmitter>(new EventEmitter());
+	export const eventEmitter = writable<TypedEmitter>(new TypedEmitter());
+	export const electronEmitter = writable<TypedEmitter>(new TypedEmitter());
 
 	export const isBrowser = writable<boolean>(!window.electron && browser);
 	export const isDesktop = writable<boolean>(
@@ -44,14 +45,14 @@
 	export const autoUpdater = writable<AutoUpdater>({
 		status: AutoUpdaterStatus.LookingForUpdate,
 	} as AutoUpdater);
-	export const currentPlayer = writable<CurrentPlayer>({} as CurrentPlayer);
-	export const currentPlayers = writable<Player[]>([]);
+	export const currentPlayer = writable<CurrentPlayer | undefined>({} as CurrentPlayer);
+	export const currentPlayers = writable<Player[] | undefined>([]);
 	export const dolphinState = writable<DolphinConnectionState>(DolphinConnectionState.Searching);
 	export const gameFrame = writable<FrameEntryType | null>({} as FrameEntryType);
 	export const gameScore = writable<number[]>([0, 0]);
 	export const gameSettings = writable<GameStartType>({} as GameStartType);
 	export const gameState = writable<InGameState>(InGameState.Inactive);
-	export const memoryReadController = writable<ControllerInputs[]>([]);
+	export const memoryReadController = writable<PlayerController>({} as PlayerController);
 	export const postGame = writable<GameStats>({} as GameStats);
 	export const postMatch = writable<MatchStats>({} as MatchStats);
 	export const recentRankedSets = writable<GameStats[]>([]); // TODO

@@ -37,10 +37,10 @@
 	$: $obs, isElementModalOpen, refreshOverlay();
 
 	function downloadOverlay() {
-		$eventEmitter.emit('electron', 'download-overlay', overlayId);
+		$eventEmitter.emit('CustomOverlayDownload', overlayId);
 	}
 
-	$eventEmitter.on('edit-layer-preview', (layerIndex: number) => {
+	$eventEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 		selectedLayer = layerIndex;
 	});
 

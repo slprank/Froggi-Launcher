@@ -44,7 +44,7 @@ export class MemoryRead {
 
 	private handleController = (memory: DolphinMemory) => {
 		const controllers = getControllerInputs(memory);
-		this.messageHandler.sendMessage('memory-controller', controllers);
+		this.messageHandler.sendMessage("MemoryControllerInput", controllers);
 	}
 
 	private handleGameState = (memory: DolphinMemory) => {

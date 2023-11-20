@@ -10,6 +10,7 @@ import {
 	GameStartTypeExtended,
 	GameStats,
 	MatchStats,
+	Player,
 } from '../../../frontend/src/lib/models/types/slippiData';
 
 @singleton()
@@ -103,25 +104,25 @@ export class ElectronLiveStatsStore {
 	initListeners() {
 		this.store.onDidChange('stats.scene', (value) => {
 			clearTimeout(this.sceneTimeout)
-			this.messageHandler.sendMessage('live-stats-scene', value);
+			this.messageHandler.sendMessage("LiveStatsSceneChange", value as LiveStatsScene);
 		});
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
-			this.messageHandler.sendMessage('current-players', value);
+			this.messageHandler.sendMessage("CurrentPlayers", value as Player[]);
 		});
 		this.store.onDidChange(`stats.game.frame`, async (value) => {
-			this.messageHandler.sendMessage('game-frame', value);
+			this.messageHandler.sendMessage("GameFrame", value as FrameEntryType);
 		});
 		this.store.onDidChange(`stats.game.settings`, async (value) => {
-			this.messageHandler.sendMessage('game-settings', value);
+			this.messageHandler.sendMessage("GameSettings", value as GameStartTypeExtended);
 		});
 		this.store.onDidChange(`stats.game.state`, async (value) => {
-			this.messageHandler.sendMessage('game-state', value);
+			this.messageHandler.sendMessage("GameState", value as InGameState);
 		});
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
-			this.messageHandler.sendMessage('post-game-stats', value);
+			this.messageHandler.sendMessage("PostGameStats", value as GameStats);
 		});
 		this.store.onDidChange(`stats.match.stats`, async (value) => {
-			this.messageHandler.sendMessage('post-match-stats', value);
+			this.messageHandler.sendMessage("PostMatchStats", value as MatchStats);
 		});
 	}
 }

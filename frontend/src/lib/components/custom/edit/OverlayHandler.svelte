@@ -110,7 +110,7 @@
 	export async function updateOverlay(overlay: Overlay) {
 		await new Promise(() =>
 			eventEmitter.subscribe((eventEmitter) =>
-				eventEmitter.emit('electron', 'update-custom-overlay', overlay),
+				eventEmitter.emit('CustomOverlayUpdate', overlay),
 			),
 		);
 	}
@@ -119,7 +119,7 @@
 		if (!overlayId) return;
 		await new Promise(() =>
 			eventEmitter.subscribe((eventEmitter) =>
-				eventEmitter.emit('electron', 'delete-custom-overlay', overlayId),
+				eventEmitter.emit('CustomOverlayDelete', overlayId),
 			),
 		);
 	}

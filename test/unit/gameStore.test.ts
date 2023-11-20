@@ -4,6 +4,7 @@ import { StatsDisplay } from '../../electron/services/statsDisplay';
 import { SlippiGame } from '@slippi/slippi-js';
 import Store from "electron-store";
 import { Api } from "../../electron/services/api";
+import { ElectronSessionStore } from "../../electron/services/store/storeSession";
 import { ElectronPlayersStore } from "../../electron/services/store/storePlayers";
 import { ElectronCurrentPlayerStore } from "../../electron/services/store/storeCurrentPlayer";
 import { GameStartMode, Player, SlippiLauncherSettings } from "../../frontend/src/lib/models/types/slippiData";
@@ -11,7 +12,6 @@ import { ElectronLiveStatsStore } from "../../electron/services/store/storeLiveS
 import { ElectronSettingsStore } from "../../electron/services/store/storeSettings";
 import log from 'electron-log';
 import { BestOf, LiveStatsScene } from "../../frontend/src/lib/models/enum";
-import { ElectronSessionStore } from "services/store/storeSession";
 
 jest.mock("../../electron/services/api")
 jest.mock("../../electron/services/store/storeSession")

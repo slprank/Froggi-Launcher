@@ -100,7 +100,7 @@ export class ElectronCurrentPlayerStore {
         if (!connectCode) return;
         this.listeners = [
             this.store.onDidChange(`player.${connectCode}`, (value) => {
-                this.messageHandler.sendMessage("current-player", value)
+                this.messageHandler.sendMessage("CurrentPlayer", value as CurrentPlayer)
             }),
             this.store.onDidChange(`settings.currentPlayer.newRankedNetplayProfile`, async () => {
                 await this.handleRankChange()

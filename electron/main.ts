@@ -8,9 +8,9 @@ import serve from 'electron-serve';
 import windowStateManager from 'electron-window-state';
 import path from 'path';
 import os from 'os';
+import { TypedEmitter } from "../frontend/src/lib/utils/customEventEmitter"
 
 import { AutoUpdater } from './services/autoUpdater';
-import { EventEmitter } from 'events';
 import { MessageHandler } from './services/messageHandler';
 import { ObsWebSocket } from './services/obs';
 import { StatsDisplay } from './services/statsDisplay';
@@ -29,7 +29,7 @@ log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 const slpParser = new SlpParser();
 const slpStream = new SlpStream();
-const eventEmitter = new EventEmitter();
+const eventEmitter = new TypedEmitter();
 
 setLoggingPath();
 
@@ -102,7 +102,7 @@ function createTray(): Tray {
 		{
 			label: 'Quit',
 			click: () => {
-				eventEmitter.emit('update-install');
+				eventEmitter.emit("AutoUpdaterInstall");
 				app.exit()
 			}
 		},
@@ -152,7 +152,7 @@ function createMainWindow() {
 
 	mainWindow.webContents.once('dom-ready', async () => {
 		container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
-		container.register<EventEmitter>('EventEmitter', { useValue: eventEmitter });
+		container.register<TypedEmitter>('EventEmitter', { useValue: eventEmitter });
 		container.register<ElectronLog>('ElectronLog', { useValue: log });
 		container.register<IpcMain>('IpcMain', { useValue: ipcMain });
 		container.register<SlpParser>('SlpParser', { useValue: slpParser });

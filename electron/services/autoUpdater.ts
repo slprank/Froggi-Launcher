@@ -1,15 +1,15 @@
 import { ElectronLog } from 'electron-log';
 import { ProgressInfo, UpdateDownloadedEvent, UpdateInfo, autoUpdater } from 'electron-updater';
-import EventEmitter from 'events';
 import { delay, inject, injectable } from 'tsyringe';
 import { MessageHandler } from './messageHandler';
 import { AutoUpdaterStatus } from '../../frontend/src/lib/models/enum';
+import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 
 @injectable()
 export class AutoUpdater {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('EventEmitter') private eventEmitter: EventEmitter,
+		@inject('EventEmitter') private eventEmitter: TypedEmitter,
 		@inject('Dev') private dev: boolean,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
@@ -21,22 +21,22 @@ export class AutoUpdater {
 		this.log.info('Initializing Auto Updater');
 		this.log.info('Current Version:', autoUpdater.currentVersion);
 		autoUpdater.autoInstallOnAppQuit = true;
-		this.messageHandler.sendMessage('auto-updater-version', autoUpdater.currentVersion.version);
+		this.messageHandler.sendMessage("AutoUpdaterVersion", autoUpdater.currentVersion.version);
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
 			autoUpdater.checkForUpdates();
 			this.messageHandler.sendMessage(
-				'auto-updater-status',
+				"AutoUpdaterStatus",
 				AutoUpdaterStatus.LookingForUpdate,
 			);
 		});
 
 		autoUpdater.on('update-not-available', () => {
 			this.log.info('Update Not Available');
-			this.messageHandler.sendMessage('auto-updater-status', AutoUpdaterStatus.UpToDate);
+			this.messageHandler.sendMessage("AutoUpdaterStatus", AutoUpdaterStatus.UpToDate);
 			this.messageHandler.sendMessage(
-				'auto-updater-version',
+				"AutoUpdaterVersion",
 				autoUpdater.currentVersion.version,
 			);
 		});
@@ -45,7 +45,7 @@ export class AutoUpdater {
 			this.log.info(`update available: ${info.version}`);
 			autoUpdater.downloadUpdate();
 			this.messageHandler.sendMessage(
-				'auto-updater-status',
+				"AutoUpdaterStatus",
 				AutoUpdaterStatus.DownloadAvailable,
 			);
 		});
@@ -53,7 +53,7 @@ export class AutoUpdater {
 		autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 			this.log.info(`Downloading: ${progress.percent.toFixed()}`);
 			this.messageHandler.sendMessage(
-				'auto-updater-progress',
+				"AutoUpdaterProgress",
 				`${Number(progress.percent.toFixed())}`,
 			);
 		});
@@ -65,13 +65,13 @@ export class AutoUpdater {
 				`Download Url: https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
 			this.messageHandler.sendMessage(
-				'auto-updater-status',
+				"AutoUpdaterStatus",
 				AutoUpdaterStatus.DownloadComplete,
 			);
-			this.messageHandler.sendMessage('auto-updater-progress', 100);
+			this.messageHandler.sendMessage("AutoUpdaterProgress", "100");
 		});
 
-		this.eventEmitter.on('update-install', async () => {
+		this.eventEmitter.on("AutoUpdaterInstall", async () => {
 			autoUpdater.quitAndInstall();
 		});
 	}

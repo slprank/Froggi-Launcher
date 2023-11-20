@@ -60,7 +60,7 @@
 
 	const installUpdate = () => {
 		if ($autoUpdater.status === AutoUpdaterStatus.DownloadComplete)
-			$eventEmitter.emit('electron', 'update-install');
+			$eventEmitter.emit('AutoUpdaterInstall');
 	};
 </script>
 

@@ -13,7 +13,7 @@
 	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
 
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
-	$: layers = curOverlay ? curOverlay[$statsScene].layers : undefined;
+	$: layers = curOverlay ? curOverlay?.[$statsScene]?.layers : undefined;
 	$: previewLayers = curOverlay ? curOverlay[$statsScene]?.previewLayers : undefined;
 
 	let scrollElement: HTMLElement;

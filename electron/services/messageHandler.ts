@@ -1,6 +1,5 @@
 import { BrowserWindow, IpcMain, dialog } from 'electron';
 import { ElectronLog } from 'electron-log';
-import EventEmitter from 'events';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
@@ -14,6 +13,8 @@ import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronSessionStore } from './store/storeSession';
 import { ElectronDolphinStore } from './store/storeDolphin';
 import path from 'path';
+import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
+import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmitter';
 
 @singleton()
 export class MessageHandler {
@@ -27,7 +28,7 @@ export class MessageHandler {
 		@inject('Dev') private dev: boolean,
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('EventEmitter') private eventEmitter: EventEmitter,
+		@inject('EventEmitter') private eventEmitter: TypedEmitter,
 		@inject('IpcMain') private ipcMain: IpcMain,
 		@inject('Port') private port: string,
 		@inject('RootDir') private rootDir: string,
@@ -80,12 +81,13 @@ export class MessageHandler {
 
 	private initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
+			console.log("Message", data)
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				this.eventEmitter.emit(key, value);
+				this.eventEmitter.emit(key as any, value);
 			}
 		});
-		this.eventEmitter.on('init-data-electron', () => {
+		this.eventEmitter.on("InitElectron", () => {
 			this.initData();
 		});
 	}
@@ -107,7 +109,7 @@ export class MessageHandler {
 		socket.addEventListener('message', (value: any) => {
 			let parse = JSON.parse(value.data);
 			for (const [key, value] of Object.entries(parse)) {
-				this.eventEmitter.emit(key, value);
+				this.eventEmitter.emit(key as any, value);
 			}
 		});
 		socket.addEventListener('close', () => {
@@ -117,73 +119,73 @@ export class MessageHandler {
 		});
 	};
 
-	sendMessage(topic: string, payload: any) {
+	sendMessage<J extends keyof MessageEvents>(topic: J, ...payload: Parameters<MessageEvents[J]>) {
 		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
-				[topic]: payload,
+				[topic]: payload[0],
 			}),
 		);
 		this.webSockets.forEach((socket: any) => {
+			console.log("ws", topic, payload[0])
 			socket.send(
 				JSON.stringify({
-					[topic]: payload,
+					[topic]: payload[0],
 				}),
 			);
 		});
-		this.eventEmitter.emit(`electron-${topic}`, payload);
+		//this.eventEmitter.emit(`electron-${topic}`, payload);
 	}
 
-	private sendInitMessage(socket: any, topic: string, payload: any) {
+	private sendInitMessage<J extends keyof MessageEvents>(socket: any, topic: J, ...payload: Parameters<MessageEvents[J]>) {
 		if (!socket) {
-			this.sendMessage(topic, payload);
+			this.sendMessage(topic, ...payload);
 			return;
 		}
+		console.log(topic, payload)
 		socket.send(
 			JSON.stringify({
-				[topic]: payload,
+				[topic]: payload[0],
 			}),
 		);
 	}
 
-	// Any data sent to frontend should be saved and initialized
-	// Leaderboard data should be stored as well
 	private initData(socket: WebSocket | undefined = undefined) {
-		this.sendInitMessage(socket, 'current-player', this.storeCurrentPlayer.getCurrentPlayer());
-		this.sendInitMessage(socket, 'current-players', this.storePlayers.getCurrentPlayers());
+		this.sendInitMessage(socket, "CurrentPlayer", this.storeCurrentPlayer.getCurrentPlayer());
+		this.sendInitMessage(socket, "CurrentPlayers", this.storePlayers.getCurrentPlayers());
 		this.sendInitMessage(
 			socket,
-			'dolphin-connection-state',
+			"DolphinConnectionState",
 			this.storeDolphin.getDolphinConnectionState(),
 		);
-		this.sendInitMessage(socket, 'game-frame', this.storeLiveStats.getGameFrame());
-		this.sendInitMessage(socket, 'game-score', this.storeGames.getGameScore());
-		this.sendInitMessage(socket, 'game-settings', this.storeLiveStats.getGameSettings());
-		this.sendInitMessage(socket, 'game-state', this.storeLiveStats.getGameState());
-		this.sendInitMessage(socket, 'live-stats-scene', this.storeLiveStats.getStatsScene());
-		this.sendInitMessage(socket, 'obs-custom', this.storeObs.getCustom());
-		this.sendInitMessage(socket, 'post-game-stats', this.storeLiveStats.getGameStats());
-		this.sendInitMessage(socket, 'recent-set-matches', this.storeGames.getRecentRankedSets());
-		this.sendInitMessage(socket, 'recent-ranked-sets', this.storeGames.getRecentRankedSets());
-		this.sendInitMessage(socket, 'urls', this.storeSettings.getLocalUrl());
-		this.sendInitMessage(socket, 'session-stats', this.storeSession.getSessionStats());
+		this.sendInitMessage(socket, "GameFrame", this.storeLiveStats.getGameFrame());
+		this.sendInitMessage(socket, "GameScore", this.storeGames.getGameScore());
+		this.sendInitMessage(socket, "GameSettings", this.storeLiveStats.getGameSettings());
+		this.sendInitMessage(socket, "GameState", this.storeLiveStats.getGameState());
+		this.sendInitMessage(socket, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
+		this.sendInitMessage(socket, "ObsCustom", this.storeObs.getCustom());
+		this.sendInitMessage(socket, "PostGameStats", this.storeLiveStats.getGameStats());
+		this.sendInitMessage(socket, "RecentRankedSets", this.storeGames.getRecentRankedSets());
+		this.sendInitMessage(socket, "Url", this.storeSettings.getLocalUrl());
+		this.sendInitMessage(socket, "SessionStats", this.storeSession.getSessionStats());
 	}
 
 	private initEventHandlers() {
-		this.eventEmitter.on('update-custom-overlay', async (overlay) => {
+		this.eventEmitter.on("CustomOverlayUpdate", async (overlay) => {
 			this.storeObs.updateCustomOverlay(overlay);
-			this.sendMessage('obs-custom-overlay', this.storeObs.getCustomOverlayById(overlay.id));
+			this.sendMessage("ObsCustomOverlay", this.storeObs.getCustomOverlayById(overlay.id));
 		});
 
-		this.eventEmitter.on('delete-custom-overlay', (overlayId) => {
+		this.eventEmitter.on('CustomOverlayDelete', (overlayId) => {
 			this.storeObs.deleteCustomOverlay(overlayId);
 		});
 
-		this.eventEmitter.on('update-live-scene', (value: LiveStatsScene) => {
+		this.eventEmitter.on("LiveStatsSceneChange", (value: LiveStatsScene | undefined) => {
+			if (!value) return
 			this.storeLiveStats.setStatsScene(value);
 		});
 
-		this.eventEmitter.on('download-overlay', async (overlayId) => {
+		this.eventEmitter.on('CustomOverlayDownload', async (overlayId) => {
 			const overlay = this.storeObs.getCustomOverlayById(overlayId);
 			if (!overlay) return;
 			const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, {
@@ -194,7 +196,7 @@ export class MessageHandler {
 			fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
 		});
 
-		this.eventEmitter.on('upload-overlay', async () => {
+		this.eventEmitter.on("CustomOverlayUpload", async () => {
 			const { canceled, filePaths } = await dialog.showOpenDialog(this.mainWindow, {
 				properties: ['openFile'],
 				filters: [{ name: 'json', extensions: ['json'] }],
@@ -206,8 +208,8 @@ export class MessageHandler {
 	}
 
 	private initGlobalEventListeners() {
-		this.eventEmitter.on('edit-layer-preview', (layerIndex: number) => {
-			this.sendMessage('edit-layer-preview', layerIndex);
+		this.eventEmitter.on('LayerPreviewChange', (layerIndex: number) => {
+			this.sendMessage('LayerPreviewChange', layerIndex);
 		});
 	}
 }

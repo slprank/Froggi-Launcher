@@ -27,7 +27,7 @@
 	let deleteLayerModalOpen = false;
 
 	const changeEditLayer = (layerIndex: number) => {
-		$eventEmitter.emit('electron', 'edit-layer-preview', layerIndex);
+		$eventEmitter.emit('LayerPreviewChange', layerIndex);
 		selectedLayer = layerIndex;
 	};
 

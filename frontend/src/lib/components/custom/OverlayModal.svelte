@@ -4,13 +4,13 @@
 	import { getNewOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	function uploadOverlay() {
-		$eventEmitter.emit('electron', 'upload-overlay');
+		$eventEmitter.emit('CustomOverlayUpload');
 		open = false;
 	}
 
 	function createBlankOverlay() {
 		const overlay = getNewOverlay();
-		$eventEmitter.emit('electron', 'update-custom-overlay', overlay);
+		$eventEmitter.emit('CustomOverlayUpdate', overlay);
 		open = false;
 	}
 

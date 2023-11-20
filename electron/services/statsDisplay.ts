@@ -72,7 +72,7 @@ export class StatsDisplay {
 		if (frameEntry.frame < 0) return
 		if (this.storeLiveStats.getGameState() === InGameState.Inactive) return;
 		this.resetPauseInterval()
-		this.messageHandler.sendMessage('game-frame', frameEntry);
+		this.messageHandler.sendMessage('GameFrame', frameEntry);
 		this.storeLiveStats.setGameState(InGameState.Running)
 	}
 
@@ -190,6 +190,7 @@ export class StatsDisplay {
 		return replayFiles.sort((a, b) => a > b ? -1 : 1);
 	}
 
+	// TODO: Test
 	private getReplayDirs = async (root: string, subFolder: string | undefined) => {
 		let filesFromRoot: string[] = []
 		let filesFromSpectate: string[] = [];

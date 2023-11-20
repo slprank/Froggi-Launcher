@@ -31,7 +31,7 @@ export class ElectronDolphinStore {
 
     initListeners() {
         this.store.onDidChange(`dolphin.connection.state`, async (value) => {
-            this.messageHandler.sendMessage('dolphin-connection-state', value);
+            this.messageHandler.sendMessage("DolphinConnectionState", value as DolphinConnectionState);
         })
     }
 }

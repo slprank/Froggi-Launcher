@@ -34,7 +34,7 @@
 	};
 
 	function updateOverlay() {
-		$eventEmitter.emit('electron', 'update-custom-overlay', getCurrentOverlay());
+		$eventEmitter.emit('CustomOverlayUpdate', getCurrentOverlay());
 	}
 
 	function getCurrentOverlay() {

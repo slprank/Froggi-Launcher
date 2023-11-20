@@ -52,7 +52,7 @@
 			return;
 		curOverlay[$statsScene].layers[layer].items = tempItems;
 
-		$eventEmitter.emit('electron', 'update-custom-overlay', curOverlay);
+		$eventEmitter.emit('CustomOverlayUpdate', curOverlay);
 		tempItems = undefined;
 		floatElements();
 	}
@@ -70,7 +70,8 @@
 	}
 
 	function notifyDisabledScene() {
-		if (curOverlay?.[$statsScene].active) return;
+		console.log(curOverlay, $statsScene);
+		if (curOverlay[$statsScene].active) return;
 		notifications.warning('Selected scene is disabled', 5000);
 	}
 	$: $statsScene, notifyDisabledScene();

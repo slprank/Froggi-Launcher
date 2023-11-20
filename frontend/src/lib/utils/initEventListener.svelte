@@ -5,8 +5,8 @@
 		InGameState,
 		LiveStatsScene,
 	} from '$lib/models/enum';
-	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
-	import type { ControllerInputs } from '$lib/models/types/controller';
+	import type { AutoUpdater, Obs, Overlay, Url } from '$lib/models/types/overlay';
+	import type { PlayerController } from '$lib/models/types/controller';
 	import type {
 		CurrentPlayer,
 		GameStartTypeExtended,
@@ -34,120 +34,169 @@
 		autoUpdater,
 		memoryReadController,
 	} from '$lib/utils/store.svelte';
-	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
-	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
-	import { getEventEmitter, getObs } from '$lib/utils/fetchSubscriptions.svelte';
+	import type { FrameEntryType } from '@slippi/slippi-js';
+	import {
+		getElectronEmitter,
+		getEventEmitter,
+		getObs,
+		getPage,
+	} from '$lib/utils/fetchSubscriptions.svelte';
+	import { WEBSOCKET_PORT } from '$lib/models/const';
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');
-		const _eventEmitter = await getEventEmitter();
-		_eventEmitter.setMaxListeners(30);
-		_eventEmitter.on('memory-controller', (controllers: ControllerInputs[]) => {
+		const _electronEmitter = await getElectronEmitter();
+		_electronEmitter.setMaxListeners(30);
+		_electronEmitter.on('MemoryControllerInput', (controllers: PlayerController) => {
 			memoryReadController.set(controllers);
 		});
-		_eventEmitter.on('auto-updater-status', (status: AutoUpdaterStatus) => {
+		_electronEmitter.on('AutoUpdaterStatus', (status: AutoUpdaterStatus) => {
 			console.log('update status', status);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, status: status };
 			});
 		});
-		_eventEmitter.on('auto-updater-version', (version: string | undefined) => {
+		_electronEmitter.on('AutoUpdaterVersion', (version: string | undefined) => {
 			console.log('version', { version });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, version: version };
 			});
 		});
-		_eventEmitter.on('auto-updater-progress', (progress: number | undefined) => {
+		_electronEmitter.on('AutoUpdaterProgress', (progress: string | undefined) => {
 			console.log('update progress', progress);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, progress: progress };
 			});
 		});
-		_eventEmitter.on('current-player', (player: CurrentPlayer) => {
+		_electronEmitter.on('CurrentPlayer', (player: CurrentPlayer | undefined) => {
 			console.log('player', player);
 			currentPlayer.set(player);
 		});
-		_eventEmitter.on('current-players', (players: Player[]) => {
+		_electronEmitter.on('CurrentPlayers', (players: Player[] | undefined) => {
 			console.log('players', players);
 			currentPlayers.set(players);
 		});
-		_eventEmitter.on('dolphin-connection-state', (state: DolphinConnectionState) => {
-			console.log('dolphin state', state);
-			dolphinState.set(state);
-		});
-		_eventEmitter.on('game-frame', (frame: FrameEntryType | null) => {
+		_electronEmitter.on(
+			'DolphinConnectionState',
+			(state: DolphinConnectionState | undefined) => {
+				if (!state) return;
+				console.log('dolphin state', state);
+				dolphinState.set(state);
+			},
+		);
+		_electronEmitter.on('GameFrame', (frame: FrameEntryType | undefined | null) => {
+			if (!frame) return;
 			gameFrame.set(frame);
 		});
-		_eventEmitter.on('game-settings', (settings: GameStartTypeExtended) => {
+		_electronEmitter.on('GameSettings', (settings: GameStartTypeExtended | undefined) => {
+			if (!settings) return;
 			console.log('game settings', settings);
 			gameSettings.set(settings);
 		});
-		_eventEmitter.on('game-score', (score: number[]) => {
+		_electronEmitter.on('GameScore', (score: number[]) => {
 			console.log('score', score);
 			gameScore.set(score);
 		});
-		_eventEmitter.on('game-state', (state: InGameState) => {
+		_electronEmitter.on('GameState', (state: InGameState | undefined) => {
+			if (!state) return;
 			console.log('game state', state);
 			gameState.set(state);
 		});
-		_eventEmitter.on('post-game-stats', (stats: GameStats) => {
+		_electronEmitter.on('PostGameStats', (stats: GameStats | undefined) => {
+			if (!stats) return;
 			console.log('game stats', stats);
 			postGame.set(stats);
 			gameFrame.set(null);
 		});
-		_eventEmitter.on('post-match-stats', (stats: MatchStats) => {
+		_electronEmitter.on('PostMatchStats', (stats: MatchStats | undefined) => {
+			if (!stats) return;
 			console.log('match stats', stats);
 			postMatch.set(stats);
 		});
-		_eventEmitter.on('recent-games', (games: GameStats[]) => {
+		_electronEmitter.on('RecentGames', (games: GameStats[]) => {
 			console.log('recent games', games);
 			recentGames.set(games);
 		});
-		_eventEmitter.on('recent-ranked-sets', (recentSets: GameStats[]) => {
+		_electronEmitter.on('RecentRankedSets', (recentSets: GameStats[]) => {
 			console.log('recent ranked sets', recentSets);
 			recentRankedSets.set(recentSets);
 		});
-		_eventEmitter.on('session-stats', (session: Session | undefined) => {
+		_electronEmitter.on('SessionStats', (session: Session | undefined) => {
 			console.log('session', session);
 			sessionStats.set(session);
 		});
-		_eventEmitter.on('live-stats-scene', (scene: LiveStatsScene) => {
+		_electronEmitter.on('LiveStatsSceneChange', (scene: LiveStatsScene | undefined) => {
+			if (!scene) return;
 			console.log('live scene', scene);
 			statsScene.set(scene);
 		});
-		_eventEmitter.on('urls', (url: Url) => {
+		_electronEmitter.on('Url', (url: Url) => {
 			console.log('url', url);
 			urls.set(url);
 		});
 
-		_eventEmitter.on('obs-custom-overlay', async (value: Overlay) => {
+		_electronEmitter.on('ObsCustomOverlay', async (overlay: Overlay) => {
 			let _obs = await getObs();
-			const overlayIndex = _obs.overlays.findIndex((overlay) => overlay.id == value.id);
+			const overlayIndex = _obs.overlays.findIndex((overlay) => overlay.id == overlay.id);
 			overlayIndex === undefined || overlayIndex === -1
-				? _obs.overlays.push(value)
-				: (_obs.overlays[overlayIndex] = value);
+				? _obs.overlays.push(overlay)
+				: (_obs.overlays[overlayIndex] = overlay);
 
 			obs.set(_obs);
 		});
 
-		_eventEmitter.on('obs-custom', (value: any) => {
+		_electronEmitter.on('ObsCustom', (value: Obs | undefined) => {
+			console.log('custom value', value);
+			if (!value) return;
 			console.log('obs', value);
 			obs.set(value);
 		});
 	}
 
 	export const initElectronEvents = async () => {
-		const _eventEmitter = await getEventEmitter();
+		const _electronEmitter = await getElectronEmitter();
 		console.log('Initializing electron');
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				_eventEmitter.emit(key, value);
+				console.log('ipcMain', key, value);
+				_electronEmitter.emit(key as any, value);
 			}
 		});
-		_eventEmitter.on('electron', (topic, payload) => {
-			console.log('Sending electron message..', topic, payload);
-			window.electron.send('message', JSON.stringify({ [topic]: payload ?? '' }));
+
+		const _eventEmitter = await getEventEmitter();
+		_eventEmitter.onAny((event, data) => {
+			//console.log('Sending electron message..', event, data);
+			window.electron.send('message', JSON.stringify({ [event as string]: data ?? '' }));
 		});
+	};
+
+	export const initWebSocket = async () => {
+		const _electronEmitter = await getElectronEmitter();
+		const _page = await getPage();
+		console.log('Initializing websocket');
+		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
+		socket.addEventListener('message', ({ data }) => {
+			const parse = JSON.parse(data);
+			for (const [key, value] of Object.entries<any[]>(parse)) {
+				console.log('ws', key, value);
+				_electronEmitter.emit(key as any, value);
+			}
+		});
+
+		const _eventEmitter = await getEventEmitter();
+		socket.onopen = () => {
+			_eventEmitter.onAny((event, data) => {
+				console.log('Sending electron message..', event, data);
+				socket.send(JSON.stringify({ [event as string]: data }));
+			});
+		};
+		socket.onclose = () => {
+			setTimeout(reload, 1000);
+		};
+	};
+
+	const reload = () => {
+		window.location.reload();
 	};
 </script>

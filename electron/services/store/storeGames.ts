@@ -131,7 +131,7 @@ export class ElectronGamesStore {
         if (!connectCode) return;
         this.listeners = [
             this.store.onDidChange(`stats.game.score`, async (value) => {
-                this.messageHandler.sendMessage('game-score', value);
+                this.messageHandler.sendMessage("GameScore", value as number[]);
             }),
         ]
     }

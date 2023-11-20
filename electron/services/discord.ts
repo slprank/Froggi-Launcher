@@ -1,13 +1,13 @@
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
-import EventEmitter from 'events';
 import { Client, Presence } from 'discord-rpc';
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
-import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
+import { GameStartType } from '@slippi/slippi-js';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
+import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 
 @singleton()
 export class DiscordRpc {
@@ -15,7 +15,7 @@ export class DiscordRpc {
 	activity: Presence;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('EventEmitter') private eventEmitter: EventEmitter,
+		@inject('EventEmitter') private eventEmitter: TypedEmitter,
 		@inject('Dev') private dev: boolean,
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
@@ -40,13 +40,14 @@ export class DiscordRpc {
 	}
 
 	initDiscordEvents = () => {
-		this.eventEmitter.on('electron-live-stats-scene', (scene: LiveStatsScene) => {
+		this.eventEmitter.on("LiveStatsSceneChange", (scene: LiveStatsScene | undefined) => {
+			if (!scene) return;
 			if ([LiveStatsScene.Menu].includes(scene)) {
 				this.setMenuActivity('Menu');
 			}
 		});
 
-		this.eventEmitter.on('electron-game-settings', (settings: GameStartType) => {
+		this.eventEmitter.on("GameSettings", (settings: GameStartType | undefined) => {
 			if (!settings) return;
 			const mode = this.storeLiveStats.getGameSettings()?.matchInfo.mode ?? 'Local';
 			const score = this.storeGames.getGameScore() ?? [0, 0];
@@ -78,7 +79,8 @@ export class DiscordRpc {
 			this.updateActivity();
 		});
 
-		this.eventEmitter.on('electron-game-frame', (frame: FrameEntryType) => {
+		this.eventEmitter.on("GameFrame", (frame) => {
+			if (!frame) return;
 			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return;
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);
@@ -114,7 +116,7 @@ export class DiscordRpc {
 			this.updateActivity();
 		});
 
-		this.eventEmitter.on('electron-post-game-stats', () => {
+		this.eventEmitter.on("PostGameStats", () => {
 			console.log('Game end event');
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);
@@ -130,7 +132,7 @@ export class DiscordRpc {
 			this.setMenuActivity(details, state);
 		});
 
-		this.eventEmitter.on('electron-game-score', (score: number[]) => {
+		this.eventEmitter.on("GameScore", (score: number[]) => {
 			console.log('game-score_event');
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);

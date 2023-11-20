@@ -78,7 +78,7 @@ export class ElectronObsStore {
 
     initListeners() {
         this.store.onDidChange("obs.custom", (value) => {
-            this.messageHandler.sendMessage('obs-custom', value);
+            this.messageHandler.sendMessage("ObsCustom", value as Obs);
         })
     }
 }

@@ -12,7 +12,9 @@
 	"dependencies": {
 		"@dimfeld/svelte-lazyload": "^0.0.4",
 		"@leveluptuts/svelte-fit": "^1.0.3",
+		"@slippi/slippi-js": "^6.7.0",
 		"cors": "^2.8.5",
+		"eventemitter2": "^6.4.9",
 		"events": "^3.3.0",
 		"froggi": "file:..",
 		"got": "^12.6.1",
@@ -22,6 +24,7 @@
 		"svelte-device-info": "^1.0.0",
 		"svelte-grid": "^5.1.2",
 		"svelte-qrcode": "^1.0.0",
+		"typed-emitter": "^2.1.0",
 		"ws": "^8.14.2"
 	},
 	"devDependencies": {

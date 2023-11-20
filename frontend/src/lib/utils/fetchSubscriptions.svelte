@@ -2,10 +2,11 @@
 	import { page } from '$app/stores';
 	import type { InGameState } from '$lib/models/enum';
 	import type { Obs } from '$lib/models/types/overlay';
-	import type { GameStats, Player, Session } from '$lib/models/types/slippiData';
+	import type { CurrentPlayer, GameStats, Player, Session } from '$lib/models/types/slippiData';
 	import {
 		currentPlayer,
 		currentPlayers,
+		electronEmitter,
 		eventEmitter,
 		gameFrame,
 		gameSettings,
@@ -18,18 +19,27 @@
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
 	import type EventEmitter from 'events';
+	import type { TypedEmitter } from './customEventEmitter';
 
-	export async function getCurrentPlayer(): Promise<Player> {
-		return await new Promise<Player>((resolve) => {
+	export async function getCurrentPlayer(): Promise<CurrentPlayer | undefined> {
+		return await new Promise<CurrentPlayer | undefined>((resolve) => {
 			currentPlayer.subscribe((player) => {
 				resolve(player);
 			});
 		});
 	}
 
-	export async function getEventEmitter(): Promise<EventEmitter> {
-		return await new Promise<EventEmitter>((resolve) => {
+	export async function getEventEmitter(): Promise<TypedEmitter> {
+		return await new Promise<TypedEmitter>((resolve) => {
 			eventEmitter.subscribe((eventEmitter) => {
+				resolve(eventEmitter);
+			});
+		});
+	}
+
+	export async function getElectronEmitter(): Promise<TypedEmitter> {
+		return await new Promise<TypedEmitter>((resolve) => {
+			electronEmitter.subscribe((eventEmitter) => {
 				resolve(eventEmitter);
 			});
 		});
@@ -96,8 +106,8 @@
 		});
 	}
 
-	export async function getSession(): Promise<Session> {
-		return await new Promise<Session>((resolve) => {
+	export async function getSession(): Promise<Session | undefined> {
+		return await new Promise<Session | undefined>((resolve) => {
 			sessionStats.subscribe((stats) => {
 				resolve(stats);
 			});

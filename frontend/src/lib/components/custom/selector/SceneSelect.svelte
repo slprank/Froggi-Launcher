@@ -3,7 +3,7 @@
 	import { eventEmitter, statsScene } from '$lib/utils/store.svelte';
 
 	function updateLiveScene(scene: LiveStatsScene) {
-		$eventEmitter.emit('electron', 'update-live-scene', scene);
+		$eventEmitter.emit('LiveStatsSceneChange', scene);
 	}
 
 	let buttons = [

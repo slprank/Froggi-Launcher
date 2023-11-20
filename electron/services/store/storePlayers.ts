@@ -32,7 +32,7 @@ export class ElectronPlayersStore {
 
     initListeners() {
         this.store.onDidChange(`stats.currentPlayers`, async (value) => {
-            this.messageHandler.sendMessage('current-players', value);
+            this.messageHandler.sendMessage("CurrentPlayers", value as Player[]);
         })
     }
 }
