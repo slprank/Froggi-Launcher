@@ -20,20 +20,30 @@
 		? defaultPreviewId
 		: -1;
 
+	let characterId: number;
+	const updateCharacterId = (externalCharacterId: number | null): number => {
+		if (!externalCharacterId || characterId >= 0) return characterId;
+		if (externalCharacterId >= 0) return externalCharacterId;
+		return characterId;
+	};
+	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
+
 	$: console.log('here', player, playerSettings, preview, defaultPreviewId);
 </script>
 
-<div
-	class={`w-full h-full flex ${style.classValue}`}
-	style={`${style.cssValue}; ${
-		dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-	}; `}
->
-	<img
-		class="h-full w-full aspect-video"
-		style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+{#if characterId}
+	<div
+		class={`w-full h-full flex ${style.classValue}`}
+		style={`${style.cssValue}; ${
+			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+		}; `}
+	>
+		<img
+			class="h-full w-full aspect-video"
+			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-		src={`/image/characters/${externalCharacterId}/0.png`}
-		alt="custom"
-	/>
-</div>
+			src={`/image/characters/${characterId}/0.png`}
+			alt="custom"
+		/>
+	</div>
+{/if}

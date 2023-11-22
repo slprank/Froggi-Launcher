@@ -16,7 +16,7 @@
 
 	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
-	$: externalCharacterId = playerPostFrame
+	let externalCharacterId = playerPostFrame
 		? CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame.internalCharacterId ?? -1]
 		: playerSettings
 		? playerSettings.characterId
