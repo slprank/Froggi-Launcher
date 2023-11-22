@@ -27,13 +27,13 @@
 		if (option[VisibilityOption.PostGame4SummaryCompleted] === VisibilityToggle.False)
 			if (!game) return true;
 		if (option[VisibilityOption.PostGame4SummaryCurrentPlayerWin] === VisibilityToggle.True)
-			if (winnerIndex === player.playerIndex) return true;
+			if (winnerIndex === player?.playerIndex) return true;
 		if (option[VisibilityOption.PostGame4SummaryCurrentPlayerWin] === VisibilityToggle.False)
-			if (winnerIndex !== player.playerIndex) return true;
+			if (winnerIndex !== player?.playerIndex) return true;
 		if (option[VisibilityOption.PostGame4SummaryCurrentPlayerLoss] === VisibilityToggle.True)
-			if (winnerIndex !== player.playerIndex) return true;
+			if (winnerIndex !== player?.playerIndex) return true;
 		if (option[VisibilityOption.PostGame4SummaryCurrentPlayerLoss] === VisibilityToggle.False)
-			if (winnerIndex === player.playerIndex) return true;
+			if (winnerIndex === player?.playerIndex) return true;
 
 		if (option[VisibilityOption.PostGame4SummaryPlayer1Stock1] === VisibilityToggle.True)
 			if (

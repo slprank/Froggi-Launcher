@@ -60,8 +60,8 @@
 		});
 	};
 
-	export async function getPlayers(): Promise<Player[]> {
-		return await new Promise<Player[]>((resolve) => {
+	export async function getPlayers(): Promise<Player[] | undefined> {
+		return await new Promise<Player[] | undefined>((resolve) => {
 			currentPlayers.subscribe((players) => {
 				resolve(players);
 			});

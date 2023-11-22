@@ -56,15 +56,13 @@ export class MessageHandler {
 		this.webSockets = [];
 
 		this.initElectronMessageHandler();
-		if (!dev) this.initHtml();
+		if (!this.dev) this.initHtml();
 		this.initWebSocket();
 		this.initEventHandlers();
 	}
 
 	private initHtml() {
 		this.log.info('Initializing HTML');
-		console.log(this.dev);
-		console.log(this.rootDir);
 		const staticServe = this.express.static(path.join(this.rootDir + '/build'));
 		try {
 			this.app.use('/', staticServe);
@@ -168,7 +166,6 @@ export class MessageHandler {
 
 	private initEventHandlers() {
 		this.svelteEmitter.on("ObsCustomOverlayUpdate", async (overlay) => {
-			console.log(overlay)
 			this.storeObs.updateCustomOverlay(overlay);
 			this.sendMessage("ObsCustomOverlay", this.storeObs.getCustomOverlayById(overlay.id));
 		});
