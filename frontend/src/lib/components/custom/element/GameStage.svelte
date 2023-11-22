@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import type { Player } from '$lib/models/types/slippiData';
 	import type { Stage } from '@slippi/slippi-js';
 
 	export let dataItem: GridContentItem;

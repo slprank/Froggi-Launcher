@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CHARACTERS } from '$lib/models/constants/characterData';
+	import { CHARACTERS, CHARACTERS_EXTERNAL_INTERNAL } from '$lib/models/constants/characterData';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { currentPlayer, currentPlayers, gameScore } from '$lib/utils/store.svelte';
@@ -7,6 +7,7 @@
 	import TextElement from '../../element/TextElement.svelte';
 	import InGameCharacterIcon from '../../element/inGame/InGameCharacterIcon.svelte';
 	import InGameCharacterRender from '../../element/inGame/InGameCharacterRender.svelte';
+	import InGameCharacterSeriesSymbol from '../../element/inGame/InGameCharacterSeriesSymbol.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -47,5 +48,24 @@
 		player={$currentPlayer}
 		preview={defaultPreview}
 		defaultPreviewId={Number(CHARACTERS['fox'])}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterSeriesSymbol}
+	<InGameCharacterSeriesSymbol
+		{dataItem}
+		{style}
+		player={$currentPlayer}
+		preview={defaultPreview}
+		defaultPreviewId={Number(CHARACTERS['fox'])}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterSeriesSymbolUltimate}
+	<InGameCharacterSeriesSymbol
+		{dataItem}
+		{style}
+		player={$currentPlayer}
+		preview={defaultPreview}
+		defaultPreviewId={Number(CHARACTERS['fox'])}
+		series={'ultimate'}
 	/>
 {/if}

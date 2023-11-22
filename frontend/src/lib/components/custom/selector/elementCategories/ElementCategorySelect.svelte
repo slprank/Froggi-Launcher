@@ -3,11 +3,12 @@
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import InGamePlayer1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
-	import InGamePlayer2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
-	import InGameCustomElementSelect from '$lib/components/custom/selector/elementCategories/Custom/CustomElementSelect.svelte';
+	import CurrentPlayerCustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CurrentPlayerCustomUiSelect.svelte';
+	import Player1CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
+	import Player2CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
+	import CustomElementSelect from '$lib/components/custom/selector/elementCategories/Custom/CustomElementSelect.svelte';
 	import Session from '$lib/components/custom/selector/elementCategories/Session/Session.svelte';
-	import InGameCustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
+	import CustomUiSelect from '$lib/components/custom/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
 	import RecentGamePlayer1SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player1SlippiData.svelte';
 	import RecentGamePlayer2SlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/Player2SlippiData.svelte';
 	import RecentGameCurrentPlayerSlippiData from '$lib/components/custom/selector/elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
@@ -261,19 +262,19 @@
 			class="overflow-scroll"
 		>
 			{#if selectedCategory === ElementCategory.Custom}
-				<InGameCustomElementSelect on:select={select} />
+				<CustomElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.GameCustomUi}
-				<InGameCustomUiSelect on:select={select} />
+				<CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerCustomUi}
-				<InGamePlayer1CustomUiSelect on:select={select} />
+				<CurrentPlayerCustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player1CustomUi}
-				<InGamePlayer1CustomUiSelect on:select={select} />
+				<Player1CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Player2CustomUi}
-				<InGamePlayer2CustomUiSelect on:select={select} />
+				<Player2CustomUiSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerControllerInput}
 				<CurrentPlayerControllerInput on:select={select} />

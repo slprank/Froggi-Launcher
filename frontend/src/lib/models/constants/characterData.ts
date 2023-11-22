@@ -86,11 +86,44 @@ export enum Character {
     "Ganondorf" = 25,
 }
 
+
+interface CharacterExternalSeriesMap {
+    [key: number]: string
+}
+export const CHARACTERS_SERIES: CharacterExternalSeriesMap = {
+    0: "FZero",
+    1: "DK",
+    2: "StarFox",
+    3: "Game&Watch",
+    4: "Kirby",
+    5: "Mario",
+    6: "Zelda",
+    7: "Mario",
+    8: "Mario",
+    9: "FireEmblem",
+    10: "Pokemon",
+    11: "Earthbound",
+    12: "Mario",
+    13: "Pokemon",
+    14: "IceClimbers",
+    15: "Pokemon",
+    16: "Metroid",
+    17: "Yoshi",
+    18: "Zelda",
+    19: "Zelda",
+    20: "StarFox",
+    21: "Zelda",
+    22: "Mario",
+    23: "FireEmblem",
+    24: "Pokemon",
+    25: "Zelda"
+}
+
 interface CharacterInternalExternalMap {
     [key: number]: number
 }
 
-export const CHARACTERS_EXTERNAL_INTERNAL: CharacterInternalExternalMap = {
+export const CHARACTERS_INTERNAL_EXTERNAL: CharacterInternalExternalMap = {
     0x00: 0x02,
     0x01: 0x03,
     0x02: 0x01,
@@ -119,7 +152,7 @@ export const CHARACTERS_EXTERNAL_INTERNAL: CharacterInternalExternalMap = {
     0x19: 0x19
 }
 
-export const CHARACTERS_INTERNAL_EXTERNAL: CharacterInternalExternalMap = {
+export const CHARACTERS_EXTERNAL_INTERNAL: CharacterInternalExternalMap = {
     0x02: 0x01,
     0x03: 0x01,
     0x01: 0x02,
@@ -147,3 +180,4 @@ export const CHARACTERS_INTERNAL_EXTERNAL: CharacterInternalExternalMap = {
     0x17: 0x18,
     0x19: 0x19
 }
+

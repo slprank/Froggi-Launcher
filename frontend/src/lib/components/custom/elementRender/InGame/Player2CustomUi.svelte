@@ -7,6 +7,7 @@
 	import TextElement from '../../element/TextElement.svelte';
 	import InGameCharacterIcon from '../../element/inGame/InGameCharacterIcon.svelte';
 	import InGameCharacterRender from '../../element/inGame/InGameCharacterRender.svelte';
+	import InGameCharacterSeriesSymbol from '../../element/inGame/InGameCharacterSeriesSymbol.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -52,5 +53,24 @@
 		player={$currentPlayers?.at(1)}
 		preview={defaultPreview}
 		defaultPreviewId={Number(CHARACTERS['falco'])}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterSeriesSymbol}
+	<InGameCharacterSeriesSymbol
+		{dataItem}
+		{style}
+		player={$currentPlayers?.at(1)}
+		preview={defaultPreview}
+		defaultPreviewId={Number(CHARACTERS['falco'])}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterSeriesSymbolUltimate}
+	<InGameCharacterSeriesSymbol
+		{dataItem}
+		{style}
+		player={$currentPlayers?.at(1)}
+		preview={defaultPreview}
+		defaultPreviewId={Number(CHARACTERS['falco'])}
+		series={'ultimate'}
 	/>
 {/if}

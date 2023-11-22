@@ -7,6 +7,7 @@
 	import TextElement from '../../element/TextElement.svelte';
 	import InGameCharacterIcon from '../../element/inGame/InGameCharacterIcon.svelte';
 	import InGameCharacterRender from '../../element/inGame/InGameCharacterRender.svelte';
+	import InGameCharacterSeriesSymbol from '../../element/inGame/InGameCharacterSeriesSymbol.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -19,7 +20,7 @@
 		{dataItem}
 		{defaultPreview}
 		numberOfDecimals={0}
-		player={$currentPlayers.at(0)}
+		player={$currentPlayers?.at(0)}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1PercentDecimal}
@@ -28,7 +29,7 @@
 		{dataItem}
 		{defaultPreview}
 		numberOfDecimals={1}
-		player={$currentPlayers.at(0)}
+		player={$currentPlayers?.at(0)}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1Score}
@@ -41,7 +42,7 @@
 		{dataItem}
 		{style}
 		preview={defaultPreview}
-		player={$currentPlayers.at(0)}
+		player={$currentPlayers?.at(0)}
 		defaultPreviewId={Number(CHARACTERS['fox'])}
 	/>
 {/if}
@@ -49,8 +50,27 @@
 	<InGameCharacterRender
 		{dataItem}
 		{style}
-		player={$currentPlayers.at(0)}
+		player={$currentPlayers?.at(0)}
 		preview={defaultPreview}
 		defaultPreviewId={Number(CHARACTERS['fox'])}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterSeriesSymbol}
+	<InGameCharacterSeriesSymbol
+		{dataItem}
+		{style}
+		player={$currentPlayers?.at(0)}
+		preview={defaultPreview}
+		defaultPreviewId={Number(CHARACTERS['fox'])}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterSeriesSymbolUltimate}
+	<InGameCharacterSeriesSymbol
+		{dataItem}
+		{style}
+		player={$currentPlayers?.at(0)}
+		preview={defaultPreview}
+		defaultPreviewId={Number(CHARACTERS['fox'])}
+		series={'ultimate'}
 	/>
 {/if}

@@ -617,9 +617,17 @@ export enum CustomElement {
     CurrentSetGame5Player2CharacterRender = 6154,
 
     InGameStage = 6200,
-    InGameCurrentPlayerCharacterIcon = 6100,
-    InGamePlayer1CharacterIcon = 6101,
-    InGamePlayer2CharacterIcon = 6102,
+    InGameCurrentPlayerCharacterIcon = 6210,
+    InGameCurrentPlayerCharacterSeriesSymbol = 6211,
+    InGameCurrentPlayerCharacterSeriesSymbolUltimate = 6212,
+
+    InGamePlayer1CharacterIcon = 6220,
+    InGamePlayer1CharacterSeriesSymbol = 6221,
+    InGamePlayer1CharacterSeriesSymbolUltimate = 6222,
+
+    InGamePlayer2CharacterIcon = 6230,
+    InGamePlayer2CharacterSeriesSymbol = 6231,
+    InGamePlayer2CharacterSeriesSymbolUltimate = 6232,
 
 
 }

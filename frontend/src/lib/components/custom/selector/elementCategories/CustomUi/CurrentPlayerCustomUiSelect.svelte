@@ -26,6 +26,20 @@
 		Current Player Render
 	</SelectOption>
 	<SelectOption
+		description="Current Player Character Series Symbols From N64/Melee"
+		value={CustomElement.InGameCurrentPlayerCharacterSeriesSymbol}
+		on:select={select}
+	>
+		Current Player Series Symbol Melee
+	</SelectOption>
+	<SelectOption
+		description="Current Player Character Series Symbol From Brawl/Sm4sh/Ultimate"
+		value={CustomElement.InGameCurrentPlayerCharacterSeriesSymbolUltimate}
+		on:select={select}
+	>
+		Current Player Series Symbol Ultimate
+	</SelectOption>
+	<SelectOption
 		description="Current Player Live In-Game Percent - 24%"
 		value={CustomElement.InGameCurrentPlayerPercent}
 		on:select={select}

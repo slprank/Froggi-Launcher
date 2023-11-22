@@ -26,6 +26,20 @@
 		Player 2 Render
 	</SelectOption>
 	<SelectOption
+		description="Player 2 Character Series Symbol (Melee)"
+		value={CustomElement.InGamePlayer2CharacterSeriesSymbol}
+		on:select={select}
+	>
+		Player 2 Series Symbol Melee
+	</SelectOption>
+	<SelectOption
+		description="Player 2 Character Series Symbol (Ultimate)"
+		value={CustomElement.InGamePlayer2CharacterSeriesSymbolUltimate}
+		on:select={select}
+	>
+		Player 2 Series Symbol Ultimate
+	</SelectOption>
+	<SelectOption
 		description="Player 2 Live In-Game Percent - 24%"
 		value={CustomElement.InGamePlayer2Percent}
 		on:select={select}

@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { CHARACTERS_INTERNAL_EXTERNAL } from '$lib/models/constants/characterData';
+	import {
+		CHARACTERS_INTERNAL_EXTERNAL,
+		CHARACTERS_SERIES,
+	} from '$lib/models/constants/characterData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame, gameSettings } from '$lib/utils/store.svelte';
@@ -9,6 +12,7 @@
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
+	export let series: 'melee' | 'ultimate' = 'melee';
 
 	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
@@ -20,27 +24,26 @@
 		? defaultPreviewId
 		: -1;
 
-	$: console.log('settings', playerSettings);
-
-	let div: HTMLElement;
+	console.log(
+		CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame?.internalCharacterId ?? -1],
+		playerSettings.characterId,
+		defaultPreviewId,
+	);
 </script>
 
 <div
-	class={`w-full h-full ${style.classValue} grid justify-end`}
+	class={`w-full h-full flex ${style.classValue}`}
 	style={`${style.cssValue}; ${
 		dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 	}; `}
-	bind:this={div}
 >
-	{#if div}
-		<img
-			class="h-full aspect-video"
-			style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
-				div?.clientHeight
-			}px;
-		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${externalCharacterId}.png`}
-			alt="custom"
-		/>
-	{/if}
+	<img
+		class="h-full w-full aspect-video"
+		style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+		src={`/image/character-origin-icons/${series}/${
+			CHARACTERS_SERIES[externalCharacterId ?? -1]
+		}.svg`}
+		alt="custom"
+	/>
 </div>

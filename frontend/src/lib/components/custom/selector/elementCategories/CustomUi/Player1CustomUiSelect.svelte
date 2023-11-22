@@ -19,11 +19,25 @@
 		Player 1 Stock Icon
 	</SelectOption>
 	<SelectOption
-		description="Player 1 Render"
+		description="Player 1 Character Render"
 		value={CustomElement.InGamePlayer1CharacterRender}
 		on:select={select}
 	>
 		Player 1 Render
+	</SelectOption>
+	<SelectOption
+		description="Player 1 Character Series Symbols From N64/Melee"
+		value={CustomElement.InGamePlayer1CharacterSeriesSymbol}
+		on:select={select}
+	>
+		Player 1 Series Symbol Melee
+	</SelectOption>
+	<SelectOption
+		description="Player 1 Character Series Symbol From Brawl/Sm4sh/Ultimate"
+		value={CustomElement.InGamePlayer1CharacterSeriesSymbolUltimate}
+		on:select={select}
+	>
+		Player 1 Series Symbol Ultimate
 	</SelectOption>
 	<SelectOption
 		description="Player 1 Live In-Game Percent - 24%"
