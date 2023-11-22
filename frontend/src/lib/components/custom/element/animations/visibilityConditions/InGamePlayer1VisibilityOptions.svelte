@@ -11,7 +11,7 @@
 		const gameFrame = await getGameFrame();
 		const players = await getPlayers();
 
-		const player = players.at(0);
+		const player = players?.at(0);
 
 		if (option[VisibilityOption.InGamePlayer1Combo] === VisibilityToggle.True)
 			if (getComboCount(gameFrame, player?.playerIndex ?? 0) >= 3) return true;

@@ -9,9 +9,11 @@
 	export const sessionVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const session = await getSession();
 
-		const wins = session.currentRankStats.wins - session.startRankStats.wins;
-		const losses = session.currentRankStats.losses - session.startRankStats.losses;
-		const rating = session.currentRankStats.rating - session.startRankStats.rating;
+		const wins = (session?.currentRankStats.wins ?? 0) - (session?.startRankStats.wins ?? 0);
+		const losses =
+			(session?.currentRankStats.losses ?? 0) - (session?.startRankStats.losses ?? 0);
+		const rating =
+			(session?.currentRankStats.rating ?? 0) - (session?.startRankStats.rating ?? 0);
 
 		if (option[VisibilityOption.SessionPositiveWinRate] === VisibilityToggle.True)
 			if (wins >= losses) return true;

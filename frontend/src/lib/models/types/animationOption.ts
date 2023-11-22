@@ -2,10 +2,15 @@
 export enum AnimationTrigger {
     None = "None",
     GameCountdown = "Game Countdown",
+    CurrentPlayerPercent = "Current Player Percent Increase",
     Player1Percent = "Player1 Percent Increase",
     Player2Percent = "Player2 Percent Increase",
+    CurrentPlayerStockLost = "Current Player Stock Loss",
     Player1StockLost = "Player1 Stock Loss",
     Player2StockLost = "Player2 Stock Loss",
+    CurrentPlayerCharacterChange = "Current Player Character Change",
+    Player1CharacterChange = "Player1 Character Change",
+    Player2CharacterChange = "Player2 Character Change",
 }
 
 export enum VisibilityOption {

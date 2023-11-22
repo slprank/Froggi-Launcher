@@ -15,27 +15,27 @@
 </script>
 
 <SelectAnimationTriggerOption
-	description="When Player1 Takes Damage"
-	value={AnimationTrigger.Player1Percent}
-	bind:selected={selectedOption[AnimationTrigger.Player1Percent]}
+	description="When Current Player Takes Damage"
+	value={AnimationTrigger.CurrentPlayerPercent}
+	bind:selected={selectedOption[AnimationTrigger.CurrentPlayerPercent]}
 	on:select={select}
 >
 	Damage Increase
 </SelectAnimationTriggerOption>
 
 <SelectAnimationTriggerOption
-	description="When Player1 Loses A Stock"
-	value={AnimationTrigger.Player1StockLost}
-	bind:selected={selectedOption[AnimationTrigger.Player1StockLost]}
+	description="When Current Player Loses A Stock"
+	value={AnimationTrigger.CurrentPlayerStockLost}
+	bind:selected={selectedOption[AnimationTrigger.CurrentPlayerStockLost]}
 	on:select={select}
 >
 	Stock Lost
 </SelectAnimationTriggerOption>
 
 <SelectAnimationTriggerOption
-	description="When Player 1 Changes Character (Zelda-Sheik)"
-	value={AnimationTrigger.Player1CharacterChange}
-	bind:selected={selectedOption[AnimationTrigger.Player1CharacterChange]}
+	description="When Current Player Changes Character (Zelda-Sheik)"
+	value={AnimationTrigger.CurrentPlayerCharacterChange}
+	bind:selected={selectedOption[AnimationTrigger.CurrentPlayerCharacterChange]}
 	on:select={select}
 >
 	Character Change

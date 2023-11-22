@@ -31,3 +31,12 @@
 >
 	Stock Lost
 </SelectAnimationTriggerOption>
+
+<SelectAnimationTriggerOption
+	description="When Player 2 Changes Character (Zelda-Sheik)"
+	value={AnimationTrigger.Player2CharacterChange}
+	bind:selected={selectedOption[AnimationTrigger.Player2CharacterChange]}
+	on:select={select}
+>
+	Character Change
+</SelectAnimationTriggerOption>

@@ -11,6 +11,7 @@
 	import type { AutoUpdater, Obs, Url } from '$lib/models/types/overlay';
 	import type {
 		CurrentPlayer,
+		GameStartTypeExtended,
 		GameStats,
 		MatchStats,
 		Player,
@@ -50,7 +51,7 @@
 	export const dolphinState = writable<DolphinConnectionState>(DolphinConnectionState.Searching);
 	export const gameFrame = writable<FrameEntryType | null>({} as FrameEntryType);
 	export const gameScore = writable<number[]>([0, 0]);
-	export const gameSettings = writable<GameStartType>({} as GameStartType);
+	export const gameSettings = writable<GameStartTypeExtended>({} as GameStartTypeExtended);
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
 	export const postGame = writable<GameStats>({} as GameStats);

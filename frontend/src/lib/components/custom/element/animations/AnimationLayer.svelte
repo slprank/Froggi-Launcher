@@ -1,71 +1,41 @@
 <script lang="ts">
 	import type { GridContentItem } from '$lib/models/types/overlay';
 	import { AnimationTrigger } from '$lib/models/types/animationOption';
-	import { localEmitter, gameFrame, gameSettings } from '$lib/utils/store.svelte';
+	import {
+		localEmitter,
+		gameFrame,
+		gameSettings,
+		currentPlayer,
+		currentPlayers,
+	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { onMount } from 'svelte';
+	import {
+		currentPlayerInGameTrigger,
+		inGameStateTrigger,
+		player1InGameTrigger,
+		player2InGameTrigger,
+	} from './animationTriggers/InGameTriggers.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
 
 	let key: number | undefined = 0;
-	let prevFrame: FrameEntryType | null;
-	let prevSecond: number | undefined;
 	const updateKeyValue = (): number | undefined => {
 		if (!dataItem) return;
-		if (!prevFrame) {
-			prevFrame = $gameFrame;
-			return;
-		}
-
-		const currentSecond = Math.ceil(
-			($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60,
-		);
 		const option = dataItem.data.animationTrigger.selectedOptions;
 
-		if (option[AnimationTrigger.GameCountdown])
-			if (currentSecond > 0 && currentSecond < 6 && currentSecond < (prevSecond ?? 0))
-				return Math.random();
-
-		if (option[AnimationTrigger.Player1Percent]) {
-			if (
-				($gameFrame?.players?.[0]?.pre.percent ?? 0) >
-				(prevFrame?.players?.[0]?.pre.percent ?? 0)
-			)
-				return Math.random();
-		}
-
-		if (option[AnimationTrigger.Player2Percent])
-			if (
-				($gameFrame?.players?.[1]?.pre.percent ?? 0) >
-				(prevFrame?.players?.[1]?.pre.percent ?? 0)
-			)
-				return Math.random();
-
-		if (option[AnimationTrigger.Player1StockLost])
-			if (
-				($gameFrame?.players?.[0]?.post.stocksRemaining ?? 0) >
-				(prevFrame?.players?.[0]?.post.stocksRemaining ?? 0)
-			)
-				return Math.random();
-
-		if (option[AnimationTrigger.Player2StockLost])
-			if (
-				($gameFrame?.players?.[1]?.post.stocksRemaining ?? 0) >
-				(prevFrame?.players?.[1]?.post.stocksRemaining ?? 0)
-			)
-				return Math.random();
+		if (inGameStateTrigger(option, $gameSettings, $gameFrame)) return Math.random();
+		if (currentPlayerInGameTrigger(option, $currentPlayer, $gameFrame)) return Math.random();
+		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame)) return Math.random();
+		if (player2InGameTrigger(option, $currentPlayers?.at(1), $gameFrame)) return Math.random();
 
 		return key;
 	};
 
 	const updateTriggerValues = () => {
 		key = updateKeyValue();
-		prevFrame = $gameFrame;
-		prevSecond = Math.ceil(
-			($gameSettings?.startingTimerSeconds ?? 480) - ($gameFrame?.frame ?? 0) / 60,
-		);
 	};
 
 	$: $gameFrame, updateTriggerValues();

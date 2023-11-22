@@ -3,6 +3,7 @@
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import GameStateAnimationTriggerSelect from './GameStateAnimationTriggerSelect.svelte';
+	import CurrentPlayerStateAnimationTriggerSelect from './CurrentPlayerStateAnimationTriggerSelect.svelte';
 	import Player1StateAnimationTriggerSelect from './Player1StateAnimationTriggerSelect.svelte';
 	import Player2StateAnimationTriggerSelect from './Player2StateAnimationTriggerSelect.svelte';
 	import {
@@ -67,6 +68,11 @@
 			{#if selectedCategory === AnimationTriggerCategory.GameState}
 				<div class="flex flex-col gap-2">
 					<GameStateAnimationTriggerSelect on:select={select} {selectedOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === AnimationTriggerCategory.CurrentPlayerState}
+				<div class="flex flex-col gap-2">
+					<CurrentPlayerStateAnimationTriggerSelect on:select={select} {selectedOption} />
 				</div>
 			{/if}
 			{#if selectedCategory === AnimationTriggerCategory.Player1State}
