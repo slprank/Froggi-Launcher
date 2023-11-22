@@ -21,9 +21,11 @@
 		const currentSecond = Math.ceil(
 			(gameSettings?.startingTimerSeconds ?? 480) - (gameFrame?.frame ?? 0) / 60,
 		);
+
 		if (option[AnimationTrigger.GameCountdown])
-			if (currentSecond > 0 && currentSecond < 6 && currentSecond < (prevSecond ?? 0))
-				trigger = true;
+			trigger =
+				(currentSecond > 0 && currentSecond < 6 && currentSecond < (prevSecond ?? 0)) ||
+				trigger;
 
 		prevSecond = currentSecond;
 		return trigger;
@@ -37,21 +39,23 @@
 	) => {
 		if (!player || !gameFrame) return;
 		let trigger = false;
-		if (option[AnimationTrigger.CurrentPlayerPercent]) {
-			if (
+		if (option[AnimationTrigger.CurrentPlayerPercent])
+			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
-				(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.pre.percent ?? 0)
-			)
-				trigger = true;
-		}
-		if (option[AnimationTrigger.CurrentPlayerStockLost])
-			if (
-				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
-				(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0)
-			)
-				trigger = true;
+					(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) ||
+				trigger;
 
-		// TODO: Character Switch
+		if (option[AnimationTrigger.CurrentPlayerStockLost])
+			trigger =
+				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
+					(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.post.stocksRemaining ??
+						0) || trigger;
+
+		if (option[AnimationTrigger.CurrentPlayerCharacterChange])
+			trigger =
+				(gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId ?? 0) !==
+					(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.post
+						.internalCharacterId ?? 0) || trigger;
 
 		prevCurrentPlayerFrame = gameFrame;
 		return trigger;
@@ -64,23 +68,24 @@
 		gameFrame: FrameEntryType | null,
 	) => {
 		if (!player || !gameFrame) return;
-		let trigger = false;
+		let trigger: boolean = false;
 
-		if (option[AnimationTrigger.Player1Percent]) {
-			if (
+		if (option[AnimationTrigger.Player1Percent])
+			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
-				(prevPlayer1Frame?.players?.[player.playerIndex]?.pre.percent ?? 0)
-			)
-				trigger = true;
-		}
-		if (option[AnimationTrigger.Player1StockLost])
-			if (
-				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
-				(prevPlayer1Frame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0)
-			)
-				trigger = true;
+					(prevPlayer1Frame?.players?.[player.playerIndex]?.pre.percent ?? 0) || trigger;
 
-		// TODO: Character Switch
+		if (option[AnimationTrigger.Player1StockLost])
+			trigger =
+				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
+					(prevPlayer1Frame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
+				trigger;
+
+		if (option[AnimationTrigger.Player1CharacterChange])
+			trigger =
+				(gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId ?? 0) !==
+					(prevPlayer1Frame?.players?.[player.playerIndex]?.post.internalCharacterId ??
+						0) || trigger;
 
 		prevPlayer1Frame = gameFrame;
 		return trigger;
@@ -95,22 +100,22 @@
 		if (!player || !gameFrame) return;
 		let trigger = false;
 
-		if (option[AnimationTrigger.Player2Percent]) {
-			if (
+		if (option[AnimationTrigger.Player2Percent])
+			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
-				(prevPlayer2Frame?.players?.[player.playerIndex]?.pre.percent ?? 0)
-			)
-				trigger = true;
-		}
+					(prevPlayer2Frame?.players?.[player.playerIndex]?.pre.percent ?? 0) || trigger;
 
 		if (option[AnimationTrigger.Player2StockLost])
-			if (
+			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
-				(prevPlayer2Frame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0)
-			)
-				trigger = true;
+					(prevPlayer2Frame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
+				trigger;
 
-		// TODO: Character Switch
+		if (option[AnimationTrigger.Player2CharacterChange])
+			trigger =
+				(gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId ?? 0) !==
+					(prevPlayer2Frame?.players?.[player.playerIndex]?.post.internalCharacterId ??
+						0) || trigger;
 
 		prevPlayer2Frame = gameFrame;
 		return trigger;

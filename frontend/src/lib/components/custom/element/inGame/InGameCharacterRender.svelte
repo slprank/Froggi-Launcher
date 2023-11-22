@@ -20,8 +20,6 @@
 		? defaultPreviewId
 		: -1;
 
-	$: console.log('settings', playerSettings);
-
 	let div: HTMLElement;
 </script>
 

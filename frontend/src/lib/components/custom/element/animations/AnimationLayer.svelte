@@ -28,7 +28,10 @@
 
 		if (inGameStateTrigger(option, $gameSettings, $gameFrame)) return Math.random();
 		if (currentPlayerInGameTrigger(option, $currentPlayer, $gameFrame)) return Math.random();
-		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame)) return Math.random();
+		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame)) {
+			console.log('here');
+			return Math.random();
+		}
 		if (player2InGameTrigger(option, $currentPlayers?.at(1), $gameFrame)) return Math.random();
 
 		return key;
@@ -36,6 +39,7 @@
 
 	const updateTriggerValues = () => {
 		key = updateKeyValue();
+		console.log(key);
 	};
 
 	$: $gameFrame, updateTriggerValues();
