@@ -12,8 +12,6 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
-	$: console.log('preview', preview);
-
 	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
 	$: externalCharacterId = preview
@@ -25,12 +23,15 @@
 		: null;
 
 	let characterId: number | null;
+	$: $gameSettings, (characterId = null);
 	const updateCharacterId = (externalCharacterId: number | null): number | null => {
-		if (!externalCharacterId || !characterId || characterId >= 0) return characterId;
+		if (!externalCharacterId) return characterId;
+		if (characterId && characterId >= 0) return characterId;
 		return externalCharacterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
-	$: $gameSettings, (characterId = null);
+
+	$: console.log(externalCharacterId, characterId);
 
 	let div: HTMLElement;
 </script>

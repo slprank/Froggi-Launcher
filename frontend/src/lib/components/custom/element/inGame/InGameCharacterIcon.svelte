@@ -21,12 +21,14 @@
 		: null;
 
 	let characterId: number | null;
+	$: $gameSettings, (characterId = null);
+
 	const updateCharacterId = (externalCharacterId: number | null): number | null => {
-		if (!externalCharacterId || !characterId || characterId >= 0) return characterId;
+		if (!externalCharacterId) return characterId;
+		if (characterId && characterId >= 0) return characterId;
 		return externalCharacterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
-	$: $gameSettings, (characterId = null);
 </script>
 
 {#key $gameSettings}
