@@ -184,6 +184,12 @@
 				size: 0,
 				color: '#000000ff',
 			},
+			transform: {
+				translate: {
+					x: 0,
+					y: 0,
+				},
+			},
 		};
 	}
 

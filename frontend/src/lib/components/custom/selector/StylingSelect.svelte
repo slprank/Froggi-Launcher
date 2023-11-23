@@ -339,6 +339,35 @@
 				</div>
 			</div>
 
+			<div class="w-full h-fit flex flex-wrap flex-col">
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">
+					X - ({payload.transform.translate.x})
+				</h1>
+				<div class="w-full h-fit flex flex-wrap">
+					<div class="w-full">
+						<NumberInput
+							bind:value={payload.transform.translate.x}
+							min={0}
+							max={100}
+							step={0.1}
+						/>
+					</div>
+				</div>
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">
+					Y - ({payload.transform.translate.y})
+				</h1>
+				<div class="w-full h-fit flex flex-wrap">
+					<div class="w-full">
+						<NumberInput
+							bind:value={payload.transform.translate.y}
+							min={0}
+							max={100}
+							step={0.1}
+						/>
+					</div>
+				</div>
+			</div>
+
 			<div class="w-full">
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
 				<div class="w-full h-fit flex flex-wrap">

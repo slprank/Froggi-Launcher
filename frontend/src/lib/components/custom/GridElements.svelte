@@ -60,6 +60,10 @@
 	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}px;
 						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
 
+	$: style.transform = `transform: translate(${dataItem.data.transform.translate.x ?? 0}%, ${
+		dataItem.data.transform.translate.y ?? 0
+	}%)`;
+
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
@@ -83,6 +87,7 @@
 			`font-family: ${dataItem.data?.font?.family};
 	`
 		}; ${style.stroke};
+		${style.transform};
 		${style.shadow};`}
 		bind:this={div}
 	>

@@ -1,20 +1,24 @@
 <script lang="ts">
+	import { isNil } from 'lodash';
+
 	export let autofocus: number | undefined = undefined;
 	export let autoFocusValue: number | undefined = undefined;
 	export let label: string | undefined = undefined;
 	export let max: number = 100;
 	export let min: number = 0;
-	export let value: number;
+	export let value: number | null;
 	export let valueConcat: string = '';
 	export let step: number | undefined = undefined;
 	export let stringFormat: string = '{0}';
 
-	const updateConcatValue = (value: number) => {
+	const updateConcatValue = (value: number | null) => {
+		if (isNil(value)) return;
 		valueConcat = String.format(stringFormat, value);
 	};
 	$: updateConcatValue(value);
 
 	const revertToMax = () => {
+		if (isNil(value)) return;
 		if (value > max) {
 			value = max;
 		}
