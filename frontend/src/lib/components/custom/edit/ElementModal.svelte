@@ -19,7 +19,7 @@
 	import { COL } from '$lib/models/const';
 	import ElementSelect from '../selector/ElementSelect.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
-	import { fixCharacterTransition } from './fixTransition';
+	import { fixTransition } from './fixTransition';
 
 	const overlayId = $page.params.overlay;
 
@@ -98,7 +98,7 @@
 			},
 		} as GridContentItem;
 
-		newItem = fixCharacterTransition(newItem);
+		newItem = fixTransition(newItem);
 
 		items = items.filter((item) => item.id != selectedId);
 		items = [...items, newItem];
