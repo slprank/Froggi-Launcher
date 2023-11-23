@@ -24,38 +24,35 @@
 		? playerSettings.characterId
 		: null;
 
-	let characterId: number;
-	const updateCharacterId = (externalCharacterId: number | null): number => {
-		if (!externalCharacterId || characterId >= 0) return characterId;
+	let characterId: number | null;
+	const updateCharacterId = (externalCharacterId: number | null): number | null => {
+		if (!externalCharacterId || !characterId || characterId >= 0) return characterId;
 		return externalCharacterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
-
-	$: console.log(externalCharacterId, characterId);
+	$: $gameSettings, (characterId = null);
 
 	let div: HTMLElement;
 </script>
 
-{#key gameSettings}
-	{#if characterId}
-		<div
-			class={`w-full h-full ${style.classValue} grid justify-end`}
-			style={`${style.cssValue}; ${
-				dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-			}; `}
-			bind:this={div}
-		>
-			{#if div}
-				<img
-					class="h-full aspect-video"
-					style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
-						div?.clientHeight
-					}px;
+{#if characterId}
+	<div
+		class={`w-full h-full ${style.classValue} grid justify-end`}
+		style={`${style.cssValue}; ${
+			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+		}; `}
+		bind:this={div}
+	>
+		{#if div}
+			<img
+				class="h-full aspect-video"
+				style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
+					div?.clientHeight
+				}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-					src={`/image/character-renders/${characterId}.png`}
-					alt="custom"
-				/>
-			{/if}
-		</div>
-	{/if}
-{/key}
+				src={`/image/character-renders/${characterId}.png`}
+				alt="custom"
+			/>
+		{/if}
+	</div>
+{/if}

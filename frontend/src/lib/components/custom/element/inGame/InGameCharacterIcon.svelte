@@ -20,15 +20,16 @@
 		? playerSettings.characterId
 		: null;
 
-	let characterId: number;
-	const updateCharacterId = (externalCharacterId: number | null): number => {
-		if (!externalCharacterId || characterId >= 0) return characterId;
+	let characterId: number | null;
+	const updateCharacterId = (externalCharacterId: number | null): number | null => {
+		if (!externalCharacterId || !characterId || characterId >= 0) return characterId;
 		return externalCharacterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
+	$: $gameSettings, (characterId = null);
 </script>
 
-{#key gameSettings}
+{#key $gameSettings}
 	{#if characterId}
 		<div
 			class={`w-full h-full flex ${style.classValue}`}
