@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { CHARACTERS, CHARACTERS_EXTERNAL_INTERNAL } from '$lib/models/constants/characterData';
+	import { CHARACTERS } from '$lib/models/constants/characterData';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayer, currentPlayers, gameScore } from '$lib/utils/store.svelte';
+	import { currentPlayer } from '$lib/utils/store.svelte';
 	import PlayerPercent from '../../element/PlayerPercent.svelte';
-	import TextElement from '../../element/TextElement.svelte';
 	import InGameCharacterIcon from '../../element/inGame/InGameCharacterIcon.svelte';
 	import InGameCharacterRender from '../../element/inGame/InGameCharacterRender.svelte';
 	import InGameCharacterSeriesSymbol from '../../element/inGame/InGameCharacterSeriesSymbol.svelte';

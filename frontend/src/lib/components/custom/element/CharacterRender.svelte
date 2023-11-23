@@ -8,7 +8,7 @@
 	export let defaultPreviewId: Character;
 	export let style: GridContentItemStyle;
 
-	$: character = characterId ? characterId : defaultPreview ? defaultPreviewId : -1;
+	$: character = defaultPreview ? defaultPreviewId : characterId ? characterId : -1;
 
 	// TODO: Include colors
 

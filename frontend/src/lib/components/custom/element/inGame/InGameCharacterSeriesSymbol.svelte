@@ -16,19 +16,13 @@
 
 	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
-	let externalCharacterId = playerPostFrame
+	let externalCharacterId = preview
+		? defaultPreviewId
+		: playerPostFrame
 		? CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame.internalCharacterId ?? -1]
 		: playerSettings
 		? playerSettings.characterId
-		: preview
-		? defaultPreviewId
 		: -1;
-
-	console.log(
-		CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame?.internalCharacterId ?? -1],
-		playerSettings.characterId,
-		defaultPreviewId,
-	);
 </script>
 
 <div

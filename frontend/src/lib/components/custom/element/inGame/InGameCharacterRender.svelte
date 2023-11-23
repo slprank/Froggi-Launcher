@@ -14,18 +14,17 @@
 
 	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
-	$: externalCharacterId = playerPostFrame
+	$: externalCharacterId = preview
+		? defaultPreviewId
+		: playerPostFrame
 		? CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame.internalCharacterId ?? -1]
 		: playerSettings
 		? playerSettings.characterId
-		: preview
-		? defaultPreviewId
-		: -1;
+		: null;
 
 	let characterId: number;
 	const updateCharacterId = (externalCharacterId: number | null): number => {
 		if (!externalCharacterId || characterId >= 0) return characterId;
-		if (externalCharacterId >= 0) return externalCharacterId;
 		return characterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
