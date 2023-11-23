@@ -19,11 +19,11 @@
 		Current Player Stock Icon
 	</SelectOption>
 	<SelectOption
-		description="Current Player Render"
+		description="Current Player Character Render"
 		value={CustomElement.InGameCurrentPlayerCharacterRender}
 		on:select={select}
 	>
-		Current Player Render
+		Current Player Character Render
 	</SelectOption>
 	<SelectOption
 		description="Current Player Character Series Symbols From N64/Melee"

@@ -15,10 +15,18 @@
 </script>
 
 <SelectAnimationTriggerOption
-	description="While Game Is Counting Down From 5"
-	value={AnimationTrigger.InGameGameCountdown}
-	bind:selected={selectedOption[AnimationTrigger.InGameGameCountdown]}
+	description="When Rank Icon Changes"
+	value={AnimationTrigger.RankStatsIconChange}
+	bind:selected={selectedOption[AnimationTrigger.RankStatsIconChange]}
 	on:select={select}
 >
-	Game Countdown
+	Rank Icon Change
+</SelectAnimationTriggerOption>
+<SelectAnimationTriggerOption
+	description="When Rank Rating Changes"
+	value={AnimationTrigger.RankStatsRatingChange}
+	bind:selected={selectedOption[AnimationTrigger.RankStatsRatingChange]}
+	on:select={select}
+>
+	Rank Rating Change
 </SelectAnimationTriggerOption>

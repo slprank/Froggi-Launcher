@@ -13,6 +13,7 @@
 	import { postGame5SummaryVisibilityOption } from './visibilityConditions/PostGame5SummaryVisibilityOptions.svelte';
 	import { sessionVisibilityOption } from './visibilityConditions/SessionVisibilityOptions.svelte';
 	import { matchStatsVisibilityOption } from './visibilityConditions/MatchStatsVisibilityOptions.svelte';
+	import { rankVisibilityOption } from './visibilityConditions/RankVisibilityOptions.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -37,6 +38,7 @@
 			const postGame3SummaryOptions = await postGame3SummaryVisibilityOption(option);
 			const postGame4SummaryOptions = await postGame4SummaryVisibilityOption(option);
 			const postGame5SummaryOptions = await postGame5SummaryVisibilityOption(option);
+			const rankOptions = await rankVisibilityOption(option);
 			const sessionOptions = await sessionVisibilityOption(option);
 
 			return (
@@ -50,6 +52,7 @@
 				postGame3SummaryOptions ||
 				postGame4SummaryOptions ||
 				postGame5SummaryOptions ||
+				rankOptions ||
 				sessionOptions
 			);
 		});

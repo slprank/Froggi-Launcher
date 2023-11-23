@@ -6,6 +6,7 @@
 	import CurrentPlayerStateAnimationTriggerSelect from './CurrentPlayerStateAnimationTriggerSelect.svelte';
 	import Player1StateAnimationTriggerSelect from './Player1StateAnimationTriggerSelect.svelte';
 	import Player2StateAnimationTriggerSelect from './Player2StateAnimationTriggerSelect.svelte';
+	import RankStatsAnimationTriggerSelect from './RankStatsAnimationTriggerSelect.svelte';
 	import {
 		AnimationTrigger,
 		AnimationTriggerCategory,
@@ -83,6 +84,11 @@
 			{#if selectedCategory === AnimationTriggerCategory.Player2State}
 				<div class="flex flex-col gap-2">
 					<Player2StateAnimationTriggerSelect on:select={select} {selectedOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === AnimationTriggerCategory.Player2State}
+				<div class="flex flex-col gap-2">
+					<RankStatsAnimationTriggerSelect on:select={select} {selectedOption} />
 				</div>
 			{/if}
 		</div>

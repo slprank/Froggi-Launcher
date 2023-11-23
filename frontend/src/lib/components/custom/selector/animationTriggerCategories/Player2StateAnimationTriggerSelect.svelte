@@ -16,8 +16,8 @@
 
 <SelectAnimationTriggerOption
 	description="When Player2 Takes Damage"
-	value={AnimationTrigger.Player2Percent}
-	bind:selected={selectedOption[AnimationTrigger.Player2Percent]}
+	value={AnimationTrigger.InGamePlayer2Percent}
+	bind:selected={selectedOption[AnimationTrigger.InGamePlayer2Percent]}
 	on:select={select}
 >
 	Damage Increase
@@ -25,8 +25,8 @@
 
 <SelectAnimationTriggerOption
 	description="When Player2 Loses A Stock"
-	value={AnimationTrigger.Player2StockLost}
-	bind:selected={selectedOption[AnimationTrigger.Player2StockLost]}
+	value={AnimationTrigger.InGamePlayer2StockLost}
+	bind:selected={selectedOption[AnimationTrigger.InGamePlayer2StockLost]}
 	on:select={select}
 >
 	Stock Lost
@@ -34,8 +34,8 @@
 
 <SelectAnimationTriggerOption
 	description="When Player 2 Changes Character (Zelda-Sheik)"
-	value={AnimationTrigger.Player2CharacterChange}
-	bind:selected={selectedOption[AnimationTrigger.Player2CharacterChange]}
+	value={AnimationTrigger.InGamePlayer2CharacterChange}
+	bind:selected={selectedOption[AnimationTrigger.InGamePlayer2CharacterChange]}
 	on:select={select}
 >
 	Character Change

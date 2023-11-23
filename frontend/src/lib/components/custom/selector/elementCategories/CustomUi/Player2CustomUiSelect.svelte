@@ -19,11 +19,11 @@
 		Player 2 Stock Icon
 	</SelectOption>
 	<SelectOption
-		description="Player 2 Render"
+		description="Player 2 Character Render"
 		value={CustomElement.InGamePlayer2CharacterRender}
 		on:select={select}
 	>
-		Player 2 Render
+		Player 2 Character Render
 	</SelectOption>
 	<SelectOption
 		description="Player 2 Character Series Symbol (Melee)"

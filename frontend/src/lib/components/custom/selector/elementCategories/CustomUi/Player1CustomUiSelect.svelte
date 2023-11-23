@@ -23,7 +23,7 @@
 		value={CustomElement.InGamePlayer1CharacterRender}
 		on:select={select}
 	>
-		Player 1 Render
+		Player 1 Character Render
 	</SelectOption>
 	<SelectOption
 		description="Player 1 Character Series Symbols From N64/Melee"

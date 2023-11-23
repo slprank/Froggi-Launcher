@@ -76,6 +76,10 @@ export class ElectronObsStore {
         this.setCustom(custom);
     }
 
+    // TODO: Scene Commands - key(stats scene) - value(obs scene name)
+
+    // TODO: Controller Input Commands - Controller Object, Command Type, key (scene/webcam/..)
+
     initListeners() {
         this.store.onDidChange("obs.custom", (value) => {
             this.messageHandler.sendMessage("ObsCustom", value as Obs);

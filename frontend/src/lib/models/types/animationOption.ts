@@ -1,16 +1,19 @@
 
 export enum AnimationTrigger {
     None = "None",
-    GameCountdown = "Game Countdown",
-    CurrentPlayerPercent = "Current Player Percent Increase",
-    Player1Percent = "Player1 Percent Increase",
-    Player2Percent = "Player2 Percent Increase",
-    CurrentPlayerStockLost = "Current Player Stock Loss",
-    Player1StockLost = "Player1 Stock Loss",
-    Player2StockLost = "Player2 Stock Loss",
-    CurrentPlayerCharacterChange = "Current Player Character Change",
-    Player1CharacterChange = "Player1 Character Change",
-    Player2CharacterChange = "Player2 Character Change",
+    InGameGameCountdown = "Game Countdown",
+    InGameCurrentPlayerPercent = "Current Player Percent Increase",
+    InGamePlayer1Percent = "Player1 Percent Increase",
+    InGamePlayer2Percent = "Player2 Percent Increase",
+    InGameCurrentPlayerStockLost = "Current Player Stock Loss",
+    InGamePlayer1StockLost = "Player1 Stock Loss",
+    InGamePlayer2StockLost = "Player2 Stock Loss",
+    InGameCurrentPlayerCharacterChange = "Current Player Character Change",
+    InGamePlayer1CharacterChange = "Player1 Character Change",
+    InGamePlayer2CharacterChange = "Player2 Character Change",
+
+    RankStatsRatingChange = "Rank Stats Rating Change",
+    RankStatsIconChange = "Rank Stats Icon Change",
 }
 
 export enum VisibilityOption {
@@ -119,6 +122,9 @@ export enum VisibilityOption {
     PostGame5SummaryPlayer2Stock2 = "Post Game 5 Summary Player 1 Stock 2",
     PostGame5SummaryPlayer2Stock3 = "Post Game 5 Summary Player 1 Stock 3",
     PostGame5SummaryPlayer2Stock4 = "Post Game 5 Summary Player 1 Stock 4",
+
+    RankStatsBeforeRankUpdated = "Rank Stats Pre Updated",
+    RankStatsAfterRankUpdated = "Rank Stats Pre Updated",
 }
 
 export enum VisibilityCategory {
@@ -135,6 +141,7 @@ export enum VisibilityCategory {
     RecentGame3Summary = "Recent Game 3 Summary",
     RecentGame4Summary = "Recent Game 4 Summary",
     RecentGame5Summary = "Recent Game 5 Summary",
+    RankStats = "Rank Stats",
 }
 
 export enum AnimationTriggerCategory {
@@ -142,6 +149,7 @@ export enum AnimationTriggerCategory {
     Player1State = "Player1 State",
     Player2State = "Player2 State",
     GameState = "Game State",
+    RankStats = "Rank Stats"
 }
 
 export type SelectedAnimationTriggerOption = {

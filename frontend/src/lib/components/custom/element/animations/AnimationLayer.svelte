@@ -8,7 +8,6 @@
 		currentPlayer,
 		currentPlayers,
 	} from '$lib/utils/store.svelte';
-	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { onMount } from 'svelte';
 	import {
 		currentPlayerInGameTrigger,
@@ -16,6 +15,7 @@
 		player1InGameTrigger,
 		player2InGameTrigger,
 	} from './animationTriggers/InGameTriggers.svelte';
+	import { rankStateTrigger } from './animationTriggers/RankChangeTriggers.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -33,6 +33,7 @@
 			return Math.random();
 		}
 		if (player2InGameTrigger(option, $currentPlayers?.at(1), $gameFrame)) return Math.random();
+		if (rankStateTrigger(option, $currentPlayer)) return Math.random();
 
 		return key;
 	};
@@ -42,7 +43,7 @@
 		console.log(key);
 	};
 
-	$: $gameFrame, updateTriggerValues();
+	$: $gameFrame, $currentPlayer, updateTriggerValues();
 
 	onMount(() => {
 		$localEmitter.on('TestAnimationTrigger', () => {

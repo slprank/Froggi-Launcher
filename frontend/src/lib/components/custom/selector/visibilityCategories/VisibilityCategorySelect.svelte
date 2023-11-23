@@ -12,6 +12,7 @@
 	import Game3SummaryVisibilitySelect from './Game3SummaryVisibilitySelect.svelte';
 	import Game4SummaryVisibilitySelect from './Game4SummaryVisibilitySelect.svelte';
 	import Game5SummaryVisibilitySelect from './Game5SummaryVisibilitySelect.svelte';
+	import RankStatsVisibilitySelect from './RankStatsVisibilitySelect.svelte';
 	import {
 		VisibilityCategory,
 		type SelectedVisibilityOption,
@@ -185,6 +186,11 @@
 			{#if selectedCategory === VisibilityCategory.RecentGame5Summary}
 				<div class="flex flex-col gap-2">
 					<Game5SummaryVisibilitySelect on:select={select} {selectedVisibilityOption} />
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.RankStats}
+				<div class="flex flex-col gap-2">
+					<RankStatsVisibilitySelect on:select={select} {selectedVisibilityOption} />
 				</div>
 			{/if}
 		</div>

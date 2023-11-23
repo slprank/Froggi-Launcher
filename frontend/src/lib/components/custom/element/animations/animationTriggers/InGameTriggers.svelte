@@ -22,7 +22,7 @@
 			(gameSettings?.startingTimerSeconds ?? 480) - (gameFrame?.frame ?? 0) / 60,
 		);
 
-		if (option[AnimationTrigger.GameCountdown])
+		if (option[AnimationTrigger.InGameGameCountdown])
 			trigger =
 				(currentSecond > 0 && currentSecond < 6 && currentSecond < (prevSecond ?? 0)) ||
 				trigger;
@@ -39,19 +39,19 @@
 	) => {
 		if (!player || !gameFrame) return;
 		let trigger = false;
-		if (option[AnimationTrigger.CurrentPlayerPercent])
+		if (option[AnimationTrigger.InGameCurrentPlayerPercent])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
 					(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) ||
 				trigger;
 
-		if (option[AnimationTrigger.CurrentPlayerStockLost])
+		if (option[AnimationTrigger.InGameCurrentPlayerStockLost])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
 					(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.post.stocksRemaining ??
 						0) || trigger;
 
-		if (option[AnimationTrigger.CurrentPlayerCharacterChange])
+		if (option[AnimationTrigger.InGameCurrentPlayerCharacterChange])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId ?? 0) !==
 					(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.post
@@ -70,18 +70,18 @@
 		if (!player || !gameFrame) return;
 		let trigger: boolean = false;
 
-		if (option[AnimationTrigger.Player1Percent])
+		if (option[AnimationTrigger.InGamePlayer1Percent])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
 					(prevPlayer1Frame?.players?.[player.playerIndex]?.pre.percent ?? 0) || trigger;
 
-		if (option[AnimationTrigger.Player1StockLost])
+		if (option[AnimationTrigger.InGamePlayer1StockLost])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
 					(prevPlayer1Frame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
 				trigger;
 
-		if (option[AnimationTrigger.Player1CharacterChange])
+		if (option[AnimationTrigger.InGamePlayer1CharacterChange])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId ?? 0) !==
 					(prevPlayer1Frame?.players?.[player.playerIndex]?.post.internalCharacterId ??
@@ -100,18 +100,18 @@
 		if (!player || !gameFrame) return;
 		let trigger = false;
 
-		if (option[AnimationTrigger.Player2Percent])
+		if (option[AnimationTrigger.InGamePlayer2Percent])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
 					(prevPlayer2Frame?.players?.[player.playerIndex]?.pre.percent ?? 0) || trigger;
 
-		if (option[AnimationTrigger.Player2StockLost])
+		if (option[AnimationTrigger.InGamePlayer2StockLost])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
 					(prevPlayer2Frame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
 				trigger;
 
-		if (option[AnimationTrigger.Player2CharacterChange])
+		if (option[AnimationTrigger.InGamePlayer2CharacterChange])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId ?? 0) !==
 					(prevPlayer2Frame?.players?.[player.playerIndex]?.post.internalCharacterId ??
