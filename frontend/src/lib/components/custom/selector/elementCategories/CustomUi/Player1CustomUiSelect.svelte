@@ -40,17 +40,24 @@
 		Player 1 Series Symbol Ultimate
 	</SelectOption>
 	<SelectOption
-		description="Player 1 Live In-Game Percent - 24%"
+		description="Player 1 Percent - 24%"
 		value={CustomElement.InGamePlayer1Percent}
 		on:select={select}
 	>
 		Player 1 Percent
 	</SelectOption>
 	<SelectOption
-		description="Player 1 Live In-Game Percent With Decimals - 24.6% "
+		description="Player 1 Percent With Decimals - 24.6% "
 		value={CustomElement.InGamePlayer1PercentDecimal}
 		on:select={select}
 	>
 		Player 1 Percent Decimal
+	</SelectOption>
+	<SelectOption
+		description="Player 1 Combo Counter"
+		value={CustomElement.InGamePlayer1ComboCounter}
+		on:select={select}
+	>
+		Player 1 Combo Counter
 	</SelectOption>
 </div>

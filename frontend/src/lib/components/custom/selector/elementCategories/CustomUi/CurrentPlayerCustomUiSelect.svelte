@@ -40,17 +40,24 @@
 		Current Player Series Symbol Ultimate
 	</SelectOption>
 	<SelectOption
-		description="Current Player Live In-Game Percent - 24%"
+		description="Current Player Percent - 24%"
 		value={CustomElement.InGameCurrentPlayerPercent}
 		on:select={select}
 	>
 		Current Player Percent
 	</SelectOption>
 	<SelectOption
-		description="Current Player Live In-Game Percent With Decimals - 24.6% "
+		description="Current Player Percent With Decimals - 24.6% "
 		value={CustomElement.InGameCurrentPlayerPercentDecimal}
 		on:select={select}
 	>
 		Current Player Percent Decimal
+	</SelectOption>
+	<SelectOption
+		description="Current Player Combo Counter"
+		value={CustomElement.InGameCurrentPlayerComboCounter}
+		on:select={select}
+	>
+		Current Player Combo Counter
 	</SelectOption>
 </div>

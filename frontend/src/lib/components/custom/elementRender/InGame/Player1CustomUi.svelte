@@ -2,7 +2,7 @@
 	import { CHARACTERS } from '$lib/models/constants/characterData';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers, gameScore } from '$lib/utils/store.svelte';
+	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
 	import PlayerPercent from '../../element/PlayerPercent.svelte';
 	import TextElement from '../../element/TextElement.svelte';
 	import InGameCharacterIcon from '../../element/inGame/InGameCharacterIcon.svelte';
@@ -31,11 +31,6 @@
 		numberOfDecimals={1}
 		player={$currentPlayers?.at(0)}
 	/>
-{/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer1Score}
-	<TextElement {style} {dataItem}>
-		{$gameScore?.at(0) ?? '0'}
-	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterIcon}
 	<InGameCharacterIcon
@@ -73,4 +68,10 @@
 		defaultPreviewId={Number(CHARACTERS['fox'])}
 		series={'ultimate'}
 	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer1ComboCounter}
+	<TextElement {style} {dataItem}>
+		{$gameFrame?.players[$currentPlayers?.at(1)?.playerIndex ?? 0]?.post.currentComboCount ??
+			'0'}
+	</TextElement>
 {/if}

@@ -32,11 +32,6 @@
 		player={$currentPlayers?.at(1)}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer2Score}
-	<TextElement {style} {dataItem}>
-		{$gameScore?.at(1) ?? '0'}
-	</TextElement>
-{/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2CharacterIcon}
 	<InGameCharacterIcon
 		{dataItem}
@@ -73,4 +68,10 @@
 		defaultPreviewId={Number(CHARACTERS['falco'])}
 		series={'ultimate'}
 	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ComboCounter}
+	<TextElement {style} {dataItem}>
+		{$gameFrame?.players[$currentPlayers?.at(1)?.playerIndex ?? 0]?.post.currentComboCount ??
+			'0'}
+	</TextElement>
 {/if}

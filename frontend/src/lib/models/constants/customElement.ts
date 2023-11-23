@@ -7,6 +7,9 @@ export enum CustomElement {
     InGameCurrentPlayerPercentDecimal = 1004,
     InGamePlayer1PercentDecimal = 1005,
     InGamePlayer2PercentDecimal = 1006,
+    InGameCurrentPlayerComboCounter = 1007,
+    InGamePlayer1ComboCounter = 1008,
+    InGamePlayer2ComboCounter = 1009,
 
     // Custom Image
     CustomImage = 2000,
@@ -117,9 +120,6 @@ export enum CustomElement {
     InGameTimerMilliseconds2 = 4303,
     InGameTimerMilliseconds1 = 4304,
     InGameTimerSecondsCountdown = 4305,
-
-    InGamePlayer1Score = 4407,
-    InGamePlayer2Score = 4408,
 
     // Character Render Under Custom Image
 

@@ -2,11 +2,12 @@
 	import { CHARACTERS } from '$lib/models/constants/characterData';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayer } from '$lib/utils/store.svelte';
-	import PlayerPercent from '../../element/PlayerPercent.svelte';
-	import InGameCharacterIcon from '../../element/inGame/InGameCharacterIcon.svelte';
-	import InGameCharacterRender from '../../element/inGame/InGameCharacterRender.svelte';
-	import InGameCharacterSeriesSymbol from '../../element/inGame/InGameCharacterSeriesSymbol.svelte';
+	import { currentPlayer, gameFrame } from '$lib/utils/store.svelte';
+	import PlayerPercent from '$lib/components/custom/element/PlayerPercent.svelte';
+	import InGameCharacterIcon from '$lib/components/custom/element/inGame/InGameCharacterIcon.svelte';
+	import InGameCharacterRender from '$lib/components/custom/element/inGame/InGameCharacterRender.svelte';
+	import InGameCharacterSeriesSymbol from '$lib/components/custom/element/inGame/InGameCharacterSeriesSymbol.svelte';
+	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -67,4 +68,9 @@
 		defaultPreviewId={Number(CHARACTERS['fox'])}
 		series={'ultimate'}
 	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerComboCounter}
+	<TextElement {style} {dataItem}>
+		{$gameFrame?.players[$currentPlayer?.playerIndex ?? 0]?.post.currentComboCount ?? '0'}
+	</TextElement>
 {/if}
