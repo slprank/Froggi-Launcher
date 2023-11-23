@@ -1,6 +1,6 @@
 export const COL = 512;
 export const ROW = Math.floor((COL * 9) / 16);
-export const MIN = Math.floor(COL / 100);
+export const MIN = 1
 
 export const WEBSOCKET_PORT = 3100;
 

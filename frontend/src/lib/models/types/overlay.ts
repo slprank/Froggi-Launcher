@@ -55,10 +55,29 @@ export interface Background {
 }
 
 export interface GridContentItem {
-	[COL]: any;
+	[COL]: GridContentItemConfig;
 	elementId: CustomElement;
 	data: ElementPayload;
 	id: string;
+}
+
+export interface GridContentItemConfig {
+	customDragger: boolean;
+	customResizer: boolean;
+	draggable: boolean;
+	fixed: boolean;
+	resizable: boolean;
+	max: {
+		y: number; h: number;
+	};
+	min: {
+		w: number; h: number;
+	};
+	id: string;
+	h: number;
+	w: number;
+	x: number;
+	y: number;
 }
 
 export interface GridContentItemStyle {

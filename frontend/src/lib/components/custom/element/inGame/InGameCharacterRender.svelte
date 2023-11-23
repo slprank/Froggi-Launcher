@@ -12,6 +12,8 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
+	$: console.log('preview', preview);
+
 	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
 	$: externalCharacterId = preview
@@ -25,32 +27,35 @@
 	let characterId: number;
 	const updateCharacterId = (externalCharacterId: number | null): number => {
 		if (!externalCharacterId || characterId >= 0) return characterId;
-		return characterId;
+		return externalCharacterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
+
+	$: console.log(externalCharacterId, characterId);
 
 	let div: HTMLElement;
 </script>
 
-{#if characterId}
-	<div
-		class={`w-full h-full ${style.classValue} grid justify-end`}
-		style={`${style.cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-		bind:this={div}
-		in:fly|local={{ duration: 0, delay: SCENE_TRANSITION_DELAY }}
-	>
-		{#if div}
-			<img
-				class="h-full aspect-video"
-				style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
-					div?.clientHeight
-				}px;
+{#key gameSettings}
+	{#if characterId}
+		<div
+			class={`w-full h-full ${style.classValue} grid justify-end`}
+			style={`${style.cssValue}; ${
+				dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+			}; `}
+			bind:this={div}
+		>
+			{#if div}
+				<img
+					class="h-full aspect-video"
+					style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
+						div?.clientHeight
+					}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-				src={`/image/character-renders/${characterId}.png`}
-				alt="custom"
-			/>
-		{/if}
-	</div>
-{/if}
+					src={`/image/character-renders/${characterId}.png`}
+					alt="custom"
+				/>
+			{/if}
+		</div>
+	{/if}
+{/key}

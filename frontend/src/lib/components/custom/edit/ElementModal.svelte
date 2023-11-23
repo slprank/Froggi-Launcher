@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { ElementPayload, GridContentItem, Overlay } from '$lib/models/types/overlay';
-	import { electronEmitter, localEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import type {
+		ElementPayload,
+		GridContentItem,
+		GridContentItemConfig,
+		Overlay,
+	} from '$lib/models/types/overlay';
+	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import {
 		generateNewItem,
@@ -14,6 +19,7 @@
 	import { COL } from '$lib/models/const';
 	import ElementSelect from '../selector/ElementSelect.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
+	import { fixCharacterTransition } from './fixTransition';
 
 	const overlayId = $page.params.overlay;
 
@@ -27,7 +33,7 @@
 
 	let demoItem: GridContentItem;
 	$: demoItem = {
-		[COL]: {},
+		[COL]: {} as GridContentItemConfig,
 		elementId: selectedElementId,
 		data: payload,
 		id: 'demo',
@@ -64,6 +70,8 @@
 			},
 		} as GridContentItem;
 
+		newItem = fixCharacterTransition(newItem);
+
 		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
@@ -76,6 +84,7 @@
 	function edit() {
 		let items = getCurrentItems();
 		let prevItem = items.find((item) => item.id === selectedId);
+
 		if (!prevItem) {
 			add();
 			return;
@@ -88,6 +97,8 @@
 				...prevItem![COL],
 			},
 		} as GridContentItem;
+
+		newItem = fixCharacterTransition(newItem);
 
 		items = items.filter((item) => item.id != selectedId);
 		items = [...items, newItem];

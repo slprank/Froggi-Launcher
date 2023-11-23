@@ -80,8 +80,6 @@
 	let loadTrigger: number;
 	const loadStyling = () => {
 		const settingsType = getSettingsType();
-		console.log(settingsType);
-		console.log('savedStyle', savedStyle);
 		if (!settingsType || !savedStyle) return;
 		payload = JSON.parse(JSON.stringify(savedStyle));
 		loadTrigger = Math.random();
@@ -93,8 +91,6 @@
 		payload = getDefaultElementPayload();
 	}
 	$: selectedElementId, clearStyle();
-
-	$: console.log('payload', payload);
 
 	const fixAnimationInputDelay = () => {
 		if (payload.animationTrigger.in.type === Animation.None) {

@@ -23,24 +23,26 @@
 	let characterId: number;
 	const updateCharacterId = (externalCharacterId: number | null): number => {
 		if (!externalCharacterId || characterId >= 0) return characterId;
-		return characterId;
+		return externalCharacterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
 </script>
 
-{#if characterId}
-	<div
-		class={`w-full h-full flex ${style.classValue}`}
-		style={`${style.cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
-		<img
-			class="h-full w-full aspect-video"
-			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+{#key gameSettings}
+	{#if characterId}
+		<div
+			class={`w-full h-full flex ${style.classValue}`}
+			style={`${style.cssValue}; ${
+				dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+			}; `}
+		>
+			<img
+				class="h-full w-full aspect-video"
+				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/characters/${characterId}/0.png`}
-			alt="custom"
-		/>
-	</div>
-{/if}
+				src={`/image/characters/${characterId}/0.png`}
+				alt="custom"
+			/>
+		</div>
+	{/if}
+{/key}
