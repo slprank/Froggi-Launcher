@@ -41,6 +41,7 @@
 	import CurrentPlayerControllerInput from './CustomUi/CurrentPlayerControllerInput.svelte';
 	import Player1ControllerInput from './CustomUi/Player1ControllerInput.svelte';
 	import Player2ControllerInput from './CustomUi/Player2ControllerInput.svelte';
+	import RankChangeData from './SlippiData/RankChangeData.svelte';
 
 	export let selectedElementId: CustomElement;
 	export let open: boolean;
@@ -86,13 +87,16 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
+			category: ElementCategory.RankChangeData,
+			visible: [LiveStatsScene.RankChange].includes($statsScene),
+		},
+		{
 			category: ElementCategory.CurrentPlayerSlippiData,
 			visible: [
 				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
 				LiveStatsScene.PostGame,
 				LiveStatsScene.PostSet,
-				LiveStatsScene.RankChange,
 			].includes($statsScene),
 		},
 		{
@@ -291,6 +295,10 @@
 			{/if}
 			{#if selectedCategory === ElementCategory.Session}
 				<Session on:select={select} />
+			{/if}
+			{#if selectedCategory === ElementCategory.RankChangeData}
+				<RecentGameCurrentPlayerSlippiData on:select={select} />
+				<RankChangeData on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
 				<RecentGameCurrentPlayerSlippiData on:select={select} />

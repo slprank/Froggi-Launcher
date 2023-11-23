@@ -78,6 +78,8 @@ export enum CustomElement {
     SlippiRankPlayer1Character3Percent = 4134,
     SlippiRankPlayer2Character3Percent = 4135,
 
+    SlippiRankChangeRatingDifference = 3140,
+
     //Post Match Game Summary
 
     CurrentSetGameMode = 4195,

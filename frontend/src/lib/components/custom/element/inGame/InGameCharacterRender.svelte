@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { CHARACTERS_INTERNAL_EXTERNAL } from '$lib/models/constants/characterData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame, gameSettings } from '$lib/utils/store.svelte';
-	import { fly } from 'svelte/transition';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;
@@ -30,8 +28,6 @@
 		return externalCharacterId;
 	};
 	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
-
-	$: console.log(externalCharacterId, characterId);
 
 	let div: HTMLElement;
 </script>

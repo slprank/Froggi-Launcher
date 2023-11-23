@@ -12,6 +12,7 @@
 	) => {
 		if (!player) return;
 		let trigger = false;
+		setTimeout(() => (prevRank = player.rank));
 
 		if (option[AnimationTrigger.RankStatsIconChange])
 			trigger = player.rank.current?.rank !== player.rank.current?.rank || trigger;
@@ -19,7 +20,6 @@
 		if (option[AnimationTrigger.RankStatsRatingChange])
 			trigger = player.rank.current?.rating !== player.rank.current?.rating || trigger;
 
-		prevRank = player.rank;
 		return trigger;
 	};
 </script>

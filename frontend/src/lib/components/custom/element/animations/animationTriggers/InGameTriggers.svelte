@@ -21,13 +21,13 @@
 		const currentSecond = Math.ceil(
 			(gameSettings?.startingTimerSeconds ?? 480) - (gameFrame?.frame ?? 0) / 60,
 		);
+		setTimeout(() => (prevSecond = currentSecond));
 
 		if (option[AnimationTrigger.InGameGameCountdown])
 			trigger =
 				(currentSecond > 0 && currentSecond < 6 && currentSecond < (prevSecond ?? 0)) ||
 				trigger;
 
-		prevSecond = currentSecond;
 		return trigger;
 	};
 
@@ -39,6 +39,8 @@
 	) => {
 		if (!player || !gameFrame) return;
 		let trigger = false;
+		setTimeout(() => (prevCurrentPlayerFrame = gameFrame));
+
 		if (option[AnimationTrigger.InGameCurrentPlayerPercent])
 			trigger =
 				(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
@@ -57,7 +59,6 @@
 					(prevCurrentPlayerFrame?.players?.[player.playerIndex]?.post
 						.internalCharacterId ?? 0) || trigger;
 
-		prevCurrentPlayerFrame = gameFrame;
 		return trigger;
 	};
 
@@ -69,6 +70,7 @@
 	) => {
 		if (!player || !gameFrame) return;
 		let trigger: boolean = false;
+		setTimeout(() => (prevPlayer1Frame = gameFrame));
 
 		if (option[AnimationTrigger.InGamePlayer1Percent])
 			trigger =
@@ -81,13 +83,13 @@
 					(prevPlayer1Frame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
 				trigger;
 
-		if (option[AnimationTrigger.InGamePlayer1CharacterChange])
+		if (option[AnimationTrigger.InGamePlayer1CharacterChange]) {
 			trigger =
-				(gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId ?? 0) !==
-					(prevPlayer1Frame?.players?.[player.playerIndex]?.post.internalCharacterId ??
-						0) || trigger;
+				gameFrame?.players?.[player.playerIndex]?.post.internalCharacterId !==
+					prevPlayer1Frame?.players?.[player.playerIndex]?.post.internalCharacterId ||
+				trigger;
+		}
 
-		prevPlayer1Frame = gameFrame;
 		return trigger;
 	};
 
@@ -99,6 +101,7 @@
 	) => {
 		if (!player || !gameFrame) return;
 		let trigger = false;
+		setTimeout(() => (prevPlayer2Frame = gameFrame));
 
 		if (option[AnimationTrigger.InGamePlayer2Percent])
 			trigger =

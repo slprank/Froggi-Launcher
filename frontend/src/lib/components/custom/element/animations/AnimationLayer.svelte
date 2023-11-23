@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { GridContentItem } from '$lib/models/types/overlay';
-	import { AnimationTrigger } from '$lib/models/types/animationOption';
 	import {
 		localEmitter,
 		gameFrame,
@@ -28,10 +27,7 @@
 
 		if (inGameStateTrigger(option, $gameSettings, $gameFrame)) return Math.random();
 		if (currentPlayerInGameTrigger(option, $currentPlayer, $gameFrame)) return Math.random();
-		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame)) {
-			console.log('here');
-			return Math.random();
-		}
+		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame)) return Math.random();
 		if (player2InGameTrigger(option, $currentPlayers?.at(1), $gameFrame)) return Math.random();
 		if (rankStateTrigger(option, $currentPlayer)) return Math.random();
 
@@ -40,7 +36,6 @@
 
 	const updateTriggerValues = () => {
 		key = updateKeyValue();
-		console.log(key);
 	};
 
 	$: $gameFrame, $currentPlayer, updateTriggerValues();

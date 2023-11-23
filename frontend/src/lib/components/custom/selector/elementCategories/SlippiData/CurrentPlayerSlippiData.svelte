@@ -40,7 +40,7 @@
 		Rank Text
 	</SelectOption>
 	<SelectOption
-		description="Current Player Slippi Rank Text"
+		description="Current Player Slippi Rating"
 		value={CustomElement.SlippiRankCurrentPlayerRating}
 		on:select={select}
 	>

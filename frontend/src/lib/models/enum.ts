@@ -96,6 +96,7 @@ export enum ElementCategory {
 	CurrentPlayerControllerInput = "Current Player Controller Inputs",
 	Player1ControllerInput = "Player1 Controller Input",
 	Player2ControllerInput = "Player2 Controller Input",
+	RankChangeData = "Rank Change Data",
 
 	RecentGameSummary = "Recent Game Summary",
 	Game1Summary = "Game 1 Summary",
