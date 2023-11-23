@@ -14,14 +14,14 @@
 		const player = players?.at(0);
 
 		if (option[VisibilityOption.InGamePlayer1Combo] === VisibilityToggle.True)
-			if (getComboCount(gameFrame, player?.playerIndex ?? 0) >= 3) return true;
+			if (isCombo(gameFrame, player?.playerIndex ?? 0)) return true;
 		if (option[VisibilityOption.InGamePlayer1Combo] === VisibilityToggle.False)
-			if (getComboCount(gameFrame, player?.playerIndex ?? 0) < 3) return true;
+			if (!isCombo(gameFrame, player?.playerIndex ?? 0)) return true;
 
 		return false;
 	};
 
-	const getComboCount = (frame: FrameEntryType | null, playerIndex: number) => {
-		return frame?.players[playerIndex]?.post.currentComboCount ?? 0;
+	const isCombo = (frame: FrameEntryType | null, playerIndex: number) => {
+		return (frame?.players[playerIndex]?.post.currentComboCount ?? 0) >= 3;
 	};
 </script>

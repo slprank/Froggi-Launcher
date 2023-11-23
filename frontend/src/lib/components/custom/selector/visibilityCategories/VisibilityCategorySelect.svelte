@@ -18,6 +18,7 @@
 		type VisibilityOption,
 	} from '$lib/models/types/animationOption';
 	import { VisibilityToggle } from '$lib/models/types/animationOption';
+	import MatchStatsVisibilitySelect from './MatchStatsVisibilitySelect.svelte';
 
 	export let selectedVisibilityOption: SelectedVisibilityOption;
 
@@ -59,6 +60,16 @@
 		{
 			category: VisibilityCategory.Player2State,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.MatchStats,
+			visible: [
+				LiveStatsScene.Menu,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+				LiveStatsScene.RankChange,
+			].includes($statsScene),
 		},
 		{
 			category: VisibilityCategory.RecentGame,
@@ -139,6 +150,11 @@
 						on:select={select}
 						{selectedVisibilityOption}
 					/>
+				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.MatchStats}
+				<div class="flex flex-col gap-2">
+					<MatchStatsVisibilitySelect on:select={select} {selectedVisibilityOption} />
 				</div>
 			{/if}
 			{#if selectedCategory === VisibilityCategory.RecentGame}

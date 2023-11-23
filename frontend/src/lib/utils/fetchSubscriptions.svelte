@@ -15,6 +15,7 @@
 		postGame,
 		recentGames,
 		sessionStats,
+		gameScore,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
@@ -101,6 +102,14 @@
 		return await new Promise<GameStats[]>((resolve) => {
 			recentGames.subscribe((stats) => {
 				resolve(stats);
+			});
+		});
+	}
+
+	export async function getMatchScore(): Promise<number[]> {
+		return await new Promise<number[]>((resolve) => {
+			gameScore.subscribe((score) => {
+				resolve(score);
 			});
 		});
 	}

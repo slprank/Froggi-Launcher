@@ -30,6 +30,13 @@ export enum VisibilityOption {
 
     InGamePlayer2Combo = "Player 2 Combo",
 
+    MatchStatsPlayer1Score1 = "Player 1 Score 1",
+    MatchStatsPlayer1Score2 = "Player 1 Score 2",
+    MatchStatsPlayer1Score3 = "Player 1 Score 3",
+    MatchStatsPlayer2Score1 = "Player 2 Score 1",
+    MatchStatsPlayer2Score2 = "Player 2 Score 2",
+    MatchStatsPlayer2Score3 = "Player 2 Score 3",
+
     PostGameCurrentPlayerWin = "Post Game Current Player Win",
     PostGameCurrentPlayerLoss = "Post Game Current Player Loss",
     PostGamePlayer1Win = "Post Game Player 1 Win",
@@ -121,6 +128,7 @@ export enum VisibilityCategory {
     OngoingGame = "Ongoing Game",
     Session = "Session",
     InGameState = "Game State",
+    MatchStats = "Match Stats",
     RecentGame = "Recent Game",
     RecentGame1Summary = "Recent Game 1 Summary",
     RecentGame2Summary = "Recent Game 2 Summary",

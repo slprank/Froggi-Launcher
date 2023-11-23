@@ -224,7 +224,7 @@
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
-			category: ElementCategory.CurrentSetStats,
+			category: ElementCategory.CurrentMatchStats,
 			visible: [
 				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
@@ -286,7 +286,7 @@
 				<Player1ControllerInput on:select={select} />
 			{/if}
 
-			{#if selectedCategory === ElementCategory.CurrentSetStats}
+			{#if selectedCategory === ElementCategory.CurrentMatchStats}
 				<RecentGameCurrentSetElementSelect on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Session}
