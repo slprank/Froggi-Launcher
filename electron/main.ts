@@ -17,26 +17,28 @@ import { StatsDisplay } from './services/statsDisplay';
 import { SlippiJs } from './services/slippi';
 import { SlpParser, SlpStream } from '@slippi/slippi-js';
 import { DiscordRpc } from './services/discord';
+import { migrateStore } from './services/store/migration';
 import Store from 'electron-store';
+
+const mainLog: ElectronLog = setLoggingPath(log);
 
 const isMac = os.platform() === 'darwin';
 const isWindows = os.platform() === 'win32';
 const isLinux = os.platform() === 'linux';
 
-const store = new Store()
+const store = new Store(migrateStore(log))
 
-log.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
+mainLog.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 const slpParser = new SlpParser();
 const slpStream = new SlpStream();
 const localEmitter = new TypedEmitter();
 
-setLoggingPath();
 
 try {
 	require('electron-reloader')(module);
 } catch (e) {
-	log.error(e);
+	mainLog.error(e);
 }
 const serveURL = serve({ directory: '.' });
 const dev = !app.isPackaged;
@@ -46,7 +48,6 @@ let mainWindow: BrowserWindow | any;
 let tray: Tray;
 
 function createWindow(): BrowserWindow {
-
 	let windowState = windowStateManager({
 		defaultWidth: 800,
 		defaultHeight: 600,
@@ -88,7 +89,6 @@ function createTray(): Tray {
 	const image = nativeImage.createFromPath(
 		path.join(__dirname, "../frontend/static/icon.png")
 	);
-	console.log("test", image.isMacTemplateImage, image.getSize())
 	tray = new Tray(image.resize({ width: 16, height: 16 }))
 	tray.setToolTip("Froggi")
 
@@ -121,7 +121,7 @@ contextMenu({
 			label: 'Run function',
 			click: () => {
 				mainWindow.webContents.send('reset-score');
-				log.info('Right click: 1');
+				mainLog.info('Right click: 1');
 				console.log(defaultActions, params, browserWindow);
 			},
 		},
@@ -136,7 +136,7 @@ contextMenu({
 
 function loadVite(port: string) {
 	mainWindow.loadURL(`http://127.0.0.1:${port}`).catch((e: any) => {
-		log.error('Error loading URL, retrying', e);
+		mainLog.error('Error loading URL, retrying', e);
 		setTimeout(() => {
 			loadVite(port);
 		}, 200);
@@ -153,7 +153,7 @@ function createMainWindow() {
 	mainWindow.webContents.once('dom-ready', async () => {
 		container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
 		container.register<TypedEmitter>('LocalEmitter', { useValue: localEmitter });
-		container.register<ElectronLog>('ElectronLog', { useValue: log });
+		container.register<ElectronLog>('ElectronLog', { useValue: mainLog });
 		container.register<IpcMain>('IpcMain', { useValue: ipcMain });
 		container.register<SlpParser>('SlpParser', { useValue: slpParser });
 		container.register<SlpStream>('SlpStream', { useValue: slpStream });
@@ -182,11 +182,12 @@ app.once('ready', createMainWindow);
 
 app.on('activate', () => { mainWindow.show() })
 
-function setLoggingPath() {
+function setLoggingPath(log: ElectronLog): ElectronLog {
 	try {
 		const appDataPath = getAppDataPath('froggi');
 		log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
 	} catch (err) {
 		log.error(err);
 	}
+	return log
 }
