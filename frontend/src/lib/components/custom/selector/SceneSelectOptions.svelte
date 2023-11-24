@@ -10,7 +10,7 @@
 		$localEmitter.emit('LiveStatsSceneChange', scene);
 	}
 
-	let buttons = [
+	let options = [
 		{
 			text: 'Waiting',
 			liveScene: LiveStatsScene.WaitingForDolphin,
@@ -40,7 +40,7 @@
 
 {#if overlay}
 	<div class="w-lg 3xl:w-full grid grid-flow-row gap-2">
-		{#each buttons as button}
+		{#each options as button}
 			<div class="grid grid-flow-col gap-2 justify-start items-start w-full">
 				<div class="w-4 h-4 grid justify-center items-center">
 					<input
@@ -60,14 +60,16 @@
 					{button.text}
 				</button>
 				{#if !overlay?.[button.liveScene].active}
-					<div class="w-32" data-tooltip={`Selected scene will be displayed instead`}>
+					<div
+						class="w-32"
+						data-tooltip={`Selected scene will be displayed over expected scene`}
+					>
 						<Select bind:selected={overlay[button.liveScene].fallback}>
-							<option value={LiveStatsScene.WaitingForDolphin}>Waiting</option>
-							<option selected value={LiveStatsScene.Menu}>Menu</option>
-							<option value={LiveStatsScene.InGame}>In Game</option>
-							<option value={LiveStatsScene.PostGame}>Post Game</option>
-							<option value={LiveStatsScene.PostSet}>Post Set</option>
-							<option value={LiveStatsScene.RankChange}>Rank Change</option>
+							{#each options as option}
+								{#if overlay[option.liveScene].active}
+									<option value={option.liveScene}>{option.text}</option>
+								{/if}
+							{/each}
 						</Select>
 					</div>
 				{/if}
