@@ -65,10 +65,8 @@
 						data-tooltip={`Selected scene will be displayed over expected scene`}
 					>
 						<Select bind:selected={overlay[button.liveScene].fallback}>
-							{#each options as option}
-								{#if overlay[option.liveScene].active}
-									<option value={option.liveScene}>{option.text}</option>
-								{/if}
+							{#each options.filter((option) => overlay[option.liveScene].active) as option}
+								<option value={option.liveScene}>{option.text}</option>
 							{/each}
 						</Select>
 					</div>
