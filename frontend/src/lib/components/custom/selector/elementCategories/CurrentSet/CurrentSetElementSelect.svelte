@@ -12,6 +12,20 @@
 
 <div class="flex flex-col gap-2">
 	<SelectOption
+		description="Ongoing Set Game Mode - Local/Direct/Unranked/Ranked"
+		value={CustomElement.CurrentSetGameMode}
+		on:select={select}
+	>
+		Game Mode
+	</SelectOption>
+	<SelectOption
+		description="Ongoing Set Best Of - 3/5"
+		value={CustomElement.CurrentSetBestOf}
+		on:select={select}
+	>
+		Best Of
+	</SelectOption>
+	<SelectOption
 		description="Player 1 Ongoing Set Score"
 		value={CustomElement.CurrentSetGameRecentPlayer1Score}
 		on:select={select}

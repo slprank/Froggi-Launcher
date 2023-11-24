@@ -258,10 +258,9 @@ export class StatsDisplay {
 		return {
 			gameEnd: game.getGameEnd(),
 			lastFrame: game.getLatestFrame(),
-			mode: getGameMode(settings),
 			postGameStats: this.enrichPostGameStats(game),
 			score: this.storeGames.getGameScore(),
-			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings), matchId: settings?.matchInfo?.matchId?.replace(/[.:]/g, '-') } },
+			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings), matchId: settings?.matchInfo?.matchId?.replace(/[.:]/g, '-'), bestOf: this.storeLiveStats.getBestOf() } },
 			timestamp: dateTimeNow(),
 		} as GameStats
 	}

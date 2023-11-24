@@ -94,7 +94,7 @@ export class ElectronLiveStatsStore {
 
 	setBestOf(bestOf: BestOf | undefined) {
 		if (!bestOf) return;
-		this.store.set("stats.bestOf", bestOf)
+		this.store.set("stats.game.settings.matchInfo.bestOf", bestOf)
 	}
 
 	getBestOf(): BestOf {

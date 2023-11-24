@@ -8,7 +8,7 @@
 	export let stageId: Stage | undefined | null;
 	export let fallbackStageId: Stage | undefined | null = null;
 
-	let stage = stageId ? stageId : defaultPreview ? fallbackStageId : null;
+	let stage = defaultPreview ? fallbackStageId : stageId ? stageId : null;
 </script>
 
 {#if stage}

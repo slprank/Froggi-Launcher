@@ -33,11 +33,11 @@
 	import CurrentMatchPlayer2ActionCount from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2ActionCount.svelte';
 	import CurrentMatchPlayer2Overall from '$lib/components/custom/selector/elementCategories/PostGameMatch/CurrentMatchPlayer2Overall.svelte';
 	import RecentGame from './RecentMatchSummary/RecentGame.svelte';
-	import Game1 from './RecentMatchSummary/Game1.svelte';
-	import Game2 from './RecentMatchSummary/Game2.svelte';
-	import Game3 from './RecentMatchSummary/Game3.svelte';
-	import Game4 from './RecentMatchSummary/Game4.svelte';
-	import Game5 from './RecentMatchSummary/Game5.svelte';
+	import Game1Summary from './RecentMatchSummary/Game1.svelte';
+	import Game2Summary from './RecentMatchSummary/Game2.svelte';
+	import Game3Summary from './RecentMatchSummary/Game3.svelte';
+	import Game4Summary from './RecentMatchSummary/Game4.svelte';
+	import Game5Summary from './RecentMatchSummary/Game5.svelte';
 	import CurrentPlayerControllerInput from './CustomUi/CurrentPlayerControllerInput.svelte';
 	import Player1ControllerInput from './CustomUi/Player1ControllerInput.svelte';
 	import Player2ControllerInput from './CustomUi/Player2ControllerInput.svelte';
@@ -65,6 +65,16 @@
 		{
 			category: ElementCategory.CurrentPlayerCustomUi,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: ElementCategory.CurrentMatchStats,
+			visible: [
+				LiveStatsScene.Menu,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostSet,
+				LiveStatsScene.RankChange,
+			].includes($statsScene),
 		},
 		{
 			category: ElementCategory.Player1CustomUi,
@@ -227,16 +237,6 @@
 			category: ElementCategory.Game5Summary,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
-		{
-			category: ElementCategory.CurrentMatchStats,
-			visible: [
-				LiveStatsScene.Menu,
-				LiveStatsScene.InGame,
-				LiveStatsScene.PostGame,
-				LiveStatsScene.PostSet,
-				LiveStatsScene.RankChange,
-			].includes($statsScene),
-		},
 	];
 </script>
 
@@ -369,19 +369,19 @@
 				<RecentGame on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Game1Summary}
-				<Game1 on:select={select} />
+				<Game1Summary on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Game2Summary}
-				<Game2 on:select={select} />
+				<Game2Summary on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Game3Summary}
-				<Game3 on:select={select} />
+				<Game3Summary on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Game4Summary}
-				<Game4 on:select={select} />
+				<Game4Summary on:select={select} />
 			{/if}
 			{#if selectedCategory === ElementCategory.Game5Summary}
-				<Game5 on:select={select} />
+				<Game5Summary on:select={select} />
 			{/if}
 		</div>
 	{/key}

@@ -83,7 +83,7 @@ export enum CustomElement {
     //Post Match Game Summary
 
     CurrentSetGameMode = 4195,
-    CurrentSetGameBestOf = 4196,
+    CurrentSetBestOf = 4196,
 
     CurrentSetGameRecentPlayer1Score = 4200,
     CurrentSetGameRecentPlayer2Score = 4201,
@@ -619,6 +619,8 @@ export enum CustomElement {
     CurrentSetGame5Player2CharacterRender = 6154,
 
     InGameStage = 6200,
+
+
     InGameCurrentPlayerCharacterIcon = 6210,
     InGameCurrentPlayerCharacterSeriesSymbol = 6211,
     InGameCurrentPlayerCharacterSeriesSymbolUltimate = 6212,

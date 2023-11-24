@@ -96,6 +96,7 @@ export type MatchInfoExtended = {
     gameNumber: number | null;
     tiebreakerNumber: number | null;
     mode: GameStartMode | undefined;
+    bestOf: number | undefined
 }
 
 export interface RankedNetplaySeason {
