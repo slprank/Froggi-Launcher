@@ -6,6 +6,7 @@
 		gameSettings,
 		currentPlayer,
 		currentPlayers,
+		gameScore,
 	} from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	import {
@@ -15,6 +16,7 @@
 		player2InGameTrigger,
 	} from './animationTriggers/InGameTriggers.svelte';
 	import { rankStateTrigger } from './animationTriggers/RankChangeTriggers.svelte';
+	import { matchStateTrigger } from './animationTriggers/MatchChangeTriggers.svelte';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -29,6 +31,7 @@
 		if (currentPlayerInGameTrigger(option, $currentPlayer, $gameFrame)) return Math.random();
 		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame)) return Math.random();
 		if (player2InGameTrigger(option, $currentPlayers?.at(1), $gameFrame)) return Math.random();
+		if (matchStateTrigger(option, $gameScore)) return Math.random();
 		if (rankStateTrigger(option, $currentPlayer)) return Math.random();
 
 		return key;

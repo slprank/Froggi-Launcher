@@ -70,7 +70,7 @@
 			},
 		} as GridContentItem;
 
-		newItem = fixCharacterTransition(newItem);
+		newItem = fixTransition(newItem);
 
 		items = [...items, newItem];
 

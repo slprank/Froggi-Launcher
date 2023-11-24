@@ -12,6 +12,9 @@ export enum AnimationTrigger {
     InGamePlayer1CharacterChange = "Player1 Character Change",
     InGamePlayer2CharacterChange = "Player2 Character Change",
 
+    MatchPlayer1ScoreChange = "Player 1 Score Change",
+    MatchPlayer2ScoreChange = "Player 1 Score Change",
+
     RankStatsRatingChange = "Rank Stats Rating Change",
     RankStatsIconChange = "Rank Stats Icon Change",
 }
@@ -149,6 +152,7 @@ export enum AnimationTriggerCategory {
     Player1State = "Player1 State",
     Player2State = "Player2 State",
     GameState = "Game State",
+    MatchState = "Match State",
     RankStats = "Rank Stats"
 }
 
