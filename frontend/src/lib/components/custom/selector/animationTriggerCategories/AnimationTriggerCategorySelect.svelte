@@ -28,6 +28,20 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
+			category: AnimationTriggerCategory.MatchState,
+			visible: [
+				LiveStatsScene.Menu,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.RankChange,
+			].includes($statsScene),
+		},
+		{
+			category: AnimationTriggerCategory.CurrentPlayerState,
+			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
 			category: AnimationTriggerCategory.Player1State,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
@@ -36,8 +50,8 @@
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			category: AnimationTriggerCategory.CurrentPlayerState,
-			visible: [LiveStatsScene.InGame].includes($statsScene),
+			category: AnimationTriggerCategory.RankStats,
+			visible: [LiveStatsScene.RankChange].includes($statsScene),
 		},
 	];
 </script>
@@ -92,7 +106,7 @@
 					<Player2StateAnimationTriggerSelect on:select={select} {selectedOption} />
 				</div>
 			{/if}
-			{#if selectedCategory === AnimationTriggerCategory.Player2State}
+			{#if selectedCategory === AnimationTriggerCategory.RankStats}
 				<div class="flex flex-col gap-2">
 					<RankStatsAnimationTriggerSelect on:select={select} {selectedOption} />
 				</div>
