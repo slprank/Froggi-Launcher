@@ -18,7 +18,7 @@
 		const players = await getPlayers();
 
 		const gameIndex = recentGames.length > 5 ? -5 : 0;
-		const game = recentGames.at(gameIndex);
+		const game = recentGames.at(gameIndex)?.at(-1);
 
 		const winnerIndex = getWinnerIndex(game?.gameEnd);
 

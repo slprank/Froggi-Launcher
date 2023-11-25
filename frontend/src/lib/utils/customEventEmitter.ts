@@ -1,7 +1,7 @@
-import type { AutoUpdaterStatus, DolphinConnectionState, InGameState, LiveStatsScene } from "../models/enum"
+import type { AutoUpdaterStatus, BestOf, DolphinConnectionState, InGameState, LiveStatsScene } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Obs, Overlay, Url } from "../models/types/overlay"
-import type { CurrentPlayer, GameStartTypeExtended, GameStats, MatchStats, Player, Session } from "../models/types/slippiData"
+import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, MatchStats, Player, Session } from "../models/types/slippiData"
 import type { FrameEntryType } from "@slippi/slippi-js"
 import localEmitter from "eventemitter2"
 
@@ -19,10 +19,10 @@ export interface MessageEvents {
     GameState: (state: InGameState | undefined) => void
     InitElectron: () => void
     LayerPreviewChange: (layerIndex: number) => void
+    CurrentMatch: (match: Match) => void
     MemoryControllerInput: (controllerInputs: PlayerController) => void
     PostGameStats: (stats: GameStats | undefined) => void
-    PostMatchStats: (stats: MatchStats | undefined) => void
-    RecentGames: (games: GameStats[]) => void
+    RecentGames: (games: GameStats[][]) => void
     RecentRankedSets: (games: GameStats[]) => void
     SessionStats: (session: Session | undefined) => void
     LiveStatsSceneChange: (scene: LiveStatsScene | undefined) => void

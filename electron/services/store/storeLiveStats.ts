@@ -9,9 +9,11 @@ import {
 	GameStartMode,
 	GameStartTypeExtended,
 	GameStats,
+	Match,
 	MatchStats,
 	Player,
 } from '../../../frontend/src/lib/models/types/slippiData';
+import { isNil } from 'lodash';
 
 @singleton()
 export class ElectronLiveStatsStore {
@@ -93,12 +95,12 @@ export class ElectronLiveStatsStore {
 	}
 
 	setBestOf(bestOf: BestOf | undefined) {
-		if (!bestOf) return;
-		this.store.set("stats.game.settings.matchInfo.bestOf", bestOf)
+		if (isNil(bestOf)) return;
+		this.store.set("stats.match.bestOf", bestOf)
 	}
 
 	getBestOf(): BestOf {
-		return this.store.get("stats.bestOf") as BestOf
+		return this.store.get("stats.match.bestOf") as BestOf
 	}
 
 	initListeners() {
@@ -121,8 +123,8 @@ export class ElectronLiveStatsStore {
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
 			this.messageHandler.sendMessage("PostGameStats", value as GameStats);
 		});
-		this.store.onDidChange(`stats.match.stats`, async (value) => {
-			this.messageHandler.sendMessage("PostMatchStats", value as MatchStats);
+		this.store.onDidChange(`stats.match`, async (value) => {
+			this.messageHandler.sendMessage("CurrentMatch", value as Match);
 		});
 	}
 }

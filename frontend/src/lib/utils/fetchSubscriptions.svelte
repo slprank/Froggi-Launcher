@@ -98,8 +98,8 @@
 		});
 	}
 
-	export async function getRecentGames(): Promise<GameStats[]> {
-		return await new Promise<GameStats[]>((resolve) => {
+	export async function getRecentGames(): Promise<GameStats[][]> {
+		return await new Promise<GameStats[][]>((resolve) => {
 			recentGames.subscribe((stats) => {
 				resolve(stats);
 			});

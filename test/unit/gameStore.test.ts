@@ -138,7 +138,7 @@ describe('ElectnronGamesStore', () => {
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
-            const recentGame = electronGamesStore.getRecentGames()?.at(0)
+            const recentGame = electronGamesStore.getRecentGames()?.at(0)?.at(0)
             expect(currentGameSettings.matchInfo?.matchId?.replace(/[.:]/g, '-')).toStrictEqual(recentGame?.settings?.matchInfo?.matchId)
             expect(currentGameSettings.matchInfo?.gameNumber).toStrictEqual(recentGame?.settings?.matchInfo?.gameNumber);
         }
@@ -168,7 +168,7 @@ describe('ElectnronGamesStore', () => {
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
-            const recentGame = electronGamesStore.getRecentGames()?.at(0)
+            const recentGame = electronGamesStore.getRecentGames()?.at(0)?.at(0)
             const matchGames = electronGamesStore.getGameMatch(recentGame?.settings?.matchInfo.matchId)
             expect(matchGames).toHaveLength(gameTest.expectedLength);
         }
@@ -198,7 +198,7 @@ describe('ElectnronGamesStore', () => {
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
             await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
-            const recentGame = electronGamesStore.getRecentGames()?.at(0)
+            const recentGame = electronGamesStore.getRecentGames()?.at(0)?.at(0)
             expect(gameTest.expectedMode).toStrictEqual(recentGame?.settings?.matchInfo.mode)
         }
     })

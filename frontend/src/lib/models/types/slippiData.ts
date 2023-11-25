@@ -1,4 +1,5 @@
 import type { ActionCountsType, FrameEntryType, GameEndType, GameStartType, OverallType, PlayerType, StatsType } from "@slippi/slippi-js";
+import type { BestOf } from "../enum";
 
 export interface Character {
     characterName: string;
@@ -72,6 +73,11 @@ export interface GameStats {
     score: number[];
     settings: GameStartTypeExtended | null;
     timestamp: Date;
+}
+
+export interface Match {
+    stats: MatchStats
+    bestOf: BestOf
 }
 
 export interface MatchStats {

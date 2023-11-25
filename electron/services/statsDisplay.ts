@@ -91,7 +91,7 @@ export class StatsDisplay {
 		this.storePlayers.setCurrentPlayers(currentPlayers);
 		this.storeLiveStats.setGameSettings(settings);
 
-		const previousGame = this.storeGames.getRecentGames()?.at(0)
+		const previousGame = this.storeGames.getRecentGames()?.at(0)?.at(0)
 
 		if (previousGame?.settings?.matchInfo.matchId === settings?.matchInfo?.matchId?.replace(/[.:]/g, '-')) return;
 		this.storeGames.clearRecentGames()
@@ -130,7 +130,7 @@ export class StatsDisplay {
 		this.storeGames.setGameMatch(gameStats)
 		const games = this.storeGames.getRecentGames()
 		if (!games || !games?.length) return;
-		const matchStats = analyzeMatch(games.slice(0, 5))
+		const matchStats = analyzeMatch(games.flat())
 		this.storeLiveStats.setMatchStats(matchStats)
 	}
 

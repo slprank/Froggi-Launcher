@@ -8,6 +8,7 @@ import { PlayerType } from '@slippi/slippi-js';
 import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
+import { isNil } from 'lodash';
 
 
 @singleton()
@@ -82,17 +83,23 @@ export class ElectronGamesStore {
         return playerGame[mode]
     }
 
-    getRecentGames(): GameStats[] | undefined {
+    getRecentGames(): GameStats[][] | undefined {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        return this.store.get(`player.any.game.recent`) as GameStats[]
+        return this.store.get(`player.any.game.recent`) as GameStats[][]
     }
 
-    addRecentGames(game: GameStats) {
+    addRecentGames(newGame: GameStats) {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        const games = this.store.get(`player.any.game.recent`) as GameStats[] ?? [];
-        this.store.set(`player.any.game.recent`, [game, ...games])
+        const prevGames = this.store.get(`player.any.game.recent`) as GameStats[][] ?? [];
+        const currentGame = prevGames.find(prevGame => prevGame.some(game => game.settings?.matchInfo.gameNumber === newGame.settings?.matchInfo.gameNumber))
+
+        if (isNil(currentGame)) {
+            this.store.set(`player.any.game.recent`, [[newGame], ...prevGames])
+        } else {
+            this.store.set(`player.any.game.recent`, [[newGame, ...currentGame], ...prevGames])
+        };
     }
 
     clearRecentGames() {
@@ -132,6 +139,9 @@ export class ElectronGamesStore {
         this.listeners = [
             this.store.onDidChange(`stats.game.score`, async (value) => {
                 this.messageHandler.sendMessage("GameScore", value as number[]);
+            }),
+            this.store.onDidChange(`player.any.game.recent`, async (value) => {
+                this.messageHandler.sendMessage("RecentGames", value as GameStats[][]);
             }),
         ]
     }

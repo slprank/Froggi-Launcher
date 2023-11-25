@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers, postMatch } from '$lib/utils/store.svelte';
+	import { currentPlayers, currentMatch } from '$lib/utils/store.svelte';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
@@ -10,7 +10,7 @@
 
 	$: player1Index = $currentPlayers?.at(0)?.playerIndex;
 
-	$: player1AttackCount = $postMatch?.actionCounts?.[player1Index ?? 0].attackCount;
+	$: player1AttackCount = $currentMatch?.stats?.actionCounts?.[player1Index ?? 0].attackCount;
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1AttackCountBair}

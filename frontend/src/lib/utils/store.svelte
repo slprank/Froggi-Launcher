@@ -3,6 +3,7 @@
 	import { browser } from '$app/environment';
 	import {
 		AutoUpdaterStatus,
+		BestOf,
 		DolphinConnectionState,
 		InGameState,
 		LiveStatsScene,
@@ -13,6 +14,7 @@
 		CurrentPlayer,
 		GameStartTypeExtended,
 		GameStats,
+		Match,
 		MatchStats,
 		Player,
 		Session,
@@ -55,9 +57,9 @@
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
 	export const postGame = writable<GameStats>({} as GameStats);
-	export const postMatch = writable<MatchStats>({} as MatchStats);
-	export const recentRankedSets = writable<GameStats[]>([]); // TODO
-	export const recentGames = writable<GameStats[]>([]);
+	export const currentMatch = writable<Match | undefined>({} as Match);
+	export const recentRankedSets = writable<GameStats[]>([]);
+	export const recentGames = writable<GameStats[][]>([]);
 	export const sessionStats = writable<Session | undefined>();
 	export const statsScene = writable<LiveStatsScene>(LiveStatsScene.WaitingForDolphin);
 

@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	import type {
 		AutoUpdaterStatus,
+		BestOf,
 		DolphinConnectionState,
 		InGameState,
 		LiveStatsScene,
@@ -11,7 +12,7 @@
 		CurrentPlayer,
 		GameStartTypeExtended,
 		GameStats,
-		MatchStats,
+		Match,
 		Player,
 		Session,
 	} from '$lib/models/types/slippiData';
@@ -21,7 +22,6 @@
 		gameScore,
 		gameSettings,
 		postGame,
-		postMatch,
 		recentRankedSets,
 		sessionStats,
 		statsScene,
@@ -33,6 +33,7 @@
 		recentGames,
 		autoUpdater,
 		memoryReadController,
+		currentMatch,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import {
@@ -105,12 +106,12 @@
 			postGame.set(stats);
 			gameFrame.set(null);
 		});
-		_localEmitter.on('PostMatchStats', (stats: MatchStats | undefined) => {
+		_localEmitter.on('CurrentMatch', (stats: Match | undefined) => {
 			if (!stats) return;
-			console.log('match stats', stats);
-			postMatch.set(stats);
+			console.log('match', stats);
+			currentMatch.set(stats);
 		});
-		_localEmitter.on('RecentGames', (games: GameStats[]) => {
+		_localEmitter.on('RecentGames', (games: GameStats[][]) => {
 			console.log('recent games', games);
 			recentGames.set(games);
 		});
