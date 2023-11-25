@@ -69,7 +69,6 @@
 				LiveStatsScene.InGame,
 				LiveStatsScene.PostGame,
 				LiveStatsScene.PostSet,
-				LiveStatsScene.RankChange,
 			].includes($statsScene),
 		},
 		{
@@ -95,6 +94,10 @@
 		{
 			category: VisibilityCategory.RecentGame5Summary,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.RankStats,
+			visible: [LiveStatsScene.RankChange].includes($statsScene),
 		},
 	];
 

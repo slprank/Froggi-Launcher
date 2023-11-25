@@ -128,6 +128,7 @@ export enum VisibilityOption {
 
     RankStatsBeforeRankUpdated = "Rank Stats Pre Updated",
     RankStatsAfterRankUpdated = "Rank Stats Pre Updated",
+    RankStatsMatchWon = "Rank Stats Match Won",
 }
 
 export enum VisibilityCategory {
