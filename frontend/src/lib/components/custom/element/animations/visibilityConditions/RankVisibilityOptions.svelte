@@ -9,17 +9,23 @@
 	export const rankVisibilityOption = async (option: SelectedVisibilityOption) => {
 		const player = await getCurrentPlayer();
 
-		const oldRank = player?.rank.current;
+		const prevRank = player?.rank.history?.at(-1);
+		const currentRank = player?.rank.current;
 		const newRank = player?.rank.new;
 
 		if (option[VisibilityOption.RankStatsBeforeRankUpdated] === VisibilityToggle.True)
-			if (oldRank !== newRank) return true;
+			if (currentRank !== newRank) return true;
 		if (option[VisibilityOption.RankStatsBeforeRankUpdated] === VisibilityToggle.False)
-			if (oldRank === newRank) return true;
+			if (currentRank === newRank) return true;
 		if (option[VisibilityOption.RankStatsAfterRankUpdated] === VisibilityToggle.True)
-			if (oldRank === newRank) return true;
+			if (currentRank === newRank) return true;
 		if (option[VisibilityOption.RankStatsAfterRankUpdated] === VisibilityToggle.False)
-			if (oldRank !== newRank) return true;
+			if (currentRank !== newRank) return true;
+
+		if (option[VisibilityOption.RankStatsMatchWon] === VisibilityToggle.True)
+			if ((newRank?.wins ?? 0) > (prevRank?.wins ?? 0)) return true;
+		if (option[VisibilityOption.RankStatsMatchWon] === VisibilityToggle.False)
+			if ((newRank?.losses ?? 0) > (prevRank?.losses ?? 0)) return true;
 
 		return false;
 	};

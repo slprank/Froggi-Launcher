@@ -15,7 +15,7 @@ export interface CurrentPlayer extends Player {
 
 export interface CurrentPlayerRank extends Rank {
     new: RankedNetplayProfile | undefined;
-    history: RankHistory;
+    history: RankedNetplayProfile[] | undefined;
 }
 
 export interface EdgeGuard {

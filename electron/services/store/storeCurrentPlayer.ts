@@ -63,17 +63,16 @@ export class ElectronCurrentPlayerStore {
     getPlayerRankHistory(): RankedNetplayProfile[] | undefined {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
-        return this.store.get(`player.${connectCode}.rank.history`) as RankedNetplayProfile[];
+        return (this.store.get(`player.${connectCode}.rank.history`) ?? []) as RankedNetplayProfile[];
     }
 
     updateCurrentPlayerRankHistory(rankStats: RankedNetplayProfile) {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         let history = this.getPlayerRankHistory();
         if (!rankStats || !connectCode || !history) return;
-        history.push(rankStats)
         this.store.set(
             `player.${connectCode}.rank.history`,
-            history,
+            [...history, rankStats],
         );
     }
 
