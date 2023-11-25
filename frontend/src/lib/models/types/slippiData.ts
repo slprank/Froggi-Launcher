@@ -151,6 +151,7 @@ export interface SlippiLauncherSettings {
     useMonthlySubfolders: boolean | undefined;
     rootSlpPath: string | undefined;
     spectateSlpPath: string | undefined;
+    useNetplayBeta: boolean
 }
 
 export interface StageData {

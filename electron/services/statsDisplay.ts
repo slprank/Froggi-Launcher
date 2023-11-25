@@ -97,7 +97,7 @@ export class StatsDisplay {
 		this.storeGames.clearRecentGames()
 		this.storeGames.setGameScore([0, 0]);
 
-		if (!currentPlayer.rank?.current) return
+		if (!currentPlayer?.rank?.current) return
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
 	}
 
@@ -173,11 +173,16 @@ export class StatsDisplay {
 
 		if (!slippiSettings?.rootSlpPath) return;
 
+		const isBeta = slippiSettings?.useNetplayBeta
+		const betaRegex = /\b(Mainline|beta)\b/i;
+
 		const subFolder = slippiSettings.useMonthlySubfolders ? (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
 			.filter(dirent => dirent.isDirectory())
 			.map(dirent => dirent.name)
-			.sort((a, b) => a > b ? 1 : -1)
+			.filter(dirname => isBeta ? betaRegex.test(dirname) : dirname)
+			.sort((a, b) => a < b ? 1 : -1)
 			.at(0) : ""
+
 
 		const root = slippiSettings.rootSlpPath
 

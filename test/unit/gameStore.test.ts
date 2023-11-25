@@ -93,6 +93,7 @@ describe('ElectnronGamesStore', () => {
                 appDataPath: undefined,
                 isoPath: undefined,
                 spectateSlpPath: undefined,
+                useNetplayBeta: false,
             }
         }
 
@@ -131,7 +132,6 @@ describe('ElectnronGamesStore', () => {
     test('Is New Game The Same As Recent Game', async () => {
         for (const gameTest of rankedGameTest) {
             connectCode = gameTest.connectCode
-            storeLiveStats.setBestOf(gameTest.setBestOf)
             const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
             const currentGameSettings = game.getSettings();

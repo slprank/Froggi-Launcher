@@ -157,7 +157,6 @@
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				console.log('ipcMain', key, value);
 				_localEmitter.emit(key as any, value);
 			}
 		});

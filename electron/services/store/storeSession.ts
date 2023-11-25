@@ -10,7 +10,7 @@ import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 
 @singleton()
 export class ElectronSessionStore {
-    private listeners: Function[];
+    private listeners: Function[] = [];
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject("ElectronStore") private store: Store,

@@ -1,7 +1,7 @@
-import type { AutoUpdaterStatus, BestOf, DolphinConnectionState, InGameState, LiveStatsScene } from "../models/enum"
+import type { AutoUpdaterStatus, DolphinConnectionState, InGameState, LiveStatsScene } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Obs, Overlay, Url } from "../models/types/overlay"
-import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, MatchStats, Player, Session } from "../models/types/slippiData"
+import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, Session } from "../models/types/slippiData"
 import type { FrameEntryType } from "@slippi/slippi-js"
 import localEmitter from "eventemitter2"
 

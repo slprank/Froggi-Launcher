@@ -8,7 +8,6 @@ import { PlayerType } from '@slippi/slippi-js';
 import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
-import { isNil } from 'lodash';
 
 
 @singleton()
@@ -25,7 +24,7 @@ export class ElectronGamesStore {
         @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
         this.log.info("Initializing Game Store")
-        this.initPlayerListener()
+        this.initListeners()
     }
 
     getRecentDirectSets() {
@@ -51,12 +50,12 @@ export class ElectronGamesStore {
 
     setGameMatch(gameStats: GameStats | null) {
         if (!gameStats) return;
+        this.addRecentGames(gameStats)
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player || !gameStats?.settings?.players.some((p: PlayerType) => p.connectCode === player?.connectCode))
             return;
         if (!gameStats.settings.matchInfo?.matchId || !gameStats?.settings.matchInfo.gameNumber) return;
         const matches = this.getGameMatch(gameStats.settings.matchInfo.matchId);
-        this.addRecentGames(gameStats)
         this.store.set(`player.${player.connectCode}.game.${gameStats.settings.matchInfo.mode}.${gameStats.settings.matchInfo.matchId}`, [...matches, gameStats]);
     }
 
@@ -83,23 +82,48 @@ export class ElectronGamesStore {
         return playerGame[mode]
     }
 
-    getRecentGames(): GameStats[][] | undefined {
-        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-        if (!connectCode) return;
-        return this.store.get(`player.any.game.recent`) as GameStats[][]
+    getRecentGames(): GameStats[][] {
+        return (this.store.get(`player.any.game.recent`) ?? []) as GameStats[][]
     }
 
     addRecentGames(newGame: GameStats) {
-        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-        if (!connectCode) return;
-        const prevGames = this.store.get(`player.any.game.recent`) as GameStats[][] ?? [];
+        if (newGame.settings?.matchInfo.matchId) this.handleOnlineGame(newGame)
+        if (!newGame.settings?.matchInfo.matchId) this.handleOfflineGame(newGame)
+    }
+
+    private handleOnlineGame(newGame: GameStats) {
+        const prevGames = this.getRecentGames()
         const currentGame = prevGames.find(prevGame => prevGame.some(game => game.settings?.matchInfo.gameNumber === newGame.settings?.matchInfo.gameNumber))
 
-        if (isNil(currentGame)) {
-            this.store.set(`player.any.game.recent`, [[newGame], ...prevGames])
-        } else {
-            this.store.set(`player.any.game.recent`, [[newGame, ...currentGame], ...prevGames])
-        };
+        const filteredGames = prevGames.filter(game => game.at(0)?.settings?.matchInfo.matchId !== currentGame?.at(0)?.settings?.matchInfo.matchId)
+        if (newGame.settings?.matchInfo.gameNumber === 1) {
+            return this.store.set(`player.any.game.recent`, [[newGame], ...filteredGames])
+        }
+        return this.store.set(`player.any.game.recent`, [[...(currentGame ?? []), newGame], ...filteredGames])
+    }
+
+    private handleOfflineGame(newGame: GameStats) {
+        if (this.hasGameBombRain(newGame)) return;
+
+        const prevGames = this.getRecentGames()
+        const currentGame = prevGames.at(0)
+
+        const prevGamesFiltered = prevGames.slice(1)
+        if (this.isTiedGame(newGame)) {
+            return this.store.set(`player.any.game.recent`, [[...(currentGame ?? []), newGame], ...prevGamesFiltered])
+        }
+        this.store.set(`player.any.game.recent`, [[newGame], ...prevGamesFiltered])
+    }
+
+    private isTiedGame(game: GameStats): boolean {
+        if (!game.settings) return true
+        if (game.settings.matchInfo.tiebreakerNumber || game.settings.players.some(player => player && player.startStocks && player.startStocks < 4)) return true
+        return false
+    }
+
+    private hasGameBombRain(game: GameStats): boolean {
+        if (game.settings?.gameInfoBlock?.bombRainEnabled) return true
+        return false
     }
 
     clearRecentGames() {
@@ -126,26 +150,15 @@ export class ElectronGamesStore {
         return (sets[mode ?? "recent"]?.sort((a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)) ?? [];
     }
 
-    private initPlayerListener() {
-        this.store.onDidChange(`stats.currentPlayers`, async () => {
-            this.unsubscribeListeners()
-            this.initListeners()
-        })
-    }
-
     private initListeners() {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
         if (!connectCode) return;
-        this.listeners = [
-            this.store.onDidChange(`stats.game.score`, async (value) => {
-                this.messageHandler.sendMessage("GameScore", value as number[]);
-            }),
-            this.store.onDidChange(`player.any.game.recent`, async (value) => {
-                this.messageHandler.sendMessage("RecentGames", value as GameStats[][]);
-            }),
-        ]
+        this.store.onDidChange(`stats.game.score`, async (value) => {
+            this.messageHandler.sendMessage("GameScore", value as number[]);
+        })
+        this.store.onDidChange(`player.any.game.recent`, async (value) => {
+            this.messageHandler.sendMessage("RecentGames", value as GameStats[][]);
+        })
     }
-    private unsubscribeListeners() {
-        this.listeners?.forEach(unsubscribe => unsubscribe())
-    }
+
 }
