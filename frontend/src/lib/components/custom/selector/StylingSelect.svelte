@@ -27,39 +27,57 @@
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
 
-	$: customStringSettings = selectedElementId >= 1000 && selectedElementId < 2000;
-	$: customBoxSettings = selectedElementId >= 2000 && selectedElementId < 3000;
-	$: customImageSettings = selectedElementId >= 3000 && selectedElementId < 4000;
-	$: stringSettings =
-		(selectedElementId >= 4000 && selectedElementId < 6000) ||
-		selectedElementId === CustomElement.CustomString;
-	$: imageSettings =
-		(selectedElementId >= 6000 && selectedElementId < 7000) ||
-		selectedElementId === CustomElement.CustomImage;
-	$: boxSettings =
-		(selectedElementId >= 7000 && selectedElementId < 8000) ||
-		selectedElementId === CustomElement.CustomBox;
+	$: customStringSettings = isCustomStringSettings(selectedElementId);
+	$: customBoxSettings = isCustomBoxSettings(selectedElementId);
+	$: customImageSettings = isCustomImageSettings(selectedElementId);
+	$: stringSettings = isStringSettings(selectedElementId);
+	$: imageSettings = isImageSettings(selectedElementId);
+
+	$: boxSettings = isBoxSettings(selectedElementId);
+
 	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
 
-	const getSettingsType = (): StyleSetting | undefined => {
-		if (stringSettings || customStringSettings) return StyleSetting.StringSettings;
-		if (boxSettings || customBoxSettings) return StyleSetting.BoxSettings;
-		if (imageSettings || customImageSettings) return StyleSetting.ImageSettings;
+	const isStringSettings = (elementId: number) => {
+		return (elementId >= 4000 && elementId < 6000) || elementId === CustomElement.CustomString;
+	};
+	const isBoxSettings = (elementId: number) => {
+		return (elementId >= 7000 && elementId < 8000) || elementId === CustomElement.CustomBox;
+	};
+	const isImageSettings = (elementId: number) => {
+		return (elementId >= 6000 && elementId < 7000) || elementId === CustomElement.CustomImage;
+	};
+	const isCustomStringSettings = (elementId: number) => {
+		return elementId >= 1000 && elementId < 2000;
+	};
+	const isCustomBoxSettings = (elementId: number) => {
+		return elementId >= 2000 && elementId < 3000;
+	};
+	const isCustomImageSettings = (elementId: number) => {
+		return elementId >= 3000 && elementId < 4000;
 	};
 
-	const prevSelectedElementId = selectedElementId;
+	const getSettingsType = (elementId: number): StyleSetting | undefined => {
+		if (isStringSettings(elementId) || isCustomStringSettings(elementId))
+			return StyleSetting.StringSettings;
+		if (isBoxSettings(elementId) || isCustomBoxSettings(elementId))
+			return StyleSetting.BoxSettings;
+		if (isImageSettings(elementId) || isCustomImageSettings(elementId))
+			return StyleSetting.ImageSettings;
+	};
+
+	let prevSelectedElementId = selectedElementId;
 
 	let savedStyle: null | ElementPayload;
 
 	const updateSavedStyle = () => {
-		const settingsType = getSettingsType();
+		const settingsType = getSettingsType(selectedElementId);
 		const savedStyleJson = localStorage.getItem(`${$statsScene}-${settingsType}`);
 		savedStyle = savedStyleJson && JSON.parse(savedStyleJson);
 	};
 	$: selectedElementId, updateSavedStyle();
 
 	const saveStyling = () => {
-		const settingsType = getSettingsType();
+		const settingsType = getSettingsType(selectedElementId);
 		if (!settingsType) return;
 		savedStyle = {
 			...JSON.parse(JSON.stringify(payload)),
@@ -79,18 +97,19 @@
 
 	let loadTrigger: number;
 	const loadStyling = () => {
-		const settingsType = getSettingsType();
+		const settingsType = getSettingsType(selectedElementId);
 		if (!settingsType || !savedStyle) return;
 		payload = JSON.parse(JSON.stringify(savedStyle));
 		loadTrigger = Math.random();
 		notifications.success('Styles Loaded', 3000);
 	};
 
-	function clearStyle() {
-		if (selectedElementId === prevSelectedElementId) return;
+	function updateStyle() {
+		if (getSettingsType(selectedElementId) === getSettingsType(prevSelectedElementId)) return;
 		payload = getDefaultElementPayload();
+		prevSelectedElementId = selectedElementId;
 	}
-	$: selectedElementId, clearStyle();
+	$: selectedElementId, updateStyle();
 
 	const fixAnimationInputDelay = () => {
 		if (payload.animationTrigger.in.type === Animation.None) {

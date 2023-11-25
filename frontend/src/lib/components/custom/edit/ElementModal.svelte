@@ -31,7 +31,6 @@
 	let payload: ElementPayload = getDefaultElementPayload();
 	$: isNewElement = !getCurrentItems().some((item) => item.id === selectedId);
 
-	let demoItem: GridContentItem;
 	$: demoItem = {
 		[COL]: {} as GridContentItemConfig,
 		elementId: selectedElementId,
@@ -60,13 +59,13 @@
 	function add() {
 		let items = getCurrentItems();
 		let newItem = generateNewItem(selectedElementId, payload, selectedId);
-		let findOutPosition = gridHelp.findSpace(newItem, items, COL);
+		const findPosition = gridHelp.findSpace(newItem, items, COL);
 
 		newItem = {
 			...newItem,
 			[COL]: {
 				...newItem[COL],
-				...findOutPosition,
+				...findPosition,
 			},
 		} as GridContentItem;
 
@@ -81,7 +80,7 @@
 		open = false;
 	}
 
-	function edit() {
+	function update() {
 		let items = getCurrentItems();
 		let prevItem = items.find((item) => item.id === selectedId);
 
@@ -89,6 +88,7 @@
 			add();
 			return;
 		}
+
 		let newItem = {
 			elementId: selectedElementId,
 			id: selectedId,
@@ -110,10 +110,13 @@
 		open = false;
 	}
 
+	// TODO: Save prev selectedId
+	// If matching same type - string/box/image
+	// Keep payload
 	function updatePayload() {
 		if (!selectedId) return;
 		let items = getCurrentItems();
-		let item = items.find((item) => item.id === selectedId);
+		let item = items.find((item) => item.id === selectedId); //
 		if (!item) return;
 		payload = { ...payload, ...item.data };
 		selectedElementId = item.elementId;
@@ -138,7 +141,7 @@
 					<button
 						transition:fly={{ duration: 250, x: 150 }}
 						class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-						on:click={edit}
+						on:click={update}
 					>
 						{isNewElement ? 'Add' : 'Update'}
 					</button>
