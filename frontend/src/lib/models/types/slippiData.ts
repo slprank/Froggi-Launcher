@@ -70,7 +70,6 @@ export interface GameStats {
     gameEnd: GameEndType;
     lastFrame: FrameEntryType
     postGameStats: StatsType | null;
-    score: number[];
     settings: GameStartTypeExtended | null;
     timestamp: Date;
 }

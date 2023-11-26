@@ -12,9 +12,9 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
-import { getWinnerIndex } from '../../frontend/src/lib/utils/gamePredicates';
 import { analyzeMatch } from '../utils/analyzeMatch';
 import os from "os"
+import { isNil } from 'lodash';
 
 @singleton()
 export class StatsDisplay {
@@ -95,21 +95,18 @@ export class StatsDisplay {
 
 		if (previousGame?.settings?.matchInfo.matchId === settings?.matchInfo?.matchId?.replace(/[.:]/g, '-')) return;
 		this.storeGames.clearRecentGames()
-		this.storeGames.setGameScore([0, 0]);
 
 		if (!currentPlayer?.rank?.current) return
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
 	}
 
-	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
+	async handleGameEnd(_: GameEndType, settings: GameStartType) {
 		this.stopPauseInterval()
-		this.handleScore(gameEnd)
-		if (gameEnd.gameEndMethod === GameEndMethod.TIME) this.storeLiveStats.setGameState(InGameState.Time)
-		if (gameEnd.gameEndMethod === GameEndMethod.GAME) this.storeLiveStats.setGameState(InGameState.End)
+		const gameStats = await this.getRecentGameStats(settings);
 
+		this.handleInGameState(gameStats)
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
-		const gameStats = await this.getRecentGameStats(settings);
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.handleGameSetStats(gameStats)
@@ -125,11 +122,18 @@ export class StatsDisplay {
 		else this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostGame, LiveStatsScene.Menu, 60000)
 	}
 
+	private handleInGameState(game: GameStats | null) {
+		if (game?.gameEnd.gameEndMethod === GameEndMethod.TIME) this.storeLiveStats.setGameState(InGameState.Time)
+		if (game?.gameEnd.gameEndMethod === GameEndMethod.GAME) this.storeLiveStats.setGameState(InGameState.End)
+		if (game && Object.entries(game?.lastFrame.players).every(([_, player]) => isNil(player) || player.post.stocksRemaining === 0)) this.storeLiveStats.setGameState(InGameState.Tie)
+	}
+
 	private handleGameSetStats(gameStats: GameStats | null) {
 		this.storeLiveStats.setGameStats(gameStats)
 		this.storeGames.setGameMatch(gameStats)
 		const games = this.storeGames.getRecentGames()
 		if (!games || !games?.length) return;
+		this.storeGames.handleGameScore(games)
 		const matchStats = analyzeMatch(games.flat())
 		this.storeLiveStats.setMatchStats(matchStats)
 	}
@@ -153,14 +157,6 @@ export class StatsDisplay {
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
 		if (!connectCode) return;
 		return players.find(p => p.connectCode === connectCode);
-	}
-
-	private handleScore(gameEnd: GameEndType) {
-		let score: number[] = this.storeGames.getGameScore();
-		const winnerIndex = getWinnerIndex(gameEnd)
-		if (winnerIndex === undefined || winnerIndex === -1) return;
-		score[winnerIndex] += 1;
-		this.storeGames.setGameScore(score);
 	}
 
 
@@ -251,7 +247,7 @@ export class StatsDisplay {
 		return gamesStats
 	}
 
-	private handleUndefinedPlayers(settings: GameStartType | undefined) {
+	private async handleUndefinedPlayers(settings: GameStartType | undefined) {
 		if (!settings) return;
 		const players = this.storePlayers.getCurrentPlayers()
 		if (!players) this.storePlayers.setCurrentPlayers(settings.players)
@@ -264,7 +260,6 @@ export class StatsDisplay {
 			gameEnd: game.getGameEnd(),
 			lastFrame: game.getLatestFrame(),
 			postGameStats: this.enrichPostGameStats(game),
-			score: this.storeGames.getGameScore(),
 			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings), matchId: settings?.matchInfo?.matchId?.replace(/[.:]/g, '-'), bestOf: this.storeLiveStats.getBestOf() } },
 			timestamp: dateTimeNow(),
 		} as GameStats

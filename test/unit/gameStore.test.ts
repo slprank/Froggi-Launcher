@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { ElectronGamesStore } from '../../electron/services/store/storeGames';
 import { StatsDisplay } from '../../electron/services/statsDisplay';
-import { SlippiGame } from '@slippi/slippi-js';
+import { GameStartType, SlippiGame } from '@slippi/slippi-js';
 import Store from "electron-store";
 import { Api } from "../../electron/services/api";
 import { ElectronSessionStore } from "../../electron/services/store/storeSession";
@@ -37,6 +37,11 @@ describe('ElectnronGamesStore', () => {
     }
 
     const rankedGameTest: TestFile[] = [
+        { file: "offline-set-1/Replay 1 [L].slp", expectedLength: 0, expectedScore: [0, 1], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "offline-set-1/Replay 2 [T].slp", expectedLength: 0, expectedScore: [0, 1], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "offline-set-1/Replay 2 [I].slp", expectedLength: 0, expectedScore: [0, 1], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "offline-set-1/Replay 2 [L].slp", expectedLength: 0, expectedScore: [0, 2], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+
         { file: "ranked-set-1/Replay 1 [W].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
         { file: "ranked-set-1/Replay 2 [L].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
         { file: "ranked-set-1/Replay 3 [W].slp", expectedLength: 3, expectedScore: [2, 1], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
@@ -111,14 +116,12 @@ describe('ElectnronGamesStore', () => {
 
         storePlayers = new ElectronPlayersStore(log, store, messageHandler)
 
-        electronGamesStore = new ElectronGamesStore(log, store, messageHandler, storeSettings, storeCurrentPlayer);
+        electronGamesStore = new ElectronGamesStore(log, store, messageHandler, storeSettings, storeCurrentPlayer, storePlayers);
 
         statsDisplay = new StatsDisplay(log, slpParser, slpStream, api, messageHandler, electronGamesStore, storeLiveStats, storePlayers, storeCurrentPlayer, storeSettings)
-        statsDisplay["getCurrentPlayersWithRankStats"] = async (): Promise<Player[]> => (new Promise<Player[]>(resolve => {
-            resolve([{ connectCode: connectCode, rank: {} } as Player])
-        }));
-        statsDisplay["getGameFiles"] = async (): Promise<string[]> => (new Promise<string[]>(resolve => {
-            resolve(rankedGameTest.map(test => `${__dirname}/../sample-games/${test.file}`))
+        statsDisplay["getCurrentPlayersWithRankStats"] = async (settings: GameStartType): Promise<Player[]> => (new Promise<Player[]>(resolve => {
+            const players = settings.players.filter(player => player)
+            resolve([{ connectCode: players.at(0)?.connectCode, rank: {}, playerIndex: players.at(0)?.playerIndex } as Player, { connectCode: players.at(1)?.connectCode, rank: {}, playerIndex: players.at(1)?.playerIndex } as Player])
         }));
     });
 
@@ -131,6 +134,10 @@ describe('ElectnronGamesStore', () => {
     // TODO: All tests in one loop
     test('Is New Game The Same As Recent Game', async () => {
         for (const gameTest of rankedGameTest) {
+            statsDisplay["getGameFiles"] = async (): Promise<string[]> => (new Promise<string[]>(resolve => {
+                resolve([`${__dirname}/../sample-games/${gameTest.file}`])
+            }));
+
             connectCode = gameTest.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
@@ -144,9 +151,30 @@ describe('ElectnronGamesStore', () => {
         }
     })
 
+    test('Set Score Is As Expected', async () => {
+        for (const gameTest of rankedGameTest) {
+            statsDisplay["getGameFiles"] = async (): Promise<string[]> => (new Promise<string[]>(resolve => {
+                resolve([`${__dirname}/../sample-games/${gameTest.file}`])
+            }));
+
+            connectCode = gameTest.connectCode
+            const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
+            const currentGameEnd = game.getGameEnd();
+            const currentGameSettings = game.getSettings();
+            if (!currentGameEnd || !currentGameSettings) return;
+            await statsDisplay.handleGameStart(currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            const gameScore = electronGamesStore.getGameScore()
+            expect(gameTest.expectedScore).toStrictEqual(gameScore)
+        }
+    })
+
     test('Is Post Game Scene As Expected', async () => {
         for (const gameTest of rankedGameTest) {
-            connectCode = gameTest.connectCode
+            statsDisplay["getGameFiles"] = async (): Promise<string[]> => (new Promise<string[]>(resolve => {
+                resolve([`${__dirname}/../sample-games/${gameTest.file}`])
+            }));
+
             storeLiveStats.setBestOf(gameTest.setBestOf)
             const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
@@ -161,6 +189,10 @@ describe('ElectnronGamesStore', () => {
 
     test('Is Returned Match Games Length As Expected', async () => {
         for (const gameTest of rankedGameTest) {
+            statsDisplay["getGameFiles"] = async (): Promise<string[]> => (new Promise<string[]>(resolve => {
+                resolve([`${__dirname}/../sample-games/${gameTest.file}`])
+            }));
+
             connectCode = gameTest.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();
@@ -174,23 +206,12 @@ describe('ElectnronGamesStore', () => {
         }
     })
 
-    test('Set Score Is As Expected', async () => {
-        for (const gameTest of rankedGameTest) {
-            connectCode = gameTest.connectCode
-            const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
-            const currentGameEnd = game.getGameEnd();
-            const currentGameSettings = game.getSettings();
-            if (!currentGameEnd || !currentGameSettings) return;
-            await statsDisplay.handleGameStart(currentGameSettings)
-            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
-            const gameScore = electronGamesStore.getGameScore()
-            expect(gameTest.expectedScore).toStrictEqual(gameScore)
-            //expect(gameScore.reduce((value, score) => value + score, 0)).toStrictEqual(currentGameSettings.matchInfo?.gameNumber)
-        }
-    })
-
     test('Game Mode As Expected', async () => {
         for (const gameTest of rankedGameTest) {
+            statsDisplay["getGameFiles"] = async (): Promise<string[]> => (new Promise<string[]>(resolve => {
+                resolve([`${__dirname}/../sample-games/${gameTest.file}`])
+            }));
+
             connectCode = gameTest.connectCode
             const game = new SlippiGame(`${__dirname}/../sample-games/${gameTest.file}`)
             const currentGameEnd = game.getGameEnd();

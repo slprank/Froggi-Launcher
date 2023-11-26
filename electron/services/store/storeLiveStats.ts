@@ -32,7 +32,7 @@ export class ElectronLiveStatsStore {
 	}
 
 	setStatsScene(scene: LiveStatsScene) {
-		this.store.set('stats.scene', scene ?? 0);
+		this.store.set('stats.scene', scene ?? LiveStatsScene.WaitingForDolphin);
 	}
 
 	setStatsSceneTimeout(firstScene: LiveStatsScene, secondScene: LiveStatsScene, ms: number) {

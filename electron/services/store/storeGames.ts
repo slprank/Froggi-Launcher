@@ -8,6 +8,9 @@ import { PlayerType } from '@slippi/slippi-js';
 import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
+import { ElectronPlayersStore } from './storePlayers';
+import { getWinnerIndex } from '../../../frontend/src/lib/utils/gamePredicates';
+import { isNil } from 'lodash';
 
 
 @singleton()
@@ -22,6 +25,7 @@ export class ElectronGamesStore {
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
         @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
         @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
+        @inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
     ) {
         this.log.info("Initializing Game Store")
         this.initListeners()
@@ -96,10 +100,10 @@ export class ElectronGamesStore {
         const currentGame = prevGames.find(prevGame => prevGame.some(game => game.settings?.matchInfo.gameNumber === newGame.settings?.matchInfo.gameNumber))
 
         const filteredGames = prevGames.filter(game => game.at(0)?.settings?.matchInfo.matchId !== currentGame?.at(0)?.settings?.matchInfo.matchId)
-        if (newGame.settings?.matchInfo.gameNumber === 1) {
-            return this.store.set(`player.any.game.recent`, [[newGame], ...filteredGames])
+        if (newGame.settings?.matchInfo.tiebreakerNumber !== 0) {
+            return this.store.set("player.any.game.recent", [[...(currentGame ?? []), newGame], ...(filteredGames ?? [])])
         }
-        return this.store.set(`player.any.game.recent`, [[...(currentGame ?? []), newGame], ...filteredGames])
+        return this.store.set("player.any.game.recent", [[newGame], ...prevGames])
     }
 
     private handleOfflineGame(newGame: GameStats) {
@@ -108,16 +112,17 @@ export class ElectronGamesStore {
         const prevGames = this.getRecentGames()
         const currentGame = prevGames.at(0)
 
-        const prevGamesFiltered = prevGames.slice(1)
-        if (this.isTiedGame(newGame)) {
-            return this.store.set(`player.any.game.recent`, [[...(currentGame ?? []), newGame], ...prevGamesFiltered])
+        const filteredGames = prevGames.slice(1)
+        if (this.isRematchGame(newGame)) {
+            return this.store.set(`player.any.game.recent`, [[...(currentGame ?? []), newGame], ...(filteredGames ?? [])])
         }
-        this.store.set(`player.any.game.recent`, [[newGame], ...prevGamesFiltered])
+        return this.store.set(`player.any.game.recent`, [[newGame], ...prevGames])
     }
 
-    private isTiedGame(game: GameStats): boolean {
+    private isRematchGame(game: GameStats): boolean {
         if (!game.settings) return true
-        if (game.settings.matchInfo.tiebreakerNumber || game.settings.players.some(player => player && player.startStocks && player.startStocks < 4)) return true
+        if (game.settings.matchInfo.tiebreakerNumber ||
+            game.settings.players.some(player => player && player.startStocks && player.startStocks < 4)) return true
         return false
     }
 
@@ -151,14 +156,43 @@ export class ElectronGamesStore {
     }
 
     private initListeners() {
-        const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
-        if (!connectCode) return;
         this.store.onDidChange(`stats.game.score`, async (value) => {
             this.messageHandler.sendMessage("GameScore", value as number[]);
         })
-        this.store.onDidChange(`player.any.game.recent`, async (value) => {
-            this.messageHandler.sendMessage("RecentGames", value as GameStats[][]);
+        this.store.onDidChange("player.any.game.recent", async (value) => {
+            const recentGames = value as GameStats[][]
+            this.messageHandler.sendMessage("RecentGames", recentGames);
         })
+    }
+
+    handleGameScore(recentGames: GameStats[][]) {
+        const players = this.storePlayers.getCurrentPlayers();
+        if (!players) return;
+        const gameScore = recentGames?.map(recentGame => recentGame.at(-1))
+            .reduce((score: number[], game: GameStats | undefined) => {
+                if (!game) return score
+
+                const isTie = this.isTiedGame(game)
+                if (isTie) return score
+
+                const winnerIndex = getWinnerIndex(game?.gameEnd)
+                if (isNil(winnerIndex)) return score
+                score[winnerIndex] += 1
+                return score
+            }, [0, 0]) ?? [0, 0]
+        this.setGameScore(gameScore)
+    }
+
+    isTiedGame(game: GameStats | undefined) {
+        if (!game) return false
+        const players = Object.entries(game.lastFrame.players).map(([_, player]) => player)
+        if (players.every((player) => isNil(player) || player.post.stocksRemaining === 0)) return true
+        if (players.every(player => {
+            const reference = players[0];
+            if (!reference) return;
+            return reference.post.stocksRemaining === player?.post.stocksRemaining && Math.floor(reference.post.percent ?? 0) === Math.floor(player?.post.percent ?? -1)
+        })) return true
+        return false
     }
 
 }

@@ -112,6 +112,7 @@ export enum InGameState {
 	Paused = "Paused",
 	End = "Game End",
 	Time = "Time",
+	Tie = "Tie",
 }
 
 export enum LiveStatsScene {
