@@ -39,8 +39,8 @@ describe('ElectnronGamesStore', () => {
     const rankedGameTest: TestFile[] = [
         { file: "offline-set-1/Replay 1 [L].slp", expectedLength: 0, expectedScore: [0, 1], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
         { file: "offline-set-1/Replay 2 [T].slp", expectedLength: 0, expectedScore: [0, 1], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
-        { file: "offline-set-1/Replay 2 [I].slp", expectedLength: 0, expectedScore: [0, 1], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
-        { file: "offline-set-1/Replay 2 [L].slp", expectedLength: 0, expectedScore: [0, 2], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "offline-set-1/Replay 3 [I].slp", expectedLength: 0, expectedScore: [0, 1], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
+        { file: "offline-set-1/Replay 4 [L].slp", expectedLength: 0, expectedScore: [0, 2], expectedMode: "local", connectCode: "", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
 
         { file: "ranked-set-1/Replay 1 [W].slp", expectedLength: 1, expectedScore: [1, 0], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
         { file: "ranked-set-1/Replay 2 [L].slp", expectedLength: 2, expectedScore: [1, 1], expectedMode: "ranked", connectCode: "PRML#682", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
