@@ -9,7 +9,7 @@ import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 import { ElectronPlayersStore } from './storePlayers';
-import { getWinnerIndex } from '../../../frontend/src/lib/utils/gamePredicates';
+import { getWinnerIndex, isTiedGame } from '../../../frontend/src/lib/utils/gamePredicates';
 import { isNil } from 'lodash';
 
 
@@ -113,15 +113,15 @@ export class ElectronGamesStore {
         const currentGame = prevGames.at(0)
 
         const filteredGames = prevGames.slice(1)
-        if (this.isRematchGame(newGame)) {
+        if (this.isRematchGame(currentGame, newGame)) {
             return this.store.set(`player.any.game.recent`, [[...(currentGame ?? []), newGame], ...(filteredGames ?? [])])
         }
         return this.store.set(`player.any.game.recent`, [[newGame], ...prevGames])
     }
 
-    private isRematchGame(game: GameStats): boolean {
+    private isRematchGame(currentGame: GameStats[] | undefined, game: GameStats): boolean {
         if (!game.settings) return true
-        if (game.settings.matchInfo.tiebreakerNumber ||
+        if (currentGame && isTiedGame(currentGame.at(0)) &&
             game.settings.players.some(player => player && player.startStocks && player.startStocks < 4)) return true
         return false
     }
@@ -172,8 +172,7 @@ export class ElectronGamesStore {
             .reduce((score: number[], game: GameStats | undefined) => {
                 if (!game) return score
 
-                const isTie = this.isTiedGame(game)
-                if (isTie) return score
+                if (isTiedGame(game)) return score
 
                 const winnerIndex = getWinnerIndex(game?.gameEnd)
                 if (isNil(winnerIndex)) return score
@@ -181,18 +180,6 @@ export class ElectronGamesStore {
                 return score
             }, [0, 0]) ?? [0, 0]
         this.setGameScore(gameScore)
-    }
-
-    isTiedGame(game: GameStats | undefined) {
-        if (!game) return false
-        const players = Object.entries(game.lastFrame.players).map(([_, player]) => player)
-        if (players.every((player) => isNil(player) || player.post.stocksRemaining === 0)) return true
-        if (players.every(player => {
-            const reference = players[0];
-            if (!reference) return;
-            return reference.post.stocksRemaining === player?.post.stocksRemaining && Math.floor(reference.post.percent ?? 0) === Math.floor(player?.post.percent ?? -1)
-        })) return true
-        return false
     }
 
 }

@@ -15,6 +15,7 @@ import { dateTimeNow, getGameMode } from '../utils/functions';
 import { analyzeMatch } from '../utils/analyzeMatch';
 import os from "os"
 import { isNil } from 'lodash';
+import { isTiedGame } from '../../frontend/src/lib/utils/gamePredicates';
 
 @singleton()
 export class StatsDisplay {
@@ -110,16 +111,18 @@ export class StatsDisplay {
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 		this.handleGameSetStats(gameStats)
-		this.handlePostGameScene()
+		this.handlePostGameScene(gameStats)
 		this.storeLiveStats.deleteGameFrame()
 	}
 
-	private handlePostGameScene() {
+	private handlePostGameScene(game: GameStats | null) {
+		if (isTiedGame(game)) return
+
 		const score = this.storeGames.getGameScore();
 		const bestOf = this.storeLiveStats.getBestOf();
 		const isPostSet = score.some(score => score >= Math.ceil(bestOf / 2))
-		if (isPostSet) this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostSet, LiveStatsScene.Menu, 60000)
-		else this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostGame, LiveStatsScene.Menu, 60000)
+		if (isPostSet) return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostSet, LiveStatsScene.Menu, 60000)
+		if (!isPostSet) return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostGame, LiveStatsScene.Menu, 60000)
 	}
 
 	private handleInGameState(game: GameStats | null) {
