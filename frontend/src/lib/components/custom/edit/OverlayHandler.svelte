@@ -4,14 +4,16 @@
 	import type {
 		AnimationSettings,
 		ElementPayload,
+		GridContentItem,
 		Overlay,
 		Scene,
 	} from '$lib/models/types/overlay';
 
 	import { COL, MIN, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 
+	//@ts-ignore
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { electronEmitter, localEmitter, obs } from '$lib/utils/store.svelte';
+	import { electronEmitter, obs } from '$lib/utils/store.svelte';
 	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
 	import { getObs } from '$lib/utils/fetchSubscriptions.svelte';
 	import isNil from 'lodash/isNil';
@@ -77,9 +79,9 @@
 	export function generateNewItem(
 		elementId: CustomElement,
 		payload: ElementPayload,
-		id: string | undefined = undefined,
+		items: GridContentItem[] | undefined = undefined,
 	) {
-		return {
+		const newItem = {
 			[COL]: gridHelp.item({
 				w: 24,
 				h: 24,
@@ -88,9 +90,20 @@
 				min: { w: MIN, h: MIN },
 				max: { y: COL - MIN, h: COL + 1 },
 			}),
-			id: id ?? newId(),
+			id: newId(),
 			elementId: elementId,
 			data: payload,
+		};
+		console.log(items);
+		if (isNil(items)) return newItem;
+
+		const findPosition = gridHelp.findSpace(newItem, items, COL);
+		return {
+			...newItem,
+			[COL]: {
+				...newItem[COL],
+				...findPosition,
+			},
 		};
 	}
 

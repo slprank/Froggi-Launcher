@@ -8,7 +8,6 @@
 		Overlay,
 	} from '$lib/models/types/overlay';
 	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
-	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import {
 		generateNewItem,
 		getDefaultElementPayload,
@@ -58,16 +57,7 @@
 
 	function add() {
 		let items = getCurrentItems();
-		let newItem = generateNewItem(selectedElementId, payload, selectedId);
-		const findPosition = gridHelp.findSpace(newItem, items, COL);
-
-		newItem = {
-			...newItem,
-			[COL]: {
-				...newItem[COL],
-				...findPosition,
-			},
-		} as GridContentItem;
+		let newItem = generateNewItem(selectedElementId, payload);
 
 		newItem = fixTransition(newItem);
 

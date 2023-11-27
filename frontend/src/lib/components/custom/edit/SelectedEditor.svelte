@@ -5,7 +5,10 @@
 	import { fly } from 'svelte/transition';
 	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
-	import { updateOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import {
+		generateNewItem,
+		updateOverlay,
+	} from '$lib/components/custom/edit/OverlayHandler.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -45,6 +48,20 @@
 			selectedItem[COL].h = ROW - selectedItem[COL].y;
 	}
 
+	function copyElement() {
+		if (!curOverlay || selectedLayer === undefined) return;
+		const items = curOverlay[$statsScene]?.layers[selectedLayer].items;
+		const item = items[selectedItemIndex];
+		const newItem = generateNewItem(item.elementId, item.data, items);
+
+		curOverlay[$statsScene]?.layers[selectedLayer].items.push(newItem);
+		selectedId = undefined;
+		selectedItem = undefined;
+		selectedItemIndex = 0;
+
+		updateOverlay(curOverlay);
+	}
+
 	function deleteElement() {
 		if (!curOverlay || selectedLayer === undefined) return;
 		curOverlay[$statsScene]?.layers[selectedLayer].items.splice(selectedItemIndex, 1);
@@ -66,8 +83,6 @@
 	$: selectedItem, updateSelectItem();
 
 	let lockOut = false;
-
-	setInterval(() => (lockOut = false), 100);
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (lockOut || !selectedId || !selectedItem) return;
@@ -98,7 +113,11 @@
 		if (e.key === 'ArrowRight') {
 			selectedItem[COL].x += 1;
 		}
+		if (e.key === 'Backspace') {
+			deleteElement();
+		}
 		lockOut = true;
+		setTimeout(() => (lockOut = false), 100);
 	}
 
 	// TODO: Add horizontal center button
@@ -129,6 +148,14 @@
 				on:click={() => (isElementModalOpen = true)}
 			>
 				Edit
+			</button>
+		</div>
+		<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 250 }}>
+			<button
+				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				on:click={copyElement}
+			>
+				Copy
 			</button>
 		</div>
 		<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 250 }}>
