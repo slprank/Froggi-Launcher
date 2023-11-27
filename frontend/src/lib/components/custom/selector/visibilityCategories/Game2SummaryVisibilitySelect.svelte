@@ -31,16 +31,8 @@
 	Current Player - Win
 </SelectOption>
 <SelectOption
-	description="Current Set Game 2 or 4th Most Recent Game - Current Player - Loss"
-	value={VisibilityOption.PostGame2SummaryCurrentPlayerLoss}
-	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame2SummaryCurrentPlayerLoss]}
-	on:select={select}
->
-	Current Player - Loss
-</SelectOption>
-<SelectOption
 	description="Current Set Game 2 or 4th Most Recent Game - If Player 1 Won The Previous Game"
-	value={VisibilityOption.PostGame2SummaryCurrentPlayerWin}
+	value={VisibilityOption.PostGame2SummaryPlayer1Win}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame2SummaryPlayer1Win]}
 	on:select={select}
 >
@@ -48,7 +40,7 @@
 </SelectOption>
 <SelectOption
 	description="Current Set Game 2 or 4th Most Recent Game - If Player 2 Won The Previous Game"
-	value={VisibilityOption.PostGame2SummaryPlayer1Win}
+	value={VisibilityOption.PostGame2SummaryPlayer2Win}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame2SummaryPlayer2Win]}
 	on:select={select}
 >
