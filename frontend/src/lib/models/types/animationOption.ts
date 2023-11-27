@@ -30,6 +30,7 @@ export enum VisibilityOption {
     InGameCountdown = "Game Countdown",
     InGameEnd = "Game End",
     InGameTime = "Game Time",
+    InGameTie = "Game Tie",
     InGamePlayerOffStage = "Player Off Stage",
 
     InGamePlayer1Combo = "Player 1 Combo",

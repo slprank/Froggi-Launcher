@@ -78,3 +78,11 @@
 >
 	Time
 </SelectOption>
+<SelectOption
+	description="When Game Ends On Tie"
+	value={VisibilityOption.InGameTie}
+	bind:selected={selectedVisibilityOption[VisibilityOption.InGameTie]}
+	on:select={select}
+>
+	Tie
+</SelectOption>

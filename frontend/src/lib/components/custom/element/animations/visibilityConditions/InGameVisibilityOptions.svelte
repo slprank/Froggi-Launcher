@@ -55,6 +55,11 @@
 		if (option[VisibilityOption.InGameTime] === VisibilityToggle.False)
 			if (!isGameTime(gameState)) return true;
 
+		if (option[VisibilityOption.InGameTie] === VisibilityToggle.True)
+			if (isGameTie(gameState)) return true;
+		if (option[VisibilityOption.InGameTie] === VisibilityToggle.False)
+			if (!isGameTie(gameState)) return true;
+
 		if (option[VisibilityOption.InGamePlayerOffStage] === VisibilityToggle.True)
 			if (isOffStage(gameFrame)) return true;
 		if (option[VisibilityOption.InGamePlayerOffStage] === VisibilityToggle.False)
@@ -81,6 +86,10 @@
 
 	const isGameTime = (gameState: InGameState) => {
 		return gameState === InGameState.Time;
+	};
+
+	const isGameTie = (gameState: InGameState) => {
+		return gameState === InGameState.Tie;
 	};
 
 	const isOffStage = (gameFrame: FrameEntryType | null): boolean => {
