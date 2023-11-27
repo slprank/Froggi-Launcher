@@ -17,7 +17,7 @@
 		const player = await getCurrentPlayer();
 		const players = await getPlayers();
 
-		const gameIndex = recentGames.length > 5 ? -5 : 0;
+		const gameIndex = recentGames.length > 5 ? 4 : 0;
 		const game = recentGames.at(gameIndex)?.at(-1);
 
 		const winnerIndex = getWinnerIndex(game?.gameEnd);
@@ -30,10 +30,6 @@
 			if (winnerIndex === player?.playerIndex) return true;
 		if (option[VisibilityOption.PostGame1SummaryCurrentPlayerWin] === VisibilityToggle.False)
 			if (winnerIndex !== player?.playerIndex) return true;
-		if (option[VisibilityOption.PostGame1SummaryCurrentPlayerLoss] === VisibilityToggle.True)
-			if (winnerIndex !== player?.playerIndex) return true;
-		if (option[VisibilityOption.PostGame1SummaryCurrentPlayerLoss] === VisibilityToggle.False)
-			if (winnerIndex === player?.playerIndex) return true;
 
 		if (option[VisibilityOption.PostGame1SummaryPlayer1Stock1] === VisibilityToggle.True)
 			if (

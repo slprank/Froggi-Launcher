@@ -24,10 +24,6 @@
 			if (winnerIndex === player?.playerIndex) return true;
 		if (option[VisibilityOption.PostGameCurrentPlayerWin] === VisibilityToggle.False)
 			if (winnerIndex !== player?.playerIndex) return true;
-		if (option[VisibilityOption.PostGameCurrentPlayerLoss] === VisibilityToggle.True)
-			if (winnerIndex !== player?.playerIndex) return true;
-		if (option[VisibilityOption.PostGameCurrentPlayerLoss] === VisibilityToggle.False)
-			if (winnerIndex === player?.playerIndex) return true;
 
 		if (option[VisibilityOption.PostGamePlayer1Stock1] === VisibilityToggle.True)
 			if (

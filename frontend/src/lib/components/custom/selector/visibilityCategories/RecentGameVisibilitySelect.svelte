@@ -23,14 +23,6 @@
 	Current Player - Win
 </SelectOption>
 <SelectOption
-	description="If Current Player Lost The Previous Game"
-	value={VisibilityOption.PostGameCurrentPlayerLoss}
-	bind:selected={selectedVisibilityOption[VisibilityOption.PostGameCurrentPlayerLoss]}
-	on:select={select}
->
-	Current Player - Loss
-</SelectOption>
-<SelectOption
 	description="If Player 1 Won The Previous Game"
 	value={VisibilityOption.PostGameCurrentPlayerWin}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer1Win]}

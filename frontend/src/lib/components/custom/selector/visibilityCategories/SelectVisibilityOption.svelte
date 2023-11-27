@@ -1,11 +1,10 @@
 <script lang="ts">
-	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { VisibilityToggle } from '$lib/models/types/animationOption';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
-	function select(customElement: CustomElement) {
+	function select(customElement: any) {
 		dispatch('select', customElement);
 	}
 

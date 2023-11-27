@@ -44,7 +44,6 @@ export enum VisibilityOption {
     MatchStatsPlayer2Score3 = "Player 2 Score 3",
 
     PostGameCurrentPlayerWin = "Post Game Current Player Win",
-    PostGameCurrentPlayerLoss = "Post Game Current Player Loss",
     PostGamePlayer1Win = "Post Game Player 1 Win",
     PostGamePlayer2Win = "Post Game Player 2 Win",
     PostGamePlayer1Stock1 = "Post Game Player 1 Stock 1",
@@ -58,7 +57,6 @@ export enum VisibilityOption {
 
     PostGame1SummaryCompleted = "Post Game 1 Summary Completed",
     PostGame1SummaryCurrentPlayerWin = "Post Game 1 Summary Current Player Win",
-    PostGame1SummaryCurrentPlayerLoss = "Post Game 1 Summary Current Player Loss",
     PostGame1SummaryPlayer1Win = "Post Game 1 Summary Player 1 Win",
     PostGame1SummaryPlayer2Win = "Post Game 1 Summary Player 2 Win",
     PostGame1SummaryPlayer1Stock1 = "Post Game 1 Summary Player 1 Stock 1",
@@ -72,7 +70,6 @@ export enum VisibilityOption {
 
     PostGame2SummaryCompleted = "Post Game 2 Summary Completed",
     PostGame2SummaryCurrentPlayerWin = "Post Game 2 Summary Current Player Win",
-    PostGame2SummaryCurrentPlayerLoss = "Post Game 2 Summary Current Player Loss",
     PostGame2SummaryPlayer1Win = "Post Game 2 Summary Player 1 Win",
     PostGame2SummaryPlayer2Win = "Post Game 2 Summary Player 2 Win",
     PostGame2SummaryPlayer1Stock1 = "Post Game 2 Summary Player 1 Stock 1",
@@ -86,7 +83,6 @@ export enum VisibilityOption {
 
     PostGame3SummaryCompleted = "Post Game 3 Summary Completed",
     PostGame3SummaryCurrentPlayerWin = "Post Game 3 Summary Current Player Win",
-    PostGame3SummaryCurrentPlayerLoss = "Post Game 3 Summary Current Player Loss",
     PostGame3SummaryPlayer1Win = "Post Game 3 Summary Player 1 Win",
     PostGame3SummaryPlayer2Win = "Post Game 3 Summary Player 2 Win",
     PostGame3SummaryPlayer1Stock1 = "Post Game 3 Summary Player 1 Stock 1",
@@ -100,7 +96,6 @@ export enum VisibilityOption {
 
     PostGame4SummaryCompleted = "Post Game 4 Summary Completed",
     PostGame4SummaryCurrentPlayerWin = "Post Game 4 Summary Current Player Win",
-    PostGame4SummaryCurrentPlayerLoss = "Post Game 4 Summary Current Player Loss",
     PostGame4SummaryPlayer1Win = "Post Game 4 Summary Player 1 Win",
     PostGame4SummaryPlayer2Win = "Post Game 4 Summary Player 2 Win",
     PostGame4SummaryPlayer1Stock1 = "Post Game 4 Summary Player 1 Stock 1",
@@ -114,7 +109,6 @@ export enum VisibilityOption {
 
     PostGame5SummaryCompleted = "Post Game 5 Summary Completed",
     PostGame5SummaryCurrentPlayerWin = "Post Game 5 Summary Current Player Win",
-    PostGame5SummaryCurrentPlayerLoss = "Post Game 5 Summary Current Player Loss",
     PostGame5SummaryPlayer1Win = "Post Game 5 Summary Player 1 Win",
     PostGame5SummaryPlayer2Win = "Post Game 5 Summary Player 2 Win",
     PostGame5SummaryPlayer1Stock1 = "Post Game 5 Summary Player 1 Stock 1",
