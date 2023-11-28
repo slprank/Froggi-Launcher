@@ -8,9 +8,7 @@ import { PlayerType } from '@slippi/slippi-js';
 import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
-import { ElectronPlayersStore } from './storePlayers';
-import { getWinnerIndex, isTiedGame } from '../../../frontend/src/lib/utils/gamePredicates';
-import { isNil } from 'lodash';
+import { isTiedGame } from '../../../frontend/src/lib/utils/gamePredicates';
 
 
 @singleton()
@@ -25,7 +23,6 @@ export class ElectronGamesStore {
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
         @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
         @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
-        @inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
     ) {
         this.log.info("Initializing Game Store")
         this.initListeners()
@@ -121,8 +118,7 @@ export class ElectronGamesStore {
 
     private isRematchGame(currentGame: GameStats[] | undefined, game: GameStats): boolean {
         if (!game.settings) return true
-        if (currentGame && isTiedGame(currentGame.at(0)) &&
-            game.settings.players.some(player => player && player.startStocks && player.startStocks < 4)) return true
+        if (currentGame && isTiedGame(currentGame.at(-1))) return true
         return false
     }
 
@@ -164,22 +160,4 @@ export class ElectronGamesStore {
             this.messageHandler.sendMessage("RecentGames", recentGames);
         })
     }
-
-    handleGameScore(recentGames: GameStats[][]) {
-        const players = this.storePlayers.getCurrentPlayers();
-        if (!players) return;
-        const gameScore = recentGames?.map(recentGame => recentGame.at(-1))
-            .reduce((score: number[], game: GameStats | undefined) => {
-                if (!game) return score
-
-                if (isTiedGame(game)) return score
-
-                const winnerIndex = getWinnerIndex(game?.gameEnd)
-                if (isNil(winnerIndex)) return score
-                score[winnerIndex] += 1
-                return score
-            }, [0, 0]) ?? [0, 0]
-        this.setGameScore(gameScore)
-    }
-
 }

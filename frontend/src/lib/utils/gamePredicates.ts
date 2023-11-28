@@ -24,3 +24,18 @@ export const isTiedGame = (game: GameStats | undefined | null) => {
     })) return true
     return false
 }
+
+export const getGameScore = (recentGames: GameStats[][]) => {
+    const gameScore = recentGames?.map(recentGame => recentGame.at(-1))
+        .reduce((score: number[], game: GameStats | undefined) => {
+            if (!game) return score
+
+            if (isTiedGame(game)) return score
+
+            const winnerIndex = getWinnerIndex(game?.gameEnd)
+            if (isNil(winnerIndex)) return score
+            score[winnerIndex] += 1
+            return score
+        }, [0, 0]) ?? [0, 0]
+    return gameScore
+}

@@ -15,7 +15,7 @@ import { dateTimeNow, getGameMode } from '../utils/functions';
 import { analyzeMatch } from '../utils/analyzeMatch';
 import os from "os"
 import { isNil } from 'lodash';
-import { isTiedGame } from '../../frontend/src/lib/utils/gamePredicates';
+import { getGameScore, isTiedGame } from '../../frontend/src/lib/utils/gamePredicates';
 
 @singleton()
 export class StatsDisplay {
@@ -136,7 +136,10 @@ export class StatsDisplay {
 		this.storeGames.setGameMatch(gameStats)
 		const games = this.storeGames.getRecentGames()
 		if (!games || !games?.length) return;
-		this.storeGames.handleGameScore(games)
+
+		const score = getGameScore(games)
+		this.storeGames.setGameScore(score)
+
 		const matchStats = analyzeMatch(games.flat())
 		this.storeLiveStats.setMatchStats(matchStats)
 	}
