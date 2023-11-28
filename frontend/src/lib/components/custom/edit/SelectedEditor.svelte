@@ -125,25 +125,25 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<h1 class="text-gray-500 text-lg font-medium text-shadow" in:fly={{ duration: 250, y: 50 }}>
+<h1 class="text-gray-500 text-lg font-medium text-shadow" transition:fly={{ duration: 250, y: 50 }}>
 	Selected element
 </h1>
 <div class="h-16">
 	{#if selectedItem !== undefined}
 		<div class="w-full flex gap-2">
-			<div in:fly={{ duration: 250, y: 50 }}>
+			<div transition:fly={{ duration: 250, y: 30 }}>
 				<NumberInput bind:value={selectedItem[COL].x} max={COL} label={`X - ${COL}`} />
 			</div>
-			<div in:fly={{ duration: 250, y: 50, delay: 50 }}>
+			<div transition:fly={{ duration: 250, y: 30, delay: 30 }}>
 				<NumberInput bind:value={selectedItem[COL].y} max={ROW} label={`Y - ${ROW}`} />
 			</div>
-			<div in:fly={{ duration: 250, y: 50, delay: 100 }}>
+			<div transition:fly={{ duration: 250, y: 30, delay: 100 }}>
 				<NumberInput bind:value={selectedItem[COL].h} max={ROW} label={`H`} />
 			</div>
-			<div in:fly={{ duration: 250, y: 50, delay: 150 }}>
+			<div transition:fly={{ duration: 250, y: 30, delay: 150 }}>
 				<NumberInput bind:value={selectedItem[COL].w} max={COL} label={`W`} />
 			</div>
-			<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 200 }}>
+			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 200 }}>
 				<button
 					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => (isElementModalOpen = true)}
@@ -151,7 +151,7 @@
 					Edit
 				</button>
 			</div>
-			<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 250 }}>
+			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
 					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={copyElement}
@@ -159,7 +159,7 @@
 					Copy
 				</button>
 			</div>
-			<div class="w-24 flex items-end" in:fly={{ duration: 250, y: 50, delay: 250 }}>
+			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
 					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={deleteElement}

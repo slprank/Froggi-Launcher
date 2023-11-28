@@ -9,6 +9,7 @@
 	import RecentMatch from './elementRender/RecentMatch.svelte';
 	import Session from './elementRender/Session.svelte';
 	import RecentMatchSummary from './elementRender/RecentMatchSummary.svelte';
+	import RightClick from '../context/RightClick.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;

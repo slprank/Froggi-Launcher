@@ -3,7 +3,9 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { urls } from '$lib/utils/store.svelte';
+	//@ts-ignore
 	import Clipboard from 'svelte-clipboard';
+	//@ts-ignore
 	import QrCode from 'svelte-qrcode';
 
 	const overlayId = $page.params.overlay;
@@ -15,15 +17,11 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-full h-72 min-w-72 max-w-[612px] grid grid-cols-2 rounded-lg bg-transparent m-0 bg-cover bg-center"
+		class="w-[80vw] h-80 max-w-[800px] flex rounded-lg bg-transparent m-0 bg-cover bg-center p-4"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		<div class="col-span-1 place-items-center grid">
-			<div class="grid w-full h-48 px-4">
-				<h1 class="text-white text-xl font-medium text-shadow">
-					Open Preview In New Window
-				</h1>
-			</div>
+		<div class="flex-1 flex flex-col justify-between items-center w-[80%]">
+			<h1 class="text-white text-xl font-medium text-shadow">Open Preview In New Window</h1>
 			<a target="popup" href={`${localUrl}`} on:click={() => (open = false)}>
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
@@ -32,24 +30,29 @@
 				</button>
 			</a>
 		</div>
-		<div class="col-span-1 place-items-center grid rounded-md">
-			<div class="w-48 h-48 border-4 border-zinc-700 text-center grid gap-2">
-				<QrCode value={`${externalUrl}`} size="192" />
-				<div class="w-full flex">
-					<h1 class="text-gray-500 text-md font-medium text-shadow">External device</h1>
-					<Clipboard
-						text={`${externalUrl}`}
-						let:copy
-						on:copy={() => {
-							notifications.success('Copied to clipboard!', 2000);
-						}}
-					>
-						<button on:click={copy} class="w-5 h-5 invert transition hover:scale-110">
-							<img src="/image/button-icons/copy.png" alt="copy" />
-						</button>
-					</Clipboard>
-				</div>
-			</div>
+		<div class="flex-1 flex flex-col justify-between items-center rounded-md">
+			<h1 class="text-white text-xl font-medium text-shadow">Open on external device</h1>
+			<QrCode value={`${externalUrl}`} size="192" />
+			<Clipboard
+				text={`${externalUrl}`}
+				let:copy
+				on:copy={() => {
+					notifications.success('Copied to clipboard!', 2000);
+				}}
+			>
+				<button
+					on:click={copy}
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				>
+					Copy external URL
+				</button>
+			</Clipboard>
 		</div>
 	</div>
 </Modal>
+
+<style>
+	h1 {
+		text-align: center;
+	}
+</style>

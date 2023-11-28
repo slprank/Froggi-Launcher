@@ -11,10 +11,12 @@
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
 	import SceneSelect from '../selector/SceneSelect.svelte';
 	import SceneEditModal from './SceneEditModal.svelte';
+	//@ts-ignore
 	import Clipboard from 'svelte-clipboard';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import LayerToggle from '../preview/LayerToggle.svelte';
 	import PreviewModal from './PreviewModal.svelte';
+	import EmbedModal from './EmbedModal.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -25,6 +27,7 @@
 	let isElementModalOpen = false;
 	let isSceneModalOpen = false;
 	let isPreviewModalOpen = false;
+	let isEmbedModalOpen = false;
 
 	function resetSelectedLayer() {
 		selectedLayer = 0;
@@ -34,7 +37,7 @@
 	async function refreshOverlay() {
 		overlay = await getOverlayById(overlayId);
 	}
-	$: $obs, isElementModalOpen, refreshOverlay();
+	$: $obs, refreshOverlay();
 
 	function downloadOverlay() {
 		$electronEmitter.emit('ObsCustomOverlayDownload', overlayId);
@@ -109,46 +112,12 @@
 						>
 							Preview
 						</button>
-						<div class="grid grid-flow-row">
-							<div class="flex items-center gap-2">
-								<h1 class="text-gray-500 text-sm font-medium text-shadow">
-									External Url
-								</h1>
-								<Clipboard
-									text={`${externalUrl}`}
-									let:copy
-									on:copy={() => {
-										notifications.success('Copied to clipboard!', 2000);
-									}}
-								>
-									<button
-										on:click={copy}
-										class="w-5 h-5 invert transition hover:scale-110"
-									>
-										<img src="/image/button-icons/copy.png" alt="copy" />
-									</button>
-								</Clipboard>
-							</div>
-							<div class="flex items-center gap-2">
-								<h1 class="text-gray-500 text-sm font-medium text-shadow">
-									Local Url
-								</h1>
-								<Clipboard
-									text={`${localUrl}`}
-									let:copy
-									on:copy={() => {
-										notifications.success('Copied to clipboard!', 2000);
-									}}
-								>
-									<button
-										on:click={copy}
-										class="w-5 h-5 invert transition hover:scale-110"
-									>
-										<img src="/image/button-icons/copy.png" alt="copy" />
-									</button>
-								</Clipboard>
-							</div>
-						</div>
+						<button
+							class="transition bg-black bg-opacity-30 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
+							on:click={() => (isEmbedModalOpen = true)}
+						>
+							Embed
+						</button>
 					</div>
 					{#if !displayPreview}
 						<LayerEdit bind:overlay bind:selectedLayer />
@@ -181,4 +150,5 @@
 		<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 	{/if}
 	<PreviewModal bind:open={isPreviewModalOpen} />
+	<EmbedModal bind:open={isEmbedModalOpen} />
 </main>
