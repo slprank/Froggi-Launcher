@@ -32,6 +32,11 @@
 		player={$currentPlayers?.at(0)}
 	/>
 {/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer1StockNumber}
+	<TextElement {style} {dataItem}>
+		{$gameFrame?.players[$currentPlayers?.at(0)?.playerIndex ?? 0]?.post.stocksRemaining ?? '0'}
+	</TextElement>
+{/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterIcon}
 	<InGameCharacterIcon
 		{dataItem}
@@ -71,7 +76,7 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1ComboCounter}
 	<TextElement {style} {dataItem}>
-		{$gameFrame?.players[$currentPlayers?.at(1)?.playerIndex ?? 0]?.post.currentComboCount ??
+		{$gameFrame?.players[$currentPlayers?.at(0)?.playerIndex ?? 0]?.post.currentComboCount ??
 			'0'}
 	</TextElement>
 {/if}

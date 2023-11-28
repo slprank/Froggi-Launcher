@@ -16,48 +16,55 @@
 		value={CustomElement.InGameCurrentPlayerCharacterIcon}
 		on:select={select}
 	>
-		Current Player Stock Icon
+		Stock Icon
 	</SelectOption>
 	<SelectOption
 		description="Current Player Character Render"
 		value={CustomElement.InGameCurrentPlayerCharacterRender}
 		on:select={select}
 	>
-		Current Player Character Render
+		Character Render
 	</SelectOption>
 	<SelectOption
 		description="Current Player Character Series Symbols From N64/Melee"
 		value={CustomElement.InGameCurrentPlayerCharacterSeriesSymbol}
 		on:select={select}
 	>
-		Current Player Series Symbol Melee
+		Series Symbol Melee
 	</SelectOption>
 	<SelectOption
 		description="Current Player Character Series Symbol From Brawl/Sm4sh/Ultimate"
 		value={CustomElement.InGameCurrentPlayerCharacterSeriesSymbolUltimate}
 		on:select={select}
 	>
-		Current Player Series Symbol Ultimate
+		Series Symbol Ultimate
+	</SelectOption>
+	<SelectOption
+		description="Current Player Remaining Stocks"
+		value={CustomElement.InGameCurrentPlayerPercent}
+		on:select={select}
+	>
+		Stocks Remaining
 	</SelectOption>
 	<SelectOption
 		description="Current Player Percent - 24%"
 		value={CustomElement.InGameCurrentPlayerPercent}
 		on:select={select}
 	>
-		Current Player Percent
+		Percent
 	</SelectOption>
 	<SelectOption
 		description="Current Player Percent With Decimals - 24.6% "
 		value={CustomElement.InGameCurrentPlayerPercentDecimal}
 		on:select={select}
 	>
-		Current Player Percent Decimal
+		Percent Decimal
 	</SelectOption>
 	<SelectOption
 		description="Current Player Combo Counter"
 		value={CustomElement.InGameCurrentPlayerComboCounter}
 		on:select={select}
 	>
-		Current Player Combo Counter
+		Combo Counter
 	</SelectOption>
 </div>

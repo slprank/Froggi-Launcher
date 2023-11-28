@@ -32,6 +32,11 @@
 		player={$currentPlayer}
 	/>
 {/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer1StockNumber}
+	<TextElement {style} {dataItem}>
+		{$gameFrame?.players[$currentPlayer?.playerIndex ?? 0]?.post.stocksRemaining ?? '0'}
+	</TextElement>
+{/if}
 {#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterIcon}
 	<InGameCharacterIcon
 		{dataItem}

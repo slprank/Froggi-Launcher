@@ -7,9 +7,13 @@ export enum CustomElement {
     InGameCurrentPlayerPercentDecimal = 1004,
     InGamePlayer1PercentDecimal = 1005,
     InGamePlayer2PercentDecimal = 1006,
-    InGameCurrentPlayerComboCounter = 1007,
-    InGamePlayer1ComboCounter = 1008,
-    InGamePlayer2ComboCounter = 1009,
+
+    InGameCurrentPlayerComboCounter = 1020,
+    InGamePlayer1ComboCounter = 1021,
+    InGamePlayer2ComboCounter = 1022,
+    InGameCurrentPlayerStockNumber = 1023,
+    InGamePlayer1StockNumber = 1024,
+    InGamePlayer2StockNumber = 1025,
 
     // Custom Image
     CustomImage = 2000,
