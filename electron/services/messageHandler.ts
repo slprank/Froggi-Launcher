@@ -37,8 +37,7 @@ export class MessageHandler {
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
 		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronCurrentPlayerStore))
-		private storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(delay(() => ElectronSessionStore)) private storeSession: ElectronSessionStore,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 	) {
