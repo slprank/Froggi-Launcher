@@ -11,9 +11,9 @@ export enum CustomElement {
     InGameCurrentPlayerComboCounter = 1020,
     InGamePlayer1ComboCounter = 1021,
     InGamePlayer2ComboCounter = 1022,
-    InGameCurrentPlayerStockNumber = 1023,
-    InGamePlayer1StockNumber = 1024,
-    InGamePlayer2StockNumber = 1025,
+    InGameCurrentPlayerStocksRemaining = 1023,
+    InGamePlayer1StocksRemaining = 1024,
+    InGamePlayer2StocksRemaining = 1025,
 
     // Custom Image
     CustomImage = 2000,

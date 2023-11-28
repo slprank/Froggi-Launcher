@@ -32,7 +32,7 @@
 		player={$currentPlayers?.at(1)}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer2StockNumber}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2StocksRemaining}
 	<TextElement {style} {dataItem}>
 		{$gameFrame?.players[$currentPlayers?.at(1)?.playerIndex ?? 1]?.post.stocksRemaining ?? '0'}
 	</TextElement>

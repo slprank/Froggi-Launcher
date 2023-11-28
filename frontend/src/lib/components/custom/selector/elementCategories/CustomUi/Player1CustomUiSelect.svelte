@@ -19,6 +19,13 @@
 		Stock Icon
 	</SelectOption>
 	<SelectOption
+		description="Player 1 Remaining Stocks"
+		value={CustomElement.InGamePlayer1StocksRemaining}
+		on:select={select}
+	>
+		Stocks Remaining
+	</SelectOption>
+	<SelectOption
 		description="Player 1 Character Render"
 		value={CustomElement.InGamePlayer1CharacterRender}
 		on:select={select}

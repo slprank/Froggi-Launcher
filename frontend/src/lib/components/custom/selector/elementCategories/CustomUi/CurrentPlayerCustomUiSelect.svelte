@@ -19,6 +19,13 @@
 		Stock Icon
 	</SelectOption>
 	<SelectOption
+		description="Current Player Remaining Stocks"
+		value={CustomElement.InGameCurrentPlayerStocksRemaining}
+		on:select={select}
+	>
+		Stocks Remaining
+	</SelectOption>
+	<SelectOption
 		description="Current Player Character Render"
 		value={CustomElement.InGameCurrentPlayerCharacterRender}
 		on:select={select}
@@ -39,13 +46,7 @@
 	>
 		Series Symbol Ultimate
 	</SelectOption>
-	<SelectOption
-		description="Current Player Remaining Stocks"
-		value={CustomElement.InGameCurrentPlayerPercent}
-		on:select={select}
-	>
-		Stocks Remaining
-	</SelectOption>
+
 	<SelectOption
 		description="Current Player Percent - 24%"
 		value={CustomElement.InGameCurrentPlayerPercent}
