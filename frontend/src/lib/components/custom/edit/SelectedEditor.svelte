@@ -86,6 +86,8 @@
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (lockOut || !selectedId || !selectedItem) return;
+		console.log('key', e.key);
+		console.log('ctrl', e.ctrlKey);
 		if (e.shiftKey) {
 			if (e.key === 'ArrowDown') {
 				selectedItem[COL].h += 1;
@@ -101,6 +103,12 @@
 			}
 			return;
 		}
+		if (e.ctrlKey) {
+			if (e.key === 'c') {
+				copyElement();
+			}
+			return;
+		}
 		if (e.key === 'ArrowDown') {
 			selectedItem[COL].y += 1;
 		}
@@ -113,7 +121,7 @@
 		if (e.key === 'ArrowRight') {
 			selectedItem[COL].x += 1;
 		}
-		if (e.key === 'Backspace') {
+		if (e.key === 'Del') {
 			deleteElement();
 		}
 		lockOut = true;

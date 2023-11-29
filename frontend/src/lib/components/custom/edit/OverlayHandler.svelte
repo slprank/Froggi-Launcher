@@ -5,6 +5,7 @@
 		AnimationSettings,
 		ElementPayload,
 		GridContentItem,
+		Layer,
 		Overlay,
 		Scene,
 	} from '$lib/models/types/overlay';
@@ -289,18 +290,44 @@
 		return selectedLayer - 1;
 	}
 
+	export async function duplicateLayer(
+		overlayId: string,
+		statsScene: LiveStatsScene,
+		selectedLayerIndex: number,
+	): Promise<number> {
+		let overlay = await getOverlayById(overlayId);
+		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayerIndex;
+
+		console.log(selectedLayerIndex);
+
+		const duplicatedLayer: Layer = {
+			...overlay[statsScene].layers[selectedLayerIndex],
+			id: newId(),
+		};
+
+		const layers: Layer[] = [...overlay[statsScene].layers];
+		overlay[statsScene].layers = [
+			...layers.slice(0, selectedLayerIndex),
+			duplicatedLayer,
+			...layers.slice(selectedLayerIndex),
+		];
+
+		updateOverlay(overlay);
+
+		return selectedLayerIndex + 1;
+	}
+
 	export async function deleteLayer(
 		overlayId: string,
 		statsScene: LiveStatsScene,
-		selectedLayer: number,
+		selectedLayerIndex: number,
 	): Promise<number> {
 		let overlay = await getOverlayById(overlayId);
-		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayer;
-		if (isNil(selectedLayer)) return selectedLayer;
+		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayerIndex;
 
-		overlay[statsScene].layers.splice(selectedLayer, 1);
+		overlay[statsScene].layers.splice(selectedLayerIndex, 1);
 		updateOverlay(overlay);
 
-		return selectedLayer - 1;
+		return selectedLayerIndex - 1;
 	}
 </script>

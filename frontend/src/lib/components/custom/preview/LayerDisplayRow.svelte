@@ -5,6 +5,7 @@
 	import { electronEmitter, statsScene } from '$lib/utils/store.svelte';
 	import {
 		deleteLayer,
+		duplicateLayer,
 		moveLayerDown,
 		moveLayerUp,
 		newLayer,
@@ -66,7 +67,7 @@
 			},
 			{
 				onClick: async () => {
-					changeEditLayer(await moveLayerUp(curOverlay.id, $statsScene, layerIndex));
+					changeEditLayer(await duplicateLayer(curOverlay.id, $statsScene, layerIndex));
 				},
 				displayText: 'Duplicate',
 			},
