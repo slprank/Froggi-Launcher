@@ -20,9 +20,7 @@
 		selectedOption[event.detail] = !selectedOption[event.detail];
 	}
 
-	let selectedCategory: AnimationTriggerCategory = AnimationTriggerCategory.GameState;
-
-	$: buttons = [
+	const buttons = [
 		{
 			category: AnimationTriggerCategory.GameState,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
@@ -54,6 +52,8 @@
 			visible: [LiveStatsScene.RankChange].includes($statsScene),
 		},
 	];
+	let selectedCategory: AnimationTriggerCategory =
+		buttons?.find((button) => button.visible)?.category ?? AnimationTriggerCategory.GameState;
 </script>
 
 <div class="w-full h-full flex flex-col gap-4">

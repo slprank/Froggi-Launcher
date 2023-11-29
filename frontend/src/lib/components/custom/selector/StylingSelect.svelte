@@ -397,7 +397,7 @@
 			</div>
 			<div>
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">
-					Opacity - {payload.css.opacity}
+					Opacity - {`${((payload.css.opacity ?? 0) * 100).toFixed()}%`}
 				</h1>
 				<div class="w-full flex flex-nowrap items-center">
 					<div class="w-full h-24">
