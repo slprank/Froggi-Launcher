@@ -17,37 +17,24 @@
 	export let curOverlay: Overlay;
 	export let layer: Layer;
 	export let layerIndex: number;
-	export let previewLayers: string[];
-	export let selectedLayer: number = 0;
+	export let selectedLayerIndex: number = 0;
 	export let src: string;
 	export let scrollToBottom: Function;
 
-	let isChecked = previewLayers?.includes(layer.id) ?? false;
-	$: isSelected = selectedLayer === layerIndex;
+	$: isSelected = selectedLayerIndex === layerIndex;
 	$: isLastRow = curOverlay[$statsScene]?.layers.length === layerIndex + 1;
 
 	let deleteLayerModalOpen = false;
 
 	const changeEditLayer = (layerIndex: number) => {
 		$electronEmitter.emit('LayerPreviewChange', layerIndex);
-		selectedLayer = layerIndex;
+		selectedLayerIndex = layerIndex;
 	};
 
 	const handleChecked = () => {
 		if (!curOverlay) return;
-		if (isChecked) curOverlay[$statsScene].previewLayers.push(layer.id);
-		if (!isChecked) {
-			curOverlay[$statsScene].previewLayers = curOverlay[$statsScene]?.previewLayers.filter(
-				(layerId) => layerId !== layer.id,
-			);
-		}
 		updateOverlay(curOverlay);
 	};
-
-	const updateCheck = () => {
-		isChecked = previewLayers.includes(layer.id);
-	};
-	$: $statsScene, previewLayers, updateCheck();
 </script>
 
 {#if layer}
@@ -87,7 +74,7 @@
 				<input
 					type="checkbox"
 					class="w-12 h-12"
-					bind:checked={isChecked}
+					bind:checked={curOverlay[$statsScene].layers[layerIndex].preview}
 					on:change={handleChecked}
 				/>
 			</div>

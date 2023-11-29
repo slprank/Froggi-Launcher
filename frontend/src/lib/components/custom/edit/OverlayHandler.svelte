@@ -56,9 +56,9 @@
 				{
 					id: sceneId,
 					items: [],
+					preview: true,
 				},
 			],
-			previewLayers: [sceneId],
 		};
 	};
 
@@ -237,8 +237,8 @@
 		overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
 			id: newLayerId,
 			items: [],
+			preview: true,
 		});
-		overlay[statsScene]?.previewLayers.push(newLayerId);
 		updateOverlay(overlay);
 
 		return overlay![statsScene]?.layers.length - 1;

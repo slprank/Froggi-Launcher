@@ -127,6 +127,7 @@ export interface Image {
 export interface Layer {
 	items: GridContentItem[]
 	id: string;
+	preview: boolean;
 }
 
 export interface Obs {
@@ -180,7 +181,6 @@ export interface Scene {
 	background: Background;
 	fallback: LiveStatsScene;
 	font: Font;
-	previewLayers: string[];
 	layers: Layer[];
 }
 

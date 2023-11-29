@@ -8,16 +8,15 @@
 
 	const overlayId: string | undefined = $page.params.overlay;
 
-	let selectedLayer: number = 0;
+	let selectedLayerIndex: number = 0;
 
 	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
 
 	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay?.[$statsScene]?.layers : undefined;
-	$: previewLayers = curOverlay ? curOverlay[$statsScene]?.previewLayers : undefined;
 
 	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
-		selectedLayer = layerIndex;
+		selectedLayerIndex = layerIndex;
 	});
 
 	let scrollElement: HTMLElement;
@@ -26,12 +25,12 @@
 	};
 
 	const updateSelectedLayer = () => {
-		selectedLayer = 0;
+		selectedLayerIndex = 0;
 	};
 	$: $statsScene, updateSelectedLayer();
 </script>
 
-{#if layers && previewLayers && curOverlay}
+{#if layers && curOverlay}
 	<div class="w-full max-h-full border-1 flex flex-col border-zinc-700">
 		<div
 			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
@@ -87,9 +86,8 @@
 						{src}
 						{layer}
 						{layerIndex}
-						{previewLayers}
 						{scrollToBottom}
-						bind:selectedLayer
+						bind:selectedLayerIndex
 					/>
 				</div>
 			{/each}
