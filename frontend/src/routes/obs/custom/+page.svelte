@@ -1,15 +1,20 @@
 <script lang="ts">
-	import { localEmitter, isElectron, obs } from '$lib/utils/store.svelte';
+	import { isElectron, obs } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { goto } from '$app/navigation';
 	import OverlayModal from '$lib/components/custom/OverlayModal.svelte';
-	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
-	import { deleteOverlay } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import OverlayPreviewModal from '$lib/components/custom/OverlayPreviewModal.svelte';
+	import type { Overlay } from '$lib/models/types/overlay';
+	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
 
-	let deleteOverlayModalOpen = false;
 	let newOverlayModalOpen = false;
+	let overlayPreviewOpen = false;
 
-	let overlayId: string | undefined = undefined;
+	const openPreview = async (overlayId: string) => {
+		selectedOverlay = await getOverlayById(overlayId);
+		overlayPreviewOpen = true;
+	};
+
+	let selectedOverlay: Overlay | undefined = undefined;
 </script>
 
 <main
@@ -18,48 +23,38 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class="w-full h-full pt-8 px-2 md:px-18 grid justify-center content-center">
-		{#each $obs?.overlays ?? [] as overlay}
-			<div class="flex gap-2" in:fly={{ duration: 250, y: 50 }}>
-				{#if !$isElectron}
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
-						on:click={() => goto(`/obs/custom/${overlay.id}/layers/external`)}
-					>
-						Preview
-					</button>
-				{/if}
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
-					on:click={() => goto(`/obs/custom/${overlay.id}`)}
-				>
-					{overlay.title}
-				</button>
-				{#if $isElectron}
+	<div class="w-full h-full py-8 px-2 md:px-18 flex flex-col justify-between items-center">
+		<div>
+			<h1 class="text-4xl font-bold text-white shadow-md">Overlays</h1>
+		</div>
+		<div
+			class="flex-1 flex flex-col gap-4 w-full items-center justify-start overflow-auto py-8"
+		>
+			{#each $obs?.overlays ?? [] as overlay}
+				<div class="flex gap-2" in:fly={{ duration: 250, y: 50 }}>
 					<button
 						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 						on:click={() => {
-							deleteOverlayModalOpen = true;
-							overlayId = overlay.id;
+							openPreview(overlay.id);
 						}}
 					>
-						Delete
+						{overlay.title}
 					</button>
-				{/if}
-			</div>
-		{/each}
-		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
-			on:click={() => (newOverlayModalOpen = true)}
-		>
-			Add new
-		</button>
+				</div>
+			{/each}
+		</div>
+		<div>
+			{#if $isElectron}
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 text-3xl font-semibold text-white text-md whitespace-nowrap p-4 border border-white rounded"
+					on:click={() => (newOverlayModalOpen = true)}
+				>
+					Add new
+				</button>
+			{/if}
+		</div>
 	</div>
-	<ConfirmModal
-		bind:open={deleteOverlayModalOpen}
-		on:confirm={async () => await deleteOverlay(overlayId)}
-	>
-		Delete Overlay?
-	</ConfirmModal>
+	<OverlayPreviewModal bind:open={overlayPreviewOpen} overlay={selectedOverlay} />
+
 	<OverlayModal bind:open={newOverlayModalOpen} />
 </main>

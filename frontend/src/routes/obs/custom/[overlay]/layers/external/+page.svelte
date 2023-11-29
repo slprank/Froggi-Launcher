@@ -114,9 +114,3 @@
 		</div>
 	</div>
 {/if}
-
-<style>
-	:global(body) {
-		background: transparent;
-	}
-</style>

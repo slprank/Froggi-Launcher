@@ -166,7 +166,10 @@ export class MessageHandler {
 	private initEventHandlers() {
 		this.svelteEmitter.on("ObsCustomOverlayUpdate", async (overlay) => {
 			this.storeObs.updateCustomOverlay(overlay);
-			this.sendMessage("ObsCustomOverlay", this.storeObs.getCustomOverlayById(overlay.id));
+		});
+		
+		this.svelteEmitter.on("ObsCustomOverlayDuplicate", async (overlayId) => {
+			this.storeObs.duplicateCustomOverlay(overlayId);
 		});
 
 		this.svelteEmitter.on('ObsCustomOverlayDelete', (overlayId) => {

@@ -15,12 +15,11 @@
 		GameStartTypeExtended,
 		GameStats,
 		Match,
-		MatchStats,
 		Player,
 		Session,
 	} from '$lib/models/types/slippiData';
-	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
-	import type { ControllerInputs, PlayerController } from '$lib/models/types/controller';
+	import type { FrameEntryType } from '@slippi/slippi-js';
+	import type { PlayerController } from '$lib/models/types/controller';
 	import { TypedEmitter } from './customEventEmitter';
 
 	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());

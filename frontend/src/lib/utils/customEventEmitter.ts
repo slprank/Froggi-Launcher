@@ -31,6 +31,7 @@ export interface MessageEvents {
     ObsCustomOverlay: (url: Overlay) => void
     ObsCustomOverlayDelete: (overlayId: string) => void
     ObsCustomOverlayDownload: (overlayId: string) => void
+    ObsCustomOverlayDuplicate: (overlayId: string) => void
     ObsCustomOverlayUpdate: (overlay: Overlay) => void
     ObsCustomOverlayUpload: () => void
 

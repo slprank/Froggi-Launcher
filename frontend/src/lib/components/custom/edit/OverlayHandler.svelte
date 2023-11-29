@@ -18,6 +18,7 @@
 	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
 	import { getObs } from '$lib/utils/fetchSubscriptions.svelte';
 	import isNil from 'lodash/isNil';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
 	export function newId() {
 		return `c${Math.random().toString(36).slice(-8)}`;
@@ -108,7 +109,9 @@
 		};
 	}
 
-	export async function getOverlayById(overlayId: string): Promise<Overlay | undefined> {
+	export async function getOverlayById(
+		overlayId: string | undefined,
+	): Promise<Overlay | undefined> {
 		return await new Promise<Overlay | undefined>((resolve) => {
 			obs?.subscribe((obs) =>
 				resolve(obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId)),
@@ -127,6 +130,14 @@
 		await new Promise(() =>
 			electronEmitter.subscribe((electronEmitter) =>
 				electronEmitter.emit('ObsCustomOverlayUpdate', overlay),
+			),
+		);
+	}
+
+	export async function duplicateOverlay(overlay: Overlay) {
+		await new Promise(() =>
+			electronEmitter.subscribe((electronEmitter) =>
+				electronEmitter.emit('ObsCustomOverlayDuplicate', overlay.id),
 			),
 		);
 	}
@@ -329,5 +340,13 @@
 		updateOverlay(overlay);
 
 		return selectedLayerIndex - 1;
+	}
+
+	export async function notifyDisabledScene(
+		curOverlay: Overlay | undefined,
+		statsScene: LiveStatsScene,
+	) {
+		if (curOverlay?.[statsScene].active) return;
+		notifications.warning('Selected scene is disabled', 5000);
 	}
 </script>

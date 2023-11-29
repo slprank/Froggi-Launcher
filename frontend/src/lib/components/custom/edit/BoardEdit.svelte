@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { electronEmitter, localEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	// @ts-ignore
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
 	import type { GridContentItem, Overlay } from '$lib/models/types/overlay';
 	import { COL, ROW } from '$lib/models/const';
 	import BoardContainer from '../BoardContainer.svelte';
-	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { addFont } from '../CustomFontHandler.svelte';
 	import { asyncForEach } from '$lib/utils/helper';
+	import { notifyDisabledScene } from './OverlayHandler.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -69,12 +70,7 @@
 		});
 	}
 
-	function notifyDisabledScene() {
-		console.log(curOverlay, $statsScene);
-		if (curOverlay[$statsScene].active) return;
-		notifications.warning('Selected scene is disabled', 5000);
-	}
-	$: $statsScene, notifyDisabledScene();
+	$: $statsScene, notifyDisabledScene(curOverlay, $statsScene);
 
 	const updateFont = async () => {
 		await addFont(curOverlay[$statsScene]?.font?.base64);

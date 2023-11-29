@@ -134,7 +134,7 @@
 		});
 
 		_localEmitter.on('ObsCustomOverlay', async (overlay: Overlay) => {
-			let _obs = await getObs();
+			const _obs = await getObs();
 			const overlayIndex = _obs.overlays.findIndex((overlay) => overlay.id == overlay.id);
 			overlayIndex === undefined || overlayIndex === -1
 				? _obs.overlays.push(overlay)
@@ -144,7 +144,6 @@
 		});
 
 		_localEmitter.on('ObsCustom', (value: Obs | undefined) => {
-			console.log('custom value', value);
 			if (!value) return;
 			console.log('obs', value);
 			obs.set(value);

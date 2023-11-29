@@ -36,7 +36,7 @@ export class ElectronObsStore {
     getOverlays(): Overlay[] {
         const overlays = this.store.get('obs.custom.overlays') as Overlay[];
         if (!overlays) throw new Error("Overlays not found")
-        return overlays
+        return overlays.sort((a: Overlay, b: Overlay) => a.title.localeCompare(b.title))
     }
 
     getCustomOverlayById(overlayId: string): Overlay {
@@ -57,6 +57,14 @@ export class ElectronObsStore {
         overlayIndex === undefined || overlayIndex === -1
             ? custom.overlays.push(overlay)
             : (custom.overlays[overlayIndex] = overlay);
+        this.setCustom(custom);
+    }
+
+    duplicateCustomOverlay(overlayId: string): void {
+        const overlay = this.getCustomOverlayById(overlayId)
+        let custom = this.getCustom();
+        if (!custom) return;
+        custom.overlays.push({...overlay, id: newId(), title: `${overlay.title} - copy`})
         this.setCustom(custom);
     }
 
