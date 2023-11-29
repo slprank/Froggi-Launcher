@@ -11,9 +11,6 @@
 	import LayerEdit from '$lib/components/custom/edit/LayerEdit.svelte';
 	import SceneSelect from '../selector/SceneSelect.svelte';
 	import SceneEditModal from './SceneEditModal.svelte';
-	//@ts-ignore
-	import Clipboard from 'svelte-clipboard';
-	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import LayerToggle from '../preview/LayerToggle.svelte';
 	import PreviewModal from './PreviewModal.svelte';
 	import EmbedModal from './EmbedModal.svelte';
@@ -46,9 +43,6 @@
 	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 		selectedLayer = layerIndex;
 	});
-
-	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
-	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
 
 	$: displayPreview = innerWidth > 1100;
 	$: gridCols = displayPreview ? 3 : 2;

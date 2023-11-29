@@ -3,13 +3,12 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { getOverlayById } from './OverlayHandler.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
-	import { isElectron, urls } from '$lib/utils/store.svelte';
+	import { isElectron, obs, urls } from '$lib/utils/store.svelte';
 	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
 
 	export let boardHeight: number;
 	export let boardWidth: number;
 
-	let timeout: NodeJS.Timeout;
 	let keyTrigger: number;
 
 	const overlayId = $page.params.overlay;
@@ -20,7 +19,7 @@
 	async function getOverlay() {
 		currentOverlay = await getOverlayById(overlayId);
 	}
-	getOverlay();
+	$: $obs, getOverlay();
 </script>
 
 <div class="w-full h-full">
