@@ -23,17 +23,17 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class="w-full h-full py-8 px-2 md:px-18 flex flex-col justify-between items-center">
+	<div class="w-full h-full py-8 px-2 gap-4 md:px-18 flex flex-col justify-between items-center">
 		<div>
 			<h1 class="text-4xl font-bold text-white shadow-md">Overlays</h1>
 		</div>
 		<div
-			class="flex-1 flex flex-col gap-4 w-full items-center justify-start overflow-auto py-8"
+			class="flex-1 flex flex-col gap-4 w-full items-center justify-start overflow-auto py-4 border-2 border-gray-500"
 		>
 			{#each $obs?.overlays ?? [] as overlay}
 				<div class="flex gap-2" in:fly={{ duration: 250, y: 50 }}>
 					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
 						on:click={() => {
 							openPreview(overlay.id);
 						}}

@@ -8,17 +8,17 @@
 	// @ts-ignore
 	import QrCode from 'svelte-qrcode';
 
-	const overlayId = $page.params.overlay;
-	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}/layers/external`;
-	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}/layers/external`;
+	export let overlayId: string = $page.params.overlay;
+	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
+	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
 
-	export let open: boolean = false;
+	export let open: boolean;
 </script>
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
 		class="w-[80vw] h-[80vh] max-h-[600px] min-w-72 flex rounded-lg bg-transparent m-0 bg-cover bg-center p-8"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		style="background-image: url('/image/backgrounds/MeleeMenuRed.png')"
 	>
 		<div
 			class="flex-1 place-items-center rounded-md flex flex-col justify-between items-center gap-4"

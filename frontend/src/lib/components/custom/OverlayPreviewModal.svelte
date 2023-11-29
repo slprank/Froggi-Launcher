@@ -11,10 +11,13 @@
 	} from './edit/OverlayHandler.svelte';
 	import { goto } from '$app/navigation';
 	import type { Overlay } from '$lib/models/types/overlay';
+	import EmbedModal from './edit/EmbedModal.svelte';
 
 	export let open = false;
 	export let overlay: Overlay | undefined;
+
 	let deleteOverlayModalOpen = false;
+	let isEmbedModalOpen = false;
 
 	$: url = `${$isElectron ? $urls?.local : $urls.external}/obs/custom/${overlay?.id}/layers`;
 
@@ -32,10 +35,10 @@
 	$: $statsScene, notifyDisabledScene(overlay, $statsScene);
 </script>
 
-<Modal bind:open on:close={() => (open = false)} class="w-[90vw] rounded-lg">
+<Modal bind:open on:close={() => (open = false)} class="w-[90vw] max-w-[960px] rounded-lg">
 	<div
 		class="w-full h-full min-w-lg flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
 		<div>
 			<h1 class="font-bold text-3xl text-white">{overlay?.title}</h1>
@@ -63,6 +66,14 @@
 					Duplicate
 				</button>
 			{/if}
+			{#if $isElectron}
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+					on:click={() => (isEmbedModalOpen = true)}
+				>
+					Embed
+				</button>
+			{/if}
 			{#if !$isElectron}
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
@@ -88,4 +99,5 @@
 	<ConfirmModal bind:open={deleteOverlayModalOpen} on:confirm={handleDelete}>
 		Delete Overlay?
 	</ConfirmModal>
+	<EmbedModal overlayId={overlay?.id} bind:open={isEmbedModalOpen} />
 </Modal>

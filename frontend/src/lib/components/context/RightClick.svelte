@@ -102,6 +102,8 @@
 		margin: 0;
 	}
 	.navbar {
+		position: fixed;
+		z-index: 99999;
 		display: inline-flex;
 		border: 1px #999 solid;
 		width: 170px;
