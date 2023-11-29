@@ -21,13 +21,19 @@
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 				on:click={() => goto('/obs/custom')}
 			>
-				Custom components
+				Custom Overlays
 			</button>
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
-				on:click={() => goto('/obs/ui')}
+				on:click={() => goto('/obs/settings')}
 			>
-				Custom UI
+				Scene Settings
+			</button>
+			<button
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+				on:click={() => goto('/obs/dashboard')}
+			>
+				Dashboard
 			</button>
 		</div>
 	</div>
