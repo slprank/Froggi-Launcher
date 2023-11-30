@@ -35,7 +35,11 @@
 	$: $statsScene, notifyDisabledScene(overlay, $statsScene);
 </script>
 
-<Modal bind:open on:close={() => (open = false)} class="w-[90vw] max-w-[960px] rounded-lg">
+<Modal
+	bind:open
+	on:close={() => (open = false)}
+	class="w-[90vw] max-w-[960px] max-h-[95vh] overflow-scroll rounded-lg"
+>
 	<div
 		class="w-full h-full min-w-lg flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
@@ -43,7 +47,9 @@
 		<div>
 			<h1 class="font-bold text-3xl text-white">{overlay?.title}</h1>
 		</div>
-		<div class="w-full max-w-[800px] aspect-video h-full border-2 border-gray-500">
+		<div
+			class="w-full max-w-[600px] lg:max-w-[800px] aspect-video h-full border-2 border-gray-500"
+		>
 			<NonInteractiveIFrame src={url} title="overlay" />
 		</div>
 		<div>

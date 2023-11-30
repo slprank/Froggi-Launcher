@@ -122,9 +122,9 @@ export enum CustomElement {
     // In Game
     InGameTimerMinutes = 4300,
     InGameTimerSeconds = 4301,
-    InGameTimerMilliseconds3 = 4302,
+    InGameTimerMilliseconds1 = 4302,
     InGameTimerMilliseconds2 = 4303,
-    InGameTimerMilliseconds1 = 4304,
+    InGameTimerMilliseconds3 = 4304,
     InGameTimerSecondsCountdown = 4305,
 
     // Character Render Under Custom Image

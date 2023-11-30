@@ -28,10 +28,10 @@
 			<h1 class="text-4xl font-bold text-white shadow-md">Overlays</h1>
 		</div>
 		<div
-			class="flex-1 flex flex-col gap-4 w-full items-center justify-start overflow-auto py-4 border-2 border-gray-500 rounded-md"
+			class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 border border-gray-500 rounded-md p-4"
 		>
-			{#each $obs?.overlays ?? [] as overlay}
-				<div class="flex gap-2" in:fly={{ duration: 250, y: 50 }}>
+			{#each $obs?.overlays.sort( (a, b) => a.title.localeCompare(b.title), ) ?? [] as overlay, i}
+				<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
 					<button
 						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
 						on:click={() => {
@@ -54,7 +54,9 @@
 			{/if}
 		</div>
 	</div>
-	<OverlayPreviewModal bind:open={overlayPreviewOpen} overlay={selectedOverlay} />
+	{#if selectedOverlay}
+		<OverlayPreviewModal bind:open={overlayPreviewOpen} overlay={selectedOverlay} />
+	{/if}
 
 	<OverlayModal bind:open={newOverlayModalOpen} />
 </main>

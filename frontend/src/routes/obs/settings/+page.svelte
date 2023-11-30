@@ -11,7 +11,7 @@
 	out:fade={{ duration: 300 }}
 >
 	<div class="w-full h-full grid justify-center content-center">
-		<h1 class="text-white text-xl">Custom UI Elements</h1>
+		<h1 class="text-white text-xl">OBS Settings</h1>
 	</div>
 </main>
 
