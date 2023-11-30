@@ -49,7 +49,8 @@
 		);
 	};
 
-	let div: HTMLElement;
+	let div: HTMLElement | undefined;
+	let parent: HTMLElement | undefined;
 	$: boardWidth = div?.clientWidth ?? 0;
 	$: boardHeight = div?.clientHeight ?? 0;
 </script>
@@ -74,14 +75,14 @@
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
 				{:else}
-					<div class="w-full h-full" in:animateIn out:animateOut>
+					<div class="w-full h-full" in:animateIn out:animateOut bind:this={parent}>
 						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(
 									node,
 									dataItem?.data.visibility.in,
-									boardHeight,
-									boardWidth,
+									parent?.clientHeight ?? 0,
+									parent?.clientWidth ?? 0,
 									0,
 									dataItem,
 								)}
@@ -89,8 +90,8 @@
 								createAnimation(
 									node,
 									dataItem?.data.visibility.out,
-									boardHeight,
-									boardWidth,
+									parent?.clientHeight ?? 0,
+									parent?.clientWidth ?? 0,
 									0,
 									dataItem,
 								)}

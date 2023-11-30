@@ -7,6 +7,7 @@ export enum Animation {
 	FlyAutomatic = "fly automatic",
 	Scale = "scale",
 	Slide = "slide",
+	Percent = "percent",
 }
 
 export enum AutoUpdaterStatus {

@@ -61,6 +61,20 @@
 		Percent Decimal
 	</SelectOption>
 	<SelectOption
+		description="Player 2 Percent - 24% - Pre Animated"
+		value={CustomElement.InGamePlayer2PercentCustom}
+		on:select={select}
+	>
+		Percent - Pre Animated
+	</SelectOption>
+	<SelectOption
+		description="Player 2 Percent With Decimals - Pre Animated"
+		value={CustomElement.InGamePlayer2PercentDecimalCustom}
+		on:select={select}
+	>
+		Percent Decimal - Pre Animated
+	</SelectOption>
+	<SelectOption
 		description="Player 2 Combo Counter"
 		value={CustomElement.InGamePlayer2ComboCounter}
 		on:select={select}

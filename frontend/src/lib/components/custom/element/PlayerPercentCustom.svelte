@@ -1,0 +1,206 @@
+<script lang="ts">
+	import { Animation, InGameState } from '$lib/models/enum';
+	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
+	import type { Player } from '$lib/models/types/slippiData';
+	import { gameFrame, gameState, localEmitter } from '$lib/utils/store.svelte';
+	import type { FrameEntryType } from '@slippi/slippi-js';
+	import { createAnimation } from './animations/Animations.svelte';
+	import { onMount } from 'svelte';
+	import type { TransitionConfig } from 'svelte/transition';
+
+	export let dataItem: GridContentItem;
+	export let defaultPreview: boolean;
+	export let style: GridContentItemStyle;
+
+	export let player: Player | undefined;
+	export let numberOfDecimals: number;
+
+	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
+
+	$: frame = $gameFrame?.players?.[player?.playerIndex ?? -1]?.post;
+
+	$: framePercent = frame && isInGame ? Math.floor(frame.percent ?? 0).toFixed() : '0';
+
+	$: decimals =
+		numberOfDecimals && isInGame
+			? frame?.percent?.toFixed(numberOfDecimals).split('.').at(1) ?? '0'
+			: '0';
+
+	const MAX_INTENSITY = 300;
+	let percentageColor: string = dataItem.data.percent.startColor;
+
+	const updateColor = () => {
+		var startColor = dataItem.data.percent.startColor; // Replace with your desired start color
+		var endColor = dataItem.data.percent.endColor; // Replace with your desired end color
+
+		percentageColor = interpolateColors(startColor, endColor, parseInt(framePercent)); // Call the function to interpolate the colors
+	};
+	$: frame?.percent, updateColor();
+
+	function interpolateColors(startColor: string, endColor: string, value: number) {
+		value = Math.min(value, MAX_INTENSITY);
+		var startRGB = hexToRgb(startColor); // Convert the start color to RGB
+		var endRGB = hexToRgb(endColor); // Convert the end color to RGB
+
+		var r = interpolate(startRGB.r, endRGB.r, value); // Interpolate the red component
+		var g = interpolate(startRGB.g, endRGB.g, value); // Interpolate the green component
+		var b = interpolate(startRGB.b, endRGB.b, value); // Interpolate the blue component
+
+		return rgbToHex(r, g, b); // Convert the interpolated RGB values back to hex
+	}
+
+	function interpolate(start: number, end: number, value: number) {
+		return start + (end - start) * (value / MAX_INTENSITY); // Perform linear interpolation
+	}
+
+	function hexToRgb(hex: string) {
+		var bigint = parseInt(hex.slice(1), 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		return { r, g, b };
+	}
+
+	function rgbToHex(r: number, g: number, b: number) {
+		var hex = ((r << 16) | (g << 8) | b).toString(16);
+		return '#' + ('000000' + hex).slice(-6);
+	}
+
+	let trigger = 0;
+	let prevFrame: FrameEntryType;
+	const animationTrigger = (player: Player | undefined, gameFrame: FrameEntryType | null) => {
+		if (!player || !gameFrame) return;
+		setTimeout(() => (prevFrame = gameFrame));
+		let trigger = false;
+		trigger =
+			(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
+				(prevFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) || trigger;
+		return trigger;
+	};
+	$: if (animationTrigger(player, $gameFrame)) trigger = Math.random();
+
+	const animation = (node: Element): TransitionConfig =>
+		createAnimation(
+			node,
+			{
+				type: Animation.Percent,
+				options: {
+					duration: 250,
+					x: 50,
+					y: 50,
+					delay: 0,
+					easing: 'cubicOut',
+					start: 0,
+				},
+			},
+			(parent?.clientHeight ?? 0) * 5,
+			(parent?.clientWidth ?? 0) * 5,
+			0,
+			dataItem,
+		);
+
+	onMount(() => {
+		const handler = () => {
+			const tempTrigger = trigger;
+			trigger = Math.random();
+			setTimeout(() => {
+				trigger = tempTrigger;
+			});
+		};
+
+		$localEmitter.on('TestCustomAnimationTrigger', handler);
+
+		return () => {
+			$localEmitter.off('TestCustomAnimationTrigger', handler);
+		};
+	});
+
+	let parent: HTMLElement | undefined;
+</script>
+
+{#key framePercent}
+	<div class="w-full h-full relative">
+		{#if isInGame || defaultPreview}
+			{#each Array.from(Array(2)) as _, i}
+				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
+					<div
+						class={`${style.classValue.replace(
+							'justify-center',
+							'justify-end',
+						)} flex aspect-[23/9] max-h-full w-full items-end justify-end hide-siblings`}
+						style={`${style.cssValue}; transform: translate(0,25%);`}
+						bind:this={parent}
+					>
+						{#key trigger}
+							<div
+								in:animation|local
+								class="flex h-full items-end justify-center"
+								style={`font-size: ${parent?.clientHeight ?? 0}px`}
+							>
+								{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
+							</div>
+						{/key}
+						{#key trigger}
+							<div
+								in:animation|local
+								class="flex h-full items-end justify-center"
+								style={`font-size: ${parent?.clientHeight ?? 0}px`}
+							>
+								{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
+							</div>
+						{/key}
+						{#key trigger}
+							<div
+								in:animation|local
+								class="flex h-full items-end justify-center"
+								style={`font-size: ${parent?.clientHeight ?? 0}px`}
+							>
+								{defaultPreview ? 0 : framePercent.at(-1) ?? ''}
+							</div>
+						{/key}
+						{#if !numberOfDecimals}
+							{#key trigger}
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[2.25%]"
+									style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
+								>
+									%
+								</div>
+							{/key}
+						{/if}
+						{#if numberOfDecimals}
+							{#key trigger}
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[6%]"
+									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								>
+									.
+								</div>
+							{/key}
+							{#key trigger}
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[6%]"
+									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								>
+									{defaultPreview ? 0 : decimals.at(0) ?? ''}
+								</div>
+							{/key}
+							{#key trigger}
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[6%]"
+									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								>
+									%
+								</div>
+							{/key}
+						{/if}
+					</div>
+				</div>
+			{/each}
+		{/if}
+	</div>
+{/key}

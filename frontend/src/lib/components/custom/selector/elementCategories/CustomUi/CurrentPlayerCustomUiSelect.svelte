@@ -62,6 +62,20 @@
 		Percent Decimal
 	</SelectOption>
 	<SelectOption
+		description="Current Player Percent - 24% - Pre Animated"
+		value={CustomElement.InGameCurrentPlayerPercentCustom}
+		on:select={select}
+	>
+		Percent - Pre Animated
+	</SelectOption>
+	<SelectOption
+		description="Current Player Percent With Decimals - Pre Animated"
+		value={CustomElement.InGameCurrentPlayerPercentDecimalCustom}
+		on:select={select}
+	>
+		Percent Decimal - Pre Animated
+	</SelectOption>
+	<SelectOption
 		description="Current Player Combo Counter"
 		value={CustomElement.InGameCurrentPlayerComboCounter}
 		on:select={select}

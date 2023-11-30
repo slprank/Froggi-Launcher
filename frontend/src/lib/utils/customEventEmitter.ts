@@ -36,6 +36,7 @@ export interface MessageEvents {
     ObsCustomOverlayUpload: () => void
 
     TestAnimationTrigger: () => void
+    TestCustomAnimationTrigger: () => void
     TestVisibilityTrigger: () => void
 }
 

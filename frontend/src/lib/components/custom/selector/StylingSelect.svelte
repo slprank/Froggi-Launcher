@@ -36,6 +36,9 @@
 	$: boxSettings = isBoxSettings(selectedElementId);
 
 	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
+	$: customPercentSettings = selectedElementId >= 1007 && selectedElementId <= 1012;
+
+	$: preAnimatedElement = customStringSettings;
 
 	const isStringSettings = (elementId: number) => {
 		return (elementId >= 4000 && elementId < 6000) || elementId === CustomElement.CustomString;
@@ -123,10 +126,13 @@
 	};
 	$: payload.animationTrigger, fixAnimationInputDelay();
 
-	const shuffleAnimationTriggers = () => {
+	const testAnimationTriggers = () => {
 		$localEmitter.emit('TestAnimationTrigger');
 	};
-	const shuffleAnimationVisibility = () => {
+	const testCustomAnimationTriggers = () => {
+		$localEmitter.emit('TestCustomAnimationTrigger');
+	};
+	const testVisibilityAnimation = () => {
 		$localEmitter.emit('TestVisibilityTrigger');
 	};
 
@@ -189,7 +195,7 @@
 					<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
 				</div>
 			{/if}
-			{#if percentSettings}
+			{#if percentSettings || customPercentSettings}
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Percent Colors</h1>
 				<div class="w-full flex flex-wrap">
 					<div class="w-full">
@@ -232,7 +238,7 @@
 					</div>
 				</div>
 			{/if}
-			{#if stringSettings && !percentSettings}
+			{#if stringSettings && (!percentSettings || !customPercentSettings)}
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Custom text</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-full h-12">
@@ -240,7 +246,7 @@
 					</div>
 				</div>
 			{/if}
-			{#if stringSettings || percentSettings}
+			{#if stringSettings || percentSettings || customPercentSettings}
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
 				<div>
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">
@@ -414,18 +420,32 @@
 				</h1>
 			</div>
 			<h1 class="text-gray-500 text-lg font-medium text-shadow">Trigger</h1>
-			<AnimationTriggerSelect
-				bind:selectedOption={payload.animationTrigger.selectedOptions}
-				on:update={handleTriggerUpdate}
-			/>
-			{#if payload.animationTrigger.selectedOptions}
+			{#if !preAnimatedElement}
+				<AnimationTriggerSelect
+					bind:selectedOption={payload.animationTrigger.selectedOptions}
+					on:update={handleTriggerUpdate}
+				/>
+			{/if}
+			{#if payload.animationTrigger.selectedOptions && !preAnimatedElement}
 				<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
 					<AnimationInput bind:animation={payload.animationTrigger.in} label="In" />
 					<AnimationInput bind:animation={payload.animationTrigger.out} label="Out" />
 				</div>
+			{/if}
+			{#if payload.animationTrigger.selectedOptions && !preAnimatedElement}
 				<button
 					in:fly={{ duration: 250, x: 100 }}
-					on:click={shuffleAnimationTriggers}
+					on:click={testAnimationTriggers}
+					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				>
+					Test animation
+				</button>
+			{/if}
+			{#if preAnimatedElement}
+				<button
+					in:fly={{ duration: 250, x: 100 }}
+					on:click={testCustomAnimationTriggers}
 					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				>
@@ -454,7 +474,7 @@
 				</div>
 				<button
 					in:fly={{ duration: 250, x: 100 }}
-					on:click={shuffleAnimationVisibility}
+					on:click={testVisibilityAnimation}
 					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				>

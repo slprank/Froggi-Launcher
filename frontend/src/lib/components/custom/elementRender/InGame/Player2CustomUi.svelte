@@ -4,6 +4,7 @@
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
 	import PlayerPercent from '../../element/PlayerPercent.svelte';
+	import PlayerPercentCustom from '../../element/PlayerPercentCustom.svelte';
 	import TextElement from '../../element/TextElement.svelte';
 	import InGameCharacterIcon from '../../element/inGame/InGameCharacterIcon.svelte';
 	import InGameCharacterRender from '../../element/inGame/InGameCharacterRender.svelte';
@@ -25,6 +26,24 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer2PercentDecimal}
 	<PlayerPercent
+		{style}
+		{dataItem}
+		{defaultPreview}
+		numberOfDecimals={1}
+		player={$currentPlayers?.at(1)}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2PercentCustom}
+	<PlayerPercentCustom
+		{style}
+		{dataItem}
+		{defaultPreview}
+		numberOfDecimals={0}
+		player={$currentPlayers?.at(1)}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2PercentDecimalCustom}
+	<PlayerPercentCustom
 		{style}
 		{dataItem}
 		{defaultPreview}

@@ -8,6 +8,7 @@
 	import InGameCharacterRender from '$lib/components/custom/element/inGame/InGameCharacterRender.svelte';
 	import InGameCharacterSeriesSymbol from '$lib/components/custom/element/inGame/InGameCharacterSeriesSymbol.svelte';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
+	import PlayerPercentCustom from '../../element/PlayerPercentCustom.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -25,6 +26,24 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameCurrentPlayerPercentDecimal}
 	<PlayerPercent
+		{style}
+		{dataItem}
+		{defaultPreview}
+		numberOfDecimals={1}
+		player={$currentPlayer}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerPercentCustom}
+	<PlayerPercentCustom
+		{style}
+		{dataItem}
+		{defaultPreview}
+		numberOfDecimals={0}
+		player={$currentPlayer}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerPercentDecimalCustom}
+	<PlayerPercentCustom
 		{style}
 		{dataItem}
 		{defaultPreview}

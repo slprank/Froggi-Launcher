@@ -44,13 +44,19 @@
 	$: $gameFrame, $currentPlayer, updateTriggerValues();
 
 	onMount(() => {
-		$localEmitter.on('TestAnimationTrigger', () => {
-			const tempKey = key;
+		const handler = () => {
+			const tempTrigger = key;
 			key = Math.random();
 			setTimeout(() => {
-				key = tempKey;
+				key = tempTrigger;
 			});
-		});
+		};
+
+		$localEmitter.on('TestAnimationTrigger', handler);
+
+		return () => {
+			$localEmitter.off('TestAnimationTrigger', handler);
+		};
 	});
 </script>
 
