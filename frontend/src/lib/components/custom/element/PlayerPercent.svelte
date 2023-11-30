@@ -62,39 +62,35 @@
 		var hex = ((r << 16) | (g << 8) | b).toString(16);
 		return '#' + ('000000' + hex).slice(-6);
 	}
+
+	$: console.log(percentageColor);
 </script>
 
 {#key framePercent}
 	<div class="w-full h-full relative">
 		{#if isInGame || defaultPreview}
-			{#each Array.from(Array(2)) as _, i}
-				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
-					<TextFitMulti
-						class={`h-full ${style.classValue} justify-end ${
-							i === 0 ? 'font-[900]' : ``
-						}`}
-						style={`${style.cssValue}; ${
-							dataItem?.data.advancedStyling ? dataItem?.data.css.customText : ''
-						}; ${i !== 0 && `color: ${percentageColor}`}; ${style.stroke}`}
-						maxFont={1000}
-					>
-						{#if !numberOfDecimals}
-							<span class="mr-[.3em]">
-								{`${defaultPreview ? 300 : framePercent}`}
-								<span class="text-[80%] mx-[-.2em]">%</span>
+			<div class={`w-full h-full absolute`}>
+				<TextFitMulti
+					class={`h-full ${style.classValue} justify-end`}
+					style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.stroke}`}
+					maxFont={1000}
+				>
+					{#if !numberOfDecimals}
+						<span class="mr-[.3em]">
+							{`${defaultPreview ? 300 : framePercent}`}
+							<span class="text-[80%] mx-[-.2em]">%</span>
+						</span>
+					{/if}
+					{#if numberOfDecimals}
+						<span class="mr-[.4em]">
+							{`${defaultPreview ? 300 : framePercent}`}
+							<span class="text-[55%] mx-[-.5em]">
+								{`${`.${defaultPreview ? 0 : decimals}`}%`}
 							</span>
-						{/if}
-						{#if numberOfDecimals}
-							<span class="mr-[.4em]">
-								{`${defaultPreview ? 300 : framePercent}`}
-								<span class="text-[55%] mx-[-.5em]">
-									{`${`.${defaultPreview ? 0 : decimals}`}%`}
-								</span>
-							</span>
-						{/if}
-					</TextFitMulti>
-				</div>
-			{/each}
+						</span>
+					{/if}
+				</TextFitMulti>
+			</div>
 		{/if}
 	</div>
 {/key}

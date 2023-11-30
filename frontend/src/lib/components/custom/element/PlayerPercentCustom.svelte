@@ -116,91 +116,90 @@
 	});
 
 	let parent: HTMLElement | undefined;
+	$: console.log(percentageColor);
 </script>
 
 {#key framePercent}
 	<div class="w-full h-full relative">
 		{#if isInGame || defaultPreview}
-			{#each Array.from(Array(2)) as _, i}
-				<div class={`w-full h-full absolute ${i === 0 ? 'text-black' : ''}`}>
-					<div
-						class={`${style.classValue.replace(
-							'justify-center',
-							'justify-end',
-						)} flex aspect-[23/9] max-h-full w-full items-end justify-end hide-siblings`}
-						style={`${style.cssValue}; transform: translate(0,25%);`}
-						bind:this={parent}
-					>
+			<div class={`w-full h-full absolute`}>
+				<div
+					class={`${style.classValue.replace(
+						'justify-center',
+						'justify-end',
+					)} flex aspect-[23/9] max-h-full w-full items-end justify-end; `}
+					style={`${style.cssValue}; transform: translate(0,25%); ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.stroke}`}
+					bind:this={parent}
+				>
+					{#key trigger}
+						<div
+							in:animation|local
+							class="flex h-full items-end justify-center"
+							style={`font-size: ${parent?.clientHeight ?? 0}px`}
+						>
+							{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
+						</div>
+					{/key}
+					{#key trigger}
+						<div
+							in:animation|local
+							class="flex h-full items-end justify-center"
+							style={`font-size: ${parent?.clientHeight ?? 0}px`}
+						>
+							{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
+						</div>
+					{/key}
+					{#key trigger}
+						<div
+							in:animation|local
+							class="flex h-full items-end justify-center"
+							style={`font-size: ${parent?.clientHeight ?? 0}px`}
+						>
+							{defaultPreview ? 0 : framePercent.at(-1) ?? ''}
+						</div>
+					{/key}
+					{#if !numberOfDecimals}
 						{#key trigger}
 							<div
 								in:animation|local
-								class="flex h-full items-end justify-center"
-								style={`font-size: ${parent?.clientHeight ?? 0}px`}
+								class="flex h-full items-end justify-center pb-[2.25%]"
+								style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
 							>
-								{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
+								%
+							</div>
+						{/key}
+					{/if}
+					{#if numberOfDecimals}
+						{#key trigger}
+							<div
+								in:animation|local
+								class="flex h-full items-end justify-center pb-[6%]"
+								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+							>
+								.
 							</div>
 						{/key}
 						{#key trigger}
 							<div
 								in:animation|local
-								class="flex h-full items-end justify-center"
-								style={`font-size: ${parent?.clientHeight ?? 0}px`}
+								class="flex h-full items-end justify-center pb-[6%]"
+								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
 							>
-								{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
+								{defaultPreview ? 0 : decimals.at(0) ?? ''}
 							</div>
 						{/key}
 						{#key trigger}
 							<div
 								in:animation|local
-								class="flex h-full items-end justify-center"
-								style={`font-size: ${parent?.clientHeight ?? 0}px`}
+								class="flex h-full items-end justify-center pb-[6%]"
+								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
 							>
-								{defaultPreview ? 0 : framePercent.at(-1) ?? ''}
+								%
 							</div>
 						{/key}
-						{#if !numberOfDecimals}
-							{#key trigger}
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[2.25%]"
-									style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
-								>
-									%
-								</div>
-							{/key}
-						{/if}
-						{#if numberOfDecimals}
-							{#key trigger}
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[6%]"
-									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
-								>
-									.
-								</div>
-							{/key}
-							{#key trigger}
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[6%]"
-									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
-								>
-									{defaultPreview ? 0 : decimals.at(0) ?? ''}
-								</div>
-							{/key}
-							{#key trigger}
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[6%]"
-									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
-								>
-									%
-								</div>
-							{/key}
-						{/if}
-					</div>
+					{/if}
 				</div>
-			{/each}
+			</div>
 		{/if}
 	</div>
 {/key}

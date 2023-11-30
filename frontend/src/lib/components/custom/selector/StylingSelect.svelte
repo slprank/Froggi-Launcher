@@ -38,7 +38,7 @@
 	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
 	$: customPercentSettings = selectedElementId >= 1007 && selectedElementId <= 1012;
 
-	$: preAnimatedElement = customStringSettings;
+	$: preAnimatedElement = customPercentSettings;
 
 	const isStringSettings = (elementId: number) => {
 		return (elementId >= 4000 && elementId < 6000) || elementId === CustomElement.CustomString;
