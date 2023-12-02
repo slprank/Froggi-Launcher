@@ -10,7 +10,6 @@
 	export let open: boolean;
 	let addGameModalOpen = false;
 	let deleteGameModalOpen = false;
-	let resetRecentGamesModalOpen = false;
 	let selectedGameIndex = 0;
 
 	let games: GameStats[][] = $recentGames;
@@ -29,11 +28,6 @@
 		console.log('delete game', games);
 		selectedGameIndex = gameIndex;
 		deleteGameModalOpen = true;
-	};
-
-	const resetRecentGames = () => {
-		console.log('reset game');
-		resetRecentGamesModalOpen = true;
 	};
 
 	const handleDelete = () => {
@@ -72,7 +66,9 @@
 				{$currentPlayers.at(1)?.displayName ?? 'Player2'}
 			</h1>
 		</div>
-		<div class="flex-l flex flex-col items-center overflow-scroll gap-4">
+		<div
+			class="flex-l flex flex-col items-center overflow-scroll gap-4 border-2 border-gray-700 rounded-md p-2"
+		>
 			<button
 				class="transition duration-100 rounded-md w-full justify-center bg-black border border-white hover:scale-[1.02] bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
@@ -153,12 +149,6 @@
 		</div>
 		<button
 			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
-			on:click={resetRecentGames}
-		>
-			Clear Games
-		</button>
-		<button
-			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 			on:click={updateScore}
 		>
 			Update Score
@@ -166,8 +156,5 @@
 	</div>
 	<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>
 		Delete Game?
-	</ConfirmModal>
-	<ConfirmModal bind:open={resetRecentGamesModalOpen} on:confirm={handleReset}>
-		Reset Games?
 	</ConfirmModal>
 </Modal>

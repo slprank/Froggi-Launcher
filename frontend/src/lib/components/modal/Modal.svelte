@@ -41,8 +41,12 @@
 
 {#if !$isIframe}
 	{#if open}
-		<div use:modalAction transition:fade={{ duration: 200 }} class="w-screen h-screen z-50">
-			<section class="w-full h-full">
+		<div
+			use:modalAction
+			transition:fade={{ duration: 200 }}
+			class="fixed inset-0 top-0 left-0 w-screen h-screen z-50 p-2"
+		>
+			<section>
 				<aside
 					in:fly={{ duration: 200, y: 100 }}
 					out:fade={{ duration: 200 }}
@@ -50,7 +54,15 @@
 					on:click_outside={handleCloseClick}
 					class={`${_class}`}
 				>
-					<slot />
+					<div class="relative">
+						<slot />
+						<button
+							class="top-2 right-2 w-6 h-6 absolute text-gray-700 text-xl transition delay-100 duration-200 hover:scale-[1.02] hover:text-white"
+							on:click={handleCloseClick}
+						>
+							X
+						</button>
+					</div>
 				</aside>
 			</section>
 		</div>
@@ -67,11 +79,6 @@
 		background-color: transparent;
 	}
 	div {
-		position: absolute;
 		background-color: rgba(0, 0, 0, 0.5);
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
 	}
 </style>

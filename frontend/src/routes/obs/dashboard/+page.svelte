@@ -4,11 +4,6 @@
 	import { DashboardOption } from '$lib/models/enum';
 	import { fade, fly } from 'svelte/transition';
 	import OverlayScenes from '$lib/components/dashboard/OverlayScenes.svelte';
-	import TagUpdateModal from '$lib/components/dashboard/Modals/TagUpdateModal.svelte';
-	import ScoreUpdateModal from '$lib/components/dashboard/Modals/ScoreUpdateModal.svelte';
-
-	let isTagModalOpen = false;
-	let isScoreModalOpen = false;
 
 	let dashboardOption: DashboardOption = DashboardOption.Offline;
 </script>
@@ -52,7 +47,7 @@
 			>
 				<div class="absolute flex flex-col gap-8">
 					{#if dashboardOption === DashboardOption.Offline}
-						<Offline bind:isScoreModalOpen bind:isTagModalOpen />
+						<Offline />
 					{/if}
 					{#if dashboardOption === DashboardOption.SmashGG}
 						<SmashGg />
@@ -62,8 +57,6 @@
 			</div>
 		{/key}
 	</div>
-	<TagUpdateModal bind:open={isTagModalOpen} />
-	<ScoreUpdateModal bind:open={isScoreModalOpen} />
 </main>
 
 <style>
