@@ -68,6 +68,7 @@
 		Change Score
 	</button>
 </div>
+
 <TagUpdateModal bind:open={isTagModalOpen} />
 <ScoreUpdateModal bind:open={isScoreModalOpen} />
 <ConfirmModal bind:open={isResetRecentGamesModalOpen} on:confirm={handleScoreReset}>

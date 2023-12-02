@@ -33,6 +33,7 @@ mainLog.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 const slpParser = new SlpParser();
 const slpStream = new SlpStream();
 const localEmitter = new TypedEmitter();
+const svelteEmitter = new TypedEmitter();
 
 
 try {
@@ -153,6 +154,7 @@ function createMainWindow() {
 	mainWindow.webContents.once('dom-ready', async () => {
 		container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
 		container.register<TypedEmitter>('LocalEmitter', { useValue: localEmitter });
+		container.register<TypedEmitter>('SvelteEmitter', { useValue: svelteEmitter });
 		container.register<ElectronLog>('ElectronLog', { useValue: mainLog });
 		container.register<IpcMain>('IpcMain', { useValue: ipcMain });
 		container.register<SlpParser>('SlpParser', { useValue: slpParser });

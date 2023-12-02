@@ -81,6 +81,11 @@ describe('ElectnronGamesStore', () => {
             sendMessage: () => { }
         };
 
+        const eventEmitter: any = {
+            on: () => { },
+            emit: () => { }
+        };
+
         const slpParser: any = {
             on: () => { }
         }
@@ -102,7 +107,7 @@ describe('ElectnronGamesStore', () => {
             }
         }
 
-        storeLiveStats = new ElectronLiveStatsStore(log, store, messageHandler)
+        storeLiveStats = new ElectronLiveStatsStore(log, store, eventEmitter, messageHandler)
 
         storeCurrentPlayer = new ElectronCurrentPlayerStore(log, store, storeLiveStats, storeSession, storeSettings, messageHandler)
         storeCurrentPlayer.getCurrentPlayer = (): any => {

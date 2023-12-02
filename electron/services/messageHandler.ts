@@ -1,12 +1,10 @@
-import { BrowserWindow, IpcMain, dialog } from 'electron';
+import { BrowserWindow, IpcMain } from 'electron';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronObsStore } from './store/storeObs';
-import fs from 'fs';
-import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronPlayersStore } from './store/storePlayers';
@@ -23,12 +21,13 @@ export class MessageHandler {
 	private server: any;
 	private webSocketServer: any;
 	private webSockets: WebSocket[];
-	private svelteEmitter: TypedEmitter = new TypedEmitter();
+
 	constructor(
 		@inject('Dev') private dev: boolean,
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('LocalEmitter') private localEmitter: TypedEmitter,
+		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
 		@inject('IpcMain') private ipcMain: IpcMain,
 		@inject('Port') private port: string,
 		@inject('RootDir') private rootDir: string,
@@ -165,47 +164,8 @@ export class MessageHandler {
 	}
 
 	private initEventHandlers() {
-		this.svelteEmitter.on("ObsCustomOverlayUpdate", async (overlay) => {
-			this.storeObs.updateCustomOverlay(overlay);
-		});
-
-		this.svelteEmitter.on("ObsCustomOverlayDuplicate", async (overlayId) => {
-			this.storeObs.duplicateCustomOverlay(overlayId);
-		});
-
-		this.svelteEmitter.on('ObsCustomOverlayDelete', (overlayId) => {
-			this.storeObs.deleteCustomOverlay(overlayId);
-		});
-
-
-		this.svelteEmitter.on('ObsCustomOverlayDownload', async (overlayId) => {
-			const overlay = this.storeObs.getCustomOverlayById(overlayId);
-			if (!overlay) return;
-			const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, {
-				filters: [{ name: 'json', extensions: ['json'] }],
-				nameFieldLabel: overlay.title,
-			});
-			if (canceled || !filePath) return;
-			fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
-		});
-
-		this.svelteEmitter.on("ObsCustomOverlayUpload", async () => {
-			const { canceled, filePaths } = await dialog.showOpenDialog(this.mainWindow, {
-				properties: ['openFile'],
-				filters: [{ name: 'json', extensions: ['json'] }],
-			});
-			if (canceled) return;
-			const overlay = fs.readFileSync(filePaths[0], 'utf8');
-			this.storeObs.uploadCustomOverlay(JSON.parse(overlay));
-		});
-
 		this.svelteEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 			this.sendMessage('LayerPreviewChange', layerIndex);
-		});
-
-		this.svelteEmitter.on("LiveStatsSceneChange", (value: LiveStatsScene | undefined) => {
-			if (!value) return
-			this.storeLiveStats.setStatsScene(value);
 		});
 	}
 

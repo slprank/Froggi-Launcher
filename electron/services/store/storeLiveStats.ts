@@ -14,6 +14,7 @@ import {
 	Player,
 } from '../../../frontend/src/lib/models/types/slippiData';
 import { isNil } from 'lodash';
+import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 
 @singleton()
 export class ElectronLiveStatsStore {
@@ -21,10 +22,12 @@ export class ElectronLiveStatsStore {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject("ElectronStore") private store: Store,
+		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
 		this.log.info('Initializing Live Stats Store');
 		this.initListeners();
+		this.initSvelteListeners();
 	}
 
 	getStatsScene(): LiveStatsScene | undefined {
@@ -125,6 +128,13 @@ export class ElectronLiveStatsStore {
 		});
 		this.store.onDidChange(`stats.match`, async (value) => {
 			this.messageHandler.sendMessage("CurrentMatch", value as Match);
+		});
+	}
+
+	initSvelteListeners() {
+		this.svelteEmitter.on("LiveStatsSceneChange", (value: LiveStatsScene | undefined) => {
+			if (!value) return
+			this.setStatsScene(value);
 		});
 	}
 }
