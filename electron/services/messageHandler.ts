@@ -78,7 +78,8 @@ export class MessageHandler {
 		this.ipcMain.on('message', (_: any, data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				this.svelteEmitter.emit(key as any, value);
+				console.log("command", key, value)
+				this.svelteEmitter.emit(key as any, ...value as any);
 			}
 		});
 		this.svelteEmitter.on("InitElectron", () => {
@@ -103,7 +104,7 @@ export class MessageHandler {
 		socket.addEventListener('message', (value: any) => {
 			let parse = JSON.parse(value.data);
 			for (const [key, value] of Object.entries(parse)) {
-				this.svelteEmitter.emit(key as any, value);
+				this.svelteEmitter.emit(key as any, ...value as any);
 			}
 		});
 		socket.addEventListener('close', () => {

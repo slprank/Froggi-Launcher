@@ -90,9 +90,29 @@ export class ElectronObsStore {
         this.setCustom(custom);
     }
 
-    // TODO: Scene Commands - key(stats scene) - value(obs scene name)
+    getObsPassword(): string {
+        return this.store.get('obs.connection.password') as string;
+    }
 
-    // TODO: Controller Input Commands - Controller Object, Command Type, key (scene/webcam/..)
+    setObsPassword(password: string) {
+        this.store.set('obs.connection.password', password);
+    }
+
+    getObsIpAddress(): string {
+        return (this.store.get('obs.connection.ipAddress') ?? "127.0.0.1") as string;
+    }
+
+    setObsIpAddress(ip: string) {
+        this.store.set('obs.connection.ipAddress', ip);
+    }
+
+    getObsPort(): string {
+        return (this.store.get('obs.connection.port') ?? "4455") as string;
+    }
+
+    setObsPort(ip: string) {
+        this.store.set('obs.connection.port', ip);
+    }
 
     initListeners() {
         this.store.onDidChange("obs.custom", (value) => {

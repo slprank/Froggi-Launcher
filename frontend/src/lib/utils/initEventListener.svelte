@@ -156,13 +156,15 @@
 		const _localEmitter = await getLocalEmitter();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
+			console.log('parse', parse);
 			for (const [key, value] of Object.entries(parse)) {
 				_localEmitter.emit(key as any, value);
 			}
 		});
 
 		const _electronEmitter = await getElectronEmitter();
-		_electronEmitter.onAny((event, data) => {
+		_electronEmitter.onAny((event, ...data) => {
+			console.log('parse', event, data);
 			window.electron.send('message', JSON.stringify({ [event as string]: data ?? '' }));
 		});
 	};
@@ -181,7 +183,7 @@
 
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = () => {
-			_electronEmitter.onAny((event, data) => {
+			_electronEmitter.onAny((event, ...data) => {
 				console.log('Sending electron message..', event, data);
 				socket.send(JSON.stringify({ [event as string]: data }));
 			});

@@ -4,6 +4,7 @@ import type { Obs, Overlay, Url } from "../models/types/overlay"
 import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, Session } from "../models/types/slippiData"
 import type { FrameEntryType } from "@slippi/slippi-js"
 import localEmitter from "eventemitter2"
+import type { OBSRequestTypes } from "obs-websocket-js/dist/types"
 
 export interface MessageEvents {
     AutoUpdaterProgress: (progress: string | undefined) => void
@@ -21,8 +22,10 @@ export interface MessageEvents {
     LayerPreviewChange: (layerIndex: number) => void
     CurrentMatch: (match: Match) => void
     MemoryControllerInput: (controllerInputs: PlayerController) => void
+    PlayersTagUpdate: (players: Player[]) => void // Here
     PostGameStats: (stats: GameStats | undefined) => void
     RecentGames: (games: GameStats[][]) => void
+    RecentGamesReset: () => void // Here
     RecentRankedSets: (games: GameStats[]) => void
     SessionStats: (session: Session | undefined) => void
     LiveStatsSceneChange: (scene: LiveStatsScene | undefined) => void
@@ -34,6 +37,10 @@ export interface MessageEvents {
     ObsCustomOverlayDuplicate: (overlayId: string) => void
     ObsCustomOverlayUpdate: (overlay: Overlay) => void
     ObsCustomOverlayUpload: () => void
+    ObsCommand: <Type extends keyof OBSRequestTypes>(
+        requestType: Type,
+        requestData?: OBSRequestTypes[Type],
+    ) => void
 
     TestAnimationTrigger: () => void
     TestCustomAnimationTrigger: () => void

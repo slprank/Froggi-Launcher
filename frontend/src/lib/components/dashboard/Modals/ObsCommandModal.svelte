@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
+	import { electronEmitter } from '$lib/utils/store.svelte';
 
 	export let open: boolean;
 </script>
@@ -33,6 +34,18 @@
 			<div class="flex flex-col gap-2">
 				<h1 class="text-white text-xl font-semibold">Webcam Control</h1>
 			</div>
+			<button
+				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded
+					border-white
+				`}
+				on:click={() => {
+					$electronEmitter.emit('ObsCommand', 'SetCurrentProgramScene', {
+						sceneName: 'Scene',
+					});
+				}}
+			>
+				Test
+			</button>
 		</div>
 	</div>
 </Modal>
