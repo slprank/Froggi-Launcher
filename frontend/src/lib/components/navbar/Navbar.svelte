@@ -145,10 +145,4 @@
 	{/if}
 </div>
 
-<Modal
-	bind:open={isMobileOpen}
-	on:close={() => (isMobileOpen = false)}
-	class="w-[90%] h-72 min-w-72 max-w-[612px] rounded-lg"
->
-	<Mobile />
-</Modal>
+<Mobile bind:open={isMobileOpen} />
