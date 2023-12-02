@@ -8,8 +8,9 @@
 	import GameStage from './GameStage.svelte';
 
 	export let open: boolean;
-	let deleteGameModalOpen = false;
 	let addGameModalOpen = false;
+	let deleteGameModalOpen = false;
+	let resetRecentGamesModalOpen = false;
 	let selectedGameIndex = 0;
 
 	let games: GameStats[][] = $recentGames;
@@ -30,8 +31,17 @@
 		deleteGameModalOpen = true;
 	};
 
+	const resetRecentGames = () => {
+		console.log('reset game');
+		resetRecentGamesModalOpen = true;
+	};
+
 	const handleDelete = () => {
 		console.log('deleting');
+	};
+
+	const handleReset = () => {
+		console.log('reset');
 	};
 
 	const updateScore = () => {
@@ -62,9 +72,9 @@
 				{$currentPlayers.at(1)?.displayName ?? 'Player2'}
 			</h1>
 		</div>
-		<div class="flex-l flex flex-col overflow-scroll gap-4">
+		<div class="flex-l flex flex-col items-center overflow-scroll gap-4">
 			<button
-				class="transition duration-100 w-full justify-center bg-black border border-white hover:scale-[1.02] bg-opacity-40 hover:bg-opacity-60"
+				class="transition duration-100 rounded-md w-full justify-center bg-black border border-white hover:scale-[1.02] bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
 					addGame(0);
 				}}
@@ -96,14 +106,23 @@
 						</div>
 					{/each}
 
-					<div class="h-16">
-						<GameStage
-							stageId={game?.settings?.stageId}
-							class="aspect-video"
-							objectFit="cover"
+					<div class="relative aspect-video h-16">
+						<img
+							src="/image/button-icons/cross.png"
+							alt="delete"
+							class="cover absolute aspect-video"
 						/>
+						<button
+							class="transition duration-300 hover:opacity-25 absolute"
+							on:click={() => deleteGame(i)}
+						>
+							<GameStage
+								stageId={game?.settings?.stageId}
+								class="aspect-video rounded-md"
+								objectFit="cover"
+							/>
+						</button>
 					</div>
-
 					{#each [...Array(4).keys()] as stock}
 						<div
 							class={`${
@@ -121,8 +140,9 @@
 						</div>
 					{/each}
 				</div>
+
 				<button
-					class="transition duration-100 w-full justify-center bg-black border border-white hover:scale-[1.02] bg-opacity-40 hover:bg-opacity-60"
+					class="transition duration-100 w-full rounded-md justify-center bg-black border border-white hover:scale-[1.02] bg-opacity-40 hover:bg-opacity-60"
 					on:click={async () => {
 						addGame(i + 1);
 					}}
@@ -133,12 +153,21 @@
 		</div>
 		<button
 			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+			on:click={resetRecentGames}
+		>
+			Clear Games
+		</button>
+		<button
+			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 			on:click={updateScore}
 		>
 			Update Score
 		</button>
 	</div>
 	<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>
-		Delete Overlay?
+		Delete Game?
+	</ConfirmModal>
+	<ConfirmModal bind:open={resetRecentGamesModalOpen} on:confirm={handleReset}>
+		Reset Games?
 	</ConfirmModal>
 </Modal>
