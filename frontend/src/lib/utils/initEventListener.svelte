@@ -75,6 +75,7 @@
 		});
 		_localEmitter.on('CurrentPlayers', (players: Player[] | undefined) => {
 			console.log('players', players);
+			if (!players) return;
 			currentPlayers.set(players);
 		});
 		_localEmitter.on('DolphinConnectionState', (state: DolphinConnectionState | undefined) => {

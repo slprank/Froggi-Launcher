@@ -2,7 +2,7 @@
 	import { isIframe } from '$lib/utils/store.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
-	export let open = false;
+	export let open: boolean;
 	export { _class as class };
 	let _class: string;
 	const dispatch = createEventDispatcher();

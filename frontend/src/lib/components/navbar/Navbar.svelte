@@ -136,7 +136,7 @@
 					<NavButton click={() => goto('/profile')}>
 						<img src="/image/button-icons/profile.png" alt="profile" />
 					</NavButton>
-					<NavButton click={() => goto('/obs/custom')}>
+					<NavButton click={() => goto('/obs')}>
 						<img src="/image/button-icons/obs.png" alt="obs" />
 					</NavButton>
 				</div>

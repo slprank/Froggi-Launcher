@@ -55,6 +55,11 @@ export enum Character {
 	Ganondorf = 25
 }
 
+export enum DashboardOption {
+	Offline = "Offline",
+	SmashGG = "SmashGG",
+}
+
 export enum DolphinConnectionState {
 	Disconnected = "Disconnected",
 	Connected = "Connected",

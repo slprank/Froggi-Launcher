@@ -48,7 +48,10 @@
 		status: AutoUpdaterStatus.LookingForUpdate,
 	} as AutoUpdater);
 	export const currentPlayer = writable<CurrentPlayer | undefined>({} as CurrentPlayer);
-	export const currentPlayers = writable<Player[] | undefined>([]);
+	export const currentPlayers = writable<Player[]>([
+		{ displayName: '' } as Player,
+		{ displayName: '' } as Player,
+	]);
 	export const dolphinState = writable<DolphinConnectionState>(DolphinConnectionState.Searching);
 	export const gameFrame = writable<FrameEntryType | null>({} as FrameEntryType);
 	export const gameScore = writable<number[]>([0, 0]);

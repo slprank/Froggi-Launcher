@@ -158,6 +158,7 @@ export class MessageHandler {
 		this.sendInitMessage(socket, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
 		this.sendInitMessage(socket, "ObsCustom", this.storeObs.getCustom());
 		this.sendInitMessage(socket, "PostGameStats", this.storeLiveStats.getGameStats());
+		this.sendInitMessage(socket, "RecentGames", this.storeGames.getRecentGames());
 		this.sendInitMessage(socket, "RecentRankedSets", this.storeGames.getRecentRankedSets());
 		this.sendInitMessage(socket, "Url", this.storeSettings.getLocalUrl());
 		this.sendInitMessage(socket, "SessionStats", this.storeSession.getSessionStats());
@@ -167,7 +168,7 @@ export class MessageHandler {
 		this.svelteEmitter.on("ObsCustomOverlayUpdate", async (overlay) => {
 			this.storeObs.updateCustomOverlay(overlay);
 		});
-		
+
 		this.svelteEmitter.on("ObsCustomOverlayDuplicate", async (overlayId) => {
 			this.storeObs.duplicateCustomOverlay(overlayId);
 		});

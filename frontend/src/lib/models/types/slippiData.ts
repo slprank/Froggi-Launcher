@@ -68,6 +68,7 @@ export type StatsTypeExtended = StatsType | {
 
 export interface GameStats {
     gameEnd: GameEndType;
+    isMock: boolean;
     lastFrame: FrameEntryType
     postGameStats: StatsType | null;
     settings: GameStartTypeExtended | null;

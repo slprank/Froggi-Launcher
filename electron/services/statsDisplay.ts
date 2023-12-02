@@ -140,7 +140,7 @@ export class StatsDisplay {
 		const score = getGameScore(games)
 		this.storeGames.setGameScore(score)
 
-		const matchStats = analyzeMatch(games.flat())
+		const matchStats = analyzeMatch(games.flat().filter(game => !game.isMock))
 		this.storeLiveStats.setMatchStats(matchStats)
 	}
 
