@@ -6,8 +6,10 @@ import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { newId } from "../../utils/functions"
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
+import { ObsCommand, ObsConnection, ObsInputs, ObsScenes } from '../../../frontend/src/lib/models/types/obsTypes';
 import { BrowserWindow, dialog } from 'electron';
 import fs from 'fs';
+import { OBSRequestTypes, OBSResponseTypes } from 'obs-websocket-js';
 
 
 @singleton()
@@ -90,33 +92,72 @@ export class ElectronObsStore {
         this.setCustom(custom);
     }
 
-    getObsPassword(): string {
+
+    getConnection(): ObsConnection {
+        return (this.store.get('obs.connection') ?? {}) as ObsConnection;
+    }
+
+    getPassword(): string | undefined {
         return this.store.get('obs.connection.password') as string;
     }
 
-    setObsPassword(password: string) {
+    setPassword(password: string) {
         this.store.set('obs.connection.password', password);
     }
 
-    getObsIpAddress(): string {
+    getIpAddress(): string {
         return (this.store.get('obs.connection.ipAddress') ?? "127.0.0.1") as string;
     }
 
-    setObsIpAddress(ip: string) {
+    setIpAddress(ip: string) {
         this.store.set('obs.connection.ipAddress', ip);
     }
 
-    getObsPort(): string {
+    getPort(): string {
         return (this.store.get('obs.connection.port') ?? "4455") as string;
     }
 
-    setObsPort(ip: string) {
+    setPort(ip: string) {
         this.store.set('obs.connection.port', ip);
+    }
+
+    getCommands(): ObsCommand<keyof OBSRequestTypes>[] {
+        return (this.store.get('obs.connection.commands') ?? {}) as ObsCommand<keyof OBSRequestTypes>[];
+    }
+
+    addCommand<Type extends keyof OBSRequestTypes>(command: Type, payload: OBSRequestTypes[Type]) {
+        const commands = this.getCommands();
+        if (!commands) return;
+        this.store.set('obs.connection.commands', [...commands, { command: command, payload: payload, id: newId() }]);
+    }
+
+    deleteCommand(commandId: string) {
+        const commands = this.getCommands();
+        if (!commands) return;
+        this.store.set('obs.connection.commands', [...commands.filter((command) => command.id !== commandId)]);
+    }
+
+    setInputs(inputs: ObsInputs[]) {
+        console.log("inputs", inputs)
+        this.store.set('obs.connection.audio', inputs);
+    }
+
+    setItems<Type extends keyof OBSResponseTypes>(items: OBSResponseTypes[Type][]) {
+        console.log("items", items)
+        this.store.set('obs.connection.items', items);
+    }
+
+    setScenes(scenes: ObsScenes) {
+        this.store.set('obs.connection.scenes', scenes);
     }
 
     initListeners() {
         this.store.onDidChange("obs.custom", (value) => {
             this.messageHandler.sendMessage("ObsCustom", value as Obs);
+        })
+        this.store.onDidChange("obs.connection", (connection) => {
+            console.log("connection", connection)
+            this.messageHandler.sendMessage("ObsConnection", { ...(connection as ObsConnection), auth: undefined } as ObsConnection);
         })
     }
 

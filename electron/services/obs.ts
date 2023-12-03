@@ -5,6 +5,7 @@ import { delay, inject, singleton } from 'tsyringe';
 import OBSWebSocket from 'obs-websocket-js';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { ElectronObsStore } from './store/storeObs';
+import { ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
 
 @singleton()
 export class ObsWebSocket {
@@ -14,60 +15,54 @@ export class ObsWebSocket {
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
-	) //@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	{
+	) {
 		this.log.info('Initializing OBS');
 		this.initObsWebSocket();
 		this.initSvelteListeners();
 	}
 
-
-	changeObsScene = async (scene: any) => {
-		try {
-			this.log.info(`Change OBS scene: ${scene}`);
-
-
-			await this.obs.connect('ws://127.0.0.1:4455');
-			await this.obs.call('SetCurrentProgramScene', { sceneName: scene });
-		} catch (err) {
-			this.log.error(err);
-		}
-	};
-
 	initObsWebSocket = async () => {
-		try {
-			this.obs.on("ConnectionClosed", async () => {
-				this.searchForObs()
-				this.log.info("OBS Connection Closed")
-			});
-			this.obs.on("ConnectionError", () => {
-				this.searchForObs()
-				this.log.error("OBS Connection Error")
-			});
-			this.obs.on("ConnectionOpened", () => {
-				clearInterval(this.obsConnectionInterval)
-				this.log.info("OBS Connection Opened")
-			});
-
+		this.obs.on("ConnectionClosed", async () => {
 			this.searchForObs()
-		} catch (err) {
-			this.log.error(err);
-		}
+			this.log.info("OBS Connection Closed")
+		});
+		this.obs.on("ConnectionError", () => {
+			this.searchForObs()
+			this.log.error("OBS Connection Error")
+		});
+		this.obs.on("ConnectionOpened", () => {
+			clearInterval(this.obsConnectionInterval)
+			setTimeout(() => { this.getObsData() }, 1000)
+			this.log.info("OBS Connection Opened")
+		});
+		this.obs.on("CurrentProgramSceneChanged", () => {
+			this.getObsData()
+		});
+		this.searchForObs()
 	};
+
+	getObsData = async () => {
+		const scenes = await this.obs.call("GetSceneList");
+		const items = await this.obs.call("GetSceneItemList", { sceneName: scenes.currentProgramSceneName });
+		const audio = await this.obs.call("GetInputList");
+		this.storeObs.setScenes(scenes as unknown as ObsScenes)
+		this.storeObs.setItems(items as unknown as ObsItem[])
+		this.storeObs.setInputs(audio as unknown as ObsInputs[])
+	}
 
 	searchForObs = async () => {
 		this.log.info("Searching for OBS connection")
 		this.obsConnectionInterval = setInterval(async () => {
-			const password = this.storeObs.getObsPassword()
-			const ipAddress = this.storeObs.getObsIpAddress()
-			const port = this.storeObs.getObsPort()
+			const password = this.storeObs.getPassword()
+			const ipAddress = this.storeObs.getIpAddress()
+			const port = this.storeObs.getPort()
 			await this.obs.connect(`ws://${ipAddress}:${port}`, password);
 		}, 5000)
 	}
 
 	initSvelteListeners() {
-		this.svelteEmitter.on("ObsCommand", (command, payload) => {
-			console.log("service", command, payload)
+		this.svelteEmitter.on("ExecuteObsCommand", (command, payload) => {
+			this.log.info("OBS Command:", command, payload)
 			this.obs.call(command, payload);
 		});
 	}

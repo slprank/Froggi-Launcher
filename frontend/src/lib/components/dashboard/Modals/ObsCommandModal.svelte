@@ -39,8 +39,24 @@
 					border-white
 				`}
 				on:click={() => {
-					$electronEmitter.emit('ObsCommand', 'SetCurrentProgramScene', {
+					$electronEmitter.emit('ExecuteObsCommand', 'SetCurrentProgramScene', {
 						sceneName: 'Scene',
+					});
+					$electronEmitter.emit('ExecuteObsCommand', 'ToggleInputMute', {
+						inputName: 'Mic/Aux',
+					});
+					$electronEmitter.emit('ExecuteObsCommand', 'SetInputVolume', {
+						inputName: 'Mic/Aux',
+						inputVolumeDb: -Math.random() * 100,
+					});
+					$electronEmitter.emit('ExecuteObsCommand', 'SetInputVolume', {
+						inputName: 'macOS Screen Capture',
+						inputVolumeDb: -Math.random() * 100,
+					});
+					$electronEmitter.emit('ExecuteObsCommand', 'SetSceneItemEnabled', {
+						sceneName: 'Scene',
+						sceneItemId: 4,
+						sceneItemEnabled: true,
 					});
 				}}
 			>

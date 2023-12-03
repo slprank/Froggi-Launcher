@@ -3,7 +3,6 @@
 	import { browser } from '$app/environment';
 	import {
 		AutoUpdaterStatus,
-		BestOf,
 		DolphinConnectionState,
 		InGameState,
 		LiveStatsScene,
@@ -21,6 +20,7 @@
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type { PlayerController } from '$lib/models/types/controller';
 	import { TypedEmitter } from './customEventEmitter';
+	import type { ObsConnection } from '$lib/models/types/obsTypes';
 
 	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());
 	export const electronEmitter = writable<TypedEmitter>(new TypedEmitter());
@@ -58,6 +58,7 @@
 	export const gameSettings = writable<GameStartTypeExtended>({} as GameStartTypeExtended);
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
+	export const obsConnection = writable<ObsConnection>([]);
 	export const postGame = writable<GameStats>({} as GameStats);
 	export const currentMatch = writable<Match | undefined>({} as Match);
 	export const recentRankedSets = writable<GameStats[]>([]);

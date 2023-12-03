@@ -1,3 +1,4 @@
+import type { ObsConnection } from "../models/types/obsTypes"
 import type { AutoUpdaterStatus, DolphinConnectionState, InGameState, LiveStatsScene } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Obs, Overlay, Url } from "../models/types/overlay"
@@ -37,10 +38,17 @@ export interface MessageEvents {
     ObsCustomOverlayDuplicate: (overlayId: string) => void
     ObsCustomOverlayUpdate: (overlay: Overlay) => void
     ObsCustomOverlayUpload: () => void
-    ObsCommand: <Type extends keyof OBSRequestTypes>(
+    ObsConnection: (connection: ObsConnection) => void
+    AddObsCommand: <Type extends keyof OBSRequestTypes>(
         requestType: Type,
         requestData?: OBSRequestTypes[Type],
     ) => void
+    DeleteObsCommand: (commandId: string) => void
+    ExecuteObsCommand: <Type extends keyof OBSRequestTypes>(
+        requestType: Type,
+        requestData?: OBSRequestTypes[Type],
+    ) => void
+
 
     TestAnimationTrigger: () => void
     TestCustomAnimationTrigger: () => void

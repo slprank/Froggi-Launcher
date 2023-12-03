@@ -34,6 +34,7 @@
 		autoUpdater,
 		memoryReadController,
 		currentMatch,
+		obsConnection,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import {
@@ -43,6 +44,7 @@
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
+	import type { ObsConnection } from '$lib/models/types/obsTypes';
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');
@@ -101,6 +103,10 @@
 			console.log('game state', state);
 			gameState.set(state);
 		});
+		_localEmitter.on('ObsConnection', (connection: ObsConnection) => {
+			console.log('obs connection', connection);
+			obsConnection.set(connection);
+		});
 		_localEmitter.on('PostGameStats', (stats: GameStats | undefined) => {
 			if (!stats) return;
 			console.log('game stats', stats);
@@ -156,7 +162,6 @@
 		const _localEmitter = await getLocalEmitter();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
-			console.log('parse', parse);
 			for (const [key, value] of Object.entries(parse)) {
 				_localEmitter.emit(key as any, value);
 			}
