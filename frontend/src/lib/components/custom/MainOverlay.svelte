@@ -40,3 +40,11 @@
 		</main>
 	{/if}
 {/await}
+
+<style>
+	:global(body) {
+		margin: 0;
+		padding: 0;
+		background-color: transparent;
+	}
+</style>

@@ -63,6 +63,7 @@ export class ObsWebSocket {
 				if (item.inputKind === "browser_source") {
 					console.log("Reload", item.sourceName)
 					await this.obs.call("PressInputPropertiesButton", { inputName: `${item.sourceName}`, propertyName: "refreshnocache" });
+
 				}
 			});
 		});
