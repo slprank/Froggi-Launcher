@@ -14,7 +14,9 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class="w-full h-full flex flex-col items-center justify-start p-4 pb-24 gap-8">
+	<div
+		class="w-full h-full flex flex-col overflow-scroll items-center justify-start p-4 pb-24 gap-8"
+	>
 		<h1 class="text-white text-4xl font-bold">Dashboard</h1>
 		<div class="flex gap-2">
 			<button

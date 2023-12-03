@@ -4,8 +4,8 @@ export interface ObsConnection {
     auth: ObsAuth | undefined,
     commands: ObsCommand<keyof OBSRequestTypes>[],
     scenes: ObsScenes,
-    inputs: string[],
-    items: string[],
+    inputs: ObsInputs[],
+    items: ObsItem[],
 }
 
 export interface ObsScenes {
@@ -14,7 +14,7 @@ export interface ObsScenes {
     scenes: {
         sceneIndex: number;
         sceneName: string;
-    };
+    }[];
 }
 
 export interface ObsItem {
@@ -32,7 +32,11 @@ export interface ObsItem {
 export interface ObsInputs {
     inputKind: string,
     inputName: string,
-    unversionedInputKind: string
+    unversionedInputKind: string,
+    volume: {
+        inputVolumeDb: number,
+        inputVolumeMul: number
+    }
 }
 
 export interface ObsAuth {

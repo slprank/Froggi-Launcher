@@ -1,7 +1,9 @@
 <script lang="ts">
 	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
+	import ObsSceneSelect from '$lib/components/dashboard/Modals/ObsCommands/ObsSceneSelect.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import { electronEmitter } from '$lib/utils/store.svelte';
+	import ObsItemControl from './ObsCommands/ObsItemControl.svelte';
+	import ObsVolumeControl from './ObsCommands/ObsVolumeControl.svelte';
 
 	export let open: boolean;
 </script>
@@ -12,56 +14,32 @@
 	class="w-[95vw] max-w-[600px] min-w-72 flex justify-center"
 >
 	<div
-		class="w-full h-full min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
+		class="w-full h-full max-h-[80vh] min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
 		style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	>
-		<div class="flex flex-col gap-2">
-			<div class="flex gap-2 justify-center items-center">
-				<h1 class="text-white text-3xl font-semibold">Obs Scenes</h1>
-			</div>
-			<div class="flex gap-2 justify-center items-center">
-				<h1 class="text-white text-xl font-semibold">
-					Disable Automatic Scene Switching: ??
+		<div class="flex gap-2 justify-center items-center">
+			<h1 class="text-white text-3xl font-semibold shadow-md">Obs Settings</h1>
+		</div>
+		<div class="flex flex-col gap-8 overflow-scroll">
+			<div class="flex flex-col gap-2">
+				<h1 class="text-white text-xl font-semibold shadow-md">Change Overlay Scene:</h1>
+				<SceneSelect />
+				<h1 class="text-gray-700 text-xl font-semibold">
+					Disable Automatic Scene Switching: Todo
 				</h1>
 			</div>
-			<div class="flex flex-col gap-2">
-				<h1 class="text-white text-xl font-semibold">Change Scene</h1>
-				<SceneSelect />
+			<div>
+				<h1 class="text-white text-xl font-semibold shadow-md">Change OBS Scene:</h1>
+				<ObsSceneSelect />
 			</div>
 			<div class="flex flex-col gap-2">
-				<h1 class="text-white text-xl font-semibold">Volume Control</h1>
+				<h1 class="text-white text-xl font-semibold shadow-md">Scene Items Control:</h1>
+				<ObsItemControl />
 			</div>
 			<div class="flex flex-col gap-2">
-				<h1 class="text-white text-xl font-semibold">Webcam Control</h1>
+				<h1 class="text-white text-xl font-semibold shadow-md">Volume Control:</h1>
+				<ObsVolumeControl />
 			</div>
-			<button
-				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded
-					border-white
-				`}
-				on:click={() => {
-					$electronEmitter.emit('ExecuteObsCommand', 'SetCurrentProgramScene', {
-						sceneName: 'Scene',
-					});
-					$electronEmitter.emit('ExecuteObsCommand', 'ToggleInputMute', {
-						inputName: 'Mic/Aux',
-					});
-					$electronEmitter.emit('ExecuteObsCommand', 'SetInputVolume', {
-						inputName: 'Mic/Aux',
-						inputVolumeDb: -Math.random() * 100,
-					});
-					$electronEmitter.emit('ExecuteObsCommand', 'SetInputVolume', {
-						inputName: 'macOS Screen Capture',
-						inputVolumeDb: -Math.random() * 100,
-					});
-					$electronEmitter.emit('ExecuteObsCommand', 'SetSceneItemEnabled', {
-						sceneName: 'Scene',
-						sceneItemId: 4,
-						sceneItemEnabled: true,
-					});
-				}}
-			>
-				Test
-			</button>
 		</div>
 	</div>
 </Modal>

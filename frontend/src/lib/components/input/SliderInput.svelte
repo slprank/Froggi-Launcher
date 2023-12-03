@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let min = 0;
 	export let max = 1;
 	export let step = 0.01;
@@ -6,6 +8,12 @@
 	export let valueConcat: string = '';
 	export let stringFormat: string = '{0}';
 	export let label: string | undefined = undefined;
+
+	const dispatch = createEventDispatcher();
+
+	function handleChange(value: number) {
+		dispatch('change', value);
+	}
 
 	const updateConcatValue = (value: number) => {
 		valueConcat = String.format(stringFormat, value);
@@ -25,6 +33,7 @@
 			{min}
 			{max}
 			bind:value
+			on:change={() => handleChange(value)}
 		/>
 	</div>
 </div>
