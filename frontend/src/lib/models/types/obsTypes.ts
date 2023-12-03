@@ -4,7 +4,7 @@ export interface ObsConnection {
     auth: ObsAuth | undefined,
     commands: ObsCommand<keyof OBSRequestTypes>[],
     scenes: ObsScenes,
-    audio: string[],
+    inputs: string[],
     items: string[],
 }
 

@@ -138,12 +138,10 @@ export class ElectronObsStore {
     }
 
     setInputs(inputs: ObsInputs[]) {
-        console.log("inputs", inputs)
-        this.store.set('obs.connection.audio', inputs);
+        this.store.set('obs.connection.inputs', inputs);
     }
 
     setItems<Type extends keyof OBSResponseTypes>(items: OBSResponseTypes[Type][]) {
-        console.log("items", items)
         this.store.set('obs.connection.items', items);
     }
 

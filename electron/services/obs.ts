@@ -32,7 +32,10 @@ export class ObsWebSocket {
 		});
 		this.obs.on("ConnectionOpened", () => {
 			clearInterval(this.obsConnectionInterval)
-			setTimeout(() => { this.getObsData() }, 1000)
+			setTimeout(() => {
+				this.getObsData()
+				this.reloadBrowserSources()
+			}, 1000)
 			this.log.info("OBS Connection Opened")
 		});
 		this.obs.on("CurrentProgramSceneChanged", () => {
@@ -43,11 +46,26 @@ export class ObsWebSocket {
 
 	getObsData = async () => {
 		const scenes = await this.obs.call("GetSceneList");
-		const items = await this.obs.call("GetSceneItemList", { sceneName: scenes.currentProgramSceneName });
-		const audio = await this.obs.call("GetInputList");
+		const itemsList = await this.obs.call("GetSceneItemList", { sceneName: scenes.currentProgramSceneName });
+		const inputList = await this.obs.call("GetInputList");
 		this.storeObs.setScenes(scenes as unknown as ObsScenes)
-		this.storeObs.setItems(items as unknown as ObsItem[])
-		this.storeObs.setInputs(audio as unknown as ObsInputs[])
+		this.storeObs.setItems(itemsList.sceneItems as unknown as ObsItem[])
+		this.storeObs.setInputs(inputList.inputs as unknown as ObsInputs[])
+	}
+
+	reloadBrowserSources = async () => {
+		const scenes = await this.obs.call("GetSceneList");
+		console.log("scenes", scenes)
+		scenes.scenes.forEach(async (scene) => {
+			const itemsList = await this.obs.call("GetSceneItemList", { sceneName: `${scene.sceneName}` });
+			console.log("itemsList", itemsList)
+			itemsList.sceneItems.forEach(async (item) => {
+				if (item.inputKind === "browser_source") {
+					console.log("Reload", item.sourceName)
+					await this.obs.call("PressInputPropertiesButton", { inputName: `${item.sourceName}`, propertyName: "refreshnocache" });
+				}
+			});
+		});
 	}
 
 	searchForObs = async () => {
