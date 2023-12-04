@@ -59,7 +59,6 @@ export class ObsWebSocket {
 		const scenes = await this.obs.call("GetSceneList");
 		scenes.scenes.forEach(async (scene) => {
 			const itemsList = await this.obs.call("GetSceneItemList", { sceneName: `${scene.sceneName}` });
-			console.log("itemsList", itemsList)
 			itemsList.sceneItems.forEach(async (item) => {
 				if (item.inputKind === "browser_source") {
 					await this.obs.call("PressInputPropertiesButton", { inputName: `${item.sourceName}`, propertyName: "refreshnocache" });
@@ -69,18 +68,14 @@ export class ObsWebSocket {
 	}
 
 	searchForObs = async () => {
-		this.stopSearch()
+		clearTimeout(this.obsConnectionInterval)
 		this.log.info("Searching for OBS connection")
-		this.obsConnectionInterval = setInterval(async () => {
+		this.obsConnectionInterval = setTimeout(async () => {
 			const password = this.storeObs.getPassword()
 			const ipAddress = this.storeObs.getIpAddress()
 			const port = this.storeObs.getPort()
 			await this.obs.connect(`ws://${ipAddress}:${port}`, password);
 		}, 5000)
-	}
-
-	stopSearch = () => {
-		clearInterval(this.obsConnectionInterval)
 	}
 
 	initObsWebSocket = async () => {
@@ -93,7 +88,6 @@ export class ObsWebSocket {
 			this.log.error("OBS Connection Error")
 		});
 		this.obs.on("ConnectionOpened", () => {
-			this.stopSearch()
 			setTimeout(() => {
 				this.updateObsData()
 				this.reloadBrowserSources()
@@ -106,12 +100,14 @@ export class ObsWebSocket {
 		this.obs.on("SceneListChanged", () => {
 			this.updateObsData()
 		});
+		this.obs.on("InputVolumeChanged", () => {
+			this.updateObsData()
+		})
 		this.searchForObs()
 	};
 
 	initSvelteListeners() {
 		this.svelteEmitter.on("ExecuteObsCommand", (command, payload) => {
-			this.log.info("OBS Command:", command, payload)
 			this.obs.call(command, payload);
 			this.updateObsData()
 		});

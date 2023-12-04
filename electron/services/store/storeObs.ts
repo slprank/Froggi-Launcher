@@ -92,33 +92,32 @@ export class ElectronObsStore {
         this.setCustom(custom);
     }
 
-
-    getConnection(): ObsConnection {
-        return (this.store.get('obs.connection') ?? {}) as ObsConnection;
-    }
-
     getPassword(): string | undefined {
-        return this.store.get('obs.connection.password') as string;
+        return this.store.get('obs.auth.password') as string;
     }
 
     setPassword(password: string) {
-        this.store.set('obs.connection.password', password);
+        this.store.set('obs.auth.password', password);
     }
 
     getIpAddress(): string {
-        return (this.store.get('obs.connection.ipAddress') ?? "127.0.0.1") as string;
+        return (this.store.get('obs.auth.ipAddress') ?? "127.0.0.1") as string;
     }
 
     setIpAddress(ip: string) {
-        this.store.set('obs.connection.ipAddress', ip);
+        this.store.set('obs.auth.ipAddress', ip);
     }
 
     getPort(): string {
-        return (this.store.get('obs.connection.port') ?? "4455") as string;
+        return (this.store.get('obs.auth.port') ?? "4455") as string;
     }
 
     setPort(ip: string) {
         this.store.set('obs.connection.port', ip);
+    }
+
+    getConnection(): ObsConnection {
+        return (this.store.get('obs.connection') ?? {}) as ObsConnection;
     }
 
     getCommands(): ObsCommand<keyof OBSRequestTypes>[] {
@@ -150,11 +149,13 @@ export class ElectronObsStore {
     }
 
     initListeners() {
+        this.store.onDidChange("obs.auth", (value) => {
+            this.messageHandler.sendMessage("ObsCustom", value as Obs);
+        })
         this.store.onDidChange("obs.custom", (value) => {
             this.messageHandler.sendMessage("ObsCustom", value as Obs);
         })
         this.store.onDidChange("obs.connection", (connection) => {
-            console.log("connection", connection)
             this.messageHandler.sendMessage("ObsConnection", { ...(connection as ObsConnection), auth: undefined } as ObsConnection);
         })
     }
