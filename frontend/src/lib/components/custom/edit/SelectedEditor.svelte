@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/models/const';
-	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { obs, overlays, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
@@ -19,7 +19,7 @@
 
 	let isElementModalOpen = false;
 
-	$: curOverlay = $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? undefined;
+	$: curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? undefined;
 
 	function getItemById() {
 		if (!curOverlay || selectedLayer === undefined || selectedId === undefined) return;

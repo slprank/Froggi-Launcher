@@ -5,6 +5,7 @@ import { ElectronGamesStore } from './store/storeGames';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronObsStore } from './store/storeObs';
+import { ElectronOverlayStore } from './store/storeOverlay';
 import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronPlayersStore } from './store/storePlayers';
@@ -35,6 +36,7 @@ export class MessageHandler {
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
+		@inject(delay(() => ElectronOverlayStore)) private storeOverlay: ElectronOverlayStore,
 		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
 		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(delay(() => ElectronSessionStore)) private storeSession: ElectronSessionStore,
@@ -156,7 +158,7 @@ export class MessageHandler {
 		this.sendInitMessage(socket, "GameSettings", this.storeLiveStats.getGameSettings());
 		this.sendInitMessage(socket, "GameState", this.storeLiveStats.getGameState());
 		this.sendInitMessage(socket, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
-		this.sendInitMessage(socket, "ObsCustom", this.storeObs.getCustom());
+		this.sendInitMessage(socket, "Overlays", this.storeOverlay.getOverlays());
 		this.sendInitMessage(socket, "ObsConnection", this.storeObs.getConnection());
 		this.sendInitMessage(socket, "PostGameStats", this.storeLiveStats.getGameStats());
 		this.sendInitMessage(socket, "RecentGames", this.storeGames.getRecentGames());

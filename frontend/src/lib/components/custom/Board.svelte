@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isElectron, obs, statsScene } from '$lib/utils/store.svelte';
+	import { isElectron, obs, overlays, statsScene } from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import type { Layer, Overlay, Scene } from '$lib/models/types/overlay';
@@ -25,7 +25,7 @@
 		}
 		updateFixedLayerItems(curOverlay[curStatsScene].layers);
 	}
-	$: layerIds, $statsScene, $obs, updateCurrentScene();
+	$: layerIds, $statsScene, $overlays, updateCurrentScene();
 
 	let fixedLayers: Layer[] = [];
 	function updateFixedLayerItems(layers: Layer[]) {

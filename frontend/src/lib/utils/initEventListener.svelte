@@ -6,7 +6,7 @@
 		InGameState,
 		LiveStatsScene,
 	} from '$lib/models/enum';
-	import type { AutoUpdater, Obs, Overlay, Url } from '$lib/models/types/overlay';
+	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
 	import type { PlayerController } from '$lib/models/types/controller';
 	import type {
 		CurrentPlayer,
@@ -34,6 +34,7 @@
 		autoUpdater,
 		memoryReadController,
 		currentMatch,
+		overlays,
 		obsConnection,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
@@ -41,6 +42,7 @@
 		getElectronEmitter,
 		getLocalEmitter,
 		getObs,
+		getOverlays,
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
@@ -140,20 +142,10 @@
 			urls.set(url);
 		});
 
-		_localEmitter.on('ObsCustomOverlay', async (overlay: Overlay) => {
-			const _obs = await getObs();
-			const overlayIndex = _obs.overlays.findIndex((overlay) => overlay.id == overlay.id);
-			overlayIndex === undefined || overlayIndex === -1
-				? _obs.overlays.push(overlay)
-				: (_obs.overlays[overlayIndex] = overlay);
-
-			obs.set(_obs);
-		});
-
-		_localEmitter.on('ObsCustom', (value: Obs | undefined) => {
+		_localEmitter.on('Overlays', (value: Overlay[] | undefined) => {
 			if (!value) return;
-			console.log('obs', value);
-			obs.set(value);
+			console.log('overlays', value);
+			overlays.set(value);
 		});
 	}
 

@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { isElectron, localEmitter, obs, statsScene, urls } from '$lib/utils/store.svelte';
+	import {
+		isElectron,
+		localEmitter,
+		obs,
+		overlays,
+		statsScene,
+		urls,
+	} from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import LayerDisplayRow from '$lib/components/custom/preview/LayerDisplayRow.svelte';
 	import { newLayer } from '$lib/components/custom/edit/OverlayHandler.svelte';
@@ -12,7 +19,7 @@
 
 	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
 
-	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
+	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay?.[$statsScene]?.layers : undefined;
 
 	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {

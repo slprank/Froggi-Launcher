@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, obs, overlays, statsScene } from '$lib/utils/store.svelte';
 	// @ts-ignore
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
@@ -18,7 +18,7 @@
 	export let selectedId: string | undefined = undefined;
 
 	let curOverlay =
-		$obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+		$overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let items: GridContentItem[] = [];
 	let tempItems: any = undefined;
 
@@ -35,14 +35,14 @@
 
 	function updateLiveScene() {
 		if (layer === undefined) return;
-		curOverlay = $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+		curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 		items = curOverlay[$statsScene]?.layers[layer]?.items ?? [];
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
 			item[COL].resizable = true;
 		});
 	}
-	$: $statsScene || layer || $obs, updateLiveScene();
+	$: $statsScene || layer || $overlays, updateLiveScene();
 
 	function updateOverlay() {
 		if (
@@ -53,7 +53,7 @@
 			return;
 		curOverlay[$statsScene].layers[layer].items = tempItems;
 
-		$electronEmitter.emit('ObsCustomOverlayUpdate', curOverlay);
+		$electronEmitter.emit('OverlayUpdate', curOverlay);
 		tempItems = undefined;
 		floatElements();
 	}

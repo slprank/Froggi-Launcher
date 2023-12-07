@@ -8,7 +8,7 @@
 		LiveStatsScene,
 	} from '$lib/models/enum';
 	import Device from 'svelte-device-info';
-	import type { AutoUpdater, Obs, Url } from '$lib/models/types/overlay';
+	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
 	import type {
 		CurrentPlayer,
 		GameStartTypeExtended,
@@ -20,7 +20,7 @@
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type { PlayerController } from '$lib/models/types/controller';
 	import { TypedEmitter } from './customEventEmitter';
-	import type { ObsConnection } from '$lib/models/types/obsTypes';
+	import type { Obs, ObsConnection } from '$lib/models/types/obsTypes';
 
 	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());
 	export const electronEmitter = writable<TypedEmitter>(new TypedEmitter());
@@ -59,6 +59,7 @@
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
 	export const obsConnection = writable<ObsConnection>({} as ObsConnection);
+	export const overlays = writable<Overlay[]>([]);
 	export const postGame = writable<GameStats>({} as GameStats);
 	export const currentMatch = writable<Match | undefined>({} as Match);
 	export const recentRankedSets = writable<GameStats[]>([]);

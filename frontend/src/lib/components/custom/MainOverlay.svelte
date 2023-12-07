@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isElectron, obs, statsScene } from '$lib/utils/store.svelte';
+	import { isElectron, obs, overlays, statsScene } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 	import Edit from '$lib/components/custom/edit/Edit.svelte';
 	import Board from '$lib/components/custom/Board.svelte';
@@ -10,7 +10,7 @@
 	export let preview: boolean = false;
 
 	const overlayId = $page.params.overlay;
-	$: curOverlay = $obs?.overlays.find((overlay) => overlay.id === overlayId);
+	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
 
 	const updateFont = async () => {
 		if (!curOverlay) return;

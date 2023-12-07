@@ -14,11 +14,12 @@
 
 	//@ts-ignore
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
-	import { electronEmitter, obs } from '$lib/utils/store.svelte';
+	import { electronEmitter, overlays } from '$lib/utils/store.svelte';
 	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
-	import { getObs } from '$lib/utils/fetchSubscriptions.svelte';
+	import { getOverlays } from '$lib/utils/fetchSubscriptions.svelte';
 	import isNil from 'lodash/isNil';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import FontSelect from '../selector/FontSelect.svelte';
 
 	export function newId() {
 		return `c${Math.random().toString(36).slice(-8)}`;
@@ -50,7 +51,7 @@
 			},
 			fallback: LiveStatsScene.Menu,
 			font: {
-				family: undefined,
+				family: 'sans-serif',
 				base64: undefined,
 			},
 			layers: [
@@ -113,8 +114,8 @@
 		overlayId: string | undefined,
 	): Promise<Overlay | undefined> {
 		return await new Promise<Overlay | undefined>((resolve) => {
-			obs?.subscribe((obs) =>
-				resolve(obs?.overlays?.find((overlay: Overlay) => overlay.id === overlayId)),
+			overlays?.subscribe((overlays) =>
+				resolve(overlays?.find((overlay: Overlay) => overlay.id === overlayId)),
 			);
 		});
 	}
@@ -122,14 +123,16 @@
 	export async function getOverlayIndexById(overlayId: string): Promise<number | undefined> {
 		let curOverlay = await getOverlayById(overlayId);
 		return await new Promise<number | undefined>((resolve) =>
-			obs?.subscribe((obs) => resolve(obs?.overlays.indexOf(curOverlay ?? ({} as Overlay)))),
+			overlays?.subscribe((overlays) =>
+				resolve(overlays.indexOf(curOverlay ?? ({} as Overlay))),
+			),
 		);
 	}
 
 	export async function updateOverlay(overlay: Overlay) {
 		await new Promise(() =>
 			electronEmitter.subscribe((electronEmitter) =>
-				electronEmitter.emit('ObsCustomOverlayUpdate', overlay),
+				electronEmitter.emit('OverlayUpdate', overlay),
 			),
 		);
 	}
@@ -137,7 +140,7 @@
 	export async function duplicateOverlay(overlay: Overlay) {
 		await new Promise(() =>
 			electronEmitter.subscribe((electronEmitter) =>
-				electronEmitter.emit('ObsCustomOverlayDuplicate', overlay.id),
+				electronEmitter.emit('OverlayDuplicate', overlay.id),
 			),
 		);
 	}
@@ -146,7 +149,7 @@
 		if (!overlayId) return;
 		await new Promise(() =>
 			electronEmitter.subscribe((electronEmitter) =>
-				electronEmitter.emit('ObsCustomOverlayDelete', overlayId),
+				electronEmitter.emit('OverlayDelete', overlayId),
 			),
 		);
 	}
@@ -240,10 +243,10 @@
 		const newLayerId = newId();
 
 		const index = await getOverlayIndexById(overlayId);
-		const obs = await getObs();
+		const overlays = await getOverlays();
 
 		if (index === undefined) return 0;
-		const overlay = obs.overlays[index];
+		const overlay = overlays[index];
 		const layersLength = overlay[statsScene]?.layers.length;
 		overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
 			id: newLayerId,

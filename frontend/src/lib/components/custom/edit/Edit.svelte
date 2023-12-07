@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
-	import { electronEmitter, localEmitter, obs, statsScene, urls } from '$lib/utils/store.svelte';
+	import { electronEmitter, localEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import { getOverlayById, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
@@ -34,10 +34,10 @@
 	async function refreshOverlay() {
 		overlay = await getOverlayById(overlayId);
 	}
-	$: $obs, refreshOverlay();
+	$: $overlays, refreshOverlay();
 
 	function downloadOverlay() {
-		$electronEmitter.emit('ObsCustomOverlayDownload', overlayId);
+		$electronEmitter.emit('OverlayDownload', overlayId);
 	}
 
 	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {

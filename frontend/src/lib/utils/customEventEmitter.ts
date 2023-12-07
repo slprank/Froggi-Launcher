@@ -1,7 +1,7 @@
-import type { ObsConnection } from "../models/types/obsTypes"
+import type { Obs, ObsConnection } from "../models/types/obsTypes"
 import type { AutoUpdaterStatus, DolphinConnectionState, InGameState, LiveStatsScene } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
-import type { Obs, Overlay, Url } from "../models/types/overlay"
+import type { Overlay, Url } from "../models/types/overlay"
 import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, Session } from "../models/types/slippiData"
 import type { FrameEntryType } from "@slippi/slippi-js"
 import localEmitter from "eventemitter2"
@@ -31,14 +31,15 @@ export interface MessageEvents {
     SessionStats: (session: Session | undefined) => void
     LiveStatsSceneChange: (scene: LiveStatsScene | undefined) => void
     Url: (url: Url) => void
-    ObsCustom: (obs: Obs | undefined) => void
-    ObsCustomOverlay: (url: Overlay) => void
-    ObsCustomOverlayDelete: (overlayId: string) => void
-    ObsCustomOverlayDownload: (overlayId: string) => void
-    ObsCustomOverlayDuplicate: (overlayId: string) => void
-    ObsCustomOverlayUpdate: (overlay: Overlay) => void
-    ObsCustomOverlayUpload: () => void
+    Obs: (obs: Obs) => void
     ObsConnection: (connection: ObsConnection) => void
+    Overlay: (overlay: Overlay) => void
+    Overlays: (overlays: Overlay[] | undefined) => void
+    OverlayDelete: (overlayId: string) => void
+    OverlayDownload: (overlayId: string) => void
+    OverlayDuplicate: (overlayId: string) => void
+    OverlayUpdate: (overlay: Overlay) => void
+    OverlayUpload: () => void
     AddObsCommand: <Type extends keyof OBSRequestTypes>(
         requestType: Type,
         requestData?: OBSRequestTypes[Type],

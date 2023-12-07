@@ -3,7 +3,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import { getOverlayById } from './OverlayHandler.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
-	import { isElectron, obs, urls } from '$lib/utils/store.svelte';
+	import { isElectron, obs, overlays, urls } from '$lib/utils/store.svelte';
 	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
 
 	export let boardHeight: number;
@@ -19,7 +19,7 @@
 	async function getOverlay() {
 		currentOverlay = await getOverlayById(overlayId);
 	}
-	$: $obs, getOverlay();
+	$: $overlays, getOverlay();
 </script>
 
 <div class="w-full h-full">

@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
 	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
-	import { obs, statsScene } from '$lib/utils/store.svelte';
+	import { overlays, statsScene } from '$lib/utils/store.svelte';
 
 	$: overlayId = $page.params.overlay;
 	$: layerId = $page.params.layer;
@@ -15,7 +15,7 @@
 			.filter((layer) => layerId === layer.id)
 			.map((layer) => layer.id);
 	};
-	$: layerId, $statsScene, $obs, getOverlay();
+	$: layerId, $statsScene, $overlays, getOverlay();
 </script>
 
 <MainOverlay bind:layerIds preview={true} />

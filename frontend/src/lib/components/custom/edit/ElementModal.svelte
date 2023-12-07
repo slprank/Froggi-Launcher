@@ -7,7 +7,7 @@
 		GridContentItemConfig,
 		Overlay,
 	} from '$lib/models/types/overlay';
-	import { electronEmitter, obs, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, obs, overlays, statsScene } from '$lib/utils/store.svelte';
 	import {
 		generateNewItem,
 		getDefaultElementPayload,
@@ -38,16 +38,16 @@
 	};
 
 	function updateOverlay() {
-		$electronEmitter.emit('ObsCustomOverlayUpdate', getCurrentOverlay());
+		$electronEmitter.emit('OverlayUpdate', getCurrentOverlay());
 	}
 
 	function getCurrentOverlay() {
-		return $obs?.overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+		return $overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	}
 
 	function getCurrentOverlayIndex() {
 		const overlay = getCurrentOverlay();
-		return $obs?.overlays.indexOf(overlay);
+		return $overlays.indexOf(overlay);
 	}
 
 	function getCurrentItems() {
@@ -64,7 +64,7 @@
 		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
-		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
+		$overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
 
 		updateOverlay();
 		open = false;
@@ -94,7 +94,7 @@
 		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
-		$obs.overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
+		$overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
 
 		updateOverlay();
 		open = false;

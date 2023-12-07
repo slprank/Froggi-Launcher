@@ -130,10 +130,6 @@ export interface Layer {
 	preview: boolean;
 }
 
-export interface Obs {
-	overlays: Overlay[];
-}
-
 export interface Overlay {
 	description: string;
 	id: string;

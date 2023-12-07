@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isElectron, obs } from '$lib/utils/store.svelte';
+	import { isElectron, overlays } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import OverlayModal from '$lib/components/custom/OverlayModal.svelte';
 	import OverlayPreviewModal from '$lib/components/custom/OverlayPreviewModal.svelte';
@@ -30,7 +30,7 @@
 		<div
 			class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 border border-gray-500 rounded-md p-4"
 		>
-			{#each $obs?.overlays.sort( (a, b) => a.title.localeCompare(b.title), ) ?? [] as overlay, i}
+			{#each $overlays.sort((a, b) => a.title.localeCompare(b.title)) ?? [] as overlay, i}
 				<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
 					<button
 						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"

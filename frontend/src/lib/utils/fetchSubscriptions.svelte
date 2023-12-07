@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { page } from '$app/stores';
 	import type { InGameState } from '$lib/models/enum';
-	import type { Obs } from '$lib/models/types/overlay';
+	import type { Overlay } from '$lib/models/types/overlay';
 	import type { CurrentPlayer, GameStats, Player, Session } from '$lib/models/types/slippiData';
 	import {
 		currentPlayer,
@@ -16,10 +16,12 @@
 		recentGames,
 		sessionStats,
 		gameScore,
+		overlays,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
 	import type { TypedEmitter } from './customEventEmitter';
+	import type { Obs } from '$lib/models/types/obsTypes';
 
 	export async function getCurrentPlayer(): Promise<CurrentPlayer | undefined> {
 		return await new Promise<CurrentPlayer | undefined>((resolve) => {
@@ -49,6 +51,14 @@
 		return await new Promise<Obs>((resolve) => {
 			obs.subscribe((obs) => {
 				resolve(obs);
+			});
+		});
+	}
+
+	export async function getOverlays(): Promise<Overlay[]> {
+		return await new Promise<Overlay[]>((resolve) => {
+			overlays.subscribe((overlays) => {
+				resolve(overlays);
 			});
 		});
 	}

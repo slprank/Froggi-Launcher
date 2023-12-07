@@ -1,7 +1,11 @@
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types";
 
-export interface ObsConnection {
+export interface Obs {
     auth: ObsAuth | undefined,
+    connection: ObsConnection,
+}
+
+export interface ObsConnection {
     commands: ObsCommand<keyof OBSRequestTypes>[],
     scenes: ObsScenes,
     inputs: ObsInputs[],
