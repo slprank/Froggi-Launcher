@@ -12,7 +12,7 @@
 	let keyTrigger: number;
 
 	const overlayId = $page.params.overlay;
-	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
+	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/overlay/${overlayId}/layers`;
 
 	let currentOverlay: Overlay | undefined;
 

@@ -81,7 +81,7 @@
 			{/if}
 
 			<div
-				class={`w-full h-full col-span-2 grid gap-2 justify-center content-center py-2 overflow-x-scroll`}
+				class={`w-full h-full col-span-2 grid gap-2 justify-center items-center py-2 overflow-scroll`}
 			>
 				<div class="grid gap-2">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>

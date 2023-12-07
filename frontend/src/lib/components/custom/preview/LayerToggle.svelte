@@ -17,7 +17,7 @@
 
 	let selectedLayerIndex: number = 0;
 
-	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
+	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/overlay/${overlayId}/layers`;
 
 	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
 	$: layers = curOverlay ? curOverlay?.[$statsScene]?.layers : undefined;

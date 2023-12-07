@@ -25,7 +25,7 @@
 	$: isVerticalScreen = innerHeight > innerWidth;
 	$: isHorizontalScreen = !isVerticalScreen;
 
-	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/custom/${overlayId}/layers`;
+	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/overlay/${overlayId}/layers`;
 	$: console.log('src', src);
 
 	const reset = () => {

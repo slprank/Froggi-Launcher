@@ -19,7 +19,7 @@
 	let deleteOverlayModalOpen = false;
 	let isEmbedModalOpen = false;
 
-	$: url = `${$isElectron ? $urls?.local : $urls.external}/obs/custom/${overlay?.id}/layers`;
+	$: url = `${$isElectron ? $urls?.local : $urls.external}/obs/overlay/${overlay?.id}/layers`;
 
 	const createDuplicateOverlay = () => {
 		if (!overlay) return;
@@ -37,15 +37,13 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="min-w-[70vw] min-h-[70vh] max-w-[95vw] max-h-[95vh] flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
+		class="min-w-[80vw] min-h-[80vh] max-w-[95vw] max-h-[95vh] flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
 		<div>
 			<h1 class="font-bold text-3xl text-white">{overlay?.title}</h1>
 		</div>
-		<div
-			class="w-full max-w-[600px] lg:max-w-[800px] aspect-video h-full border-2 border-gray-500"
-		>
+		<div class="aspect-video max-h-full max-w-[600px] w-full border-2 border-gray-500">
 			<NonInteractiveIFrame src={url} title="overlay" />
 		</div>
 		<div>
@@ -55,7 +53,7 @@
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 				on:click={() => {
-					goto(`/obs/custom/${overlay?.id}`);
+					goto(`/obs/overlay/${overlay?.id}`);
 				}}
 			>
 				Open
@@ -80,7 +78,7 @@
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 					on:click={() => {
-						goto(`/obs/custom/${overlay?.id}/layers/external`);
+						goto(`/obs/overlay/${overlay?.id}/layers/external`);
 					}}
 				>
 					Edit Preview

@@ -19,9 +19,9 @@
 	export let open = false;
 </script>
 
-<Modal bind:open on:close={() => (open = false)} class="w-72 min-w-72 rounded-lg">
+<Modal bind:open on:close={() => (open = false)} class="rounded-lg">
 	<div
-		class="w-full h-full min-w-lg py-4 grid gap-8 justify-center bg-cover bg-center rounded-md border border-zinc-700"
+		class="w-72 min-w-72 min-w-lg py-4 grid gap-8 justify-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="w-full grid justify-center gap-8 py-4">
