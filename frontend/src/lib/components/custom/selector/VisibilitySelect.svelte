@@ -34,9 +34,9 @@
 	</button>
 </div>
 
-<Modal bind:open on:close={() => (open = false)} class="w-[70vw] h-[70vh]">
+<Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-full h-full bg-cover bg-center p-16 overflow-auto grid gap-8 divide-y-1"
+		class="w-[70vw] h-[70vh] bg-cover bg-center p-16 overflow-auto grid gap-8 divide-y-1"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
 		{#each tempSelectedOptions as option, i (i)}

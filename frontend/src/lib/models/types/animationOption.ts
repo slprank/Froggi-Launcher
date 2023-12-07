@@ -128,6 +128,7 @@ export enum VisibilityOption {
 
 export enum VisibilityCategory {
     CurrentPlayerState = "Current Player State",
+    DolphinState = "Dolphin State",
     Player1State = "Player 1 State",
     Player2State = "Player 2 State",
     OngoingGame = "Ongoing Game",
@@ -145,6 +146,7 @@ export enum VisibilityCategory {
 
 export enum AnimationTriggerCategory {
     CurrentPlayerState = "Current Player State",
+    DolphinState = "Dolphin State",
     Player1State = "Player1 State",
     Player2State = "Player2 State",
     GameState = "Game State",

@@ -16,9 +16,9 @@
 	</button>
 </div>
 
-<Modal bind:open on:close={() => (open = false)} class="w-[70vw] h-[70vh]">
+<Modal bind:open on:close={() => (open = false)} class="">
 	<div
-		class="w-full h-full bg-cover bg-center p-16"
+		class="bg-cover bg-center p-16 w-[70vw] h-[70vh]"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
 		<ElementCategorySelect bind:selectedElementId bind:open />

@@ -114,9 +114,9 @@
 	updatePayload();
 </script>
 
-<Modal bind:open class="w-[80vw] h-[80vh] min-w-72 rounded-lg" on:close={() => (open = false)}>
+<Modal bind:open class="rounded-lg" on:close={() => (open = false)}>
 	<div
-		class="w-full h-full min-w-lg place-items-start bg-cover bg-center rounded-md border border-zinc-700"
+		class="w-[80vw] h-[80vh] min-w-lg place-items-start bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="w-full h-full p-4 px-8 grid grid-cols-7">

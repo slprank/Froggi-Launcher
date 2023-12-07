@@ -41,6 +41,10 @@
 
 	const buttons = [
 		{
+			category: VisibilityCategory.DolphinState,
+			visible: [LiveStatsScene.WaitingForDolphin].includes($statsScene),
+		},
+		{
 			category: VisibilityCategory.Session,
 			visible: [
 				LiveStatsScene.InGame,

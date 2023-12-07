@@ -22,6 +22,10 @@
 
 	const buttons = [
 		{
+			category: AnimationTriggerCategory.DolphinState,
+			visible: [LiveStatsScene.WaitingForDolphin].includes($statsScene),
+		},
+		{
 			category: AnimationTriggerCategory.GameState,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
