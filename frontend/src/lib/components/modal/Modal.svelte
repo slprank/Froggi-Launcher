@@ -54,7 +54,9 @@
 					on:click_outside={handleCloseClick}
 					class={`flex justify-center items-center ${_class}`}
 				>
-					<div class="relative overflow-hidden flex justify-center items-center">
+					<div
+						class="relative overflow-hidden flex justify-center items-center rounded-md"
+					>
 						<slot />
 						<button
 							class="top-2 right-2 w-6 h-6 absolute text-gray-700 text-xl transition delay-100 duration-200 hover:scale-[1.02] hover:text-white"

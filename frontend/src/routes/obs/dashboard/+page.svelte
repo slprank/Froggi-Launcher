@@ -48,12 +48,10 @@
 				out:fly={{ duration: 250, x: 200 }}
 			>
 				<div class="absolute flex flex-col gap-8">
-					{#if dashboardOption === DashboardOption.Offline}
-						<Offline />
-					{/if}
 					{#if dashboardOption === DashboardOption.SmashGG}
 						<SmashGg />
 					{/if}
+					<Offline />
 					<OverlayScenes />
 				</div>
 			</div>

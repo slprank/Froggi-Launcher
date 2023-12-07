@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isElectron, overlays } from '$lib/utils/store.svelte';
+	import { isElectron, isMobile, overlays } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import OverlayModal from '$lib/components/custom/OverlayModal.svelte';
 	import OverlayPreviewModal from '$lib/components/custom/OverlayPreviewModal.svelte';
@@ -23,7 +23,11 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class="w-full h-full py-8 px-2 gap-4 md:px-18 flex flex-col justify-between items-center">
+	<div
+		class={`w-full h-full py-8 px-2 gap-4 md:px-18 flex flex-col justify-between items-center ${
+			$isMobile && 'pb-18'
+		}`}
+	>
 		<div>
 			<h1 class="text-4xl font-bold text-white shadow-md">Overlays</h1>
 		</div>

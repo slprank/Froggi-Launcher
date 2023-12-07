@@ -49,9 +49,9 @@
 	let autofocus: number = 0;
 </script>
 
-<Modal bind:open class="w-[80vw] h-[80vh] min-w-72 rounded-lg" on:close={clear}>
+<Modal bind:open class="rounded-lg" on:close={clear}>
 	<div
-		class=" w-full h-full min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
+		class="w-[80vw] h-[80vh] min-w-72 min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="w-full h-full grid grid-cols-2">

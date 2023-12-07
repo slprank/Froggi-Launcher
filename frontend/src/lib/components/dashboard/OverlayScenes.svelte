@@ -2,7 +2,6 @@
 	import ObsCommandModal from './Modals/ObsCommandModal.svelte';
 
 	let isSceneObsModalOpen = false;
-	let isSceneOverlayModalOpen = false;
 
 	const openChangeObsSceneModal = () => {
 		isSceneObsModalOpen = true;

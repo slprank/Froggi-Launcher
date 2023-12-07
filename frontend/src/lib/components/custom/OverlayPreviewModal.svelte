@@ -35,13 +35,9 @@
 	$: $statsScene, notifyDisabledScene(overlay, $statsScene);
 </script>
 
-<Modal
-	bind:open
-	on:close={() => (open = false)}
-	class="w-[90vw] max-w-[960px] max-h-[95vh] overflow-scroll rounded-lg"
->
+<Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-full h-full min-w-lg flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
+		class="min-w-[70vw] min-h-[70vh] max-w-[95vw] max-h-[95vh] flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
 		<div>
