@@ -1,11 +1,5 @@
 <script lang="ts">
-	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
+	import SecondaryOverlay from '$lib/components/custom/SecondaryOverlay.svelte';
 </script>
 
-<MainOverlay preview={true} />
-
-<style>
-	:global(body) {
-		background: transparent;
-	}
-</style>
+<SecondaryOverlay preview={true} />

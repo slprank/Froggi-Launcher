@@ -69,7 +69,7 @@ export class ObsWebSocket {
 				}
 			});
 		}
-		await this.cycleThroughScenes()
+		//await this.cycleThroughScenes()
 	}
 
 	cycleThroughScenes = async () => {

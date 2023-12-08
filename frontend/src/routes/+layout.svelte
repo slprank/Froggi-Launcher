@@ -10,6 +10,7 @@
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { initClient } from '$lib/utils/init.svelte';
+	import { page } from '$app/stores';
 
 	let ready: boolean = false;
 
@@ -17,6 +18,16 @@
 		await initClient();
 		ready = true;
 	});
+
+	const updateBackgroundColor = (url: string) => {
+		console.log('here');
+		if (url?.startsWith('/obs/overlay/') && !$isElectron) {
+			document.body.style.backgroundColor = 'transparent';
+		} else {
+			document.body.style.backgroundColor = 'black';
+		}
+	};
+	$: updateBackgroundColor($page.url.pathname);
 </script>
 
 {#if $isElectron}
@@ -33,12 +44,6 @@
 {/if}
 
 <style>
-	:global(body) {
-		margin: 0;
-		padding: 0;
-		background-color: black;
-	}
-
 	:root {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

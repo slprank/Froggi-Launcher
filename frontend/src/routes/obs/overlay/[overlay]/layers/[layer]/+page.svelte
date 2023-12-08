@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
+	import SecondaryOverlay from '$lib/components/custom/SecondaryOverlay.svelte';
 	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import { overlays, statsScene } from '$lib/utils/store.svelte';
 
@@ -18,10 +18,4 @@
 	$: layerId, $statsScene, $overlays, getOverlay();
 </script>
 
-<MainOverlay bind:layerIds preview={true} />
-
-<style>
-	:global(body) {
-		background: transparent;
-	}
-</style>
+<SecondaryOverlay bind:layerIds preview={true} />

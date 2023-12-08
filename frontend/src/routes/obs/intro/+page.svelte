@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { localEmitter } from '$lib/utils/store.svelte';
-	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 
 	// TODO: Create intro on how to create and apply custom components in OBS
