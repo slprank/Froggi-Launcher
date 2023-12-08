@@ -1,5 +1,5 @@
 import type { Obs, ObsConnection } from "../models/types/obsTypes"
-import type { AutoUpdaterStatus, DolphinConnectionState, InGameState, LiveStatsScene } from "../models/enum"
+import type { AutoUpdaterStatus, DolphinConnectionState, InGameState, LiveStatsScene, NotificationType } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Overlay, Url } from "../models/types/overlay"
 import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, Session } from "../models/types/slippiData"
@@ -23,6 +23,7 @@ export interface MessageEvents {
     LayerPreviewChange: (layerIndex: number) => void
     CurrentMatch: (match: Match) => void
     MemoryControllerInput: (controllerInputs: PlayerController) => void
+    Notification: (message: string, type: NotificationType) => void
     PlayersTagUpdate: (players: Player[]) => void // Here
     PostGameStats: (stats: GameStats | undefined) => void
     RecentGames: (games: GameStats[][]) => void

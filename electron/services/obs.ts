@@ -6,6 +6,8 @@ import OBSWebSocket from 'obs-websocket-js';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { ElectronObsStore } from './store/storeObs';
 import { ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
+import { MessageHandler } from './messageHandler';
+import { NotificationType } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class ObsWebSocket {
@@ -14,6 +16,7 @@ export class ObsWebSocket {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
+		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
 	) {
 		this.log.info('Initializing OBS');
@@ -57,14 +60,31 @@ export class ObsWebSocket {
 
 	reloadBrowserSources = async () => {
 		const scenes = await this.obs.call("GetSceneList");
-		scenes.scenes.forEach(async (scene) => {
-			const itemsList = await this.obs.call("GetSceneItemList", { sceneName: `${scene.sceneName}` });
+		const sceneList = scenes.scenes.map((scene) => scene.sceneName)
+		for (const scene of sceneList) {
+			const itemsList = await this.obs.call("GetSceneItemList", { sceneName: `${scene}` });
 			itemsList.sceneItems.forEach(async (item) => {
 				if (item.inputKind === "browser_source") {
 					await this.obs.call("PressInputPropertiesButton", { inputName: `${item.sourceName}`, propertyName: "refreshnocache" });
 				}
 			});
-		});
+		}
+		await this.cycleThroughScenes()
+	}
+
+	cycleThroughScenes = async () => {
+		const scenes = await this.obs.call("GetSceneList");
+		const currentScene = scenes.currentProgramSceneName
+		const sceneList = scenes.scenes.map((scene) => scene.sceneName)
+		for (const scene of sceneList) {
+			await this.obs.call("SetCurrentProgramScene", { sceneName: `${scene}` })
+			await new Promise((resolve) => setTimeout(resolve, 500))
+		}
+		await this.obs.call("SetCurrentProgramScene", { sceneName: currentScene })
+	}
+
+	startReplayBuffer = async () => {
+		await this.obs.call("StartReplayBuffer");
 	}
 
 	searchForObs = async () => {
@@ -78,6 +98,12 @@ export class ObsWebSocket {
 		}, 5000)
 	}
 
+	initConnection = async () => {
+		await this.updateObsData()
+		await this.reloadBrowserSources()
+		await this.obs.call("StartReplayBuffer");
+	}
+
 	initObsWebSocket = async () => {
 		this.obs.on("ConnectionClosed", async () => {
 			this.searchForObs()
@@ -88,10 +114,7 @@ export class ObsWebSocket {
 			this.log.error("OBS Connection Error")
 		});
 		this.obs.on("ConnectionOpened", () => {
-			setTimeout(() => {
-				this.updateObsData()
-				this.reloadBrowserSources()
-			}, 1000)
+			setTimeout(this.initConnection, 1000)
 			this.log.info("OBS Connection Opened")
 		});
 		this.obs.on("CurrentProgramSceneChanged", () => {
@@ -107,9 +130,15 @@ export class ObsWebSocket {
 	};
 
 	initSvelteListeners() {
-		this.svelteEmitter.on("ExecuteObsCommand", (command, payload) => {
-			this.obs.call(command, payload);
-			this.updateObsData()
+		this.svelteEmitter.on("ExecuteObsCommand", async (command, payload) => {
+			try {
+				await this.obs.call(command, payload);
+				await this.updateObsData()
+
+			} catch (error) {
+				this.log.error(error)
+				this.messageHandler.sendMessage("Notification", `Could not execute command: ${command}`, NotificationType.Warning)
+			}
 		});
 	}
 }

@@ -6,6 +6,7 @@
 		InGameState,
 		LiveStatsScene,
 	} from '$lib/models/enum';
+	import { NotificationType } from '$lib/models/enum';
 	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
 	import type { PlayerController } from '$lib/models/types/controller';
 	import type {
@@ -47,6 +48,7 @@
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import type { ObsConnection } from '$lib/models/types/obsTypes';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
 	export async function initEventListener() {
 		console.log('Initializing listeners');
@@ -104,6 +106,26 @@
 			if (!state) return;
 			console.log('game state', state);
 			gameState.set(state);
+		});
+		_localEmitter.on('Notification', (message: string, type: NotificationType) => {
+			console.log('message', message, type);
+			switch (type) {
+				case NotificationType.Default:
+					notifications.default(message, 2000);
+					break;
+				case NotificationType.Danger:
+					notifications.danger(message, 2000);
+					break;
+				case NotificationType.Info:
+					notifications.info(message, 2000);
+					break;
+				case NotificationType.Success:
+					notifications.success(message, 2000);
+					break;
+				case NotificationType.Warning:
+					notifications.warning(message, 2000);
+					break;
+			}
 		});
 		_localEmitter.on('ObsConnection', (connection: ObsConnection) => {
 			console.log('obs connection', connection);

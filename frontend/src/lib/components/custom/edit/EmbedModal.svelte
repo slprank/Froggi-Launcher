@@ -9,8 +9,8 @@
 	import QrCode from 'svelte-qrcode';
 
 	export let overlayId: string = $page.params.overlay;
-	$: localUrl = `${$urls?.local}/obs/custom/${overlayId}`;
-	$: externalUrl = `${$urls?.external}/obs/custom/${overlayId}`;
+	$: localUrl = `${$urls?.local}/obs/overlay/${overlayId}`;
+	$: externalUrl = `${$urls?.external}/obs/overlay/${overlayId}`;
 
 	export let open: boolean;
 </script>

@@ -130,6 +130,14 @@ export enum LiveStatsScene {
 	RankChange = "Rank Change",
 }
 
+export enum NotificationType {
+	Default = "Defalut",
+	Danger = "Danger",
+	Warning = "Warning",
+	Info = "Info",
+	Success = "Success",
+}
+
 export enum PlayerActionState {
 	Dead = 0
 }
