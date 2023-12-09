@@ -42,9 +42,7 @@
 
 {#if isVerticalScreen}
 	<div
-		class={`flex flex-col bg-cover bg-center items-start md:px-16 md:pb-${
-			$isMobile ? '18' : '16'
-		}`}
+		class={`flex flex-col bg-cover bg-center items-start`}
 		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png')`}
 	>
 		<div class="w-full flex flex-col justify-center" bind:this={parentDiv}>

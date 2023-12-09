@@ -24,7 +24,7 @@
 	out:fade={{ duration: 300 }}
 >
 	<div
-		class={`w-full h-full py-8 px-2 gap-4 md:px-18 flex flex-col justify-between items-center ${
+		class={`w-full h-full gap-4 flex flex-col justify-between items-center ${
 			$isMobile && 'pb-18'
 		}`}
 	>
@@ -47,16 +47,16 @@
 				</div>
 			{/each}
 		</div>
-		<div>
-			{#if $isElectron}
+		{#if $isElectron}
+			<div>
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 text-3xl font-semibold text-white text-md whitespace-nowrap p-4 border border-white rounded"
 					on:click={() => (newOverlayModalOpen = true)}
 				>
 					Add new
 				</button>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</div>
 	{#if selectedOverlay}
 		<OverlayPreviewModal bind:open={overlayPreviewOpen} overlay={selectedOverlay} />

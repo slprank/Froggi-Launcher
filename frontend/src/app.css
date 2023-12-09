@@ -23,3 +23,30 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-button {
 	display: none;
 }
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: black;
+}
+
+main {
+	padding: 0.5rem;
+	padding-bottom: 4.5rem;
+}
+
+button:active {
+	opacity: 0.5;
+}
+
+@media (hover: hover) {
+	button:hover {
+		transform: scale(1.02);
+	}
+
+	main {
+		padding: 0.5rem;
+		padding-left: 4.5rem;
+		padding-right: 4.5rem;
+	}
+}

@@ -21,7 +21,7 @@
 
 <Modal bind:open on:close={() => (open = false)} class="w-56 h-96 min-w-72 rounded-lg">
 	<div
-		class="w-full h-full min-w-lg flex flex-col justify-between bg-cover bg-center rounded-md border border-zinc-700 p-4"
+		class="w-full h-full min-w-lg flex flex-col gap-4 justify-between bg-cover bg-center rounded-md border border-zinc-700 p-4"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<h1 class="text-center text-white text-2xl font-semibold text-shadow">New overlay</h1>

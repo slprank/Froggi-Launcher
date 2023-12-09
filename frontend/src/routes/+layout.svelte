@@ -6,7 +6,7 @@
 	import '$lib/styles/tooltip.css';
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import { isElectron } from '$lib/utils/store.svelte';
+	import { isElectron, isOverlayPage } from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { initClient } from '$lib/utils/init.svelte';
@@ -20,8 +20,7 @@
 	});
 
 	const updateBackgroundColor = (url: string) => {
-		console.log('here');
-		if (url?.startsWith('/obs/overlay/') && !$isElectron) {
+		if ($isOverlayPage && !$isElectron) {
 			document.body.style.backgroundColor = 'transparent';
 		} else {
 			document.body.style.backgroundColor = 'black';
@@ -44,12 +43,6 @@
 {/if}
 
 <style>
-	@media (hover: hover) {
-		button:hover {
-			scale: 1.02;
-		}
-	}
-
 	:root {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

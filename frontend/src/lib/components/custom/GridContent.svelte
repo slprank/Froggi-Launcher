@@ -75,7 +75,12 @@
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
 				{:else}
-					<div class="w-full h-full" in:animateIn out:animateOut bind:this={parent}>
+					<div
+						class="w-full h-full"
+						in:animateIn|global
+						out:animateOut|global
+						bind:this={parent}
+					>
 						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(

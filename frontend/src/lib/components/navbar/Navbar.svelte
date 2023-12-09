@@ -6,6 +6,7 @@
 		isElectron,
 		isIframe,
 		isMobile,
+		isOverlayPage,
 		obsConnection,
 	} from '$lib/utils/store.svelte';
 	import { goto } from '$app/navigation';
@@ -15,6 +16,14 @@
 	import ElectronVersionButton from './ElectronVersionButton.svelte';
 
 	function resetVisibilityTimer() {
+		if ($isElectron) {
+			isVisible = true;
+			return;
+		}
+		if ($isIframe || $isOverlayPage) {
+			isVisible = false;
+			return;
+		}
 		isVisible = true;
 		clearInterval(visibilityTimer);
 		startVisibilityTimer();
@@ -30,11 +39,10 @@
 	}
 
 	let visibilityTimer: NodeJS.Timeout;
-	$: isVisible = $isMobile && !$isIframe;
-	startVisibilityTimer();
+	let isVisible = false;
+	$: $isOverlayPage, resetVisibilityTimer();
 
 	let isMobileOpen: boolean;
-
 	let width: number;
 </script>
 
@@ -49,7 +57,7 @@
 
 <div>
 	{#if isVisible}
-		{#if !$isMobile && width > 768}
+		{#if !$isMobile}
 			<div
 				in:fly={{ x: -100, duration: 150 }}
 				out:fly={{ x: -100, duration: 400 }}

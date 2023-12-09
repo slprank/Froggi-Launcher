@@ -11,11 +11,7 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div
-		class={`w-full h-full py-8 px-2 gap-4 md:px-18 flex flex-col justify-between items-center ${
-			$isMobile && 'pb-18'
-		}`}
-	>
+	<div class={`w-full h-full  px-2 gap-4 flex flex-col justify-between items-center`}>
 		<div>
 			<h1 class="text-4xl font-bold text-white shadow-md">Settings</h1>
 		</div>

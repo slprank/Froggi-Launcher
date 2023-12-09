@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { isElectron, overlays, statsScene } from '$lib/utils/store.svelte';
-	import { fade } from 'svelte/transition';
+	import { overlays, statsScene } from '$lib/utils/store.svelte';
 	import Edit from '$lib/components/custom/edit/Edit.svelte';
-	import Board from '$lib/components/custom/Board.svelte';
 	import { page } from '$app/stores';
 	import { addFont } from '$lib/components/custom/CustomFontHandler.svelte';
-	import { goto } from '$app/navigation';
+	import { fade } from 'svelte/transition';
 
 	const overlayId = $page.params.overlay;
 	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
@@ -25,12 +23,12 @@
 
 {#await updateFont() then}
 	{#if curOverlay}
-		<main
+		<div
 			class="fixed h-full w-full bg-cover bg-center bg-transparent"
 			in:fade={{ delay: 50, duration: 150 }}
 			out:fade={{ duration: 300 }}
 		>
 			<Edit />
-		</main>
+		</div>
 	{/if}
 {/await}

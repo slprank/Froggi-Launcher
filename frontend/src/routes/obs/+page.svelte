@@ -11,7 +11,7 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class="w-full h-full flex flex-col justify-center items-center md:px-18 p-8">
+	<div class="w-full h-full flex flex-col justify-center items-center p-8">
 		<div>
 			<h1 class="text-white font-bold text-4xl">OBS</h1>
 		</div>

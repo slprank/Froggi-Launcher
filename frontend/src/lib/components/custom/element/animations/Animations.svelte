@@ -116,7 +116,7 @@
 		};
 	}
 
-	const emptyAnimation = (node: any, delay: number): AnimationConfig => {
+	const emptyAnimation = (node: Element, delay: number): AnimationConfig => {
 		return fly(node, { delay: delay, duration: 0 });
 	};
 
@@ -132,7 +132,7 @@
 	};
 
 	export const createAnimation = (
-		node: any,
+		node: Element,
 		animation: AnimationSettings | undefined,
 		height: number,
 		width: number,

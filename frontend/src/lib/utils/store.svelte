@@ -33,7 +33,7 @@
 	export const isMobile = writable<boolean>(!window.electron && Device.isMobile);
 	export const isTablet = writable<boolean>(!window.electron && Device.isTablet);
 	export const isIframe = writable<boolean>(window.self !== window.top);
-	export const isOverlayPage = writable<boolean>(window.self !== window.top);
+	export const isOverlayPage = writable<boolean>(true);
 
 	export const isPWA = writable<boolean>(
 		window.electron ||

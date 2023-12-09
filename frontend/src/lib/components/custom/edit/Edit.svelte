@@ -63,7 +63,7 @@
 >
 	{#if overlay && boardHeightEdit && boardWidthEdit}
 		<div
-			class={`w-full h-full grid px-16 justify-center`}
+			class={`w-full h-full grid justify-center`}
 			style={`grid-template-columns: repeat(${gridCols}, minmax(0, 1fr));`}
 		>
 			{#if displayPreview}

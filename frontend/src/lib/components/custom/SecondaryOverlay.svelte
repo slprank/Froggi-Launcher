@@ -26,12 +26,12 @@
 
 {#await updateFont() then}
 	{#if curOverlay}
-		<main
+		<div
 			class="fixed h-full w-full bg-cover bg-center"
 			in:fade={{ delay: 50, duration: 150 }}
 			out:fade={{ duration: 300 }}
 		>
 			<Board bind:curOverlay bind:layerIds {preview} />
-		</main>
+		</div>
 	{/if}
 {/await}
