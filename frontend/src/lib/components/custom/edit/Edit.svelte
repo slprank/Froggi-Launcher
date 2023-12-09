@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
-	import { electronEmitter, localEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
+	import {
+		currentOverlayEditor,
+		electronEmitter,
+		localEmitter,
+		overlays,
+		statsScene,
+	} from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import { getOverlayById, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
@@ -18,7 +24,7 @@
 	const overlayId = $page.params.overlay;
 
 	$: selectedLayer = 0;
-	let selectedId: string | undefined = undefined;
+	let selectedItemId: string | undefined = undefined;
 	let overlay: Overlay | undefined;
 
 	let isElementModalOpen = false;
@@ -44,14 +50,13 @@
 		selectedLayer = layerIndex;
 	});
 
-	$: displayPreview = innerWidth > 1100;
-	$: gridCols = displayPreview ? 3 : 2;
+	let innerWidth: number;
+	$: displayPreview = innerWidth > 1024;
 
-	$: innerWidth = 400;
-	$: boardWidthEdit = Math.floor(((innerWidth - 160) / gridCols) * 2);
-	$: boardHeightEdit = Math.floor((boardWidthEdit / 16) * 9);
-	$: boardWidthPreview = Math.floor((innerWidth - 160) / gridCols);
-	$: boardHeightPreview = Math.floor((boardWidthPreview / 16) * 9);
+	$: boardWidthEdit = Math.floor(innerWidth - (displayPreview ? 560 : 144));
+	$: boardHeightEdit = Math.floor(
+		(boardWidthEdit / (overlay?.aspectRatio.width ?? 0)) * (overlay?.aspectRatio.height ?? 0),
+	);
 </script>
 
 <svelte:window bind:innerWidth />
@@ -62,26 +67,23 @@
 	in:fade={{ delay: 50, duration: 150 }}
 >
 	{#if overlay && boardHeightEdit && boardWidthEdit}
-		<div
-			class={`w-full h-full grid justify-center`}
-			style={`grid-template-columns: repeat(${gridCols}, minmax(0, 1fr));`}
-		>
+		<div class={`w-full h-full justify-center flex gap-4`}>
 			{#if displayPreview}
-				<div class="w-full h-full col-span-1 grid justify-center content-center px-1">
-					<div class="w-full h-full grid">
-						<Preview
-							bind:boardWidth={boardWidthPreview}
-							bind:boardHeight={boardHeightPreview}
-						/>
-						<div class="w-full h-80">
-							<LayerToggle />
-						</div>
+				<div class="h-[95vh] flex flex-col justify-center content-center w-[400px] gap-4">
+					<div
+						class="w-full"
+						style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
+					>
+						<Preview />
+					</div>
+					<div class="w-full flex-1">
+						<LayerToggle />
 					</div>
 				</div>
 			{/if}
 
 			<div
-				class={`w-full h-full col-span-2 grid gap-2 justify-center items-center py-2 overflow-scroll`}
+				class={`w-full h-full flex-1 flex flex-col gap-2 justify-center items-center py-2 overflow-scroll`}
 			>
 				<div class="grid gap-2">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
@@ -116,22 +118,22 @@
 					{#if !displayPreview}
 						<LayerEdit bind:overlay bind:selectedLayer />
 					{/if}
-					<SelectedEditor bind:selectedId bind:selectedLayer />
+					<SelectedEditor bind:selectedItemId bind:selectedLayer />
 				</div>
 				<div
 					style={`width: ${boardWidthEdit}px; height: ${boardHeightEdit}px;`}
-					class={`outline outline-zinc-700 overflow-hidden shadow-md`}
+					class={`border-2 border-zinc-700 overflow-hidden shadow-md`}
 				>
 					<BoardEdit
-						bind:boardHeight={boardHeightEdit}
+						bind:borderHeight={boardHeightEdit}
 						bind:layer={selectedLayer}
-						bind:selectedId
+						bind:selectedItemId
 					/>
 				</div>
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => {
-						selectedId = newId();
+						selectedItemId = newId();
 						isElementModalOpen = true;
 					}}
 				>
@@ -140,7 +142,7 @@
 				<SceneSelect />
 			</div>
 		</div>
-		<ElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} {selectedId} />
+		<ElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} {selectedItemId} />
 		<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 	{/if}
 	<PreviewModal bind:open={isPreviewModalOpen} />

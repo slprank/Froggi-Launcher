@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/models/const';
-	import { obs, overlays, statsScene } from '$lib/utils/store.svelte';
+	import { localEmitter, obs, overlays, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
@@ -12,7 +12,7 @@
 
 	const overlayId = $page.params.overlay;
 
-	export let selectedId: string | undefined;
+	export let selectedItemId: string | undefined;
 	export let selectedLayer: number | undefined;
 	let selectedItem: any;
 	let selectedItemIndex: number;
@@ -22,16 +22,16 @@
 	$: curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? undefined;
 
 	function getItemById() {
-		if (!curOverlay || selectedLayer === undefined || selectedId === undefined) return;
+		if (!curOverlay || selectedLayer === undefined || selectedItemId === undefined) return;
 		selectedItemIndex = curOverlay[$statsScene]?.layers[selectedLayer].items
 			.map((i) => i.id)
-			.indexOf(selectedId);
+			.indexOf(selectedItemId);
 		selectedItem = curOverlay[$statsScene]?.layers[selectedLayer].items[selectedItemIndex];
 	}
-	$: selectedId, getItemById();
+	$: selectedItemId, getItemById();
 
 	function clearItem() {
-		selectedId = undefined;
+		selectedItemId = undefined;
 		selectedItem = undefined;
 	}
 	$: selectedLayer, $statsScene, clearItem();
@@ -55,7 +55,7 @@
 		const newItem = generateNewItem(item.elementId, item.data, items);
 
 		curOverlay[$statsScene]?.layers[selectedLayer].items.push(newItem);
-		selectedId = undefined;
+		selectedItemId = undefined;
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
@@ -65,7 +65,7 @@
 	function deleteElement() {
 		if (!curOverlay || selectedLayer === undefined) return;
 		curOverlay[$statsScene]?.layers[selectedLayer].items.splice(selectedItemIndex, 1);
-		selectedId = undefined;
+		selectedItemId = undefined;
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
@@ -73,7 +73,7 @@
 	}
 
 	function updateSelectItem() {
-		if (!curOverlay || selectedLayer === undefined || selectedId === undefined) return;
+		if (!curOverlay || selectedLayer === undefined || selectedItemId === undefined) return;
 
 		handleOverflow();
 
@@ -85,7 +85,7 @@
 	let lockOut = false;
 
 	function handleKeydown(e: KeyboardEvent) {
-		if (lockOut || !selectedId || !selectedItem) return;
+		if (lockOut || !selectedItemId || !selectedItem) return;
 		if (e.shiftKey) {
 			if (e.key === 'ArrowDown') {
 				selectedItem[COL].h += 1;
@@ -128,6 +128,10 @@
 		lockOut = true;
 		setTimeout(() => (lockOut = false), 100);
 	}
+
+	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
+		selectedLayer = layerIndex;
+	});
 
 	// TODO: Add horizontal center button
 </script>
@@ -178,11 +182,11 @@
 			</div>
 		</div>
 		{#key isElementModalOpen}
-			{#key selectedId}
+			{#key selectedItemId}
 				<ElementModal
 					bind:open={isElementModalOpen}
 					bind:layer={selectedLayer}
-					{selectedId}
+					{selectedItemId}
 				/>
 			{/key}
 		{/key}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { electronEmitter, obs, overlays, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
 	// @ts-ignore
 	import Grid from 'svelte-grid';
 	import GridContent from '$lib/components/custom/GridContent.svelte';
@@ -13,9 +13,9 @@
 
 	const overlayId = $page.params.overlay;
 
-	export let boardHeight: number | undefined;
+	export let borderHeight: number | undefined = undefined;
 	export let layer: number | undefined = undefined;
-	export let selectedId: string | undefined = undefined;
+	export let selectedItemId: string | undefined = undefined;
 
 	let curOverlay =
 		$overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
@@ -82,7 +82,9 @@
 	updateFont();
 
 	let innerHeight: number;
-	$: rowHeight = (boardHeight ?? innerHeight) / ROW;
+	$: rowHeight =
+		((borderHeight ?? 0) * (curOverlay.aspectRatio.width / curOverlay.aspectRatio.width) ??
+			innerHeight) / ROW;
 </script>
 
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />
@@ -106,13 +108,17 @@
 						fastStart={true}
 						on:change={updateScene}
 						on:pointerup={(e) => {
-							selectedId = undefined;
-							setTimeout(() => (selectedId = e.detail.id), 20);
+							selectedItemId = undefined;
+							setTimeout(() => (selectedItemId = e.detail.id), 20);
 						}}
 					>
 						<div class="w-full h-full relative">
-							<div class="w-full h-full absolute">
-								<GridContent edit={true} {dataItem} bind:selectedId />
+							<div
+								class={`w-full h-full absolute ${
+									selectedItemId === dataItem?.id ? 'outline outline-red-500' : ''
+								}`}
+							>
+								<GridContent edit={true} {dataItem} />
 							</div>
 							<div
 								class="bottom-0 right-0 w-[5%] h-[5%] max-w-[0.8em] max-h-[0.8em] absolute cursor-se-resize overflow-hidden z-5"
