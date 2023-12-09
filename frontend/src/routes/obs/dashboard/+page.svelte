@@ -5,12 +5,13 @@
 	import OverlayScenes from '$lib/components/dashboard/OverlayScenes.svelte';
 	import Default from '$lib/components/dashboard/Default.svelte';
 	import ReplayBufferHandler from '$lib/components/dashboard/ReplayBufferHandler.svelte';
+	import { isMobile } from '$lib/utils/store.svelte';
 
 	let dashboardOption: DashboardOption = DashboardOption.Offline;
 </script>
 
 <main
-	class="fixed h-screen w-screen bg-cover bg-center"
+	class={`fixed h-screen w-screen bg-cover bg-center`}
 	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
@@ -21,7 +22,7 @@
 		<h1 class="text-white text-4xl font-bold">Dashboard</h1>
 		<div class="flex gap-2">
 			<button
-				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
+				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
 					dashboardOption === DashboardOption.Offline ? 'border-red-700' : 'border-white'
 				}`}
 				on:click={() => {
@@ -32,7 +33,7 @@
 			</button>
 			<button
 				disabled
-				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
+				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
 					dashboardOption === DashboardOption.SmashGG ? 'border-red-700' : 'border-white'
 				} disabled:opacity-50 disabled:cursor-not-allowed`}
 				on:click={() => {

@@ -29,14 +29,14 @@
 				<slot />
 			</h1>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
 				on:click={cancel}
 			>
 				Cancel
 			</button>
 
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
 				on:click={confirm}
 			>
 				Confirm
@@ -44,3 +44,10 @@
 		</div>
 	</div>
 </Modal>
+
+<style>
+	:root {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	}
+</style>

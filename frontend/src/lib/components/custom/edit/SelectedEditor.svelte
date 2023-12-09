@@ -154,7 +154,7 @@
 			</div>
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 200 }}>
 				<button
-					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={() => (isElementModalOpen = true)}
 				>
 					Edit
@@ -162,7 +162,7 @@
 			</div>
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
-					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={copyElement}
 				>
 					Copy
@@ -170,7 +170,7 @@
 			</div>
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
-					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={deleteElement}
 				>
 					Delete

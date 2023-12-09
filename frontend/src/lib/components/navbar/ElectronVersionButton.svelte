@@ -64,7 +64,7 @@
 {#if $isElectron}
 	{#key $autoUpdater}
 		<button
-			class="transition hover:scale-110 fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
+			class="transition fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
 			on:click={installUpdate}
 		>
 			<span class={getAnimation($autoUpdater)} />

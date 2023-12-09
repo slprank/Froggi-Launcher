@@ -59,7 +59,7 @@
 					>
 						<slot />
 						<button
-							class="top-2 right-2 w-6 h-6 absolute text-gray-700 text-xl transition delay-100 duration-200 hover:scale-[1.02] hover:text-white"
+							class="top-2 right-2 w-6 h-6 absolute text-gray-700 text-xl transition delay-100 duration-200 hover:text-white"
 							on:click={handleCloseClick}
 						>
 							X

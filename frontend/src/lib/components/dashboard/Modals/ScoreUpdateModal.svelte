@@ -70,7 +70,7 @@
 			class="flex-l flex flex-col items-center overflow-scroll gap-4 border-2 border-gray-700 rounded-md p-2"
 		>
 			<button
-				class="transition duration-100 rounded-md w-full justify-center bg-black border border-white hover:scale-[1.02] bg-opacity-40 hover:bg-opacity-60"
+				class="transition duration-100 rounded-md w-full justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
 					addGame(0);
 				}}
@@ -138,7 +138,7 @@
 				</div>
 
 				<button
-					class="transition duration-100 w-full rounded-md justify-center bg-black border border-white hover:scale-[1.02] bg-opacity-40 hover:bg-opacity-60"
+					class="transition duration-100 w-full rounded-md justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
 					on:click={async () => {
 						addGame(i + 1);
 					}}
@@ -148,7 +148,7 @@
 			{/each}
 		</div>
 		<button
-			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 			on:click={updateScore}
 		>
 			Update Score

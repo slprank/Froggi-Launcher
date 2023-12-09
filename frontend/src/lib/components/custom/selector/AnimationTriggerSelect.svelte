@@ -18,7 +18,7 @@
 
 <div class="grid grid-flow-col gap-2 items-center">
 	<button
-		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
 		on:click={() => (open = true)}
 	>
 		Select
@@ -36,7 +36,7 @@
 
 		<div class="w-48 flex items-end">
 			<button
-				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
 				on:click={handleUpdate}
 			>
 				Update

@@ -35,7 +35,7 @@
 
 <div class="relative">
 	<button
-		class="transition hover:scale-110 opacity-60 hover:opacity-100 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
+		class="transition opacity-60 hover:opacity-100 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
 		transition:fly={{ duration: 150, x: -50 }}
 		on:click={click}
 	>

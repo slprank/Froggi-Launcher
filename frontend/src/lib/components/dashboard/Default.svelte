@@ -39,7 +39,7 @@
 	</div>
 	<div class="flex flex-col gap-2">
 		<button
-			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 			on:click={updateTag}
 		>
 			Change Tag
@@ -56,13 +56,13 @@
 		<h1 class="text-white text-3xl font-semibold">{$gameScore.at(1)}</h1>
 	</div>
 	<button
-		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 		on:click={resetScore}
 	>
 		Reset Score
 	</button>
 	<button
-		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 		on:click={updateScore}
 	>
 		Change Score

@@ -24,7 +24,7 @@
 			<h1 class="text-white text-xl font-medium text-shadow">Open Preview In New Window</h1>
 			<a target="popup" href={`${localUrl}`} on:click={() => (open = false)}>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
 				>
 					Popup
 				</button>
@@ -42,7 +42,7 @@
 			>
 				<button
 					on:click={copy}
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				>
 					Copy external URL
 				</button>

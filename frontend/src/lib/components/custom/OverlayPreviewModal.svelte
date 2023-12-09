@@ -51,7 +51,7 @@
 		</div>
 		<div class="flex gap-2">
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 				on:click={() => {
 					goto(`/obs/overlay/${overlay?.id}`);
 				}}
@@ -60,7 +60,7 @@
 			</button>
 			{#if $isElectron}
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 					on:click={createDuplicateOverlay}
 				>
 					Duplicate
@@ -68,7 +68,7 @@
 			{/if}
 			{#if $isElectron}
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 					on:click={() => (isEmbedModalOpen = true)}
 				>
 					Embed
@@ -76,7 +76,7 @@
 			{/if}
 			{#if !$isElectron}
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 					on:click={() => {
 						goto(`/obs/overlay/${overlay?.id}/layers/external`);
 					}}
@@ -86,7 +86,7 @@
 			{/if}
 			{#if $isElectron}
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 					on:click={() => {
 						deleteOverlayModalOpen = true;
 					}}

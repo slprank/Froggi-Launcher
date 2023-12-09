@@ -18,7 +18,7 @@
 		<SliderInput min={0} max={1} step={0.01} bind:value={imageOpacity} />
 	</div>
 	<button
-		class="col-start-7 col-span-2 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-[1.02] font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+		class="col-start-7 col-span-2 transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
 		on:click={() => reset()}
 	>
 		Reset

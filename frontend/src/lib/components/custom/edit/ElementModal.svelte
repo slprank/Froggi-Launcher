@@ -130,7 +130,7 @@
 					</div>
 					<button
 						transition:fly={{ duration: 250, x: 150 }}
-						class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-110 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+						class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 						on:click={update}
 					>
 						{isNewElement ? 'Add' : 'Update'}

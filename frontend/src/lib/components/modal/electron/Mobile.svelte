@@ -43,10 +43,7 @@
 								notifications.success('Copied to clipboard!', 2000);
 							}}
 						>
-							<button
-								on:click={copy}
-								class="w-5 h-5 invert transition hover:scale-110"
-							>
+							<button on:click={copy} class="w-5 h-5 invert transition">
 								<img src="/image/button-icons/copy.png" alt="copy" />
 							</button>
 						</Clipboard>

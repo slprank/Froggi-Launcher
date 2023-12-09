@@ -44,6 +44,12 @@
 {/if}
 
 <style>
+	@media (hover: hover) {
+		button:hover {
+			scale: 1.02;
+		}
+	}
+
 	:root {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

@@ -84,7 +84,7 @@
 				in:fly={{ duration: 750, delay: 100 * (layerIndex + 1), x: 75 }}
 			>
 				<button
-					class="w-full h-full transition hover:scale-110"
+					class="w-full h-full transition"
 					on:click={() => changeEditLayer(layerIndex)}
 				>
 					<div class="h-16 aspect-video rounded-sm">
@@ -97,7 +97,7 @@
 				</button>
 			</div>
 			<button
-				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md transition hover:scale-110"
+				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md transition"
 				on:click={() => changeEditLayer(layerIndex)}
 			>
 				<div class="w-full h-full grid justify-center items-center text-[1.5em]">
@@ -149,7 +149,7 @@
 		</div>
 		<div class="w-full items-center overflow-hidden">
 			<button
-				class="w-full h-full justify-center bg-black hover:scale-110 bg-opacity-40 hover:bg-opacity-60"
+				class="w-full h-full justify-center bg-black bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
 					if (isLastRow) setTimeout(scrollToBottom);
 					await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
