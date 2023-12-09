@@ -8,7 +8,7 @@
 		LiveStatsScene,
 	} from '$lib/models/enum';
 	import Device from 'svelte-device-info';
-	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
+	import type { AutoUpdater, Overlay, OverlayEditor, Url } from '$lib/models/types/overlay';
 	import type {
 		CurrentPlayer,
 		GameStartTypeExtended,
@@ -61,6 +61,7 @@
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
 	export const obsConnection = writable<ObsConnection>({} as ObsConnection);
 	export const overlays = writable<Overlay[]>([]);
+	export const currentOverlayEditor = writable<OverlayEditor>({ layerIndex: 0 } as OverlayEditor);
 	export const postGame = writable<GameStats>({} as GameStats);
 	export const currentMatch = writable<Match | undefined>({} as Match);
 	export const recentRankedSets = writable<GameStats[]>([]);

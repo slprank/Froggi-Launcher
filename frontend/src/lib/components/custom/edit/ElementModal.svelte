@@ -24,11 +24,11 @@
 
 	export let open: boolean;
 	export let layer: number | undefined;
-	export let selectedId: string | undefined = undefined;
+	export let selectedItemId: string | undefined = undefined;
 
 	let selectedElementId: CustomElement;
 	let payload: ElementPayload = getDefaultElementPayload();
-	$: isNewElement = !getCurrentItems().some((item) => item.id === selectedId);
+	$: isNewElement = !getCurrentItems().some((item) => item.id === selectedItemId);
 
 	$: demoItem = {
 		[COL]: {} as GridContentItemConfig,
@@ -52,7 +52,7 @@
 
 	function getCurrentItems() {
 		let curOverlay = getCurrentOverlay();
-		return curOverlay[$statsScene]?.layers[layer ?? 0].items ?? [];
+		return curOverlay[$statsScene]?.layers[layer ?? 0]?.items ?? [];
 	}
 
 	function add() {
@@ -72,7 +72,7 @@
 
 	function update() {
 		let items = getCurrentItems();
-		let prevItem = items.find((item) => item.id === selectedId);
+		let prevItem = items.find((item) => item.id === selectedItemId);
 
 		if (!prevItem) {
 			add();
@@ -81,7 +81,7 @@
 
 		let newItem = {
 			elementId: selectedElementId,
-			id: selectedId,
+			id: selectedItemId,
 			data: payload,
 			[COL]: {
 				...prevItem![COL],
@@ -90,7 +90,7 @@
 
 		newItem = fixTransition(newItem);
 
-		items = items.filter((item) => item.id != selectedId);
+		items = items.filter((item) => item.id != selectedItemId);
 		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
@@ -100,13 +100,10 @@
 		open = false;
 	}
 
-	// TODO: Save prev selectedId
-	// If matching same type - string/box/image
-	// Keep payload
 	function updatePayload() {
-		if (!selectedId) return;
+		if (!selectedItemId) return;
 		let items = getCurrentItems();
-		let item = items.find((item) => item.id === selectedId); //
+		let item = items.find((item) => item.id === selectedItemId); //
 		if (!item) return;
 		payload = { ...payload, ...item.data };
 		selectedElementId = item.elementId;
@@ -124,8 +121,12 @@
 				<ElementSelect bind:selectedElementId />
 				{#if selectedElementId}
 					<div class="w-full">
-						{#if payload && selectedId}
-							<StylingSelect bind:selectedElementId bind:payload bind:selectedId />
+						{#if payload && selectedItemId}
+							<StylingSelect
+								bind:selectedElementId
+								bind:payload
+								bind:selectedItemId
+							/>
 						{/if}
 					</div>
 					<button

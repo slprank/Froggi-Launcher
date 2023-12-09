@@ -12,7 +12,7 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 
 	export let overlay: Overlay;
-	export let selectedLayer: number;
+	export let selectedLayer: number = 0;
 	$: curScene = overlay[$statsScene];
 </script>
 

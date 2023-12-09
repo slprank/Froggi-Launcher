@@ -3,6 +3,7 @@
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import type {
 		AnimationSettings,
+		AspectRatio,
 		ElementPayload,
 		GridContentItem,
 		Layer,
@@ -64,12 +65,14 @@
 		};
 	};
 
-	export function getNewOverlay(): Overlay {
+	export function getNewOverlay(aspect: AspectRatio = { width: 16, height: 9 }): Overlay {
+		const id = newId();
 		return {
-			id: newId(),
-			title: 'New Title',
+			id: id,
+			title: `New Overlay - ${id}`,
 			description: 'Scene Description',
 			defaultScene: LiveStatsScene.Menu,
+			aspectRatio: aspect,
 			[LiveStatsScene.WaitingForDolphin]: getDefaultScene(newId()),
 			[LiveStatsScene.Menu]: getDefaultScene(newId()),
 			[LiveStatsScene.InGame]: getDefaultScene(newId()),
@@ -349,7 +352,7 @@
 		curOverlay: Overlay | undefined,
 		statsScene: LiveStatsScene,
 	) {
-		if (curOverlay?.[statsScene].active) return;
+		if (curOverlay?.[statsScene]?.active) return;
 		notifications.warning('Selected scene is disabled', 5000);
 	}
 </script>

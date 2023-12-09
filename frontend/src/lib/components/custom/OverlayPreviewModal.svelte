@@ -33,6 +33,7 @@
 	};
 
 	$: $statsScene, notifyDisabledScene(overlay, $statsScene);
+	let parentDiv: HTMLElement | undefined;
 </script>
 
 <Modal bind:open on:close={() => (open = false)}>
@@ -43,8 +44,13 @@
 		<div>
 			<h1 class="font-bold text-3xl text-white">{overlay?.title}</h1>
 		</div>
-		<div class="aspect-video max-h-full max-w-[600px] w-full border-2 border-gray-500">
-			<NonInteractiveIFrame src={url} title="overlay" />
+		<div
+			class="flex-1 aspect-video max-h-full h-full border-2 border-gray-500"
+			bind:this={parentDiv}
+		>
+			<div style={`height: ${parentDiv?.clientHeight}px; width: ${parentDiv?.clientWidth}px`}>
+				<NonInteractiveIFrame src={url} title="overlay" />
+			</div>
 		</div>
 		<div>
 			<SceneSelect />

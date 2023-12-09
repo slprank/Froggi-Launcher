@@ -38,7 +38,7 @@
 </script>
 
 {#if layers && curOverlay}
-	<div class="w-full max-h-full border-1 flex flex-col border-zinc-700">
+	<div class="h-full w-full border-2 flex flex-col border-zinc-700">
 		<div
 			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
 		>

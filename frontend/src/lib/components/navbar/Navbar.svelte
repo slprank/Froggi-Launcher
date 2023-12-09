@@ -20,7 +20,7 @@
 			isVisible = true;
 			return;
 		}
-		if ($isIframe || $isOverlayPage) {
+		if ($isIframe) {
 			isVisible = false;
 			return;
 		}
@@ -40,7 +40,7 @@
 
 	let visibilityTimer: NodeJS.Timeout;
 	let isVisible = false;
-	$: $isOverlayPage, resetVisibilityTimer();
+	$: $isOverlayPage, startVisibilityTimer();
 
 	let isMobileOpen: boolean;
 	let width: number;

@@ -1,9 +1,11 @@
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types";
 import type { ConnectionState } from "../enum";
+import type { OverlayLayout } from "./overlay";
 
 export interface Obs {
     auth: ObsAuth | undefined,
     connection: ObsConnection,
+    layout: OverlayLayout,
 }
 
 export interface ObsConnection {

@@ -14,7 +14,6 @@
 	export let demoItem: GridContentItem | undefined = undefined;
 	export let edit: boolean = false;
 	export let preview: boolean = false;
-	export let selectedId: string | undefined = undefined;
 
 	function updateDemoData() {
 		if (demoItem) dataItem = demoItem;
@@ -23,6 +22,7 @@
 
 	const animateIn = (node: Element): TransitionConfig => {
 		if (edit || !dataItem || !curScene) return fly(node, { duration: 0 });
+		console.log('edit', edit, 'dataItem', dataItem, 'curScene', curScene);
 		const delay =
 			dataItem[COL]?.y +
 			Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
@@ -62,9 +62,7 @@
 		{#if div}
 			<div
 				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
-				class={`h-full w-full ${edit ? 'bg-white' : 'text-white'} ${
-					selectedId && selectedId === dataItem?.id ? 'outline outline-red-500' : ''
-				} bg-opacity-50 relative`}
+				class={`h-full w-full ${edit ? 'bg-white' : 'text-white'} bg-opacity-50 relative`}
 			>
 				{#if edit}
 					<GridElements {dataItem} {edit} />
@@ -75,12 +73,7 @@
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
 				{:else}
-					<div
-						class="w-full h-full"
-						in:animateIn|global
-						out:animateOut|global
-						bind:this={parent}
-					>
+					<div class="w-full h-full" in:animateIn out:animateOut bind:this={parent}>
 						<VisibilityAnimationLayer
 							animationIn={(node) =>
 								createAnimation(

@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import type { Overlay } from '../../../frontend/src/lib/models/types/overlay';
+import type { Overlay, OverlayEditor } from '../../../frontend/src/lib/models/types/overlay';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -25,17 +25,17 @@ export class ElectronOverlayStore {
     }
 
     createOverlays() {
-        if (this.store.get('overlays') === undefined)
-            this.store.set('overlays', []);
+        if (this.store.get('obs.layout.overlays') === undefined)
+            this.store.set('obs.layout.overlays', []);
     }
 
     getOverlays(): Overlay[] {
-        return (this.store.get('overlays') ?? []) as Overlay[];
+        return (this.store.get('obs.layout.overlays') ?? []) as Overlay[];
     }
 
     setOverlays(value: Overlay[]) {
         if (!value) return;
-        this.store.set('overlays', value);
+        this.store.set('obs.layout.overlays', value);
     }
 
     getOverlayById(overlayId: string): Overlay {
@@ -83,9 +83,21 @@ export class ElectronOverlayStore {
         this.setOverlays(overlays);
     }
 
+    setCurrentLayoutIndex(index: number) {
+        this.store.set('obs.layout.current.layerIndex', index);
+    }
+
+    setCurrentItemId(itemId: string) {
+        this.store.set('obs.layout.current.itemId', itemId);
+    }
+
     initListeners() {
-        this.store.onDidChange("overlays", (value) => {
+        this.store.onDidChange("obs.layout.overlays", (value) => {
             this.messageHandler.sendMessage("Overlays", value as Overlay[]);
+        })
+        this.store.onDidChange("obs.layout.current", (value) => {
+            console.log("CurrentOverlayEditor", value)
+            this.messageHandler.sendMessage("CurrentOverlayEditor", value as OverlayEditor);
         })
     }
 
@@ -100,6 +112,14 @@ export class ElectronOverlayStore {
 
         this.svelteEmitter.on('OverlayDelete', (overlayId) => {
             this.deleteOverlay(overlayId);
+        });
+
+        this.svelteEmitter.on('SelectedItemChange', (itemId) => {
+            this.setCurrentItemId(itemId);
+        });
+
+        this.svelteEmitter.on("LayerPreviewChange", (layerIndex) => {
+            this.setCurrentLayoutIndex(layerIndex);
         });
 
 

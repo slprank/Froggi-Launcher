@@ -20,6 +20,10 @@ export class ElectronObsStore {
         this.initListeners();
     }
 
+    getObs(): Obs | undefined {
+        return this.store.get('obs') as Obs;
+    }
+
     getPassword(): string | undefined {
         return this.store.get('obs.auth.password') as string;
     }

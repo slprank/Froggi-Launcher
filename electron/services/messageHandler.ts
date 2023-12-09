@@ -159,7 +159,7 @@ export class MessageHandler {
 		this.sendInitMessage(socket, "GameState", this.storeLiveStats.getGameState());
 		this.sendInitMessage(socket, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
 		this.sendInitMessage(socket, "Overlays", this.storeOverlay.getOverlays());
-		this.sendInitMessage(socket, "ObsConnection", this.storeObs.getConnection());
+		this.sendInitMessage(socket, "Obs", this.storeObs.getObs());
 		this.sendInitMessage(socket, "PostGameStats", this.storeLiveStats.getGameStats());
 		this.sendInitMessage(socket, "RecentGames", this.storeGames.getRecentGames());
 		this.sendInitMessage(socket, "RecentRankedSets", this.storeGames.getRecentRankedSets());

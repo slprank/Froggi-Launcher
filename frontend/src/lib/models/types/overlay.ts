@@ -28,6 +28,11 @@ export interface AnimationOptions {
 	y: number;
 }
 
+export interface AspectRatio {
+	width: number;
+	height: number;
+}
+
 export interface Background {
 	animation: Animations
 	color: string | undefined;
@@ -130,7 +135,18 @@ export interface Layer {
 	preview: boolean;
 }
 
+export interface OverlayEditor {
+	layerIndex: number | undefined;
+	itemId: string | undefined;
+}
+
+export interface OverlayLayout {
+	overlays: Overlay[]
+	current: OverlayEditor
+}
+
 export interface Overlay {
+	aspectRatio: AspectRatio;
 	description: string;
 	id: string;
 	title: string;

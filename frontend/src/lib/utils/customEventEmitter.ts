@@ -1,7 +1,7 @@
 import type { Obs, ObsConnection } from "../models/types/obsTypes"
 import type { AutoUpdaterStatus, ConnectionState, InGameState, LiveStatsScene, NotificationType } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
-import type { Overlay, Url } from "../models/types/overlay"
+import type { Overlay, OverlayEditor, Url } from "../models/types/overlay"
 import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, Session } from "../models/types/slippiData"
 import type { FrameEntryType } from "@slippi/slippi-js"
 import localEmitter from "eventemitter2"
@@ -32,8 +32,9 @@ export interface MessageEvents {
     SessionStats: (session: Session | undefined) => void
     LiveStatsSceneChange: (scene: LiveStatsScene | undefined) => void
     Url: (url: Url) => void
-    Obs: (obs: Obs) => void
+    Obs: (obs: Obs | undefined) => void
     ObsConnection: (connection: ObsConnection) => void
+    CurrentOverlayEditor: (overlay: OverlayEditor) => void
     Overlay: (overlay: Overlay) => void
     Overlays: (overlays: Overlay[] | undefined) => void
     OverlayDelete: (overlayId: string) => void
@@ -41,6 +42,8 @@ export interface MessageEvents {
     OverlayDuplicate: (overlayId: string) => void
     OverlayUpdate: (overlay: Overlay) => void
     OverlayUpload: () => void
+    SelectedItemChange: (itemId: string) => void
+
     AddObsCommand: <Type extends keyof OBSRequestTypes>(
         requestType: Type,
         requestData?: OBSRequestTypes[Type],

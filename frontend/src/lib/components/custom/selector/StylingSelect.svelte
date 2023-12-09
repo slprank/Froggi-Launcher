@@ -23,7 +23,7 @@
 		SelectedVisibilityOption,
 	} from '$lib/models/types/animationOption';
 
-	export let selectedId: string;
+	export let selectedItemId: string;
 	export let selectedElementId: number;
 	export let payload: ElementPayload;
 
@@ -192,7 +192,7 @@
 
 			{#if stringSettings || customStringSettings}
 				<div class="gap-4">
-					<FontSelectorLayer bind:font={payload.font} fontId={selectedId} />
+					<FontSelectorLayer bind:font={payload.font} fontId={selectedItemId} />
 				</div>
 			{/if}
 			{#if percentSettings || customPercentSettings}
