@@ -6,7 +6,7 @@
 		LiveStatsScene,
 	} from '$lib/models/enum';
 	import { NotificationType } from '$lib/models/enum';
-	import type { AutoUpdater, Overlay, Url } from '$lib/models/types/overlay';
+	import type { AutoUpdater, Overlay, OverlayEditor, Url } from '$lib/models/types/overlay';
 	import type { PlayerController } from '$lib/models/types/controller';
 	import type {
 		CurrentPlayer,
@@ -35,6 +35,8 @@
 		currentMatch,
 		overlays,
 		obsConnection,
+		obs,
+		currentOverlayEditor,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import {
@@ -43,7 +45,7 @@
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import type { ObsConnection } from '$lib/models/types/obsTypes';
+	import type { Obs, ObsConnection } from '$lib/models/types/obsTypes';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
 	export async function initEventListener() {
@@ -123,9 +125,27 @@
 					break;
 			}
 		});
+		_localEmitter.on('Obs', (value: Obs | undefined) => {
+			if (!value) return;
+			console.log('obs', value);
+			obs.set(value);
+			obsConnection.set(value.connection);
+			overlays.set(value.layout.overlays);
+			currentOverlayEditor.set(value.layout.current);
+		});
 		_localEmitter.on('ObsConnection', (connection: ObsConnection) => {
 			console.log('obs connection', connection);
 			obsConnection.set(connection);
+		});
+		_localEmitter.on('Overlays', (value: Overlay[] | undefined) => {
+			if (!value) return;
+			console.log('overlays', value);
+			overlays.set(value);
+		});
+		_localEmitter.on('CurrentOverlayEditor', (value: OverlayEditor | undefined) => {
+			if (!value) return;
+			console.log('current overlay editor', value);
+			currentOverlayEditor.set(value);
 		});
 		_localEmitter.on('PostGameStats', (stats: GameStats | undefined) => {
 			if (!stats) return;
@@ -158,12 +178,6 @@
 		_localEmitter.on('Url', (url: Url) => {
 			console.log('url', url);
 			urls.set(url);
-		});
-
-		_localEmitter.on('Overlays', (value: Overlay[] | undefined) => {
-			if (!value) return;
-			console.log('overlays', value);
-			overlays.set(value);
 		});
 	}
 
