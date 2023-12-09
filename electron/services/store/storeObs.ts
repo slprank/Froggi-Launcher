@@ -71,6 +71,10 @@ export class ElectronObsStore {
         this.store.set('obs.connection.items', items);
     }
 
+    setReplayBufferState<Type extends keyof OBSResponseTypes>(state: OBSResponseTypes[Type]) {
+        this.store.set('obs.connection.replayBufferState', state);
+    }
+
     setScenes(scenes: ObsScenes) {
         this.store.set('obs.connection.scenes', scenes);
     }

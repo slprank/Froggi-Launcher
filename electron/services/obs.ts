@@ -117,6 +117,7 @@ export class ObsWebSocket {
 			setTimeout(this.initConnection, 1000)
 			this.log.info("OBS Connection Opened")
 		});
+
 		this.obs.on("CurrentProgramSceneChanged", () => {
 			this.updateObsData()
 		});
@@ -125,6 +126,13 @@ export class ObsWebSocket {
 		});
 		this.obs.on("InputVolumeChanged", () => {
 			this.updateObsData()
+		})
+		this.obs.on("ReplayBufferSaved", () => {
+			this.messageHandler.sendMessage("Notification", "Replay Saved", NotificationType.Success)
+		})
+		this.obs.on("ReplayBufferStateChanged", (state) => {
+			this.messageHandler.sendMessage("Notification", "Replay Saved", NotificationType.Success)
+			this.storeObs.setReplayBufferState(state)
 		})
 		this.searchForObs()
 	};

@@ -177,13 +177,12 @@
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				_localEmitter.emit(key as any, value);
+				_localEmitter.emit(key as any, ...(value as any));
 			}
 		});
 
 		const _electronEmitter = await getElectronEmitter();
 		_electronEmitter.onAny((event, ...data) => {
-			console.log('parse', event, data);
 			window.electron.send('message', JSON.stringify({ [event as string]: data ?? '' }));
 		});
 	};
@@ -193,17 +192,16 @@
 		const _page = await getPage();
 		console.log('Initializing websocket');
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
-		socket.addEventListener('message', ({ data }) => {
+		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
 			for (const [key, value] of Object.entries<any[]>(parse)) {
-				_localEmitter.emit(key as any, value);
+				_localEmitter.emit(key as any, ...(value as any));
 			}
 		});
 
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = () => {
 			_electronEmitter.onAny((event, ...data) => {
-				console.log('Sending electron message..', event, data);
 				socket.send(JSON.stringify({ [event as string]: data }));
 			});
 		};
