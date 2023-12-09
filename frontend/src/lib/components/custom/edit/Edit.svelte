@@ -1,13 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
-	import {
-		currentOverlayEditor,
-		electronEmitter,
-		localEmitter,
-		overlays,
-		statsScene,
-	} from '$lib/utils/store.svelte';
+	import { electronEmitter, localEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/custom/edit/BoardEdit.svelte';
 	import { getOverlayById, newId } from '$lib/components/custom/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
@@ -51,39 +45,52 @@
 	});
 
 	let innerWidth: number;
+	let innerHeight: number;
 	$: displayPreview = innerWidth > 1024;
 
-	$: boardWidthEdit = Math.floor(innerWidth - (displayPreview ? 560 : 144));
-	$: boardHeightEdit = Math.floor(
-		(boardWidthEdit / (overlay?.aspectRatio.width ?? 0)) * (overlay?.aspectRatio.height ?? 0),
-	);
+	$: isVertical = (overlay?.aspectRatio.height ?? 0) > (overlay?.aspectRatio.width ?? 0);
+	$: horizontalWidth = Math.floor(innerWidth - (displayPreview ? 560 : 144));
+	$: horizontalHeight = Math.floor((horizontalWidth / 16) * 9);
+
+	$: verticalHeight = innerHeight - (displayPreview ? 320 : 400);
+	$: verticalWidth =
+		(verticalHeight * (overlay?.aspectRatio.width ?? 0)) / (overlay?.aspectRatio.height ?? 0);
+
+	$: boardWidth = isVertical ? verticalWidth : horizontalWidth;
+	$: boardHeight = isVertical ? verticalHeight : horizontalHeight;
+
+	$: console.log({ boardWidth, horizontalHeight, verticalWidth });
 </script>
 
-<svelte:window bind:innerWidth />
+<svelte:window bind:innerWidth bind:innerHeight />
 
 <main
 	class="fixed h-screen w-screen bg-cover bg-center"
 	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 >
-	{#if overlay && boardHeightEdit && boardWidthEdit}
+	{#if overlay && boardHeight && boardWidth}
 		<div class={`w-full h-full justify-center flex gap-4`}>
 			{#if displayPreview}
-				<div class="h-[95vh] flex flex-col justify-center content-center w-[400px] gap-4">
+				<div
+					class="h-[96vh] p-2[rem] flex flex-col justify-start content-center w-[400px] gap-4"
+				>
 					<div
-						class="w-full"
-						style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
+						style={`min-height: ${
+							(400 * (overlay?.aspectRatio.height ?? 0)) /
+							(overlay?.aspectRatio.width ?? 0)
+						}px; min-width: 400px`}
 					>
 						<Preview />
 					</div>
-					<div class="w-full flex-1">
+					<div class="w-full flex-1 bg-black bg-opacity-20">
 						<LayerToggle />
 					</div>
 				</div>
 			{/if}
 
 			<div
-				class={`w-full h-full flex-1 flex flex-col gap-2 justify-center items-center py-2 overflow-scroll`}
+				class={`max-w-full max-h-full flex-1 flex flex-col gap-2 justify-start items-center py-2 overflow-scroll`}
 			>
 				<div class="grid gap-2">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
@@ -121,11 +128,13 @@
 					<SelectedEditor bind:selectedItemId bind:selectedLayer />
 				</div>
 				<div
-					style={`width: ${boardWidthEdit}px; height: ${boardHeightEdit}px;`}
-					class={`border-2 border-zinc-700 overflow-hidden shadow-md`}
+					style={`min-width: ${
+						isVertical ? verticalWidth : boardWidth
+					}px; min-height: ${boardHeight}px;`}
+					class={`border-2 border-zinc-700 shadow-md`}
 				>
 					<BoardEdit
-						bind:borderHeight={boardHeightEdit}
+						bind:borderHeight={boardHeight}
 						bind:layer={selectedLayer}
 						bind:selectedItemId
 					/>
