@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { notifications } from './Notifications.svelte';
-	import { isBrowser } from '$lib/utils/store.svelte';
+	import { isElectron, isMobile, isOverlayPage } from '$lib/utils/store.svelte';
+	import { page } from '$app/stores';
 
 	export let themes = {
 		danger: '#E26D69',
@@ -11,10 +12,15 @@
 		info: '#5bc0de',
 		default: '#aaaaaa',
 	};
+
+	const setOverlayPage = (pathname: string) => {
+		isOverlayPage.set(pathname.startsWith('/obs/overlay/'));
+	};
+	$: setOverlayPage($page.url.pathname);
 </script>
 
-{#if !$isBrowser}
-	<div class="notifications">
+{#if $isElectron || !$isOverlayPage}
+	<div class={`notifications ${$isMobile ? 'bottom-20' : 'bottom-2'}`}>
 		{#each $notifications as notification (notification.id)}
 			<div
 				animate:flip
@@ -33,7 +39,6 @@
 <style>
 	.notifications {
 		position: fixed;
-		bottom: 10px;
 		left: 0;
 		right: 0;
 		margin: 0 auto;

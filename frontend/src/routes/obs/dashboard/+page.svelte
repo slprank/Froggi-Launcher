@@ -1,9 +1,10 @@
 <script lang="ts">
 	import SmashGg from '$lib/components/dashboard/SmashGG.svelte';
-	import Offline from '$lib/components/dashboard/Offline.svelte';
 	import { DashboardOption } from '$lib/models/enum';
 	import { fade, fly } from 'svelte/transition';
 	import OverlayScenes from '$lib/components/dashboard/OverlayScenes.svelte';
+	import Default from '$lib/components/dashboard/Default.svelte';
+	import ReplayBufferHandler from '$lib/components/dashboard/ReplayBufferHandler.svelte';
 
 	let dashboardOption: DashboardOption = DashboardOption.Offline;
 </script>
@@ -47,12 +48,13 @@
 				in:fly={{ duration: 250, x: -200, delay: 250 }}
 				out:fly={{ duration: 250, x: 200 }}
 			>
-				<div class="absolute flex flex-col gap-8">
+				<div class="absolute flex flex-col gap-8 py-4">
 					{#if dashboardOption === DashboardOption.SmashGG}
 						<SmashGg />
 					{/if}
-					<Offline />
+					<Default />
 					<OverlayScenes />
+					<ReplayBufferHandler />
 				</div>
 			</div>
 		{/key}

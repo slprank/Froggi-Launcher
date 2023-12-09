@@ -126,7 +126,7 @@ export class MessageHandler {
 		this.webSockets.forEach((socket: any) => {
 			socket.send(
 				JSON.stringify({
-					[topic]: payload[0],
+					[topic]: payload,
 				}),
 			);
 		});
@@ -140,7 +140,7 @@ export class MessageHandler {
 		}
 		socket.send(
 			JSON.stringify({
-				[topic]: payload[0],
+				[topic]: [...payload],
 			}),
 		);
 	}

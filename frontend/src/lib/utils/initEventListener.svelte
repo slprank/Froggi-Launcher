@@ -104,7 +104,7 @@
 			gameState.set(state);
 		});
 		_localEmitter.on('Notification', (message: string, type: NotificationType) => {
-			console.log('message', message, type);
+			console.log('notification', message, type);
 			switch (type) {
 				case NotificationType.Default:
 					notifications.default(message, 2000);
@@ -172,7 +172,6 @@
 		const _localEmitter = await getLocalEmitter();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
-			console.log('data', parse);
 			for (const [key, value] of Object.entries(parse)) {
 				_localEmitter.emit(key as any, ...(value as any));
 			}
@@ -192,8 +191,7 @@
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
 			for (const [key, value] of Object.entries<any[]>(parse)) {
-				console.log('ws', key, value);
-				_localEmitter.emit(key as any, value as any);
+				_localEmitter.emit(key as any, ...(value as any));
 			}
 		});
 

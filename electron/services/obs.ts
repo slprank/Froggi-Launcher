@@ -150,5 +150,6 @@ export class ObsWebSocket {
 				this.messageHandler.sendMessage("Notification", `Could not execute command: ${command}`, NotificationType.Warning)
 			}
 		});
+
 	}
 }
