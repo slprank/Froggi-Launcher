@@ -22,6 +22,7 @@
 		<div
 			class="flex-1 flex flex-col flex-wrap gap-4 w-full items-center justify-start overflow-auto py-4 border border-gray-500 rounded-md p-4"
 		>
+			<h1 class="text-xl font-bold text-white shadow-md">Authentication</h1>
 			<h1 class="text-xl font-bold text-white shadow-md">Scene Switching</h1>
 			<h1 class="text-xl font-bold text-white shadow-md">Controller Commands</h1>
 		</div>

@@ -6,6 +6,7 @@ import { MessageHandler } from '../messageHandler';
 import { newId } from "../../utils/functions"
 import { Obs, ObsCommand, ObsConnection, ObsInputs, ObsScenes } from '../../../frontend/src/lib/models/types/obsTypes';
 import { OBSRequestTypes, OBSResponseTypes } from 'obs-websocket-js';
+import { ConnectionState } from '../../../frontend/src/lib/models/enum';
 
 
 @singleton()
@@ -63,6 +64,10 @@ export class ElectronObsStore {
         this.store.set('obs.connection.commands', [...commands.filter((command) => command.id !== commandId)]);
     }
 
+    setConnectionState(state: ConnectionState) {
+        this.store.set('obs.connection.state', state);
+    }
+
     setInputs(inputs: ObsInputs[]) {
         this.store.set('obs.connection.inputs', inputs);
     }
@@ -74,6 +79,7 @@ export class ElectronObsStore {
     setReplayBufferState<Type extends keyof OBSResponseTypes>(state: OBSResponseTypes[Type]) {
         this.store.set('obs.connection.replayBufferState', state);
     }
+
 
     setScenes(scenes: ObsScenes) {
         this.store.set('obs.connection.scenes', scenes);

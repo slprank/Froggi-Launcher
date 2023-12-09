@@ -1,12 +1,17 @@
 <script lang="ts">
 	import NavButton from '$lib/components/navbar/NavButton.svelte';
 	import { fly } from 'svelte/transition';
-	import { isElectron, isIframe, isMobile } from '$lib/utils/store.svelte';
+	import {
+		dolphinState,
+		isElectron,
+		isIframe,
+		isMobile,
+		obsConnection,
+	} from '$lib/utils/store.svelte';
 	import { goto } from '$app/navigation';
-	import Modal from '$lib/components/modal/Modal.svelte';
 	import Mobile from '$lib/components/modal/electron/Mobile.svelte';
 	import BackButton from '$lib/components/navbar/BackButton.svelte';
-	import DolphinStateButton from './DolphinStateButton.svelte';
+	import ConnectionStateButton from './ConnectionStateButton.svelte';
 	import ElectronVersionButton from './ElectronVersionButton.svelte';
 
 	function resetVisibilityTimer() {
@@ -94,9 +99,11 @@
 				<div
 					class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 				>
-					<NavButton click={() => goto('/obs')}>
-						<img src="/image/button-icons/obs.png" alt="obs" />
-					</NavButton>
+					<ConnectionStateButton
+						iconPath="/image/button-icons/obs.png"
+						connectionState={$obsConnection.state}
+						click={() => goto('/obs')}
+					/>
 					<NavButton click={() => (isMobileOpen = true)}>
 						<img src="/image/button-icons/mobile.png" alt="mobile" />
 					</NavButton>
@@ -106,7 +113,12 @@
 						</NavButton>
 					{/if}
 				</div>
-				<DolphinStateButton />
+				<div class="fixed bottom-4">
+					<ConnectionStateButton
+						iconPath="/image/button-icons/dolphin.svg"
+						connectionState={$dolphinState}
+					/>
+				</div>
 			</div>
 		{:else}
 			<div
@@ -117,7 +129,7 @@
 				}`}
 			>
 				<div
-					class={`grid grid-cols-6 justify-center content-center place-items-center divide-x divide-zinc-800 w-screen ${
+					class={`grid grid-cols-6 justify-center content-center place-items-center w-screen ${
 						$isMobile ? 'max-w-lg' : 'max-w-xl'
 					}`}
 				>
@@ -136,9 +148,11 @@
 					<NavButton click={() => goto('/profile')}>
 						<img src="/image/button-icons/profile.png" alt="profile" />
 					</NavButton>
-					<NavButton click={() => goto('/obs')}>
-						<img src="/image/button-icons/obs.png" alt="obs" />
-					</NavButton>
+					<ConnectionStateButton
+						iconPath="/image/button-icons/obs.png"
+						connectionState={$obsConnection.state}
+						click={() => goto('/obs')}
+					/>
 				</div>
 			</div>
 		{/if}

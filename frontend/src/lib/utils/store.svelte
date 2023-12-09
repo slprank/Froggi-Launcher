@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import {
 		AutoUpdaterStatus,
-		DolphinConnectionState,
+		ConnectionState,
 		InGameState,
 		LiveStatsScene,
 	} from '$lib/models/enum';
@@ -52,7 +52,7 @@
 		{ displayName: '' } as Player,
 		{ displayName: '' } as Player,
 	]);
-	export const dolphinState = writable<DolphinConnectionState>(DolphinConnectionState.Searching);
+	export const dolphinState = writable<ConnectionState>(ConnectionState.Searching);
 	export const gameFrame = writable<FrameEntryType | null>({} as FrameEntryType);
 	export const gameScore = writable<number[]>([0, 0]);
 	export const gameSettings = writable<GameStartTypeExtended>({} as GameStartTypeExtended);

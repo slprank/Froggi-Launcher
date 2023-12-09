@@ -9,7 +9,7 @@ import {
 import { IpcMain } from 'electron';
 import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
-import { DolphinConnectionState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { ConnectionState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { Api } from './api';
@@ -94,7 +94,7 @@ export class SlippiJs {
 
 	private handleDisconnected() {
 		this.log.info('Dolphin Disconnected');
-		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Disconnected);
+		this.storeDolphin.setDolphinConnectionState(ConnectionState.Disconnected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
 		this.startProcessSearchInterval();
 		this.memoryRead.stopMemoryRead();
@@ -102,13 +102,13 @@ export class SlippiJs {
 
 	private handleConnecting() {
 		this.log.info('Dolphin Connecting');
-		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connecting);
+		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connecting);
 	}
 
 	private async handleConnected() {
 		this.log.info('Dolphin Connected');
 		this.memoryRead.stopMemoryRead();
-		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Connected);
+		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu);
 		const connectCode = (await findPlayKey()).connectCode;
 		this.storeSettings.setCurrentPlayerConnectCode(connectCode);
@@ -120,7 +120,7 @@ export class SlippiJs {
 	}
 
 	private async startProcessSearchInterval() {
-		this.storeDolphin.setDolphinConnectionState(DolphinConnectionState.Searching);
+		this.storeDolphin.setDolphinConnectionState(ConnectionState.Searching);
 		this.log.info('Looking For Dolphin Process');
 		const dolphinProcessInterval = setInterval(async () => {
 			if (await isDolphinRunning()) {

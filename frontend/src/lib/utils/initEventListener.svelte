@@ -1,8 +1,7 @@
 <script lang="ts" context="module">
 	import type {
 		AutoUpdaterStatus,
-		BestOf,
-		DolphinConnectionState,
+		ConnectionState,
 		InGameState,
 		LiveStatsScene,
 	} from '$lib/models/enum';
@@ -27,7 +26,6 @@
 		sessionStats,
 		statsScene,
 		urls,
-		obs,
 		gameFrame,
 		dolphinState,
 		gameState,
@@ -42,8 +40,6 @@
 	import {
 		getElectronEmitter,
 		getLocalEmitter,
-		getObs,
-		getOverlays,
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
@@ -84,7 +80,7 @@
 			if (!players) return;
 			currentPlayers.set(players);
 		});
-		_localEmitter.on('DolphinConnectionState', (state: DolphinConnectionState | undefined) => {
+		_localEmitter.on('DolphinConnectionState', (state: ConnectionState | undefined) => {
 			if (!state) return;
 			console.log('dolphin state', state);
 			dolphinState.set(state);
@@ -176,6 +172,7 @@
 		const _localEmitter = await getLocalEmitter();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
+			console.log('data', parse);
 			for (const [key, value] of Object.entries(parse)) {
 				_localEmitter.emit(key as any, ...(value as any));
 			}
@@ -195,7 +192,8 @@
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
 			for (const [key, value] of Object.entries<any[]>(parse)) {
-				_localEmitter.emit(key as any, ...(value as any));
+				console.log('ws', key, value);
+				_localEmitter.emit(key as any, value as any);
 			}
 		});
 

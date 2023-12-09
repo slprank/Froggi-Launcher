@@ -2,7 +2,7 @@ import { ElectronLog } from 'electron-log';
 import { ProgressInfo, UpdateDownloadedEvent, UpdateInfo, autoUpdater } from 'electron-updater';
 import { delay, inject, injectable } from 'tsyringe';
 import { MessageHandler } from './messageHandler';
-import { AutoUpdaterStatus } from '../../frontend/src/lib/models/enum';
+import { AutoUpdaterStatus, NotificationType } from '../../frontend/src/lib/models/enum';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 
 @injectable()
@@ -43,6 +43,7 @@ export class AutoUpdater {
 
 		autoUpdater.on('update-available', (info: UpdateInfo) => {
 			this.log.info(`update available: ${info.version}`);
+			this.messageHandler.sendMessage("Notification", "Update Available", NotificationType.Success);
 			autoUpdater.downloadUpdate();
 			this.messageHandler.sendMessage(
 				"AutoUpdaterStatus",
@@ -69,6 +70,7 @@ export class AutoUpdater {
 				AutoUpdaterStatus.DownloadComplete,
 			);
 			this.messageHandler.sendMessage("AutoUpdaterProgress", "100");
+			this.messageHandler.sendMessage("Notification", "Update Complete", NotificationType.Success);
 		});
 
 		this.localEmitter.on("AutoUpdaterInstall", async () => {

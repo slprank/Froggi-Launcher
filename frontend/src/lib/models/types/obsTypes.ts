@@ -1,4 +1,5 @@
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types";
+import type { ConnectionState } from "../enum";
 
 export interface Obs {
     auth: ObsAuth | undefined,
@@ -10,6 +11,11 @@ export interface ObsConnection {
     scenes: ObsScenes,
     inputs: ObsInputs[],
     items: ObsItem[],
+    replayBufferState: {
+        outputActive: boolean,
+        outputState: string,
+    },
+    state: ConnectionState,
 }
 
 export interface ObsScenes {

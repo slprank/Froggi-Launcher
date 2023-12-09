@@ -7,7 +7,7 @@ import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { ElectronObsStore } from './store/storeObs';
 import { ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
 import { MessageHandler } from './messageHandler';
-import { NotificationType } from '../../frontend/src/lib/models/enum';
+import { NotificationType, ConnectionState } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class ObsWebSocket {
@@ -90,6 +90,7 @@ export class ObsWebSocket {
 	searchForObs = async () => {
 		clearTimeout(this.obsConnectionInterval)
 		this.log.info("Searching for OBS connection")
+		this.storeObs.setConnectionState(ConnectionState.Searching)
 		this.obsConnectionInterval = setTimeout(async () => {
 			const password = this.storeObs.getPassword()
 			const ipAddress = this.storeObs.getIpAddress()
@@ -114,6 +115,7 @@ export class ObsWebSocket {
 			this.log.error("OBS Connection Error")
 		});
 		this.obs.on("ConnectionOpened", () => {
+			this.storeObs.setConnectionState(ConnectionState.Connected)
 			setTimeout(this.initConnection, 1000)
 			this.log.info("OBS Connection Opened")
 		});
@@ -131,9 +133,9 @@ export class ObsWebSocket {
 			this.messageHandler.sendMessage("Notification", "Replay Saved", NotificationType.Success)
 		})
 		this.obs.on("ReplayBufferStateChanged", (state) => {
-			this.messageHandler.sendMessage("Notification", "Replay Saved", NotificationType.Success)
 			this.storeObs.setReplayBufferState(state)
 		})
+
 		this.searchForObs()
 	};
 

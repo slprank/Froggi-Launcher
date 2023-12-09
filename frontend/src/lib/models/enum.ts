@@ -60,7 +60,8 @@ export enum DashboardOption {
 	SmashGG = "SmashGG",
 }
 
-export enum DolphinConnectionState {
+export enum ConnectionState {
+	None = "None",
 	Disconnected = "Disconnected",
 	Connected = "Connected",
 	Connecting = "Connecting",

@@ -117,7 +117,6 @@ export class MessageHandler {
 	};
 
 	sendMessage<J extends keyof MessageEvents>(topic: J, ...payload: Parameters<MessageEvents[J]>) {
-		console.log("topic", topic)
 		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
@@ -127,7 +126,7 @@ export class MessageHandler {
 		this.webSockets.forEach((socket: any) => {
 			socket.send(
 				JSON.stringify({
-					[topic]: payload,
+					[topic]: payload[0],
 				}),
 			);
 		});

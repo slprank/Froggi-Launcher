@@ -43,6 +43,3 @@
 		</div>
 	</div>
 </main>
-
-<style>
-</style>
