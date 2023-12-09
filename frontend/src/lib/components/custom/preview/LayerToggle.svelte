@@ -38,7 +38,7 @@
 </script>
 
 {#if layers && curOverlay}
-	<div class="w-full border-1 flex flex-col border-zinc-700">
+	<div class="max-h-full border-1 flex flex-col border-zinc-700">
 		<div
 			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
 		>
@@ -74,7 +74,7 @@
 				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Del</h1>
 			</div>
 		</div>
-		<div class={`w-full max-h-full overflow-y-scroll`} bind:this={scrollElement}>
+		<div class={`w-full max-h-full overflow-auto`} bind:this={scrollElement}>
 			<div class="w-full h-6 items-center overflow-hidden">
 				<button
 					class="w-full h-full justify-center bg-black bg-opacity-40 hover:bg-opacity-60"

@@ -44,7 +44,7 @@ export enum CustomElement {
     SlippiRankPlayer2Rating = 4011,
     SlippiRankCurrentPlayerConnectCode = 4012,
     SlippiRankPlayer1ConnectCode = 4013,
-    SlippiRankPlayer2ConnectCode = 40140,
+    SlippiRankPlayer2ConnectCode = 4014,
     SlippiRankCurrentPlayerContinent = 4015,
     SlippiRankPlayer1Continent = 4016,
     SlippiRankPlayer2Continent = 4017,

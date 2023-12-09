@@ -49,7 +49,7 @@
 	$: displayPreview = innerWidth > 1024;
 
 	$: isVertical = (overlay?.aspectRatio.height ?? 0) > (overlay?.aspectRatio.width ?? 0);
-	$: horizontalWidth = Math.floor(innerWidth - (displayPreview ? 560 : 144));
+	$: horizontalWidth = Math.floor(innerWidth - (displayPreview ? 580 : 144));
 	$: horizontalHeight = Math.floor((horizontalWidth / 16) * 9);
 
 	$: verticalHeight = innerHeight - (displayPreview ? 320 : 400);
@@ -73,17 +73,20 @@
 		<div class={`w-full h-full justify-center flex gap-4`}>
 			{#if displayPreview}
 				<div
-					class="h-[96vh] p-2[rem] flex flex-col justify-start content-center w-[400px] gap-4"
+					class="h-[96vh] p-2[rem] flex flex-col justify-start items-center gap-4 overflow-hidden"
 				>
 					<div
+						class="flex"
 						style={`min-height: ${
-							(400 * (overlay?.aspectRatio.height ?? 0)) /
+							((isVertical ? 350 : 400) * (overlay?.aspectRatio.height ?? 0)) /
 							(overlay?.aspectRatio.width ?? 0)
-						}px; min-width: 400px`}
+						}px; min-width: ${isVertical ? 350 : 400}px`}
 					>
 						<Preview />
 					</div>
-					<div class="w-full flex-1 bg-black bg-opacity-20">
+					<div
+						class="w-full border-2 border-zinc-700 bg-black bg-opacity-20 flex-1 overflow-hidden"
+					>
 						<LayerToggle />
 					</div>
 				</div>
@@ -92,9 +95,9 @@
 			<div
 				class={`max-w-full max-h-full flex-1 flex flex-col gap-2 justify-start items-center py-2 overflow-scroll`}
 			>
-				<div class="grid gap-2">
+				<div class="flex flex-col items-center">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
-					<div class="flex gap-2">
+					<div class="flex gap-2 justify-center items-center">
 						<button
 							class="transition bg-black bg-opacity-30 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
 							on:click={() => {

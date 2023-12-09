@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers, gameSettings, recentGames } from '$lib/utils/store.svelte';
+	import { currentPlayers, gameScore, gameSettings, recentGames } from '$lib/utils/store.svelte';
 	import GameStage from '../../element/GameStage.svelte';
 	import CharacterIcon from '../../element/CharacterIcon.svelte';
 	import CharacterRender from '../../element/CharacterRender.svelte';
-	import { Character } from '$lib/models/enum';
+	import { BestOf, Character } from '$lib/models/enum';
 	import { Stage } from '$lib/models/constants/stageData';
 	import TextElement from '$lib/components/custom/element/TextElement.svelte';
 
@@ -13,7 +13,7 @@
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	const game = $recentGames.at(-1);
+	const game = $recentGames.at(-1)?.at(-1);
 </script>
 
 {#if dataItem?.elementId === CustomElement.CurrentSetGameRecentStage}
@@ -28,7 +28,7 @@
 {#if dataItem?.elementId === CustomElement.CurrentSetGameMode}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `1`
+			? `Unranked`
 			: $gameSettings
 			? `${$gameSettings.matchInfo.mode
 					?.at(0)
@@ -36,28 +36,20 @@
 			: '0'}
 	</TextElement>
 {/if}
+
 {#if dataItem?.elementId === CustomElement.CurrentSetBestOf}
 	<TextElement {style} {dataItem}>
-		{defaultPreview
-			? `1`
-			: $gameSettings?.matchInfo?.bestOf
-			? `${$gameSettings.matchInfo.bestOf}`
-			: '3'}
-	</TextElement>
-{/if}
-{#if dataItem?.elementId === CustomElement.CurrentSetBestOf}
-	<TextElement {style} {dataItem}>
-		{defaultPreview ? `1` : game?.score.at(0) ? game.score[0] : '0'}
+		{defaultPreview ? BestOf.BestOf3 : $gameSettings?.matchInfo.bestOf ?? BestOf.BestOf3}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1Score}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `1` : game?.score.at(0) ? game.score[0] : '0'}
+		{defaultPreview ? `1` : $gameScore.at(0) ? $gameScore[0] : '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer2Score}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `0` : game?.score.at(1) ? game.score[1] : '0'}
+		{defaultPreview ? `0` : $gameScore.at(1) ? $gameScore[1] : '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1CharacterIcon}
