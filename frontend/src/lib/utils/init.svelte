@@ -10,10 +10,10 @@
 	import { extendStringFormat } from './extendString';
 
 	export const initClient = async () => {
+		extendStringFormat();
+
 		await initEventListener();
 		await initDevices();
-
-		extendStringFormat();
 	};
 
 	const initDevices = async () => {

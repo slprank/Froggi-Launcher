@@ -56,35 +56,29 @@
 			memoryReadController.set(controllers);
 		});
 		_localEmitter.on('AutoUpdaterStatus', (status: AutoUpdaterStatus) => {
-			console.log('update status', status);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, status: status };
 			});
 		});
 		_localEmitter.on('AutoUpdaterVersion', (version: string | undefined) => {
-			console.log('version', { version });
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, version: version };
 			});
 		});
 		_localEmitter.on('AutoUpdaterProgress', (progress: string | undefined) => {
-			console.log('update progress', progress);
 			autoUpdater.update((autoUpdater: AutoUpdater) => {
 				return { ...autoUpdater, progress: progress };
 			});
 		});
 		_localEmitter.on('CurrentPlayer', (player: CurrentPlayer | undefined) => {
-			console.log('player', player);
 			currentPlayer.set(player);
 		});
 		_localEmitter.on('CurrentPlayers', (players: Player[] | undefined) => {
-			console.log('players', players);
 			if (!players) return;
 			currentPlayers.set(players);
 		});
 		_localEmitter.on('DolphinConnectionState', (state: ConnectionState | undefined) => {
 			if (!state) return;
-			console.log('dolphin state', state);
 			dolphinState.set(state);
 		});
 		_localEmitter.on('GameFrame', (frame: FrameEntryType | undefined | null) => {
@@ -93,20 +87,16 @@
 		});
 		_localEmitter.on('GameSettings', (settings: GameStartTypeExtended | undefined) => {
 			if (!settings) return;
-			console.log('game settings', settings);
 			gameSettings.set(settings);
 		});
 		_localEmitter.on('GameScore', (score: number[]) => {
-			console.log('score', score);
 			gameScore.set(score);
 		});
 		_localEmitter.on('GameState', (state: InGameState | undefined) => {
 			if (!state) return;
-			console.log('game state', state);
 			gameState.set(state);
 		});
 		_localEmitter.on('Notification', (message: string, type: NotificationType) => {
-			console.log('notification', message, type);
 			switch (type) {
 				case NotificationType.Default:
 					notifications.default(message, 2000);
@@ -127,56 +117,45 @@
 		});
 		_localEmitter.on('Obs', (value: Obs | undefined) => {
 			if (!value) return;
-			console.log('obs', value);
 			obs.set(value);
 			obsConnection.set(value.connection);
 			overlays.set(value.layout.overlays);
 			currentOverlayEditor.set(value.layout.current);
 		});
 		_localEmitter.on('ObsConnection', (connection: ObsConnection) => {
-			console.log('obs connection', connection);
 			obsConnection.set(connection);
 		});
 		_localEmitter.on('Overlays', (value: Overlay[] | undefined) => {
 			if (!value) return;
-			console.log('overlays', value);
 			overlays.set(value);
 		});
 		_localEmitter.on('CurrentOverlayEditor', (value: OverlayEditor | undefined) => {
 			if (!value) return;
-			console.log('current overlay editor', value);
 			currentOverlayEditor.set(value);
 		});
 		_localEmitter.on('PostGameStats', (stats: GameStats | undefined) => {
 			if (!stats) return;
-			console.log('game stats', stats);
 			postGame.set(stats);
 			gameFrame.set(null);
 		});
 		_localEmitter.on('CurrentMatch', (stats: Match | undefined) => {
 			if (!stats) return;
-			console.log('match', stats);
 			currentMatch.set(stats);
 		});
 		_localEmitter.on('RecentGames', (games: GameStats[][]) => {
-			console.log('recent games', games);
 			recentGames.set(games);
 		});
 		_localEmitter.on('RecentRankedSets', (recentSets: GameStats[]) => {
-			console.log('recent ranked sets', recentSets);
 			recentRankedSets.set(recentSets);
 		});
 		_localEmitter.on('SessionStats', (session: Session | undefined) => {
-			console.log('session', session);
 			sessionStats.set(session);
 		});
 		_localEmitter.on('LiveStatsSceneChange', (scene: LiveStatsScene | undefined) => {
 			if (!scene) return;
-			console.log('live scene', scene);
 			statsScene.set(scene);
 		});
 		_localEmitter.on('Url', (url: Url) => {
-			console.log('url', url);
 			urls.set(url);
 		});
 	}
