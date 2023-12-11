@@ -16,28 +16,29 @@
 
 	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
-	let externalCharacterId = preview
+	$: externalCharacterId = preview
 		? defaultPreviewId
 		: playerPostFrame
 		? CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame.internalCharacterId ?? -1]
 		: playerSettings
 		? playerSettings.characterId
 		: -1;
+	$: characterSeries = CHARACTERS_SERIES[externalCharacterId ?? -1];
 </script>
 
-<div
-	class={`w-full h-full flex ${style.classValue}`}
-	style={`${style.cssValue}; ${
-		dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-	}; `}
->
-	<img
-		class="h-full w-full aspect-video"
-		style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+{#if characterSeries}
+	<div
+		class={`w-full h-full flex ${style.classValue}`}
+		style={`${style.cssValue}; ${
+			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+		}; `}
+	>
+		<img
+			class="h-full w-full aspect-video"
+			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-		src={`/image/character-origin-icons/${series}/${
-			CHARACTERS_SERIES[externalCharacterId ?? -1]
-		}.svg`}
-		alt="custom"
-	/>
-</div>
+			src={`/image/character-origin-icons/${series}/${characterSeries}.svg`}
+			alt="custom"
+		/>
+	</div>
+{/if}

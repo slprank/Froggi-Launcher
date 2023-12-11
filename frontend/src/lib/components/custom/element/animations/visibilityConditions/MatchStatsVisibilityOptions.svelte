@@ -4,12 +4,12 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import { getMatchScore } from '$lib/utils/fetchSubscriptions.svelte';
 	import { isNil } from 'lodash';
 
-	export const matchStatsVisibilityOption = async (option: SelectedVisibilityOption) => {
-		const gameScore = await getMatchScore();
-
+	export const matchStatsVisibilityOption = (
+		option: SelectedVisibilityOption,
+		gameScore: number[],
+	) => {
 		if (option[VisibilityOption.MatchStatsPlayer1Score1] === VisibilityToggle.True)
 			if (isScoreGreater(gameScore?.at(0), 1)) return true;
 		if (option[VisibilityOption.MatchStatsPlayer1Score1] === VisibilityToggle.False)

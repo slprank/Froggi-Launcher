@@ -4,11 +4,12 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import { getSession } from '$lib/utils/fetchSubscriptions.svelte';
+	import type { Session } from '$lib/models/types/slippiData';
 
-	export const sessionVisibilityOption = async (option: SelectedVisibilityOption) => {
-		const session = await getSession();
-
+	export const sessionVisibilityOption = (
+		option: SelectedVisibilityOption,
+		session: Session | undefined,
+	) => {
 		const wins = (session?.currentRankStats.wins ?? 0) - (session?.startRankStats.wins ?? 0);
 		const losses =
 			(session?.currentRankStats.losses ?? 0) - (session?.startRankStats.losses ?? 0);

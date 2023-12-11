@@ -4,11 +4,13 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
+	import type { CurrentPlayer } from '$lib/models/types/slippiData';
 	import { getCurrentPlayer } from '$lib/utils/fetchSubscriptions.svelte';
 
-	export const rankVisibilityOption = async (option: SelectedVisibilityOption) => {
-		const player = await getCurrentPlayer();
-
+	export const rankVisibilityOption = (
+		option: SelectedVisibilityOption,
+		player: CurrentPlayer | undefined,
+	) => {
 		const prevRank = player?.rank.history?.at(-1);
 		const currentRank = player?.rank.current;
 		const newRank = player?.rank.new;

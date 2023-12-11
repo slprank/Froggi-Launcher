@@ -83,13 +83,13 @@
 		createAnimation(
 			node,
 			{
-				type: Animation.Percent,
+				type: defaultPreview ? Animation.None : Animation.Percent,
 				options: {
-					duration: 250,
-					x: 50,
-					y: 50,
+					duration: 11 * 16,
+					x: 20,
+					y: 20,
 					delay: 0,
-					easing: 'cubicOut',
+					easing: 'cubicInOut',
 					start: 0,
 				},
 			},
@@ -116,7 +116,6 @@
 	});
 
 	let parent: HTMLElement | undefined;
-	$: console.log(percentageColor);
 </script>
 
 {#key framePercent}
@@ -139,8 +138,6 @@
 						>
 							{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
 						</div>
-					{/key}
-					{#key trigger}
 						<div
 							in:animation|local
 							class="flex h-full items-end justify-center"
@@ -148,8 +145,6 @@
 						>
 							{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
 						</div>
-					{/key}
-					{#key trigger}
 						<div
 							in:animation|local
 							class="flex h-full items-end justify-center"
@@ -159,15 +154,13 @@
 						</div>
 					{/key}
 					{#if !numberOfDecimals}
-						{#key trigger}
-							<div
-								in:animation|local
-								class="flex h-full items-end justify-center pb-[2.25%]"
-								style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
-							>
-								%
-							</div>
-						{/key}
+						<div
+							in:animation|local
+							class="flex h-full items-end justify-center pb-[2.25%]"
+							style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
+						>
+							%
+						</div>
 					{/if}
 					{#if numberOfDecimals}
 						{#key trigger}
@@ -178,8 +171,6 @@
 							>
 								.
 							</div>
-						{/key}
-						{#key trigger}
 							<div
 								in:animation|local
 								class="flex h-full items-end justify-center pb-[6%]"
@@ -187,8 +178,6 @@
 							>
 								{defaultPreview ? 0 : decimals.at(0) ?? ''}
 							</div>
-						{/key}
-						{#key trigger}
 							<div
 								in:animation|local
 								class="flex h-full items-end justify-center pb-[6%]"

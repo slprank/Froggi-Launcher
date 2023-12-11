@@ -1,6 +1,17 @@
 <script lang="ts">
 	import type { GridContentItem } from '$lib/models/types/overlay';
-	import { localEmitter, gameFrame, gameState } from '$lib/utils/store.svelte';
+	import {
+		localEmitter,
+		gameFrame,
+		gameState,
+		gameSettings,
+		currentPlayers,
+		currentPlayer,
+		gameScore,
+		postGame,
+		recentGames,
+		sessionStats,
+	} from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	import { inGameVisibilityOption } from './visibilityConditions/InGameVisibilityOptions.svelte';
 	import { inGamePlayer1VisibilityOption } from './visibilityConditions/InGamePlayer1VisibilityOptions.svelte';
@@ -20,26 +31,68 @@
 	export let preview: boolean;
 	export let edit: boolean = false;
 
-	let visible = true;
-	const updateVisibilityValue = async () => {
+	$: visible = true;
+	const updateVisibilityValue = (dataItem: GridContentItem) => {
 		if (edit || preview) return true;
-		if (!dataItem) return false;
 
 		const options = dataItem.data.visibility.selectedOptions;
 
-		visible = options.every(async (option) => {
-			const inGameOptions = await inGameVisibilityOption(option);
-			const inGamePlayer1Options = await inGamePlayer1VisibilityOption(option);
-			const inGamePlayer2Options = await inGamePlayer2VisibilityOption(option);
-			const matchStatsOptions = await matchStatsVisibilityOption(option);
-			const postGameOptions = await postGameVisibilityOption(option);
-			const postGame1SummaryOptions = await postGame1SummaryVisibilityOption(option);
-			const postGame2SummaryOptions = await postGame2SummaryVisibilityOption(option);
-			const postGame3SummaryOptions = await postGame3SummaryVisibilityOption(option);
-			const postGame4SummaryOptions = await postGame4SummaryVisibilityOption(option);
-			const postGame5SummaryOptions = await postGame5SummaryVisibilityOption(option);
-			const rankOptions = await rankVisibilityOption(option);
-			const sessionOptions = await sessionVisibilityOption(option);
+		return options.every((option) => {
+			const inGameOptions = inGameVisibilityOption(
+				option,
+				$gameSettings,
+				$gameFrame,
+				$gameState,
+			);
+			const inGamePlayer1Options = inGamePlayer1VisibilityOption(
+				option,
+				$gameFrame,
+				$currentPlayers,
+			);
+			const inGamePlayer2Options = inGamePlayer2VisibilityOption(
+				option,
+				$gameFrame,
+				$currentPlayers,
+			);
+			const matchStatsOptions = matchStatsVisibilityOption(option, $gameScore);
+			const postGameOptions = postGameVisibilityOption(
+				option,
+				$currentPlayers,
+				$currentPlayer,
+				$postGame,
+			);
+			const postGame1SummaryOptions = postGame1SummaryVisibilityOption(
+				option,
+				$currentPlayers,
+				$currentPlayer,
+				$recentGames,
+			);
+			const postGame2SummaryOptions = postGame2SummaryVisibilityOption(
+				option,
+				$currentPlayers,
+				$currentPlayer,
+				$recentGames,
+			);
+			const postGame3SummaryOptions = postGame3SummaryVisibilityOption(
+				option,
+				$currentPlayers,
+				$currentPlayer,
+				$recentGames,
+			);
+			const postGame4SummaryOptions = postGame4SummaryVisibilityOption(
+				option,
+				$currentPlayers,
+				$currentPlayer,
+				$recentGames,
+			);
+			const postGame5SummaryOptions = postGame5SummaryVisibilityOption(
+				option,
+				$currentPlayers,
+				$currentPlayer,
+				$recentGames,
+			);
+			const rankOptions = rankVisibilityOption(option, $currentPlayer);
+			const sessionOptions = sessionVisibilityOption(option, $sessionStats);
 
 			return (
 				inGameOptions ||
@@ -59,7 +112,7 @@
 	};
 
 	$: {
-		$gameState, $gameFrame, updateVisibilityValue();
+		$gameState, $gameFrame, (visible = updateVisibilityValue(dataItem));
 	}
 
 	onMount(() => {

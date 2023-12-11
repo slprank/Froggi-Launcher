@@ -5,18 +5,15 @@
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
 	import { getWinnerIndex } from '$lib/utils/gamePredicates';
-	import {
-		getRecentGames,
-		getCurrentPlayer,
-		getPlayers,
-	} from '$lib/utils/fetchSubscriptions.svelte';
 
-	export const postGame5SummaryVisibilityOption = async (option: SelectedVisibilityOption) => {
-		const recentGames = await getRecentGames();
+	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
 
-		const player = await getCurrentPlayer();
-		const players = await getPlayers();
-
+	export const postGame5SummaryVisibilityOption = (
+		option: SelectedVisibilityOption,
+		players: Player[],
+		player: CurrentPlayer | undefined,
+		recentGames: GameStats[][],
+	) => {
 		const gameIndex = recentGames.length > 5 ? 0 : 4;
 		const game = recentGames.at(gameIndex)?.at(-1);
 

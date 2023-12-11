@@ -1,5 +1,5 @@
 import type { GameStats } from "../../lib/models/types/slippiData";
-import type { GameEndType } from "@slippi/slippi-js";
+import type { FrameEntryType, GameEndType } from "@slippi/slippi-js";
 import { isNil } from "lodash";
 
 // TODO: Figure out how tied game placements look
@@ -39,3 +39,16 @@ export const getGameScore = (recentGames: GameStats[][]) => {
         }, [0, 0]) ?? [0, 0]
     return gameScore
 }
+
+
+export const getComboCount = (frame: FrameEntryType | null, playerIndex: number) => {
+    return frame?.players[playerIndex]?.post.currentComboCount ?? 0;
+};
+
+export const hasStocksRemaining = (
+    frame: FrameEntryType | null,
+    playerIndex: number,
+    stocks: number,
+) => {
+    return (frame?.players[playerIndex]?.post.stocksRemaining ?? 0) >= stocks;
+};

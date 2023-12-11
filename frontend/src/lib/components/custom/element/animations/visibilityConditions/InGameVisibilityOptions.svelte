@@ -5,18 +5,15 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import {
-		getGameFrame,
-		getGameSettings,
-		getGameState,
-	} from '$lib/utils/fetchSubscriptions.svelte';
-	import type { FrameEntryType } from '@slippi/slippi-js';
+	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
+	import { isNil } from 'lodash';
 
-	export const inGameVisibilityOption = async (option: SelectedVisibilityOption) => {
-		const gameFrame = await getGameFrame();
-		const gameSettings = await getGameSettings();
-		const gameState = await getGameState();
-
+	export const inGameVisibilityOption = (
+		option: SelectedVisibilityOption,
+		gameSettings: GameStartType,
+		gameFrame: FrameEntryType | null,
+		gameState: InGameState,
+	) => {
 		if (option[VisibilityOption.InGameRunning] === VisibilityToggle.True)
 			if (gameState === InGameState.Running) return true;
 		if (option[VisibilityOption.InGameRunning] === VisibilityToggle.False)
@@ -68,7 +65,8 @@
 		return false;
 	};
 
-	const isGameReady = (gameFrame: FrameEntryType | null) => {
+	const isGameReady = (gameFrame: FrameEntryType | null | undefined) => {
+		if (isNil(gameFrame)) return false;
 		return (gameFrame?.frame ?? 0) <= -36;
 	};
 

@@ -101,15 +101,15 @@ export class StatsDisplay {
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
 	}
 
-	async handleGameEnd(_: GameEndType, settings: GameStartType) {
+	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
 		this.stopPauseInterval()
-		const gameStats = await this.getRecentGameStats(settings);
-
-		this.handleInGameState(gameStats)
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
+
+		const gameStats = await this.getRecentGameStats(settings, gameEnd);
+		this.handleInGameState(gameStats)
 		this.handleGameSetStats(gameStats)
 		this.handlePostGameScene(gameStats)
 		this.storeLiveStats.deleteGameFrame()
@@ -126,9 +126,11 @@ export class StatsDisplay {
 	}
 
 	private handleInGameState(game: GameStats | null) {
-		if (game?.gameEnd.gameEndMethod === GameEndMethod.TIME) this.storeLiveStats.setGameState(InGameState.Time)
-		if (game?.gameEnd.gameEndMethod === GameEndMethod.GAME) this.storeLiveStats.setGameState(InGameState.End)
+		console.log("game", game)
+		if (game?.gameEnd?.gameEndMethod === GameEndMethod.TIME) this.storeLiveStats.setGameState(InGameState.Time)
+		if (game?.gameEnd?.gameEndMethod === GameEndMethod.GAME) this.storeLiveStats.setGameState(InGameState.End)
 		if (game && Object.entries(game?.lastFrame.players).every(([_, player]) => isNil(player) || player.post.stocksRemaining === 0)) this.storeLiveStats.setGameState(InGameState.Tie)
+		this.storeLiveStats.setGameState(InGameState.End)
 	}
 
 	private handleGameSetStats(gameStats: GameStats | null) {
@@ -223,7 +225,7 @@ export class StatsDisplay {
 		];
 	}
 
-	private async getRecentGameStats(settings: GameStartType): Promise<GameStats | null> {
+	private async getRecentGameStats(settings: GameStartType, gameEnd: GameEndType | undefined = undefined): Promise<GameStats | null> {
 		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
 		const matchId = settings.matchInfo?.matchId;
@@ -236,7 +238,7 @@ export class StatsDisplay {
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
 		const game = new SlippiGame(file)
-		return this.getGameStats(game)
+		return this.getGameStats(game, gameEnd)
 	}
 
 	async getRecentSetStats(settings: GameStartType): Promise<GameStats[] | null> {
@@ -259,11 +261,11 @@ export class StatsDisplay {
 		if (!players) this.storePlayers.setCurrentPlayers(settings.players)
 	}
 
-	private getGameStats(game: SlippiGame | null): GameStats | null {
+	private getGameStats(game: SlippiGame | null, gameEnd: GameEndType | undefined = undefined): GameStats | null {
 		if (!game) return null;
 		const settings = game.getSettings()
 		return {
-			gameEnd: game.getGameEnd(),
+			gameEnd: gameEnd ?? game?.getGameEnd(),
 			lastFrame: game.getLatestFrame(),
 			postGameStats: this.enrichPostGameStats(game),
 			settings: { ...settings, matchInfo: { ...settings?.matchInfo, mode: getGameMode(settings), matchId: settings?.matchInfo?.matchId?.replace(/[.:]/g, '-'), bestOf: this.storeLiveStats.getBestOf() } },

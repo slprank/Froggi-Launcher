@@ -34,8 +34,16 @@ export enum VisibilityOption {
     InGamePlayerOffStage = "Player Off Stage",
 
     InGamePlayer1Combo = "Player 1 Combo",
+    InGamePlayer1Stock1 = "Player 1 Stock 1",
+    InGamePlayer1Stock2 = "Player 1 Stock 2",
+    InGamePlayer1Stock3 = "Player 1 Stock 3",
+    InGamePlayer1Stock4 = "Player 1 Stock 4",
 
     InGamePlayer2Combo = "Player 2 Combo",
+    InGamePlayer2Stock1 = "Player 2 Stock 1",
+    InGamePlayer2Stock2 = "Player 2 Stock 2",
+    InGamePlayer2Stock3 = "Player 2 Stock 3",
+    InGamePlayer2Stock4 = "Player 2 Stock 4",
 
     MatchStatsPlayer1Score1 = "Player 1 Score 1",
     MatchStatsPlayer1Score2 = "Player 1 Score 2",

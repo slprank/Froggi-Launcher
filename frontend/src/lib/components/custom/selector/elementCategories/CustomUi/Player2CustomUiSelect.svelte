@@ -23,7 +23,7 @@
 		value={CustomElement.InGamePlayer2StocksRemaining}
 		on:select={select}
 	>
-		Stock Icon
+		Remaining Stocks
 	</SelectOption>
 	<SelectOption
 		description="Player 2 Character Render"

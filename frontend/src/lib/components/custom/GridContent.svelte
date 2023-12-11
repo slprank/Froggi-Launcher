@@ -22,7 +22,6 @@
 
 	const animateIn = (node: Element): TransitionConfig => {
 		if (edit || !dataItem || !curScene) return fly(node, { duration: 0 });
-		console.log('edit', edit, 'dataItem', dataItem, 'curScene', curScene);
 		const delay =
 			dataItem[COL]?.y +
 			Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
