@@ -35,7 +35,6 @@ export interface MessageEvents {
     Obs: (obs: Obs | undefined) => void
     ObsConnection: (connection: ObsConnection) => void
     CurrentOverlayEditor: (overlay: OverlayEditor) => void
-    Overlay: (overlay: Overlay) => void
     Overlays: (overlays: Overlay[] | undefined) => void
     OverlayDelete: (overlayId: string) => void
     OverlayDownload: (overlayId: string) => void
