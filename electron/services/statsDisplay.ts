@@ -48,8 +48,9 @@ export class StatsDisplay {
 
 		this.slpParser.on(SlpParserEvent.END, async (gameEnd: GameEndType) => {
 			const settings = this.slpParser.getSettings()
-			if (!settings) return
-			await this.handleGameEnd(gameEnd, settings);
+			const latestGameFrame = this.slpParser.getLatestFrame()
+			if (!settings || !latestGameFrame) return
+			await this.handleGameEnd(gameEnd, latestGameFrame, settings);
 		});
 
 		this.slpParser.on(SlpParserEvent.FRAME, async (frameEntry: FrameEntryType) => {
@@ -70,8 +71,6 @@ export class StatsDisplay {
 	}
 
 	async handleGameFrame(frameEntry: FrameEntryType) {
-		if (frameEntry.frame < 0) return
-		if (this.storeLiveStats.getGameState() === InGameState.Inactive) return;
 		this.resetPauseInterval()
 		this.messageHandler.sendMessage('GameFrame', frameEntry);
 		this.storeLiveStats.setGameState(InGameState.Running)
@@ -101,15 +100,16 @@ export class StatsDisplay {
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
 	}
 
-	async handleGameEnd(gameEnd: GameEndType, settings: GameStartType) {
+	async handleGameEnd(gameEnd: GameEndType, latestGameFrame: FrameEntryType | null, settings: GameStartType) {
 		this.stopPauseInterval()
+		const gameStats = await this.getRecentGameStats(settings, gameEnd);
+		this.handleInGameState(gameEnd, latestGameFrame)
+
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
 		const currentPlayer = this.getCurrentPlayer(currentPlayers)
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 
-		const gameStats = await this.getRecentGameStats(settings, gameEnd);
-		this.handleInGameState(gameStats)
 		this.handleGameSetStats(gameStats)
 		this.handlePostGameScene(gameStats)
 		this.storeLiveStats.deleteGameFrame()
@@ -125,12 +125,10 @@ export class StatsDisplay {
 		if (!isPostSet) return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostGame, LiveStatsScene.Menu, 60000)
 	}
 
-	private handleInGameState(game: GameStats | null) {
-		console.log("game", game)
-		if (game?.gameEnd?.gameEndMethod === GameEndMethod.TIME) this.storeLiveStats.setGameState(InGameState.Time)
-		if (game?.gameEnd?.gameEndMethod === GameEndMethod.GAME) this.storeLiveStats.setGameState(InGameState.End)
-		if (game && Object.entries(game?.lastFrame.players).every(([_, player]) => isNil(player) || player.post.stocksRemaining === 0)) this.storeLiveStats.setGameState(InGameState.Tie)
-		this.storeLiveStats.setGameState(InGameState.End)
+	private handleInGameState(gameEnd: GameEndType | null, latestGameFrame: FrameEntryType | null) {
+		if (gameEnd?.gameEndMethod === GameEndMethod.TIME) this.storeLiveStats.setGameState(InGameState.Time)
+		if (gameEnd?.gameEndMethod === GameEndMethod.GAME) this.storeLiveStats.setGameState(InGameState.End)
+		if (latestGameFrame && Object.entries(latestGameFrame.players).every(([_, player]) => isNil(player) || player.post.stocksRemaining === 0)) this.storeLiveStats.setGameState(InGameState.Tie)
 	}
 
 	private handleGameSetStats(gameStats: GameStats | null) {

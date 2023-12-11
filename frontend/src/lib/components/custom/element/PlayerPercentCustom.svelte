@@ -15,7 +15,7 @@
 	export let player: Player | undefined;
 	export let numberOfDecimals: number;
 
-	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
+	$: isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
 
 	$: frame = $gameFrame?.players?.[player?.playerIndex ?? -1]?.post;
 
@@ -130,62 +130,64 @@
 					style={`${style.cssValue}; transform: translate(0,25%); ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.stroke}`}
 					bind:this={parent}
 				>
-					{#key trigger}
-						<div
-							in:animation|local
-							class="flex h-full items-end justify-center"
-							style={`font-size: ${parent?.clientHeight ?? 0}px`}
-						>
-							{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
-						</div>
-						<div
-							in:animation|local
-							class="flex h-full items-end justify-center"
-							style={`font-size: ${parent?.clientHeight ?? 0}px`}
-						>
-							{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
-						</div>
-						<div
-							in:animation|local
-							class="flex h-full items-end justify-center"
-							style={`font-size: ${parent?.clientHeight ?? 0}px`}
-						>
-							{defaultPreview ? 0 : framePercent.at(-1) ?? ''}
-						</div>
-					{/key}
-					{#if !numberOfDecimals}
-						<div
-							in:animation|local
-							class="flex h-full items-end justify-center pb-[2.25%]"
-							style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
-						>
-							%
-						</div>
-					{/if}
-					{#if numberOfDecimals}
+					{#if parent}
 						{#key trigger}
 							<div
 								in:animation|local
-								class="flex h-full items-end justify-center pb-[6%]"
-								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								class="flex h-full items-end justify-center"
+								style={`font-size: ${parent?.clientHeight ?? 0}px`}
 							>
-								.
+								{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
 							</div>
 							<div
 								in:animation|local
-								class="flex h-full items-end justify-center pb-[6%]"
-								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								class="flex h-full items-end justify-center"
+								style={`font-size: ${parent?.clientHeight ?? 0}px`}
 							>
-								{defaultPreview ? 0 : decimals.at(0) ?? ''}
+								{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
 							</div>
 							<div
 								in:animation|local
-								class="flex h-full items-end justify-center pb-[6%]"
-								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								class="flex h-full items-end justify-center"
+								style={`font-size: ${parent?.clientHeight ?? 0}px`}
 							>
-								%
+								{defaultPreview ? 0 : framePercent.at(-1) ?? ''}
 							</div>
+							{#if !numberOfDecimals}
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[2.25%]"
+									style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
+								>
+									%
+								</div>
+							{/if}
 						{/key}
+						{#if numberOfDecimals}
+							{#key trigger}
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[6%]"
+									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								>
+									.
+								</div>
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[6%]"
+									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								>
+									{defaultPreview ? 0 : decimals.at(0) ?? ''}
+								</div>
+								<div
+									in:animation|local
+									class="flex h-full items-end justify-center pb-[6%]"
+									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								>
+									%
+								</div>
+							{/key}
+						{/if}
 					{/if}
 				</div>
 			</div>

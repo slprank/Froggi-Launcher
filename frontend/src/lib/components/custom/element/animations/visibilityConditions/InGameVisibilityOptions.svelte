@@ -71,6 +71,7 @@
 	};
 
 	const isGameGo = (gameFrame: FrameEntryType | null) => {
+		if (isNil(gameFrame)) return false;
 		return (gameFrame?.frame ?? 0) >= -36 && (gameFrame?.frame ?? 0) < 0;
 	};
 

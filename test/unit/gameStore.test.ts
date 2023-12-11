@@ -149,7 +149,7 @@ describe('ElectnronGamesStore', () => {
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
-            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, game.getLatestFrame(), currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)?.at(0)
             expect(currentGameSettings.matchInfo?.matchId?.replace(/[.:]/g, '-')).toStrictEqual(recentGame?.settings?.matchInfo?.matchId)
             expect(currentGameSettings.matchInfo?.gameNumber).toStrictEqual(recentGame?.settings?.matchInfo?.gameNumber);
@@ -168,7 +168,7 @@ describe('ElectnronGamesStore', () => {
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
-            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, game.getLatestFrame(), currentGameSettings)
             const gameScore = electronGamesStore.getGameScore()
             expect(gameTest.expectedScore).toStrictEqual(gameScore)
         }
@@ -186,7 +186,7 @@ describe('ElectnronGamesStore', () => {
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
-            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, game.getLatestFrame(), currentGameSettings)
             const liveScene = storeLiveStats.getStatsScene();
             expect(gameTest.expectedScene).toStrictEqual(liveScene);
         }
@@ -204,7 +204,7 @@ describe('ElectnronGamesStore', () => {
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
-            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, game.getLatestFrame(), currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)?.at(0)
             const matchGames = electronGamesStore.getGameMatch(recentGame?.settings?.matchInfo.matchId)
             expect(matchGames).toHaveLength(gameTest.expectedLength);
@@ -223,7 +223,7 @@ describe('ElectnronGamesStore', () => {
             const currentGameSettings = game.getSettings();
             if (!currentGameEnd || !currentGameSettings) return;
             await statsDisplay.handleGameStart(currentGameSettings)
-            await statsDisplay.handleGameEnd(currentGameEnd, currentGameSettings)
+            await statsDisplay.handleGameEnd(currentGameEnd, game.getLatestFrame(), currentGameSettings)
             const recentGame = electronGamesStore.getRecentGames()?.at(0)?.at(0)
             expect(gameTest.expectedMode).toStrictEqual(recentGame?.settings?.matchInfo.mode)
         }

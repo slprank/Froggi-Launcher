@@ -50,5 +50,5 @@ export const hasStocksRemaining = (
     playerIndex: number,
     stocks: number,
 ) => {
-    return (frame?.players[playerIndex]?.post.stocksRemaining ?? 0) >= stocks;
+    return (frame?.players?.[playerIndex]?.post.stocksRemaining ?? 0) >= stocks;
 };

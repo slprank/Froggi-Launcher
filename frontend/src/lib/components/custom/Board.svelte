@@ -58,7 +58,6 @@
 	const updateFont = async () => {
 		if (!curScene) return;
 		await addFont(curScene.font?.base64);
-		console.log('font', curScene.font.family);
 		setTimeout(() => (font = curScene.font.family ?? 'sans-serif'), SCENE_TRANSITION_DELAY);
 	};
 	$: curScene, updateFont();
