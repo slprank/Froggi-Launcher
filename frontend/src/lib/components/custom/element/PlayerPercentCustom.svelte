@@ -7,6 +7,7 @@
 	import { createAnimation } from './animations/Animations.svelte';
 	import { onMount } from 'svelte';
 	import type { TransitionConfig } from 'svelte/transition';
+	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -15,7 +16,8 @@
 	export let player: Player | undefined;
 	export let numberOfDecimals: number;
 
-	$: isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
+	$: isInGame =
+		!isNil($gameState) && [InGameState.Paused, InGameState.Running].includes($gameState);
 
 	$: frame = $gameFrame?.players?.[player?.playerIndex ?? -1]?.post;
 
@@ -68,13 +70,18 @@
 
 	let trigger = 0;
 	let prevFrame: FrameEntryType;
-	const animationTrigger = (player: Player | undefined, gameFrame: FrameEntryType | null) => {
+
+	// TODO: Fix
+	const animationTrigger = (
+		player: Player | undefined,
+		gameFrame: FrameEntryType | null | undefined,
+	) => {
 		if (!player || !gameFrame) return;
-		setTimeout(() => (prevFrame = gameFrame));
 		let trigger = false;
 		trigger =
 			(gameFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) >
 				(prevFrame?.players?.[player.playerIndex]?.pre.percent ?? 0) || trigger;
+		prevFrame = gameFrame;
 		return trigger;
 	};
 	$: if (animationTrigger(player, $gameFrame)) trigger = Math.random();
@@ -116,81 +123,81 @@
 	});
 
 	let parent: HTMLElement | undefined;
+
+	$: console.log('trigger', trigger);
 </script>
 
-{#key framePercent}
-	<div class="w-full h-full relative">
-		{#if isInGame || defaultPreview}
-			<div class={`w-full h-full absolute`}>
-				<div
-					class={`${style.classValue.replace(
-						'justify-center',
-						'justify-end',
-					)} flex aspect-[23/9] max-h-full w-full items-end justify-end; `}
-					style={`${style.cssValue}; transform: translate(0,25%); ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.stroke}`}
-					bind:this={parent}
-				>
-					{#if parent}
-						{#key trigger}
+<div class="w-full h-full relative">
+	{#if isInGame || defaultPreview}
+		<div class={`w-full h-full absolute`}>
+			<div
+				class={`${style.classValue.replace(
+					'justify-center',
+					'justify-end',
+				)} flex aspect-[23/9] max-h-full w-full items-end justify-end; `}
+				style={`${style.cssValue}; transform: translate(0,25%); ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.stroke}`}
+				bind:this={parent}
+			>
+				{#if parent}
+					{#key framePercent}
+						<div
+							in:animation|local
+							class="flex h-full items-end justify-center"
+							style={`font-size: ${parent?.clientHeight ?? 0}px`}
+						>
+							{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
+						</div>
+						<div
+							in:animation|local
+							class="flex h-full items-end justify-center"
+							style={`font-size: ${parent?.clientHeight ?? 0}px`}
+						>
+							{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
+						</div>
+						<div
+							in:animation|local
+							class="flex h-full items-end justify-center"
+							style={`font-size: ${parent?.clientHeight ?? 0}px`}
+						>
+							{defaultPreview ? 0 : framePercent.at(-1) ?? ''}
+						</div>
+						{#if !numberOfDecimals}
 							<div
 								in:animation|local
-								class="flex h-full items-end justify-center"
-								style={`font-size: ${parent?.clientHeight ?? 0}px`}
+								class="flex h-full items-end justify-center pb-[2.25%]"
+								style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
 							>
-								{defaultPreview ? 3 : framePercent.at(-3) ?? ''}
+								%
 							</div>
-							<div
-								in:animation|local
-								class="flex h-full items-end justify-center"
-								style={`font-size: ${parent?.clientHeight ?? 0}px`}
-							>
-								{defaultPreview ? 0 : framePercent.at(-2) ?? ''}
-							</div>
-							<div
-								in:animation|local
-								class="flex h-full items-end justify-center"
-								style={`font-size: ${parent?.clientHeight ?? 0}px`}
-							>
-								{defaultPreview ? 0 : framePercent.at(-1) ?? ''}
-							</div>
-							{#if !numberOfDecimals}
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[2.25%]"
-									style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
-								>
-									%
-								</div>
-							{/if}
-						{/key}
-						{#if numberOfDecimals}
-							{#key trigger}
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[6%]"
-									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
-								>
-									.
-								</div>
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[6%]"
-									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
-								>
-									{defaultPreview ? 0 : decimals.at(0) ?? ''}
-								</div>
-								<div
-									in:animation|local
-									class="flex h-full items-end justify-center pb-[6%]"
-									style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
-								>
-									%
-								</div>
-							{/key}
 						{/if}
+					{/key}
+					{#if numberOfDecimals}
+						{#key framePercent}
+							<div
+								in:animation|local
+								class="flex h-full items-end justify-center pb-[6%]"
+								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+							>
+								.
+							</div>
+							<div
+								in:animation|local
+								class="flex h-full items-end justify-center pb-[6%]"
+								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+							>
+								{defaultPreview ? 0 : decimals.at(0) ?? ''}
+							</div>
+							<div
+								in:animation|local
+								class="flex h-full items-end justify-center pb-[6%]"
+								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+							>
+								%
+							</div>
+						{/key}
 					{/if}
-				</div>
+				{/if}
 			</div>
-		{/if}
-	</div>
-{/key}
+		</div>
+	{/if}
+</div>

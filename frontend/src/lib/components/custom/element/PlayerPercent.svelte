@@ -12,7 +12,7 @@
 	export let player: Player | undefined;
 	export let numberOfDecimals: number;
 
-	const isInGame = [InGameState.Paused, InGameState.Running].includes($gameState);
+	$: isInGame = $gameState && [InGameState.Paused, InGameState.Running].includes($gameState);
 
 	$: frame = $gameFrame?.players?.[player?.playerIndex ?? -1]?.post;
 
@@ -62,8 +62,6 @@
 		var hex = ((r << 16) | (g << 8) | b).toString(16);
 		return '#' + ('000000' + hex).slice(-6);
 	}
-
-	$: console.log(percentageColor);
 </script>
 
 {#key framePercent}
