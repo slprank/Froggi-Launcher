@@ -56,27 +56,27 @@
 				});
 				break;
 			case 'CurrentPlayer':
-				currentPlayer.set(...(payload as Parameters<MessageEvents['CurrentPlayer']>));
+				currentPlayer.set(payload[0] as Parameters<MessageEvents['CurrentPlayer']>[0]);
 				break;
 			case 'CurrentPlayers':
-				currentPlayers.set(...(payload as Parameters<MessageEvents['CurrentPlayers']>));
+				currentPlayers.set(payload[0] as Parameters<MessageEvents['CurrentPlayers']>[0]);
 				break;
 			case 'DolphinConnectionState':
 				dolphinState.set(
-					...(payload as Parameters<MessageEvents['DolphinConnectionState']>),
+					payload[0] as Parameters<MessageEvents['DolphinConnectionState']>[0],
 				);
 				break;
 			case 'GameFrame':
-				gameFrame.set(...(payload as Parameters<MessageEvents['GameFrame']>));
+				gameFrame.set(payload[0] as Parameters<MessageEvents['GameFrame']>[0]);
 				break;
 			case 'GameSettings':
-				gameSettings.set(...(payload as Parameters<MessageEvents['GameSettings']>));
+				gameSettings.set(payload[0] as Parameters<MessageEvents['GameSettings']>[0]);
 				break;
 			case 'GameScore':
-				gameScore.set(...(payload as Parameters<MessageEvents['GameScore']>));
+				gameScore.set(payload[0] as Parameters<MessageEvents['GameScore']>[0]);
 				break;
 			case 'GameState':
-				gameState.set(...(payload as Parameters<MessageEvents['GameState']>));
+				gameState.set(payload[0] as Parameters<MessageEvents['GameState']>[0]);
 				break;
 			case 'Notification':
 				const message = payload[0] as Parameters<MessageEvents['Notification']>[0];
@@ -100,39 +100,41 @@
 				}
 				break;
 			case 'Obs':
-				obs.set(...(payload as Parameters<MessageEvents['Obs']>));
+				obs.set(payload[0] as Parameters<MessageEvents['Obs']>[0]);
 				break;
 			case 'ObsConnection':
-				obsConnection.set(...(payload as Parameters<MessageEvents['ObsConnection']>));
+				obsConnection.set(payload[0] as Parameters<MessageEvents['ObsConnection']>[0]);
 				break;
 			case 'Overlays':
-				overlays.set(...(payload as Parameters<MessageEvents['Overlays']>));
+				overlays.set(payload[0] as Parameters<MessageEvents['Overlays']>[0]);
 				break;
 			case 'CurrentOverlayEditor':
 				currentOverlayEditor.set(
-					...(payload as Parameters<MessageEvents['CurrentOverlayEditor']>),
+					payload[0] as Parameters<MessageEvents['CurrentOverlayEditor']>[0],
 				);
 				break;
 			case 'PostGameStats':
-				postGame.set(...(payload as Parameters<MessageEvents['PostGameStats']>));
+				postGame.set(payload[0] as Parameters<MessageEvents['PostGameStats']>[0]);
 				break;
 			case 'CurrentMatch':
-				currentMatch.set(...(payload as Parameters<MessageEvents['CurrentMatch']>));
+				currentMatch.set(payload[0] as Parameters<MessageEvents['CurrentMatch']>[0]);
 				break;
 			case 'RecentGames':
-				recentGames.set(...(payload as Parameters<MessageEvents['RecentGames']>));
+				recentGames.set(payload[0] as Parameters<MessageEvents['RecentGames']>[0]);
 				break;
 			case 'RecentRankedSets':
-				recentRankedSets.set(...(payload as Parameters<MessageEvents['RecentRankedSets']>));
+				recentRankedSets.set(
+					payload[0] as Parameters<MessageEvents['RecentRankedSets']>[0],
+				);
 				break;
 			case 'SessionStats':
-				sessionStats.set(...(payload as Parameters<MessageEvents['SessionStats']>));
+				sessionStats.set(payload[0] as Parameters<MessageEvents['SessionStats']>[0]);
 				break;
 			case 'LiveStatsSceneChange':
-				statsScene.set(...(payload as Parameters<MessageEvents['LiveStatsSceneChange']>));
+				statsScene.set(payload[0] as Parameters<MessageEvents['LiveStatsSceneChange']>[0]);
 				break;
 			case 'Url':
-				urls.set(...(payload as Parameters<MessageEvents['Url']>));
+				urls.set(payload[0] as Parameters<MessageEvents['Url']>[0]);
 				break;
 		}
 	}

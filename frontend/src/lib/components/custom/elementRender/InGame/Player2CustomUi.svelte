@@ -2,7 +2,7 @@
 	import { CHARACTERS } from '$lib/models/constants/characterData';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { currentPlayers, gameFrame, gameScore } from '$lib/utils/store.svelte';
+	import { currentPlayers, gameFrame } from '$lib/utils/store.svelte';
 	import PlayerPercent from '../../element/PlayerPercent.svelte';
 	import PlayerPercentCustom from '../../element/PlayerPercentCustom.svelte';
 	import TextElement from '../../element/TextElement.svelte';
