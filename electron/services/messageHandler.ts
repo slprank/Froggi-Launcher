@@ -153,7 +153,6 @@ export class MessageHandler {
 			"DolphinConnectionState",
 			this.storeDolphin.getDolphinConnectionState(),
 		);
-		this.sendInitMessage(socket, "GameFrame", this.storeLiveStats.getGameFrame());
 		this.sendInitMessage(socket, "GameScore", this.storeGames.getGameScore());
 		this.sendInitMessage(socket, "GameSettings", this.storeLiveStats.getGameSettings());
 		this.sendInitMessage(socket, "GameState", this.storeLiveStats.getGameState());
