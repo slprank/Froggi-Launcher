@@ -109,6 +109,7 @@
 				overlays.set(payload[0] as Parameters<MessageEvents['Overlays']>[0]);
 				break;
 			case 'CurrentOverlayEditor':
+				console.log('nice', payload);
 				currentOverlayEditor.set(
 					payload[0] as Parameters<MessageEvents['CurrentOverlayEditor']>[0],
 				);
@@ -131,6 +132,7 @@
 				sessionStats.set(payload[0] as Parameters<MessageEvents['SessionStats']>[0]);
 				break;
 			case 'LiveStatsSceneChange':
+				console.log('payload', payload);
 				statsScene.set(payload[0] as Parameters<MessageEvents['LiveStatsSceneChange']>[0]);
 				break;
 			case 'Url':
@@ -149,7 +151,9 @@
 		});
 
 		const _electronEmitter = await getElectronEmitter();
+		console.log('electron', _electronEmitter);
 		_electronEmitter.onAny((event, ...data) => {
+			console.log('event', event, 'data', data);
 			window.electron.send('message', JSON.stringify({ [event as string]: data ?? '' }));
 		});
 	};

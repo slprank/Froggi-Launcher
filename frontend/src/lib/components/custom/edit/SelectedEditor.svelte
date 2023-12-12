@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/models/const';
-	import { localEmitter, obs, overlays, statsScene } from '$lib/utils/store.svelte';
+	import {
+		currentOverlayEditor,
+		localEmitter,
+		obs,
+		overlays,
+		statsScene,
+	} from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import ElementModal from '$lib/components/custom/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
@@ -13,13 +19,13 @@
 	const overlayId = $page.params.overlay;
 
 	export let selectedItemId: string | undefined;
-	export let selectedLayer: number | undefined;
 	let selectedItem: any;
 	let selectedItemIndex: number;
 
 	let isElementModalOpen = false;
 
 	$: curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? undefined;
+	$: selectedLayer = $currentOverlayEditor?.layerIndex;
 
 	function getItemById() {
 		if (!curOverlay || selectedLayer === undefined || selectedItemId === undefined) return;

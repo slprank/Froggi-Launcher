@@ -40,10 +40,6 @@
 		$electronEmitter.emit('OverlayDownload', overlayId);
 	}
 
-	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
-		selectedLayer = layerIndex;
-	});
-
 	let innerWidth: number;
 	let innerHeight: number;
 	$: displayPreview = innerWidth > 1024;
@@ -136,11 +132,7 @@
 					}px; min-height: ${boardHeight}px;`}
 					class={`border-2 border-zinc-700 shadow-md`}
 				>
-					<BoardEdit
-						bind:borderHeight={boardHeight}
-						bind:layer={selectedLayer}
-						bind:selectedItemId
-					/>
+					<BoardEdit bind:borderHeight={boardHeight} bind:selectedItemId />
 				</div>
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
