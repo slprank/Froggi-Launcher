@@ -14,7 +14,7 @@ import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
 import { analyzeMatch } from '../utils/analyzeMatch';
 import os from "os"
-import { debounce, isNil } from 'lodash';
+import { isNil } from 'lodash';
 import { getGameScore, isTiedGame } from '../../frontend/src/lib/utils/gamePredicates';
 import { Command } from '../../frontend/src/lib/models/types/overlay';
 
@@ -56,9 +56,10 @@ export class StatsDisplay {
 			await this.handleGameEnd(gameEnd, latestFrame, settings);
 		});
 
-		this.slpParser.on(SlpParserEvent.FRAME, debounce(async (frameEntry: FrameEntryType) => {
+		this.slpParser.on(SlpParserEvent.FRAME, async (frameEntry: FrameEntryType) => {
 			await this.handleGameFrame(frameEntry);
-		}, 8, { leading: true, trailing: true, maxWait: 16 }));
+			console.log("frame", frameEntry.frame)
+		});
 	}
 
 	private resetPauseInterval() {

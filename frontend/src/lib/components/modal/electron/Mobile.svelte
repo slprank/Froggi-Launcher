@@ -6,8 +6,6 @@
 	import Modal from '../Modal.svelte';
 
 	export let open: boolean;
-
-	console.log('open', open);
 </script>
 
 <Modal bind:open on:close={() => (open = false)}>

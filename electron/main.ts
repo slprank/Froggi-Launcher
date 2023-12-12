@@ -22,6 +22,10 @@ import Store from 'electron-store';
 
 const mainLog: ElectronLog = setLoggingPath(log);
 
+os.setPriority(19);
+
+app.commandLine.appendSwitch('disable-background-timer-throttling');
+
 const isMac = os.platform() === 'darwin';
 const isWindows = os.platform() === 'win32';
 const isLinux = os.platform() === 'linux';
@@ -60,11 +64,12 @@ function createWindow(): BrowserWindow {
 		minHeight: 600,
 		minWidth: 800,
 		webPreferences: {
+			backgroundThrottling: false,
 			contextIsolation: true,
-			nodeIntegration: true,
-			spellcheck: false,
 			devTools: true ?? dev,
+			nodeIntegration: true,
 			preload: path.join(__dirname.replace(`\\`, '/'), '/preload.js'),
+			spellcheck: false,
 		},
 		x: windowState.x,
 		y: windowState.y,

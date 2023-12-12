@@ -98,6 +98,7 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['GameFrame']>[0];
 					if (!value) return;
+					console.log("frame", value.frame)
 					gameFrame.set(value);
 				})();
 				break;
