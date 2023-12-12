@@ -1,4 +1,4 @@
-import { SlpParserEvent, SlpStreamEvent, SlippiGame, SlpParser, SlpStream, SlpRawEventPayload, FrameEntryType, GameEndType, GameStartType, PlayerType, GameEndMethod } from '@slippi/slippi-js';
+import { SlpParserEvent, SlippiGame, SlpParser, SlpStream, FrameEntryType, GameEndType, GameStartType, PlayerType, GameEndMethod, SlpStreamEvent, SlpRawEventPayload } from '@slippi/slippi-js';
 import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
@@ -16,6 +16,7 @@ import { analyzeMatch } from '../utils/analyzeMatch';
 import os from "os"
 import { isNil } from 'lodash';
 import { getGameScore, isTiedGame } from '../../frontend/src/lib/utils/gamePredicates';
+import { Command } from '../../frontend/src/lib/models/types/overlay';
 
 @singleton()
 export class StatsDisplay {
@@ -40,17 +41,19 @@ export class StatsDisplay {
 		this.log.info("Initialize Dolphin Events")
 		this.slpStream.on(SlpStreamEvent.COMMAND, async (event: SlpRawEventPayload) => {
 			this.slpParser.handleCommand(event.command, event.payload);
-			if (event.command === 54) {
-				this.handleUndefinedPlayers(this.slpParser.getSettings() ?? undefined)
-				await this.handleGameStart(this.slpParser.getSettings());
+			if (event.command === Command.GAME_START) {
+				const gameSettings = this.slpParser.getSettings()
+				this.handleUndefinedPlayers(gameSettings)
+				await this.handleGameStart(gameSettings);
 			}
 		});
 
 		this.slpParser.on(SlpParserEvent.END, async (gameEnd: GameEndType) => {
+			await new Promise(resolve => setTimeout(resolve, 1000))
 			const settings = this.slpParser.getSettings()
-			const latestGameFrame = this.slpParser.getLatestFrame()
-			if (!settings || !latestGameFrame) return
-			await this.handleGameEnd(gameEnd, latestGameFrame, settings);
+			const latestFrame = this.slpParser.getLatestFrame()
+			if (isNil(settings) || isNil(latestFrame) || isNil(gameEnd)) return
+			await this.handleGameEnd(gameEnd, latestFrame, settings);
 		});
 
 		this.slpParser.on(SlpParserEvent.FRAME, async (frameEntry: FrameEntryType) => {
@@ -102,6 +105,7 @@ export class StatsDisplay {
 
 	async handleGameEnd(gameEnd: GameEndType, latestGameFrame: FrameEntryType | null, settings: GameStartType) {
 		this.stopPauseInterval()
+		console.log("Game End:", gameEnd)
 		const gameStats = await this.getRecentGameStats(settings, gameEnd);
 		this.handleInGameState(gameEnd, latestGameFrame)
 
@@ -223,11 +227,11 @@ export class StatsDisplay {
 		];
 	}
 
-	private async getRecentGameStats(settings: GameStartType, gameEnd: GameEndType | undefined = undefined): Promise<GameStats | null> {
+	private async getRecentGameStats(settings: GameStartType | undefined = undefined, gameEnd: GameEndType | undefined = undefined): Promise<GameStats | null> {
 		const files = await this.getGameFiles();
 		if (!files || !files.length) return null;
-		const matchId = settings.matchInfo?.matchId;
-		const gameNumber = settings.matchInfo?.gameNumber
+		const matchId = settings?.matchInfo?.matchId ?? "";
+		const gameNumber = settings?.matchInfo?.gameNumber ?? 0
 		const file = files
 			.find(file => {
 				const settings = new SlippiGame(file).getSettings();
@@ -253,7 +257,7 @@ export class StatsDisplay {
 		return gamesStats
 	}
 
-	private async handleUndefinedPlayers(settings: GameStartType | undefined) {
+	private async handleUndefinedPlayers(settings: GameStartType | null | undefined) {
 		if (!settings) return;
 		const players = this.storePlayers.getCurrentPlayers()
 		if (!players) this.storePlayers.setCurrentPlayers(settings.players)

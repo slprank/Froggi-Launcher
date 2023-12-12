@@ -29,7 +29,7 @@
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
 
-	async function keyValueStore<J extends keyof MessageEvents>(
+	async function messageDataHandler<J extends keyof MessageEvents>(
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
@@ -142,7 +142,7 @@
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				keyValueStore(key as keyof MessageEvents, ...(value as any));
+				messageDataHandler(key as keyof MessageEvents, ...(value as any));
 			}
 		});
 
@@ -159,7 +159,7 @@
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
 			for (const [key, value] of Object.entries<any[]>(parse)) {
-				initEventListener(key as keyof MessageEvents, ...(value as any));
+				messageDataHandler(key as keyof MessageEvents, ...(value as any));
 			}
 		});
 

@@ -47,6 +47,19 @@ export interface Class {
 	alignment: string | undefined;
 }
 
+export enum Command {
+	SPLIT_MESSAGE = 16,
+	MESSAGE_SIZES = 53,
+	GAME_START = 54,
+	PRE_FRAME_UPDATE = 55,
+	POST_FRAME_UPDATE = 56,
+	GAME_END = 57,
+	FRAME_START = 58,
+	ITEM_UPDATE = 59,
+	FRAME_BOOKEND = 60,
+	GECKO_LIST = 61
+}
+
 export interface Css {
 	background: string | undefined;
 	borderColor: string | undefined;
