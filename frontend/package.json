@@ -13,7 +13,7 @@
 		"@dimfeld/svelte-lazyload": "^0.0.4",
 		"@leveluptuts/svelte-fit": "^1.0.3",
 		"@slippi/slippi-js": "^6.7.0",
-		"@types/lodash": "^4.14.201",
+		"@types/lodash": "^4.14.202",
 		"cors": "^2.8.5",
 		"eventemitter2": "^6.4.9",
 		"events": "^3.3.0",
@@ -27,7 +27,7 @@
 		"svelte-grid": "^5.1.2",
 		"svelte-qrcode": "^1.0.0",
 		"typed-emitter": "^2.1.0",
-		"ws": "^8.14.2"
+		"ws": "^8.15.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "2.1.1",
@@ -41,21 +41,21 @@
 		"concurrently": "^7.6.0",
 		"cross-env": "^7.0.3",
 		"dotenv": "^16.3.1",
-		"eslint": "^8.54.0",
+		"eslint": "^8.55.0",
 		"eslint-config-prettier": "^8.10.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"obs-websocket-js": "^5.0.3",
-		"postcss": "^8.4.31",
+		"postcss": "^8.4.32",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
 		"sass": "^1.69.5",
 		"svelte": "^3.59.2",
-		"svelte-check": "^3.6.0",
-		"svelte-preprocess": "^5.1.0",
+		"svelte-check": "^3.6.2",
+		"svelte-preprocess": "^5.1.2",
 		"svelte-textfit": "^1.1.4",
-		"tailwindcss": "^3.3.5",
+		"tailwindcss": "^3.3.6",
 		"tslib": "^2.6.2",
-		"typescript": "^4.9.5",
-		"vite": "^4.5.0"
+		"typescript": "^5.3.3",
+		"vite": "^4.5.1"
 	}
 }

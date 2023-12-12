@@ -84,6 +84,8 @@ export class ObsWebSocket {
 	}
 
 	startReplayBuffer = async () => {
+		const replayBufferState = await this.obs.call("GetReplayBufferStatus");
+		if (replayBufferState.outputActive) return;
 		await this.obs.call("StartReplayBuffer");
 	}
 
@@ -95,7 +97,9 @@ export class ObsWebSocket {
 			const password = this.storeObs.getPassword()
 			const ipAddress = this.storeObs.getIpAddress()
 			const port = this.storeObs.getPort()
-			await this.obs.connect(`ws://${ipAddress}:${port}`, password);
+			try {
+				await this.obs.connect(`ws://${ipAddress}:${port}`, password);
+			} catch { }
 		}, 5000)
 	}
 

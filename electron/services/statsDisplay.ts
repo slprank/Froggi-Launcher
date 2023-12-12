@@ -105,7 +105,6 @@ export class StatsDisplay {
 
 	async handleGameEnd(gameEnd: GameEndType, latestGameFrame: FrameEntryType | null, settings: GameStartType) {
 		this.stopPauseInterval()
-		console.log("Game End:", gameEnd)
 		const gameStats = await this.getRecentGameStats(settings, gameEnd);
 		this.handleInGameState(gameEnd, latestGameFrame)
 

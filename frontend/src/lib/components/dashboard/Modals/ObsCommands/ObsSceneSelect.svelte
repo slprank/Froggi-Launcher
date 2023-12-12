@@ -21,10 +21,10 @@
 						: 'border-white'
 				}`}
 				on:click={() => {
-					SwitchScene(scene.sceneName);
+					SwitchScene(scene?.sceneName);
 				}}
 			>
-				{scene.sceneName}
+				{scene?.sceneName}
 			</button>
 		</div>
 	{/each}

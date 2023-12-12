@@ -33,50 +33,94 @@
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
-		console.log('Initializing listeners');
+		let value: any;
 		switch (topic) {
 			case 'MemoryControllerInput':
-				memoryReadController.set(
-					...(payload as Parameters<MessageEvents['MemoryControllerInput']>),
-				);
+				(() => {
+					const value = payload[0] as Parameters<
+						MessageEvents['MemoryControllerInput']
+					>[0];
+					if (!value) return;
+					memoryReadController.set(value);
+				})();
 				break;
 			case 'AutoUpdaterStatus':
-				autoUpdater.update((autoUpdater: AutoUpdater) => {
-					return { ...autoUpdater, status: payload[0] };
-				});
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['AutoUpdaterStatus']>[0];
+					if (!value) return;
+					autoUpdater.update((autoUpdater: AutoUpdater) => {
+						return { ...autoUpdater, status: payload[0] };
+					});
+				})();
 				break;
 			case 'AutoUpdaterVersion':
-				autoUpdater.update((autoUpdater: AutoUpdater) => {
-					return { ...autoUpdater, version: payload[0] };
-				});
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['AutoUpdaterVersion']>[0];
+					if (!value) return;
+					autoUpdater.update((autoUpdater: AutoUpdater) => {
+						return { ...autoUpdater, version: payload[0] };
+					});
+				})();
 				break;
 			case 'AutoUpdaterProgress':
-				autoUpdater.update((autoUpdater: AutoUpdater) => {
-					return { ...autoUpdater, progress: payload[0] };
-				});
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['AutoUpdaterProgress']>[0];
+					if (!value) return;
+					autoUpdater.update((autoUpdater: AutoUpdater) => {
+						return { ...autoUpdater, progress: value };
+					});
+				})();
 				break;
 			case 'CurrentPlayer':
-				currentPlayer.set(payload[0] as Parameters<MessageEvents['CurrentPlayer']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['CurrentPlayer']>[0];
+					if (!value) return;
+					currentPlayer.set(value);
+				})();
 				break;
 			case 'CurrentPlayers':
-				currentPlayers.set(payload[0] as Parameters<MessageEvents['CurrentPlayers']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['CurrentPlayers']>[0];
+					if (!value) return;
+					currentPlayers.set(value);
+				})();
 				break;
 			case 'DolphinConnectionState':
-				dolphinState.set(
-					payload[0] as Parameters<MessageEvents['DolphinConnectionState']>[0],
-				);
+				(() => {
+					const value = payload[0] as Parameters<
+						MessageEvents['DolphinConnectionState']
+					>[0];
+					if (!value) return;
+					dolphinState.set(value);
+				})();
 				break;
 			case 'GameFrame':
-				gameFrame.set(payload[0] as Parameters<MessageEvents['GameFrame']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['GameFrame']>[0];
+					if (!value) return;
+					gameFrame.set(value);
+				})();
 				break;
 			case 'GameSettings':
-				gameSettings.set(payload[0] as Parameters<MessageEvents['GameSettings']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['GameSettings']>[0];
+					if (!value) return;
+					gameSettings.set(value);
+				})();
 				break;
 			case 'GameScore':
-				gameScore.set(payload[0] as Parameters<MessageEvents['GameScore']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['GameScore']>[0];
+					if (!value) return;
+					gameScore.set(value);
+				})();
 				break;
 			case 'GameState':
-				gameState.set(payload[0] as Parameters<MessageEvents['GameState']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['GameState']>[0];
+					if (!value) return;
+					gameState.set(value);
+				})();
 				break;
 			case 'Notification':
 				const message = payload[0] as Parameters<MessageEvents['Notification']>[0];
@@ -100,43 +144,87 @@
 				}
 				break;
 			case 'Obs':
-				obs.set(payload[0] as Parameters<MessageEvents['Obs']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['Obs']>[0];
+					if (!value) return;
+					obs.set(value);
+					obsConnection.set(value.connection);
+				})();
 				break;
 			case 'ObsConnection':
-				obsConnection.set(payload[0] as Parameters<MessageEvents['ObsConnection']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['ObsConnection']>[0];
+					if (!value) return;
+					obsConnection.set(value);
+				})();
 				break;
 			case 'Overlays':
-				overlays.set(payload[0] as Parameters<MessageEvents['Overlays']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['Overlays']>[0];
+					if (!value) return;
+					overlays.set(value);
+				})();
 				break;
 			case 'CurrentOverlayEditor':
-				console.log('nice', payload);
-				currentOverlayEditor.set(
-					payload[0] as Parameters<MessageEvents['CurrentOverlayEditor']>[0],
-				);
+				(() => {
+					const value = payload[0] as Parameters<
+						MessageEvents['CurrentOverlayEditor']
+					>[0];
+					if (!value) return;
+
+					currentOverlayEditor.set(value);
+				})();
 				break;
 			case 'PostGameStats':
-				postGame.set(payload[0] as Parameters<MessageEvents['PostGameStats']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['PostGameStats']>[0];
+					if (!value) return;
+					postGame.set(value);
+				})();
 				break;
 			case 'CurrentMatch':
-				currentMatch.set(payload[0] as Parameters<MessageEvents['CurrentMatch']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['CurrentMatch']>[0];
+					if (!value) return;
+					currentMatch.set(value);
+				})();
 				break;
 			case 'RecentGames':
-				recentGames.set(payload[0] as Parameters<MessageEvents['RecentGames']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['RecentGames']>[0];
+					if (!value) return;
+					recentGames.set(value);
+				})();
 				break;
 			case 'RecentRankedSets':
-				recentRankedSets.set(
-					payload[0] as Parameters<MessageEvents['RecentRankedSets']>[0],
-				);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['RecentRankedSets']>[0];
+					if (!value) return;
+					recentRankedSets.set(value);
+				})();
 				break;
 			case 'SessionStats':
-				sessionStats.set(payload[0] as Parameters<MessageEvents['SessionStats']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['SessionStats']>[0];
+					if (!value) return;
+					sessionStats.set(value);
+				})();
 				break;
 			case 'LiveStatsSceneChange':
-				console.log('payload', payload);
-				statsScene.set(payload[0] as Parameters<MessageEvents['LiveStatsSceneChange']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<
+						MessageEvents['LiveStatsSceneChange']
+					>[0];
+					if (!value) return;
+					statsScene.set(value);
+				})();
 				break;
 			case 'Url':
-				urls.set(payload[0] as Parameters<MessageEvents['Url']>[0]);
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['Url']>[0];
+					if (!value) return;
+					urls.set(payload[0] as Parameters<MessageEvents['Url']>[0]);
+				})();
 				break;
 		}
 	}
@@ -153,7 +241,6 @@
 		const _electronEmitter = await getElectronEmitter();
 		console.log('electron', _electronEmitter);
 		_electronEmitter.onAny((event, ...data) => {
-			console.log('event', event, 'data', data);
 			window.electron.send('message', JSON.stringify({ [event as string]: data ?? '' }));
 		});
 	};

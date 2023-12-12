@@ -123,8 +123,6 @@
 	});
 
 	let parent: HTMLElement | undefined;
-
-	$: console.log('trigger', trigger);
 </script>
 
 <div class="w-full h-full relative">
