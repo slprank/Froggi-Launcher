@@ -1,21 +1,7 @@
 <script lang="ts" context="module">
-	import type {
-		AutoUpdaterStatus,
-		ConnectionState,
-		InGameState,
-		LiveStatsScene,
-	} from '$lib/models/enum';
 	import { NotificationType } from '$lib/models/enum';
-	import type { AutoUpdater, Overlay, OverlayEditor, Url } from '$lib/models/types/overlay';
-	import type { PlayerController } from '$lib/models/types/controller';
-	import type {
-		CurrentPlayer,
-		GameStartTypeExtended,
-		GameStats,
-		Match,
-		Player,
-		Session,
-	} from '$lib/models/types/slippiData';
+	import type { AutoUpdater } from '$lib/models/types/overlay';
+
 	import {
 		currentPlayer,
 		currentPlayers,
@@ -40,12 +26,10 @@
 	} from '$lib/utils/store.svelte';
 	import { getElectronEmitter, getPage } from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import type { Obs, ObsConnection } from '$lib/models/types/obsTypes';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
-	import { isNil } from 'lodash';
 
-	export async function initEventListener<J extends keyof MessageEvents>(
+	async function keyValueStore<J extends keyof MessageEvents>(
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
@@ -158,7 +142,7 @@
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				initEventListener(key as keyof MessageEvents, ...(value as any));
+				keyValueStore(key as keyof MessageEvents, ...(value as any));
 			}
 		});
 

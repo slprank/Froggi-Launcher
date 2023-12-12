@@ -1,9 +1,5 @@
 <script lang="ts" context="module">
-	import {
-		initElectronEvents,
-		initEventListener,
-		initWebSocket,
-	} from '$lib/utils/initEventListener.svelte';
+	import { initElectronEvents, initWebSocket } from '$lib/utils/initEventListener.svelte';
 	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import { isBrowser, isElectron } from '$lib/utils/store.svelte';
 	import { getElectronEmitter } from '$lib/utils/fetchSubscriptions.svelte';
@@ -11,8 +7,6 @@
 
 	export const initClient = async () => {
 		extendStringFormat();
-
-		await initEventListener();
 		await initDevices();
 	};
 
