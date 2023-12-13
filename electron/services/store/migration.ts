@@ -17,6 +17,10 @@ export const migrateStore = (log: ElectronLog): Store.Options<Record<string, unk
             '>=0.1.6': store => {
                 log.info('>= 0.1.6')
                 store.set('debugPhase', true);
+            },
+            '>=0.2.0': store => {
+                log.info('>= 0.1.6')
+                store.delete('obs');
             }
         }
     }
