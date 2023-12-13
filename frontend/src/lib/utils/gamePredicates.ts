@@ -41,12 +41,12 @@ export const getGameScore = (recentGames: GameStats[][]) => {
 }
 
 
-export const getComboCount = (frame: FrameEntryType | null, playerIndex: number) => {
+export const getComboCount = (frame: FrameEntryType | null | undefined, playerIndex: number) => {
     return frame?.players[playerIndex]?.post.currentComboCount ?? 0;
 };
 
 export const hasStocksRemaining = (
-    frame: FrameEntryType | null,
+    frame: FrameEntryType | null | undefined,
     playerIndex: number,
     stocks: number,
 ) => {

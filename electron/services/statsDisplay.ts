@@ -74,14 +74,15 @@ export class StatsDisplay {
 	}
 
 	async handleGameFrame(frameEntry: FrameEntryType) {
-		this.resetPauseInterval()
 		this.messageHandler.sendMessage('GameFrame', frameEntry);
 		this.messageHandler.sendMessage('GameState', InGameState.Running);
+		this.resetPauseInterval()
 	}
 
 	async handleGamePaused(frameEntry: FrameEntryType | null) {
 		this.storeLiveStats.setGameFrame(frameEntry)
 		this.storeLiveStats.setGameState(InGameState.Paused)
+		this.messageHandler.sendMessage('GameState', InGameState.Paused);
 	}
 
 	async handleGameStart(settings: GameStartType | null) {

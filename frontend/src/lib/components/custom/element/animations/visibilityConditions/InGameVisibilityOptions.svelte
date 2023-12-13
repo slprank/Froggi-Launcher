@@ -11,7 +11,7 @@
 	export const inGameVisibilityOption = (
 		option: SelectedVisibilityOption,
 		gameSettings: GameStartType,
-		gameFrame: FrameEntryType | null,
+		gameFrame: FrameEntryType | undefined | null,
 		gameState: InGameState,
 	) => {
 		if (option[VisibilityOption.InGameRunning] === VisibilityToggle.True)
@@ -70,7 +70,7 @@
 		return (gameFrame?.frame ?? 0) <= -36;
 	};
 
-	const isGameGo = (gameFrame: FrameEntryType | null) => {
+	const isGameGo = (gameFrame: FrameEntryType | null | undefined) => {
 		if (isNil(gameFrame)) return false;
 		return (gameFrame?.frame ?? 0) >= -36 && (gameFrame?.frame ?? 0) < 0;
 	};
@@ -91,7 +91,7 @@
 		return gameState === InGameState.Tie;
 	};
 
-	const isOffStage = (gameFrame: FrameEntryType | null): boolean => {
+	const isOffStage = (gameFrame: FrameEntryType | null | undefined): boolean => {
 		// TODO: Complete
 		return true;
 	};

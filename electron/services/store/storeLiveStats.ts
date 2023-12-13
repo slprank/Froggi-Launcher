@@ -64,7 +64,6 @@ export class ElectronLiveStatsStore {
 	}
 
 	setGameState(state: InGameState) {
-		if (state === this.getGameState()) return;
 		return this.store.set('stats.game.state', state);
 	}
 
@@ -122,6 +121,7 @@ export class ElectronLiveStatsStore {
 			this.messageHandler.sendMessage("GameSettings", value as GameStartTypeExtended);
 		});
 		this.store.onDidChange(`stats.game.state`, async (value) => {
+			console.log("Game State changed to", value)
 			this.messageHandler.sendMessage("GameState", value as InGameState);
 		});
 		this.store.onDidChange(`stats.game.stats`, async (value) => {

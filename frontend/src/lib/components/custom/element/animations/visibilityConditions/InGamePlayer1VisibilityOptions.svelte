@@ -11,7 +11,7 @@
 
 	export const inGamePlayer1VisibilityOption = (
 		option: SelectedVisibilityOption,
-		gameFrame: FrameEntryType | null,
+		gameFrame: FrameEntryType | null | undefined,
 		players: Player[],
 	) => {
 		const player = players?.at(0);

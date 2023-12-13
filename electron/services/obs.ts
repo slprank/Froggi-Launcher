@@ -99,7 +99,9 @@ export class ObsWebSocket {
 			const port = this.storeObs.getPort()
 			try {
 				await this.obs.connect(`ws://${ipAddress}:${port}`, password);
-			} catch { }
+			} catch {
+				this.log.error(`Could not connect to OBS: ${`ws://${ipAddress}:${port}`} - (Failed connection may cause lag spikes)`)
+			}
 		}, 5000)
 	}
 
@@ -145,14 +147,11 @@ export class ObsWebSocket {
 
 	initSvelteListeners() {
 		this.svelteEmitter.on("ExecuteObsCommand", async (command, payload) => {
-			try {
-				await this.obs.call(command, payload);
-				await this.updateObsData()
 
-			} catch (error) {
-				this.log.error(error)
-				this.messageHandler.sendMessage("Notification", `Could not execute command: ${command}`, NotificationType.Warning)
-			}
+			await this.obs.call(command, payload);
+			await this.updateObsData()
+
+			this.messageHandler.sendMessage("Notification", `Could not execute command: ${command}`, NotificationType.Warning)
 		});
 
 	}

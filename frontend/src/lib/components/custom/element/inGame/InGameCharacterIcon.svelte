@@ -3,6 +3,7 @@
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame, gameSettings } from '$lib/utils/store.svelte';
+	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;
@@ -10,25 +11,21 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
-	$: playerPostFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
-	$: externalCharacterId = preview
-		? defaultPreviewId
-		: playerPostFrame
-		? CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame.internalCharacterId ?? -1]
-		: playerSettings
-		? playerSettings.characterId
-		: null;
 
 	let characterId: number | null;
 	$: $gameSettings, (characterId = null);
-
-	const updateCharacterId = (externalCharacterId: number | null): number | null => {
-		if (!externalCharacterId) return characterId;
-		if (characterId && characterId >= 0) return characterId;
-		return externalCharacterId;
+	const updateCharacterId = (gameFrame: FrameEntryType | null | undefined): number | null => {
+		const postFrame = gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
+		return preview
+		? defaultPreviewId
+		: postFrame
+		? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
+		: playerSettings
+		? playerSettings.characterId
+		: null;
 	};
-	$: externalCharacterId, (characterId = updateCharacterId(externalCharacterId));
+	$: characterId = updateCharacterId($gameFrame);
 </script>
 
 {#key $gameSettings}

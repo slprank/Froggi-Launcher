@@ -98,7 +98,6 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['GameFrame']>[0];
 					if (!value) return;
-					console.log("frame", value.frame)
 					gameFrame.set(value);
 				})();
 				break;
@@ -216,6 +215,7 @@
 					const value = payload[0] as Parameters<
 						MessageEvents['LiveStatsSceneChange']
 					>[0];
+					console.log("LiveStatsSceneChange", value)
 					if (!value) return;
 					statsScene.set(value);
 				})();

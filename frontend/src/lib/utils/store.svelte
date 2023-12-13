@@ -48,31 +48,31 @@
 	export const autoUpdater = writable<AutoUpdater>({
 		status: AutoUpdaterStatus.LookingForUpdate,
 	} as AutoUpdater);
-	export const currentPlayer = writable<CurrentPlayer | undefined>({} as CurrentPlayer);
-	export const currentPlayers = writable<Player[] | undefined>([
+	export const currentPlayer = writable<CurrentPlayer>({} as CurrentPlayer);
+	export const currentPlayers = writable<Player[]>([
 		{ displayName: '' } as Player,
 		{ displayName: '' } as Player,
 	]);
-	export const dolphinState = writable<ConnectionState | undefined>(ConnectionState.Searching);
+	export const dolphinState = writable<ConnectionState | undefined>(ConnectionState.None);
 	export const gameFrame = writable<FrameEntryType | null | undefined>({} as FrameEntryType);
 	export const gameScore = writable<number[]>([0, 0]);
-	export const gameSettings = writable<GameStartTypeExtended | undefined>(
+	export const gameSettings = writable<GameStartTypeExtended>(
 		{} as GameStartTypeExtended,
 	);
-	export const gameState = writable<InGameState | undefined>(InGameState.Inactive);
+	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
-	export const obsConnection = writable<ObsConnection>({} as ObsConnection);
-	export const overlays = writable<Overlay[] | undefined>([]);
+	export const obsConnection = writable<ObsConnection>({ state: ConnectionState.None} as ObsConnection);
+	export const overlays = writable<Overlay[]>([]);
 	export const currentOverlayEditor = writable<OverlayEditor>({ layerIndex: 0 } as OverlayEditor);
-	export const postGame = writable<GameStats | undefined>({} as GameStats);
-	export const currentMatch = writable<Match | undefined>({} as Match);
+	export const postGame = writable<GameStats>({} as GameStats);
+	export const currentMatch = writable<Match>({} as Match);
 	export const recentRankedSets = writable<GameStats[]>([]);
 	export const recentGames = writable<GameStats[][]>([]);
 	export const sessionStats = writable<Session | undefined>();
-	export const statsScene = writable<LiveStatsScene | undefined>(
+	export const statsScene = writable<LiveStatsScene>(
 		LiveStatsScene.WaitingForDolphin,
 	);
 
-	export const obs = writable<Obs | undefined>();
-	export const urls = writable<Url | undefined>();
+	export const obs = writable<Obs>();
+	export const urls = writable<Url>();
 </script>
