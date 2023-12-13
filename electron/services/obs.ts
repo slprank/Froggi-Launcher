@@ -147,9 +147,12 @@ export class ObsWebSocket {
 
 	initSvelteListeners() {
 		this.svelteEmitter.on("ExecuteObsCommand", async (command, payload) => {
-
-			await this.obs.call(command, payload);
-			await this.updateObsData()
+			try {
+				await this.obs.call(command, payload);
+				await this.updateObsData()
+			} catch {
+				this.log.error(`Could not execute command: ${command}`)
+			}
 
 			this.messageHandler.sendMessage("Notification", `Could not execute command: ${command}`, NotificationType.Warning)
 		});
