@@ -152,9 +152,8 @@ export class ObsWebSocket {
 				await this.updateObsData()
 			} catch {
 				this.log.error(`Could not execute command: ${command}`)
+				this.messageHandler.sendMessage("Notification", `Could not execute command: ${command}`, NotificationType.Warning)
 			}
-
-			this.messageHandler.sendMessage("Notification", `Could not execute command: ${command}`, NotificationType.Warning)
 		});
 
 	}
