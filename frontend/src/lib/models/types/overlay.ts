@@ -73,12 +73,12 @@ export interface Css {
 	customText: string | undefined;
 	customImage: string | undefined;
 	opacity: number;
-	rotate: string | undefined;
-	scale: string | undefined;
 }
 
 export interface CssTransform {
 	translate: Position
+	rotate: number
+	scale: string
 }
 
 export interface ElementPayload {

@@ -20,7 +20,6 @@
 	import { getOverlays } from '$lib/utils/fetchSubscriptions.svelte';
 	import isNil from 'lodash/isNil';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import FontSelect from '../selector/FontSelect.svelte';
 
 	export function newId() {
 		return `c${Math.random().toString(36).slice(-8)}`;
@@ -182,8 +181,6 @@
 				customText: undefined,
 				customImage: undefined,
 				opacity: 1,
-				rotate: undefined,
-				scale: undefined,
 			},
 			description: '',
 			percent: {
@@ -216,6 +213,8 @@
 				color: '#000000ff',
 			},
 			transform: {
+				rotate: 0,
+				scale: "1, 1",
 				translate: {
 					x: 0,
 					y: 0,

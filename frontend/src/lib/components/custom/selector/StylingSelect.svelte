@@ -340,23 +340,21 @@
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-full h-24">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Flip</h1>
-					<Select bind:selected={payload.css.scale}>
-						<option selected value={undefined}>Default</option>
-						<option value={'-1 1;'}>Horizontal</option>
-						<option value={'1 -1'}>Vertical</option>
-						<option value={'-1 -1'}>Horizontal & Vertical</option>
+					<Select bind:selected={payload.transform.scale}>
+						<option selected value={"1, 1"}>Default</option>
+						<option value={'-1, 1'}>Horizontal</option>
+						<option value={'1, -1'}>Vertical</option>
+						<option value={'-1, -1'}>Horizontal & Vertical</option>
 					</Select>
 				</div>
 			</div>
 			<div class="w-full h-fit flex flex-wrap">
 				<div class="w-44 h-24">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">
-						Rotate - ({payload.css.rotate ?? '0deg'})
+						Rotate - ({payload.transform.rotate})
 					</h1>
 					<SliderInput
-						value={payload.css.rotate ? parseInt(payload.css.rotate.slice(0, -3)) : 0}
-						stringFormat={'{0}deg'}
-						bind:valueConcat={payload.css.rotate}
+						bind:value={payload.transform.rotate}
 						min={-180}
 						max={180}
 						step={1}

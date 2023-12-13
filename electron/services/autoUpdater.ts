@@ -14,15 +14,15 @@ export class AutoUpdater {
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
 		this.initListeners();
-		setInterval(() => {
-			autoUpdater.checkForUpdates();
-		}, 1000 * 60 * 5);
 	}
 
 	async initListeners() {
 		if (this.dev) return;
 		this.log.info('Initializing Auto Updater');
 		this.log.info('Current Version:', autoUpdater.currentVersion);
+		setInterval(() => {
+			autoUpdater.checkForUpdates();
+		}, 1000 * 60 * 5);
 		autoUpdater.autoInstallOnAppQuit = true;
 		this.messageHandler.sendMessage("AutoUpdaterVersion", autoUpdater.currentVersion.version);
 

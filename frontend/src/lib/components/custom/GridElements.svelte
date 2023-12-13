@@ -63,7 +63,7 @@
 
 	$: style.transform = `transform: translate(${dataItem.data.transform.translate.x ?? 0}%, ${
 		dataItem.data.transform.translate.y ?? 0
-	}%)`;
+	}%) scale(${dataItem.data.transform.scale}) rotate(${dataItem.data.transform.rotate ?? 0}deg);`;
 
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
