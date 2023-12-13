@@ -72,14 +72,13 @@ export class ElectronLiveStatsStore {
 	}
 
 	setGameSettings(settings: GameStartType) {
-		this.store.set('stats.game.settings', settings);
-		const gameMode = settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) as GameStartMode ?? 'local'
+		const gameMode = settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) as GameStartMode ?? "local";
+		this.store.set('stats.game.settings', { ...settings, matchInfo: { ...settings.matchInfo, mode: gameMode } });
 		if (gameMode === "ranked") this.setBestOf(BestOf.BestOf3)
-		this.setGameMode(gameMode);
 	}
 
-	setGameMode(mode: GameStartMode) {
-		return this.store.set('stats.game.settings.matchInfo.mode', mode);
+	getGameMode(): GameStartMode {
+		return this.store.get('stats.game.settings.matchInfo.mode') as GameStartMode;
 	}
 
 	getGameStats(): GameStats | undefined {
