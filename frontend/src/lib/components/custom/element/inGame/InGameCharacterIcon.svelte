@@ -2,8 +2,7 @@
 	import { CHARACTERS_INTERNAL_EXTERNAL } from '$lib/models/constants/characterData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
-	import { gameFrame, gameSettings } from '$lib/utils/store.svelte';
-	import type { FrameEntryType } from '@slippi/slippi-js';
+	import { gameFrame, gameSettings, statsScene } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;
@@ -11,12 +10,11 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
-	$: playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
+	const playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
+	const postFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 
 	let characterId: number | null;
-	$: $gameSettings, (characterId = null);
-	const updateCharacterId = (gameFrame: FrameEntryType | null | undefined): number | null => {
-		const postFrame = gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
+	const updateCharacterId = (): number | null => {
 		return preview
 		? defaultPreviewId
 		: postFrame
@@ -25,7 +23,7 @@
 		? playerSettings.characterId
 		: null;
 	};
-	$: characterId = updateCharacterId($gameFrame);
+	$: $statsScene, $gameSettings, characterId = updateCharacterId();
 </script>
 
 {#key $gameSettings}

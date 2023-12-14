@@ -10,27 +10,30 @@
 	} from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	import {
-		currentPlayerInGameTrigger,
+	currentPlayerInGameTrigger,
 		inGameStateTrigger,
 		player1InGameTrigger,
 		player2InGameTrigger,
-	} from './animationTriggers/InGameTriggers.svelte';
-	import { rankStateTrigger } from './animationTriggers/RankChangeTriggers.svelte';
-	import { matchStateTrigger } from './animationTriggers/MatchChangeTriggers.svelte';
+	} from '$lib/components/custom/element/animations/animationTriggers/InGameStateTriggers';
+	import { rankStateTrigger } from '$lib/components/custom/element/animations/animationTriggers/RankChangeTriggers';
+	import { matchStateTrigger } from '$lib/components/custom/element/animations/animationTriggers/MatchChangeTriggers';
+	import type { FrameEntryType } from '@slippi/slippi-js';
+	import { cloneDeep } from 'lodash';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
 
 	let key: number | undefined = 0;
+	let prevGameFrame: FrameEntryType | null | undefined
 	const updateKeyValue = (): number | undefined => {
 		if (!dataItem) return;
 		const option = dataItem.data.animationTrigger.selectedOptions;
 
-		if (inGameStateTrigger(option, $gameSettings, $gameFrame)) return Math.random();
-		if (currentPlayerInGameTrigger(option, $currentPlayer, $gameFrame)) return Math.random();
-		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame)) return Math.random();
-		if (player2InGameTrigger(option, $currentPlayers?.at(1), $gameFrame)) return Math.random();
+		if (inGameStateTrigger(option, $gameSettings,prevGameFrame, $gameFrame)) return Math.random();
+		if (currentPlayerInGameTrigger(option, $currentPlayer,prevGameFrame, $gameFrame)) return Math.random();
+		if (player1InGameTrigger(option, $currentPlayers?.at(0),prevGameFrame, $gameFrame)) return Math.random();
+		if (player2InGameTrigger(option, $currentPlayers?.at(1),prevGameFrame, $gameFrame)) return Math.random();
 		if (matchStateTrigger(option, $gameScore)) return Math.random();
 		if (rankStateTrigger(option, $currentPlayer)) return Math.random();
 
@@ -39,6 +42,7 @@
 
 	const updateTriggerValues = () => {
 		key = updateKeyValue();
+		prevGameFrame = cloneDeep($gameFrame);
 	};
 
 	$: $gameFrame, $currentPlayer, updateTriggerValues();

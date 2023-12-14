@@ -1,4 +1,3 @@
-<script lang="ts" context="module">
 	import {
 		AnimationTrigger,
 		type SelectedAnimationTriggerOption,
@@ -17,4 +16,3 @@
 		prevScore = score;
 		return trigger;
 	};
-</script>
