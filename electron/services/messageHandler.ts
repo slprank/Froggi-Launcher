@@ -14,6 +14,7 @@ import { ElectronDolphinStore } from './store/storeDolphin';
 import path from 'path';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmitter';
+import { WebSocketServer } from 'ws';
 
 @singleton()
 export class MessageHandler {
@@ -21,7 +22,7 @@ export class MessageHandler {
 	private express: any;
 	private server: any;
 	private webSocketServer: any;
-	private webSockets: WebSocket[];
+	private connections: WebSocket[] = [];
 
 	constructor(
 		@inject('Dev') private dev: boolean,
@@ -46,14 +47,12 @@ export class MessageHandler {
 		this.express = require('express');
 		const cors = require('cors');
 		const http = require('http');
-		const { WebSocketServer } = require('ws');
 
 		this.app = this.express();
 
 		this.app.use(cors());
 		this.server = http.createServer(this.app);
 		this.webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
-		this.webSockets = [];
 
 		this.initElectronMessageHandler();
 		if (!this.dev) this.initHtml();
@@ -92,28 +91,31 @@ export class MessageHandler {
 		try {
 			this.webSocketServer.on('connection', (socket: WebSocket) => {
 				this.log.info('New WebSocket Connection');
-				this.webSockets.push(socket);
+				this.connections.push(socket);
 				this.receiveMessage(socket);
 				this.initData(socket);
-				console.log("Ws connections", this.webSockets.length)
+				console.log("Ws connections", this.connections.length)
 			});
 		} catch (err) {
 			this.log.error(err);
 		}
 	}
 
-	private receiveMessage = (socket: any) => {
-		socket.addEventListener('message', (value: any) => {
+	private receiveMessage = (socket: WebSocket) => {
+		socket.addEventListener('message', (value) => {
 			let parse = JSON.parse(value.data);
 			for (const [key, value] of Object.entries(parse)) {
 				this.svelteEmitter.emit(key as any, ...value as any);
 			}
 		});
 		socket.addEventListener('close', () => {
-			this.log.info('Closed WebSocket Connection');
-			socket.removeEventListener('message');
-			this.webSockets = this.webSockets.filter((s: any) => s != socket);
-			console.log("Ws connections", this.webSockets.length)
+			console.log('WebSocket closed:');
+
+			const index = this.connections.indexOf(socket);
+			if (index > -1) {
+				this.connections.splice(index, 1);
+				console.log('Connection removed');
+			}
 		});
 	};
 
@@ -124,7 +126,7 @@ export class MessageHandler {
 				[topic]: payload,
 			}),
 		);
-		this.webSockets.forEach((socket: any) => {
+		this.connections.forEach((socket: any) => {
 			socket.send(
 				JSON.stringify({
 					[topic]: payload,

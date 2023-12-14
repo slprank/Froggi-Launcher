@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"module": "esnext",
-		"target": "es2020",
+		"module": "ESNext",
+		"target": "ESNext",
 		"moduleResolution": "node",
 		"strict": true,
 		"types": ["vite/client", "node"],
