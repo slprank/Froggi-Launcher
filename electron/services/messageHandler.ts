@@ -80,7 +80,6 @@ export class MessageHandler {
 		this.ipcMain.on('message', (_: any, data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse)) {
-				console.log("command", key, value)
 				this.svelteEmitter.emit(key as any, ...value as any);
 			}
 		});
@@ -96,6 +95,7 @@ export class MessageHandler {
 				this.webSockets.push(socket);
 				this.receiveMessage(socket);
 				this.initData(socket);
+				console.log("Ws connections", this.webSockets.length)
 			});
 		} catch (err) {
 			this.log.error(err);
@@ -113,6 +113,7 @@ export class MessageHandler {
 			this.log.info('Closed WebSocket Connection');
 			socket.removeEventListener('message');
 			this.webSockets = this.webSockets.filter((s: any) => s != socket);
+			console.log("Ws connections", this.webSockets.length)
 		});
 	};
 

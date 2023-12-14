@@ -9,6 +9,7 @@ import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 import { isTiedGame } from '../../../frontend/src/lib/utils/gamePredicates';
+import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 
 
 @singleton()
@@ -20,12 +21,14 @@ export class ElectronGamesStore {
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject("ElectronStore") private store: Store,
+        @inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
         @inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
         @inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
     ) {
         this.log.info("Initializing Game Store")
-        this.initListeners()
+        this.initStoreListeners()
+        this.initEventListeners()
     }
 
     getRecentDirectSets() {
@@ -128,9 +131,8 @@ export class ElectronGamesStore {
     }
 
     clearRecentGames() {
-        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-        if (!connectCode) return;
         this.store.set(`player.any.game.recent`, [])
+        this.setGameScore([0, 0])
     }
 
     private getAllSets(): Sets | undefined {
@@ -151,11 +153,16 @@ export class ElectronGamesStore {
         return (sets[mode ?? "recent"]?.sort((a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)) ?? [];
     }
 
-    private initListeners() {
+    private initEventListeners() {
+        this.svelteEmitter.on("RecentGamesReset", () => { console.log("Deleted"), this.clearRecentGames() })
+    }
+
+    private initStoreListeners() {
         this.store.onDidChange(`stats.game.score`, async (value) => {
             this.messageHandler.sendMessage("GameScore", value as number[]);
         })
         this.store.onDidChange("player.any.game.recent", async (value) => {
+            console.log("RecentGames", value)
             const recentGames = value as GameStats[][]
             this.messageHandler.sendMessage("RecentGames", recentGames);
         })

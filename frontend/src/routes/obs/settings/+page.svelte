@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { isMobile } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
-
-	// TODO: Create list of UI elements to preview
 </script>
 
 <main

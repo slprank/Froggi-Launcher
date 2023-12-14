@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentPlayers, gameScore } from '$lib/utils/store.svelte';
+	import { currentPlayers, electronEmitter, gameScore } from '$lib/utils/store.svelte';
 	import ConfirmModal from '../ConfirmModal.svelte';
 	import ScoreUpdateModal from './Modals/ScoreUpdateModal.svelte';
 	import TagUpdateModal from './Modals/TagUpdateModal.svelte';
@@ -13,7 +13,7 @@
 	};
 
 	const handleScoreReset = () => {
-		isResetRecentGamesModalOpen = true;
+		$electronEmitter.emit("RecentGamesReset");
 	};
 
 	const updateScore = () => {
