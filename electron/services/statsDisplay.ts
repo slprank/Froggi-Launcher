@@ -122,7 +122,7 @@ export class StatsDisplay {
 		const bestOf = this.storeLiveStats.getBestOf();
 		const isPostSet = game.score.some(score => score >= Math.ceil(bestOf / 2))
 		if (isPostSet) {
-			if (game.settings?.matchInfo.mode === "ranked") {
+			if (game.settings?.matchInfo?.mode === "ranked") {
 				const currentPlayerRankStats = await this.api.getPlayerRankStats(this.storeSettings.getCurrentPlayerConnectCode())
 				this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
 			}

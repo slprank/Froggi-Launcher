@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { currentPlayers, electronEmitter, gameScore } from '$lib/utils/store.svelte';
+	import { currentPlayers, electronEmitter, gameScore, gameSettings } from '$lib/utils/store.svelte';
 	import ConfirmModal from '../ConfirmModal.svelte';
+	import BestOfUpdateModal from './Modals/BestOfUpdateModal.svelte';
 	import ScoreUpdateModal from './Modals/ScoreUpdateModal.svelte';
 	import TagUpdateModal from './Modals/TagUpdateModal.svelte';
 
-	let isTagModalOpen = false;
+	let isBestOfModalOpen = false;
 	let isScoreModalOpen = false;
+	let isTagModalOpen = false;
 	let isResetRecentGamesModalOpen = false;
 
 	const resetScore = () => {
@@ -14,6 +16,10 @@
 
 	const handleScoreReset = () => {
 		$electronEmitter.emit("RecentGamesReset");
+	};
+
+	const updateBestOf = () => {
+		isBestOfModalOpen = true;
 	};
 
 	const updateScore = () => {
@@ -68,9 +74,21 @@
 		Change Score
 	</button>
 </div>
+<div class="flex flex-col gap-2">
+	<div class="flex gap-2 justify-center items-center">
+		<h1 class="text-white text-3xl font-semibold">BestOf</h1>
+	</div>
+		<button
+			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+			on:click={updateBestOf}
+		>
+			Change Best Of - ({$gameSettings?.matchInfo?.bestOf})
+		</button>
+</div>
 
-<TagUpdateModal bind:open={isTagModalOpen} />
-<ScoreUpdateModal bind:open={isScoreModalOpen} />
 <ConfirmModal bind:open={isResetRecentGamesModalOpen} on:confirm={handleScoreReset}>
 	Reset Games?
 </ConfirmModal>
+<ScoreUpdateModal bind:open={isScoreModalOpen} />
+<BestOfUpdateModal bind:open={isBestOfModalOpen} />
+<TagUpdateModal bind:open={isTagModalOpen} />

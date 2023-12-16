@@ -1,5 +1,5 @@
 import type { Obs, ObsConnection } from "../models/types/obsTypes"
-import type { AutoUpdaterStatus, ConnectionState, InGameState, LiveStatsScene, NotificationType } from "../models/enum"
+import type { AutoUpdaterStatus, BestOf, ConnectionState, InGameState, LiveStatsScene, NotificationType } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Overlay, OverlayEditor, Url } from "../models/types/overlay"
 import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, Session } from "../models/types/slippiData"
@@ -12,6 +12,7 @@ export interface MessageEvents {
     AutoUpdaterStatus: (status: AutoUpdaterStatus) => void
     AutoUpdaterVersion: (version: string | undefined) => void
     AutoUpdaterInstall: () => void
+    BestOfUpdate: (bestOf: BestOf) => void
     CurrentPlayer: (player: CurrentPlayer | undefined) => void
     CurrentPlayers: (player: Player[] | undefined) => void
     DolphinConnectionState: (state: ConnectionState | undefined) => void

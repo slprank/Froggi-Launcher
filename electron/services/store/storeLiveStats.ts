@@ -101,11 +101,11 @@ export class ElectronLiveStatsStore {
 
 	setBestOf(bestOf: BestOf | undefined) {
 		if (isNil(bestOf)) return;
-		this.store.set("stats.match.bestOf", bestOf)
+		this.store.set("stats.game.settings.matchInfo.bestOf", bestOf)
 	}
 
 	getBestOf(): BestOf {
-		return (this.store.get("stats.match.bestOf") ?? BestOf.BestOf3) as BestOf
+		return (this.store.get("stats.game.settings.matchInfo.bestOf") ?? BestOf.BestOf3) as BestOf
 	}
 
 	initListeners() {
@@ -132,6 +132,9 @@ export class ElectronLiveStatsStore {
 		this.svelteEmitter.on("LiveStatsSceneChange", (value: LiveStatsScene | undefined) => {
 			if (!value) return
 			this.setStatsScene(value);
+		});
+		this.svelteEmitter.on("BestOfUpdate", (bestOf: BestOf) => {
+			this.setBestOf(bestOf);
 		});
 	}
 }

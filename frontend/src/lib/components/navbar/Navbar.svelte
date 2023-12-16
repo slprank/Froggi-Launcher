@@ -14,6 +14,7 @@
 	import BackButton from '$lib/components/navbar/BackButton.svelte';
 	import ConnectionStateButton from './ConnectionStateButton.svelte';
 	import ElectronVersionButton from './ElectronVersionButton.svelte';
+	import { notifications } from '../notification/Notifications.svelte';
 
 	function resetVisibilityTimer() {
 		if ($isElectron) {
@@ -39,8 +40,7 @@
 	}
 
 	let visibilityTimer: NodeJS.Timeout;
-	let isVisible = false;
-	$: $isOverlayPage, startVisibilityTimer();
+	let isVisible = !$isOverlayPage && ($isElectron || $isMobile);
 
 	let isMobileOpen: boolean;
 	let width: number;
@@ -137,13 +137,10 @@
 				}`}
 			>
 				<div
-					class={`grid grid-cols-6 justify-center content-center place-items-center w-screen ${
+					class={`flex justify-evenly content-center place-items-center w-screen ${
 						$isMobile ? 'max-w-lg' : 'max-w-xl'
 					}`}
 				>
-					<NavButton click={() => goto('/live')}>
-						<img src="/image/button-icons/live.png" alt="live" />
-					</NavButton>
 					<NavButton click={() => goto('/')}>
 						<img src="/image/button-icons/home.png" alt="home" />
 					</NavButton>

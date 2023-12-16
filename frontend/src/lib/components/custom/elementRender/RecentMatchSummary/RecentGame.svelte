@@ -30,16 +30,15 @@
 		{defaultPreview
 			? `Unranked`
 			: $gameSettings
-			? `${$gameSettings.matchInfo.mode
-					?.at(0)
-					?.toUpperCase()}${$gameSettings.matchInfo.mode?.slice(1)}`
-			: '0'}
+			? `${$gameSettings?.matchInfo?.mode?.at(0)
+					?.toUpperCase()}${$gameSettings.matchInfo?.mode?.slice(1)}`
+			: 'Local'}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.CurrentSetBestOf}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? BestOf.BestOf3 : $gameSettings?.matchInfo.bestOf ?? BestOf.BestOf3}
+		{defaultPreview ? BestOf.BestOf3 : $gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1Score}

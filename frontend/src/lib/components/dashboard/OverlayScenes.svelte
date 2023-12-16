@@ -17,7 +17,7 @@
 			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 			on:click={openChangeObsSceneModal}
 		>
-			OBS
+			Scene Handler
 		</button>
 	</div>
 </div>
