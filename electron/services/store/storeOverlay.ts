@@ -96,7 +96,6 @@ export class ElectronOverlayStore {
             this.messageHandler.sendMessage("Overlays", value as Overlay[]);
         })
         this.store.onDidChange("obs.layout.current", (value) => {
-            console.log("CurrentOverlayEditor", value)
             this.messageHandler.sendMessage("CurrentOverlayEditor", value as OverlayEditor);
         })
     }

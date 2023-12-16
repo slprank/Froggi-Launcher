@@ -1,6 +1,7 @@
 
 export enum AnimationTrigger {
     None = "None",
+
     InGameGameCountdown = "Game Countdown",
     InGameCurrentPlayerPercent = "Current Player Percent Increase",
     InGamePlayer1Percent = "Player1 Percent Increase",
@@ -12,6 +13,9 @@ export enum AnimationTrigger {
     InGamePlayer1CharacterChange = "Player1 Character Change",
     InGamePlayer2CharacterChange = "Player2 Character Change",
 
+    MatchBestOfChange = "Match Best Of Change",
+    MatchPlayer1TagChange = "Player 1 Tag Change",
+    MatchPlayer2TagChange = "Player 2 Tag Change",
     MatchPlayer1ScoreChange = "Player 1 Score Change",
     MatchPlayer2ScoreChange = "Player 2 Score Change",
 
@@ -132,6 +136,7 @@ export enum VisibilityOption {
     RankStatsBeforeRankUpdated = "Rank Stats Pre Updated",
     RankStatsAfterRankUpdated = "Rank Stats Pre Updated",
     RankStatsMatchWon = "Rank Stats Match Won",
+
 }
 
 export enum VisibilityCategory {

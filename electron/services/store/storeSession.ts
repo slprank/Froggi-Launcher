@@ -43,7 +43,6 @@ export class ElectronSessionStore {
     }
 
     updateSessionStats(rankStats: RankedNetplayProfile | undefined) {
-        console.log("update")
         if (!rankStats) return;
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;

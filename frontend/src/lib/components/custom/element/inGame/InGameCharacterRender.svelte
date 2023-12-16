@@ -25,8 +25,6 @@
 	};
 	$: $statsScene, $gameSettings, characterId = updateCharacterId();
 
-	console.log("here")
-
 	let div: HTMLElement;
 </script>
 

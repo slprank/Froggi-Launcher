@@ -234,7 +234,7 @@
 		console.log('Initializing electron');
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
-			for (const [key, value] of Object.entries(parse)) {
+			for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));
 			}
 		});
@@ -242,7 +242,7 @@
 		const _electronEmitter = await getElectronEmitter();
 		console.log('electron', _electronEmitter);
 		_electronEmitter.onAny((event, ...data) => {
-			window.electron.send('message', JSON.stringify({ [event as string]: data ?? '' }));
+			window.electron.send('message', JSON.stringify({ [event as string]: data }));
 		});
 	};
 
@@ -252,9 +252,8 @@
 
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
-			console.log("Message")
 			const parse = JSON.parse(data);
-			for (const [key, value] of Object.entries<any[]>(parse)) {
+			for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));
 			}
 		});
@@ -262,7 +261,7 @@
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = () => {
 			_electronEmitter.onAny((event, ...data) => {
-				socket.send(JSON.stringify({ [event as string]: data }));
+				socket.send(JSON.stringify({ [event as string]: data, authorizationElectron: localStorage.getItem('authorizationElectron') ?? ""  }));
 			});
 		};
 		socket.onclose = () => {

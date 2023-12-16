@@ -27,6 +27,13 @@ export class ElectronSettingsStore {
 		this.updateSlippiSettings();
 	}
 
+	getAuthorizationKey(): string {
+		return this.store.get('settings.authorization.key') as string ?? "";
+	}
+	setAuthorizationKey(key: string) {
+		this.store.set('settings.authorization.key', key);
+	}
+
 	getCurrentPlayerConnectCode(): string | undefined {
 		return this.store.get('settings.currentPlayer.connectCode') as string;
 	}

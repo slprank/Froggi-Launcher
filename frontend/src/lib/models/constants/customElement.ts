@@ -91,10 +91,6 @@ export enum CustomElement {
     SlippiRankChangeRatingDifference = 3140,
 
     //Post Match Game Summary
-
-    CurrentSetGameMode = 4195,
-    CurrentSetBestOf = 4196,
-
     CurrentSetGameRecentPlayer1Score = 4200,
     CurrentSetGameRecentPlayer2Score = 4201,
     CurrentSetGameRecentPlayer1StocksRemaining = 4202,
@@ -133,7 +129,15 @@ export enum CustomElement {
     InGameTimerMilliseconds3 = 4304,
     InGameTimerSecondsCountdown = 4305,
 
-    // Character Render Under Custom Image
+    // Match
+
+    MatchGameMode = 4400,
+    MatchBestOf = 4401,
+
+    MatchPlayer1Tag = 4420,
+    MatchPlayer2Tag = 4421,
+    MatchPlayer1Score = 4422,
+    MatchPlayer2Score = 4423,
 
 
     // Post Game

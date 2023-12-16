@@ -111,7 +111,6 @@ export class ElectronLiveStatsStore {
 	initListeners() {
 		this.store.onDidChange('stats.scene', (value) => {
 			clearTimeout(this.sceneTimeout)
-			console.log("Scene changed to", value)
 			this.messageHandler.sendMessage("LiveStatsSceneChange", value as LiveStatsScene);
 		});
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {

@@ -173,7 +173,7 @@ export class StatsDisplay {
 		const path = require('path');
 
 		const slippiSettings = this.storeSettings.getSlippiLauncherSettings()
-		console.log("Settings:", slippiSettings)
+		this.log.info("Settings:", slippiSettings)
 
 		if (!slippiSettings?.rootSlpPath) return;
 

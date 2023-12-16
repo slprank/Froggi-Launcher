@@ -14,6 +14,7 @@ import path from 'path';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmitter';
 import { Worker } from 'worker_threads';
+import { sendAuthenticatedMessage } from '../../frontend/src/lib/utils/websocketAuthentication';
 
 @singleton()
 export class MessageHandler {
@@ -54,7 +55,7 @@ export class MessageHandler {
 		this.initElectronMessageHandler();
 		if (!this.dev) this.initHtml();
 		this.initWebSocket();
-		this.initEventHandlers();
+		this.initEventListeners();
 	}
 
 	private initHtml() {
@@ -89,12 +90,15 @@ export class MessageHandler {
 			this.webSocketWorker.on("message", (value: string) => {
 				const parse = JSON.parse(value);
 				for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
-					this.svelteEmitter.emit(key as any, ...value as any);
+					sendAuthenticatedMessage(
+						parse["authorizationElectron"],
+						this.storeSettings.getAuthorizationKey(),
+						this.svelteEmitter,
+						key as keyof MessageEvents,
+						value)
 				}
 			});
-			this.svelteEmitter.on("InitData", (socketId: string) => {
-				this.initData(socketId);
-			})
+
 		} catch (err) {
 			this.log.error(err);
 		}
@@ -148,10 +152,13 @@ export class MessageHandler {
 		this.sendInitMessage(socketId, "SessionStats", this.storeSession.getSessionStats());
 	}
 
-	private initEventHandlers() {
+	private initEventListeners() {
 		this.svelteEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 			this.sendMessage('LayerPreviewChange', layerIndex);
 		});
+		this.svelteEmitter.on("InitData", (socketId: string) => {
+			this.initData(socketId);
+		})
 	}
 
 }

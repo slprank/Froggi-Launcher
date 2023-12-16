@@ -15,6 +15,31 @@
 </script>
 
 <SelectAnimationTriggerOption
+	description="When changing the Best Of value"
+	value={AnimationTrigger.MatchBestOfChange}
+	bind:selected={selectedOption[AnimationTrigger.MatchBestOfChange]}
+	on:select={select}
+>
+	Best Of Change
+</SelectAnimationTriggerOption>
+<SelectAnimationTriggerOption
+	description="When Player 1 Tag Changes"
+	value={AnimationTrigger.MatchPlayer1TagChange}
+	bind:selected={selectedOption[AnimationTrigger.MatchPlayer1TagChange]}
+	on:select={select}
+>
+	Player 1 Tag Change
+</SelectAnimationTriggerOption>
+
+<SelectAnimationTriggerOption
+	description="When Player 2 Tag Changes"
+	value={AnimationTrigger.MatchPlayer2TagChange}
+	bind:selected={selectedOption[AnimationTrigger.MatchPlayer2TagChange]}
+	on:select={select}
+>
+	Player 2 Tag Change
+</SelectAnimationTriggerOption>
+<SelectAnimationTriggerOption
 	description="When Player 1 Score Changes"
 	value={AnimationTrigger.MatchPlayer1ScoreChange}
 	bind:selected={selectedOption[AnimationTrigger.MatchPlayer1ScoreChange]}

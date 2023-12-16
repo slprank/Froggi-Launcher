@@ -34,7 +34,7 @@
 		if (currentPlayerInGameTrigger(option, $currentPlayer,prevGameFrame, $gameFrame)) return Math.random();
 		if (player1InGameTrigger(option, $currentPlayers?.at(0),prevGameFrame, $gameFrame)) return Math.random();
 		if (player2InGameTrigger(option, $currentPlayers?.at(1),prevGameFrame, $gameFrame)) return Math.random();
-		if (matchStateTrigger(option, $gameScore)) return Math.random();
+		if (matchStateTrigger(option, $currentPlayers, $gameScore, $gameSettings)) return Math.random();
 		if (rankStateTrigger(option, $currentPlayer)) return Math.random();
 
 		return key;

@@ -10,6 +10,7 @@
 	import Session from './elementRender/Session.svelte';
 	import RecentMatchSummary from './elementRender/RecentMatchSummary.svelte';
 	import RightClick from '../context/RightClick.svelte';
+	import Match from './elementRender/Match.svelte';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
@@ -99,6 +100,8 @@
 						<Custom {dataItem} {style} />
 
 						<InGame {dataItem} {defaultPreview} {style} />
+
+						<Match {dataItem} {defaultPreview} {style} />
 
 						<RecentGame {dataItem} {defaultPreview} {style} />
 

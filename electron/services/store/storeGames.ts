@@ -74,7 +74,6 @@ export class ElectronGamesStore {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         if (!connectCode) return;
         const games = Object.assign(this.getAllSetsByMode("ranked") ?? {}, this.getAllSetsByMode("unranked") ?? {}, this.getAllSetsByMode("direct") ?? {})
-        console.log("all games", games)
         return games[matchId].find(game => game.settings?.matchInfo?.gameNumber === gameNumber)
     }
 

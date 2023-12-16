@@ -25,7 +25,7 @@
 		fallbackStageId={Stage.YOSHIS_ISLAND_N64}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.CurrentSetGameMode}
+{#if dataItem?.elementId === CustomElement.MatchGameMode}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `Unranked`
@@ -36,7 +36,7 @@
 	</TextElement>
 {/if}
 
-{#if dataItem?.elementId === CustomElement.CurrentSetBestOf}
+{#if dataItem?.elementId === CustomElement.MatchBestOf}
 	<TextElement {style} {dataItem}>
 		{defaultPreview ? BestOf.BestOf3 : $gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3}
 	</TextElement>

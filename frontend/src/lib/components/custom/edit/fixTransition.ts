@@ -13,6 +13,41 @@ const fixCharacterTransition = (item: GridContentItem): GridContentItem => {
     const newItem = { ...item };
     if (
         [
+            CustomElement.MatchBestOf,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchBestOfChange] = true;
+    }
+    if (
+        [
+            CustomElement.MatchPlayer1Tag,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchPlayer1TagChange] = true;
+    }
+    if (
+        [
+            CustomElement.MatchPlayer2Tag,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchPlayer2TagChange] = true;
+    }
+    if (
+        [
+            CustomElement.CurrentSetGameRecentPlayer1Score,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchPlayer1ScoreChange] = true;
+    }
+    if (
+        [
+            CustomElement.CurrentSetGameRecentPlayer1Score,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchPlayer2ScoreChange] = true;
+    }
+    if (
+        [
             CustomElement.InGameCurrentPlayerCharacterIcon,
             CustomElement.InGameCurrentPlayerCharacterRender,
         ].includes(item.elementId)
