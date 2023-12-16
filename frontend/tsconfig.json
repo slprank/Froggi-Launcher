@@ -6,7 +6,6 @@
 		"strict": true,
 		"types": ["vite/client", "node"],
 		"lib": ["ESNext"],
-		"importsNotUsedAsValues": "error",
 		"isolatedModules": true,
 		"sourceMap": true,
 		"esModuleInterop": true,

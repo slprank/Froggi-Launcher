@@ -20,6 +20,7 @@ export interface MessageEvents {
     GameSettings: (settings: GameStartTypeExtended | undefined) => void
     GameState: (state: InGameState | undefined) => void
     InitElectron: () => void
+    InitData: (socketId: string) => void
     LayerPreviewChange: (layerIndex: number) => void
     CurrentMatch: (match: Match) => void
     MemoryControllerInput: (controllerInputs: PlayerController) => void

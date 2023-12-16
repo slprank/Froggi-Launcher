@@ -33,7 +33,7 @@
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
-		let value: any;
+		
 		switch (topic) {
 			case 'MemoryControllerInput':
 				(() => {
@@ -249,8 +249,10 @@
 	export const initWebSocket = async () => {
 		const _page = await getPage();
 		console.log('Initializing websocket');
+
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
+			console.log("Message")
 			const parse = JSON.parse(data);
 			for (const [key, value] of Object.entries<any[]>(parse)) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));

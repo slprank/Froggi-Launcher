@@ -11,7 +11,7 @@ import { SlpParser } from '@slippi/slippi-js';
 
 @singleton()
 export class MemoryRead {
-	private memoryReadInterval: NodeJS.Timeout;
+	private memoryReadInterval: NodeJS.Timeout = {} as NodeJS.Timeout;
 	private isWindows = os.platform() === 'win32';
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,

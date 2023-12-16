@@ -26,6 +26,11 @@
 		"esModuleInterop": true,
 		"isolatedModules": true
 	},
-	"include": [".", "../test", "../frontend/src/lib/utils/gamePredicates.ts"],
-	"exclude": ["node_modules", "services"]
+	"include": [
+		".",
+		"../test",
+		"../frontend/src/lib/utils/gamePredicates.ts",
+		"../electron/services/websocketWorker.ts"
+	],
+	"exclude": ["node_modules"]
 }

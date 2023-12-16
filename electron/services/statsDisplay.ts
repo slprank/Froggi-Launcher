@@ -1,5 +1,4 @@
 import { SlpParserEvent, SlippiGame, SlpParser, SlpStream, FrameEntryType, GameEndType, GameStartType, PlayerType, GameEndMethod, SlpStreamEvent, SlpRawEventPayload } from '@slippi/slippi-js';
-import { MessageHandler } from './messageHandler';
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
@@ -17,6 +16,7 @@ import os from "os"
 import { debounce, isNil } from 'lodash';
 import { getGameScore, isTiedGame } from '../../frontend/src/lib/utils/gamePredicates';
 import { Command } from '../../frontend/src/lib/models/types/overlay';
+import { MessageHandler } from './messageHandler';
 
 @singleton()
 export class StatsDisplay {
@@ -65,7 +65,7 @@ export class StatsDisplay {
 		if (this.isWin) return; // Windows utilized memory reads
 		this.stopPauseInterval()
 		this.pauseInterval = setTimeout(() => {
-			this.handleGamePaused(this.slpParser.getLatestFrame())
+			this.handleGamePaused()
 		}, 160)
 	}
 
@@ -75,14 +75,12 @@ export class StatsDisplay {
 
 	async handleGameFrame(frameEntry: FrameEntryType) {
 		this.messageHandler.sendMessage('GameFrame', frameEntry);
-		this.messageHandler.sendMessage('GameState', InGameState.Running);
+		this.storeLiveStats.setGameState(InGameState.Running);
 		this.resetPauseInterval()
 	}
 
-	async handleGamePaused(frameEntry: FrameEntryType | null) {
-		this.storeLiveStats.setGameFrame(frameEntry)
+	async handleGamePaused() {
 		this.storeLiveStats.setGameState(InGameState.Paused)
-		this.messageHandler.sendMessage('GameState', InGameState.Paused);
 	}
 
 	async handleGameStart(settings: GameStartType | null) {

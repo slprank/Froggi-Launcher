@@ -56,7 +56,7 @@
 		"run-script-os": "^1.1.6",
 		"tsyringe": "^4.8.0",
 		"typed-emitter": "^2.1.0",
-		"ws": "^8.14.2"
+		"ws": "^8.15.1"
 	},
 	"devDependencies": {
 		"@types/discord-rpc": "^4.0.8",

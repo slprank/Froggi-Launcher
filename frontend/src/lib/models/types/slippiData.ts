@@ -75,6 +75,10 @@ export interface GameStats {
     timestamp: Date;
 }
 
+export interface RecentGameStats extends GameStats {
+    score: number[]
+}
+
 export interface Match {
     stats: MatchStats
     bestOf: BestOf

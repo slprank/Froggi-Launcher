@@ -19,6 +19,8 @@ import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter
 @singleton()
 export class ElectronLiveStatsStore {
 	private sceneTimeout: NodeJS.Timeout
+	private gameState: InGameState = InGameState.Inactive;
+	private gameFrame: FrameEntryType | undefined
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject("ElectronStore") private store: Store,
@@ -47,12 +49,13 @@ export class ElectronLiveStatsStore {
 	}
 
 	getGameFrame(): FrameEntryType | undefined {
-		return this.store.get('stats.game.frame') as FrameEntryType;
+		return this.gameFrame
 	}
 
 	setGameFrame(frameEntry: FrameEntryType | undefined | null) {
 		if (!frameEntry) return;
-		this.store.set('stats.game.frame', frameEntry);
+		this.gameFrame = frameEntry
+		this.messageHandler.sendMessage("GameFrame", frameEntry as FrameEntryType);
 	}
 
 	deleteGameFrame() {
@@ -60,11 +63,12 @@ export class ElectronLiveStatsStore {
 	}
 
 	getGameState(): InGameState | undefined {
-		return this.store.get('stats.game.state') as InGameState;
+		return this.gameState as InGameState;
 	}
 
 	setGameState(state: InGameState) {
-		return this.store.set('stats.game.state', state);
+		this.gameState = state;
+		this.messageHandler.sendMessage("GameState", state as InGameState);
 	}
 
 	getGameSettings(): GameStartTypeExtended | undefined {
@@ -113,15 +117,8 @@ export class ElectronLiveStatsStore {
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
 			this.messageHandler.sendMessage("CurrentPlayers", value as Player[]);
 		});
-		this.store.onDidChange(`stats.game.frame`, async (value) => {
-			this.messageHandler.sendMessage("GameFrame", value as FrameEntryType);
-		});
 		this.store.onDidChange(`stats.game.settings`, async (value) => {
 			this.messageHandler.sendMessage("GameSettings", value as GameStartTypeExtended);
-		});
-		this.store.onDidChange(`stats.game.state`, async (value) => {
-			console.log("Game State changed to", value)
-			this.messageHandler.sendMessage("GameState", value as InGameState);
 		});
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
 			this.messageHandler.sendMessage("PostGameStats", value as GameStats);

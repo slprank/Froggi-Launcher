@@ -11,7 +11,7 @@ import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 
 @singleton()
 export class DiscordRpc {
-	rpc: Client;
+	rpc: Client = new Client({ transport: 'ipc' });
 	activity: Presence;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
@@ -24,7 +24,6 @@ export class DiscordRpc {
 		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		if (this.dev) return;
-		this.rpc = new Client({ transport: 'ipc' });
 		this.rpc
 			.login({ clientId: '1143955754643112016' })
 			.catch((err) => this.log.error('err', err));

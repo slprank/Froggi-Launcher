@@ -6,7 +6,6 @@ import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronObsStore } from './store/storeObs';
 import { ElectronOverlayStore } from './store/storeOverlay';
-import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronSessionStore } from './store/storeSession';
@@ -14,15 +13,14 @@ import { ElectronDolphinStore } from './store/storeDolphin';
 import path from 'path';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmitter';
-import { WebSocketServer } from 'ws';
+import { Worker } from 'worker_threads';
 
 @singleton()
 export class MessageHandler {
 	private app: any;
 	private express: any;
 	private server: any;
-	private webSocketServer: any;
-	private connections: WebSocket[] = [];
+	private webSocketWorker: Worker = new Worker(path.join(__dirname, 'websocketWorker.js'));
 
 	constructor(
 		@inject('Dev') private dev: boolean,
@@ -52,7 +50,6 @@ export class MessageHandler {
 
 		this.app.use(cors());
 		this.server = http.createServer(this.app);
-		this.webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
 
 		this.initElectronMessageHandler();
 		if (!this.dev) this.initHtml();
@@ -78,7 +75,7 @@ export class MessageHandler {
 	private initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
 			let parse = JSON.parse(data);
-			for (const [key, value] of Object.entries(parse)) {
+			for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
 				this.svelteEmitter.emit(key as any, ...value as any);
 			}
 		});
@@ -89,35 +86,19 @@ export class MessageHandler {
 
 	private initWebSocket() {
 		try {
-			this.webSocketServer.on('connection', (socket: WebSocket) => {
-				this.log.info('New WebSocket Connection');
-				this.connections.push(socket);
-				this.receiveMessage(socket);
-				this.initData(socket);
-				console.log("Ws connections", this.connections.length)
+			this.webSocketWorker.on("message", (value: string) => {
+				const parse = JSON.parse(value);
+				for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
+					this.svelteEmitter.emit(key as any, ...value as any);
+				}
 			});
+			this.svelteEmitter.on("InitData", (socketId: string) => {
+				this.initData(socketId);
+			})
 		} catch (err) {
 			this.log.error(err);
 		}
 	}
-
-	private receiveMessage = (socket: WebSocket) => {
-		socket.addEventListener('message', (value) => {
-			let parse = JSON.parse(value.data);
-			for (const [key, value] of Object.entries(parse)) {
-				this.svelteEmitter.emit(key as any, ...value as any);
-			}
-		});
-		socket.addEventListener('close', () => {
-			console.log('WebSocket closed:');
-
-			const index = this.connections.indexOf(socket);
-			if (index > -1) {
-				this.connections.splice(index, 1);
-				console.log('Connection removed');
-			}
-		});
-	};
 
 	sendMessage<J extends keyof MessageEvents>(topic: J, ...payload: Parameters<MessageEvents[J]>) {
 		this.mainWindow.webContents.send(
@@ -126,47 +107,45 @@ export class MessageHandler {
 				[topic]: payload,
 			}),
 		);
-		this.connections.forEach((socket: any) => {
-			socket.send(
-				JSON.stringify({
-					[topic]: payload,
-				}),
-			);
-		});
+		this.webSocketWorker.postMessage(
+			JSON.stringify({
+				[topic]: payload,
+			}),
+		);
 		this.localEmitter.emit(topic, ...payload);
 	}
 
-	private sendInitMessage<J extends keyof MessageEvents>(socket: any, topic: J, ...payload: Parameters<MessageEvents[J]>) {
-		if (!socket) {
+	private sendInitMessage<J extends keyof MessageEvents>(socketId: string | undefined, topic: J, ...payload: Parameters<MessageEvents[J]>) {
+		if (!socketId) {
 			this.sendMessage(topic, ...payload);
 			return;
 		}
-		socket.send(
+		this.webSocketWorker.postMessage(
 			JSON.stringify({
-				[topic]: [...payload],
+				[topic]: payload,
 			}),
 		);
 	}
 
-	private initData(socket: WebSocket | undefined = undefined) {
-		this.sendInitMessage(socket, "CurrentPlayer", this.storeCurrentPlayer.getCurrentPlayer());
-		this.sendInitMessage(socket, "CurrentPlayers", this.storePlayers.getCurrentPlayers());
+	private initData(socketId: string | undefined = undefined) {
+		this.sendInitMessage(socketId, "CurrentPlayer", this.storeCurrentPlayer.getCurrentPlayer());
+		this.sendInitMessage(socketId, "CurrentPlayers", this.storePlayers.getCurrentPlayers());
 		this.sendInitMessage(
-			socket,
+			socketId,
 			"DolphinConnectionState",
 			this.storeDolphin.getDolphinConnectionState(),
 		);
-		this.sendInitMessage(socket, "GameScore", this.storeGames.getGameScore());
-		this.sendInitMessage(socket, "GameSettings", this.storeLiveStats.getGameSettings());
-		this.sendInitMessage(socket, "GameState", this.storeLiveStats.getGameState());
-		this.sendInitMessage(socket, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
-		this.sendInitMessage(socket, "Overlays", this.storeOverlay.getOverlays());
-		this.sendInitMessage(socket, "Obs", this.storeObs.getObs());
-		this.sendInitMessage(socket, "PostGameStats", this.storeLiveStats.getGameStats());
-		this.sendInitMessage(socket, "RecentGames", this.storeGames.getRecentGames());
-		this.sendInitMessage(socket, "RecentRankedSets", this.storeGames.getRecentRankedSets());
-		this.sendInitMessage(socket, "Url", this.storeSettings.getLocalUrl());
-		this.sendInitMessage(socket, "SessionStats", this.storeSession.getSessionStats());
+		this.sendInitMessage(socketId, "GameScore", this.storeGames.getGameScore());
+		this.sendInitMessage(socketId, "GameSettings", this.storeLiveStats.getGameSettings());
+		this.sendInitMessage(socketId, "GameState", this.storeLiveStats.getGameState());
+		this.sendInitMessage(socketId, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
+		this.sendInitMessage(socketId, "Overlays", this.storeOverlay.getOverlays());
+		this.sendInitMessage(socketId, "Obs", this.storeObs.getObs());
+		this.sendInitMessage(socketId, "PostGameStats", this.storeLiveStats.getGameStats());
+		this.sendInitMessage(socketId, "RecentGames", this.storeGames.getRecentGames());
+		this.sendInitMessage(socketId, "RecentRankedSets", this.storeGames.getRecentRankedSets());
+		this.sendInitMessage(socketId, "Url", this.storeSettings.getLocalUrl());
+		this.sendInitMessage(socketId, "SessionStats", this.storeSession.getSessionStats());
 	}
 
 	private initEventHandlers() {
