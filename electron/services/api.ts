@@ -11,8 +11,7 @@ export class Api {
 		this.log.info("Initializing Api")
 	}
 
-	async getPlayerRankStats(connectCode: string): Promise<RankedNetplayProfile | undefined> {
-		this.log.info("Attempting to fetch user:", connectCode)
+	async getPlayerRankStats(connectCode: string | undefined): Promise<RankedNetplayProfile | undefined> {
 		if (!connectCode) return undefined;
 		try {
 			const rankData = (await axios.get(`http://slprank.com/rank/${connectCode.replace('#', '-')}?raw`)).data as RankedNetplayProfile

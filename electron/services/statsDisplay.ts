@@ -86,7 +86,6 @@ export class StatsDisplay {
 	async handleGameStart(settings: GameStartType | null) {
 		if (!settings) return;
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
-		const currentPlayer = this.getCurrentPlayer(currentPlayers)!
 
 		this.storeLiveStats.setGameState(InGameState.Running)
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame)
@@ -97,20 +96,11 @@ export class StatsDisplay {
 
 		if (previousGame?.settings?.matchInfo.matchId === settings?.matchInfo?.matchId?.replace(/[.:]/g, '-')) return;
 		this.storeGames.clearRecentGames()
-
-		if (!currentPlayer?.rank?.current) return
-		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(currentPlayer.rank.current);
 	}
 
 	async handleGameEnd(gameEnd: GameEndType, latestGameFrame: FrameEntryType | null, settings: GameStartType) {
 		this.stopPauseInterval()
 		this.handleInGameState(gameEnd, latestGameFrame)
-
-		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
-		const currentPlayer = this.getCurrentPlayer(currentPlayers)
-
-		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
-
 
 		let gameStats = await this.getRecentGameStats(settings, gameEnd);
 		if (!gameStats) return;
@@ -126,12 +116,18 @@ export class StatsDisplay {
 		this.storeLiveStats.deleteGameFrame()
 	}
 
-	private handlePostGameScene(game: GameStats | null) {
+	private async handlePostGameScene(game: GameStats | null) {
 		if (isNil(game)) return;
 
 		const bestOf = this.storeLiveStats.getBestOf();
 		const isPostSet = game.score.some(score => score >= Math.ceil(bestOf / 2))
-		if (isPostSet) return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostSet, LiveStatsScene.Menu, 60000)
+		if (isPostSet) {
+			if (game.settings?.matchInfo.mode === "ranked") {
+				const currentPlayerRankStats = await this.api.getPlayerRankStats(this.storeSettings.getCurrentPlayerConnectCode())
+				this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
+			}
+			return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostSet, LiveStatsScene.Menu, 60000)
+		}
 		if (!isPostSet) return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostGame, LiveStatsScene.Menu, 60000)
 	}
 
@@ -154,6 +150,7 @@ export class StatsDisplay {
 
 	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
 		const currentPlayers = settings.players.filter(player => player)
+
 		if (currentPlayers.some(player => !player.connectCode))
 			return settings.players.filter(player => player).map((player, i: number) => {
 				return {
@@ -164,16 +161,12 @@ export class StatsDisplay {
 
 
 		return (await Promise.all(
-			currentPlayers.map(async (player: PlayerType) => await this.api.getPlayerWithRankStats(player))
+			currentPlayers.map(async (player: PlayerType) => {
+				if (player.connectCode === this.storeSettings.getCurrentPlayerConnectCode()) return this.storeCurrentPlayer.getCurrentPlayer()
+				return await this.api.getPlayerWithRankStats(player)
+			})
 		)).filter((player): player is Player => player !== undefined);
 	}
-
-	private getCurrentPlayer(players: Player[]): Player | undefined {
-		const connectCode = this.storeSettings.getCurrentPlayerConnectCode()
-		if (!connectCode) return;
-		return players.find(p => p.connectCode === connectCode);
-	}
-
 
 	private async getGameFiles(): Promise<string[] | undefined> {
 		const re = new RegExp('^Game_.*.slp$');
