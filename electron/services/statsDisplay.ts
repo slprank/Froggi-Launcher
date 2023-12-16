@@ -14,7 +14,7 @@ import { dateTimeNow, getGameMode } from '../utils/functions';
 import { analyzeMatch } from '../utils/analyzeMatch';
 import os from "os"
 import { debounce, isNil } from 'lodash';
-import { getGameScore, isTiedGame } from '../../frontend/src/lib/utils/gamePredicates';
+import { getWinnerIndex } from '../../frontend/src/lib/utils/gamePredicates';
 import { Command } from '../../frontend/src/lib/models/types/overlay';
 import { MessageHandler } from './messageHandler';
 
@@ -104,7 +104,6 @@ export class StatsDisplay {
 
 	async handleGameEnd(gameEnd: GameEndType, latestGameFrame: FrameEntryType | null, settings: GameStartType) {
 		this.stopPauseInterval()
-		const gameStats = await this.getRecentGameStats(settings, gameEnd);
 		this.handleInGameState(gameEnd, latestGameFrame)
 
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings)
@@ -112,17 +111,26 @@ export class StatsDisplay {
 
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayer?.rank?.current);
 
+
+		let gameStats = await this.getRecentGameStats(settings, gameEnd);
+		if (!gameStats) return;
+
+		const winnerIndex = getWinnerIndex(gameStats)
+		let score = this.storeGames.getGameScore()
+		if (!isNil(winnerIndex)) score[winnerIndex ?? 0] += 1
+		gameStats.score = score
+
+		this.storeGames.setGameScore(gameStats.score)
 		this.handleGameSetStats(gameStats)
 		this.handlePostGameScene(gameStats)
 		this.storeLiveStats.deleteGameFrame()
 	}
 
 	private handlePostGameScene(game: GameStats | null) {
-		if (isTiedGame(game)) return
+		if (isNil(game)) return;
 
-		const score = this.storeGames.getGameScore();
 		const bestOf = this.storeLiveStats.getBestOf();
-		const isPostSet = score.some(score => score >= Math.ceil(bestOf / 2))
+		const isPostSet = game.score.some(score => score >= Math.ceil(bestOf / 2))
 		if (isPostSet) return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostSet, LiveStatsScene.Menu, 60000)
 		if (!isPostSet) return this.storeLiveStats.setStatsSceneTimeout(LiveStatsScene.PostGame, LiveStatsScene.Menu, 60000)
 	}
@@ -134,20 +142,18 @@ export class StatsDisplay {
 	}
 
 	private handleGameSetStats(gameStats: GameStats | null) {
+		if (!gameStats) return;
 		this.storeLiveStats.setGameStats(gameStats)
 		this.storeGames.setGameMatch(gameStats)
 		const games = this.storeGames.getRecentGames()
 		if (!games || !games?.length) return;
 
-		const score = getGameScore(games)
-		this.storeGames.setGameScore(score)
-
 		const matchStats = analyzeMatch(games.flat().filter(game => !game.isMock))
 		this.storeLiveStats.setMatchStats(matchStats)
 	}
 
-	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<(Player)[]> {
-		let currentPlayers = settings.players.filter(player => player)
+	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
+		const currentPlayers = settings.players.filter(player => player)
 		if (currentPlayers.some(player => !player.connectCode))
 			return settings.players.filter(player => player).map((player, i: number) => {
 				return {
@@ -155,6 +161,7 @@ export class StatsDisplay {
 					rank: this.storePlayers.getCurrentPlayers()?.at(i)?.rank
 				}
 			})
+
 
 		return (await Promise.all(
 			currentPlayers.map(async (player: PlayerType) => await this.api.getPlayerWithRankStats(player))
@@ -199,7 +206,6 @@ export class StatsDisplay {
 		return replayFiles.sort((a, b) => a > b ? -1 : 1);
 	}
 
-	// TODO: Test
 	private getReplayDirs = async (root: string, subFolder: string | undefined) => {
 		let filesFromRoot: string[] = []
 		let filesFromSpectate: string[] = [];
@@ -237,22 +243,8 @@ export class StatsDisplay {
 			})
 		if (!file) return null;
 		this.log.info("Analyzing recent game file:", file)
-		const game = new SlippiGame(file)
+		let game = new SlippiGame(file)
 		return this.getGameStats(game, gameEnd)
-	}
-
-	async getRecentSetStats(settings: GameStartType): Promise<GameStats[] | null> {
-		const files = await this.getGameFiles();
-		if (!files || !files.length) return null;
-		const matchId = settings.matchInfo?.matchId
-		const setFiles = files.filter(file => {
-			const settings = new SlippiGame(file).getSettings();
-			return settings?.matchInfo?.matchId === matchId;
-		})
-		if (!setFiles.length) return null;
-		this.log.info("Analyzing recent set files:", files)
-		const gamesStats = setFiles.map(file => this.getGameStats(new SlippiGame(file))).filter((game): game is GameStats => game !== null)
-		return gamesStats
 	}
 
 	private async handleUndefinedPlayers(settings: GameStartType | null | undefined) {

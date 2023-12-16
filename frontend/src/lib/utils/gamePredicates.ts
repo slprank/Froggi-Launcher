@@ -1,20 +1,22 @@
-import type { GameStats } from "../../lib/models/types/slippiData";
-import type { FrameEntryType, GameEndType } from "@slippi/slippi-js";
+import type { GameStartMode, GameStats } from "../../lib/models/types/slippiData";
+import type { FrameEntryType, GameStartType } from "@slippi/slippi-js";
 import { isNil } from "lodash";
 
 // TODO: Figure out how tied game placements look
-export const getWinnerIndex = (gameEnd: GameEndType | undefined): number | undefined => {
-    if (!gameEnd) return;
-    const lrasIndex = gameEnd.lrasInitiatorIndex ?? -1
+export const getWinnerIndex = (game: GameStats | undefined): number | undefined => {
+    if (!game) return;
+    if (isTiedGame(game)) return
+    const lrasIndex = game.gameEnd.lrasInitiatorIndex ?? -1
     if (lrasIndex >= 0) return lrasIndex === 0 ? 1 : 0
 
-    const placements = gameEnd.placements;
+    const placements = game.gameEnd.placements;
     if (placements.filter(placement => placement.position === 0).length >= 2) return
     return placements.find(placement => placement.position === 0)?.playerIndex
 }
 
 export const isTiedGame = (game: GameStats | undefined | null) => {
     if (!game) return false
+    if (hasGameBombRain(game)) return true
     const players = Object.entries(game.lastFrame.players).map(([_, player]) => player)
     if (players.every((player) => isNil(player) || player.post.stocksRemaining === 0)) return true
     if (players.every(player => {
@@ -32,12 +34,16 @@ export const getGameScore = (recentGames: GameStats[][]) => {
 
             if (isTiedGame(game)) return score
 
-            const winnerIndex = getWinnerIndex(game?.gameEnd)
+            const winnerIndex = getWinnerIndex(game)
             if (isNil(winnerIndex)) return score
             score[winnerIndex] += 1
             return score
         }, [0, 0]) ?? [0, 0]
     return gameScore
+}
+
+export const getGameMode = (settings: GameStartType): GameStartMode => {
+    return settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) as GameStartMode ?? "local";
 }
 
 
@@ -52,3 +58,8 @@ export const hasStocksRemaining = (
 ) => {
     return (frame?.players?.[playerIndex]?.post.stocksRemaining ?? 0) >= stocks;
 };
+
+export const hasGameBombRain = (game: GameStats): boolean => {
+    if (game.settings?.gameInfoBlock?.bombRainEnabled) return true
+    return false
+}

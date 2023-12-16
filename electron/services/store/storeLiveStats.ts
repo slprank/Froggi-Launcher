@@ -105,7 +105,7 @@ export class ElectronLiveStatsStore {
 	}
 
 	getBestOf(): BestOf {
-		return this.store.get("stats.match.bestOf") as BestOf
+		return (this.store.get("stats.match.bestOf") ?? BestOf.BestOf3) as BestOf
 	}
 
 	initListeners() {

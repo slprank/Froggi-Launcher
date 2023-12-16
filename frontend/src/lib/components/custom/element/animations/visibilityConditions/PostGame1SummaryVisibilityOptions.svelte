@@ -16,7 +16,7 @@
 		const gameIndex = recentGames.length > 5 ? 4 : 0;
 		const game = recentGames.at(gameIndex)?.at(-1);
 
-		const winnerIndex = getWinnerIndex(game?.gameEnd);
+		const winnerIndex = getWinnerIndex(game);
 
 		if (option[VisibilityOption.PostGame1SummaryCompleted] === VisibilityToggle.True)
 			if (game) return true;

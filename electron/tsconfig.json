@@ -30,7 +30,7 @@
 		".",
 		"../test",
 		"../frontend/src/lib/utils/gamePredicates.ts",
-		"../electron/services/websocketWorker.ts"
+		"services/workers/websocketWorker.ts"
 	],
 	"exclude": ["node_modules"]
 }

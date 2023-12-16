@@ -8,7 +8,7 @@ import { PlayerType } from '@slippi/slippi-js';
 import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
-import { isTiedGame } from '../../../frontend/src/lib/utils/gamePredicates';
+import { getGameScore, hasGameBombRain, isTiedGame } from '../../../frontend/src/lib/utils/gamePredicates';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 
 
@@ -48,8 +48,8 @@ export class ElectronGamesStore {
         return (this.store.get('stats.game.score') ?? [0, 0]) as number[];
     }
 
-    setGameScore(score: number[]) {
-        this.store.set('stats.game.score', score);
+    setGameScore(score: number[] | undefined) {
+        this.store.set('stats.game.score', score ?? [0, 0]);
     }
 
     setGameMatch(gameStats: GameStats | null) {
@@ -87,7 +87,8 @@ export class ElectronGamesStore {
     }
 
     getRecentGames(): GameStats[][] {
-        return (this.store.get(`player.any.game.recent`) ?? []) as GameStats[][]
+        const recentGames = (this.store.get(`player.any.game.recent`) ?? []) as GameStats[][]
+        return this.applyRecentGameScore(recentGames)
     }
 
     addRecentGames(newGame: GameStats) {
@@ -107,7 +108,7 @@ export class ElectronGamesStore {
     }
 
     private handleOfflineGame(newGame: GameStats) {
-        if (this.hasGameBombRain(newGame)) return;
+        if (hasGameBombRain(newGame)) return;
 
         const prevGames = this.getRecentGames()
         const currentGame = prevGames.at(0)
@@ -125,11 +126,6 @@ export class ElectronGamesStore {
         return false
     }
 
-    private hasGameBombRain(game: GameStats): boolean {
-        if (game.settings?.gameInfoBlock?.bombRainEnabled) return true
-        return false
-    }
-
     clearRecentGames() {
         this.store.set(`player.any.game.recent`, [])
         this.setGameScore([0, 0])
@@ -141,20 +137,24 @@ export class ElectronGamesStore {
         return this.store.get(`player.${connectCode}.game`) as Sets | undefined;
     }
 
-    getRecentSets(number = 10): GameStats[] | undefined {
-        const sets = this.getAllSetsByMode("ranked"); // TODO: Fix
-        if (!sets) return []
-        return sets["recent"]?.sort((a, b) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number) ?? [];
-    }
-
     getRecentSetsByMode(mode: GameStartMode, number = 10): GameStats[] {
         const sets = this.getAllSets();
         if (!sets) return []
-        return (sets[mode ?? "recent"]?.sort((a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)) ?? [];
+        return (sets[mode]?.sort((a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf()).slice(0, number)) ?? [];
+    }
+
+    private applyRecentGameScore(games: GameStats[][]) {
+        for (let [i, game] of games.entries()) {
+            const score = getGameScore(games.slice(0, i + 1))
+            for (let g of game) {
+                g.score = score
+            }
+        }
+        return games
     }
 
     private initEventListeners() {
-        this.svelteEmitter.on("RecentGamesReset", () => { console.log("Deleted"), this.clearRecentGames() })
+        this.svelteEmitter.on("RecentGamesReset", this.clearRecentGames)
     }
 
     private initStoreListeners() {
@@ -162,8 +162,7 @@ export class ElectronGamesStore {
             this.messageHandler.sendMessage("GameScore", value as number[]);
         })
         this.store.onDidChange("player.any.game.recent", async (value) => {
-            console.log("RecentGames", value)
-            const recentGames = value as GameStats[][]
+            const recentGames = this.applyRecentGameScore((value ?? []) as GameStats[][])
             this.messageHandler.sendMessage("RecentGames", recentGames);
         })
     }

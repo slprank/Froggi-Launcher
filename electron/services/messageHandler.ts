@@ -20,7 +20,7 @@ export class MessageHandler {
 	private app: any;
 	private express: any;
 	private server: any;
-	private webSocketWorker: Worker = new Worker(path.join(__dirname, 'websocketWorker.js'));
+	private webSocketWorker: Worker = new Worker(path.join(__dirname, 'workers/websocketWorker.js'));
 
 	constructor(
 		@inject('Dev') private dev: boolean,

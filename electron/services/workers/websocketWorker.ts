@@ -1,8 +1,8 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { WEBSOCKET_PORT } from '../../frontend/src/lib/models/const';
-import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmitter';
+import { WEBSOCKET_PORT } from '../../../frontend/src/lib/models/const';
+import type { MessageEvents } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { parentPort } from 'worker_threads';
-import { newId } from '../utils/functions';
+import { newId } from '../../utils/functions';
 
 const webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
 const connections: Connection[] = [];
