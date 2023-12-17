@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import NonInteractiveIFrame from './preview/NonInteractiveIFrame.svelte';
-	import { urls, isElectron, statsScene } from '$lib/utils/store.svelte';
+	import { urls, isElectron, statsScene, isMobile } from '$lib/utils/store.svelte';
 	import SceneSelect from './selector/SceneSelect.svelte';
 	import ConfirmModal from '../ConfirmModal.svelte';
 	import {
@@ -16,6 +16,7 @@
 	export let open = false;
 	export let overlay: Overlay | undefined;
 
+	$: isHorizontal = (overlay?.aspectRatio.width ?? 0) > (overlay?.aspectRatio.height ?? 0);
 	let deleteOverlayModalOpen = false;
 	let isEmbedModalOpen = false;
 
@@ -45,7 +46,8 @@
 			<h1 class="font-bold text-3xl text-white">{overlay?.title}</h1>
 		</div>
 		<div
-			class="flex-1 aspect-video max-h-full h-full border-2 border-gray-500"
+			class={`flex-1 aspect-[16/9] ${$isMobile && isHorizontal ? "max-h-56" : "max-h-full"} h-full border-2 border-gray-500`}
+			style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
 			bind:this={parentDiv}
 		>
 			<div style={`height: ${parentDiv?.clientHeight}px; width: ${parentDiv?.clientWidth}px`}>
