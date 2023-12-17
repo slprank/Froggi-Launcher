@@ -49,7 +49,7 @@
 				(() => {
 					const value = payload[0] as Parameters<
 						MessageEvents['Authorize']
-					>[0];console.log("Authorize", value)
+					>[0];
 
 					if (!value) return;
 					isAuthorized.set(value);
@@ -271,7 +271,7 @@
 
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = () => {
-			_electronEmitter.onAny((event, ...data) => {
+			_electronEmitter.onAny((event, data) => {
 				socket.send(JSON.stringify({ [event as string]: data, authorizationElectron: localStorage.getItem('authorizationKey') ?? ""  }));
 			});
 		};

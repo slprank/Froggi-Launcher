@@ -14,8 +14,6 @@
 
 	let ready: boolean = false;
 
-	$: console.log("Authorized", $isAuthorized)
-
 	onMount(async () => {
 		await initClient();
 		ready = true;
