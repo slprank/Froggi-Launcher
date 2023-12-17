@@ -14,6 +14,7 @@ export enum AnimationTrigger {
     InGamePlayer2CharacterChange = "Player2 Character Change",
 
     MatchBestOfChange = "Match Best Of Change",
+    MatchGameModeChange = "Match Best Of Change",
     MatchPlayer1TagChange = "Player 1 Tag Change",
     MatchPlayer2TagChange = "Player 2 Tag Change",
     MatchPlayer1ScoreChange = "Player 1 Score Change",

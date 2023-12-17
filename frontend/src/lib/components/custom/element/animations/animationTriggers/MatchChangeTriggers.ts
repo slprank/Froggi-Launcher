@@ -10,6 +10,8 @@ export const matchStateTrigger = (option: SelectedAnimationTriggerOption, curren
 
 	if (option[AnimationTrigger.MatchBestOfChange])
 		trigger = gameSettings.matchInfo.bestOf !== prevSettings?.matchInfo.bestOf || trigger
+	if (option[AnimationTrigger.MatchBestOfChange])
+		trigger = gameSettings.matchInfo.mode !== prevSettings?.matchInfo.mode || trigger
 	if (option[AnimationTrigger.MatchPlayer1TagChange])
 		trigger = currentPlayers.at(0)?.displayName !== prevPlayers?.at(0)?.displayName || trigger
 	if (option[AnimationTrigger.MatchPlayer2TagChange])

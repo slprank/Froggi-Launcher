@@ -23,6 +23,14 @@
 	Best Of Change
 </SelectAnimationTriggerOption>
 <SelectAnimationTriggerOption
+	description="When changing game mode"
+	value={AnimationTrigger.MatchGameModeChange}
+	bind:selected={selectedOption[AnimationTrigger.MatchGameModeChange]}
+	on:select={select}
+>
+	Game Mode Change
+</SelectAnimationTriggerOption>
+<SelectAnimationTriggerOption
 	description="When Player 1 Tag Changes"
 	value={AnimationTrigger.MatchPlayer1TagChange}
 	bind:selected={selectedOption[AnimationTrigger.MatchPlayer1TagChange]}

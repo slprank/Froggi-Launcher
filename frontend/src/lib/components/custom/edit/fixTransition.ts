@@ -20,6 +20,13 @@ const fixCharacterTransition = (item: GridContentItem): GridContentItem => {
     }
     if (
         [
+            CustomElement.MatchGameMode,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchGameModeChange] = true;
+    }
+    if (
+        [
             CustomElement.MatchPlayer1Tag,
         ].includes(item.elementId)
     ) {
