@@ -272,7 +272,7 @@
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = () => {
 			_electronEmitter.onAny((event, ...data) => {
-				socket.send(JSON.stringify({ [event as string]: data, authorizationElectron: localStorage.getItem('authorizationElectron') ?? ""  }));
+				socket.send(JSON.stringify({ [event as string]: data, authorizationElectron: localStorage.getItem('authorizationKey') ?? ""  }));
 			});
 		};
 		socket.onclose = () => {

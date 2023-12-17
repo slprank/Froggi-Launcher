@@ -91,7 +91,7 @@ export class MessageHandler {
 				const parse = JSON.parse(value);
 				for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
 					sendAuthenticatedMessage(
-						parse["authorizationElectron"],
+						parse["authorizationKey"],
 						this.storeSettings.getAuthorizationKey(),
 						this.svelteEmitter,
 						key as keyof MessageEvents,
