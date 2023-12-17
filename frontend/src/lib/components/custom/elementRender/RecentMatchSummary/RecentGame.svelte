@@ -35,12 +35,6 @@
 			: 'Local'}
 	</TextElement>
 {/if}
-
-{#if dataItem?.elementId === CustomElement.MatchBestOf}
-	<TextElement {style} {dataItem}>
-		{defaultPreview ? BestOf.BestOf3 : $gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3}
-	</TextElement>
-{/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGameRecentPlayer1Score}
 	<TextElement {style} {dataItem}>
 		{defaultPreview ? `1` : $gameScore.at(0) ? $gameScore[0] : '0'}

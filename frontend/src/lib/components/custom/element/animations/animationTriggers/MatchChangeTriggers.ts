@@ -4,12 +4,8 @@ import {
 	type SelectedAnimationTriggerOption,
 } from '$lib/models/types/animationOption';
 import { GameStartTypeExtended, Player } from '$lib/models/types/slippiData';
-import { GameStartType } from '@slippi/slippi-js';
 
-let prevScore: number[] | undefined;
-let prevPlayers: Player[] | undefined;
-let prevSettings: GameStartTypeExtended | undefined;
-export const matchStateTrigger = (option: SelectedAnimationTriggerOption, currentPlayers: Player[], score: number[], gameSettings: GameStartTypeExtended) => {
+export const matchStateTrigger = (option: SelectedAnimationTriggerOption, currentPlayers: Player[], prevPlayers: Player[] | undefined, score: number[], prevScore: number[] | undefined, gameSettings: GameStartTypeExtended, prevSettings: GameStartTypeExtended | undefined) => {
 	let trigger = false;
 
 	if (option[AnimationTrigger.MatchBestOfChange])
@@ -24,7 +20,6 @@ export const matchStateTrigger = (option: SelectedAnimationTriggerOption, curren
 
 	if (option[AnimationTrigger.MatchPlayer2ScoreChange])
 		trigger = prevScore?.at(1) !== score.at(1) || trigger;
-
 
 	prevScore = score;
 	prevSettings = gameSettings;

@@ -49,7 +49,7 @@
 					const value = payload[0] as Parameters<MessageEvents['AutoUpdaterStatus']>[0];
 					if (!value) return;
 					autoUpdater.update((autoUpdater: AutoUpdater) => {
-						return { ...autoUpdater, status: payload[0] };
+						return { ...autoUpdater, status: value };
 					});
 				})();
 				break;
@@ -58,7 +58,7 @@
 					const value = payload[0] as Parameters<MessageEvents['AutoUpdaterVersion']>[0];
 					if (!value) return;
 					autoUpdater.update((autoUpdater: AutoUpdater) => {
-						return { ...autoUpdater, version: payload[0] };
+						return { ...autoUpdater, version: value };
 					});
 				})();
 				break;

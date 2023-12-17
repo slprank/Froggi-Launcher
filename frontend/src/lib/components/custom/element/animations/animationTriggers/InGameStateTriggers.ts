@@ -12,8 +12,8 @@ import type { FrameEntryType } from '@slippi/slippi-js';
 export const inGameStateTrigger = (
 	option: SelectedAnimationTriggerOption,
 	gameSettings: GameStartTypeExtended,
-	prevGameFrame: FrameEntryType | null | undefined,
 	gameFrame: FrameEntryType | null | undefined,
+	prevGameFrame: FrameEntryType | null | undefined,
 ) => {
 	if (!gameFrame) return;
 	let trigger = false;
@@ -35,8 +35,8 @@ export const inGameStateTrigger = (
 export const currentPlayerInGameTrigger = (
 	option: SelectedAnimationTriggerOption,
 	player: CurrentPlayer | undefined,
-	prevGameFrame: FrameEntryType | null | undefined,
 	gameFrame: FrameEntryType | null | undefined,
+	prevGameFrame: FrameEntryType | null | undefined,
 ) => {
 	if (!player || !gameFrame) return;
 	let trigger = false;
@@ -65,8 +65,8 @@ export const currentPlayerInGameTrigger = (
 export const player1InGameTrigger = (
 	option: SelectedAnimationTriggerOption,
 	player: Player | undefined,
-	prevGameFrame: FrameEntryType | null | undefined,
 	gameFrame: FrameEntryType | null | undefined,
+	prevGameFrame: FrameEntryType | null | undefined,
 ) => {
 	if (!player || !gameFrame) return;
 	let trigger: boolean = false;
@@ -96,8 +96,8 @@ export const player1InGameTrigger = (
 export const player2InGameTrigger = (
 	option: SelectedAnimationTriggerOption,
 	player: Player | undefined,
-	prevGameFrame: FrameEntryType | null | undefined,
 	gameFrame: FrameEntryType | null | undefined,
+	prevGameFrame: FrameEntryType | null | undefined,
 ) => {
 	if (!player || !gameFrame) return;
 	let trigger = false;

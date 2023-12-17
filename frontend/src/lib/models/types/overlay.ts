@@ -4,7 +4,7 @@ import type { CustomElement } from '../constants/customElement';
 import type { SelectedAnimationTriggerOption, SelectedVisibilityOption } from './animationOption';
 
 export interface AutoUpdater {
-	progress: number | undefined;
+	progress: string | undefined;
 	status: AutoUpdaterStatus;
 	version: string | undefined;
 }

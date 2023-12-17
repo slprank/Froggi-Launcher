@@ -19,6 +19,7 @@
 	import { matchStateTrigger } from '$lib/components/custom/element/animations/animationTriggers/MatchChangeTriggers';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import { cloneDeep } from 'lodash';
+	import { GameStartTypeExtended, Player } from '$lib/models/types/slippiData';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -26,15 +27,18 @@
 
 	let key: number | undefined = 0;
 	let prevGameFrame: FrameEntryType | null | undefined
+	let prevScore: number[] | undefined;
+	let prevPlayers: Player[] | undefined;
+	let prevSettings: GameStartTypeExtended | undefined;
 	const updateKeyValue = (): number | undefined => {
 		if (!dataItem) return;
 		const option = dataItem.data.animationTrigger.selectedOptions;
 
-		if (inGameStateTrigger(option, $gameSettings,prevGameFrame, $gameFrame)) return Math.random();
-		if (currentPlayerInGameTrigger(option, $currentPlayer,prevGameFrame, $gameFrame)) return Math.random();
-		if (player1InGameTrigger(option, $currentPlayers?.at(0),prevGameFrame, $gameFrame)) return Math.random();
-		if (player2InGameTrigger(option, $currentPlayers?.at(1),prevGameFrame, $gameFrame)) return Math.random();
-		if (matchStateTrigger(option, $currentPlayers, $gameScore, $gameSettings)) return Math.random();
+		if (inGameStateTrigger(option, $gameSettings, $gameFrame, prevGameFrame)) return Math.random();
+		if (currentPlayerInGameTrigger(option, $currentPlayer, $gameFrame, prevGameFrame)) return Math.random();
+		if (player1InGameTrigger(option, $currentPlayers?.at(0), $gameFrame, prevGameFrame)) return Math.random();
+		if (player2InGameTrigger(option, $currentPlayers?.at(1), $gameFrame, prevGameFrame)) return Math.random();
+		if (matchStateTrigger(option, $currentPlayers, prevPlayers, $gameScore, prevScore, $gameSettings, prevSettings)) return Math.random();
 		if (rankStateTrigger(option, $currentPlayer)) return Math.random();
 
 		return key;
@@ -45,7 +49,7 @@
 		prevGameFrame = cloneDeep($gameFrame);
 	};
 
-	$: $gameFrame, $currentPlayer, updateTriggerValues();
+	$: $gameFrame, $currentPlayer, $gameSettings, updateTriggerValues();
 
 	onMount(() => {
 		const handler = () => {
