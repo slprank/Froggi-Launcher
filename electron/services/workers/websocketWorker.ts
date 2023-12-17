@@ -3,6 +3,7 @@ import { WEBSOCKET_PORT } from '../../../frontend/src/lib/models/const';
 import type { MessageEvents } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { parentPort } from 'worker_threads';
 import { newId } from '../../utils/functions';
+import { isNil } from 'lodash';
 
 const webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
 const connections: Connection[] = [];
@@ -42,13 +43,19 @@ const initSocket = (socket: WebSocket) => {
 parentPort?.on("message", <J extends keyof MessageEvents>(message: string) => {
     const parse = JSON.parse(message);
     for (const [topic, payload] of Object.entries(parse) as [topic: J, payload: Parameters<MessageEvents[J]>]) {
-        connections.forEach((conn: any) => {
-            conn.socket.send(
-                JSON.stringify({
-                    [`${topic}`]: payload,
-                }),
-            );
-        });
+        if (isNil(parse["socketId"])) {
+            connections.forEach((conn: any) => {
+                conn.socket.send(
+                    JSON.stringify({
+                        [`${topic}`]: payload,
+                    }),
+                );
+            });
+        } else {
+            connections.find(conn => conn.id === parse["socketId"])?.socket.send(JSON.stringify({
+                [`${topic}`]: payload,
+            }),)
+        }
     }
 })
 

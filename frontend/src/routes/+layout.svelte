@@ -6,13 +6,15 @@
 	import '$lib/styles/tooltip.css';
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import { isElectron, isOverlayPage, localEmitter } from '$lib/utils/store.svelte';
+	import { isAuthorized, isElectron, isOverlayPage, localEmitter } from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { initClient } from '$lib/utils/init.svelte';
 	import { page } from '$app/stores';
 
 	let ready: boolean = false;
+
+	$: console.log("Authorized", $isAuthorized)
 
 	onMount(async () => {
 		await initClient();

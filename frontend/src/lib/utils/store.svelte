@@ -25,6 +25,7 @@
 	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());
 	export const electronEmitter = writable<TypedEmitter>(new TypedEmitter());
 
+	export const isAuthorized = writable<boolean>(Boolean(window.electron));
 	export const isBrowser = writable<boolean>(!window.electron && browser);
 	export const isDesktop = writable<boolean>(
 		!window.electron && browser && !Device.isMobile && !Device.isTablet,

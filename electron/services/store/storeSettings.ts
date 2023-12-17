@@ -9,6 +9,7 @@ import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
+import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 
 @singleton()
 export class ElectronSettingsStore {
@@ -19,17 +20,20 @@ export class ElectronSettingsStore {
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('Port') private port: string,
 		@inject("ElectronStore") private store: Store,
+		@inject("SvelteEmitter") private svelteEmitter: TypedEmitter,
 		@inject(delay(() => ElectronCurrentPlayerStore))
 		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		this.log.info('Initializing Settings Store');
-		this.initListeners();
+		this.initStoreListeners();
+		this.initEventListeners()
 		this.updateSlippiSettings();
 	}
 
 	getAuthorizationKey(): string {
 		return this.store.get('settings.authorization.key') as string ?? "";
 	}
+
 	setAuthorizationKey(key: string) {
 		this.store.set('settings.authorization.key', key);
 	}
@@ -94,9 +98,15 @@ export class ElectronSettingsStore {
 		};
 	}
 
-	initListeners() {
+	initStoreListeners() {
 		this.store.onDidChange(`settings.currentPlayer`, async () => {
 			this.storeCurrentPlayer.updateCurrentPlayerConnectCode();
 		});
+	}
+
+	initEventListeners() {
+		this.svelteEmitter.on("AuthorizationKey", (key: string) => {
+			this.setAuthorizationKey(key);
+		})
 	}
 }

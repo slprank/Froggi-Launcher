@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { isAuthorized } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
 
 	console.log('here');
@@ -34,12 +35,14 @@
 			>
 				OBS Settings
 			</button>
-			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
-				on:click={() => goto('/obs/dashboard')}
-			>
-				Dashboard
-			</button>
+			{#if $isAuthorized}
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+					on:click={() => goto('/obs/dashboard')}
+				>
+					Dashboard
+				</button>
+			{/if}
 		</div>
 	</div>
 </main>

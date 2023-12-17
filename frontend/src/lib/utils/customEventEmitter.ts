@@ -8,6 +8,7 @@ import localEmitter from "eventemitter2"
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types"
 
 export interface MessageEvents {
+    Authorize: (isAuthorized: boolean) => void
     AutoUpdaterProgress: (progress: string | undefined) => void
     AutoUpdaterStatus: (status: AutoUpdaterStatus) => void
     AutoUpdaterVersion: (version: string | undefined) => void
@@ -21,7 +22,7 @@ export interface MessageEvents {
     GameSettings: (settings: GameStartTypeExtended | undefined) => void
     GameState: (state: InGameState | undefined) => void
     InitElectron: () => void
-    InitData: (socketId: string) => void
+    InitData: (socketId: string, authorizeKey: string | undefined) => void
     LayerPreviewChange: (layerIndex: number) => void
     CurrentMatch: (match: Match) => void
     MemoryControllerInput: (controllerInputs: PlayerController) => void
@@ -44,6 +45,8 @@ export interface MessageEvents {
     OverlayUpdate: (overlay: Overlay) => void
     OverlayUpload: () => void
     SelectedItemChange: (itemId: string) => void
+
+    AuthorizationKey: (key: string) => void
 
     AddObsCommand: <Type extends keyof OBSRequestTypes>(
         requestType: Type,

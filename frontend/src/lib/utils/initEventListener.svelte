@@ -23,6 +23,7 @@
 		obsConnection,
 		obs,
 		currentOverlayEditor,
+		isAuthorized,
 	} from '$lib/utils/store.svelte';
 	import { getElectronEmitter, getPage } from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
@@ -42,6 +43,16 @@
 					>[0];
 					if (!value) return;
 					memoryReadController.set(value);
+				})();
+				break;
+			case "Authorize":
+				(() => {
+					const value = payload[0] as Parameters<
+						MessageEvents['Authorize']
+					>[0];console.log("Authorize", value)
+
+					if (!value) return;
+					isAuthorized.set(value);
 				})();
 				break;
 			case 'AutoUpdaterStatus':

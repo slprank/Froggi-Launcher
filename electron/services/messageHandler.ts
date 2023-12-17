@@ -152,13 +152,19 @@ export class MessageHandler {
 		this.sendInitMessage(socketId, "SessionStats", this.storeSession.getSessionStats());
 	}
 
+	private sendAuthorizedMessage(socketId: string, clientKey: string) {
+		const serverKey = this.storeSettings.getAuthorizationKey()
+		const isAuthorized = !serverKey || clientKey === serverKey;
+		this.sendInitMessage(socketId, "Authorize", isAuthorized);
+	}
+
 	private initEventListeners() {
 		this.svelteEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 			this.sendMessage('LayerPreviewChange', layerIndex);
 		});
-		this.svelteEmitter.on("InitData", (socketId: string) => {
+		this.svelteEmitter.on("InitData", (socketId: string, authorizeKey: string | undefined) => {
 			this.initData(socketId);
+			this.sendAuthorizedMessage(socketId, authorizeKey ?? "");
 		})
 	}
-
 }
