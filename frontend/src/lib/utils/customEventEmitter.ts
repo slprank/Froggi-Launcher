@@ -46,7 +46,9 @@ export interface MessageEvents {
     OverlayUpload: () => void
     SelectedItemChange: (itemId: string) => void
 
+
     AuthorizationKey: (key: string) => void
+    InitAuthentication: (payload: [socketId: string, authKey: string]) => void
 
     AddObsCommand: <Type extends keyof OBSRequestTypes>(
         requestType: Type,
@@ -62,6 +64,8 @@ export interface MessageEvents {
     TestAnimationTrigger: () => void
     TestCustomAnimationTrigger: () => void
     TestVisibilityTrigger: () => void
+
+    Ping: () => void
 }
 
 export class TypedEmitter extends localEmitter {

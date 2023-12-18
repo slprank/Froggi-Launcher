@@ -95,7 +95,7 @@ export class MessageHandler {
 						this.storeSettings.getAuthorizationKey(),
 						this.svelteEmitter,
 						key as keyof MessageEvents,
-						value)
+						value as any)
 				}
 			});
 
@@ -155,6 +155,7 @@ export class MessageHandler {
 	private sendAuthorizedMessage(socketId: string, clientKey: string) {
 		const serverKey = this.storeSettings.getAuthorizationKey()
 		const isAuthorized = !serverKey || clientKey === serverKey;
+		console.log("Server Key", serverKey, "Client Key", clientKey)
 		this.sendInitMessage(socketId, "Authorize", isAuthorized);
 	}
 
@@ -162,9 +163,12 @@ export class MessageHandler {
 		this.svelteEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 			this.sendMessage('LayerPreviewChange', layerIndex);
 		});
-		this.svelteEmitter.on("InitData", (socketId: string, authorizeKey: string | undefined) => {
+		this.svelteEmitter.on("InitData", (socketId: string) => {
 			this.initData(socketId);
-			this.sendAuthorizedMessage(socketId, authorizeKey ?? "");
+		})
+		this.svelteEmitter.on("InitAuthentication", (payload) => {
+			console.log("InitAuthentication", payload[0], payload[1])
+			this.sendAuthorizedMessage(payload[0], payload[1] ?? "");
 		})
 	}
 }

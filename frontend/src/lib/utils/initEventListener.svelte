@@ -271,9 +271,11 @@
 
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = () => {
+			const authorizationKey = localStorage.getItem('authorizationKey') ?? "";
 			_electronEmitter.onAny((event, data) => {
-				socket.send(JSON.stringify({ [event as string]: data, authorizationElectron: localStorage.getItem('authorizationKey') ?? ""  }));
+				socket.send(JSON.stringify({ [event as string]: data, authorizationKey: authorizationKey  }));
 			});
+			_electronEmitter.emit("Ping");
 		};
 		socket.onclose = () => {
 			setTimeout(reload, 1000);
