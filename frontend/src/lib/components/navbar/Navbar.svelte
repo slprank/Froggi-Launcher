@@ -115,11 +115,9 @@
 					<NavButton click={() => (isMobileOpen = true)}>
 						<img src="/image/button-icons/mobile.png" alt="mobile" />
 					</NavButton>
-					{#if $isElectron}
-						<NavButton click={() => goto('/settings')}>
-							<img src="/image/button-icons/settings.png" alt="settings" />
-						</NavButton>
-					{/if}
+					<NavButton click={() => goto('/settings')}>
+						<img src="/image/button-icons/settings.png" alt="settings" />
+					</NavButton>
 				</div>
 				<div class="fixed bottom-4">
 					<ConnectionStateButton

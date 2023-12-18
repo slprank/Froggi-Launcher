@@ -1,17 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { electronEmitter, isAuthorized, isElectron } from '$lib/utils/store.svelte';
+	import { isAuthorized } from '$lib/utils/store.svelte';
 
-	const authenticate = async (key: string) => {
-		localStorage.setItem('authorizationKey', key);
-		location.reload();
-	}
-
-	const updateKey = async (key: string) => {
-		$electronEmitter.emit('AuthorizationKey', key);
-	}
-
-	let authorizationKey: string = localStorage.getItem('authorizationKey') ?? "";
 </script>
 
 <main
@@ -29,19 +19,9 @@
 		>
 			<h1 class="text-xl font-bold text-white shadow-md">Authentication - <span class={`${$isAuthorized ? "text-green-500" : "text-red-700}"} shadow-md`}>{!$isAuthorized ? "Not " :""}Authorized</span></h1>
 			<div class="flex flex-col gap-2 ">
-				<h1 class="text-white font-md text-center">Authorization Key</h1>
-				<input class="w-full rounded-md p-2 disabled:grayscale" type="text" bind:value={authorizationKey} disabled={!$isElectron && $isAuthorized} />
-				{#if $isElectron}
-					<button class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer" on:click={() => updateKey(authorizationKey)} >Update</button>
-				{/if}
-				{#if !$isElectron}
-					<button class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer" on:click={() => authenticate(authorizationKey)} disabled={$isAuthorized}>Authenticate</button>
-				{/if}
-				</div>
-			{#if $isAuthorized}
-				<h1 class="text-xl font-bold text-white shadow-md">Scene Switching</h1>
-				<h1 class="text-xl font-bold text-white shadow-md">Controller Commands</h1>
-			{/if}
+
+			<h1 class="text-xl font-bold text-white shadow-md">Scene Switching</h1>
+			<h1 class="text-xl font-bold text-white shadow-md">Controller Commands</h1>
 		</div>
 	</div>
 </main>
