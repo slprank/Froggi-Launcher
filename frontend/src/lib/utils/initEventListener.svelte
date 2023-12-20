@@ -24,8 +24,9 @@
 		obs,
 		currentOverlayEditor,
 		isAuthorized,
+		authorizationKey,
 	} from '$lib/utils/store.svelte';
-	import { getElectronEmitter, getPage } from '$lib/utils/fetchSubscriptions.svelte';
+	import { getAuthorizationKey, getElectronEmitter, getPage } from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
@@ -36,6 +37,16 @@
 	) {
 		
 		switch (topic) {
+			case "AuthorizationKey":
+				(() => {
+					const value = payload[0] as Parameters<
+						MessageEvents['AuthorizationKey']
+					>[0];
+					if (!value) return;
+					authorizationKey.set(value)
+					console.log("auth")
+				})();
+				break;
 			case 'MemoryControllerInput':
 				(() => {
 					const value = payload[0] as Parameters<
@@ -251,7 +262,6 @@
 		});
 
 		const _electronEmitter = await getElectronEmitter();
-		console.log('electron', _electronEmitter);
 		_electronEmitter.onAny((event, ...data) => {
 			window.electron.send('message', JSON.stringify({ [event as string]: data }));
 		});
@@ -264,16 +274,17 @@
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
+			console.log(parse)
 			for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));
 			}
 		});
 
 		const _electronEmitter = await getElectronEmitter();
-		socket.onopen = () => {
-			const authorizationKey = localStorage.getItem('authorizationKey') ?? "";
-			_electronEmitter.onAny((event, data) => {
-				socket.send(JSON.stringify({ [event as string]: data, authorizationKey: authorizationKey  }));
+		socket.onopen = async () => {
+			_electronEmitter.onAny(async (event, data) => {
+				const _authorizationKey = await getAuthorizationKey();
+				socket.send(JSON.stringify({ [event as string]: data, authorizationKey: _authorizationKey  }));
 			});
 			_electronEmitter.emit("Ping");
 		};

@@ -82,6 +82,7 @@ export class MessageHandler {
 		});
 		this.svelteEmitter.on("InitElectron", () => {
 			this.initData();
+			this.sendAuthKey()
 		});
 	}
 
@@ -108,7 +109,7 @@ export class MessageHandler {
 		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
-				[topic]: payload,
+				[topic]: [...payload],
 			}),
 		);
 		this.webSocketWorker.postMessage(
@@ -155,8 +156,17 @@ export class MessageHandler {
 	private sendAuthorizedMessage(socketId: string, clientKey: string) {
 		const serverKey = this.storeSettings.getAuthorizationKey()
 		const isAuthorized = !serverKey || clientKey === serverKey;
-		console.log("Server Key", serverKey, "Client Key", clientKey)
+		console.log("Send auth", serverKey, clientKey, isAuthorized)
 		this.sendInitMessage(socketId, "Authorize", isAuthorized);
+	}
+
+	private sendAuthKey() {
+		this.mainWindow.webContents.send(
+			'message',
+			JSON.stringify({
+				["AuthorizationKey"]: [this.storeSettings.getAuthorizationKey()],
+			}),
+		);
 	}
 
 	private initEventListeners() {
@@ -167,7 +177,6 @@ export class MessageHandler {
 			this.initData(socketId);
 		})
 		this.svelteEmitter.on("InitAuthentication", (payload) => {
-			console.log("InitAuthentication", payload[0], payload[1])
 			this.sendAuthorizedMessage(payload[0], payload[1] ?? "");
 		})
 	}

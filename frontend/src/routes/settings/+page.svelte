@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { electronEmitter, isAuthorized, isElectron } from '$lib/utils/store.svelte';
+	import { electronEmitter, isAuthorized, isElectron, authorizationKey } from '$lib/utils/store.svelte';
 
-	const authenticate = async (key: string) => {
-		localStorage.setItem('authorizationKey', key);
-		location.reload();
+	const authenticate = async () => {
+		localStorage.setItem('authorizationKey', authKey);
+		authorizationKey.set(authKey);
+		$electronEmitter.emit("Ping")
 	}
 
-	const updateKey = async (key: string) => {
-		$electronEmitter.emit('AuthorizationKey', key);
+	const updateKey = async () => {
+		$electronEmitter.emit('AuthorizationKey', authKey);
 	}
 
-	let authorizationKey: string = localStorage.getItem('authorizationKey') ?? "";
+	let authKey: string = $authorizationKey
 </script>
 
 <main
@@ -30,12 +31,12 @@
 			<h1 class="text-xl font-bold text-white shadow-md">Authentication - <span class={`${$isAuthorized ? "text-green-500" : "text-red-700}"} shadow-md`}>{!$isAuthorized ? "Not " :""}Authorized</span></h1>
 			<div class="flex flex-col gap-2 ">
 				<h1 class="text-white font-md text-center">Authorization Key</h1>
-				<input class="w-full rounded-md p-2 disabled:grayscale" type="text" bind:value={authorizationKey} disabled={!$isElectron && $isAuthorized} />
+				<input class="w-full rounded-md p-2 disabled:grayscale" type="text" bind:value={authKey} disabled={!$isElectron && $isAuthorized} />
 				{#if $isElectron}
-					<button class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer" on:click={() => updateKey(authorizationKey)} >Update</button>
+					<button class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer" on:click={updateKey} >Update</button>
 				{/if}
 				{#if !$isElectron}
-					<button class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0" on:click={() => authenticate(authorizationKey)} disabled={$isAuthorized}>Authenticate</button>
+					<button class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0" on:click={authenticate} disabled={$isAuthorized}>Authenticate</button>
 				{/if}
 			</div>
 		</div>

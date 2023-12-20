@@ -17,11 +17,20 @@
 		sessionStats,
 		gameScore,
 		overlays,
+		authorizationKey,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
 	import type { TypedEmitter } from './customEventEmitter';
 	import type { Obs } from '$lib/models/types/obsTypes';
+
+	export async function getAuthorizationKey(): Promise<string | undefined> {
+		return await new Promise<string | undefined>((resolve) => {
+			authorizationKey.subscribe((key) => {
+				resolve(key);
+			});
+		});
+	}
 
 	export async function getCurrentPlayer(): Promise<CurrentPlayer | undefined> {
 		return await new Promise<CurrentPlayer | undefined>((resolve) => {
