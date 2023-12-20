@@ -1,5 +1,5 @@
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types";
-import type { ConnectionState } from "../enum";
+import type { ConnectionState, LiveStatsScene } from "../enum";
 import type { OverlayLayout } from "./overlay";
 import { PlayerController } from "./controller";
 
@@ -68,4 +68,13 @@ export interface ObsControllerCommand {
     controllerInputs: PlayerController
     obsCommand: ObsCommand<keyof OBSRequestTypes>
     id: string
+}
+
+export interface ObsSceneSwitch {
+    [LiveStatsScene.WaitingForDolphin]: string
+    [LiveStatsScene.Menu]: string
+    [LiveStatsScene.InGame]: string
+    [LiveStatsScene.PostGame]: string
+    [LiveStatsScene.PostSet]: string
+    [LiveStatsScene.RankChange]: string
 }
