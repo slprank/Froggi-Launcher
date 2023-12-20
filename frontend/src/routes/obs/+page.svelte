@@ -29,20 +29,21 @@
 			>
 				Custom Overlays
 			</button>
+
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4 disabled:text-zinc-700 disabled:border-zinc-700 disabled:hover:pointer-events-none disabled:hover:scale-100"
 				on:click={() => goto('/obs/settings')}
+				disabled={!$isAuthorized}
 			>
 				OBS Settings
 			</button>
-			{#if $isAuthorized}
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
-					on:click={() => goto('/obs/dashboard')}
-				>
-					Dashboard
-				</button>
-			{/if}
+			<button
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4 disabled:text-zinc-700 disabled:border-zinc-700 disabled:hover:pointer-events-none disabled:hover:scale-100"
+				on:click={() => goto('/obs/dashboard')}
+				disabled={!$isAuthorized}
+			>
+				Dashboard
+			</button>
 		</div>
 	</div>
 </main>

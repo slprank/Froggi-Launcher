@@ -1,7 +1,7 @@
 import { NotificationType } from "../models/enum";
 import { MessageEvents, TypedEmitter } from "./customEventEmitter";
 
-const unauthorized: (keyof MessageEvents)[] = ["InitData", "InitElectron", "InitAuthentication"];
+const unauthorized: (keyof MessageEvents)[] = ["InitData", "InitElectron", "InitAuthentication", "Ping"];
 
 export let sendAuthenticatedMessage = <K extends keyof MessageEvents>(incomingKey: string = "", authorizationKey: string = "", emitter: TypedEmitter, topic: K, ...value: Parameters<MessageEvents[K]>) => {
     const isAuthorized = incomingKey === authorizationKey;
