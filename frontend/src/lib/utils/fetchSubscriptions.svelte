@@ -18,6 +18,7 @@
 		gameScore,
 		overlays,
 		authorizationKey,
+		isIframe,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
@@ -88,8 +89,8 @@
 		});
 	}
 
-	export async function getGameFrame(): Promise<FrameEntryType | null> {
-		return await new Promise<FrameEntryType | null>((resolve) => {
+	export async function getGameFrame(): Promise<FrameEntryType | null | undefined> {
+		return await new Promise<FrameEntryType | null | undefined>((resolve) => {
 			gameFrame.subscribe((gameFrame) => {
 				resolve(gameFrame);
 			});
@@ -137,6 +138,14 @@
 		return await new Promise<Session | undefined>((resolve) => {
 			sessionStats.subscribe((stats) => {
 				resolve(stats);
+			});
+		});
+	}
+	
+	export async function getIsIframe(): Promise<boolean> {
+		return await new Promise<boolean>((resolve) => {
+			isIframe.subscribe((value) => {
+				resolve(value);
 			});
 		});
 	}

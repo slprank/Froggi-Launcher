@@ -44,6 +44,7 @@ const initSocket = (socket: WebSocket) => {
 
 parentPort?.on("message", <J extends keyof MessageEvents>(message: string) => {
     const parse = JSON.parse(message);
+    console.log("message", parse)
     for (const [topic, payload] of Object.entries(parse) as [topic: J, payload: Parameters<MessageEvents[J]>]) {
         if (isNil(parse["socketId"])) {
             connections.forEach((conn: any) => {

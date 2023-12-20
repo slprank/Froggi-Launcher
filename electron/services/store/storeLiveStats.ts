@@ -20,7 +20,7 @@ import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter
 export class ElectronLiveStatsStore {
 	private sceneTimeout: NodeJS.Timeout
 	private gameState: InGameState = InGameState.Inactive;
-	private gameFrame: FrameEntryType | undefined
+	private gameFrame: FrameEntryType | null | undefined
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject("ElectronStore") private store: Store,
@@ -48,7 +48,7 @@ export class ElectronLiveStatsStore {
 		}, ms)
 	}
 
-	getGameFrame(): FrameEntryType | undefined {
+	getGameFrame(): FrameEntryType | null | undefined {
 		return this.gameFrame
 	}
 
@@ -59,7 +59,7 @@ export class ElectronLiveStatsStore {
 	}
 
 	deleteGameFrame() {
-		this.store.delete('stats.game.frame');
+		this.gameFrame = null
 	}
 
 	getGameState(): InGameState | undefined {

@@ -15,6 +15,7 @@ import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmitter';
 import { Worker } from 'worker_threads';
 import { sendAuthenticatedMessage } from '../../frontend/src/lib/utils/websocketAuthentication';
+import { NotificationType } from '../../frontend/src/lib/models/enum';
 
 @singleton()
 export class MessageHandler {
@@ -156,7 +157,6 @@ export class MessageHandler {
 	private sendAuthorizedMessage(socketId: string, clientKey: string) {
 		const serverKey = this.storeSettings.getAuthorizationKey()
 		const isAuthorized = !serverKey || clientKey === serverKey;
-		console.log("Send auth", serverKey, clientKey, isAuthorized)
 		this.sendInitMessage(socketId, "Authorize", isAuthorized);
 	}
 
@@ -178,6 +178,9 @@ export class MessageHandler {
 		})
 		this.svelteEmitter.on("InitAuthentication", (payload) => {
 			this.sendAuthorizedMessage(payload[0], payload[1] ?? "");
+		})
+		this.svelteEmitter.on('Notification', (message: string, type: NotificationType) => {
+			this.sendMessage('Notification', message, type);
 		})
 	}
 }

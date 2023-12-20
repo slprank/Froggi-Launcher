@@ -1,10 +1,12 @@
 <script lang="ts" context="module">
+	import { getIsIframe } from '$lib/utils/fetchSubscriptions.svelte';
 	import { writable, derived } from 'svelte/store';
 
 	function createNotificationStore() {
 		const _notifications = writable([]);
 
-		function send(message: string, type = 'default', timeout: number) {
+		async function send(message: string, type = 'default', timeout: number) {	
+			if (await getIsIframe()) return;
 			_notifications.update((state) => {
 				return [...state.slice(0, 0), { id: id(), type, message, timeout }];
 			});
@@ -15,7 +17,8 @@
 		const notifications = derived(_notifications, ($_notifications, set) => {
 			set($_notifications);
 			if ($_notifications.length > 0) {
-				const timer = setTimeout(() => {
+				const timer = setTimeout(async () => {
+					if (await getIsIframe()) return;
 					_notifications.update((state) => {
 						state.shift();
 						return state;
