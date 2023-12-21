@@ -32,8 +32,8 @@ export class ElectronLiveStatsStore {
 		this.initSvelteListeners();
 	}
 
-	getStatsScene(): LiveStatsScene | undefined {
-		return (this.store.get('stats.scene') as LiveStatsScene) ?? 0;
+	getStatsScene(): LiveStatsScene {
+		return (this.store.get('stats.scene') as LiveStatsScene) ?? LiveStatsScene.WaitingForDolphin;
 	}
 
 	setStatsScene(scene: LiveStatsScene) {

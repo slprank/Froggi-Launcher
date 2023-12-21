@@ -65,16 +65,16 @@ export interface ObsCommand<Type extends keyof OBSRequestTypes> {
 }
 
 export interface ObsControllerCommand {
-    controllerInputs: PlayerController
-    obsCommand: ObsCommand<keyof OBSRequestTypes>
+    inputs: PlayerController
+    command: ObsCommand<keyof OBSRequestTypes>
     id: string
 }
 
 export interface ObsSceneSwitch {
     [LiveStatsScene.WaitingForDolphin]: string
-    [LiveStatsScene.Menu]: string
-    [LiveStatsScene.InGame]: string
-    [LiveStatsScene.PostGame]: string
-    [LiveStatsScene.PostSet]: string
-    [LiveStatsScene.RankChange]: string
+    [LiveStatsScene.Menu]: string | null | undefined
+    [LiveStatsScene.InGame]: string | null | undefined
+    [LiveStatsScene.PostGame]: string | null | undefined
+    [LiveStatsScene.PostSet]: string | null | undefined
+    [LiveStatsScene.RankChange]: string | null | undefined
 }

@@ -33,7 +33,7 @@ export interface MessageEvents {
     RecentGamesReset: () => void // Here
     RecentRankedSets: (games: GameStats[]) => void
     SessionStats: (session: Session | undefined) => void
-    LiveStatsSceneChange: (scene: LiveStatsScene | undefined) => void
+    LiveStatsSceneChange: (scene: LiveStatsScene) => void
     Url: (url: Url) => void
     Obs: (obs: Obs | undefined) => void
     ObsConnection: (connection: ObsConnection) => void
