@@ -27,7 +27,6 @@
 		);
 	};
 	const animateOut = (node: Element): AnimationConfig => {
-		console.log('scene', scene);
 		if (preview || edit || !scene) return fly(node, { duration: 0 });
 		return createAnimation(
 			node,

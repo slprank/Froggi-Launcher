@@ -11,7 +11,7 @@ import { ConnectionState } from '../../../frontend/src/lib/models/enum';
 
 @singleton()
 export class ElectronObsStore {
-    store: Store = new Store();
+    private store: Store = new Store();
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
@@ -89,7 +89,7 @@ export class ElectronObsStore {
         this.store.set('obs.connection.scenes', scenes);
     }
 
-    initListeners() {
+    private initListeners() {
         this.store.onDidChange("obs.auth", (value) => {
             this.messageHandler.sendMessage("Obs", value as Obs);
         })

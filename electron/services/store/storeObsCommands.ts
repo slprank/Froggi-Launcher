@@ -1,24 +1,30 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import { delay, inject, singleton } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ObsControllerCommand, ObsSceneSwitch } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
-import { ObsWebSocket } from 'services/obs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
+import { PlayerController } from '../../../frontend/src/lib/models/types/controller';
+import { ElectronPlayersStore } from './storePlayers';
+import { ElectronSettingsStore } from './storeSettings';
+import { ObsWebSocket } from '../obs';
 
 @singleton()
 export class ElectronObsCommandStore {
     private store: Store = new Store();
     private controllerCommands: ObsControllerCommand[] = []
+    private commandTimeout: boolean = false;
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject('LocalEmitter') private localEmitter: TypedEmitter,
 
-        @inject(delay(() => ObsWebSocket)) private obsWebSocket: ObsWebSocket,
+        @inject(ObsWebSocket) private obsWebSocket: ObsWebSocket,
+        @inject(ElectronPlayersStore) private storePlayer: ElectronPlayersStore,
+        @inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
         //@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
-        this.log.info("Initializing Obs Store")
+        this.log.info("Initializing Obs Command Store")
         this.initListeners();
         this.initEventListeners();
         this.init()
@@ -50,11 +56,26 @@ export class ElectronObsCommandStore {
         this.controllerCommands = this.store.get('obs.command.controller') as ObsControllerCommand[] ?? [];
     }
 
+    private handleControllerCommand = (playerControllerInputs: PlayerController) => {
+        if (this.commandTimeout) return;
+        const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+        const players = this.storePlayer.getCurrentPlayers();
+        const player = players?.find(player => player.connectCode === connectCode)
+        const lowestIndex = players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0
+        const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex]
+        const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs)?.command
+        if (!controllerCommand) return;
+
+        this.obsWebSocket.executeCommand(controllerCommand.command, controllerCommand.payload)
+        this.commandTimeout = true;
+        setTimeout(() => {
+            this.commandTimeout = false;
+        }, 1000)
+    }
+
     private initEventListeners() {
         this.localEmitter.on("MemoryControllerInput", (controllerInputs) => {
-            const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs)?.command
-            if (!controllerCommand) return;
-            this.obsWebSocket.executeCommand(controllerCommand.command, controllerCommand.payload)
+            this.handleControllerCommand(controllerInputs)
         })
         this.localEmitter.on("LiveStatsSceneChange", (scene: LiveStatsScene) => {
             const sceneConfig = this.getObsSceneSwitch()

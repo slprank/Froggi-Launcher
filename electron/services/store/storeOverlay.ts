@@ -18,7 +18,7 @@ export class ElectronOverlayStore {
         @inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
-        this.log.info("Initializing Obs Store")
+        this.log.info("Initializing Obs Overlay Store")
         this.initListeners();
         this.initSvelteListeners();
         this.createOverlays();

@@ -16,8 +16,8 @@ export class ObsWebSocket {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
+		@inject(ElectronObsStore) private storeObs: ElectronObsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
 	) {
 		this.log.info('Initializing OBS');
 		this.initObsWebSocket();

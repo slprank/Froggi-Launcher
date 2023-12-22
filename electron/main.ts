@@ -19,6 +19,7 @@ import { SlpParser, SlpStream } from '@slippi/slippi-js';
 import { DiscordRpc } from './services/discord';
 import { migrateStore } from './services/store/migration';
 import Store from 'electron-store';
+import { ElectronObsCommandStore } from './services/store/storeObsCommands';
 
 const mainLog: ElectronLog = setLoggingPath(log);
 
@@ -166,6 +167,8 @@ function createMainWindow() {
 		});
 		container.register<string>('Port', { useValue: port });
 		container.register<boolean>('Dev', { useValue: dev });
+
+		container.resolve(ElectronObsCommandStore);
 
 		container.resolve(DiscordRpc);
 		container.resolve(MessageHandler);

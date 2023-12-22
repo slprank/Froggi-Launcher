@@ -116,7 +116,6 @@ export class DiscordRpc {
 		});
 
 		this.localEmitter.on("PostGameStats", () => {
-			console.log('Game end event');
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);
 			const player2 = players?.at(1);
@@ -132,7 +131,6 @@ export class DiscordRpc {
 		});
 
 		this.localEmitter.on("GameScore", (score: number[]) => {
-			console.log('game-score_event');
 			const players = this.storePlayers.getCurrentPlayers();
 			const player1 = players?.at(0);
 			const player2 = players?.at(1);
