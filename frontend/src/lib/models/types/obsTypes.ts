@@ -1,7 +1,7 @@
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types";
 import type { ConnectionState, LiveStatsScene } from "../enum";
 import type { OverlayLayout } from "./overlay";
-import { PlayerController } from "./controller";
+import { ControllerButtons } from "./controller";
 
 export interface Obs {
     auth: ObsAuth | undefined,
@@ -65,9 +65,10 @@ export interface ObsCommand<Type extends keyof OBSRequestTypes> {
 }
 
 export interface ObsControllerCommand {
-    inputs: PlayerController
-    command: ObsCommand<keyof OBSRequestTypes>
-    id: string
+    inputs: ControllerButtons,
+    command: keyof OBSRequestTypes,
+    payload: OBSRequestTypes[keyof OBSRequestTypes],
+    id: string | undefined
 }
 
 export interface ObsSceneSwitch {

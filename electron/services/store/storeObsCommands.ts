@@ -4,12 +4,14 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ObsControllerCommand, ObsSceneSwitch } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
-import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
+import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { PlayerController } from '../../../frontend/src/lib/models/types/controller';
 import { ElectronPlayersStore } from './storePlayers';
 import { ElectronSettingsStore } from './storeSettings';
 import { ObsWebSocket } from '../obs';
 import { MessageHandler } from '../messageHandler';
+import { newId } from '../../utils/functions';
+import { ElectronLiveStatsStore } from './storeLiveStats';
 
 @singleton()
 export class ElectronObsCommandStore {
@@ -24,6 +26,7 @@ export class ElectronObsCommandStore {
         @inject(ObsWebSocket) private obsWebSocket: ObsWebSocket,
         @inject(ElectronPlayersStore) private storePlayer: ElectronPlayersStore,
         @inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
+        @inject(ElectronLiveStatsStore) private storeLiveStats: ElectronLiveStatsStore,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
         this.log.info("Initializing Obs Command Store")
@@ -32,13 +35,13 @@ export class ElectronObsCommandStore {
         this.init()
     }
 
-    getObsControllerCommands(): ObsControllerCommand[] | undefined {
-        return this.controllerCommands;
+    getObsControllerCommands(): ObsControllerCommand[] {
+        return this.controllerCommands ?? [];
     }
 
     addObsControllerCommand(command: ObsControllerCommand) {
-        const commands = this.getObsControllerCommands() ?? [];
-        return this.store.set('obs.command.controller', [...commands, command]);
+        const commands = this.getObsControllerCommands()
+        return this.store.set('obs.command.controller', [...commands, { ...command, id: newId() }])
     }
 
     deleteObsControllerCommand(commandId: string) {
@@ -72,9 +75,10 @@ export class ElectronObsCommandStore {
         const players = this.storePlayer.getCurrentPlayers();
         const player = players?.find(player => player.connectCode === connectCode)
         if (players?.some(player => player.connectCode) && !player) return;
-        const lowestIndex = players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0
+        const gameActive = ![InGameState.End, InGameState.Time, InGameState.Inactive].includes(this.storeLiveStats.getGameState())
+        const lowestIndex = gameActive ? players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0 : 0
         const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex]
-        const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs)?.command
+        const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs.buttons)
         if (!controllerCommand) return;
 
         this.obsWebSocket.executeCommand(controllerCommand.command, controllerCommand.payload)
@@ -96,6 +100,9 @@ export class ElectronObsCommandStore {
         })
         this.svelteEmitter.on("ObsSceneSwitchUpdate", (options: ObsSceneSwitch) => {
             this.setObsSceneSwitch(options)
+        })
+        this.svelteEmitter.on("ObsControllerCommandNew", (command: ObsControllerCommand) => {
+            this.addObsControllerCommand(command)
         })
     }
 

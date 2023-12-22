@@ -62,8 +62,8 @@ export class ElectronLiveStatsStore {
 		this.gameFrame = null
 	}
 
-	getGameState(): InGameState | undefined {
-		return this.gameState as InGameState;
+	getGameState(): InGameState {
+		return this.gameState as InGameState ?? InGameState.Inactive;
 	}
 
 	setGameState(state: InGameState) {

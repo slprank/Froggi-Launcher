@@ -16,7 +16,7 @@
 		<div>
 			<h1 class="text-4xl font-bold text-white shadow-md">OBS - Settings</h1>
 		</div>
-		<div class="flex-1 flex flex-col gap-8">
+		<div class="flex-1 flex flex-col gap-8 overflow-auto p-2">
 			<SceneOptions />
 			<ControllerCommandOptions />
 		</div>

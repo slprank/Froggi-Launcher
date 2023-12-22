@@ -20,7 +20,7 @@
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type { PlayerController } from '$lib/models/types/controller';
 	import { TypedEmitter } from './customEventEmitter';
-	import type { Obs, ObsConnection, ObsSceneSwitch } from '$lib/models/types/obsTypes';
+	import type { Obs, ObsConnection, ObsControllerCommand, ObsSceneSwitch } from '$lib/models/types/obsTypes';
 
 	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());
 	export const electronEmitter = writable<TypedEmitter>(new TypedEmitter());
@@ -63,6 +63,7 @@
 	);
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
+	export const obsControllerCommands = writable<ObsControllerCommand[]>([]);
 	export const obsConnection = writable<ObsConnection>({ state: ConnectionState.None} as ObsConnection);
 	export const obsSceneSwitch = writable<ObsSceneSwitch | undefined>();
 	
