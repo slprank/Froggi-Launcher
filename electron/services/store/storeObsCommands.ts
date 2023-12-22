@@ -75,10 +75,11 @@ export class ElectronObsCommandStore {
         const players = this.storePlayer.getCurrentPlayers();
         const player = players?.find(player => player.connectCode === connectCode)
         if (players?.some(player => player.connectCode) && !player) return;
-        const gameActive = ![InGameState.End, InGameState.Time, InGameState.Inactive].includes(this.storeLiveStats.getGameState())
-        const lowestIndex = gameActive ? players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0 : 0
-        const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex]
-        const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs.buttons)
+        const isGameActive = [InGameState.Inactive, InGameState.End, InGameState.Time, InGameState.Tie].includes(this.storeLiveStats.getGameState());
+        const lowestActiveControllerIndex = Number(Object.entries(playerControllerInputs).find(controller => Object.values(controller[1].buttons ?? {}).some(isPressed => isPressed))?.[0]) ?? 0
+        const lowestIndex = isGameActive ? players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0 : lowestActiveControllerIndex
+        const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex].buttons
+        const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs)
         if (!controllerCommand) return;
 
         this.obsWebSocket.executeCommand(controllerCommand.command, controllerCommand.payload)
