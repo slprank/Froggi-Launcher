@@ -16,6 +16,7 @@ import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmit
 import { Worker } from 'worker_threads';
 import { sendAuthenticatedMessage } from '../../frontend/src/lib/utils/websocketAuthentication';
 import { NotificationType } from '../../frontend/src/lib/models/enum';
+import { ElectronObsCommandStore } from './store/storeObsCommands';
 
 @singleton()
 export class MessageHandler {
@@ -37,6 +38,7 @@ export class MessageHandler {
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
+		@inject(delay(() => ElectronObsCommandStore)) private storeObsCommands: ElectronObsCommandStore,
 		@inject(delay(() => ElectronOverlayStore)) private storeOverlay: ElectronOverlayStore,
 		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
 		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
@@ -93,7 +95,7 @@ export class MessageHandler {
 				const parse = JSON.parse(value);
 				for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
 					sendAuthenticatedMessage(
-						parse["authorizationKey"],
+						parse["AuthorizationKey"],
 						this.storeSettings.getAuthorizationKey(),
 						this.svelteEmitter,
 						key as keyof MessageEvents,
@@ -147,6 +149,7 @@ export class MessageHandler {
 		this.sendInitMessage(socketId, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
 		this.sendInitMessage(socketId, "Overlays", this.storeOverlay.getOverlays());
 		this.sendInitMessage(socketId, "Obs", this.storeObs.getObs());
+		this.sendInitMessage(socketId, "ObsSceneSwitch", this.storeObsCommands.getObsSceneSwitch());
 		this.sendInitMessage(socketId, "PostGameStats", this.storeLiveStats.getGameStats());
 		this.sendInitMessage(socketId, "RecentGames", this.storeGames.getRecentGames());
 		this.sendInitMessage(socketId, "RecentRankedSets", this.storeGames.getRecentRankedSets());
@@ -156,6 +159,7 @@ export class MessageHandler {
 
 	private sendAuthorizedMessage(socketId: string, clientKey: string) {
 		const serverKey = this.storeSettings.getAuthorizationKey()
+		console.log("Server Key", serverKey, "Client Key", clientKey)
 		const isAuthorized = !serverKey || clientKey === serverKey;
 		this.sendInitMessage(socketId, "Authorize", isAuthorized);
 	}

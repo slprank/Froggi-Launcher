@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { newId } from '$lib/utils/helper';
 	import { fly } from 'svelte/transition';
-	import { newId } from '../custom/edit/OverlayHandler.svelte';
 
 	export let menuItems = [
 		{

@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import { inject, singleton } from 'tsyringe';
+import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ObsControllerCommand, ObsSceneSwitch } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
@@ -9,6 +9,7 @@ import { PlayerController } from '../../../frontend/src/lib/models/types/control
 import { ElectronPlayersStore } from './storePlayers';
 import { ElectronSettingsStore } from './storeSettings';
 import { ObsWebSocket } from '../obs';
+import { MessageHandler } from '../messageHandler';
 
 @singleton()
 export class ElectronObsCommandStore {
@@ -18,11 +19,12 @@ export class ElectronObsCommandStore {
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject('LocalEmitter') private localEmitter: TypedEmitter,
+        @inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
 
         @inject(ObsWebSocket) private obsWebSocket: ObsWebSocket,
         @inject(ElectronPlayersStore) private storePlayer: ElectronPlayersStore,
         @inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
-        //@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+        @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
         this.log.info("Initializing Obs Command Store")
         this.initListeners();
@@ -45,7 +47,14 @@ export class ElectronObsCommandStore {
     }
 
     getObsSceneSwitch(): ObsSceneSwitch {
-        return this.store.get('obs.command.sceneSwitch') as ObsSceneSwitch ?? {}
+        return this.store.get('obs.command.sceneSwitch') as ObsSceneSwitch ?? {
+            [LiveStatsScene.WaitingForDolphin]: { sceneName: "", delay: 0 },
+            [LiveStatsScene.Menu]: { sceneName: "", delay: 0 },
+            [LiveStatsScene.InGame]: { sceneName: "", delay: 0 },
+            [LiveStatsScene.PostGame]: { sceneName: "", delay: 0 },
+            [LiveStatsScene.PostSet]: { sceneName: "", delay: 0 },
+            [LiveStatsScene.RankChange]: { sceneName: "", delay: 0 },
+        }
     }
 
     setObsSceneSwitch(value: ObsSceneSwitch) {
@@ -83,13 +92,19 @@ export class ElectronObsCommandStore {
             const sceneConfig = this.getObsSceneSwitch()
             const obsScene = sceneConfig[scene]
             if (!obsScene) return;
-            this.obsWebSocket.executeCommand("SetCurrentProgramScene", { sceneName: obsScene })
+            this.obsWebSocket.executeCommand("SetCurrentProgramScene", { sceneName: obsScene.sceneName })
+        })
+        this.svelteEmitter.on("ObsSceneSwitchUpdate", (options: ObsSceneSwitch) => {
+            this.setObsSceneSwitch(options)
         })
     }
 
     private initListeners() {
         this.store.onDidChange("obs.command.controller", (value) => {
             this.controllerCommands = value as ObsControllerCommand[];
+        })
+        this.store.onDidChange('obs.command.sceneSwitch', (value) => {
+            this.messageHandler.sendMessage("ObsSceneSwitch", value as ObsSceneSwitch)
         })
     }
 }

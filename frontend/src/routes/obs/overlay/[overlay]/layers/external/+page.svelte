@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
-	import ExternalPreviewSettings from '$lib/components/custom/preview/ExternalPreviewSettings.svelte';
-	import LayerToggle from '$lib/components/custom/preview/LayerToggle.svelte';
-	import NonInteractiveIFrame from '$lib/components/custom/preview/NonInteractiveIFrame.svelte';
-	import SceneSelect from '$lib/components/custom/selector/SceneSelect.svelte';
+	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
+	import ExternalPreviewSettings from '$lib/components/obs/overlays/preview/ExternalPreviewSettings.svelte';
+	import LayerToggle from '$lib/components/obs/overlays/preview/LayerToggle.svelte';
+	import NonInteractiveIFrame from '$lib/components/obs/overlays/preview/NonInteractiveIFrame.svelte';
+	import SceneSelect from '$lib/components/obs/overlays/selector/SceneSelect.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
 	import { isElectron, isMobile, urls } from '$lib/utils/store.svelte';
 

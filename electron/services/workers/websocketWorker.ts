@@ -27,7 +27,7 @@ const initSocket = (socket: WebSocket) => {
     socket.addEventListener("message", (message: WebSocket.MessageEvent) => {
         const parse = JSON.parse(message.data as string);
         parentPort?.postMessage([message.data]);
-        initAuthentication(connections?.find(conn => conn.socket === message.target)?.id ?? "", parse["authorizationKey"] ?? "");
+        initAuthentication(connections?.find(conn => conn.socket === message.target)?.id ?? "", parse["AuthorizationKey"] ?? "");
     });
 
     socket.addEventListener('close', () => {

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
-	import SecondaryOverlay from '$lib/components/custom/SecondaryOverlay.svelte';
-	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import MainOverlay from '$lib/components/obs/overlays/MainOverlay.svelte';
+	import SecondaryOverlay from '$lib/components/obs/overlays/SecondaryOverlay.svelte';
+	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import { overlays, statsScene } from '$lib/utils/store.svelte';
 
 	$: overlayId = $page.params.overlay;

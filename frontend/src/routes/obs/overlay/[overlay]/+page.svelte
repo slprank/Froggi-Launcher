@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MainOverlay from '$lib/components/custom/MainOverlay.svelte';
-	import SecondaryOverlay from '$lib/components/custom/SecondaryOverlay.svelte';
+	import MainOverlay from '$lib/components/obs/overlays/MainOverlay.svelte';
+	import SecondaryOverlay from '$lib/components/obs/overlays/SecondaryOverlay.svelte';
 	import { isElectron } from '$lib/utils/store.svelte';
 </script>
 

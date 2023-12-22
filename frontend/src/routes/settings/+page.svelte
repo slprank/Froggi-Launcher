@@ -3,16 +3,18 @@
 	import { electronEmitter, isAuthorized, isElectron, authorizationKey } from '$lib/utils/store.svelte';
 
 	const authenticate = async () => {
-		localStorage.setItem('authorizationKey', authKey);
+		localStorage.setItem('AuthorizationKey', authKey);
 		authorizationKey.set(authKey);
 		$electronEmitter.emit("Ping")
 	}
 
 	const updateKey = async () => {
-		$electronEmitter.emit('AuthorizationKey', authKey);
+		$electronEmitter.emit('AuthorizationKeyUpdate', authKey);
 	}
 
 	let authKey: string = $authorizationKey
+	
+	$: $authorizationKey, (authKey = $authorizationKey);
 </script>
 
 <main

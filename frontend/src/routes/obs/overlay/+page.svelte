@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { isElectron, isMobile, overlays } from '$lib/utils/store.svelte';
 	import { fade, fly } from 'svelte/transition';
-	import OverlayModal from '$lib/components/custom/OverlayModal.svelte';
-	import OverlayPreviewModal from '$lib/components/custom/OverlayPreviewModal.svelte';
+	import OverlayModal from '$lib/components/obs/overlays/OverlayModal.svelte';
+	import OverlayPreviewModal from '$lib/components/obs/overlays/OverlayPreviewModal.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
-	import { getOverlayById } from '$lib/components/custom/edit/OverlayHandler.svelte';
+	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 
 	let newOverlayModalOpen = false;
 	let overlayPreviewOpen = false;

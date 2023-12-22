@@ -25,8 +25,9 @@
 		currentOverlayEditor,
 		isAuthorized,
 		authorizationKey,
+		obsSceneSwitch,
 	} from '$lib/utils/store.svelte';
-	import { getAuthorizationKey, getElectronEmitter, getPage } from '$lib/utils/fetchSubscriptions.svelte';
+	import { getAuthorizationKey, getElectronEmitter, getIsIframe, getPage } from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
@@ -40,11 +41,10 @@
 			case "AuthorizationKey":
 				(() => {
 					const value = payload[0] as Parameters<
-						MessageEvents['AuthorizationKey']
+					MessageEvents['AuthorizationKey']
 					>[0];
 					if (!value) return;
 					authorizationKey.set(value)
-					console.log("auth")
 				})();
 				break;
 			case 'MemoryControllerInput':
@@ -61,7 +61,7 @@
 					const value = payload[0] as Parameters<
 						MessageEvents['Authorize']
 					>[0];
-
+					console.log("isAuthorized", value)
 					if (!value) return;
 					isAuthorized.set(value);
 				})();
@@ -145,6 +145,7 @@
 				})();
 				break;
 			case 'Notification':
+				if (await getIsIframe()) return;
 				const message = payload[0] as Parameters<MessageEvents['Notification']>[0];
 				const type = payload[1] as Parameters<MessageEvents['Notification']>[0];
 				switch (type) {
@@ -178,6 +179,13 @@
 					const value = payload[0] as Parameters<MessageEvents['ObsConnection']>[0];
 					if (!value) return;
 					obsConnection.set(value);
+				})();
+				break;
+			case 'ObsSceneSwitch':
+				(() => {
+					const value = payload[0] as Parameters<MessageEvents['ObsSceneSwitch']>[0];
+					if (!value) return;
+					obsSceneSwitch.set(value);
 				})();
 				break;
 			case 'Overlays':
@@ -284,7 +292,7 @@
 		socket.onopen = async () => {
 			_electronEmitter.onAny(async (event, data) => {
 				const _authorizationKey = await getAuthorizationKey();
-				socket.send(JSON.stringify({ [event as string]: data, authorizationKey: _authorizationKey  }));
+				socket.send(JSON.stringify({ [event as string]: data, ["AuthorizationKey"]: _authorizationKey  }));
 			});
 			_electronEmitter.emit("Ping");
 		};

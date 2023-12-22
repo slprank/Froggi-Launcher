@@ -71,10 +71,15 @@ export interface ObsControllerCommand {
 }
 
 export interface ObsSceneSwitch {
-    [LiveStatsScene.WaitingForDolphin]: string
-    [LiveStatsScene.Menu]: string | null | undefined
-    [LiveStatsScene.InGame]: string | null | undefined
-    [LiveStatsScene.PostGame]: string | null | undefined
-    [LiveStatsScene.PostSet]: string | null | undefined
-    [LiveStatsScene.RankChange]: string | null | undefined
+    [LiveStatsScene.WaitingForDolphin]: ObsSceneSwitchOptions
+    [LiveStatsScene.Menu]: ObsSceneSwitchOptions
+    [LiveStatsScene.InGame]: ObsSceneSwitchOptions
+    [LiveStatsScene.PostGame]: ObsSceneSwitchOptions
+    [LiveStatsScene.PostSet]: ObsSceneSwitchOptions
+    [LiveStatsScene.RankChange]: ObsSceneSwitchOptions
+}
+
+export interface ObsSceneSwitchOptions {
+    sceneName: string,
+    delay: number,
 }

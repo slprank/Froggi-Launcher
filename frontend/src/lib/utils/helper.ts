@@ -4,6 +4,10 @@ export async function asyncForEach(array: any[], callback: Function) {
 	}
 }
 
+export function newId() {
+	return `c${Math.random().toString(36).slice(-8)}`;
+}
+
 const getEnumKeys = <T>(e: T): (keyof T)[] => {
 	return Object.keys(e) as (keyof T)[];
 };

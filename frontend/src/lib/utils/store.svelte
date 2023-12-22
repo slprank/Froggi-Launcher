@@ -20,12 +20,12 @@
 	import type { FrameEntryType } from '@slippi/slippi-js';
 	import type { PlayerController } from '$lib/models/types/controller';
 	import { TypedEmitter } from './customEventEmitter';
-	import type { Obs, ObsConnection } from '$lib/models/types/obsTypes';
+	import type { Obs, ObsConnection, ObsSceneSwitch } from '$lib/models/types/obsTypes';
 
 	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());
 	export const electronEmitter = writable<TypedEmitter>(new TypedEmitter());
 
-	export const authorizationKey = writable<string>(localStorage.getItem('authorizationKey') ?? "");
+	export const authorizationKey = writable<string>(localStorage.getItem('AuthorizationKey') ?? "");
 	export const isAuthorized = writable<boolean>(Boolean(window.electron));
 	export const isBrowser = writable<boolean>(!window.electron && browser);
 	export const isDesktop = writable<boolean>(
@@ -64,6 +64,8 @@
 	export const gameState = writable<InGameState>(InGameState.Inactive);
 	export const memoryReadController = writable<PlayerController>({} as PlayerController);
 	export const obsConnection = writable<ObsConnection>({ state: ConnectionState.None} as ObsConnection);
+	export const obsSceneSwitch = writable<ObsSceneSwitch | undefined>();
+	
 	export const overlays = writable<Overlay[]>([]);
 	export const currentOverlayEditor = writable<OverlayEditor>({ layerIndex: 0 } as OverlayEditor);
 	export const postGame = writable<GameStats>({} as GameStats);

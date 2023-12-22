@@ -105,7 +105,7 @@ export class ElectronSettingsStore {
 	}
 
 	initEventListeners() {
-		this.svelteEmitter.on("AuthorizationKey", (key: string) => {
+		this.svelteEmitter.on("AuthorizationKeyUpdate", (key: string) => {
 			this.setAuthorizationKey(key);
 		})
 	}
