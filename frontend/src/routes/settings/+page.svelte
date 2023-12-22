@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { electronEmitter, isAuthorized, isElectron, authorizationKey } from '$lib/utils/store.svelte';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 
 	const authenticate = async () => {
 		localStorage.setItem('AuthorizationKey', authKey);
@@ -10,6 +11,7 @@
 
 	const updateKey = async () => {
 		$electronEmitter.emit('AuthorizationKeyUpdate', authKey);
+		notifications.success('Authorization Key Updated', 1500);
 	}
 
 	let authKey: string = $authorizationKey

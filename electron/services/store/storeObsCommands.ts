@@ -91,7 +91,7 @@ export class ElectronObsCommandStore {
         this.localEmitter.on("LiveStatsSceneChange", (scene: LiveStatsScene) => {
             const sceneConfig = this.getObsSceneSwitch()
             const obsScene = sceneConfig[scene]
-            if (!obsScene) return;
+            if (!obsScene || !obsScene.sceneName) return;
             this.obsWebSocket.executeCommand("SetCurrentProgramScene", { sceneName: obsScene.sceneName })
         })
         this.svelteEmitter.on("ObsSceneSwitchUpdate", (options: ObsSceneSwitch) => {

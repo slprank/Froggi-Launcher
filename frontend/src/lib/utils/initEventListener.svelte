@@ -64,6 +64,7 @@
 					>[0];
 					if (isNil(value)) return;
 					isAuthorized.set(value);
+					notifications.success('Authorized', 1500);
 				})();
 				break;
 			case 'AutoUpdaterStatus':
