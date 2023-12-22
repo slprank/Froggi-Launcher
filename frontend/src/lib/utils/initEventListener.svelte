@@ -31,6 +31,7 @@
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
+	import { isNil } from 'lodash';
 
 	async function messageDataHandler<J extends keyof MessageEvents>(
 		topic: J,
@@ -61,8 +62,7 @@
 					const value = payload[0] as Parameters<
 						MessageEvents['Authorize']
 					>[0];
-					console.log("isAuthorized", value)
-					if (!value) return;
+					if (isNil(value)) return;
 					isAuthorized.set(value);
 				})();
 				break;

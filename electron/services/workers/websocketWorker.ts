@@ -3,7 +3,6 @@ import { WEBSOCKET_PORT } from '../../../frontend/src/lib/models/const';
 import type { MessageEvents } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { parentPort } from 'worker_threads';
 import { newId } from '../../utils/functions';
-import { isNil } from 'lodash';
 
 const webSocketServer = new WebSocketServer({ port: WEBSOCKET_PORT });
 const connections: Connection[] = [];
@@ -26,7 +25,8 @@ webSocketServer.on('connection', (socket: WebSocket) => {
 const initSocket = (socket: WebSocket) => {
     socket.addEventListener("message", (message: WebSocket.MessageEvent) => {
         const parse = JSON.parse(message.data as string);
-        parentPort?.postMessage([message.data]);
+        parse["socketId"] = connections?.find(conn => conn.socket === message.target)?.id ?? "";
+        parentPort?.postMessage([JSON.stringify(parse)]);
         initAuthentication(connections?.find(conn => conn.socket === message.target)?.id ?? "", parse["AuthorizationKey"] ?? "");
     });
 
@@ -44,8 +44,10 @@ const initSocket = (socket: WebSocket) => {
 
 parentPort?.on("message", <J extends keyof MessageEvents>(message: string) => {
     const parse = JSON.parse(message);
+    const socketId = parse["socketId"];
+    delete parse["socketId"];
     for (const [topic, payload] of Object.entries(parse) as [topic: J, payload: Parameters<MessageEvents[J]>]) {
-        if (isNil(parse["socketId"])) {
+        if (!socketId) {
             connections.forEach((conn: any) => {
                 conn.socket.send(
                     JSON.stringify({
@@ -54,16 +56,16 @@ parentPort?.on("message", <J extends keyof MessageEvents>(message: string) => {
                 );
             });
         } else {
-            connections.find(conn => conn.id === parse["socketId"])?.socket.send(JSON.stringify({
+            connections.find(conn => conn.id === socketId)?.socket.send(JSON.stringify({
                 [`${topic}`]: payload,
-            }),)
+            }))
         }
     }
 })
 
 const initData = (socketId: string) => {
     parentPort?.postMessage(JSON.stringify({
-        ["InitData"]: [socketId],
+        ["InitData"]: socketId,
     }));
 }
 

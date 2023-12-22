@@ -95,9 +95,11 @@ export class MessageHandler {
 				const parse = JSON.parse(value);
 				for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
 					sendAuthenticatedMessage(
+						parse["socketId"],
 						parse["AuthorizationKey"],
 						this.storeSettings.getAuthorizationKey(),
 						this.svelteEmitter,
+						this.webSocketWorker,
 						key as keyof MessageEvents,
 						value as any)
 				}
@@ -109,13 +111,13 @@ export class MessageHandler {
 	}
 
 	sendMessage<J extends keyof MessageEvents>(topic: J, ...payload: Parameters<MessageEvents[J]>) {
-		this.mainWindow.webContents.send(
-			'message',
+		this.webSocketWorker.postMessage(
 			JSON.stringify({
-				[topic]: [...payload],
+				[topic]: payload,
 			}),
 		);
-		this.webSocketWorker.postMessage(
+		this.mainWindow.webContents.send(
+			'message',
 			JSON.stringify({
 				[topic]: payload,
 			}),
@@ -124,15 +126,15 @@ export class MessageHandler {
 	}
 
 	private sendInitMessage<J extends keyof MessageEvents>(socketId: string | undefined, topic: J, ...payload: Parameters<MessageEvents[J]>) {
-		if (!socketId) {
-			this.sendMessage(topic, ...payload);
-			return;
-		}
 		this.webSocketWorker.postMessage(
 			JSON.stringify({
 				[topic]: payload,
+				socketId: socketId,
 			}),
 		);
+		if (socketId) return
+		this.sendMessage(topic, ...payload);
+	
 	}
 
 	private initData(socketId: string | undefined = undefined) {
@@ -159,8 +161,8 @@ export class MessageHandler {
 
 	private sendAuthorizedMessage(socketId: string, clientKey: string) {
 		const serverKey = this.storeSettings.getAuthorizationKey()
-		console.log("Server Key", serverKey, "Client Key", clientKey)
 		const isAuthorized = !serverKey || clientKey === serverKey;
+		console.log("Is Authorized", isAuthorized, clientKey, serverKey, socketId)
 		this.sendInitMessage(socketId, "Authorize", isAuthorized);
 	}
 
