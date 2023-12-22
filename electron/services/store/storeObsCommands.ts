@@ -41,12 +41,21 @@ export class ElectronObsCommandStore {
 
     addObsControllerCommand(command: ObsControllerCommand) {
         const commands = this.getObsControllerCommands()
-        return this.store.set('obs.command.controller', [...commands, { ...command, id: newId() }])
+        return this.store.set('obs.command.controller.inputCommands', [...commands, { ...command, id: newId() }])
     }
 
     deleteObsControllerCommand(commandId: string) {
         const commands = this.getObsControllerCommands() ?? [];
-        return this.store.set('obs.command.controller', commands.filter(command => command.id !== commandId))
+        return this.store.set('obs.command.controller.inputCommands', commands.filter(command => command.id !== commandId))
+    }
+
+    getObsControllerCommandsState(): boolean {
+        return this.store.get('obs.command.controller.enabled') as boolean ?? false;
+    }
+
+    toggleObsControllerCommandsState() {
+        const state = this.store.get('obs.command.controller.enabled') as boolean ?? false;
+        this.store.set('obs.command.controller.enabled', !state)
     }
 
     getObsSceneSwitch(): ObsSceneSwitch {
@@ -65,19 +74,21 @@ export class ElectronObsCommandStore {
     }
 
     private init() {
-        this.controllerCommands = this.store.get('obs.command.controller') as ObsControllerCommand[] ?? [];
+        this.controllerCommands = this.store.get('obs.command.controller.inputCommands') as ObsControllerCommand[] ?? [];
     }
 
     private handleControllerCommand = (playerControllerInputs: PlayerController) => {
-        // TODO: Option to disable controller commands
+        if (!this.getObsControllerCommandsState()) return;
         if (this.commandTimeout) return;
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         const players = this.storePlayer.getCurrentPlayers();
         const player = players?.find(player => player.connectCode === connectCode)
         if (players?.some(player => player.connectCode) && !player) return;
+
         const isGameActive = [InGameState.Inactive, InGameState.End, InGameState.Time, InGameState.Tie].includes(this.storeLiveStats.getGameState());
         const lowestActiveControllerIndex = Number(Object.entries(playerControllerInputs).find(controller => Object.values(controller[1].buttons ?? {}).some(isPressed => isPressed))?.[0]) ?? 0
         const lowestIndex = isGameActive ? players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0 : lowestActiveControllerIndex
+
         const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex].buttons
         const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs)
         if (!controllerCommand) return;

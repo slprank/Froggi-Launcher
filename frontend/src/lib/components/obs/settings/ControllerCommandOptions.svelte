@@ -6,10 +6,10 @@
 	let isNewCommandModalOpen = false;
 
 	const deleteCommand = async () => {
-		
 		notifications.success('Command Deleted', 1500);
 	}
-	
+	// TODO: Delete Command
+	// TODO: Toggle Controller State
 </script>
 
 <div class="flex flex-col gap-2">
