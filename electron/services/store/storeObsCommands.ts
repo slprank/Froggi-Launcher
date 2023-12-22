@@ -57,10 +57,12 @@ export class ElectronObsCommandStore {
     }
 
     private handleControllerCommand = (playerControllerInputs: PlayerController) => {
+        // TODO: Option to disable controller commands
         if (this.commandTimeout) return;
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         const players = this.storePlayer.getCurrentPlayers();
         const player = players?.find(player => player.connectCode === connectCode)
+        if (players?.some(player => player.connectCode) && !player) return;
         const lowestIndex = players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0
         const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex]
         const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs)?.command
