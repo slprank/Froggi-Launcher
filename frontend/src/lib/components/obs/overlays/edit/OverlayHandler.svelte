@@ -20,6 +20,7 @@
 	import { getOverlays } from '$lib/utils/fetchSubscriptions.svelte';
 	import isNil from 'lodash/isNil';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import { newId } from '$lib/utils/helper';
 
 	const getDefaultScene = (sceneId: string, active: boolean = true): Scene => {
 		return {
@@ -210,7 +211,7 @@
 			},
 			transform: {
 				rotate: 0,
-				scale: "1, 1",
+				scale: '1, 1',
 				translate: {
 					x: 0,
 					y: 0,

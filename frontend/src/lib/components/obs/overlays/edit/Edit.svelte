@@ -3,7 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { electronEmitter, localEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/obs/overlays/edit/BoardEdit.svelte';
-	import { getOverlayById, newId } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
+	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
 	import ElementModal from '$lib/components/obs/overlays/edit/ElementModal.svelte';
 	import SelectedEditor from './SelectedEditor.svelte';
@@ -14,10 +14,11 @@
 	import LayerToggle from '../preview/LayerToggle.svelte';
 	import PreviewModal from './PreviewModal.svelte';
 	import EmbedModal from './EmbedModal.svelte';
+	import { newId } from '$lib/utils/helper';
 
 	const overlayId = $page.params.overlay;
 
-	$: selectedLayer = 0;
+	let selectedLayer: number = 0;
 	let selectedItemId: string | undefined = undefined;
 	let overlay: Overlay | undefined;
 
@@ -124,7 +125,7 @@
 					{#if !displayPreview}
 						<LayerEdit bind:overlay bind:selectedLayer />
 					{/if}
-					<SelectedEditor bind:selectedItemId bind:selectedLayer />
+					<SelectedEditor bind:selectedItemId />
 				</div>
 				<div
 					style={`min-width: ${

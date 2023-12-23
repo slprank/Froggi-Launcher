@@ -2,19 +2,18 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { ObsControllerCommand } from '$lib/models/types/obsTypes';
-	import { newId } from '$lib/utils/helper';
-	import { electronEmitter, obsControllerCommands } from "$lib/utils/store.svelte";
+	import { electronEmitter } from '$lib/utils/store.svelte';
 
 	export let open: boolean;
 
 	const addCommand = async () => {
 		if (!controllerCommand) return;
 		if (!Object.values(controllerCommand.inputs).some((input) => input)) return;
-		$electronEmitter.emit("ObsControllerCommandNew", controllerCommand);
+		$electronEmitter.emit('ObsControllerCommandNew', controllerCommand);
 		notifications.success('Updated Commands', 1500);
 		open = false;
-	}
-	
+	};
+
 	let controllerCommand: ObsControllerCommand = {
 		inputs: {
 			isAPressed: false,
@@ -28,12 +27,12 @@
 			isStartPressed: false,
 			isXPressed: false,
 			isYPressed: false,
-			isZPressed: false
+			isZPressed: false,
 		},
-		command: "SetCurrentProgramScene",
+		command: 'SetCurrentProgramScene',
 		payload: {},
-		id: undefined
-	}
+		id: undefined,
+	};
 </script>
 
 <Modal
@@ -46,8 +45,9 @@
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="flex justify-center">
-			<button class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-12 px-2 xl:text-xl border border-white rounded"
-				on:click={addCommand}	
+			<button
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-12 px-2 xl:text-xl border border-white rounded"
+				on:click={addCommand}
 			>
 				Add Command
 			</button>
