@@ -32,8 +32,9 @@ export interface ControllerButtons {
 export type ControllerInputs = {
 	[option in ControllerInputType]: number | undefined;
 } & {
-	controllerIndex: number | undefined;
 	buttons: ControllerButtons | undefined;
+	controllerIndex: number | undefined;
+	isConnected: boolean;
 };
 
 export type PlayerController = {

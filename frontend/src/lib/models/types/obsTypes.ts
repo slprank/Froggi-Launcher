@@ -64,10 +64,15 @@ export interface ObsCommand<Type extends keyof OBSRequestTypes> {
     id: string,
 }
 
+export interface ObsController {
+    enabled: boolean,
+    inputCommands: ObsControllerCommand[],
+}
+
 export interface ObsControllerCommand {
     inputs: ControllerButtons,
     command: keyof OBSRequestTypes,
-    payload: OBSRequestTypes[keyof OBSRequestTypes],
+    payload: OBSRequestTypes[keyof OBSRequestTypes] | any,
     id: string | undefined
 }
 

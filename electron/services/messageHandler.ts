@@ -134,7 +134,7 @@ export class MessageHandler {
 		);
 		if (socketId) return
 		this.sendMessage(topic, ...payload);
-	
+
 	}
 
 	private initData(socketId: string | undefined = undefined) {
@@ -151,6 +151,7 @@ export class MessageHandler {
 		this.sendInitMessage(socketId, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
 		this.sendInitMessage(socketId, "Overlays", this.storeOverlay.getOverlays());
 		this.sendInitMessage(socketId, "Obs", this.storeObs.getObs());
+		this.sendInitMessage(socketId, "ObsControllerCommand", this.storeObsCommands.getObsController());
 		this.sendInitMessage(socketId, "ObsSceneSwitch", this.storeObsCommands.getObsSceneSwitch());
 		this.sendInitMessage(socketId, "PostGameStats", this.storeLiveStats.getGameStats());
 		this.sendInitMessage(socketId, "RecentGames", this.storeGames.getRecentGames());

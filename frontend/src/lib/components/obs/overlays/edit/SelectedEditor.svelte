@@ -17,8 +17,8 @@
 	} from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 
 	const overlayId = $page.params.overlay;
-
 	export let selectedItemId: string | undefined;
+
 	let selectedItem: any;
 	let selectedItemIndex: number;
 

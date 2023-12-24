@@ -1,4 +1,4 @@
-import type { Obs, ObsConnection, ObsControllerCommand, ObsSceneSwitch } from "../models/types/obsTypes"
+import type { Obs, ObsConnection, ObsController, ObsControllerCommand, ObsSceneSwitch } from "../models/types/obsTypes"
 import type { AutoUpdaterStatus, BestOf, ConnectionState, InGameState, LiveStatsScene, NotificationType } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Overlay, OverlayEditor, Url } from "../models/types/overlay"
@@ -51,7 +51,10 @@ export interface MessageEvents {
     AuthorizationKeyUpdate: (key: string) => void
     InitAuthentication: (payload: [socketId: string, authKey: string]) => void
 
-    ObsControllerCommandNew: (command: ObsControllerCommand) => void
+    ObsControllerCommand: (command: ObsController) => void
+    ObsControllerCommandAdd: (command: ObsControllerCommand) => void
+    ObsControllerCommandDelete: (commandId: string) => void
+    ObsControllerCommandStateToggle: () => void
     ObsSceneSwitch: (options: ObsSceneSwitch) => void
     ObsSceneSwitchUpdate: (options: ObsSceneSwitch) => void
     DeleteObsCommand: (commandId: string) => void

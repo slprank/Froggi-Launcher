@@ -26,8 +26,14 @@
 		isAuthorized,
 		authorizationKey,
 		obsSceneSwitch,
+		obsController,
 	} from '$lib/utils/store.svelte';
-	import { getAuthorizationKey, getElectronEmitter, getIsIframe, getPage } from '$lib/utils/fetchSubscriptions.svelte';
+	import {
+		getAuthorizationKey,
+		getElectronEmitter,
+		getIsIframe,
+		getPage,
+	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
@@ -37,15 +43,12 @@
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
-		
 		switch (topic) {
-			case "AuthorizationKey":
+			case 'AuthorizationKey':
 				(() => {
-					const value = payload[0] as Parameters<
-					MessageEvents['AuthorizationKey']
-					>[0];
+					const value = payload[0] as Parameters<MessageEvents['AuthorizationKey']>[0];
 					if (!value) return;
-					authorizationKey.set(value)
+					authorizationKey.set(value);
 				})();
 				break;
 			case 'MemoryControllerInput':
@@ -57,11 +60,9 @@
 					memoryReadController.set(value);
 				})();
 				break;
-			case "Authorize":
+			case 'Authorize':
 				(() => {
-					const value = payload[0] as Parameters<
-						MessageEvents['Authorize']
-					>[0];
+					const value = payload[0] as Parameters<MessageEvents['Authorize']>[0];
 					if (isNil(value)) return;
 					isAuthorized.set(value);
 					notifications.success('Authorized', 1500);
@@ -182,6 +183,15 @@
 					obsConnection.set(value);
 				})();
 				break;
+			case 'ObsControllerCommand':
+				(() => {
+					const value = payload[0] as Parameters<
+						MessageEvents['ObsControllerCommand']
+					>[0];
+					if (!value) return;
+					obsController.set(value);
+				})();
+				break;
 			case 'ObsSceneSwitch':
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['ObsSceneSwitch']>[0];
@@ -246,7 +256,7 @@
 					const value = payload[0] as Parameters<
 						MessageEvents['LiveStatsSceneChange']
 					>[0];
-					console.log("LiveStatsSceneChange", value)
+					console.log('LiveStatsSceneChange', value);
 					if (!value) return;
 					statsScene.set(value);
 				})();
@@ -265,7 +275,10 @@
 		console.log('Initializing electron');
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
-			for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
+			for (const [key, value] of Object.entries(parse) as [
+				key: keyof MessageEvents,
+				value: Parameters<MessageEvents[keyof MessageEvents]>,
+			]) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));
 			}
 		});
@@ -283,8 +296,11 @@
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
-			console.log(parse)
-			for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
+			console.log(parse);
+			for (const [key, value] of Object.entries(parse) as [
+				key: keyof MessageEvents,
+				value: Parameters<MessageEvents[keyof MessageEvents]>,
+			]) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));
 			}
 		});
@@ -293,9 +309,14 @@
 		socket.onopen = async () => {
 			_electronEmitter.onAny(async (event, data) => {
 				const _authorizationKey = await getAuthorizationKey();
-				socket.send(JSON.stringify({ [event as string]: data, ["AuthorizationKey"]: _authorizationKey  }));
+				socket.send(
+					JSON.stringify({
+						[event as string]: data,
+						['AuthorizationKey']: _authorizationKey,
+					}),
+				);
 			});
-			_electronEmitter.emit("Ping");
+			_electronEmitter.emit('Ping');
 		};
 		socket.onclose = () => {
 			setTimeout(reload, 1000);

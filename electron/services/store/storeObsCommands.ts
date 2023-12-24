@@ -2,7 +2,7 @@
 import Store from 'electron-store';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
-import { ObsControllerCommand, ObsSceneSwitch } from '../../../frontend/src/lib/models/types/obsTypes';
+import { ObsController, ObsControllerCommand, ObsSceneSwitch } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { PlayerController } from '../../../frontend/src/lib/models/types/controller';
@@ -17,6 +17,7 @@ import { ElectronLiveStatsStore } from './storeLiveStats';
 export class ElectronObsCommandStore {
     private store: Store = new Store();
     private controllerCommands: ObsControllerCommand[] = []
+    private controllerCommandState: boolean = false;
     private commandTimeout: boolean = false;
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
@@ -35,22 +36,34 @@ export class ElectronObsCommandStore {
         this.init()
     }
 
-    getObsControllerCommands(): ObsControllerCommand[] {
+    getObsController(): ObsController {
+        return this.store.get('obs.command.controller') as ObsController
+    }
+
+    setObsController(controller: ObsController) {
+        this.store.set('obs.command.controller', controller)
+        this.controllerCommands = controller.inputCommands as ObsControllerCommand[];
+        this.controllerCommandState = controller.enabled as boolean;
+    }
+
+    getObsControllerCommandInputs(): ObsControllerCommand[] {
         return this.controllerCommands ?? [];
     }
 
     addObsControllerCommand(command: ObsControllerCommand) {
-        const commands = this.getObsControllerCommands()
-        return this.store.set('obs.command.controller.inputCommands', [...commands, { ...command, id: newId() }])
+        const commands = this.getObsControllerCommandInputs()
+        console.log(commands)
+        console.log(command)
+        this.store.set('obs.command.controller.inputCommands', [...commands, { ...command, id: newId() }])
     }
 
     deleteObsControllerCommand(commandId: string) {
-        const commands = this.getObsControllerCommands() ?? [];
+        const commands = this.getObsControllerCommandInputs() ?? [];
         return this.store.set('obs.command.controller.inputCommands', commands.filter(command => command.id !== commandId))
     }
 
     getObsControllerCommandsState(): boolean {
-        return this.store.get('obs.command.controller.enabled') as boolean ?? false;
+        return this.controllerCommandState ?? false;
     }
 
     toggleObsControllerCommandsState() {
@@ -75,6 +88,7 @@ export class ElectronObsCommandStore {
 
     private init() {
         this.controllerCommands = this.store.get('obs.command.controller.inputCommands') as ObsControllerCommand[] ?? [];
+        this.controllerCommandState = this.store.get('obs.command.controller.enabled') as boolean ?? false;
     }
 
     private handleControllerCommand = (playerControllerInputs: PlayerController) => {
@@ -113,14 +127,22 @@ export class ElectronObsCommandStore {
         this.svelteEmitter.on("ObsSceneSwitchUpdate", (options: ObsSceneSwitch) => {
             this.setObsSceneSwitch(options)
         })
-        this.svelteEmitter.on("ObsControllerCommandNew", (command: ObsControllerCommand) => {
+        this.svelteEmitter.on("ObsControllerCommandAdd", (command: ObsControllerCommand) => {
             this.addObsControllerCommand(command)
+        })
+        this.svelteEmitter.on("ObsControllerCommandDelete", (commandId: string) => {
+            this.deleteObsControllerCommand(commandId)
+        })
+        this.svelteEmitter.on("ObsControllerCommandStateToggle", () => {
+            this.toggleObsControllerCommandsState()
         })
     }
 
     private initListeners() {
         this.store.onDidChange("obs.command.controller", (value) => {
-            this.controllerCommands = value as ObsControllerCommand[];
+            const controller = value as ObsController;
+            this.setObsController(controller)
+            this.messageHandler.sendMessage("ObsControllerCommand", value as ObsController)
         })
         this.store.onDidChange('obs.command.sceneSwitch', (value) => {
             this.messageHandler.sendMessage("ObsSceneSwitch", value as ObsSceneSwitch)
