@@ -78,6 +78,7 @@ export const getControllerInputs = (memory: DolphinMemory): PlayerController => 
 				}, {} as ControllerInputs),
 			};
 			playerController[i].buttons = getButtonPresses(playerController[i].buttonsPressed);
+			playerController[i].isConnected = true // TODO: Add isConnected
 			return playerController;
 		},
 		{} as PlayerController,

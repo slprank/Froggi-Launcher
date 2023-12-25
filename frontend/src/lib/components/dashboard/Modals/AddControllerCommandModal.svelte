@@ -6,7 +6,6 @@
 	import { ControllerButtons } from '$lib/models/types/controller';
 	import { ObsControllerCommand } from '$lib/models/types/obsTypes';
 	import { electronEmitter } from '$lib/utils/store.svelte';
-	import { OBSRequestTypes } from 'obs-websocket-js/dist/types';
 	import { fly } from 'svelte/transition';
 
 	export let open: boolean;

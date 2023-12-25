@@ -100,7 +100,7 @@ export class ElectronObsCommandStore {
         if (players?.some(player => player.connectCode) && !player) return;
 
         const isGameActive = [InGameState.Inactive, InGameState.End, InGameState.Time, InGameState.Tie].includes(this.storeLiveStats.getGameState());
-        const lowestActiveControllerIndex = Number(Object.entries(playerControllerInputs).find(controller => Object.values(controller[1].buttons ?? {}).some(isPressed => isPressed))?.[0]) ?? 0
+        const lowestActiveControllerIndex = Number(Object.entries(playerControllerInputs).find(controller => controller[1].isConnected)?.[0]) ?? 0
         const lowestIndex = isGameActive ? players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0 : lowestActiveControllerIndex
 
         const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex].buttons

@@ -58,7 +58,7 @@ export class StatsDisplay {
 
 		this.slpParser.on(SlpParserEvent.FRAME, debounce(async (frameEntry: FrameEntryType) => {
 			await this.handleGameFrame(frameEntry);
-		}, 4, { trailing: true, maxWait: 4 }));
+		}, 2, { trailing: true, maxWait: 2 }));
 	}
 
 	private resetPauseInterval() {
