@@ -256,7 +256,6 @@
 					const value = payload[0] as Parameters<
 						MessageEvents['LiveStatsSceneChange']
 					>[0];
-					console.log('LiveStatsSceneChange', value);
 					if (!value) return;
 					statsScene.set(value);
 				})();

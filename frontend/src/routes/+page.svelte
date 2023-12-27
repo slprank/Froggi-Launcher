@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Logo from '$lib/Logo.svelte';
-	import { gameState, memoryReadController } from '$lib/utils/store.svelte';
+	import { gameState } from '$lib/utils/store.svelte';
 </script>
 
 <main
