@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
-import type { RankedNetplayProfile, Session } from '../../../frontend/src/lib/models/types/slippiData';
+import type { RankedNetplayProfile, SessionStats } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -21,10 +21,10 @@ export class ElectronSessionStore {
         this.initPlayerListener()
     }
 
-    getSessionStats(): Session | undefined {
+    getSessionStats(): SessionStats | undefined {
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
-        return this.store.get(`player.${player.connectCode}.session`) as Session;
+        return this.store.get(`player.${player.connectCode}.session`) as SessionStats;
     }
 
     resetSessionStats() {
@@ -32,7 +32,7 @@ export class ElectronSessionStore {
         if (!player) return;
         const currentRankedStats = player.rank.current;
         if (!currentRankedStats) return;
-        const session: Session = {
+        const session: SessionStats = {
             startRankStats: currentRankedStats,
             startTime: dateTimeNow(),
             currentRankStats: currentRankedStats,
@@ -68,7 +68,7 @@ export class ElectronSessionStore {
         if (!player) return;
         this.listeners = [
             this.store.onDidChange(`player.${player.connectCode}.session`, (value) => {
-                this.messageHandler.sendMessage("SessionStats", value as Session)
+                this.messageHandler.sendMessage("SessionStats", value as SessionStats)
             }),
         ]
     }
