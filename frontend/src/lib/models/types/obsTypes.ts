@@ -11,13 +11,13 @@ export interface Obs {
 
 export interface ObsConnection {
     commands: ObsCommand<keyof OBSRequestTypes>[],
-    scenes: ObsScenes,
-    inputs: ObsInputs[],
-    items: ObsItem[],
+    scenes: ObsScenes | undefined,
+    inputs: ObsInputs[] | undefined,
+    items: ObsItem[] | undefined,
     replayBufferState: {
         outputActive: boolean,
         outputState: string,
-    },
+    } | undefined,
     state: ConnectionState,
 }
 

@@ -11,16 +11,16 @@
 	};
 
 	$: activeItems = $obsConnection.items
-		.filter((item) => item.sceneItemEnabled)
+		?.filter((item) => item.sceneItemEnabled)
 		.map((item) => item.sourceName);
-	$: inputs = $obsConnection.inputs.filter(
+	$: inputs = $obsConnection?.inputs?.filter(
 		(input) =>
-			activeItems.includes(input.inputName) || input.inputKind === 'coreaudio_input_capture',
+			activeItems?.includes(input.inputName) || input.inputKind === 'coreaudio_input_capture',
 	);
 </script>
 
 <div class="flex flex-col gap-2">
-	{#each inputs as input (input.inputName)}
+	{#each inputs ?? [] as input (input.inputName)}
 		<div
 			class="flex gap-2 justify-start items-center"
 			animate:flip={{ duration: 250 }}

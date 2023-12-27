@@ -5,7 +5,7 @@
 
 	const updateVolume = (sceneItemId: number, enabled: boolean) => {
 		$electronEmitter.emit('ExecuteObsCommand', 'SetSceneItemEnabled', {
-			sceneName: $obsConnection.scenes.currentProgramSceneName,
+			sceneName: $obsConnection?.scenes?.currentProgramSceneName ?? '',
 			sceneItemId: sceneItemId,
 			sceneItemEnabled: enabled,
 		});
@@ -13,7 +13,7 @@
 </script>
 
 <div class="flex flex-col gap-2">
-	{#each $obsConnection.items as item, i}
+	{#each $obsConnection.items ?? [] as item, i}
 		<div
 			class="flex gap-2 justify-start items-center"
 			in:fly={{ duration: 250, x: 150, delay: i * 50 }}

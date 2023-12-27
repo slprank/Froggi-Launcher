@@ -8,15 +8,17 @@
 		});
 	};
 
-	$: scenes = $obsConnection.scenes.scenes.sort((a, b) => a.sceneName.localeCompare(b.sceneName));
+	$: scenes = $obsConnection.scenes?.scenes.sort((a, b) =>
+		a.sceneName.localeCompare(b.sceneName),
+	);
 </script>
 
 <div class="flex flex-wrap gap-2">
-	{#each scenes as scene}
+	{#each scenes ?? [] as scene}
 		<div class="flex gap-2 justify-start items-center" in:fly={{ duration: 250, x: 150 }}>
 			<button
 				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
-					$obsConnection.scenes.currentProgramSceneName === scene.sceneName
+					$obsConnection.scenes?.currentProgramSceneName === scene.sceneName
 						? 'border-red-500'
 						: 'border-white'
 				}`}

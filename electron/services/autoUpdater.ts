@@ -29,7 +29,6 @@ export class AutoUpdater {
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
-			autoUpdater.checkForUpdates();
 			this.messageHandler.sendMessage(
 				"AutoUpdaterStatus",
 				AutoUpdaterStatus.LookingForUpdate,
