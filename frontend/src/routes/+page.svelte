@@ -2,6 +2,8 @@
 	import { fade } from 'svelte/transition';
 	import Logo from '$lib/Logo.svelte';
 	import { gameFrame, memoryReadController } from '$lib/utils/store.svelte';
+
+	$: console.log($memoryReadController);
 </script>
 
 <main
