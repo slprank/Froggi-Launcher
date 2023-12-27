@@ -14,6 +14,7 @@ export class AutoUpdater {
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
 		this.initListeners();
+		autoUpdater.checkForUpdates()
 	}
 
 	async initListeners() {
