@@ -46,6 +46,8 @@ export class MemoryRead {
 	};
 
 	private handleGameState = (memory: DolphinMemory) => {
+		const currentState = this.storeLiveStats.getGameState();
+		if (currentState !== InGameState.Running) return;
 		const isPaused = getPause(memory);
 		if (!isPaused) return;
 		this.storeLiveStats.setGameState(InGameState.Paused);

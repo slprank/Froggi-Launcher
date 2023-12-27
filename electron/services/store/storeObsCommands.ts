@@ -139,7 +139,7 @@ export class ElectronObsCommandStore {
 		this.commandTimeout = true;
 		setTimeout(() => {
 			this.commandTimeout = false;
-		}, 1000);
+		}, 100);
 	};
 
 	private initEventListeners() {
