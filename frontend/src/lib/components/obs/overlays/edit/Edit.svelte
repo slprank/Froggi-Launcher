@@ -55,8 +55,6 @@
 
 	$: boardWidth = isVertical ? verticalWidth : horizontalWidth;
 	$: boardHeight = isVertical ? verticalHeight : horizontalHeight;
-
-	$: console.log({ boardWidth, horizontalHeight, verticalWidth });
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />

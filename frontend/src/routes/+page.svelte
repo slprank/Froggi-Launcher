@@ -13,7 +13,10 @@
 	<div class="grid grid-flow-row gap-4 justify-center">
 		<h1>Memory:</h1>
 		<div class="w-[80vw]">
-			{JSON.stringify($memoryReadController[0])}
+			{JSON.stringify({ ...$memoryReadController[0], buttons: undefined })}
+		</div>
+		<div class="w-[80vw]">
+			{JSON.stringify($memoryReadController[0].buttons)}
 		</div>
 		<h1>Player 1 - Slippi-Js</h1>
 		<div class="w-[80vw]">
