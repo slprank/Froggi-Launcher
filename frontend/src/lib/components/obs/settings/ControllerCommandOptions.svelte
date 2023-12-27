@@ -43,7 +43,7 @@
 		<h1 class="text-xl font-semibold text-white">Enable Controller Commands</h1>
 	</div>
 	<div class="flex flex-col gap-4" style={`opacity: ${isControllerCommandEnabled ? 1 : 0.5}`}>
-		{#each $obsController.inputCommands as controllerCommand}
+		{#each $obsController?.inputCommands as controllerCommand}
 			<div class="flex gap-4">
 				<div class="flex flex-col">
 					<h1 class="text-xl text-white">{controllerCommand}</h1>

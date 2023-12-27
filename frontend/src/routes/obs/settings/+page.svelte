@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { isAuthorized } from '$lib/utils/store.svelte';
 	import SceneOptions from '$lib/components/obs/settings/SceneOptions.svelte';
 	import ControllerCommandOptions from '$lib/components/obs/settings/ControllerCommandOptions.svelte';
-
 </script>
 
 <main
