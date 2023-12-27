@@ -105,6 +105,11 @@ export class ElectronObsCommandStore {
 
         const controllerInputs = playerControllerInputs[player?.playerIndex ?? lowestIndex].buttons
         const controllerCommand = this.controllerCommands.find(command => command.inputs === controllerInputs)
+        this.log.info("is game active:", isGameActive)
+        this.log.info("lowest active controller index:", lowestActiveControllerIndex)
+        this.log.info("lowest controller index:", lowestIndex)
+        this.log.info("controller inputs:", controllerInputs)
+        this.log.info("controller command:", controllerCommand)
         if (!controllerCommand) return;
 
         this.obsWebSocket.executeCommand(controllerCommand.command, controllerCommand.payload)
