@@ -7,7 +7,6 @@ import { MessageHandler } from './messageHandler';
 import DolphinMemory from 'dolphin-memory-reader';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { InGameState } from '../../frontend/src/lib/models/enum';
-import { SlpParser } from '@slippi/slippi-js';
 
 @singleton()
 export class MemoryRead {
@@ -15,7 +14,6 @@ export class MemoryRead {
 	private isWindows = os.platform() === 'win32';
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('SlpParser') private slpParser: SlpParser,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {}
@@ -49,10 +47,7 @@ export class MemoryRead {
 
 	private handleGameState = (memory: DolphinMemory) => {
 		const isPaused = getPause(memory);
-		console.log(isPaused);
 		if (!isPaused) return;
-		const frameEntry = this.slpParser.getLatestFrame();
-		this.storeLiveStats.setGameFrame(frameEntry);
 		this.storeLiveStats.setGameState(InGameState.Paused);
 	};
 

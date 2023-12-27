@@ -18,12 +18,12 @@ import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter
 
 @singleton()
 export class ElectronLiveStatsStore {
-	private sceneTimeout: NodeJS.Timeout
+	private sceneTimeout: NodeJS.Timeout;
 	private gameState: InGameState = InGameState.Inactive;
-	private gameFrame: FrameEntryType | null | undefined
+	private gameFrame: FrameEntryType | null | undefined;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject("ElectronStore") private store: Store,
+		@inject('ElectronStore') private store: Store,
 		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
@@ -33,7 +33,9 @@ export class ElectronLiveStatsStore {
 	}
 
 	getStatsScene(): LiveStatsScene {
-		return (this.store.get('stats.scene') as LiveStatsScene) ?? LiveStatsScene.WaitingForDolphin;
+		return (
+			(this.store.get('stats.scene') as LiveStatsScene) ?? LiveStatsScene.WaitingForDolphin
+		);
 	}
 
 	setStatsScene(scene: LiveStatsScene) {
@@ -45,30 +47,31 @@ export class ElectronLiveStatsStore {
 
 		this.sceneTimeout = setTimeout(() => {
 			this.store.set('stats.scene', secondScene);
-		}, ms)
+		}, ms);
 	}
 
 	getGameFrame(): FrameEntryType | null | undefined {
-		return this.gameFrame
+		return this.gameFrame;
 	}
 
 	setGameFrame(frameEntry: FrameEntryType | undefined | null) {
 		if (!frameEntry) return;
-		this.gameFrame = frameEntry
-		this.messageHandler.sendMessage("GameFrame", frameEntry as FrameEntryType);
+		this.gameFrame = frameEntry;
+		this.messageHandler.sendMessage('GameFrame', frameEntry as FrameEntryType);
 	}
 
 	deleteGameFrame() {
-		this.gameFrame = null
+		this.gameFrame = null;
 	}
 
 	getGameState(): InGameState {
-		return this.gameState as InGameState ?? InGameState.Inactive;
+		return (this.gameState as InGameState) ?? InGameState.Inactive;
 	}
 
 	setGameState(state: InGameState) {
 		this.gameState = state;
-		this.messageHandler.sendMessage("GameState", state as InGameState);
+		console.log('state', state);
+		this.messageHandler.sendMessage('GameState', state as InGameState);
 	}
 
 	getGameSettings(): GameStartTypeExtended | undefined {
@@ -76,9 +79,13 @@ export class ElectronLiveStatsStore {
 	}
 
 	setGameSettings(settings: GameStartType) {
-		const gameMode = settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) as GameStartMode ?? "local";
-		this.store.set('stats.game.settings', { ...settings, matchInfo: { ...settings.matchInfo, mode: gameMode } });
-		if (gameMode === "ranked") this.setBestOf(BestOf.BestOf3)
+		const gameMode =
+			(settings?.matchInfo?.matchId?.match(/mode\.(\w+)/)?.at(1) as GameStartMode) ?? 'local';
+		this.store.set('stats.game.settings', {
+			...settings,
+			matchInfo: { ...settings.matchInfo, mode: gameMode },
+		});
+		if (gameMode === 'ranked') this.setBestOf(BestOf.BestOf3);
 	}
 
 	getGameMode(): GameStartMode {
@@ -101,38 +108,38 @@ export class ElectronLiveStatsStore {
 
 	setBestOf(bestOf: BestOf | undefined) {
 		if (isNil(bestOf)) return;
-		this.store.set("stats.game.settings.matchInfo.bestOf", bestOf)
+		this.store.set('stats.game.settings.matchInfo.bestOf', bestOf);
 	}
 
 	getBestOf(): BestOf {
-		return (this.store.get("stats.game.settings.matchInfo.bestOf") ?? BestOf.BestOf3) as BestOf
+		return (this.store.get('stats.game.settings.matchInfo.bestOf') ?? BestOf.BestOf3) as BestOf;
 	}
 
 	initListeners() {
 		this.store.onDidChange('stats.scene', (value) => {
-			clearTimeout(this.sceneTimeout)
-			this.messageHandler.sendMessage("LiveStatsSceneChange", value as LiveStatsScene);
+			clearTimeout(this.sceneTimeout);
+			this.messageHandler.sendMessage('LiveStatsSceneChange', value as LiveStatsScene);
 		});
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {
-			this.messageHandler.sendMessage("CurrentPlayers", value as Player[]);
+			this.messageHandler.sendMessage('CurrentPlayers', value as Player[]);
 		});
 		this.store.onDidChange(`stats.game.settings`, async (value) => {
-			this.messageHandler.sendMessage("GameSettings", value as GameStartTypeExtended);
+			this.messageHandler.sendMessage('GameSettings', value as GameStartTypeExtended);
 		});
 		this.store.onDidChange(`stats.game.stats`, async (value) => {
-			this.messageHandler.sendMessage("PostGameStats", value as GameStats);
+			this.messageHandler.sendMessage('PostGameStats', value as GameStats);
 		});
 		this.store.onDidChange(`stats.match`, async (value) => {
-			this.messageHandler.sendMessage("CurrentMatch", value as Match);
+			this.messageHandler.sendMessage('CurrentMatch', value as Match);
 		});
 	}
 
 	initSvelteListeners() {
-		this.svelteEmitter.on("LiveStatsSceneChange", (value: LiveStatsScene | undefined) => {
-			if (!value) return
+		this.svelteEmitter.on('LiveStatsSceneChange', (value: LiveStatsScene | undefined) => {
+			if (!value) return;
 			this.setStatsScene(value);
 		});
-		this.svelteEmitter.on("BestOfUpdate", (bestOf: BestOf) => {
+		this.svelteEmitter.on('BestOfUpdate', (bestOf: BestOf) => {
 			this.setBestOf(bestOf);
 		});
 	}
