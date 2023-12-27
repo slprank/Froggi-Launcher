@@ -241,148 +241,154 @@
 </script>
 
 <div class="w-full h-full flex flex-col gap-2">
-	<h1 class="text-gray-500 text-lg font-medium text-shadow">Category</h1>
-	<div class="w-lg 3xl:w-full flex flex-wrap gap-2 h-[13rem] min-h-[9rem] overflow-auto">
-		{#each buttons.filter((b) => b.visible) as button}
-			<div class="grid gap-2 justify-start items-start">
-				<button
-					class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
-						selectedCategory === button.category ? 'border-red-500' : 'border-white'
-					}`}
-					on:click={() => {
-						selectedCategory = button.category;
-					}}
-				>
-					{button.category}
-				</button>
-			</div>
-		{/each}
-	</div>
-	<h1 class="text-gray-500 text-lg font-medium text-shadow">Element</h1>
-	{#key selectedCategory}
-		<div
-			in:fly={{ duration: 250, x: 50, delay: 250 }}
-			out:fly={{ duration: 250, x: 50 }}
-			class="overflow-scroll"
-		>
-			{#if selectedCategory === ElementCategory.Custom}
-				<CustomElementSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.GameCustomUi}
-				<CustomUiSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerCustomUi}
-				<CurrentPlayerCustomUiSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1CustomUi}
-				<Player1CustomUiSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2CustomUi}
-				<Player2CustomUiSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerControllerInput}
-				<CurrentPlayerControllerInput on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1ControllerInput}
-				<Player1ControllerInput on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2ControllerInput}
-				<Player1ControllerInput on:select={select} />
-			{/if}
-
-			{#if selectedCategory === ElementCategory.CurrentMatchStats}
-				<RecentGameCurrentSetElementSelect on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Session}
-				<Session on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.RankChangeData}
-				<RecentGameCurrentPlayerSlippiData on:select={select} />
-				<RankChangeData on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
-				<RecentGameCurrentPlayerSlippiData on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1SlippiData}
-				<RecentGamePlayer1SlippiData on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2SlippiData}
-				<RecentGamePlayer2SlippiData on:select={select} />
-			{/if}
-
-			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameAttackCount}
-				<RecentGameCurrentPlayerAttackCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameActionCount}
-				<RecentGameCurrentPlayerActionCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameOverallStats}
-				<RecentGameCurrentPlayerOverall on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1PostGameAttackCount}
-				<RecentGamePlayer1AttackCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1PostGameActionCount}
-				<RecentGamePlayer1ActionCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1PostGameOverallStats}
-				<RecentGamePlayer1Overall on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2PostGameAttackCount}
-				<RecentGamePlayer2AttackCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2PostGameActionCount}
-				<RecentGamePlayer2ActionCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2PostGameOverallStats}
-				<RecentGamePlayer2Overall on:select={select} />
-			{/if}
-
-			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchAttackCount}
-				<CurrentMatchCurrentPlayerAttackCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchActionCount}
-				<CurrentMatchCurrentPlayerActionCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchOverallStats}
-				<CurrentMatchCurrentPlayerOverall on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1PostGameMatchAttackCount}
-				<CurrentMatchPlayer1AttackCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1PostGameMatchActionCount}
-				<CurrentMatchPlayer1ActionCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player1PostGameMatchOverallStats}
-				<CurrentMatchPlayer1Overall on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2PostGameMatchAttackCount}
-				<CurrentMatchPlayer2AttackCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2PostGameMatchActionCount}
-				<CurrentMatchPlayer2ActionCount on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Player2PostGameMatchOverallStats}
-				<CurrentMatchPlayer2Overall on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.RecentGameSummary}
-				<RecentGame on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Game1Summary}
-				<Game1Summary on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Game2Summary}
-				<Game2Summary on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Game3Summary}
-				<Game3Summary on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Game4Summary}
-				<Game4Summary on:select={select} />
-			{/if}
-			{#if selectedCategory === ElementCategory.Game5Summary}
-				<Game5Summary on:select={select} />
-			{/if}
+	<div class="w-full">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Category</h1>
+		<div class="w-lg 3xl:w-full flex flex-wrap gap-2 max-h-[13rem] min-h-[9rem] overflow-auto">
+			{#each buttons.filter((b) => b.visible) as button}
+				<div class="grid gap-2 justify-start items-start">
+					<button
+						class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
+							selectedCategory === button.category ? 'border-red-500' : 'border-white'
+						}`}
+						on:click={() => {
+							selectedCategory = button.category;
+						}}
+					>
+						{button.category}
+					</button>
+				</div>
+			{/each}
 		</div>
-	{/key}
+	</div>
+	<div class="w-full flex-1 overflow-scroll">
+		<h1 class="text-gray-500 text-lg font-medium text-shadow">Element</h1>
+		{#key selectedCategory}
+			<div
+				in:fly={{ duration: 250, x: 50, delay: 250 }}
+				out:fly={{ duration: 250, x: 50 }}
+				class="overflow-scroll"
+			>
+				{#if selectedCategory === ElementCategory.Custom}
+					<CustomElementSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.GameCustomUi}
+					<CustomUiSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.CurrentPlayerCustomUi}
+					<CurrentPlayerCustomUiSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1CustomUi}
+					<Player1CustomUiSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2CustomUi}
+					<Player2CustomUiSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.CurrentPlayerControllerInput}
+					<CurrentPlayerControllerInput on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1ControllerInput}
+					<Player1ControllerInput on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2ControllerInput}
+					<Player1ControllerInput on:select={select} />
+				{/if}
+
+				{#if selectedCategory === ElementCategory.CurrentMatchStats}
+					<RecentGameCurrentSetElementSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Session}
+					<Session on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.RankChangeData}
+					<div class="flex flex-col gap-2">
+						<RecentGameCurrentPlayerSlippiData on:select={select} />
+						<RankChangeData on:select={select} />
+					</div>
+				{/if}
+				{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
+					<RecentGameCurrentPlayerSlippiData on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1SlippiData}
+					<RecentGamePlayer1SlippiData on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2SlippiData}
+					<RecentGamePlayer2SlippiData on:select={select} />
+				{/if}
+
+				{#if selectedCategory === ElementCategory.CurrentPlayerPostGameAttackCount}
+					<RecentGameCurrentPlayerAttackCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.CurrentPlayerPostGameActionCount}
+					<RecentGameCurrentPlayerActionCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.CurrentPlayerPostGameOverallStats}
+					<RecentGameCurrentPlayerOverall on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1PostGameAttackCount}
+					<RecentGamePlayer1AttackCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1PostGameActionCount}
+					<RecentGamePlayer1ActionCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1PostGameOverallStats}
+					<RecentGamePlayer1Overall on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2PostGameAttackCount}
+					<RecentGamePlayer2AttackCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2PostGameActionCount}
+					<RecentGamePlayer2ActionCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2PostGameOverallStats}
+					<RecentGamePlayer2Overall on:select={select} />
+				{/if}
+
+				{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchAttackCount}
+					<CurrentMatchCurrentPlayerAttackCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchActionCount}
+					<CurrentMatchCurrentPlayerActionCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchOverallStats}
+					<CurrentMatchCurrentPlayerOverall on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1PostGameMatchAttackCount}
+					<CurrentMatchPlayer1AttackCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1PostGameMatchActionCount}
+					<CurrentMatchPlayer1ActionCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player1PostGameMatchOverallStats}
+					<CurrentMatchPlayer1Overall on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2PostGameMatchAttackCount}
+					<CurrentMatchPlayer2AttackCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2PostGameMatchActionCount}
+					<CurrentMatchPlayer2ActionCount on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Player2PostGameMatchOverallStats}
+					<CurrentMatchPlayer2Overall on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.RecentGameSummary}
+					<RecentGame on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Game1Summary}
+					<Game1Summary on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Game2Summary}
+					<Game2Summary on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Game3Summary}
+					<Game3Summary on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Game4Summary}
+					<Game4Summary on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Game5Summary}
+					<Game5Summary on:select={select} />
+				{/if}
+			</div>
+		{/key}
+	</div>
 </div>

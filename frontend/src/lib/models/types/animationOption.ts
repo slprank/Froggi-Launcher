@@ -20,8 +20,16 @@ export enum AnimationTrigger {
     MatchPlayer1ScoreChange = "Player 1 Score Change",
     MatchPlayer2ScoreChange = "Player 2 Score Change",
 
-    RankStatsRatingChange = "Rank Stats Rating Change",
-    RankStatsIconChange = "Rank Stats Icon Change",
+    SlippiRankPlayer1ConnectCodeChange = "Player 1 Connect Code Change",
+    SlippiRankPlayer2ConnectCodeChange = "Player 2 Connect Code Change",
+
+    SlippiRankStatsRatingChange = "Slippi Stats Rating Change",
+    SlippiRankStatsRankChange = "Slippi Stats Rank Change",
+
+    SessionWins = "Session Wins Change",
+    SessionLosses = "Session Losses Change",
+    SessionRating = "Session Rating Change",
+    SessionGames = "Session Games Number Change",
 }
 
 export enum VisibilityOption {
@@ -135,7 +143,7 @@ export enum VisibilityOption {
     PostGame5SummaryPlayer2Stock4 = "Post Game 5 Summary Player 1 Stock 4",
 
     RankStatsBeforeRankUpdated = "Rank Stats Pre Updated",
-    RankStatsAfterRankUpdated = "Rank Stats Pre Updated",
+    RankStatsAfterRankUpdated = "Rank Stats Post Updated",
     RankStatsMatchWon = "Rank Stats Match Won",
 
 }
@@ -165,7 +173,8 @@ export enum AnimationTriggerCategory {
     Player2State = "Player2 State",
     GameState = "Game State",
     MatchState = "Match State",
-    RankStats = "Rank Stats"
+    RankStats = "Rank Stats",
+    SessionStats = "Session Stats"
 }
 
 export type SelectedAnimationTriggerOption = {

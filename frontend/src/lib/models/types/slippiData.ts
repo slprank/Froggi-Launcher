@@ -139,7 +139,7 @@ export interface RankedNetplayProfile {
     winsPercent: number;
 }
 
-export interface Session {
+export interface SessionStats {
     startRankStats: RankedNetplayProfile,
     startTime: Date,
     currentRankStats: RankedNetplayProfile,

@@ -15,18 +15,18 @@
 </script>
 
 <SelectAnimationTriggerOption
-	description="When Rank Icon Changes"
-	value={AnimationTrigger.RankStatsIconChange}
-	bind:selected={selectedOption[AnimationTrigger.RankStatsIconChange]}
+	description="When Rank Changes"
+	value={AnimationTrigger.SlippiRankStatsRankChange}
+	bind:selected={selectedOption[AnimationTrigger.SlippiRankStatsRankChange]}
 	on:select={select}
 >
-	Rank Icon Change
+	Rank Change
 </SelectAnimationTriggerOption>
 <SelectAnimationTriggerOption
 	description="When Rank Rating Changes"
-	value={AnimationTrigger.RankStatsRatingChange}
-	bind:selected={selectedOption[AnimationTrigger.RankStatsRatingChange]}
+	value={AnimationTrigger.SlippiRankStatsRatingChange}
+	bind:selected={selectedOption[AnimationTrigger.SlippiRankStatsRatingChange]}
 	on:select={select}
 >
-	Rank Rating Change
+	Rating Change
 </SelectAnimationTriggerOption>

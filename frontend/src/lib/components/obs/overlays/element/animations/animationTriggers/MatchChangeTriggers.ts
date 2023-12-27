@@ -1,4 +1,3 @@
-import { BestOf } from '$lib/models/enum';
 import {
 	AnimationTrigger,
 	type SelectedAnimationTriggerOption,
@@ -10,7 +9,7 @@ export const matchStateTrigger = (option: SelectedAnimationTriggerOption, curren
 
 	if (option[AnimationTrigger.MatchBestOfChange])
 		trigger = gameSettings.matchInfo.bestOf !== prevSettings?.matchInfo.bestOf || trigger
-	if (option[AnimationTrigger.MatchBestOfChange])
+	if (option[AnimationTrigger.MatchGameModeChange])
 		trigger = gameSettings.matchInfo.mode !== prevSettings?.matchInfo.mode || trigger
 	if (option[AnimationTrigger.MatchPlayer1TagChange])
 		trigger = currentPlayers.at(0)?.displayName !== prevPlayers?.at(0)?.displayName || trigger
@@ -23,8 +22,5 @@ export const matchStateTrigger = (option: SelectedAnimationTriggerOption, curren
 	if (option[AnimationTrigger.MatchPlayer2ScoreChange])
 		trigger = prevScore?.at(1) !== score.at(1) || trigger;
 
-	prevScore = score;
-	prevSettings = gameSettings;
-	prevPlayers = currentPlayers;
 	return trigger;
 };

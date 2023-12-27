@@ -88,7 +88,7 @@ export enum CustomElement {
     SlippiRankPlayer1Character3Percent = 4134,
     SlippiRankPlayer2Character3Percent = 4135,
 
-    SlippiRankChangeRatingDifference = 3140,
+    SlippiRankChangeRatingDifference = 4140,
 
     //Post Match Game Summary
     CurrentSetGameRecentPlayer1Score = 4200,
@@ -577,9 +577,6 @@ export enum CustomElement {
     SessionLosses = 5301,
     SessionRating = 5302,
     SessionGameNumber = 5303,
-    // TODO: Create components for enums below
-
-
 
     // Image
     // Rank Data

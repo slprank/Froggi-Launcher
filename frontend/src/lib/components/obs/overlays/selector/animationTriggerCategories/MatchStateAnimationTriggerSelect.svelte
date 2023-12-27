@@ -48,6 +48,23 @@
 	Player 2 Tag Change
 </SelectAnimationTriggerOption>
 <SelectAnimationTriggerOption
+	description="When Player 1 Connect Code Changes"
+	value={AnimationTrigger.SlippiRankPlayer1ConnectCodeChange}
+	bind:selected={selectedOption[AnimationTrigger.SlippiRankPlayer1ConnectCodeChange]}
+	on:select={select}
+>
+	Player 1 Connect Code Change
+</SelectAnimationTriggerOption>
+
+<SelectAnimationTriggerOption
+	description="When Player 2 Connect Code Changes"
+	value={AnimationTrigger.SlippiRankPlayer2ConnectCodeChange}
+	bind:selected={selectedOption[AnimationTrigger.SlippiRankPlayer2ConnectCodeChange]}
+	on:select={select}
+>
+	Player 2 Connect Code Change
+</SelectAnimationTriggerOption>
+<SelectAnimationTriggerOption
 	description="When Player 1 Score Changes"
 	value={AnimationTrigger.MatchPlayer1ScoreChange}
 	bind:selected={selectedOption[AnimationTrigger.MatchPlayer1ScoreChange]}

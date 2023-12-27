@@ -2,6 +2,7 @@
 	import { CHARACTERS } from '$lib/models/constants/characterData';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
+	import { CurrentPlayer } from '$lib/models/types/slippiData';
 	import { currentPlayer } from '$lib/utils/store.svelte';
 	import PlayerRankIcon from '../../element/PlayerRankIcon.svelte';
 	import RankedCharacterIcon from '../../element/RankedCharacterIcon.svelte';
@@ -10,6 +11,8 @@
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
+
+	const player: CurrentPlayer = $currentPlayer;
 </script>
 
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerTag}

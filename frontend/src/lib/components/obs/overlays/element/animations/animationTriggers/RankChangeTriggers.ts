@@ -2,22 +2,21 @@ import {
 	AnimationTrigger,
 	type SelectedAnimationTriggerOption,
 } from '$lib/models/types/animationOption';
-import type { CurrentPlayer, Rank } from '$lib/models/types/slippiData';
+import type { CurrentPlayerRank } from '$lib/models/types/slippiData';
 
-let prevRank: Rank;
 export const rankStateTrigger = (
 	option: SelectedAnimationTriggerOption,
-	player: CurrentPlayer | undefined,
+	rank: CurrentPlayerRank | undefined,
+	prevRank: CurrentPlayerRank | undefined,
 ) => {
-	if (!player) return;
+	if (!rank || !prevRank) return;
 	let trigger = false;
 
-	if (option[AnimationTrigger.RankStatsIconChange])
-		trigger = player.rank.current?.rank !== player.rank.current?.rank || trigger;
+	if (option[AnimationTrigger.SlippiRankStatsRankChange])
+		trigger = rank.current?.rank !== prevRank.current?.rank || trigger;
 
-	if (option[AnimationTrigger.RankStatsRatingChange])
-		trigger = player.rank.current?.rating !== player.rank.current?.rating || trigger;
+	if (option[AnimationTrigger.SlippiRankStatsRatingChange])
+		trigger = rank.current?.rating !== prevRank.current?.rating || trigger;
 
-	prevRank = player.rank;
 	return trigger;
 };

@@ -8,6 +8,7 @@
 	import Player1StateAnimationTriggerSelect from './Player1StateAnimationTriggerSelect.svelte';
 	import Player2StateAnimationTriggerSelect from './Player2StateAnimationTriggerSelect.svelte';
 	import RankStatsAnimationTriggerSelect from './RankStatsAnimationTriggerSelect.svelte';
+	import SessionStatsAnimationTriggerSelect from './SessionStatsAnimationTriggerSelect.svelte';
 	import {
 		AnimationTrigger,
 		AnimationTriggerCategory,
@@ -55,6 +56,16 @@
 			category: AnimationTriggerCategory.RankStats,
 			visible: [LiveStatsScene.RankChange].includes($statsScene),
 		},
+		{
+			category: AnimationTriggerCategory.SessionStats,
+			visible: [
+				LiveStatsScene.Menu,
+				LiveStatsScene.InGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.PostGame,
+				LiveStatsScene.RankChange,
+			].includes($statsScene),
+		},
 	];
 	let selectedCategory: AnimationTriggerCategory =
 		buttons?.find((button) => button.visible)?.category ?? AnimationTriggerCategory.GameState;
@@ -83,37 +94,28 @@
 		<div
 			in:fly={{ duration: 250, x: 50, delay: 250 }}
 			out:fly={{ duration: 250, x: 50 }}
-			class="overflow-scroll"
+			class="overflow-scroll flex flex-col gap-2"
 		>
 			{#if selectedCategory === AnimationTriggerCategory.GameState}
-				<div class="flex flex-col gap-2">
-					<GameStateAnimationTriggerSelect on:select={select} {selectedOption} />
-				</div>
+				<GameStateAnimationTriggerSelect on:select={select} {selectedOption} />
 			{/if}
 			{#if selectedCategory === AnimationTriggerCategory.MatchState}
-				<div class="flex flex-col gap-2">
-					<MatchStateAnimationTriggerSelect on:select={select} {selectedOption} />
-				</div>
+				<MatchStateAnimationTriggerSelect on:select={select} {selectedOption} />
 			{/if}
 			{#if selectedCategory === AnimationTriggerCategory.CurrentPlayerState}
-				<div class="flex flex-col gap-2">
-					<CurrentPlayerStateAnimationTriggerSelect on:select={select} {selectedOption} />
-				</div>
+				<CurrentPlayerStateAnimationTriggerSelect on:select={select} {selectedOption} />
 			{/if}
 			{#if selectedCategory === AnimationTriggerCategory.Player1State}
-				<div class="flex flex-col gap-2">
-					<Player1StateAnimationTriggerSelect on:select={select} {selectedOption} />
-				</div>
+				<Player1StateAnimationTriggerSelect on:select={select} {selectedOption} />
 			{/if}
 			{#if selectedCategory === AnimationTriggerCategory.Player2State}
-				<div class="flex flex-col gap-2">
-					<Player2StateAnimationTriggerSelect on:select={select} {selectedOption} />
-				</div>
+				<Player2StateAnimationTriggerSelect on:select={select} {selectedOption} />
 			{/if}
 			{#if selectedCategory === AnimationTriggerCategory.RankStats}
-				<div class="flex flex-col gap-2">
-					<RankStatsAnimationTriggerSelect on:select={select} {selectedOption} />
-				</div>
+				<RankStatsAnimationTriggerSelect on:select={select} {selectedOption} />
+			{/if}
+			{#if selectedCategory === AnimationTriggerCategory.SessionStats}
+				<SessionStatsAnimationTriggerSelect on:select={select} {selectedOption} />
 			{/if}
 		</div>
 		<br />

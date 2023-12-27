@@ -2,7 +2,7 @@ import type { Obs, ObsConnection, ObsController, ObsControllerCommand, ObsSceneS
 import type { AutoUpdaterStatus, BestOf, ConnectionState, InGameState, LiveStatsScene, NotificationType } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Overlay, OverlayEditor, Url } from "../models/types/overlay"
-import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, Session } from "../models/types/slippiData"
+import type { CurrentPlayer, GameStartTypeExtended, GameStats, Match, Player, SessionStats } from "../models/types/slippiData"
 import type { FrameEntryType } from "@slippi/slippi-js"
 import localEmitter from "eventemitter2"
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types"
@@ -32,7 +32,7 @@ export interface MessageEvents {
     RecentGames: (games: GameStats[][]) => void
     RecentGamesReset: () => void // Here
     RecentRankedSets: (games: GameStats[]) => void
-    SessionStats: (session: Session | undefined) => void
+    SessionStats: (session: SessionStats | undefined) => void
     LiveStatsSceneChange: (scene: LiveStatsScene) => void
     Url: (url: Url) => void
     Obs: (obs: Obs | undefined) => void

@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { CustomElement } from "$lib/models/constants/customElement";
-	import { BestOf } from "$lib/models/enum";
-	import { GridContentItem, GridContentItemStyle } from "$lib/models/types/overlay";
-	import { currentPlayers, gameScore, gameSettings, statsScene } from "$lib/utils/store.svelte";
-    import TextElement from "../../element/TextElement.svelte";
+	import { CustomElement } from '$lib/models/constants/customElement';
+	import { BestOf } from '$lib/models/enum';
+	import { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
+	import { currentPlayers, gameScore, gameSettings, statsScene } from '$lib/utils/store.svelte';
+	import TextElement from '../../element/TextElement.svelte';
 
-    export let dataItem: GridContentItem;
+	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
-	let bestOf = $gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3;
-	let player1Tag = $currentPlayers.at(0)?.displayName ?? "";
-	let player2Tag = $currentPlayers.at(1)?.displayName ?? "";
-	let player1Score = $gameScore.at(0) ?? 0;
-	let player2Score = $gameScore.at(1) ?? 0;
+	const bestOf = $gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3;
+	const player1Tag = $currentPlayers.at(0)?.displayName ?? '';
+	const player2Tag = $currentPlayers.at(1)?.displayName ?? '';
+	const player1Score = $gameScore.at(0) ?? 0;
+	const player2Score = $gameScore.at(1) ?? 0;
 </script>
 
 {#if dataItem?.elementId === CustomElement.MatchBestOf}
@@ -23,12 +23,12 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.MatchPlayer1Tag}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? "Player1" : player1Tag ?? ""}
+		{defaultPreview ? 'Player1' : player1Tag ?? ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.MatchPlayer2Tag}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? "Player2" : player2Tag ?? ""}
+		{defaultPreview ? 'Player2' : player2Tag ?? ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.MatchPlayer1Score}

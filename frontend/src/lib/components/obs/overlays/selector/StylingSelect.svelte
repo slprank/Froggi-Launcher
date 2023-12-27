@@ -341,7 +341,7 @@
 				<div class="w-full h-24">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Flip</h1>
 					<Select bind:selected={payload.transform.scale}>
-						<option selected value={"1, 1"}>Default</option>
+						<option selected value={'1, 1'}>Default</option>
 						<option value={'-1, 1'}>Horizontal</option>
 						<option value={'1, -1'}>Vertical</option>
 						<option value={'-1, -1'}>Horizontal & Vertical</option>
@@ -394,9 +394,7 @@
 			<div class="w-full">
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Shadow</h1>
 				<div class="w-full h-fit flex flex-wrap">
-					<div class="w-full">
-						<ShadowSelect bind:value={payload.shadow} />
-					</div>
+					<ShadowSelect bind:value={payload.shadow} />
 				</div>
 			</div>
 			<div>
