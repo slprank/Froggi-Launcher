@@ -108,7 +108,6 @@ export class ElectronObsCommandStore {
 	}
 
 	private handleControllerCommand = (playerControllerInputs: PlayerController) => {
-		console.log('Command State:', this.getObsControllerCommandsState());
 		if (!this.getObsControllerCommandsState()) return;
 		if (this.commandTimeout) return;
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
@@ -134,9 +133,6 @@ export class ElectronObsCommandStore {
 		const controllerCommand = this.controllerCommands?.find((command) =>
 			isEqual(command.inputs, controllerInputs),
 		);
-		console.log('is game active:', isGameActive);
-		console.log('controller index:', lowestIndex);
-		console.log('player controller index:', lowestIndex);
 		if (!controllerCommand) return;
 
 		this.obsWebSocket.executeCommand(controllerCommand.command, controllerCommand.payload);

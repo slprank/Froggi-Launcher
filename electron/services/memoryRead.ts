@@ -15,10 +15,10 @@ export class MemoryRead {
 	private isWindows = os.platform() === 'win32';
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject("SlpParser") private slpParser: SlpParser,
+		@inject('SlpParser') private slpParser: SlpParser,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) { }
+	) {}
 
 	initMemoryRead() {
 		this.initMemoryReadWin();
@@ -31,8 +31,8 @@ export class MemoryRead {
 		await memory.init();
 		this.memoryReadInterval = setInterval(() => {
 			try {
-				this.handleController(memory)
-				this.handleGameState(memory)
+				this.handleController(memory);
+				this.handleGameState(memory);
 				// TODO: Get Pause
 				// TODO: Get Menu Location
 			} catch (err) {
@@ -44,16 +44,17 @@ export class MemoryRead {
 
 	private handleController = (memory: DolphinMemory) => {
 		const controllers = getControllerInputs(memory);
-		this.messageHandler.sendMessage("MemoryControllerInput", controllers);
-	}
+		this.messageHandler.sendMessage('MemoryControllerInput', controllers);
+	};
 
 	private handleGameState = (memory: DolphinMemory) => {
-		const isPaused = getPause(memory)
+		const isPaused = getPause(memory);
+		console.log(isPaused);
 		if (!isPaused) return;
-		const frameEntry = this.slpParser.getLatestFrame()
-		this.storeLiveStats.setGameFrame(frameEntry)
-		this.storeLiveStats.setGameState(InGameState.Paused)
-	}
+		const frameEntry = this.slpParser.getLatestFrame();
+		this.storeLiveStats.setGameFrame(frameEntry);
+		this.storeLiveStats.setGameState(InGameState.Paused);
+	};
 
 	stopMemoryRead() {
 		this.log.info('Stopping memory read');
