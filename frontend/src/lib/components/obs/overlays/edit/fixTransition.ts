@@ -121,6 +121,20 @@ const fixSlippiStatsTransition = (item: GridContentItem) => {
     let newItem = cloneDeep(item);
     if (
         [
+            CustomElement.MatchPlayer1Tag,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchPlayer1TagChange] = true;
+    }
+    if (
+        [
+            CustomElement.MatchPlayer2Tag,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.MatchPlayer2TagChange] = true;
+    }
+    if (
+        [
             CustomElement.SlippiRankPlayer1ConnectCode,
         ].includes(item.elementId)
     ) {

@@ -107,19 +107,15 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `66.7%`
-			: $currentPlayer?.rank?.current?.winsPercent
-			? `${$currentPlayer?.rank?.current?.winsPercent}%`
+			: player?.rank?.current?.winsPercent
+			? `${player?.rank?.current?.winsPercent}%`
 			: ''}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerLosses}
 	<TextElement {style} {dataItem}>
-		{defaultPreview
-			? `25`
-			: $currentPlayer?.rank?.current?.losses
-			? $currentPlayer?.rank?.current?.losses
-			: ''}
+		{defaultPreview ? `25` : player?.rank?.current?.losses ? player?.rank?.current?.losses : ''}
 	</TextElement>
 {/if}
 
@@ -127,8 +123,8 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `33.3%`
-			: $currentPlayer?.rank?.current?.lossesPercent
-			? `${$currentPlayer?.rank?.current?.lossesPercent}%`
+			: player?.rank?.current?.lossesPercent
+			? `${player?.rank?.current?.lossesPercent}%`
 			: ''}
 	</TextElement>
 {/if}

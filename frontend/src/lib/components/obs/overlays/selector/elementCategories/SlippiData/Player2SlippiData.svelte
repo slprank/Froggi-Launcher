@@ -13,7 +13,7 @@
 <div class="flex flex-col gap-2">
 	<SelectOption
 		description="Player 2 Slippi Tag"
-		value={CustomElement.SlippiRankPlayer2Tag}
+		value={CustomElement.MatchPlayer2Tag}
 		on:select={select}
 	>
 		Tag

@@ -33,8 +33,6 @@ export enum CustomElement {
     // String
     // Rank Data
     SlippiRankCurrentPlayerTag = 4000,
-    SlippiRankPlayer1Tag = 4001,
-    SlippiRankPlayer2Tag = 4002,
     SlippiRankCurrentPlayerScore = 4003,
     SlippiRankCurrentPlayerRankText = 4006,
     SlippiRankPlayer1RankText = 4007,

@@ -14,7 +14,7 @@
 	export let style: GridContentItemStyle;
 </script>
 
-{#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Tag}
+{#if dataItem?.elementId === CustomElement.MatchPlayer1Tag}
 	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.displayName
 			? $currentPlayers?.at(0)?.rank?.current?.displayName
