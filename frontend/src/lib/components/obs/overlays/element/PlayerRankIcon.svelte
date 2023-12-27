@@ -6,13 +6,12 @@
 	export let player: Player | undefined;
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
-
-	const fallbackIcon = 'GOLD 2';
+	export let fallbackIcon = 'GOLD 2';
 
 	$: playerRankIcon = player?.rank?.current?.rank?.toUpperCase();
 	$: getRankIcon = (rankIcon: string | undefined) => {
-		if (rankIcon) return rankIcon;
 		if (preview) return fallbackIcon;
+		if (rankIcon) return rankIcon;
 		return '';
 	};
 	$: rankIcon = getRankIcon(playerRankIcon);

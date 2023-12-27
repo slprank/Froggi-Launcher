@@ -15,6 +15,22 @@
 </script>
 
 <SelectAnimationTriggerOption
+	description="When Win Number Changes"
+	value={AnimationTrigger.SlippiRankStatsWinsChange}
+	bind:selected={selectedOption[AnimationTrigger.SlippiRankStatsWinsChange]}
+	on:select={select}
+>
+	Wins Change
+</SelectAnimationTriggerOption>
+<SelectAnimationTriggerOption
+	description="When Loss Number Changes"
+	value={AnimationTrigger.SlippiRankStatsLossesChange}
+	bind:selected={selectedOption[AnimationTrigger.SlippiRankStatsLossesChange]}
+	on:select={select}
+>
+	Losses Change
+</SelectAnimationTriggerOption>
+<SelectAnimationTriggerOption
 	description="When Rank Changes"
 	value={AnimationTrigger.SlippiRankStatsRankChange}
 	bind:selected={selectedOption[AnimationTrigger.SlippiRankStatsRankChange]}

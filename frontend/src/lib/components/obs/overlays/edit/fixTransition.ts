@@ -154,6 +154,23 @@ const fixSlippiStatsTransition = (item: GridContentItem) => {
     ) {
         newItem.data.animationTrigger.selectedOptions[AnimationTrigger.SlippiRankStatsRatingChange] = true;
     }
+    if (
+        [
+            CustomElement.SlippiRankCurrentPlayerWins,
+            CustomElement.SlippiRankCurrentPlayerWinsPercent,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.SlippiRankStatsWinsChange] = true;
+    }
+    if (
+        [
+            CustomElement.SlippiRankCurrentPlayerLosses,
+            CustomElement.SlippiRankCurrentPlayerLossesPercent,
+        ].includes(item.elementId)
+    ) {
+        newItem.data.animationTrigger.selectedOptions[AnimationTrigger.SlippiRankStatsLossesChange] = true;
+    }
+
 
     return newItem
 }

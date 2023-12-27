@@ -34,23 +34,25 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRankIcon}
-	<PlayerRankIcon {dataItem} {style} player={$currentPlayer} preview={defaultPreview} />
+	<PlayerRankIcon
+		{dataItem}
+		{style}
+		player={$currentPlayer}
+		preview={defaultPreview}
+		fallbackIcon="GOLD 2"
+	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRankText}
 	<TextElement {style} {dataItem}>
-		{defaultPreview
-			? `Gold 2`
-			: $currentPlayer?.rank?.current?.rank
-			? $currentPlayer?.rank?.current?.rank
-			: ''}
+		{defaultPreview ? `GOLD 2` : player.rank?.current?.rank ? player.rank?.current?.rank : ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRating}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `1429.3`
-			: $currentPlayer?.rank?.current?.rating
-			? $currentPlayer?.rank?.current?.rating
+			: player.rank?.current?.rating
+			? player.rank?.current?.rating
 			: ''}
 	</TextElement>
 {/if}
@@ -97,11 +99,7 @@
 
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerWins}
 	<TextElement {style} {dataItem}>
-		{defaultPreview
-			? `50`
-			: $currentPlayer?.rank?.current?.wins
-			? $currentPlayer?.rank?.current?.wins
-			: ''}
+		{defaultPreview ? `50` : player.rank?.current?.wins ? player.rank?.current?.wins : ''}
 	</TextElement>
 {/if}
 

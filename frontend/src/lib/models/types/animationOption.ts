@@ -23,6 +23,8 @@ export enum AnimationTrigger {
     SlippiRankPlayer1ConnectCodeChange = "Player 1 Connect Code Change",
     SlippiRankPlayer2ConnectCodeChange = "Player 2 Connect Code Change",
 
+    SlippiRankStatsWinsChange = "Slippi Stats Wins Change",
+    SlippiRankStatsLossesChange = "Slippi Stats Losses Change",
     SlippiRankStatsRatingChange = "Slippi Stats Rating Change",
     SlippiRankStatsRankChange = "Slippi Stats Rank Change",
 
