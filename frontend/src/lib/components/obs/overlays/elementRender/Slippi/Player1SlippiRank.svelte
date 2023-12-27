@@ -14,15 +14,6 @@
 	export let style: GridContentItemStyle;
 </script>
 
-{#if dataItem?.elementId === CustomElement.MatchPlayer1Tag}
-	<TextElement {style} {dataItem}>
-		{$currentPlayers?.at(0)?.rank?.current?.displayName
-			? $currentPlayers?.at(0)?.rank?.current?.displayName
-			: defaultPreview
-			? `Player 1`
-			: ''}
-	</TextElement>
-{/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1ConnectCode}
 	<TextElement {style} {dataItem}>
 		{$currentPlayers?.at(0)?.rank?.current?.connectCode || defaultPreview ? `ABCD#123` : ''}
