@@ -180,7 +180,8 @@ function createMainWindow() {
 
 	mainWindow.on('close', (event: Event) => {
 		event.preventDefault()
-		app.hide()
+		if (isWindows) mainWindow.hide()
+		else app.hide()
 	})
 }
 
