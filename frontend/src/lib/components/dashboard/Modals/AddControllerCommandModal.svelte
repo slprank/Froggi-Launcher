@@ -29,7 +29,6 @@
 	};
 
 	const addCommand = async () => {
-		console.log('controllerCommand', controllerCommand);
 		if (!controllerCommand) return;
 		if (!Object.values(controllerCommand.inputs).some((input) => input)) return;
 		$electronEmitter.emit('ObsControllerCommandAdd', controllerCommand);

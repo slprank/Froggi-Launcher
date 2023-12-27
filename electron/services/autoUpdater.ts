@@ -14,7 +14,6 @@ export class AutoUpdater {
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
 		this.initListeners();
-		autoUpdater.checkForUpdates()
 	}
 
 	async initListeners() {
@@ -24,6 +23,7 @@ export class AutoUpdater {
 		setInterval(() => {
 			autoUpdater.checkForUpdates();
 		}, 1000 * 60 * 5);
+		autoUpdater.checkForUpdates()
 		autoUpdater.autoInstallOnAppQuit = true;
 		this.messageHandler.sendMessage("AutoUpdaterVersion", autoUpdater.currentVersion.version);
 
