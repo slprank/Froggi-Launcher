@@ -2,8 +2,9 @@
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import AddControllerCommandModal from '$lib/components/dashboard/Modals/AddControllerCommandModal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import { ControllerButtons } from '$lib/models/types/controller';
 	import { ObsControllerCommand } from '$lib/models/types/obsTypes';
-	import { electronEmitter, obsController } from '$lib/utils/store.svelte';
+	import { electronEmitter, memoryReadController, obsController } from '$lib/utils/store.svelte';
 
 	let isNewCommandModalOpen = false;
 	let isDeleteCommandModalOpen = false;
@@ -26,6 +27,27 @@
 		);
 	};
 
+	const getSelectedInputs = (
+		controllerButtons: ControllerButtons,
+	): [key: keyof ControllerButtons, value: boolean][] => {
+		return Object.entries(controllerButtons).filter(([_, value]) => value) as [
+			key: keyof ControllerButtons,
+			value: boolean,
+		][];
+	};
+
+	const getControllerIndex = (): number => {
+		return Number(
+			Object.entries($memoryReadController).find(([_, value]) => value.isConnected)?.[0],
+		);
+	};
+
+	const filterKey = (key: string) => {
+		const pattern = /is(.*?)Pressed/;
+		const match = key.match(pattern);
+		return match ? match[1] : key;
+	};
+
 	$: isControllerCommandEnabled = $obsController.enabled;
 </script>
 
@@ -42,13 +64,29 @@
 	</div>
 	<div class="flex flex-col gap-4" style={`opacity: ${isControllerCommandEnabled ? 1 : 0.5}`}>
 		{#each $obsController?.inputCommands ?? [] as controllerCommand}
-			<div class="flex gap-4">
-				<div class="flex flex-col">
-					<h1 class="text-xl text-white">{controllerCommand}</h1>
-					<h1 class="text-xl text-white">{controllerCommand.command}</h1>
+			<div class="flex gap-4 justify-center items-center">
+				<div class="flex flex-col flex-1 justify-center">
+					<div class="flex gap-2">
+						{#each getSelectedInputs(controllerCommand.inputs) as [key, value]}
+							<img
+								class="aspect-square w-12 h-12"
+								style={`opacity: ${
+									$memoryReadController?.[getControllerIndex()]?.buttons?.[key]
+										? 1
+										: 0.5
+								}`}
+								src={`/image/controller-buttons/${filterKey(key)}.svg`}
+								alt={key}
+							/>
+						{/each}
+					</div>
+					<h1 class="text-xl text-white">
+						{controllerCommand.command}
+						{JSON.stringify(controllerCommand.payload)}
+					</h1>
 				</div>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-12 px-2 xl:text-xl border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
 					on:click={() => {
 						selectedCommand = controllerCommand;
 						isDeleteCommandModalOpen = true;
@@ -57,6 +95,7 @@
 					Delete
 				</button>
 			</div>
+			<hr />
 		{/each}
 	</div>
 	<div class="flex justify-center" style={`opacity: ${isControllerCommandEnabled ? 1 : 0.5}`}>

@@ -69,7 +69,7 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="max-h-[80vh] max-w-[800px] w-full h-full min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
+		class="max-h-[80vh] max-w-[400px] w-screen h-full min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<h1 class="flex text-2xl font-bold text-white shadow-md">Button Combinations</h1>
@@ -78,7 +78,11 @@
 				<div class="flex flex-col gap-2">
 					{#each getKeys() as key}
 						<div class="flex justify-between items-center gap-2">
-							<h1 class="text-xl text-white">{filterKey(key)}</h1>
+							<img
+								class="aspect-square w-12 h-12"
+								src={`/image/controller-buttons/${filterKey(key)}.svg`}
+								alt={key}
+							/>
 							<input
 								type="checkbox"
 								class="w-12 h-12"

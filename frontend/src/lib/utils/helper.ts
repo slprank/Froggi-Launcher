@@ -9,7 +9,7 @@ export function newId() {
 }
 
 const getEnumKeys = <T>(e: T): (keyof T)[] => {
-	return Object.keys(e) as (keyof T)[];
+	return Object.keys(e as any) as (keyof T)[];
 };
 
 export const getEnumStringValues = <T>(e: T): string[] => {

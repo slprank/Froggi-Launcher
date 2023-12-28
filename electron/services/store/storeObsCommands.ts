@@ -9,14 +9,14 @@ import {
 } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
-import { PlayerController } from '../../../frontend/src/lib/models/types/controller';
+import { ControllerButtons, PlayerController } from '../../../frontend/src/lib/models/types/controller';
 import { ElectronPlayersStore } from './storePlayers';
 import { ElectronSettingsStore } from './storeSettings';
 import { ObsWebSocket } from '../obs';
 import { MessageHandler } from '../messageHandler';
 import { newId } from '../../utils/functions';
 import { ElectronLiveStatsStore } from './storeLiveStats';
-import { isEqual } from 'lodash';
+import { isMatch, isNil } from 'lodash';
 
 @singleton()
 export class ElectronObsCommandStore {
@@ -107,14 +107,18 @@ export class ElectronObsCommandStore {
             (this.store.get('obs.command.controller.enabled') as boolean) ?? false;
     }
 
-    private handleControllerCommand = (playerControllerInputs: PlayerController) => {
-        if (!this.getObsControllerCommandsState()) return;
-        if (this.commandTimeout) return;
+    private getCommands = (buttonInputs: ControllerButtons | undefined): ObsControllerCommand[] => {
+        if (!buttonInputs) return [];
+        return this.controllerCommands?.filter((command) =>
+            isMatch(command.inputs, buttonInputs),
+        );
+    }
+
+    private getControllerIndex = (playerControllerInputs: PlayerController): number | undefined => {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         const players = this.storePlayer.getCurrentPlayers();
         const player = players?.find((player) => player.connectCode === connectCode);
         if (players?.some((player) => player.connectCode) && !player) return;
-
         const isGameActive = [InGameState.Running, InGameState.Paused].includes(
             this.storeLiveStats.getGameState(),
         );
@@ -127,13 +131,22 @@ export class ElectronObsCommandStore {
             ? players?.sort((a, b) => a.port - b.port).at(0)?.playerIndex ?? 0
             : lowestActiveControllerIndex;
 
-        const controllerInputs =
-            playerControllerInputs?.[player?.playerIndex ?? lowestIndex].buttons;
+        return player?.playerIndex ?? lowestIndex
+    }
+
+    private handleControllerCommand = (playerControllerInputs: PlayerController) => {
+        if (!this.getObsControllerCommandsState()) return;
+        if (this.commandTimeout) return;
+
+        const controllerIndex = this.getControllerIndex(playerControllerInputs);
+
+        if (isNil(controllerIndex)) return
+
+        const buttonInputs =
+            playerControllerInputs?.[controllerIndex].buttons;
 
         // TODO: include overlaps
-        const controllerCommands = this.controllerCommands?.filter((command) =>
-            isEqual(command.inputs, controllerInputs),
-        );
+        const controllerCommands = this.getCommands(buttonInputs);
         if (!controllerCommands) return;
 
         controllerCommands.forEach((controllerCommand) => {
