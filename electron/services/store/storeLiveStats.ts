@@ -24,7 +24,7 @@ export class ElectronLiveStatsStore {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('ElectronStore') private store: Store,
-		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
+		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
 		this.log.info('Initializing Live Stats Store');
@@ -135,11 +135,11 @@ export class ElectronLiveStatsStore {
 	}
 
 	initSvelteListeners() {
-		this.svelteEmitter.on('LiveStatsSceneChange', (value: LiveStatsScene | undefined) => {
+		this.clientEmitter.on('LiveStatsSceneChange', (value: LiveStatsScene | undefined) => {
 			if (!value) return;
 			this.setStatsScene(value);
 		});
-		this.svelteEmitter.on('BestOfUpdate', (bestOf: BestOf) => {
+		this.clientEmitter.on('BestOfUpdate', (bestOf: BestOf) => {
 			this.setBestOf(bestOf);
 		});
 	}

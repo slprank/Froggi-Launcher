@@ -8,7 +8,7 @@
 		switch (autoUpdater.status) {
 			case AutoUpdaterStatus.LookingForUpdate:
 				return 'border: 1px solid black;';
-			case AutoUpdaterStatus.DownloadAvailable:
+			case AutoUpdaterStatus.UpdateAvailable:
 				return 'border: 1px solid green; background-color: green;';
 			case AutoUpdaterStatus.Downloading:
 				return 'border: 1px solid yellow; background-color: yellow;';
@@ -27,7 +27,7 @@
 		switch (autoUpdater.status) {
 			case AutoUpdaterStatus.LookingForUpdate:
 				return 'pulse';
-			case AutoUpdaterStatus.DownloadAvailable:
+			case AutoUpdaterStatus.UpdateAvailable:
 				return 'pulse';
 			case AutoUpdaterStatus.DownloadComplete:
 				return 'pulse';
@@ -40,7 +40,7 @@
 		switch (autoUpdater.status) {
 			case AutoUpdaterStatus.LookingForUpdate:
 				return 'Checking';
-			case AutoUpdaterStatus.DownloadAvailable:
+			case AutoUpdaterStatus.UpdateAvailable:
 				return 'Update';
 			case AutoUpdaterStatus.Downloading:
 				return `${autoUpdater.progress}%`;
@@ -58,6 +58,10 @@
 	const installUpdate = () => {
 		if ($autoUpdater.status === AutoUpdaterStatus.DownloadComplete)
 			$electronEmitter.emit('AutoUpdaterInstall');
+		if ($autoUpdater.status === AutoUpdaterStatus.UpToDate)
+			$electronEmitter.emit('AutoUpdaterCheckForUpdate');
+		if ($autoUpdater.status === AutoUpdaterStatus.UpdateAvailable)
+			$electronEmitter.emit('AutoUpdaterDownloadUpdate');
 	};
 </script>
 

@@ -23,14 +23,16 @@ export class MessageHandler {
 	private app: any;
 	private express: any;
 	private server: any;
-	private webSocketWorker: Worker = new Worker(path.join(__dirname, 'workers/websocketWorker.js'));
+	private webSocketWorker: Worker = new Worker(
+		path.join(__dirname, 'workers/websocketWorker.js'),
+	);
 
 	constructor(
 		@inject('Dev') private dev: boolean,
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('LocalEmitter') private localEmitter: TypedEmitter,
-		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
+		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject('IpcMain') private ipcMain: IpcMain,
 		@inject('Port') private port: string,
 		@inject('RootDir') private rootDir: string,
@@ -38,10 +40,12 @@ export class MessageHandler {
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
-		@inject(delay(() => ElectronObsCommandStore)) private storeObsCommands: ElectronObsCommandStore,
+		@inject(delay(() => ElectronObsCommandStore))
+		private storeObsCommands: ElectronObsCommandStore,
 		@inject(delay(() => ElectronOverlayStore)) private storeOverlay: ElectronOverlayStore,
 		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
-		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject(delay(() => ElectronCurrentPlayerStore))
+		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(delay(() => ElectronSessionStore)) private storeSession: ElectronSessionStore,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 	) {
@@ -79,32 +83,38 @@ export class MessageHandler {
 	private initElectronMessageHandler() {
 		this.ipcMain.on('message', (_: any, data: any) => {
 			let parse = JSON.parse(data);
-			for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
-				this.svelteEmitter.emit(key as any, ...value as any);
+			for (const [key, value] of Object.entries(parse) as [
+				key: keyof MessageEvents,
+				value: Parameters<MessageEvents[keyof MessageEvents]>,
+			]) {
+				this.clientEmitter.emit(key as any, ...(value as any));
 			}
 		});
-		this.svelteEmitter.on("InitElectron", () => {
+		this.clientEmitter.on('InitElectron', () => {
 			this.initData();
-			this.sendAuthKey()
+			this.sendAuthKey();
 		});
 	}
 
 	private initWebSocket() {
 		try {
-			this.webSocketWorker.on("message", (value: string) => {
+			this.webSocketWorker.on('message', (value: string) => {
 				const parse = JSON.parse(value);
-				for (const [key, value] of Object.entries(parse) as [key: keyof MessageEvents, value: Parameters<MessageEvents[keyof MessageEvents]>]) {
+				for (const [key, value] of Object.entries(parse) as [
+					key: keyof MessageEvents,
+					value: Parameters<MessageEvents[keyof MessageEvents]>,
+				]) {
 					sendAuthenticatedMessage(
-						parse["socketId"],
-						parse["AuthorizationKey"],
+						parse['socketId'],
+						parse['AuthorizationKey'],
 						this.storeSettings.getAuthorizationKey(),
-						this.svelteEmitter,
+						this.clientEmitter,
 						this.webSocketWorker,
 						key as keyof MessageEvents,
-						value as any)
+						value as any,
+					);
 				}
 			});
-
 		} catch (err) {
 			this.log.error(err);
 		}
@@ -125,69 +135,76 @@ export class MessageHandler {
 		this.localEmitter.emit(topic, ...payload);
 	}
 
-	private sendInitMessage<J extends keyof MessageEvents>(socketId: string | undefined, topic: J, ...payload: Parameters<MessageEvents[J]>) {
+	private sendInitMessage<J extends keyof MessageEvents>(
+		socketId: string | undefined,
+		topic: J,
+		...payload: Parameters<MessageEvents[J]>
+	) {
 		this.webSocketWorker.postMessage(
 			JSON.stringify({
 				[topic]: payload,
 				socketId: socketId,
 			}),
 		);
-		if (socketId) return
+		if (socketId) return;
 		this.sendMessage(topic, ...payload);
-
 	}
 
 	private initData(socketId: string | undefined = undefined) {
-		this.sendInitMessage(socketId, "CurrentPlayer", this.storeCurrentPlayer.getCurrentPlayer());
-		this.sendInitMessage(socketId, "CurrentPlayers", this.storePlayers.getCurrentPlayers());
+		this.sendInitMessage(socketId, 'CurrentPlayer', this.storeCurrentPlayer.getCurrentPlayer());
+		this.sendInitMessage(socketId, 'CurrentPlayers', this.storePlayers.getCurrentPlayers());
 		this.sendInitMessage(
 			socketId,
-			"DolphinConnectionState",
+			'DolphinConnectionState',
 			this.storeDolphin.getDolphinConnectionState(),
 		);
-		this.sendInitMessage(socketId, "GameScore", this.storeGames.getGameScore());
-		this.sendInitMessage(socketId, "GameSettings", this.storeLiveStats.getGameSettings());
-		this.sendInitMessage(socketId, "GameState", this.storeLiveStats.getGameState());
-		this.sendInitMessage(socketId, "LiveStatsSceneChange", this.storeLiveStats.getStatsScene());
-		this.sendInitMessage(socketId, "Overlays", this.storeOverlay.getOverlays());
-		this.sendInitMessage(socketId, "Obs", this.storeObs.getObs());
-		this.sendInitMessage(socketId, "ObsControllerCommand", this.storeObsCommands.getObsController());
-		this.sendInitMessage(socketId, "ObsSceneSwitch", this.storeObsCommands.getObsSceneSwitch());
-		this.sendInitMessage(socketId, "PostGameStats", this.storeLiveStats.getGameStats());
-		this.sendInitMessage(socketId, "RecentGames", this.storeGames.getRecentGames());
-		this.sendInitMessage(socketId, "RecentRankedSets", this.storeGames.getRecentRankedSets());
-		this.sendInitMessage(socketId, "Url", this.storeSettings.getLocalUrl());
-		this.sendInitMessage(socketId, "SessionStats", this.storeSession.getSessionStats());
+		this.sendInitMessage(socketId, 'GameScore', this.storeGames.getGameScore());
+		this.sendInitMessage(socketId, 'GameSettings', this.storeLiveStats.getGameSettings());
+		this.sendInitMessage(socketId, 'GameState', this.storeLiveStats.getGameState());
+		this.sendInitMessage(socketId, 'LiveStatsSceneChange', this.storeLiveStats.getStatsScene());
+		this.sendInitMessage(socketId, 'Overlays', this.storeOverlay.getOverlays());
+		this.sendInitMessage(socketId, 'Obs', this.storeObs.getObs());
+		this.sendInitMessage(
+			socketId,
+			'ObsControllerCommand',
+			this.storeObsCommands.getObsController(),
+		);
+		this.sendInitMessage(socketId, 'ObsSceneSwitch', this.storeObsCommands.getObsSceneSwitch());
+		this.sendInitMessage(socketId, 'PostGameStats', this.storeLiveStats.getGameStats());
+		this.sendInitMessage(socketId, 'RecentGames', this.storeGames.getRecentGames());
+		this.sendInitMessage(socketId, 'RecentRankedSets', this.storeGames.getRecentRankedSets());
+		this.sendInitMessage(socketId, 'Url', this.storeSettings.getLocalUrl());
+		this.sendInitMessage(socketId, 'SessionStats', this.storeSession.getSessionStats());
 	}
 
 	private sendAuthorizedMessage(socketId: string, clientKey: string) {
-		const serverKey = this.storeSettings.getAuthorizationKey()
+		const serverKey = this.storeSettings.getAuthorizationKey();
 		const isAuthorized = !serverKey || clientKey === serverKey;
-		console.log("Is Authorized", isAuthorized, clientKey, serverKey, socketId)
-		this.sendInitMessage(socketId, "Authorize", isAuthorized);
+		console.log('Is Authorized', isAuthorized, clientKey, serverKey, socketId);
+		this.sendInitMessage(socketId, 'Authorize', isAuthorized);
 	}
 
 	private sendAuthKey() {
 		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
-				["AuthorizationKey"]: [this.storeSettings.getAuthorizationKey()],
+				['AuthorizationKey']: [this.storeSettings.getAuthorizationKey()],
 			}),
 		);
 	}
 
 	private initEventListeners() {
-		this.svelteEmitter.on('LayerPreviewChange', (layerIndex: number) => {
+		this.clientEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 			this.sendMessage('LayerPreviewChange', layerIndex);
 		});
-		this.svelteEmitter.on("InitData", (socketId: string) => {
+		this.clientEmitter.on('InitData', (socketId: string) => {
 			this.initData(socketId);
-		})
-		this.svelteEmitter.on("InitAuthentication", (payload) => {
-			this.sendAuthorizedMessage(payload[0], payload[1] ?? "");
-		})
-		this.svelteEmitter.on('Notification', (message: string, type: NotificationType) => {
+		});
+		this.clientEmitter.on('InitAuthentication', (payload) => {
+			this.sendAuthorizedMessage(payload[0], payload[1] ?? '');
+		});
+		this.clientEmitter.on('Notification', (message: string, type: NotificationType) => {
 			this.sendMessage('Notification', message, type);
-		})
+		});
 	}
 }

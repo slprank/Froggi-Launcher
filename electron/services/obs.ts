@@ -15,7 +15,7 @@ export class ObsWebSocket {
 	private obsConnectionInterval: NodeJS.Timeout | undefined;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('SvelteEmitter') private svelteEmitter: TypedEmitter,
+		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(ElectronObsStore) private storeObs: ElectronObsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
@@ -196,7 +196,7 @@ export class ObsWebSocket {
 	};
 
 	private initSvelteListeners() {
-		this.svelteEmitter.on('ExecuteObsCommand', async (command, payload) => {
+		this.clientEmitter.on('ExecuteObsCommand', async (command, payload) => {
 			this.executeCommand(command, payload);
 		});
 	}

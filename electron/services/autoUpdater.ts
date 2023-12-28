@@ -7,57 +7,57 @@ import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 
 @injectable()
 export class AutoUpdater {
+	private status: AutoUpdaterStatus;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('LocalEmitter') private localEmitter: TypedEmitter,
+		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject('Dev') private dev: boolean,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
+		this.log.info('Initializing Auto Updater');
 		this.initListeners();
+		autoUpdater.checkForUpdates();
+		autoUpdater.autoInstallOnAppQuit = true;
 	}
 
-	async initListeners() {
+	private async initListeners() {
 		if (this.dev) return;
-		this.log.info('Initializing Auto Updater');
 		this.log.info('Current Version:', autoUpdater.currentVersion);
-		setInterval(() => {
-			autoUpdater.checkForUpdates();
-		}, 1000 * 60 * 5);
-		autoUpdater.checkForUpdates()
-		autoUpdater.autoInstallOnAppQuit = true;
-		this.messageHandler.sendMessage("AutoUpdaterVersion", autoUpdater.currentVersion.version);
+		this.messageHandler.sendMessage('AutoUpdaterVersion', autoUpdater.currentVersion.version);
 
 		autoUpdater.on('checking-for-update', () => {
 			this.log.info('Checking for update');
 			this.messageHandler.sendMessage(
-				"AutoUpdaterStatus",
+				'AutoUpdaterStatus',
 				AutoUpdaterStatus.LookingForUpdate,
 			);
 		});
 
 		autoUpdater.on('update-not-available', () => {
 			this.log.info('Update Not Available');
-			this.messageHandler.sendMessage("AutoUpdaterStatus", AutoUpdaterStatus.UpToDate);
+			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.UpToDate);
 			this.messageHandler.sendMessage(
-				"AutoUpdaterVersion",
+				'AutoUpdaterVersion',
 				autoUpdater.currentVersion.version,
 			);
 		});
 
 		autoUpdater.on('update-available', (info: UpdateInfo) => {
 			this.log.info(`update available: ${info.version}`);
-			this.messageHandler.sendMessage("Notification", "Update Available", NotificationType.Success);
-			autoUpdater.downloadUpdate();
 			this.messageHandler.sendMessage(
-				"AutoUpdaterStatus",
-				AutoUpdaterStatus.DownloadAvailable,
+				'Notification',
+				'Update Available',
+				NotificationType.Success,
 			);
+			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.UpdateAvailable);
 		});
 
 		autoUpdater.on('download-progress', (progress: ProgressInfo) => {
 			this.log.info(`Downloading: ${progress.percent.toFixed()}`);
+			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.Downloading);
 			this.messageHandler.sendMessage(
-				"AutoUpdaterProgress",
+				'AutoUpdaterProgress',
 				`${Number(progress.percent.toFixed())}`,
 			);
 		});
@@ -69,15 +69,40 @@ export class AutoUpdater {
 				`Download Url: https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
 			this.messageHandler.sendMessage(
-				"AutoUpdaterStatus",
+				'AutoUpdaterStatus',
 				AutoUpdaterStatus.DownloadComplete,
 			);
-			this.messageHandler.sendMessage("AutoUpdaterProgress", "100");
-			this.messageHandler.sendMessage("Notification", "Update Complete", NotificationType.Success);
+			this.messageHandler.sendMessage(
+				'AutoUpdaterDownloadUrl',
+				`https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
+			);
+			this.messageHandler.sendMessage('AutoUpdaterProgress', '100');
+			this.messageHandler.sendMessage(
+				'Notification',
+				'Update Downloaded',
+				NotificationType.Success,
+			);
 		});
 
-		this.localEmitter.on("AutoUpdaterInstall", async () => {
+		this.clientEmitter.on('AutoUpdaterInstall', async () => {
+			this.log.info('Quit and install');
+			if (this.status !== AutoUpdaterStatus.DownloadComplete) return;
+			this.log.info('Quit and install');
 			autoUpdater.quitAndInstall();
+		});
+
+		this.clientEmitter.on('AutoUpdaterCheckForUpdate', async () => {
+			if (this.status !== AutoUpdaterStatus.UpToDate) return;
+			autoUpdater.checkForUpdates();
+		});
+
+		this.clientEmitter.on('AutoUpdaterDownloadUpdate', async () => {
+			if (this.status !== AutoUpdaterStatus.UpdateAvailable) return;
+			autoUpdater.checkForUpdates();
+		});
+
+		this.localEmitter.on('AutoUpdaterStatus', (status) => {
+			this.status = status;
 		});
 	}
 }

@@ -19,19 +19,19 @@ export class ElectronSettingsStore {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('Port') private port: string,
-		@inject("ElectronStore") private store: Store,
-		@inject("SvelteEmitter") private svelteEmitter: TypedEmitter,
+		@inject('ElectronStore') private store: Store,
+		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(delay(() => ElectronCurrentPlayerStore))
 		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		this.log.info('Initializing Settings Store');
 		this.initStoreListeners();
-		this.initEventListeners()
+		this.initEventListeners();
 		this.updateSlippiSettings();
 	}
 
 	getAuthorizationKey(): string {
-		return this.store.get('settings.authorization.key') as string ?? "";
+		return (this.store.get('settings.authorization.key') as string) ?? '';
 	}
 
 	setAuthorizationKey(key: string) {
@@ -105,8 +105,8 @@ export class ElectronSettingsStore {
 	}
 
 	initEventListeners() {
-		this.svelteEmitter.on("AuthorizationKeyUpdate", (key: string) => {
+		this.clientEmitter.on('AuthorizationKeyUpdate', (key: string) => {
 			this.setAuthorizationKey(key);
-		})
+		});
 	}
 }
