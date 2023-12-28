@@ -1,4 +1,4 @@
-import type { Obs, ObsConnection, ObsController, ObsControllerCommand, ObsSceneSwitch } from "../models/types/obsTypes"
+import type { CustomObsCommandType, Obs, ObsConnection, ObsController, ObsControllerCommand, ObsSceneSwitch } from "../models/types/obsTypes"
 import type { AutoUpdaterStatus, BestOf, ConnectionState, InGameState, LiveStatsScene, NotificationType } from "../models/enum"
 import type { PlayerController } from "../models/types/controller"
 import type { Overlay, OverlayEditor, Url } from "../models/types/overlay"
@@ -60,6 +60,10 @@ export interface MessageEvents {
     DeleteObsCommand: (commandId: string) => void
     ExecuteObsCommand: <Type extends keyof OBSRequestTypes>(
         requestType: Type,
+        requestData?: OBSRequestTypes[Type],
+    ) => void
+    ExecuteCustomObsCommand: <Type extends keyof OBSRequestTypes>(
+        requestType: CustomObsCommandType,
         requestData?: OBSRequestTypes[Type],
     ) => void
 

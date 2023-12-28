@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let value: string | undefined;
+	export let value: string = '';
 	export let label: string | undefined = undefined;
 	export let autofocus: number | undefined = undefined;
 	export let autoFocusValue: number | undefined = undefined;

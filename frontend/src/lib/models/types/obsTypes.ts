@@ -3,6 +3,17 @@ import type { ConnectionState, LiveStatsScene } from "../enum";
 import type { OverlayLayout } from "./overlay";
 import { ControllerButtons } from "./controller";
 
+export enum CustomObsCommandType {
+    ToggleElement = 'ToggleElement',
+    ChangeScene = 'ChangeScene',
+}
+
+export interface CustomObsCommand<Type extends keyof OBSRequestTypes> {
+    command: Type,
+    payload: OBSRequestTypes[Type],
+    id: string,
+}
+
 export interface Obs {
     auth: ObsAuth | undefined,
     connection: ObsConnection,
@@ -77,15 +88,14 @@ export interface ObsControllerCommand {
 }
 
 export interface ObsSceneSwitch {
-    [LiveStatsScene.WaitingForDolphin]: ObsSceneSwitchOptions
-    [LiveStatsScene.Menu]: ObsSceneSwitchOptions
-    [LiveStatsScene.InGame]: ObsSceneSwitchOptions
-    [LiveStatsScene.PostGame]: ObsSceneSwitchOptions
-    [LiveStatsScene.PostSet]: ObsSceneSwitchOptions
-    [LiveStatsScene.RankChange]: ObsSceneSwitchOptions
+    [LiveStatsScene.WaitingForDolphin]: SceneSwitchCommand
+    [LiveStatsScene.Menu]: SceneSwitchCommand
+    [LiveStatsScene.InGame]: SceneSwitchCommand
+    [LiveStatsScene.PostGame]: SceneSwitchCommand
+    [LiveStatsScene.PostSet]: SceneSwitchCommand
+    [LiveStatsScene.RankChange]: SceneSwitchCommand
 }
 
-export interface ObsSceneSwitchOptions {
-    sceneName: string,
-    delay: number,
+export interface SceneSwitchCommand {
+    [obsCommand: keyof OBSRequestTypes | string]: OBSRequestTypes[keyof OBSRequestTypes] | any
 }

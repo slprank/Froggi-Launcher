@@ -123,7 +123,7 @@ export enum InGameState {
 }
 
 export enum LiveStatsScene {
-	WaitingForDolphin = "Waiting",
+	WaitingForDolphin = "Waiting For Dolphin",
 	Menu = "Menu",
 	InGame = "In Game",
 	PostGame = "Post Game",

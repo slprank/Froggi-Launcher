@@ -18,6 +18,7 @@ import { newId } from '../../utils/functions';
 import { ElectronLiveStatsStore } from './storeLiveStats';
 import { isNil } from 'lodash';
 import { getOverlappingCommands } from '../../../frontend/src/lib/utils/controllerCommandHelper';
+import { OBSRequestTypes } from 'obs-websocket-js';
 
 @singleton()
 export class ElectronObsCommandStore {
@@ -159,23 +160,23 @@ export class ElectronObsCommandStore {
         this.localEmitter.on('LiveStatsSceneChange', (scene: LiveStatsScene) => {
             const sceneConfig = this.getObsSceneSwitch();
             const obsScene = sceneConfig[scene];
-            if (!obsScene || !obsScene.sceneName) return;
-            this.obsWebSocket.executeCommand('SetCurrentProgramScene', {
-                sceneName: obsScene.sceneName,
+            if (!obsScene || !obsScene) return;
+            for (const [command, payload] of Object.entries(sceneConfig) as [command: keyof OBSRequestTypes | string, value: OBSRequestTypes[keyof OBSRequestTypes] | any]) {
+                this.obsWebSocket.executeCommand(command, payload)
+            };
+            this.svelteEmitter.on('ObsSceneSwitchUpdate', (options: ObsSceneSwitch) => {
+                this.setObsSceneSwitch(options);
             });
-        });
-        this.svelteEmitter.on('ObsSceneSwitchUpdate', (options: ObsSceneSwitch) => {
-            this.setObsSceneSwitch(options);
-        });
-        this.svelteEmitter.on('ObsControllerCommandAdd', (command: ObsControllerCommand) => {
-            this.addObsControllerCommand(command);
-        });
-        this.svelteEmitter.on('ObsControllerCommandDelete', (commandId: string) => {
-            this.deleteObsControllerCommand(commandId);
-        });
-        this.svelteEmitter.on('ObsControllerCommandStateToggle', () => {
-            this.toggleObsControllerCommandsState();
-        });
+            this.svelteEmitter.on('ObsControllerCommandAdd', (command: ObsControllerCommand) => {
+                this.addObsControllerCommand(command);
+            });
+            this.svelteEmitter.on('ObsControllerCommandDelete', (commandId: string) => {
+                this.deleteObsControllerCommand(commandId);
+            });
+            this.svelteEmitter.on('ObsControllerCommandStateToggle', () => {
+                this.toggleObsControllerCommandsState();
+            });
+        })
     }
 
     private initListeners() {
