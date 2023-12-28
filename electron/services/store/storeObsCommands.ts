@@ -9,14 +9,15 @@ import {
 } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
-import { ControllerButtons, PlayerController } from '../../../frontend/src/lib/models/types/controller';
+import { PlayerController } from '../../../frontend/src/lib/models/types/controller';
 import { ElectronPlayersStore } from './storePlayers';
 import { ElectronSettingsStore } from './storeSettings';
 import { ObsWebSocket } from '../obs';
 import { MessageHandler } from '../messageHandler';
 import { newId } from '../../utils/functions';
 import { ElectronLiveStatsStore } from './storeLiveStats';
-import { isMatch, isNil } from 'lodash';
+import { isNil } from 'lodash';
+import { getOverlappingCommands } from '../../../frontend/src/lib/utils/controllerCommandHelper';
 
 @singleton()
 export class ElectronObsCommandStore {
@@ -107,13 +108,6 @@ export class ElectronObsCommandStore {
             (this.store.get('obs.command.controller.enabled') as boolean) ?? false;
     }
 
-    private getCommands = (buttonInputs: ControllerButtons | undefined): ObsControllerCommand[] => {
-        if (!buttonInputs) return [];
-        return this.controllerCommands?.filter((command) =>
-            isMatch(command.inputs, buttonInputs),
-        );
-    }
-
     private getControllerIndex = (playerControllerInputs: PlayerController): number | undefined => {
         const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
         const players = this.storePlayer.getCurrentPlayers();
@@ -146,7 +140,7 @@ export class ElectronObsCommandStore {
             playerControllerInputs?.[controllerIndex].buttons;
 
         // TODO: include overlaps
-        const controllerCommands = this.getCommands(buttonInputs);
+        const controllerCommands = getOverlappingCommands(this.controllerCommands, buttonInputs);
         if (!controllerCommands) return;
 
         controllerCommands.forEach((controllerCommand) => {
