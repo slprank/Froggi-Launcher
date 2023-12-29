@@ -53,9 +53,13 @@
 			{/each}
 		</div>
 		<h1 class="text-xl text-white">
-			{controllerCommand.command}
-			{JSON.stringify(controllerCommand.payload)}
+			{controllerCommand.command}:
 		</h1>
+		{#each Object.entries(controllerCommand.payload) as [key, value]}
+			<h1 class="text-xl text-white">
+				{key}: {value}
+			</h1>
+		{/each}
 	</div>
 	<button
 		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
