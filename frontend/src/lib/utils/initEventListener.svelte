@@ -64,8 +64,15 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['Authorize']>[0];
 					if (isNil(value)) return;
-					isAuthorized.set(value);
-					notifications.success('Authorized', 1500);
+					isAuthorized.update((prev) => {
+						if (prev === value) return prev;
+						if (value) {
+							notifications.success('Authorized', 1500);
+						} else {
+							notifications.danger('Unauthorized', 1500);
+						}
+						return value;
+					});
 				})();
 				break;
 			case 'AutoUpdaterStatus':

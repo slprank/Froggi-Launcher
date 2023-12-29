@@ -14,12 +14,6 @@
 		);
 	};
 
-	const getControllerIndex = (): number => {
-		return Number(
-			Object.entries($memoryReadController).find(([_, value]) => value.isConnected)?.[0],
-		);
-	};
-
 	$: isControllerCommandEnabled = $obsController.enabled;
 </script>
 
