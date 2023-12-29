@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { ObsCommandType } from '$lib/models/types/obsTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 
 	const SwitchScene = (sceneName: string) => {
-		$electronEmitter.emit('ExecuteObsCommand', 'SetCurrentProgramScene', {
+		$electronEmitter.emit('ExecuteObsCommand', ObsCommandType.Obs, 'SetCurrentProgramScene', {
 			sceneName: sceneName,
 		});
 	};

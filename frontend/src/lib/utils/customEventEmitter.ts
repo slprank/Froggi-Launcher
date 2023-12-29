@@ -1,8 +1,11 @@
-import type {
+import {
 	Obs,
+	ObsCommandType,
 	ObsConnection,
 	ObsController,
 	ObsControllerCommand,
+	ObsCustomCommand,
+	ObsCustomCommands,
 	ObsSceneSwitch,
 } from '../models/types/obsTypes';
 import type {
@@ -58,9 +61,9 @@ export interface MessageEvents {
 	SessionStats: (session: SessionStats | undefined) => void;
 	LiveStatsSceneChange: (scene: LiveStatsScene) => void;
 	Url: (url: Url) => void;
+	CurrentOverlayEditor: (overlay: OverlayEditor) => void;
 	Obs: (obs: Obs | undefined) => void;
 	ObsConnection: (connection: ObsConnection) => void;
-	CurrentOverlayEditor: (overlay: OverlayEditor) => void;
 	Overlays: (overlays: Overlay[] | undefined) => void;
 	OverlayDelete: (overlayId: string) => void;
 	OverlayDownload: (overlayId: string) => void;
@@ -80,9 +83,10 @@ export interface MessageEvents {
 	ObsSceneSwitch: (options: ObsSceneSwitch) => void;
 	ObsSceneSwitchUpdate: (options: ObsSceneSwitch) => void;
 	DeleteObsCommand: (commandId: string) => void;
-	ExecuteObsCommand: <Type extends keyof OBSRequestTypes>(
-		requestType: Type,
-		requestData?: OBSRequestTypes[Type],
+	ExecuteObsCommand: <ObsType extends keyof OBSRequestTypes, CustomType extends keyof ObsCustomCommands>(
+		type: ObsCommandType,
+		requestType: ObsType | CustomType,
+		requestData?: OBSRequestTypes[ObsType] | ObsCustomCommands[CustomType],
 	) => void;
 
 	TestAnimationTrigger: () => void;

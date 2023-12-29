@@ -1,10 +1,10 @@
 <script lang="ts">
-	import SliderInput from '$lib/components/input/SliderInput.svelte';
+	import { ObsCommandType } from '$lib/models/types/obsTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 
 	const updateVolume = (sceneItemId: number, enabled: boolean) => {
-		$electronEmitter.emit('ExecuteObsCommand', 'SetSceneItemEnabled', {
+		$electronEmitter.emit('ExecuteObsCommand', ObsCommandType.Obs, 'SetSceneItemEnabled', {
 			sceneName: $obsConnection?.scenes?.currentProgramSceneName ?? '',
 			sceneItemId: sceneItemId,
 			sceneItemEnabled: enabled,

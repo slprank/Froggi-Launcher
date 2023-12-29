@@ -69,9 +69,26 @@ export interface ObsAuth {
     password: string,
 }
 
+export enum ObsCommandType {
+    Obs = "Obs",
+    Custom = "Custom",
+}
+
+export interface ObsCustomCommands {
+    ChangeScene: {
+        sceneName: LiveStatsScene,
+    }
+}
+
 export interface ObsCommand<Type extends keyof OBSRequestTypes> {
     command: Type,
     payload: OBSRequestTypes[Type],
+    id: string,
+}
+
+export interface ObsCustomCommand<Type extends keyof ObsCustomCommands> {
+    command: Type,
+    payload: ObsCustomCommands[Type],
     id: string,
 }
 

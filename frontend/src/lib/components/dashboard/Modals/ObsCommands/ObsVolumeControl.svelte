@@ -1,10 +1,11 @@
 <script lang="ts">
 	import SliderInput from '$lib/components/input/SliderInput.svelte';
+	import { ObsCommandType } from '$lib/models/types/obsTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { flip } from 'svelte/animate';
 
 	const updateVolume = (inputName: string, volume: number) => {
-		$electronEmitter.emit('ExecuteObsCommand', 'SetInputVolume', {
+		$electronEmitter.emit('ExecuteObsCommand', ObsCommandType.Obs, 'SetInputVolume', {
 			inputName: inputName,
 			inputVolumeMul: volume,
 		});

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ConnectionState } from '$lib/models/enum';
+	import { ObsCommandType } from '$lib/models/types/obsTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { notifications } from '../notification/Notifications.svelte';
 
@@ -8,11 +9,11 @@
 			notifications.warning('OBS is not running', 3000);
 			return;
 		}
-		if (!$obsConnection.replayBufferState.outputActive) {
+		if (!$obsConnection.replayBufferState?.outputActive) {
 			notifications.warning('Replay Buffer is not active', 3000);
 			return;
 		}
-		$electronEmitter.emit('ExecuteObsCommand', 'SaveReplayBuffer');
+		$electronEmitter.emit('ExecuteObsCommand', ObsCommandType.Obs, 'SaveReplayBuffer');
 	};
 </script>
 
