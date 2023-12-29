@@ -8,7 +8,7 @@ import serve from 'electron-serve';
 import windowStateManager from 'electron-window-state';
 import path from 'path';
 import os from 'os';
-import { TypedEmitter } from "../frontend/src/lib/utils/customEventEmitter"
+import { TypedEmitter } from '../frontend/src/lib/utils/customEventEmitter';
 
 import { AutoUpdater } from './services/autoUpdater';
 import { MessageHandler } from './services/messageHandler';
@@ -27,15 +27,14 @@ const isMac = os.platform() === 'darwin';
 const isWindows = os.platform() === 'win32';
 const isLinux = os.platform() === 'linux';
 
-const store = new Store(migrateStore(log))
+const store = new Store(migrateStore(log));
 
 mainLog.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 const slpParser = new SlpParser();
 const slpStream = new SlpStream();
 const localEmitter = new TypedEmitter();
-const svelteEmitter = new TypedEmitter();
-
+const clientEmitter = new TypedEmitter();
 
 try {
 	require('electron-reloader')(module);
@@ -89,30 +88,27 @@ function createWindow(): BrowserWindow {
 }
 
 function createTray(): Tray {
-	const image = nativeImage.createFromPath(
-		path.join(__dirname, "../frontend/static/icon.png")
-	);
-	tray = new Tray(image.resize({ width: 16, height: 16 }))
-	tray.setToolTip("Froggi")
+	const image = nativeImage.createFromPath(path.join(__dirname, '../frontend/static/icon.png'));
+	tray = new Tray(image.resize({ width: 16, height: 16 }));
+	tray.setToolTip('Froggi');
 
 	const contextMenu = Menu.buildFromTemplate([
 		{
 			label: 'Open',
 			click: () => {
-				mainWindow.show()
-			}
+				mainWindow.show();
+			},
 		},
 		{
 			label: 'Quit',
 			click: () => {
-				localEmitter.emit("AutoUpdaterInstall");
-				app.exit()
-			}
+				app.exit();
+			},
 		},
-	])
+	]);
 
-	tray.setContextMenu(contextMenu)
-	return tray
+	tray.setContextMenu(contextMenu);
+	return tray;
 }
 
 contextMenu({
@@ -156,7 +152,7 @@ function createMainWindow() {
 	mainWindow.webContents.once('dom-ready', async () => {
 		container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
 		container.register<TypedEmitter>('LocalEmitter', { useValue: localEmitter });
-		container.register<TypedEmitter>('SvelteEmitter', { useValue: svelteEmitter });
+		container.register<TypedEmitter>('ClientEmitter', { useValue: clientEmitter });
 		container.register<ElectronLog>('ElectronLog', { useValue: mainLog });
 		container.register<IpcMain>('IpcMain', { useValue: ipcMain });
 		container.register<SlpParser>('SlpParser', { useValue: slpParser });
@@ -179,15 +175,17 @@ function createMainWindow() {
 	});
 
 	mainWindow.on('close', (event: Event) => {
-		event.preventDefault()
-		if (isWindows) mainWindow.hide()
-		else app.hide()
-	})
+		event.preventDefault();
+		if (isWindows) mainWindow.hide();
+		else app.hide();
+	});
 }
 
 app.once('ready', createMainWindow);
 
-app.on('activate', () => { mainWindow.show() })
+app.on('activate', () => {
+	mainWindow.show();
+});
 
 function setLoggingPath(log: ElectronLog): ElectronLog {
 	try {
@@ -196,5 +194,5 @@ function setLoggingPath(log: ElectronLog): ElectronLog {
 	} catch (err) {
 		log.error(err);
 	}
-	return log
+	return log;
 }
