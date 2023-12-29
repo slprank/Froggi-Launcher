@@ -23,7 +23,7 @@
 	Positive Win Rate
 </SelectOption>
 <SelectOption
-	description="When You Have A Even Or Positive Net Rating The Current Session"
+	description="When You Have A Even Or Net Positive Rating The Current Session"
 	value={VisibilityOption.SessionPositiveNetRating}
 	bind:selected={selectedVisibilityOption[VisibilityOption.SessionPositiveNetRating]}
 	on:select={select}
