@@ -134,12 +134,17 @@ contextMenu({
 });
 
 function loadVite(port: string) {
-	mainWindow.loadURL(`http://127.0.0.1:${port}`).catch((e: any) => {
-		mainLog.error('Error loading URL, retrying', e);
-		setTimeout(() => {
-			loadVite(port);
-		}, 200);
-	});
+	try {
+		mainWindow.loadURL(`http://127.0.0.1:${port}`).catch((e: any) => {
+			mainLog.error('Error loading URL, retrying', e);
+			setTimeout(() => {
+				loadVite(port);
+			}, 200);
+		});
+	} catch (e) {
+		log.error('Error loading URL, retrying', e);
+		app.quit();
+	}
 }
 
 function createMainWindow() {
