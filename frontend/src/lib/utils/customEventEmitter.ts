@@ -1,11 +1,10 @@
 import {
+	CustomCommands,
 	Obs,
 	ObsCommandType,
 	ObsConnection,
 	ObsController,
 	ObsControllerCommand,
-	ObsCustomCommand,
-	ObsCustomCommands,
 	ObsSceneSwitch,
 } from '../models/types/obsTypes';
 import type {
@@ -83,10 +82,10 @@ export interface MessageEvents {
 	ObsSceneSwitch: (options: ObsSceneSwitch) => void;
 	ObsSceneSwitchUpdate: (options: ObsSceneSwitch) => void;
 	DeleteObsCommand: (commandId: string) => void;
-	ExecuteObsCommand: <ObsType extends keyof OBSRequestTypes, CustomType extends keyof ObsCustomCommands>(
+	ExecuteObsCommand: <ObsType extends keyof OBSRequestTypes, CustomType extends keyof CustomCommands>(
 		type: ObsCommandType,
 		requestType: ObsType | CustomType,
-		requestData?: OBSRequestTypes[ObsType] | ObsCustomCommands[CustomType],
+		requestData?: OBSRequestTypes[ObsType] | CustomCommands[CustomType],
 	) => void;
 
 	TestAnimationTrigger: () => void;

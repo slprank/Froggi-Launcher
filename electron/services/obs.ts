@@ -5,7 +5,7 @@ import { delay, inject, singleton } from 'tsyringe';
 import OBSWebSocket, { OBSRequestTypes } from 'obs-websocket-js';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { ElectronObsStore } from './store/storeObs';
-import { ObsCommandType, ObsCustomCommands, ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
+import { CustomCommands, ObsCommandType, ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
 import { MessageHandler } from './messageHandler';
 import { NotificationType, ConnectionState } from '../../frontend/src/lib/models/enum';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
@@ -197,9 +197,9 @@ export class ObsWebSocket {
 		}
 	};
 
-	executeCustomCommand = async <T extends keyof ObsCustomCommands>(
+	executeCustomCommand = async <T extends keyof CustomCommands>(
 		command: T,
-		payload: ObsCustomCommands[T],
+		payload: CustomCommands[T],
 	) => {
 		switch (command) {
 			case 'ChangeScene':
@@ -207,12 +207,22 @@ export class ObsWebSocket {
 		}
 	};
 
+	executeCommand = <
+		ObsType extends keyof OBSRequestTypes,
+		CustomType extends keyof CustomCommands>
+		(
+			type: ObsCommandType,
+			command: ObsType | CustomType,
+			payload: OBSRequestTypes[ObsType] | CustomCommands[CustomType] | undefined) => {
+		if (type === ObsCommandType.Obs)
+			this.executeObsCommand(command as keyof OBSRequestTypes, payload as OBSRequestTypes[keyof OBSRequestTypes]);
+		if (type === ObsCommandType.Custom)
+			this.executeCustomCommand(command as keyof CustomCommands, payload as CustomCommands[keyof CustomCommands]);
+	}
+
 	private initSvelteListeners() {
 		this.clientEmitter.on('ExecuteObsCommand', async (type, command, payload) => {
-			if (type === ObsCommandType.Obs)
-				this.executeObsCommand(command as keyof OBSRequestTypes, payload as OBSRequestTypes[keyof OBSRequestTypes]);
-			if (type === ObsCommandType.Custom)
-				this.executeCustomCommand(command as keyof ObsCustomCommands, payload as ObsCustomCommands[keyof ObsCustomCommands]);
+			this.executeCommand(type, command, payload);
 		});
 	}
 }

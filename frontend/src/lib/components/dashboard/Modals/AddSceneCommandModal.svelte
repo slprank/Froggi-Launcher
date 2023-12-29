@@ -25,6 +25,10 @@
 		if (isNil(sceneOptions)) return;
 		sceneOptions[scene]['SetCurrentProgramScene'].payload.sceneName = command;
 	};
+
+	// TODO: Set Command Type - obs/custom
+	// TODO: Set Request Type - OBSRequestTypes/ObsCustomCommands
+	// TODO: Set Payload - any
 </script>
 
 <Modal bind:open on:close={() => (open = false)}>

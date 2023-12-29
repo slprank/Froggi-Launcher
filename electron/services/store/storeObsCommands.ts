@@ -3,6 +3,7 @@ import Store from 'electron-store';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import {
+	ObsCommandType,
 	ObsController,
 	ObsControllerCommand,
 	ObsSceneSwitch,
@@ -143,7 +144,7 @@ export class ElectronObsCommandStore {
 		if (!controllerCommands) return;
 
 		controllerCommands.forEach((controllerCommand) => {
-			this.obsWebSocket.executeCommand(controllerCommand.command, controllerCommand.payload);
+			this.obsWebSocket.executeCommand(ObsCommandType.Obs, controllerCommand.command, controllerCommand.payload);
 		});
 		this.commandTimeout = true;
 		setTimeout(() => {
@@ -159,7 +160,7 @@ export class ElectronObsCommandStore {
 			const sceneConfig = this.getObsSceneSwitch();
 			const obsScene = sceneConfig[scene];
 			if (!obsScene || !obsScene.sceneName) return;
-			this.obsWebSocket.executeCommand('SetCurrentProgramScene', {
+			this.obsWebSocket.executeCommand(ObsCommandType.Obs, 'SetCurrentProgramScene', {
 				sceneName: obsScene.sceneName,
 			});
 		});

@@ -74,7 +74,7 @@ export enum ObsCommandType {
     Custom = "Custom",
 }
 
-export interface ObsCustomCommands {
+export interface CustomCommands {
     ChangeScene: {
         sceneName: LiveStatsScene,
     }
@@ -86,9 +86,9 @@ export interface ObsCommand<Type extends keyof OBSRequestTypes> {
     id: string,
 }
 
-export interface ObsCustomCommand<Type extends keyof ObsCustomCommands> {
+export interface ObsCustomCommand<Type extends keyof CustomCommands> {
     command: Type,
-    payload: ObsCustomCommands[Type],
+    payload: CustomCommands[Type],
     id: string,
 }
 
