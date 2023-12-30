@@ -11,11 +11,11 @@
 	let selectedCommand: ObsControllerCommand | undefined;
 	let isDeleteCommandModalOpen = false;
 	const deleteCommand = async () => {
-		if (!selectedCommand?.id) {
+		if (!selectedCommand?.command.id) {
 			notifications.danger('Could not delete command', 1500);
 			return;
 		}
-		$electronEmitter.emit('ObsControllerCommandDelete', selectedCommand.id);
+		$electronEmitter.emit('ObsControllerCommandDelete', selectedCommand.command.id);
 		notifications.success('Command Deleted', 1500);
 	};
 
@@ -33,6 +33,8 @@
 		const match = key.match(pattern);
 		return match ? match[1] : key;
 	};
+
+	$: console.log(controllerCommand);
 </script>
 
 <div class="flex gap-4 justify-center items-center">
@@ -53,9 +55,9 @@
 			{/each}
 		</div>
 		<h1 class="text-xl text-white">
-			{controllerCommand.command}:
+			{controllerCommand.command.requestType}:
 		</h1>
-		{#each Object.entries(controllerCommand.payload) as [key, value]}
+		{#each Object.entries(controllerCommand.command.payload ?? {}) as [key, value]}
 			<h1 class="text-xl text-white">
 				{key}: {value}
 			</h1>

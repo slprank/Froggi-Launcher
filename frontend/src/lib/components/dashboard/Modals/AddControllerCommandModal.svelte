@@ -1,36 +1,16 @@
 <script lang="ts">
-	import Select from '$lib/components/input/Select.svelte';
-	import TextInput from '$lib/components/input/TextInput.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { ControllerButtons } from '$lib/models/types/controller';
-	import { ObsControllerCommand } from '$lib/models/types/obsTypes';
+	import { Command, CommandType, ObsControllerCommand } from '$lib/models/types/obsTypes';
 	import { getOverlappingCommands } from '$lib/utils/controllerCommandHelper';
 	import { electronEmitter, obsController } from '$lib/utils/store.svelte';
-	import { isMatch } from 'lodash';
 	import { fly } from 'svelte/transition';
 	import ButtonCommand from './ObsCommands/ButtonCommand.svelte';
 	import { flip } from 'svelte/animate';
+	import CommandSelect from './ObsCommands/CommandSelect.svelte';
 
 	export let open: boolean;
-
-	const updatePayload = () => {
-		switch (controllerCommand.command) {
-			case 'SetCurrentProgramScene':
-				controllerCommand.payload = {
-					sceneName: '',
-				};
-				break;
-			case 'ToggleInputMute':
-				controllerCommand.payload = {
-					inputName: '',
-				};
-				break;
-			default:
-				controllerCommand.payload = {};
-				break;
-		}
-	};
 
 	$: overlappingCommands = getOverlappingCommands(
 		$obsController.inputCommands,
@@ -60,9 +40,12 @@
 			isYPressed: false,
 			isZPressed: false,
 		},
-		command: 'SetCurrentProgramScene',
-		payload: {},
-		id: undefined,
+		command: {
+			id: '',
+			requestType: 'SaveReplayBuffer',
+			payload: undefined,
+			type: CommandType.Obs,
+		} as Command,
 	};
 
 	const filterKey = (key: string) => {
@@ -129,40 +112,12 @@
 				</div>
 			{/if}
 		{/if}
-		<div class="flex flex-col gap-4">
-			<h1 class="text-2xl font-bold text-white shadow-md">Command</h1>
-			<Select bind:selected={controllerCommand.command} on:change={updatePayload}>
-				<option value="SaveReplayBuffer">Save Replay Buffer</option>
-				<option value="SetCurrentProgramScene">Change Obs Scene</option>
-				<option value="ToggleInputMute">Toggle Input Mute</option>
-			</Select>
-		</div>
-		{#if controllerCommand.command === 'SetCurrentProgramScene'}
-			<div class="flex flex-col gap-4">
-				<h1 class="text-2xl font-bold text-white shadow-md">Change Scene</h1>
-				<TextInput
-					bind:value={controllerCommand.payload.sceneName}
-					placeholder="scene name"
-				/>
-			</div>
-		{/if}
-		{#if controllerCommand.command === 'ToggleInputMute'}
-			<div class="flex flex-col gap-4">
-				<h1 class="text-2xl font-bold text-white shadow-md">Input Mute</h1>
-				<TextInput
-					bind:value={controllerCommand.payload.inputName}
-					placeholder="input name"
-				/>
-			</div>
-		{/if}
-		<div class="flex justify-center">
-			<button
-				disabled={selectedKeys.length === 0}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-12 px-2 xl:text-xl border border-white rounded disabled:opacity-50"
-				on:click={addCommand}
-			>
-				Add Command
-			</button>
-		</div>
+		<CommandSelect bind:command={controllerCommand.command} />
+		<button
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+			on:click={addCommand}
+		>
+			Add Command
+		</button>
 	</div>
 </Modal>

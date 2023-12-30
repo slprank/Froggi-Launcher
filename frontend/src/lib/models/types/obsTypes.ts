@@ -92,9 +92,7 @@ export interface ObsController {
 
 export interface ObsControllerCommand {
     inputs: ControllerButtons,
-    command: RequestType,
-    payload: OBSRequestTypes[keyof OBSRequestTypes] | any,
-    id: string | undefined
+    command: Command
 }
 
 export interface ObsSceneSwitchCommands {
@@ -108,10 +106,10 @@ export interface ObsSceneSwitchCommands {
 
 
 export const ObsRequestOptions = {
+    SaveReplayBuffer: undefined,
     SetCurrentProgramScene: {
         sceneName: ""
     },
-    SaveReplayBuffer: undefined,
     SetInputVolume: {
         inputName: "",
         inputVolumeMul: 0,

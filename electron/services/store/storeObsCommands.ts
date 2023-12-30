@@ -67,10 +67,10 @@ export class ElectronObsCommandStore {
 	}
 
 	deleteObsControllerCommand(commandId: string) {
-		const commands = this.getObsControllerCommandInputs() ?? [];
+		const controllerCommands = this.getObsControllerCommandInputs() ?? [];
 		return this.store.set(
 			'obs.command.controller.inputCommands',
-			commands.filter((command) => command.id !== commandId),
+			controllerCommands.filter((controllerCommands) => controllerCommands.command.id !== commandId),
 		);
 	}
 
@@ -148,7 +148,7 @@ export class ElectronObsCommandStore {
 		if (!controllerCommands) return;
 
 		controllerCommands.forEach((controllerCommand) => {
-			this.obsWebSocket.executeCommand(CommandType.Obs, controllerCommand.command, controllerCommand.payload);
+			this.obsWebSocket.executeCommand(CommandType.Obs, controllerCommand.command.requestType, controllerCommand.command.payload);
 		});
 		this.commandTimeout = true;
 		setTimeout(() => {
