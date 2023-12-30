@@ -1,12 +1,13 @@
 import {
 	CustomCommands,
 	Obs,
-	ObsCommandType,
+	CommandType,
 	ObsConnection,
 	ObsController,
 	ObsControllerCommand,
 	ObsSceneSwitchCommands,
-	SceneCommand,
+	Command,
+	RequestType,
 } from '../models/types/obsTypes';
 import type {
 	AutoUpdaterStatus,
@@ -81,12 +82,12 @@ export interface MessageEvents {
 	ObsControllerCommandDelete: (commandId: string) => void;
 	ObsControllerCommandStateToggle: () => void;
 	ObsSceneSwitch: (options: ObsSceneSwitchCommands) => void;
-	ObsSceneSwitchAdd: (scene: LiveStatsScene, options: SceneCommand) => void;
+	ObsSceneSwitchAdd: (scene: LiveStatsScene, options: Command) => void;
 	ObsSceneSwitchDelete: (scene: LiveStatsScene, commandId: string) => void;
 	DeleteObsCommand: (commandId: string) => void;
 	ExecuteObsCommand: <ObsType extends keyof OBSRequestTypes, CustomType extends keyof CustomCommands>(
-		type: ObsCommandType,
-		requestType: ObsType | CustomType,
+		type: CommandType,
+		requestType: RequestType,
 		requestData?: OBSRequestTypes[ObsType] | CustomCommands[CustomType],
 	) => void;
 

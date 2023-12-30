@@ -3,61 +3,61 @@
 	import AddSceneCommandModal from '$lib/components/dashboard/Modals/AddSceneCommandModal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { ObsSceneSwitch } from '$lib/models/types/obsTypes';
+	import { Command, ObsSceneSwitchCommands } from '$lib/models/types/obsTypes';
 	import { electronEmitter, obsSceneSwitch } from '$lib/utils/store.svelte';
 	import { isNil } from 'lodash';
 
-	let sceneOptions: ObsSceneSwitch | undefined = $obsSceneSwitch;
+	let sceneCommands: ObsSceneSwitchCommands | undefined = $obsSceneSwitch;
 	let isSceneCommandModalOpen = false;
 	let isDeleteCommandModalOpen = false;
 
 	let selectedScene: LiveStatsScene = LiveStatsScene.WaitingForDolphin;
-	let selectedCommand: string = '';
+	let selectedCommand: Command;
 
-	$: console.log('scene options', sceneOptions);
-
-	const deleteCommand = () => {
-		if (isNil(sceneOptions)) return;
-		delete sceneOptions[selectedScene][selectedCommand];
+	const deleteSceneCommand = () => {
+		if (isNil(sceneCommands) || isNil(selectedCommand)) return;
+		$electronEmitter.emit('ObsSceneSwitchDelete', selectedScene, selectedCommand?.id);
 		isDeleteCommandModalOpen = false;
-		updateSceneOptions();
-	};
-
-	const updateSceneOptions = () => {
-		if (isNil(sceneOptions)) return;
-		$electronEmitter.emit('ObsSceneSwitchUpdate', sceneOptions);
-		notifications.success('Scene Options Updated', 2000);
+		notifications.success('Scene Command Deleted', 2000);
 	};
 
 	const scenes: LiveStatsScene[] = Object.values(LiveStatsScene);
 
-	$: sceneOptions = $obsSceneSwitch;
+	$: sceneCommands = $obsSceneSwitch;
 </script>
 
-{#if !isNil(sceneOptions)}
+{#if !isNil(sceneCommands)}
 	<div class="flex flex-col gap-2 font-bold">
-		<h1 class="text-2xl font-bold text-white shadow-md text-center">Scene Switching</h1>
+		<h1 class="text-3xl font-bold text-white shadow-md text-center">Scene Switching</h1>
 		<div class="flex flex-col justify-between gap-8 items-center">
 			{#each scenes as scene}
-				<h1 class="text-white text-xl">{scene}</h1>
-				{#each Object.keys(sceneOptions?.[scene] ?? {}) as command}
-					<div class="flex">
-						<h1 class="text-white text-md">{command}</h1>
-						<h1 class="text-white text-md">
-							{JSON.stringify(sceneOptions[scene][command].payload)}
-						</h1>
+				<h1 class="text-white text-2xl">{scene}</h1>
+				{#each sceneCommands[scene] ?? [] as command}
+					<div class="flex flex-col w-full">
+						<h1 class="text-white text-md">{command.requestType}</h1>
+						{#each Object.keys(command?.payload ?? {}) as key}
+							<div class="flex gap-2 justify-between">
+								<h1 class="text-white text-md">
+									{key}
+								</h1>
+								<h1 class="text-white text-md">
+									{command?.payload?.[key]}
+								</h1>
+							</div>
+							<button
+								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+								on:click={() => {
+									selectedScene = scene;
+									selectedCommand = command;
+									isDeleteCommandModalOpen = true;
+								}}
+							>
+								Delete
+							</button>
+						{/each}
 					</div>
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
-						on:click={() => {
-							selectedScene = scene;
-							selectedCommand = command;
-							isDeleteCommandModalOpen = true;
-						}}
-					>
-						Delete
-					</button>
 				{/each}
+				<hr />
 			{/each}
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
@@ -72,6 +72,6 @@
 {/if}
 
 <AddSceneCommandModal bind:open={isSceneCommandModalOpen} />
-<ConfirmModal bind:open={isDeleteCommandModalOpen} on:confirm={deleteCommand}>
+<ConfirmModal bind:open={isDeleteCommandModalOpen} on:confirm={deleteSceneCommand}>
 	Delete Command
 </ConfirmModal>

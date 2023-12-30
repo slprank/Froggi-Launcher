@@ -3,11 +3,11 @@ import Store from 'electron-store';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import {
-	ObsCommandType,
+	CommandType,
 	ObsController,
 	ObsControllerCommand,
 	ObsSceneSwitchCommands,
-	SceneCommand,
+	Command,
 } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
@@ -60,8 +60,6 @@ export class ElectronObsCommandStore {
 
 	addObsControllerCommand(command: ObsControllerCommand) {
 		const commands = this.getObsControllerCommandInputs();
-		console.log(commands);
-		console.log(command);
 		this.store.set('obs.command.controller.inputCommands', [
 			...commands,
 			{ ...command, id: newId() },
@@ -99,7 +97,7 @@ export class ElectronObsCommandStore {
 		);
 	}
 
-	getObsSceneCommandsByScene(scene: LiveStatsScene): SceneCommand[] {
+	getObsSceneCommandsByScene(scene: LiveStatsScene): Command[] {
 		const commands = this.getObsSceneCommands();
 		return commands[scene];
 	}
@@ -150,7 +148,7 @@ export class ElectronObsCommandStore {
 		if (!controllerCommands) return;
 
 		controllerCommands.forEach((controllerCommand) => {
-			this.obsWebSocket.executeCommand(ObsCommandType.Obs, controllerCommand.command, controllerCommand.payload);
+			this.obsWebSocket.executeCommand(CommandType.Obs, controllerCommand.command, controllerCommand.payload);
 		});
 		this.commandTimeout = true;
 		setTimeout(() => {
@@ -158,11 +156,10 @@ export class ElectronObsCommandStore {
 		}, 100);
 	};
 
-	private handleSceneChangeCommands = (sceneCommands: SceneCommand[]) => {
-		console.log(sceneCommands)
-		// sceneCommands?.forEach((sceneCommand) => {
-		// 	this.obsWebSocket.executeCommand(sceneCommand.type, sceneCommand.command as any, sceneCommand.command.payload);
-		// });
+	private handleSceneChangeCommands = (commands: Command[]) => {
+		commands?.forEach((command) => {
+			this.obsWebSocket.executeCommand(command.type, command.requestType, command.payload);
+		});
 	}
 
 	private initEventListeners() {
@@ -174,9 +171,14 @@ export class ElectronObsCommandStore {
 			if (!commands) return;
 			this.handleSceneChangeCommands(commands);
 		});
-		this.clientEmitter.on('ObsSceneSwitchAdd', (scene: LiveStatsScene, options: SceneCommand) => {
+		this.clientEmitter.on('ObsSceneSwitchAdd', (scene: LiveStatsScene, options: Command) => {
 			const sceneCommands = this.getObsSceneCommands();
-			sceneCommands[scene] = [...sceneCommands[scene], { ...options }];
+			sceneCommands[scene] = [...sceneCommands[scene], { ...options, id: newId() }];
+			this.setObsSceneCommands(sceneCommands);
+		});
+		this.clientEmitter.on('ObsSceneSwitchDelete', (scene: LiveStatsScene, commandId: string) => {
+			const sceneCommands = this.getObsSceneCommands();
+			sceneCommands[scene] = sceneCommands[scene].filter((command) => command.id !== commandId);
 			this.setObsSceneCommands(sceneCommands);
 		});
 		this.clientEmitter.on('ObsControllerCommandAdd', (command: ObsControllerCommand) => {

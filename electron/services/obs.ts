@@ -5,7 +5,7 @@ import { delay, inject, singleton } from 'tsyringe';
 import OBSWebSocket, { OBSRequestTypes } from 'obs-websocket-js';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { ElectronObsStore } from './store/storeObs';
-import { CustomCommands, ObsCommandType, ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
+import { CustomCommands, CommandType, ObsInputs, ObsItem, ObsScenes, RequestType } from '../../frontend/src/lib/models/types/obsTypes';
 import { MessageHandler } from './messageHandler';
 import { NotificationType, ConnectionState } from '../../frontend/src/lib/models/enum';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
@@ -211,13 +211,13 @@ export class ObsWebSocket {
 		ObsType extends keyof OBSRequestTypes,
 		CustomType extends keyof CustomCommands>
 		(
-			type: ObsCommandType,
-			command: ObsType | CustomType,
-			payload: OBSRequestTypes[ObsType] | CustomCommands[CustomType] | undefined) => {
-		if (type === ObsCommandType.Obs)
-			this.executeObsCommand(command as keyof OBSRequestTypes, payload);
-		if (type === ObsCommandType.Custom)
-			this.executeCustomCommand(command as keyof CustomCommands, payload as CustomCommands[keyof CustomCommands]);
+			type: CommandType,
+			requestType: RequestType,
+			payload: OBSRequestTypes[ObsType] | CustomCommands[CustomType] | any) => {
+		if (type === CommandType.Obs)
+			this.executeObsCommand(requestType as keyof OBSRequestTypes, payload);
+		if (type === CommandType.Custom)
+			this.executeCustomCommand(requestType as keyof CustomCommands, payload as CustomCommands[keyof CustomCommands]);
 	}
 
 	private initSvelteListeners() {

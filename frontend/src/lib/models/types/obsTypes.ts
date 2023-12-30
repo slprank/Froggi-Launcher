@@ -16,7 +16,7 @@ export interface Obs {
 }
 
 export interface ObsConnection {
-    commands: ObsCommand<keyof (OBSRequestTypes | CustomCommands)>[],
+    commands: Command[],
     scenes: ObsScenes | undefined,
     inputs: ObsInputs[] | undefined,
     items: ObsItem[] | undefined,
@@ -71,18 +71,19 @@ export interface CustomCommands {
     }
 }
 
-export enum ObsCommandType {
+export enum CommandType {
     Obs = "Obs",
     Custom = "Custom",
 }
 
-
-
-export interface ObsCommand<Type extends keyof (OBSRequestTypes | CustomCommands)> {
-    command: Type,
-    payload: Type extends keyof OBSRequestTypes ? OBSRequestTypes[Type] : CustomCommands[Type],
+export interface Command {
     id: string,
+    type: CommandType,
+    requestType: RequestType
+    payload: OBSRequestTypes[keyof OBSRequestTypes] | CustomCommands[keyof CustomCommands] | undefined,
 }
+
+export type RequestType = keyof typeof ObsRequestOptions | keyof typeof CustomRequestOptions
 
 export interface ObsController {
     enabled: boolean,
@@ -91,25 +92,19 @@ export interface ObsController {
 
 export interface ObsControllerCommand {
     inputs: ControllerButtons,
-    command: keyof OBSRequestTypes,
+    command: RequestType,
     payload: OBSRequestTypes[keyof OBSRequestTypes] | any,
     id: string | undefined
 }
 
 export interface ObsSceneSwitchCommands {
-    [LiveStatsScene.WaitingForDolphin]: SceneCommand[]
-    [LiveStatsScene.Menu]: SceneCommand[]
-    [LiveStatsScene.InGame]: SceneCommand[]
-    [LiveStatsScene.PostGame]: SceneCommand[]
-    [LiveStatsScene.PostSet]: SceneCommand[]
-    [LiveStatsScene.RankChange]: SceneCommand[]
+    [LiveStatsScene.WaitingForDolphin]: Command[]
+    [LiveStatsScene.Menu]: Command[]
+    [LiveStatsScene.InGame]: Command[]
+    [LiveStatsScene.PostGame]: Command[]
+    [LiveStatsScene.PostSet]: Command[]
+    [LiveStatsScene.RankChange]: Command[]
 }
-
-export type SceneCommand = {
-    type: ObsCommandType,
-    command: ObsCommand<keyof (OBSRequestTypes | CustomCommands)>
-};
-
 
 
 export const ObsRequestOptions = {
@@ -117,7 +112,10 @@ export const ObsRequestOptions = {
         sceneName: ""
     },
     SaveReplayBuffer: undefined,
-    SetInputVolume: undefined,
+    SetInputVolume: {
+        inputName: "",
+        inputVolumeMul: 0,
+    },
 }
 
 export const CustomRequestOptions = {
