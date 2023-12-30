@@ -215,7 +215,7 @@ export class ObsWebSocket {
 			command: ObsType | CustomType,
 			payload: OBSRequestTypes[ObsType] | CustomCommands[CustomType] | undefined) => {
 		if (type === ObsCommandType.Obs)
-			this.executeObsCommand(command as keyof OBSRequestTypes, payload as OBSRequestTypes[keyof OBSRequestTypes]);
+			this.executeObsCommand(command as keyof OBSRequestTypes, payload);
 		if (type === ObsCommandType.Custom)
 			this.executeCustomCommand(command as keyof CustomCommands, payload as CustomCommands[keyof CustomCommands]);
 	}

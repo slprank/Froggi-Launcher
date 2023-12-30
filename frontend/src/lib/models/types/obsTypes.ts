@@ -3,11 +3,6 @@ import type { ConnectionState, LiveStatsScene } from "../enum";
 import type { OverlayLayout } from "./overlay";
 import { ControllerButtons } from "./controller";
 
-export enum CustomObsCommandType {
-    ToggleElement = 'ToggleElement',
-    ChangeScene = 'ChangeScene',
-}
-
 export interface CustomObsCommand<Type extends keyof OBSRequestTypes> {
     command: Type,
     payload: OBSRequestTypes[Type],
@@ -21,7 +16,7 @@ export interface Obs {
 }
 
 export interface ObsConnection {
-    commands: ObsCommand<keyof OBSRequestTypes>[],
+    commands: ObsCommand<keyof (OBSRequestTypes | CustomCommands)>[],
     scenes: ObsScenes | undefined,
     inputs: ObsInputs[] | undefined,
     items: ObsItem[] | undefined,
@@ -69,10 +64,6 @@ export interface ObsAuth {
     password: string,
 }
 
-export enum ObsCommandType {
-    Obs = "Obs",
-    Custom = "Custom",
-}
 
 export interface CustomCommands {
     ChangeScene: {
@@ -80,15 +71,16 @@ export interface CustomCommands {
     }
 }
 
-export interface ObsCommand<Type extends keyof OBSRequestTypes> {
-    command: Type,
-    payload: OBSRequestTypes[Type],
-    id: string,
+export enum ObsCommandType {
+    Obs = "Obs",
+    Custom = "Custom",
 }
 
-export interface ObsCustomCommand<Type extends keyof CustomCommands> {
+
+
+export interface ObsCommand<Type extends keyof (OBSRequestTypes | CustomCommands)> {
     command: Type,
-    payload: CustomCommands[Type],
+    payload: Type extends keyof OBSRequestTypes ? OBSRequestTypes[Type] : CustomCommands[Type],
     id: string,
 }
 
@@ -104,15 +96,31 @@ export interface ObsControllerCommand {
     id: string | undefined
 }
 
-export interface ObsSceneSwitch {
-    [LiveStatsScene.WaitingForDolphin]: SceneSwitchCommand
-    [LiveStatsScene.Menu]: SceneSwitchCommand
-    [LiveStatsScene.InGame]: SceneSwitchCommand
-    [LiveStatsScene.PostGame]: SceneSwitchCommand
-    [LiveStatsScene.PostSet]: SceneSwitchCommand
-    [LiveStatsScene.RankChange]: SceneSwitchCommand
+export interface ObsSceneSwitchCommands {
+    [LiveStatsScene.WaitingForDolphin]: SceneCommand[]
+    [LiveStatsScene.Menu]: SceneCommand[]
+    [LiveStatsScene.InGame]: SceneCommand[]
+    [LiveStatsScene.PostGame]: SceneCommand[]
+    [LiveStatsScene.PostSet]: SceneCommand[]
+    [LiveStatsScene.RankChange]: SceneCommand[]
 }
 
-export interface SceneSwitchCommand {
-    [obsCommand: keyof OBSRequestTypes | string]: OBSRequestTypes[keyof OBSRequestTypes] | any
+export type SceneCommand = {
+    type: ObsCommandType,
+    command: ObsCommand<keyof (OBSRequestTypes | CustomCommands)>
+};
+
+
+
+export const ObsRequestOptions = {
+    SetCurrentProgramScene: {
+        sceneName: ""
+    },
+    SaveReplayBuffer: undefined,
+    SetInputVolume: undefined,
+}
+
+export const CustomRequestOptions = {
+    ToggleElement: undefined,
+    ChangeScene: undefined,
 }

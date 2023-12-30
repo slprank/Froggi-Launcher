@@ -169,7 +169,7 @@ export class MessageHandler {
 			'ObsControllerCommand',
 			this.storeObsCommands.getObsController(),
 		);
-		this.sendInitMessage(socketId, 'ObsSceneSwitch', this.storeObsCommands.getObsSceneSwitch());
+		this.sendInitMessage(socketId, 'ObsSceneSwitch', this.storeObsCommands.getObsSceneCommands());
 		this.sendInitMessage(socketId, 'PostGameStats', this.storeLiveStats.getGameStats());
 		this.sendInitMessage(socketId, 'RecentGames', this.storeGames.getRecentGames());
 		this.sendInitMessage(socketId, 'RecentRankedSets', this.storeGames.getRecentRankedSets());

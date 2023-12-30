@@ -5,7 +5,8 @@ import {
 	ObsConnection,
 	ObsController,
 	ObsControllerCommand,
-	ObsSceneSwitch,
+	ObsSceneSwitchCommands,
+	SceneCommand,
 } from '../models/types/obsTypes';
 import type {
 	AutoUpdaterStatus,
@@ -79,8 +80,9 @@ export interface MessageEvents {
 	ObsControllerCommandAdd: (command: ObsControllerCommand) => void;
 	ObsControllerCommandDelete: (commandId: string) => void;
 	ObsControllerCommandStateToggle: () => void;
-	ObsSceneSwitch: (options: ObsSceneSwitch) => void;
-	ObsSceneSwitchUpdate: (options: ObsSceneSwitch) => void;
+	ObsSceneSwitch: (options: ObsSceneSwitchCommands) => void;
+	ObsSceneSwitchAdd: (scene: LiveStatsScene, options: SceneCommand) => void;
+	ObsSceneSwitchDelete: (scene: LiveStatsScene, commandId: string) => void;
 	DeleteObsCommand: (commandId: string) => void;
 	ExecuteObsCommand: <ObsType extends keyof OBSRequestTypes, CustomType extends keyof CustomCommands>(
 		type: ObsCommandType,

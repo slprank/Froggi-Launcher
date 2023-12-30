@@ -26,22 +26,22 @@
 	$: value, revertToMax();
 </script>
 
-{#if label}
-	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
-{/if}
-
 {#key autofocus}
-	<div class="w-full h-11 bg-white rounded-md">
-		<input
-			on:focus={() => (autofocus = autoFocusValue)}
-			autofocus={!!autofocus && autofocus === autoFocusValue}
-			type="number"
-			class="bg-white w-full h-full px-2 rounded border-0 bg-transparent dark:bg-gray-700 dark:text-white"
-			id="numberInput"
-			step={step ?? 1}
-			{min}
-			{max}
-			bind:value
-		/>
+	<div class="w-full">
+		{#if label}
+			<h1 class="text-gray-500 text-sm font-medium text-shadow m-0">{label}</h1>
+		{/if}
+		<div class="w-full h-11 bg-white rounded-md">
+			<input
+				on:focus={() => (autofocus = autoFocusValue)}
+				type="number"
+				class="bg-white w-full h-full px-2 rounded border-0 bg-transparent dark:bg-gray-700 dark:text-white"
+				id="numberInput"
+				step={step ?? 1}
+				{min}
+				{max}
+				bind:value
+			/>
+		</div>
 	</div>
 {/key}

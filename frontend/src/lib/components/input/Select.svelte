@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let selected: any;
+	export let selected: any = undefined;
 	export let label: string | undefined = undefined;
 
 	const dispatch = createEventDispatcher();

@@ -6,7 +6,8 @@ import {
 	ObsCommandType,
 	ObsController,
 	ObsControllerCommand,
-	ObsSceneSwitch,
+	ObsSceneSwitchCommands,
+	SceneCommand,
 } from '../../../frontend/src/lib/models/types/obsTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';
@@ -84,20 +85,26 @@ export class ElectronObsCommandStore {
 		this.store.set('obs.command.controller.enabled', !state);
 	}
 
-	getObsSceneSwitch(): ObsSceneSwitch {
+	getObsSceneCommands(): ObsSceneSwitchCommands {
 		return (
-			(this.store.get('obs.command.sceneSwitch') as ObsSceneSwitch) ?? {
-				[LiveStatsScene.WaitingForDolphin]: { sceneName: '', delay: 0 },
-				[LiveStatsScene.Menu]: { sceneName: '', delay: 0 },
-				[LiveStatsScene.InGame]: { sceneName: '', delay: 0 },
-				[LiveStatsScene.PostGame]: { sceneName: '', delay: 0 },
-				[LiveStatsScene.PostSet]: { sceneName: '', delay: 0 },
-				[LiveStatsScene.RankChange]: { sceneName: '', delay: 0 },
+			(this.store.get('obs.command.sceneSwitch') as ObsSceneSwitchCommands) ?? {
+				[LiveStatsScene.WaitingForDolphin]: [],
+				[LiveStatsScene.Menu]: [],
+				[LiveStatsScene.InGame]: [],
+				[LiveStatsScene.PostGame]: [],
+				[LiveStatsScene.PostSet]: [],
+				[LiveStatsScene.RankChange]: [],
 			}
+
 		);
 	}
 
-	setObsSceneSwitch(value: ObsSceneSwitch) {
+	getObsSceneCommandsByScene(scene: LiveStatsScene): SceneCommand[] {
+		const commands = this.getObsSceneCommands();
+		return commands[scene];
+	}
+
+	setObsSceneCommands(value: ObsSceneSwitchCommands) {
 		this.store.set('obs.command.sceneSwitch', value);
 	}
 
@@ -139,7 +146,6 @@ export class ElectronObsCommandStore {
 
 		const buttonInputs = playerControllerInputs?.[controllerIndex].buttons;
 
-		// TODO: include overlaps
 		const controllerCommands = getOverlappingCommands(this.controllerCommands, buttonInputs);
 		if (!controllerCommands) return;
 
@@ -152,20 +158,26 @@ export class ElectronObsCommandStore {
 		}, 100);
 	};
 
+	private handleSceneChangeCommands = (sceneCommands: SceneCommand[]) => {
+		console.log(sceneCommands)
+		// sceneCommands?.forEach((sceneCommand) => {
+		// 	this.obsWebSocket.executeCommand(sceneCommand.type, sceneCommand.command as any, sceneCommand.command.payload);
+		// });
+	}
+
 	private initEventListeners() {
 		this.localEmitter.on('MemoryControllerInput', (controllerInputs) => {
 			this.handleControllerCommand(controllerInputs);
 		});
 		this.localEmitter.on('LiveStatsSceneChange', (scene: LiveStatsScene) => {
-			const sceneConfig = this.getObsSceneSwitch();
-			const obsScene = sceneConfig[scene];
-			if (!obsScene || !obsScene.sceneName) return;
-			this.obsWebSocket.executeCommand(ObsCommandType.Obs, 'SetCurrentProgramScene', {
-				sceneName: obsScene.sceneName,
-			});
+			const commands = this.getObsSceneCommandsByScene(scene);
+			if (!commands) return;
+			this.handleSceneChangeCommands(commands);
 		});
-		this.clientEmitter.on('ObsSceneSwitchUpdate', (options: ObsSceneSwitch) => {
-			this.setObsSceneSwitch(options);
+		this.clientEmitter.on('ObsSceneSwitchAdd', (scene: LiveStatsScene, options: SceneCommand) => {
+			const sceneCommands = this.getObsSceneCommands();
+			sceneCommands[scene] = [...sceneCommands[scene], { ...options }];
+			this.setObsSceneCommands(sceneCommands);
 		});
 		this.clientEmitter.on('ObsControllerCommandAdd', (command: ObsControllerCommand) => {
 			this.addObsControllerCommand(command);
@@ -185,7 +197,7 @@ export class ElectronObsCommandStore {
 			this.messageHandler.sendMessage('ObsControllerCommand', value as ObsController);
 		});
 		this.store.onDidChange('obs.command.sceneSwitch', (value) => {
-			this.messageHandler.sendMessage('ObsSceneSwitch', value as ObsSceneSwitch);
+			this.messageHandler.sendMessage('ObsSceneSwitch', value as ObsSceneSwitchCommands);
 		});
 	}
 }

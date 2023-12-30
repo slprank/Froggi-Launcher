@@ -24,8 +24,7 @@
 		Obs,
 		ObsConnection,
 		ObsController,
-		ObsControllerCommand,
-		ObsSceneSwitch,
+		ObsSceneSwitchCommands,
 	} from '$lib/models/types/obsTypes';
 
 	export const localEmitter = writable<TypedEmitter>(new TypedEmitter());
@@ -76,7 +75,7 @@
 		enabled: false,
 		inputCommands: [],
 	} as ObsController);
-	export const obsSceneSwitch = writable<ObsSceneSwitch | undefined>();
+	export const obsSceneSwitch = writable<ObsSceneSwitchCommands | undefined>();
 
 	export const overlays = writable<Overlay[]>([]);
 	export const currentOverlayEditor = writable<OverlayEditor>({ layerIndex: 0 } as OverlayEditor);

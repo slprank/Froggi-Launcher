@@ -4,7 +4,7 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { newId } from "../../utils/functions"
-import { Obs, ObsCommand, ObsConnection, ObsInputs, ObsScenes } from '../../../frontend/src/lib/models/types/obsTypes';
+import { CustomCommands, Obs, ObsCommand, ObsConnection, ObsInputs, ObsScenes } from '../../../frontend/src/lib/models/types/obsTypes';
 import { OBSRequestTypes, OBSResponseTypes } from 'obs-websocket-js';
 import { ConnectionState } from '../../../frontend/src/lib/models/enum';
 
@@ -52,8 +52,8 @@ export class ElectronObsStore {
         return (this.store.get('obs.connection') ?? {}) as ObsConnection;
     }
 
-    getCommands(): ObsCommand<keyof OBSRequestTypes>[] {
-        return (this.store.get('obs.connection.commands') ?? {}) as ObsCommand<keyof OBSRequestTypes>[];
+    getCommands(): (ObsCommand<keyof (OBSRequestTypes | CustomCommands)>)[] {
+        return (this.store.get('obs.connection.commands') ?? {}) as (ObsCommand<keyof (OBSRequestTypes | CustomCommands)>)[];
     }
 
     addCommand<Type extends keyof OBSRequestTypes>(command: Type, payload: OBSRequestTypes[Type]) {
