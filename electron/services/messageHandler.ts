@@ -16,7 +16,7 @@ import type { MessageEvents } from '../../frontend/src/lib/utils/customEventEmit
 import { Worker } from 'worker_threads';
 import { sendAuthenticatedMessage } from '../../frontend/src/lib/utils/websocketAuthentication';
 import { NotificationType } from '../../frontend/src/lib/models/enum';
-import { ElectronObsCommandStore } from './store/storeObsCommands';
+import { ElectronCommandStore } from './store/storeCommands';
 
 @singleton()
 export class MessageHandler {
@@ -40,8 +40,8 @@ export class MessageHandler {
 		@inject(delay(() => ElectronGamesStore)) private storeGames: ElectronGamesStore,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronObsStore)) private storeObs: ElectronObsStore,
-		@inject(delay(() => ElectronObsCommandStore))
-		private storeObsCommands: ElectronObsCommandStore,
+		@inject(delay(() => ElectronCommandStore))
+		private storeObsCommands: ElectronCommandStore,
 		@inject(delay(() => ElectronOverlayStore)) private storeOverlay: ElectronOverlayStore,
 		@inject(delay(() => ElectronPlayersStore)) private storePlayers: ElectronPlayersStore,
 		@inject(delay(() => ElectronCurrentPlayerStore))
@@ -166,10 +166,10 @@ export class MessageHandler {
 		this.sendInitMessage(socketId, 'Obs', this.storeObs.getObs());
 		this.sendInitMessage(
 			socketId,
-			'ObsControllerCommand',
-			this.storeObsCommands.getObsController(),
+			'ControllerCommand',
+			this.storeObsCommands.getController(),
 		);
-		this.sendInitMessage(socketId, 'ObsSceneSwitch', this.storeObsCommands.getObsSceneCommands());
+		this.sendInitMessage(socketId, 'SceneSwitchCommands', this.storeObsCommands.getSceneCommands());
 		this.sendInitMessage(socketId, 'PostGameStats', this.storeLiveStats.getGameStats());
 		this.sendInitMessage(socketId, 'RecentGames', this.storeGames.getRecentGames());
 		this.sendInitMessage(socketId, 'RecentRankedSets', this.storeGames.getRecentRankedSets());

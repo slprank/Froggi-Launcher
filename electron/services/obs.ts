@@ -3,12 +3,10 @@
 import { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import OBSWebSocket, { OBSRequestTypes } from 'obs-websocket-js';
-import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { ElectronObsStore } from './store/storeObs';
-import { CustomCommands, CommandType, ObsInputs, ObsItem, ObsScenes, RequestType } from '../../frontend/src/lib/models/types/obsTypes';
+import { ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
 import { MessageHandler } from './messageHandler';
 import { NotificationType, ConnectionState } from '../../frontend/src/lib/models/enum';
-import { ElectronLiveStatsStore } from './store/storeLiveStats';
 
 @singleton()
 export class ObsWebSocket {
@@ -16,14 +14,11 @@ export class ObsWebSocket {
 	private obsConnectionInterval: NodeJS.Timeout | undefined;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(ElectronObsStore) private storeObs: ElectronObsStore,
-		@inject(ElectronLiveStatsStore) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
 		this.log.info('Initializing OBS');
 		this.initObsWebSocket();
-		this.initSvelteListeners();
 	}
 
 	private updateObsData = async () => {
@@ -94,19 +89,7 @@ export class ObsWebSocket {
 		} catch (err) {
 			this.log.error(err);
 		}
-		//await this.cycleThroughScenes()
 	};
-
-	// private cycleThroughScenes = async () => {
-	// 	const scenes = await this.obs.call("GetSceneList");
-	// 	const currentScene = scenes.currentProgramSceneName
-	// 	const sceneList = scenes.scenes.map((scene) => scene.sceneName)
-	// 	for (const scene of sceneList) {
-	// 		await this.obs.call("SetCurrentProgramScene", { sceneName: `${scene}` })
-	// 		await new Promise((resolve) => setTimeout(resolve, 500))
-	// 	}
-	// 	await this.obs.call("SetCurrentProgramScene", { sceneName: currentScene })
-	// }
 
 	private startReplayBuffer = async () => {
 		try {
@@ -180,7 +163,7 @@ export class ObsWebSocket {
 		this.searchForObs();
 	};
 
-	executeObsCommand = async <T extends keyof OBSRequestTypes>(
+	executeCommand = async <T extends keyof OBSRequestTypes>(
 		command: T,
 		payload: OBSRequestTypes[T] | undefined,
 	) => {
@@ -197,32 +180,4 @@ export class ObsWebSocket {
 		}
 	};
 
-	executeCustomCommand = async <T extends keyof CustomCommands>(
-		command: T,
-		payload: CustomCommands[T],
-	) => {
-		switch (command) {
-			case 'ChangeScene':
-				this.storeLiveStats.setStatsScene(payload.sceneName);
-		}
-	};
-
-	executeCommand = <
-		ObsType extends keyof OBSRequestTypes,
-		CustomType extends keyof CustomCommands>
-		(
-			type: CommandType,
-			requestType: RequestType,
-			payload: OBSRequestTypes[ObsType] | CustomCommands[CustomType] | any) => {
-		if (type === CommandType.Obs)
-			this.executeObsCommand(requestType as keyof OBSRequestTypes, payload);
-		if (type === CommandType.Custom)
-			this.executeCustomCommand(requestType as keyof CustomCommands, payload as CustomCommands[keyof CustomCommands]);
-	}
-
-	private initSvelteListeners() {
-		this.clientEmitter.on('ExecuteObsCommand', async (type, command, payload) => {
-			this.executeCommand(type, command, payload);
-		});
-	}
 }

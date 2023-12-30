@@ -7,7 +7,7 @@
 	let isNewCommandModalOpen = false;
 
 	const toggleControllerCommandState = () => {
-		$electronEmitter.emit('ObsControllerCommandStateToggle');
+		$electronEmitter.emit('ControllerCommandStateToggle');
 		notifications.success(
 			`Controller Command ${isControllerCommandEnabled ? 'Disabled' : 'Enabled'}`,
 			1500,

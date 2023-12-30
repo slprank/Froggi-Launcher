@@ -1,5 +1,5 @@
+import { ControllerCommand } from "../models/types/commandTypes";
 import { ControllerButtons, PlayerController } from "../models/types/controller";
-import { ObsControllerCommand } from "../models/types/obsTypes";
 import { isMatch } from "lodash";
 
 
@@ -17,14 +17,14 @@ const removeFalseValues = (buttonInputs: ControllerButtons) => {
     }
 }
 
-export const getOverlappingCommands = (commands: ObsControllerCommand[] | undefined, buttonInputs: ControllerButtons | undefined): ObsControllerCommand[] => {
+export const getOverlappingCommands = (commands: ControllerCommand[] | undefined, buttonInputs: ControllerButtons | undefined): ControllerCommand[] => {
     if (!buttonInputs || !commands) return [];
     return commands.filter((command) =>
         isMatch(removeFalseValues(command.inputs), removeFalseValues(buttonInputs)) || isMatch(removeFalseValues(buttonInputs), removeFalseValues(command.inputs)),
     );
 }
 
-export const getSubsetCommands = (commands: ObsControllerCommand[] | undefined, buttonInputs: ControllerButtons | undefined): ObsControllerCommand[] => {
+export const getSubsetCommands = (commands: ControllerCommand[] | undefined, buttonInputs: ControllerButtons | undefined): ControllerCommand[] => {
     if (!buttonInputs || !commands) return [];
     return commands.filter((command) =>
         isMatch(removeFalseValues(command.inputs), removeFalseValues(buttonInputs))

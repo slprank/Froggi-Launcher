@@ -4,9 +4,10 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { newId } from "../../utils/functions"
-import { Obs, Command, ObsConnection, ObsInputs, ObsScenes } from '../../../frontend/src/lib/models/types/obsTypes';
+import { Obs, ObsConnection, ObsInputs, ObsScenes } from '../../../frontend/src/lib/models/types/obsTypes';
 import { OBSRequestTypes, OBSResponseTypes } from 'obs-websocket-js';
 import { ConnectionState } from '../../../frontend/src/lib/models/enum';
+import { Command } from '../../../frontend/src/lib/models/types/commandTypes';
 
 
 @singleton()

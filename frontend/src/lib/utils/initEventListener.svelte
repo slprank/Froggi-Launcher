@@ -190,18 +190,16 @@
 					obsConnection.set(value);
 				})();
 				break;
-			case 'ObsControllerCommand':
+			case 'ControllerCommand':
 				(() => {
-					const value = payload[0] as Parameters<
-						MessageEvents['ObsControllerCommand']
-					>[0];
+					const value = payload[0] as Parameters<MessageEvents['ControllerCommand']>[0];
 					if (!value) return;
 					obsController.set(value);
 				})();
 				break;
-			case 'ObsSceneSwitch':
+			case 'SceneSwitchCommands':
 				(() => {
-					const value = payload[0] as Parameters<MessageEvents['ObsSceneSwitch']>[0];
+					const value = payload[0] as Parameters<MessageEvents['SceneSwitchCommands']>[0];
 					if (!value) return;
 					obsSceneSwitch.set(value);
 				})();

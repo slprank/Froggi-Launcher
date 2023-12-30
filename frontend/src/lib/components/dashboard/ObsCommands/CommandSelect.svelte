@@ -2,46 +2,75 @@
 	import {
 		Command,
 		CommandType,
-		CustomCommands,
-		CustomRequestOptions,
+		ObsCustomRequestOptions,
 		ObsRequestOptions,
-	} from '$lib/models/types/obsTypes';
+		OverlayRequestOptions,
+		PayloadType,
+	} from '$lib/models/types/commandTypes';
 	import Select from '$lib/components/input/Select.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import TextInput from '$lib/components/input/TextInput.svelte';
-	import { OBSRequestTypes } from 'obs-websocket-js/dist/types';
+	import { LiveStatsScene } from '$lib/models/enum';
 
 	export let command: Command;
+	export let displayOverlayCommands: boolean = true;
 
-	const handleCommandTypeChange = (
-		e: CustomEvent<
-			OBSRequestTypes[keyof OBSRequestTypes] | CustomCommands[keyof CustomCommands]
-		>,
-	) => {
-		command = { ...command, ...e.detail };
+	const handleRequestTypeChange = (e: CustomEvent<PayloadType>) => {
+		command = { ...command, ...e.detail } as Command;
+	};
+
+	const handleCommandTypeChange = (e: CustomEvent<CommandType>) => {
+		switch (e.detail) {
+			case CommandType.Obs:
+				command = {
+					type: CommandType.Obs,
+					requestType: 'SaveReplayBuffer',
+					payload: {},
+				} as Command;
+				break;
+			case CommandType.ObsCustom:
+				command = {
+					type: CommandType.ObsCustom,
+					requestType: 'ToggleSceneItem',
+					payload: {
+						itemName: '',
+					},
+				} as Command;
+				break;
+			case CommandType.Overlay:
+				command = {
+					type: CommandType.Overlay,
+					requestType: 'ChangeScene',
+					payload: {
+						liveStatsScene: LiveStatsScene.WaitingForDolphin,
+					},
+				} as Command;
+				break;
+		}
 	};
 
 	$: obsRequestOptions = Object.keys(ObsRequestOptions) as (keyof typeof ObsRequestOptions)[];
 
-	$: customRequestOptions = Object.keys(
-		CustomRequestOptions,
-	) as (keyof typeof CustomRequestOptions)[];
+	$: obsCustomRequestOptions = Object.keys(
+		ObsCustomRequestOptions,
+	) as (keyof typeof ObsCustomRequestOptions)[];
 
-	$: payloadOptions = Object.keys(command?.payload ?? {}) as (
-		| keyof typeof ObsRequestOptions
-		| keyof typeof CustomRequestOptions
-	)[];
+	$: overlayRequestOptions = Object.keys(
+		OverlayRequestOptions,
+	) as (keyof typeof OverlayRequestOptions)[];
+
+	$: payloadOptions = Object.keys(command?.payload ?? {}) as (keyof PayloadType)[];
 </script>
 
-<Select bind:selected={command.type}>
-	{#each Object.keys(CommandType) as scene}
+<Select bind:selected={command.type} on:change={handleCommandTypeChange}>
+	{#each displayOverlayCommands ? Object.keys(CommandType) : Object.keys(CommandType).filter((command) => command !== CommandType.Overlay) as scene}
 		<option value={scene} selected={scene === CommandType.Obs}>
 			{scene}
 		</option>
 	{/each}
 </Select>
 {#if command.type === CommandType.Obs}
-	<Select on:change={handleCommandTypeChange}>
+	<Select on:change={handleRequestTypeChange}>
 		{#each obsRequestOptions as option}
 			<option
 				value={{
@@ -54,20 +83,46 @@
 			</option>
 		{/each}
 	</Select>
-{:else if command.type === CommandType.Custom}
-	<Select on:change={handleCommandTypeChange}>
-		{#each customRequestOptions as option}
-			<option value={CustomRequestOptions[option]} selected={command.requestType === option}>
+{:else if command.type === CommandType.ObsCustom}
+	<Select on:change={handleRequestTypeChange}>
+		{#each obsCustomRequestOptions as option}
+			<option
+				value={ObsCustomRequestOptions[option]}
+				selected={command.requestType === option}
+			>
+				{option}
+			</option>
+		{/each}
+	</Select>
+{:else if command.type === CommandType.Overlay}
+	<Select on:change={handleRequestTypeChange}>
+		{#each overlayRequestOptions as option}
+			<option
+				value={{
+					requestType: option,
+					payload: OverlayRequestOptions[option],
+				}}
+				selected={command.requestType === option}
+			>
 				{option}
 			</option>
 		{/each}
 	</Select>
 {/if}
-{#each payloadOptions as option}
-	{#if typeof command.payload?.[option] === 'string'}
-		<TextInput bind:value={command.payload[option]} label={option} />
-	{/if}
-	{#if typeof command.payload?.[option] === 'number'}
-		<NumberInput bind:value={command.payload[option]} label={option} />
-	{/if}
-{/each}
+{#if command.payload}
+	{#each payloadOptions as option}
+		{#if option === 'liveStatsScene'}
+			<Select bind:selected={command.payload[option]} label={option}>
+				{#each Object.values(LiveStatsScene) as scene}
+					<option value={scene} selected={scene === command.payload[option]}>
+						{scene}
+					</option>
+				{/each}
+			</Select>
+		{:else if typeof command.payload?.[option] === 'string'}
+			<TextInput bind:value={command.payload[option]} label={option} />
+		{:else if typeof command.payload?.[option] === 'number'}
+			<NumberInput bind:value={command.payload[option]} label={option} />
+		{/if}
+	{/each}
+{/if}

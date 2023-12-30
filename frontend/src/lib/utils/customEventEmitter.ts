@@ -1,14 +1,16 @@
 import {
-	CustomCommands,
 	Obs,
-	CommandType,
 	ObsConnection,
-	ObsController,
-	ObsControllerCommand,
-	ObsSceneSwitchCommands,
+} from '../models/types/obsTypes';
+import {
+	CommandType,
+	Controller,
+	ControllerCommand,
+	SceneSwitchCommands,
 	Command,
 	RequestType,
-} from '../models/types/obsTypes';
+	PayloadType,
+} from '../models/types/commandTypes';
 import type {
 	AutoUpdaterStatus,
 	BestOf,
@@ -29,7 +31,6 @@ import type {
 } from '../models/types/slippiData';
 import type { FrameEntryType } from '@slippi/slippi-js';
 import localEmitter from 'eventemitter2';
-import type { OBSRequestTypes } from 'obs-websocket-js/dist/types';
 
 export interface MessageEvents {
 	Authorize: (isAuthorized: boolean) => void;
@@ -77,18 +78,18 @@ export interface MessageEvents {
 	AuthorizationKeyUpdate: (key: string) => void;
 	InitAuthentication: (payload: [socketId: string, authKey: string]) => void;
 
-	ObsControllerCommand: (command: ObsController) => void;
-	ObsControllerCommandAdd: (command: ObsControllerCommand) => void;
-	ObsControllerCommandDelete: (commandId: string) => void;
-	ObsControllerCommandStateToggle: () => void;
-	ObsSceneSwitch: (options: ObsSceneSwitchCommands) => void;
-	ObsSceneSwitchAdd: (scene: LiveStatsScene, options: Command) => void;
-	ObsSceneSwitchDelete: (scene: LiveStatsScene, commandId: string) => void;
-	DeleteObsCommand: (commandId: string) => void;
-	ExecuteObsCommand: <ObsType extends keyof OBSRequestTypes, CustomType extends keyof CustomCommands>(
+	ControllerCommand: (command: Controller) => void;
+	ControllerCommandAdd: (command: ControllerCommand) => void;
+	ControllerCommandDelete: (commandId: string) => void;
+	ControllerCommandStateToggle: () => void;
+	SceneSwitchCommands: (options: SceneSwitchCommands) => void;
+	SceneSwitchCommandAdd: (scene: LiveStatsScene, options: Command) => void;
+	SceneSwitchCommandDelete: (scene: LiveStatsScene, commandId: string) => void;
+	DeleteCommand: (commandId: string) => void;
+	ExecuteCommand: (
 		type: CommandType,
 		requestType: RequestType,
-		requestData?: OBSRequestTypes[ObsType] | CustomCommands[CustomType],
+		requestData?: PayloadType,
 	) => void;
 
 	TestAnimationTrigger: () => void;

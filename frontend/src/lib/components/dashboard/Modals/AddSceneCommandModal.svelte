@@ -2,7 +2,7 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { Command, CommandType } from '$lib/models/types/obsTypes';
+	import { Command, CommandType } from '$lib/models/types/commandTypes';
 	import { electronEmitter } from '$lib/utils/store.svelte';
 	import Select from '$lib/components/input/Select.svelte';
 	import CommandSelect from '../ObsCommands/CommandSelect.svelte';
@@ -17,7 +17,7 @@
 	} as Command;
 
 	const addSceneCommand = () => {
-		$electronEmitter.emit('ObsSceneSwitchAdd', selectedScene, sceneCommand);
+		$electronEmitter.emit('SceneSwitchCommandAdd', selectedScene, sceneCommand);
 		notifications.success('Scene Command Added', 2000);
 		open = false;
 	};
@@ -35,7 +35,7 @@
 				</option>
 			{/each}
 		</Select>
-		<CommandSelect bind:command={sceneCommand} />
+		<CommandSelect bind:command={sceneCommand} displayOverlayCommands={false} />
 		<button
 			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
 			on:click={addSceneCommand}

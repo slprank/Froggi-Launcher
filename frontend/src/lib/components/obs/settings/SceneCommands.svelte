@@ -3,11 +3,11 @@
 	import AddSceneCommandModal from '$lib/components/dashboard/Modals/AddSceneCommandModal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { Command, ObsSceneSwitchCommands } from '$lib/models/types/obsTypes';
+	import { Command, SceneSwitchCommands } from '$lib/models/types/commandTypes';
 	import { electronEmitter, obsSceneSwitch } from '$lib/utils/store.svelte';
 	import { isNil } from 'lodash';
 
-	let sceneCommands: ObsSceneSwitchCommands | undefined = $obsSceneSwitch;
+	let sceneCommands: SceneSwitchCommands | undefined = $obsSceneSwitch;
 	let isSceneCommandModalOpen = false;
 	let isDeleteCommandModalOpen = false;
 
@@ -16,7 +16,7 @@
 
 	const deleteSceneCommand = () => {
 		if (isNil(sceneCommands) || isNil(selectedCommand)) return;
-		$electronEmitter.emit('ObsSceneSwitchDelete', selectedScene, selectedCommand?.id);
+		$electronEmitter.emit('SceneSwitchCommandDelete', selectedScene, selectedCommand?.id);
 		isDeleteCommandModalOpen = false;
 		notifications.success('Scene Command Deleted', 2000);
 	};
@@ -24,8 +24,6 @@
 	const scenes: LiveStatsScene[] = Object.values(LiveStatsScene);
 
 	$: sceneCommands = $obsSceneSwitch;
-
-	$: console.log(sceneCommands);
 </script>
 
 {#if !isNil(sceneCommands)}

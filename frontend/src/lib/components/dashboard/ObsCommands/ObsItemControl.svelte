@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { ObsCommandType } from '$lib/models/types/obsTypes';
+	import { CommandType } from '$lib/models/types/commandTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 
-	const updateVolume = (sceneItemId: number, enabled: boolean) => {
-		$electronEmitter.emit('ExecuteObsCommand', ObsCommandType.Obs, 'SetSceneItemEnabled', {
+	const toggleItem = (sceneItemId: number, enabled: boolean) => {
+		$electronEmitter.emit('ExecuteCommand', CommandType.Obs, 'SetSceneItemEnabled', {
 			sceneName: $obsConnection?.scenes?.currentProgramSceneName ?? '',
 			sceneItemId: sceneItemId,
 			sceneItemEnabled: enabled,
@@ -24,7 +24,7 @@
 					type="checkbox"
 					class="w-12 h-12"
 					bind:checked={item.sceneItemEnabled}
-					on:change={() => updateVolume(item.sceneItemId, item.sceneItemEnabled)}
+					on:change={() => toggleItem(item.sceneItemId, item.sceneItemEnabled)}
 				/>
 			</div>
 		</div>

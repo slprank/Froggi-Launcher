@@ -2,7 +2,7 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { ControllerButtons } from '$lib/models/types/controller';
-	import { Command, CommandType, ObsControllerCommand } from '$lib/models/types/obsTypes';
+	import { Command, CommandType, ControllerCommand } from '$lib/models/types/commandTypes';
 	import { getOverlappingCommands } from '$lib/utils/controllerCommandHelper';
 	import { electronEmitter, obsController } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
@@ -20,12 +20,12 @@
 	const addCommand = async () => {
 		if (!controllerCommand) return;
 		if (!Object.values(controllerCommand.inputs).some((input) => input)) return;
-		$electronEmitter.emit('ObsControllerCommandAdd', controllerCommand);
+		$electronEmitter.emit('ControllerCommandAdd', controllerCommand);
 		notifications.success('Updated Commands', 1500);
 		open = false;
 	};
 
-	let controllerCommand: ObsControllerCommand = {
+	let controllerCommand: ControllerCommand = {
 		inputs: {
 			isAPressed: false,
 			isBPressed: false,

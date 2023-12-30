@@ -1,7 +1,6 @@
 import type { OBSRequestTypes } from "obs-websocket-js/dist/types";
-import type { ConnectionState, LiveStatsScene } from "../enum";
+import type { ConnectionState } from "../enum";
 import type { OverlayLayout } from "./overlay";
-import { ControllerButtons } from "./controller";
 
 export interface CustomObsCommand<Type extends keyof OBSRequestTypes> {
     command: Type,
@@ -16,7 +15,6 @@ export interface Obs {
 }
 
 export interface ObsConnection {
-    commands: Command[],
     scenes: ObsScenes | undefined,
     inputs: ObsInputs[] | undefined,
     items: ObsItem[] | undefined,
@@ -64,59 +62,3 @@ export interface ObsAuth {
     password: string,
 }
 
-
-export interface CustomCommands {
-    ChangeScene: {
-        sceneName: LiveStatsScene,
-    }
-}
-
-export enum CommandType {
-    Obs = "Obs",
-    Custom = "Custom",
-}
-
-export interface Command {
-    id: string,
-    type: CommandType,
-    requestType: RequestType
-    payload: OBSRequestTypes[keyof OBSRequestTypes] | CustomCommands[keyof CustomCommands] | undefined,
-}
-
-export type RequestType = keyof typeof ObsRequestOptions | keyof typeof CustomRequestOptions
-
-export interface ObsController {
-    enabled: boolean,
-    inputCommands: ObsControllerCommand[],
-}
-
-export interface ObsControllerCommand {
-    inputs: ControllerButtons,
-    command: Command
-}
-
-export interface ObsSceneSwitchCommands {
-    [LiveStatsScene.WaitingForDolphin]: Command[]
-    [LiveStatsScene.Menu]: Command[]
-    [LiveStatsScene.InGame]: Command[]
-    [LiveStatsScene.PostGame]: Command[]
-    [LiveStatsScene.PostSet]: Command[]
-    [LiveStatsScene.RankChange]: Command[]
-}
-
-
-export const ObsRequestOptions = {
-    SaveReplayBuffer: undefined,
-    SetCurrentProgramScene: {
-        sceneName: ""
-    },
-    SetInputVolume: {
-        inputName: "",
-        inputVolumeMul: 0,
-    },
-}
-
-export const CustomRequestOptions = {
-    ToggleElement: undefined,
-    ChangeScene: undefined,
-}
