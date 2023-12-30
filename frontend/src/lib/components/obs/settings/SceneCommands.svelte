@@ -24,6 +24,8 @@
 	const scenes: LiveStatsScene[] = Object.values(LiveStatsScene);
 
 	$: sceneCommands = $obsSceneSwitch;
+
+	$: console.log(sceneCommands);
 </script>
 
 {#if !isNil(sceneCommands)}
@@ -44,18 +46,18 @@
 									{command?.payload?.[key]}
 								</h1>
 							</div>
-							<button
-								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
-								on:click={() => {
-									selectedScene = scene;
-									selectedCommand = command;
-									isDeleteCommandModalOpen = true;
-								}}
-							>
-								Delete
-							</button>
 						{/each}
 					</div>
+					<button
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+						on:click={() => {
+							selectedScene = scene;
+							selectedCommand = command;
+							isDeleteCommandModalOpen = true;
+						}}
+					>
+						Delete
+					</button>
 				{/each}
 				<hr />
 			{/each}

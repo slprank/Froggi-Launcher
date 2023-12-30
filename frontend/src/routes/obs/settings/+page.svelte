@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import SceneOptions from '$lib/components/obs/settings/SceneOptions.svelte';
-	import ControllerCommandOptions from '$lib/components/obs/settings/ControllerCommandOptions.svelte';
+	import SceneCommands from '$lib/components/obs/settings/SceneCommands.svelte';
+	import ControllerCommands from '$lib/components/obs/settings/ControllerCommands.svelte';
 </script>
 
 <main
@@ -15,8 +15,8 @@
 			<h1 class="text-4xl font-bold text-white shadow-md">OBS - Settings</h1>
 		</div>
 		<div class="flex-1 flex flex-col gap-8 overflow-auto p-2 w-full max-w-[30rem]">
-			<SceneOptions />
-			<ControllerCommandOptions />
+			<SceneCommands />
+			<ControllerCommands />
 		</div>
 	</div>
 </main>

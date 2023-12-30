@@ -33,8 +33,6 @@
 		const match = key.match(pattern);
 		return match ? match[1] : key;
 	};
-
-	$: console.log(controllerCommand);
 </script>
 
 <div class="flex gap-4 justify-center items-center">

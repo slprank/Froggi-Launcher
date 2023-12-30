@@ -19,6 +19,7 @@
 	const addSceneCommand = () => {
 		$electronEmitter.emit('ObsSceneSwitchAdd', selectedScene, sceneCommand);
 		notifications.success('Scene Command Added', 2000);
+		open = false;
 	};
 </script>
 
@@ -28,8 +29,10 @@
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<Select bind:selected={selectedScene}>
-			{#each Object.keys(LiveStatsScene) as scene}
-				<option value={scene}>{scene}</option>
+			{#each Object.values(LiveStatsScene) as scene}
+				<option value={scene} selected={scene === selectedScene}>
+					{scene}
+				</option>
 			{/each}
 		</Select>
 		<CommandSelect bind:command={sceneCommand} />
