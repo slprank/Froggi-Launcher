@@ -1,9 +1,9 @@
 <script lang="ts">
 	import SceneSelect from '$lib/components/obs/overlays/selector/SceneSelect.svelte';
-	import ObsSceneSelect from '$lib/components/dashboard/Modals/ObsCommands/ObsSceneSelect.svelte';
+	import ObsSceneSelect from '$lib/components/dashboard/ObsCommands/ObsSceneSelect.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import ObsItemControl from './ObsCommands/ObsItemControl.svelte';
-	import ObsVolumeControl from './ObsCommands/ObsVolumeControl.svelte';
+	import ObsItemControl from '../ObsCommands/ObsItemControl.svelte';
+	import ObsVolumeControl from '../ObsCommands/ObsVolumeControl.svelte';
 
 	export let open: boolean;
 </script>

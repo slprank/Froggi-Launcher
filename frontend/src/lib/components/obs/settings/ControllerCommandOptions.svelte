@@ -1,8 +1,8 @@
 <script lang="ts">
 	import AddControllerCommandModal from '$lib/components/dashboard/Modals/AddControllerCommandModal.svelte';
-	import ButtonCommand from '$lib/components/dashboard/Modals/ObsCommands/ButtonCommand.svelte';
+	import ButtonCommand from '$lib/components/dashboard/ObsCommands/ButtonCommand.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
-	import { electronEmitter, memoryReadController, obsController } from '$lib/utils/store.svelte';
+	import { electronEmitter, obsController } from '$lib/utils/store.svelte';
 
 	let isNewCommandModalOpen = false;
 

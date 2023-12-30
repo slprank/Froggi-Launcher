@@ -5,7 +5,7 @@
 	import { Command, CommandType } from '$lib/models/types/obsTypes';
 	import { electronEmitter } from '$lib/utils/store.svelte';
 	import Select from '$lib/components/input/Select.svelte';
-	import CommandSelect from './ObsCommands/CommandSelect.svelte';
+	import CommandSelect from '../ObsCommands/CommandSelect.svelte';
 
 	export let open: boolean;
 

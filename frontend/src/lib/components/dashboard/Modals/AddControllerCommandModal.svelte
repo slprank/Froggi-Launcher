@@ -6,9 +6,9 @@
 	import { getOverlappingCommands } from '$lib/utils/controllerCommandHelper';
 	import { electronEmitter, obsController } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import ButtonCommand from './ObsCommands/ButtonCommand.svelte';
+	import ButtonCommand from '../ObsCommands/ButtonCommand.svelte';
 	import { flip } from 'svelte/animate';
-	import CommandSelect from './ObsCommands/CommandSelect.svelte';
+	import CommandSelect from '../ObsCommands/CommandSelect.svelte';
 
 	export let open: boolean;
 
