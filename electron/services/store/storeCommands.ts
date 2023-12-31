@@ -27,6 +27,7 @@ import { ElectronLiveStatsStore } from './storeLiveStats';
 import { isNil } from 'lodash';
 import { getOverlappingCommands } from '../../../frontend/src/lib/utils/controllerCommandHelper';
 import { OBSRequestTypes } from 'obs-websocket-js';
+import { ObsItem } from '../../../frontend/src/lib/models/types/obsTypes';
 
 @singleton()
 export class ElectronCommandStore {
@@ -222,8 +223,7 @@ export class ElectronCommandStore {
 	) => {
 		switch (command) {
 			case "ToggleSceneItem":
-				console.log(payload)
-			//this.storeLiveStats.setStatsScene(payload.itemName);
+				this.toggleSceneItem(payload.itemName);
 		}
 	};
 
@@ -236,6 +236,21 @@ export class ElectronCommandStore {
 				this.storeLiveStats.setStatsScene(payload.liveStatsScene);
 		}
 	};
+
+	private toggleSceneItem = async (itemName: string) => {
+		try {
+			const scene = (await this.obsWebSocket.obs.call("GetCurrentProgramScene")).currentProgramSceneName;
+			const item = (await this.obsWebSocket.obs.call('GetSceneItemList', { sceneName: scene })).sceneItems.find((item) => item.name === itemName) as unknown as ObsItem;
+			const state = (await this.obsWebSocket.obs.call("GetSceneItemEnabled", { sceneName: scene, sceneItemId: item.sceneItemId })).sceneItemEnabled;
+			this.executeCommand(CommandType.Obs, "SetSceneItemEnabled", {
+				sceneName: scene,
+				sceneItemId: item.sceneItemId,
+				enabled: state,
+			})
+		} catch (err) {
+			this.log.error(err)
+		}
+	}
 
 	private initEventListeners() {
 		this.clientEmitter.on('ExecuteCommand', async (type, command, payload) => {

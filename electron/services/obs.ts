@@ -10,7 +10,7 @@ import { NotificationType, ConnectionState } from '../../frontend/src/lib/models
 
 @singleton()
 export class ObsWebSocket {
-	private obs = new OBSWebSocket();
+	obs = new OBSWebSocket();
 	private obsConnectionInterval: NodeJS.Timeout | undefined;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
