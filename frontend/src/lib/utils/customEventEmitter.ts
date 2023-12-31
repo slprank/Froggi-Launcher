@@ -85,6 +85,7 @@ export interface MessageEvents {
 	SceneSwitchCommands: (options: SceneSwitchCommands) => void;
 	SceneSwitchCommandAdd: (scene: LiveStatsScene, options: Command) => void;
 	SceneSwitchCommandDelete: (scene: LiveStatsScene, commandId: string) => void;
+	SceneSwitchCommandStateToggle: () => void;
 	DeleteCommand: (commandId: string) => void;
 	ExecuteCommand: (
 		type: CommandType,

@@ -2,20 +2,20 @@
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { ControllerButtons } from '$lib/models/types/controller';
-	import { ObsControllerCommand } from '$lib/models/types/obsTypes';
+	import { ControllerCommand } from '$lib/models/types/commandTypes';
 	import { getControllerIndex } from '$lib/utils/controllerCommandHelper';
 	import { electronEmitter, memoryReadController } from '$lib/utils/store.svelte';
 
-	export let controllerCommand: ObsControllerCommand;
+	export let controllerCommand: ControllerCommand;
 
-	let selectedCommand: ObsControllerCommand | undefined;
+	let selectedCommand: ControllerCommand | undefined;
 	let isDeleteCommandModalOpen = false;
 	const deleteCommand = async () => {
-		if (!selectedCommand?.command.id) {
+		if (!selectedCommand?.id) {
 			notifications.danger('Could not delete command', 1500);
 			return;
 		}
-		$electronEmitter.emit('ObsControllerCommandDelete', selectedCommand.command.id);
+		$electronEmitter.emit('ControllerCommandDelete', selectedCommand.id);
 		notifications.success('Command Deleted', 1500);
 	};
 

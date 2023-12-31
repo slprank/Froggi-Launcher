@@ -75,9 +75,9 @@ export class ElectronCommandStore {
 
 	deleteControllerCommand(commandId: string) {
 		const controllerCommands = this.getControllerCommandInputs() ?? [];
-		return this.store.set(
+		this.store.set(
 			'command.controller.inputCommands',
-			controllerCommands.filter((controllerCommands) => controllerCommands.command.id !== commandId),
+			controllerCommands.filter((controllerCommands) => controllerCommands.id !== commandId),
 		);
 	}
 
@@ -111,6 +111,22 @@ export class ElectronCommandStore {
 
 	setSceneCommands(value: SceneSwitchCommands) {
 		this.store.set('command.sceneSwitch', value);
+	}
+
+	addSceneCommand(scene: LiveStatsScene, command: Command) {
+		const sceneCommands = this.getSceneCommands();
+		sceneCommands[scene] = [...sceneCommands[scene], { ...command, id: newId() }];
+		this.setSceneCommands(sceneCommands);
+	}
+	deleteSceneCommand(scene: LiveStatsScene, commandId: string) {
+		const sceneCommands = this.getSceneCommands();
+		sceneCommands[scene] = sceneCommands[scene].filter((command) => command.id !== commandId);
+		this.setSceneCommands(sceneCommands);
+	}
+
+	toggleSceneSwitchCommandsState() {
+		const state = (this.store.get('command.sceneSwitch.enabled') as boolean) ?? false;
+		this.store.set('command.sceneSwitch.enabled', !state);
 	}
 
 	private init() {
@@ -233,15 +249,14 @@ export class ElectronCommandStore {
 			if (!commands) return;
 			this.handleSceneChangeCommands(commands);
 		});
-		this.clientEmitter.on('SceneSwitchCommandAdd', (scene: LiveStatsScene, options: Command) => {
-			const sceneCommands = this.getSceneCommands();
-			sceneCommands[scene] = [...sceneCommands[scene], { ...options, id: newId() }];
-			this.setSceneCommands(sceneCommands);
+		this.clientEmitter.on('SceneSwitchCommandAdd', (scene: LiveStatsScene, command: Command) => {
+			this.addSceneCommand(scene, command);
 		});
 		this.clientEmitter.on('SceneSwitchCommandDelete', (scene: LiveStatsScene, commandId: string) => {
-			const sceneCommands = this.getSceneCommands();
-			sceneCommands[scene] = sceneCommands[scene].filter((command) => command.id !== commandId);
-			this.setSceneCommands(sceneCommands);
+			this.deleteSceneCommand(scene, commandId);
+		});
+		this.clientEmitter.on('SceneSwitchCommandStateToggle', () => {
+			this.toggleSceneSwitchCommandsState();
 		});
 		this.clientEmitter.on('ControllerCommandAdd', (command: ControllerCommand) => {
 			this.addControllerCommand(command);

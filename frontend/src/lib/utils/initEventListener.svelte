@@ -25,8 +25,8 @@
 		currentOverlayEditor,
 		isAuthorized,
 		authorizationKey,
-		obsSceneSwitch,
-		obsController,
+		sceneSwitch,
+		controller,
 	} from '$lib/utils/store.svelte';
 	import {
 		getAuthorizationKey,
@@ -194,14 +194,14 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['ControllerCommand']>[0];
 					if (!value) return;
-					obsController.set(value);
+					controller.set(value);
 				})();
 				break;
 			case 'SceneSwitchCommands':
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['SceneSwitchCommands']>[0];
 					if (!value) return;
-					obsSceneSwitch.set(value);
+					sceneSwitch.set(value);
 				})();
 				break;
 			case 'Overlays':

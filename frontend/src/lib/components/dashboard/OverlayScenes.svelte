@@ -10,14 +10,14 @@
 
 <div class="flex flex-col gap-2">
 	<div class="flex gap-2 justify-center items-center">
-		<h1 class="text-white text-3xl font-semibold">OBS Commands</h1>
+		<h1 class="text-white text-3xl font-semibold">Stream Commands</h1>
 	</div>
 	<div class="flex flex-col gap-2">
 		<button
 			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 			on:click={openChangeObsSceneModal}
 		>
-			Scene Handler
+			Commands
 		</button>
 	</div>
 </div>

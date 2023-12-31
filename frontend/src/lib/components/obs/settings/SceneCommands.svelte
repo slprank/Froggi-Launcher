@@ -1,13 +1,14 @@
 <script lang="ts">
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import AddSceneCommandModal from '$lib/components/dashboard/Modals/AddSceneCommandModal.svelte';
+	import ToggleSceneSwitchCommand from '$lib/components/dashboard/ObsCommands/ToggleSceneSwitchCommand.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import { Command, SceneSwitchCommands } from '$lib/models/types/commandTypes';
-	import { electronEmitter, obsSceneSwitch } from '$lib/utils/store.svelte';
+	import { electronEmitter, sceneSwitch } from '$lib/utils/store.svelte';
 	import { isNil } from 'lodash';
 
-	let sceneCommands: SceneSwitchCommands | undefined = $obsSceneSwitch;
+	let sceneCommands: SceneSwitchCommands | undefined = $sceneSwitch;
 	let isSceneCommandModalOpen = false;
 	let isDeleteCommandModalOpen = false;
 
@@ -23,13 +24,17 @@
 
 	const scenes: LiveStatsScene[] = Object.values(LiveStatsScene);
 
-	$: sceneCommands = $obsSceneSwitch;
+	$: sceneCommands = $sceneSwitch;
 </script>
 
 {#if !isNil(sceneCommands)}
 	<div class="flex flex-col gap-2 font-bold">
 		<h1 class="text-3xl font-bold text-white shadow-md text-center">Scene Switching</h1>
-		<div class="flex flex-col justify-between gap-8 items-center">
+		<ToggleSceneSwitchCommand />
+		<div
+			class="flex flex-col justify-between gap-8 items-center"
+			style={`opacity: ${$sceneSwitch?.enabled ? 1 : 0.5}`}
+		>
 			{#each scenes as scene}
 				<div class="w-full flex flex-col gap-4">
 					<h1 class="text-white text-2xl">{scene}:</h1>

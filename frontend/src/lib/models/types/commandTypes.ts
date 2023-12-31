@@ -26,11 +26,13 @@ export interface Controller {
 }
 
 export interface ControllerCommand {
+    id: string,
     inputs: ControllerButtons,
     command: Command
 }
 
 export interface SceneSwitchCommands {
+    enabled: boolean,
     [LiveStatsScene.WaitingForDolphin]: Command[]
     [LiveStatsScene.Menu]: Command[]
     [LiveStatsScene.InGame]: Command[]

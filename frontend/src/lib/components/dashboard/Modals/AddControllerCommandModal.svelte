@@ -4,7 +4,7 @@
 	import { ControllerButtons } from '$lib/models/types/controller';
 	import { Command, CommandType, ControllerCommand } from '$lib/models/types/commandTypes';
 	import { getOverlappingCommands } from '$lib/utils/controllerCommandHelper';
-	import { electronEmitter, obsController } from '$lib/utils/store.svelte';
+	import { electronEmitter, controller } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import ButtonCommand from '../ObsCommands/ButtonCommand.svelte';
 	import { flip } from 'svelte/animate';
@@ -13,7 +13,7 @@
 	export let open: boolean;
 
 	$: overlappingCommands = getOverlappingCommands(
-		$obsController.inputCommands,
+		$controller.inputCommands,
 		controllerCommand.inputs,
 	);
 
@@ -26,6 +26,7 @@
 	};
 
 	let controllerCommand: ControllerCommand = {
+		id: '',
 		inputs: {
 			isAPressed: false,
 			isBPressed: false,
