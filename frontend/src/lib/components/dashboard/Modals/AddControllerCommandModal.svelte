@@ -71,7 +71,7 @@
 		<h1 class="flex text-2xl font-bold text-white shadow-md">Button Combinations</h1>
 		<div class="flex flex-col flex-1 overflow-scroll gap-4 min-h-40">
 			<div class="flex flex-col gap-4">
-				<div class="flex flex-col gap-2">
+				<div class="flex flex-col gap-2 pr-4">
 					{#each getKeys() as key}
 						<div class="flex justify-between items-center gap-2">
 							<img

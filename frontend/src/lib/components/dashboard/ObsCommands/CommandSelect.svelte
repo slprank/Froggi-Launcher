@@ -62,15 +62,15 @@
 	$: payloadOptions = Object.keys(command?.payload ?? {}) as (keyof PayloadType)[];
 </script>
 
-<Select bind:selected={command.type} on:change={handleCommandTypeChange}>
+<Select bind:selected={command.type} on:change={handleCommandTypeChange} label="Command type:">
 	{#each displayOverlayCommands ? Object.keys(CommandType) : Object.keys(CommandType).filter((command) => command !== CommandType.Overlay) as scene}
 		<option value={scene} selected={scene === CommandType.Obs}>
 			{scene}
 		</option>
 	{/each}
 </Select>
-{#if command.type === CommandType.Obs}
-	<Select on:change={handleRequestTypeChange}>
+<Select on:change={handleRequestTypeChange} label="Execute:">
+	{#if command.type === CommandType.Obs}
 		{#each obsRequestOptions as option}
 			<option
 				value={{
@@ -82,9 +82,7 @@
 				{option}
 			</option>
 		{/each}
-	</Select>
-{:else if command.type === CommandType.ObsCustom}
-	<Select on:change={handleRequestTypeChange}>
+	{:else if command.type === CommandType.ObsCustom}
 		{#each obsCustomRequestOptions as option}
 			<option
 				value={ObsCustomRequestOptions[option]}
@@ -93,9 +91,7 @@
 				{option}
 			</option>
 		{/each}
-	</Select>
-{:else if command.type === CommandType.Overlay}
-	<Select on:change={handleRequestTypeChange}>
+	{:else if command.type === CommandType.Overlay}
 		{#each overlayRequestOptions as option}
 			<option
 				value={{
@@ -107,8 +103,8 @@
 				{option}
 			</option>
 		{/each}
-	</Select>
-{/if}
+	{/if}
+</Select>
 {#if command.payload}
 	{#each payloadOptions as option}
 		{#if option === 'liveStatsScene'}

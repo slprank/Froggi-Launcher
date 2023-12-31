@@ -1,25 +1,24 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-	import SceneCommands from '$lib/components/obs/settings/SceneCommands.svelte';
-	import ControllerCommands from '$lib/components/obs/settings/ControllerCommands.svelte';
+	import { goto } from '$app/navigation';
 </script>
 
-<main
-	class="fixed h-screen w-screen bg-cover bg-center"
-	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
-	in:fade={{ delay: 50, duration: 150 }}
-	out:fade={{ duration: 300 }}
->
-	<div class={`w-full h-full px-2 gap-4 flex flex-col justify-between items-center`}>
-		<div>
-			<h1 class="text-4xl font-bold text-white shadow-md">OBS - Settings</h1>
-		</div>
-		<div class="flex-1 flex flex-col gap-8 overflow-auto p-2 w-full max-w-[30rem]">
-			<SceneCommands />
-			<ControllerCommands />
-		</div>
-	</div>
-</main>
-
-<style>
-</style>
+<div class="w-full h-full flex flex-col items-center justify-center">
+	<button
+		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+		on:click={() => goto('/obs/settings/websocket')}
+	>
+		OBS Websocket
+	</button>
+	<button
+		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+		on:click={() => goto('/obs/settings/scene')}
+	>
+		Scene Commands
+	</button>
+	<button
+		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+		on:click={() => goto('/obs/settings/controller')}
+	>
+		Controller Commands
+	</button>
+</div>

@@ -28,7 +28,7 @@
 		class="max-h-[80vh] max-w-[400px] w-screen h-full min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8 overflow-y-scroll"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		<Select bind:selected={selectedScene}>
+		<Select bind:selected={selectedScene} label="When switching scene to:">
 			{#each Object.values(LiveStatsScene) as scene}
 				<option value={scene} selected={scene === selectedScene}>
 					{scene}
