@@ -10,7 +10,6 @@ import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { PlayerType } from '@slippi/slippi-js';
-import * as os from 'os';
 import { ElectronSettingsStore } from './storeSettings';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 import {
@@ -22,13 +21,9 @@ import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter
 
 @singleton()
 export class ElectronGamesStore {
-	isMac: boolean = os.platform() === 'darwin';
-	isWindows: boolean = os.platform() === 'win32';
-	isLinux: boolean = os.platform() === 'linux';
-	listeners: Function[];
+	private store = new Store();
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
-		@inject('ElectronStore') private store: Store,
 		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
@@ -36,8 +31,8 @@ export class ElectronGamesStore {
 		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		this.log.info('Initializing Game Store');
-		this.initStoreListeners();
 		this.initEventListeners();
+		this.initStoreListeners();
 	}
 
 	getRecentDirectSets() {
@@ -167,6 +162,8 @@ export class ElectronGamesStore {
 	}
 
 	clearRecentGames() {
+		const recentGams = this.getRecentGames();
+		console.log(recentGams)
 		this.store.set(`player.any.game.recent`, []);
 		this.setGameScore([0, 0]);
 	}
@@ -200,7 +197,7 @@ export class ElectronGamesStore {
 	}
 
 	private initEventListeners() {
-		this.clientEmitter.on('RecentGamesReset', this.clearRecentGames);
+		this.clientEmitter.on('RecentGamesReset', () => this.clearRecentGames());
 	}
 
 	private initStoreListeners() {

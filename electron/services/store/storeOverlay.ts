@@ -20,12 +20,6 @@ export class ElectronOverlayStore {
 		this.log.info('Initializing Obs Overlay Store');
 		this.initListeners();
 		this.initSvelteListeners();
-		this.createOverlays();
-	}
-
-	createOverlays() {
-		if (this.store.get('obs.layout.overlays') === undefined)
-			this.store.set('obs.layout.overlays', []);
 	}
 
 	getOverlays(): Overlay[] {
