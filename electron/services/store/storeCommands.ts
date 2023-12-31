@@ -125,8 +125,12 @@ export class ElectronCommandStore {
 		this.setSceneCommands(sceneCommands);
 	}
 
+	getSceneSwitchCommandsState(): boolean {
+		return this.store.get('command.sceneSwitch.enabled') as boolean
+	}
+
 	toggleSceneSwitchCommandsState() {
-		const state = (this.store.get('command.sceneSwitch.enabled') as boolean) ?? false;
+		const state = this.getSceneSwitchCommandsState()
 		this.store.set('command.sceneSwitch.enabled', !state);
 	}
 
@@ -181,6 +185,7 @@ export class ElectronCommandStore {
 	};
 
 	private handleSceneChangeCommands = (commands: Command[]) => {
+		if (!this.getSceneSwitchCommandsState()) return;
 		commands?.forEach((command) => {
 			this.executeCommand(command.type, command.requestType, command.payload);
 		});

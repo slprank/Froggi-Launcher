@@ -70,7 +70,6 @@ export class ElectronLiveStatsStore {
 
 	setGameState(state: InGameState) {
 		this.gameState = state;
-		this.log.info('state', state);
 		this.messageHandler.sendMessage('GameState', state as InGameState);
 	}
 

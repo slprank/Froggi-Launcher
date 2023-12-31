@@ -76,7 +76,7 @@
 		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 		on:click={updateScore}
 	>
-		Change Score
+		Update Score
 	</button>
 </div>
 <div class="flex flex-col gap-2">

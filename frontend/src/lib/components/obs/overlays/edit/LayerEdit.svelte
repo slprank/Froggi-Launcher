@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Overlay } from '$lib/models/types/overlay';
 	import Select from '$lib/components/input/Select.svelte';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, localEmitter, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import {
 		deleteLayer,
@@ -13,13 +13,18 @@
 
 	export let overlay: Overlay;
 	export let selectedLayer: number = 0;
+
+	const changeLayer = () => {
+		$electronEmitter.emit('LayerPreviewChange', selectedLayer);
+	};
+
 	$: curScene = overlay[$statsScene];
 </script>
 
 <h1 class="text-gray-500 text-lg font-medium text-shadow">Layers</h1>
 <div class="w-full flex gap-2">
 	<div class="w-24">
-		<Select bind:selected={selectedLayer}>
+		<Select bind:selected={selectedLayer} on:change={changeLayer}>
 			{#each curScene?.layers as _, i}
 				<option selected={i === 0} value={i}>Layer {i + 1}</option>
 			{/each}
