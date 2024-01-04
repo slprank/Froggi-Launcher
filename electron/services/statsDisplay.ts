@@ -201,9 +201,10 @@ export class StatsDisplay {
 	}
 
 	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
+		const isNewGame = this.storeLiveStats.getGameSettings()?.matchInfo?.matchId !== settings?.matchInfo?.matchId;
 		const currentPlayers = settings.players.filter((player) => player);
 
-		if (currentPlayers.some((player) => !player.connectCode))
+		if (!isNewGame || currentPlayers.some((player) => !player.connectCode))
 			return settings.players
 				.filter((player) => player)
 				.map((player, i: number) => {
@@ -238,11 +239,11 @@ export class StatsDisplay {
 
 		const subFolder = slippiSettings.useMonthlySubfolders
 			? (await fs.readdir(slippiSettings.rootSlpPath, { withFileTypes: true }))
-					.filter((dirent) => dirent.isDirectory())
-					.map((dirent) => dirent.name)
-					.filter((dirname) => (isBeta ? betaRegex.test(dirname) : dirname))
-					.sort((a, b) => (a < b ? 1 : -1))
-					.at(0)
+				.filter((dirent) => dirent.isDirectory())
+				.map((dirent) => dirent.name)
+				.filter((dirname) => (isBeta ? betaRegex.test(dirname) : dirname))
+				.sort((a, b) => (a < b ? 1 : -1))
+				.at(0)
 			: '';
 
 		const root = slippiSettings.rootSlpPath;
