@@ -59,6 +59,7 @@ export interface MessageEvents {
 	PostGameStats: (stats: GameStats | undefined) => void;
 	RecentGames: (games: GameStats[][]) => void;
 	RecentGamesReset: () => void; // Here
+	RecentGamesMock: (game: GameStats, index: number) => void; // Here
 	RecentRankedSets: (games: GameStats[]) => void;
 	SessionStats: (session: SessionStats | undefined) => void;
 	LiveStatsSceneChange: (scene: LiveStatsScene) => void;

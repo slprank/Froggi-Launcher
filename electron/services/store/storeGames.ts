@@ -2,6 +2,7 @@
 import Store from 'electron-store';
 import type {
 	GameStartMode,
+	GameStartTypeExtended,
 	GameStats,
 	PlayerGame,
 	Sets,
@@ -18,6 +19,7 @@ import {
 	isTiedGame,
 } from '../../../frontend/src/lib/utils/gamePredicates';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
+import { ElectronLiveStatsStore } from './storeLiveStats';
 
 @singleton()
 export class ElectronGamesStore {
@@ -26,6 +28,7 @@ export class ElectronGamesStore {
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 		@inject(delay(() => ElectronCurrentPlayerStore))
 		private storeCurrentPlayer: ElectronCurrentPlayerStore,
@@ -116,6 +119,14 @@ export class ElectronGamesStore {
 		if (!newGame.settings?.matchInfo.matchId) this.handleOfflineGame(newGame);
 	}
 
+	insertMockGame(newGame: GameStats, index: number) {
+		let recentGames = this.getRecentGames()
+		const recentGame = recentGames.at(-1)?.at(-1) ?? null
+		newGame = { ...newGame, isMock: true, settings: { ...newGame.settings, matchInfo: { ...(recentGame?.settings?.matchInfo ?? { gameNumber: null, matchId: "", tiebreakerNumber: 0, mode: "local", }), ...{ gameNumber: null, bestOf: this.storeLiveStats.getBestOf() } } } as GameStartTypeExtended }
+		recentGames = [...recentGames.slice(0, index), [newGame], ...recentGames.slice(index)];
+		this.store.set('player.any.game.recent', recentGames);
+	}
+
 	private handleOnlineGame(newGame: GameStats) {
 		const prevGames = this.getRecentGames();
 		const currentGame = prevGames.find((prevGame) =>
@@ -125,7 +136,7 @@ export class ElectronGamesStore {
 			),
 		);
 
-		const filteredGames = prevGames.filter(
+		const otherGames = prevGames.filter(
 			(game) =>
 				game.at(0)?.settings?.matchInfo.matchId !==
 				currentGame?.at(0)?.settings?.matchInfo.matchId,
@@ -133,7 +144,7 @@ export class ElectronGamesStore {
 		if (newGame.settings?.matchInfo.tiebreakerNumber !== 0) {
 			return this.store.set('player.any.game.recent', [
 				[...(currentGame ?? []), newGame],
-				...(filteredGames ?? []),
+				...(otherGames ?? []),
 			]);
 		}
 		return this.store.set('player.any.game.recent', [[newGame], ...prevGames]);
@@ -162,10 +173,7 @@ export class ElectronGamesStore {
 	}
 
 	clearRecentGames() {
-		const recentGams = this.getRecentGames();
-		console.log(recentGams)
 		this.store.set(`player.any.game.recent`, []);
-		this.setGameScore([0, 0]);
 	}
 
 	private getAllSets(): Sets | undefined {
@@ -193,11 +201,13 @@ export class ElectronGamesStore {
 				g.score = score;
 			}
 		}
+		this.setGameScore(games.at(-1)?.at(-1)?.score ?? [0, 0]);
 		return games;
 	}
 
 	private initEventListeners() {
-		this.clientEmitter.on('RecentGamesReset', () => this.clearRecentGames());
+		this.clientEmitter.on('RecentGamesReset', this.clearRecentGames.bind(this));
+		this.clientEmitter.on('RecentGamesMock', this.insertMockGame.bind(this));
 	}
 
 	private initStoreListeners() {
