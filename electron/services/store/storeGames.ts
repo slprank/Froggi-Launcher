@@ -110,13 +110,17 @@ export class ElectronGamesStore {
 	}
 
 	getRecentGames(): GameStats[][] {
-		const recentGames = (this.store.get(`player.any.game.recent`) ?? []) as GameStats[][];
-		return this.applyRecentGameScore(recentGames);
+		return (this.store.get(`player.any.game.recent`) ?? []) as GameStats[][];
 	}
 
 	addRecentGames(newGame: GameStats) {
 		if (newGame.settings?.matchInfo.matchId) this.handleOnlineGame(newGame);
 		if (!newGame.settings?.matchInfo.matchId) this.handleOfflineGame(newGame);
+	}
+
+	deleteRecentGame(gameIndex: number) {
+		const recentGames = this.getRecentGames();
+		this.store.set('player.any.game.recent', this.applyRecentGameScore(recentGames.filter((_, index) => index !== gameIndex)));
 	}
 
 	insertMockGame(newGame: GameStats, index: number) {
@@ -147,7 +151,7 @@ export class ElectronGamesStore {
 				...(otherGames ?? []),
 			]);
 		}
-		return this.store.set('player.any.game.recent', [[newGame], ...prevGames]);
+		return this.store.set('player.any.game.recent', this.applyRecentGameScore([...prevGames, [newGame]]));
 	}
 
 	private handleOfflineGame(newGame: GameStats) {
@@ -163,7 +167,7 @@ export class ElectronGamesStore {
 				...(filteredGames ?? []),
 			]);
 		}
-		return this.store.set(`player.any.game.recent`, [[newGame], ...prevGames]);
+		return this.store.set(`player.any.game.recent`, this.applyRecentGameScore([...prevGames, [newGame]]));
 	}
 
 	private isRematchGame(currentGame: GameStats[] | undefined, game: GameStats): boolean {
@@ -188,7 +192,7 @@ export class ElectronGamesStore {
 		return (
 			sets[mode]
 				?.sort(
-					(a: GameStats, b: GameStats) => a.timestamp.valueOf() - b.timestamp.valueOf(),
+					(a: GameStats, b: GameStats) => (a.timestamp?.valueOf() ?? 0) - (b.timestamp?.valueOf() ?? 0),
 				)
 				.slice(0, number) ?? []
 		);
@@ -206,6 +210,7 @@ export class ElectronGamesStore {
 	}
 
 	private initEventListeners() {
+		this.clientEmitter.on('RecentGamesDelete', this.deleteRecentGame.bind(this));
 		this.clientEmitter.on('RecentGamesReset', this.clearRecentGames.bind(this));
 		this.clientEmitter.on('RecentGamesMock', this.insertMockGame.bind(this));
 	}
@@ -215,7 +220,7 @@ export class ElectronGamesStore {
 			this.messageHandler.sendMessage('GameScore', value as number[]);
 		});
 		this.store.onDidChange('player.any.game.recent', async (value) => {
-			const recentGames = this.applyRecentGameScore((value ?? []) as GameStats[][]);
+			const recentGames = (value ?? []) as GameStats[][];
 			this.messageHandler.sendMessage('RecentGames', recentGames);
 		});
 	}

@@ -121,7 +121,7 @@ describe('ElectnronGamesStore', () => {
 
         storePlayers = new ElectronPlayersStore(log, store, messageHandler)
 
-        electronGamesStore = new ElectronGamesStore(log, eventEmitter, messageHandler, storeSettings, storeCurrentPlayer);
+        electronGamesStore = new ElectronGamesStore(log, eventEmitter, messageHandler, storeLiveStats, storeSettings, storeCurrentPlayer);
 
         statsDisplay = new StatsDisplay(log, slpParser, slpStream, api, messageHandler, electronGamesStore, storeLiveStats, storePlayers, storeCurrentPlayer, storeSettings)
         statsDisplay["getCurrentPlayersWithRankStats"] = async (settings: GameStartType): Promise<Player[]> => (new Promise<Player[]>(resolve => {

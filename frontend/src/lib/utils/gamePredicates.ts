@@ -17,7 +17,7 @@ export const getWinnerIndex = (game: GameStats | undefined): number | undefined 
 export const isTiedGame = (game: GameStats | undefined | null) => {
     if (!game) return false
     if (hasGameBombRain(game)) return true
-    const players = Object.entries(game.lastFrame.players).map(([_, player]) => player)
+    const players = Object.values(game.lastFrame?.players ?? {})
     if (players.every((player) => isNil(player) || player.post.stocksRemaining === 0)) return true
     if (players.every(player => {
         const reference = players[0];

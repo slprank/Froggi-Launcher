@@ -2,8 +2,7 @@
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import type { GameStats, Player } from '$lib/models/types/slippiData';
-	import { currentPlayers, gameSettings, recentGames } from '$lib/utils/store.svelte';
-	import { reverse } from 'lodash';
+	import { currentPlayers, electronEmitter, recentGames } from '$lib/utils/store.svelte';
 	import CharacterIcon from './CharacterIcon.svelte';
 	import GameStage from './GameStage.svelte';
 
@@ -19,28 +18,17 @@
 	$: updateGames($recentGames);
 
 	const addGame = (gameIndex: number) => {
-		console.log('add game', games);
 		selectedGameIndex = gameIndex;
 		addGameModalOpen = true;
 	};
 
 	const deleteGame = (gameIndex: number) => {
-		console.log('delete game', games);
 		selectedGameIndex = gameIndex;
 		deleteGameModalOpen = true;
 	};
 
 	const handleDelete = () => {
-		console.log('deleting');
-	};
-
-	const handleReset = () => {
-		console.log('reset');
-	};
-
-	const updateScore = () => {
-		console.log('updateScore', games);
-		open = false;
+		$electronEmitter.emit('RecentGamesDelete', selectedGameIndex);
 	};
 
 	$: console.log('games', games);
@@ -84,6 +72,19 @@
 				<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
 					Game {i + 1}
 				</h1>
+				<div class="flex justify-between items-center gap-2 w-full">
+					<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
+						{$currentPlayers.at(0)?.displayName}
+					</h1>
+					<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
+						{$currentPlayers.at(1)?.displayName}
+					</h1>
+				</div>
+				<div class="flex justify-center items-center gap-2 w-full">
+					<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
+						{game?.score.at(0) ?? 0} - {game?.score.at(1) ?? 0}
+					</h1>
+				</div>
 				<div class="flex justify-center items-center gap-2">
 					{#each [...Array(4).keys()].reverse() as stock}
 						<div
@@ -145,14 +146,12 @@
 				>
 					<h1 class="text-white text-shadow-md">+</h1>
 				</button>
+			{:else}
+				<div class="flex gap-4 justify-center items-center">
+					<h1 class="text-white text-3xl font-semibold">No Games</h1>
+				</div>
 			{/each}
 		</div>
-		<button
-			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
-			on:click={updateScore}
-		>
-			Update Score
-		</button>
 	</div>
 	<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>
 		Delete Game?

@@ -58,6 +58,7 @@ export interface MessageEvents {
 	PlayersTagUpdate: (players: Player[]) => void; // Here
 	PostGameStats: (stats: GameStats | undefined) => void;
 	RecentGames: (games: GameStats[][]) => void;
+	RecentGamesDelete: (gameIndex: number) => void; // Here
 	RecentGamesReset: () => void; // Here
 	RecentGamesMock: (game: GameStats, index: number) => void; // Here
 	RecentRankedSets: (games: GameStats[]) => void;

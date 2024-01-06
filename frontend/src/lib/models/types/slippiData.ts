@@ -69,11 +69,11 @@ export type StatsTypeExtended = StatsType | {
 export interface GameStats {
     gameEnd: GameEndType;
     isMock: boolean;
-    lastFrame: FrameEntryType
+    lastFrame: FrameEntryType | null
     postGameStats: StatsType | null;
     score: number[]
     settings: GameStartTypeExtended | null;
-    timestamp: Date;
+    timestamp: Date | null;
 }
 
 export interface Match {
