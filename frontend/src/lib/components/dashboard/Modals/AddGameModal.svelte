@@ -6,17 +6,18 @@
 		GameStats,
 		MatchInfoExtended,
 	} from '$lib/models/types/slippiData';
-	import { electronEmitter, recentGames } from '$lib/utils/store.svelte';
-	import {
-		GameEndMethod,
-		PlayerType,
-		PostFrameUpdateType,
-		PreFrameUpdateType,
-		TimerType,
-	} from '@slippi/slippi-js';
+	import { currentPlayers, electronEmitter, recentGames } from '$lib/utils/store.svelte';
 	import { Stage } from '$lib/models/constants/stageData';
 	import { Character } from '$lib/models/enum';
 	import { CHARACTERS_EXTERNAL_INTERNAL } from '$lib/models/constants/characterData';
+	import {
+		PlayerType,
+		PostFrameUpdateType,
+		PreFrameUpdateType,
+	} from '@slippi/slippi-js/dist/types';
+	import GameStage from './GameStage.svelte';
+	import CharacterIcon from './CharacterIcon.svelte';
+	import Select from '$lib/components/input/Select.svelte';
 
 	export let open: boolean;
 	export let selectedGameIndex: number;
@@ -25,7 +26,7 @@
 
 	let game: GameStats = {
 		gameEnd: {
-			gameEndMethod: GameEndMethod.GAME,
+			gameEndMethod: 2,
 			lrasInitiatorIndex: -1,
 			placements: [
 				{ playerIndex: 0, position: 0 },
@@ -77,11 +78,25 @@
 					},
 				] as PlayerType[],
 				matchInfo: {} as MatchInfoExtended,
-				timerType: TimerType.DECREASING,
+				timerType: 2,
 				stageId: Stage.BATTLEFIELD,
 				startingTimerSeconds: 480,
 			} as GameStartTypeExtended),
 		timestamp: null,
+	};
+
+	const handleStockChange = (playerIndex: number, stockNumber: number) => {
+		if (!game.lastFrame?.players?.[playerIndex]) return;
+		game.lastFrame.players[playerIndex]!.post.stocksRemaining = stockNumber;
+	};
+
+	const handleCharacterChange = (playerIndex: number, event: CustomEvent<Character>) => {
+		const characterId = Number(event.detail);
+		if (!game.settings?.players?.[playerIndex] || !game.lastFrame?.players?.[playerIndex])
+			return;
+		game.settings.players[playerIndex].characterId = characterId;
+		game.lastFrame.players[playerIndex]!.post.internalCharacterId =
+			CHARACTERS_EXTERNAL_INTERNAL[characterId];
 	};
 
 	const addGame = () => {
@@ -100,9 +115,116 @@
 	class="w-[95vw] max-w-[600px] max-h-[80vh] min-w-72 flex justify-center"
 >
 	<div
-		class="w-full max-h-[80vh] min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
+		class="w-[600px] h-[80vh] min-w-lg flex flex-col gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8 overflow-scroll"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
-	/>
+	>
+		<div class="flex gap-4 justify-center items-center">
+			<h1 class="text-white text-3xl font-semibold">Add Game</h1>
+		</div>
+		<div class="flex justify-between gap-4">
+			<h1 class="text-white text-2xl font-semibold">Player1</h1>
+			<h1 class="text-white text-2xl font-semibold">Player2</h1>
+		</div>
+		<div class="flex justify-between gap-4">
+			<h1 class="text-white text-2xl font-semibold">
+				{$currentPlayers.at(0)?.displayName ?? ''}
+			</h1>
+			<h1 class="text-white text-2xl font-semibold">
+				{$currentPlayers.at(1)?.displayName ?? ''}
+			</h1>
+		</div>
+		<div class="flex gap-4 justify-center items-center">
+			<h1 class="text-white text-2xl font-semibold">Character</h1>
+		</div>
+		<div class="flex justify-between gap-4">
+			<Select
+				on:change={(e) => handleCharacterChange($currentPlayers.at(0)?.playerIndex ?? 0, e)}
+				label={`${$currentPlayers.at(0)?.displayName ?? 'Player1 Character'}`}
+			>
+				{#each Object.entries(Character).filter(([_, name]) => typeof name === 'string') as [id, name]}
+					<option value={id}>{name}</option>
+				{/each}
+			</Select>
+			<Select
+				on:change={(e) => handleCharacterChange($currentPlayers.at(1)?.playerIndex ?? 1, e)}
+				label={`${$currentPlayers.at(1)?.displayName ?? 'Player2 Character'}`}
+			>
+				{#each Object.entries(Character).filter(([_, name]) => typeof name === 'string') as [id, name]}
+					<option value={id}>{name}</option>
+				{/each}
+			</Select>
+		</div>
+		<div class="flex gap-4 justify-center items-center">
+			<h1 class="text-white text-2xl font-semibold">Stocks</h1>
+		</div>
+		<div class="flex justify-between gap-18">
+			<div class="flex gap-2">
+				{#each [...Array(4).keys()].reverse() as stock}
+					<button
+						class={`${
+							(game?.lastFrame?.players[$currentPlayers.at(0)?.playerIndex ?? 0]?.post
+								.stocksRemaining ?? 0) > stock
+								? 'opacity-100'
+								: 'opacity-50'
+						} h-10`}
+						on:click={() => {
+							handleStockChange($currentPlayers.at(0)?.playerIndex ?? 0, stock + 1);
+						}}
+					>
+						<CharacterIcon
+							characterId={game?.settings?.players[
+								$currentPlayers.at(0)?.playerIndex ?? 0
+							]?.characterId ?? 0}
+						/>
+					</button>
+				{/each}
+				<button
+					class="transition duration-100 w-14 p-2 rounded-md justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
+					on:click={() => {
+						handleStockChange($currentPlayers.at(0)?.playerIndex ?? 0, 0);
+					}}
+				>
+					<h1 class="text-white text-shadow-md">None</h1>
+				</button>
+			</div>
+			<div class="flex gap-2">
+				<button
+					class="transition duration-100 w-14 p-2 rounded-md justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
+					on:click={() => {
+						handleStockChange($currentPlayers.at(1)?.playerIndex ?? 1, 0);
+					}}
+				>
+					<h1 class="text-white text-shadow-md">None</h1>
+				</button>
+				{#each [...Array(4).keys()] as stock}
+					<button
+						class={`${
+							(game?.lastFrame?.players[$currentPlayers.at(1)?.playerIndex ?? 1]?.post
+								.stocksRemaining ?? 0) > stock
+								? 'opacity-100'
+								: 'opacity-50'
+						} h-10`}
+						on:click={() => {
+							handleStockChange($currentPlayers.at(1)?.playerIndex ?? 1, stock + 1);
+						}}
+					>
+						<CharacterIcon
+							characterId={game?.settings?.players[
+								$currentPlayers.at(1)?.playerIndex ?? 1
+							]?.characterId ?? 0}
+						/>
+					</button>
+				{/each}
+			</div>
+		</div>
+		<div class="relative aspect-video w-full">
+			<GameStage
+				stageId={game?.settings?.stageId}
+				class="aspect-video rounded-md"
+				objectFit="cover"
+			/>
+		</div>
+	</div>
 </Modal>
 
 <ConfirmModal bind:open={confirmModalOpen} on:confirm={handleAddGame}>Delete Game?</ConfirmModal>

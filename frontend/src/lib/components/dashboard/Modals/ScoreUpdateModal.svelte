@@ -1,8 +1,9 @@
 <script lang="ts">
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { GameStats, Player } from '$lib/models/types/slippiData';
+	import type { GameStats } from '$lib/models/types/slippiData';
 	import { currentPlayers, electronEmitter, recentGames } from '$lib/utils/store.svelte';
+	import AddGameModal from './AddGameModal.svelte';
 	import CharacterIcon from './CharacterIcon.svelte';
 	import GameStage from './GameStage.svelte';
 
@@ -89,7 +90,7 @@
 					{#each [...Array(4).keys()].reverse() as stock}
 						<div
 							class={`${
-								(game?.lastFrame.players[$currentPlayers.at(0)?.playerIndex ?? 0]
+								(game?.lastFrame?.players[$currentPlayers.at(0)?.playerIndex ?? 0]
 									?.post.stocksRemaining ?? 0) > stock
 									? 'opacity-100'
 									: 'opacity-50'
@@ -123,7 +124,7 @@
 					{#each [...Array(4).keys()] as stock}
 						<div
 							class={`${
-								(game?.lastFrame.players[$currentPlayers.at(1)?.playerIndex ?? 0]
+								(game?.lastFrame?.players[$currentPlayers.at(1)?.playerIndex ?? 0]
 									?.post.stocksRemaining ?? 0) > stock
 									? 'opacity-100'
 									: 'opacity-50'
@@ -153,7 +154,6 @@
 			{/each}
 		</div>
 	</div>
-	<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>
-		Delete Game?
-	</ConfirmModal>
 </Modal>
+<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>Delete Game?</ConfirmModal>
+<AddGameModal bind:open={addGameModalOpen} bind:selectedGameIndex />
