@@ -129,6 +129,7 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['GameFrame']>[0];
 					if (!value) return;
+					console.log(value);
 					gameFrame.set(value);
 				})();
 				break;

@@ -59,6 +59,13 @@ export const hasStocksRemaining = (
     return (frame?.players?.[playerIndex]?.post.stocksRemaining ?? 0) >= stocks;
 };
 
+export const isPlayerAlive = (
+    frame: FrameEntryType | null | undefined,
+    playerIndex: number,
+) => {
+    return (frame?.players?.[playerIndex]?.post.actionStateId ?? 0) <= 10;
+};
+
 export const hasGameBombRain = (game: GameStats): boolean => {
     if (game.settings?.gameInfoBlock?.bombRainEnabled) return true
     return false

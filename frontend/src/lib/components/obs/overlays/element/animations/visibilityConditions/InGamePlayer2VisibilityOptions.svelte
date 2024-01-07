@@ -5,7 +5,7 @@
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
 	import type { Player } from '$lib/models/types/slippiData';
-	import { getComboCount, hasStocksRemaining } from '$lib/utils/gamePredicates';
+	import { getComboCount, hasStocksRemaining, isPlayerAlive } from '$lib/utils/gamePredicates';
 	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	export const inGamePlayer2VisibilityOption = (
@@ -15,8 +15,8 @@
 	) => {
 		const player = players?.at(1);
 
-		if (option[VisibilityOption.InGamePlayer2Stock1] === VisibilityToggle.True)
-			if (hasStocksRemaining(gameFrame, player?.playerIndex ?? 0, 1)) return true;
+		if (option[VisibilityOption.InGamePlayer2Alive] === VisibilityToggle.True)
+			if (isPlayerAlive(gameFrame, player?.playerIndex ?? 1)) return true;
 		if (option[VisibilityOption.InGamePlayer2Stock1] === VisibilityToggle.False)
 			if (!hasStocksRemaining(gameFrame, player?.playerIndex ?? 0, 1)) return true;
 		if (option[VisibilityOption.InGamePlayer2Stock2] === VisibilityToggle.True)

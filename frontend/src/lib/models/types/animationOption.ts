@@ -48,12 +48,14 @@ export enum VisibilityOption {
     InGameTie = "Game Tie",
     InGamePlayerOffStage = "Player Off Stage",
 
+    InGamePlayer1Alive = "Player 1 Alive",
     InGamePlayer1Combo = "Player 1 Combo",
     InGamePlayer1Stock1 = "Player 1 Stock 1",
     InGamePlayer1Stock2 = "Player 1 Stock 2",
     InGamePlayer1Stock3 = "Player 1 Stock 3",
     InGamePlayer1Stock4 = "Player 1 Stock 4",
 
+    InGamePlayer2Alive = "Player 2 Alive",
     InGamePlayer2Combo = "Player 2 Combo",
     InGamePlayer2Stock1 = "Player 2 Stock 1",
     InGamePlayer2Stock2 = "Player 2 Stock 2",
