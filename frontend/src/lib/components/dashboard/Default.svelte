@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Player } from '$lib/models/types/slippiData';
 	import {
 		currentPlayers,
 		electronEmitter,
@@ -15,9 +16,10 @@
 	let isTagModalOpen = false;
 	let isResetRecentGamesModalOpen = false;
 
-	const getDisplayName = (playerIndex: number) => {
-		const displayName = $currentPlayers.at(playerIndex)?.displayName;
-		return displayName?.length ? displayName : `Player${playerIndex + 1}`;
+	const getDisplayName = (player: Player | undefined): string => {
+		if (!player) return 'Player';
+		const displayName = player?.displayName;
+		return displayName?.length ? displayName : `Player${player.playerIndex + 1}`;
 	};
 
 	const resetScore = () => {
@@ -47,10 +49,10 @@
 	</div>
 	<div class="flex w-full justify-between">
 		<h1 class="text-white text-2xl font-semibold">
-			{getDisplayName(0)}
+			{getDisplayName($currentPlayers.at(0))}
 		</h1>
 		<h1 class="text-white text-2xl font-semibold">
-			{getDisplayName(1)}
+			{getDisplayName($currentPlayers.at(1))}
 		</h1>
 	</div>
 	<div class="flex flex-col gap-2">

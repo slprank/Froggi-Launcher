@@ -1,5 +1,6 @@
 import {
 	Obs,
+	ObsAuth,
 	ObsConnection,
 } from '../models/types/obsTypes';
 import {
@@ -67,6 +68,7 @@ export interface MessageEvents {
 	Url: (url: Url) => void;
 	CurrentOverlayEditor: (overlay: OverlayEditor) => void;
 	Obs: (obs: Obs | undefined) => void;
+	ObsAuth: (auth: ObsAuth) => void;
 	ObsConnection: (connection: ObsConnection) => void;
 	Overlays: (overlays: Overlay[] | undefined) => void;
 	OverlayDelete: (overlayId: string) => void;

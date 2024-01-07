@@ -1,9 +1,17 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let value: string = '';
 	export let label: string | undefined = undefined;
 	export let autofocus: number | undefined = undefined;
 	export let autoFocusValue: number | undefined = undefined;
 	export let placeholder: string | undefined = undefined;
+
+	const dispatch = createEventDispatcher();
+
+	function handleChange(value: string | null) {
+		dispatch('change', value);
+	}
 </script>
 
 <div class="w-full">
@@ -17,6 +25,9 @@
 			type="text"
 			class="w-full h-full pl-2 bg-gray-200 rounded-lg appearance-none dark:bg-gray-700 dark:text-white"
 			bind:value
+			on:change={(e) => {
+				handleChange(value);
+			}}
 		/>
 	</div>
 </div>

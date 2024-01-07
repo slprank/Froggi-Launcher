@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { isNil } from 'lodash';
+	import { createEventDispatcher } from 'svelte';
 
 	export let autofocus: number | undefined = undefined;
 	export let autoFocusValue: number | undefined = undefined;
@@ -10,6 +11,12 @@
 	export let valueConcat: string = '';
 	export let step: number | undefined = undefined;
 	export let stringFormat: string = '{0}';
+
+	const dispatch = createEventDispatcher();
+
+	function handleChange(value: number | null) {
+		dispatch('change', value);
+	}
 
 	const updateConcatValue = (value: number | null) => {
 		if (isNil(value)) return;
@@ -41,6 +48,7 @@
 				{min}
 				{max}
 				bind:value
+				on:change={(e) => handleChange(value)}
 			/>
 		</div>
 	</div>
