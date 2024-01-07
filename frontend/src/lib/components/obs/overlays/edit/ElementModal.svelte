@@ -7,7 +7,7 @@
 		GridContentItemConfig,
 		Overlay,
 	} from '$lib/models/types/overlay';
-	import { electronEmitter, obs, overlays, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
 	import {
 		generateNewItem,
 		getDefaultElementPayload,
@@ -19,12 +19,14 @@
 	import ElementSelectModal from '../selector/ElementSelectModal.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { fixTransition } from './fixTransition';
+	import { onMount } from 'svelte';
 
 	const overlayId = $page.params.overlay;
 
 	export let open: boolean;
 	export let layer: number | undefined;
 	export let selectedItemId: string | undefined = undefined;
+	export let isEdit: boolean = false;
 
 	let isElementSelectOpen = false;
 	let selectedElementId: CustomElement;
@@ -39,9 +41,9 @@
 	};
 
 	const openItemSelect = () => {
+		if (isEdit) return;
 		isElementSelectOpen = true;
 	};
-
 	$: open, openItemSelect();
 
 	function updateOverlay() {

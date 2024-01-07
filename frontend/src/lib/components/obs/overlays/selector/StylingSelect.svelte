@@ -349,16 +349,24 @@
 				</div>
 			</div>
 			<div class="w-full h-fit flex flex-wrap">
-				<div class="w-44 h-24">
+				<div class="w-full h-24">
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">
 						Rotate - ({payload.transform.rotate})
 					</h1>
-					<SliderInput
-						bind:value={payload.transform.rotate}
-						min={-180}
-						max={180}
-						step={1}
-					/>
+					<div class="flex gap-2">
+						<SliderInput
+							bind:value={payload.transform.rotate}
+							min={-180}
+							max={180}
+							step={1}
+						/>
+						<NumberInput
+							bind:value={payload.transform.rotate}
+							min={-180}
+							max={180}
+							step={1}
+						/>
+					</div>
 				</div>
 			</div>
 

@@ -193,6 +193,7 @@
 					bind:open={isElementModalOpen}
 					bind:layer={selectedLayer}
 					{selectedItemId}
+					isEdit={true}
 				/>
 			{/key}
 		{/key}

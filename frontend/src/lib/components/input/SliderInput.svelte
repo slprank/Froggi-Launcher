@@ -21,7 +21,7 @@
 	$: updateConcatValue(value);
 </script>
 
-<div>
+<div class="w-full">
 	{#if label}
 		<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
 	{/if}
