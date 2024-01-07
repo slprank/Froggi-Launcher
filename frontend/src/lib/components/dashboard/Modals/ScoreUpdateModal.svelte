@@ -25,7 +25,7 @@
 
 	const addGame = (gameIndex: number) => {
 		selectedGameIndex = gameIndex;
-		open = false;
+		addGameModalOpen = true;
 	};
 
 	const deleteGame = (gameIndex: number) => {
@@ -59,7 +59,7 @@
 			</h1>
 		</div>
 		<div
-			class="flex-l flex flex-col items-center overflow-scroll gap-4 border-2 border-gray-700 rounded-md p-2"
+			class="flex-l flex flex-col items-center overflow-scroll gap-4 border border-gray-700 rounded-md p-2"
 		>
 			<button
 				class="transition duration-100 rounded-md w-full justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
@@ -72,10 +72,13 @@
 			{#each games.map((game) => game.at(-1)) as game, i}
 				<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
 					Game {i + 1}
+					<span class={`${game?.isMock ? 'text-red-700' : ''}`}>
+						{game?.isMock ? '*' : ''}
+					</span>
 				</h1>
 
 				<div class="flex justify-center items-center gap-2 w-full">
-					<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
+					<h1 class="text-white text-shadow-md text-center text-2xl font-semibold">
 						{game?.score.at(0) ?? 0} - {game?.score.at(1) ?? 0}
 					</h1>
 				</div>
@@ -87,7 +90,7 @@
 									?.post.stocksRemaining ?? 0) > stock
 									? 'opacity-100'
 									: 'opacity-50'
-							} h-12`}
+							} h-8`}
 						>
 							<CharacterIcon
 								characterId={game?.settings?.players[
@@ -121,7 +124,7 @@
 									?.post.stocksRemaining ?? 0) > stock
 									? 'opacity-100'
 									: 'opacity-50'
-							} h-12`}
+							} h-8`}
 						>
 							<CharacterIcon
 								characterId={game?.settings?.players[
@@ -147,6 +150,8 @@
 			{/each}
 		</div>
 	</div>
+	<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>
+		Delete Game?
+	</ConfirmModal>
+	<AddGameModal bind:open={addGameModalOpen} bind:selectedGameIndex />
 </Modal>
-<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>Delete Game?</ConfirmModal>
-<AddGameModal bind:open={addGameModalOpen} bind:selectedGameIndex />
