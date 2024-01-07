@@ -6,6 +6,7 @@ import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { PlayerType } from '@slippi/slippi-js';
 import os from 'os';
+import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 
 
 @singleton()
@@ -16,9 +17,11 @@ export class ElectronPlayersStore {
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject("ElectronStore") private store: Store,
+        @inject("ClientEmitter") private clientEmitter: TypedEmitter,
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
         this.log.info("Initializing Players Store")
+        this.initEventListeners();
         this.initListeners();
     }
 
@@ -28,6 +31,12 @@ export class ElectronPlayersStore {
 
     setCurrentPlayers(players: (Player | PlayerType)[]) {
         this.store.set('stats.currentPlayers', players?.filter(player => player));
+    }
+
+    initEventListeners() {
+        this.clientEmitter.on("PlayersTagUpdate", (players: Player[]) => {
+            this.setCurrentPlayers(players);
+        })
     }
 
     initListeners() {

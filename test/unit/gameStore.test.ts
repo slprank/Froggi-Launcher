@@ -119,7 +119,7 @@ describe('ElectnronGamesStore', () => {
             }
         };
 
-        storePlayers = new ElectronPlayersStore(log, store, messageHandler)
+        storePlayers = new ElectronPlayersStore(log, store, eventEmitter, messageHandler)
 
         electronGamesStore = new ElectronGamesStore(log, eventEmitter, messageHandler, storeLiveStats, storeSettings, storeCurrentPlayer);
 

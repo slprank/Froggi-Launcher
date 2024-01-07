@@ -25,7 +25,7 @@
 
 	const addGame = (gameIndex: number) => {
 		selectedGameIndex = gameIndex;
-		addGameModalOpen = true;
+		open = false;
 	};
 
 	const deleteGame = (gameIndex: number) => {

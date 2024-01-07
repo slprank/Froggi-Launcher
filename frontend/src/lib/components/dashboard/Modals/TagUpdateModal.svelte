@@ -2,15 +2,15 @@
 	import TextInput from '$lib/components/input/TextInput.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import type { Player } from '$lib/models/types/slippiData';
-	import { currentPlayers } from '$lib/utils/store.svelte';
+	import { currentPlayers, electronEmitter } from '$lib/utils/store.svelte';
 
 	export let open: boolean;
 
 	let players: Player[] = $currentPlayers;
 
 	const updateTag = () => {
-		console.log('updateTag', players);
 		open = false;
+		$electronEmitter.emit('PlayersTagUpdate', players);
 	};
 </script>
 
@@ -35,7 +35,7 @@
 			</div>
 			<div class="flex flex-col items-end">
 				<TextInput
-					label={`${$currentPlayers[1].displayName} - Player2`}
+					label={`Player2 - ${$currentPlayers[1].displayName}`}
 					bind:value={players[1].displayName}
 				/>
 			</div>
