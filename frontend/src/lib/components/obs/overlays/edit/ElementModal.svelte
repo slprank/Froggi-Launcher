@@ -16,7 +16,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import GridContent from '../GridContent.svelte';
 	import { COL } from '$lib/models/const';
-	import ElementSelect from '../selector/ElementSelect.svelte';
+	import ElementSelectModal from '../selector/ElementSelectModal.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { fixTransition } from './fixTransition';
 
@@ -26,6 +26,7 @@
 	export let layer: number | undefined;
 	export let selectedItemId: string | undefined = undefined;
 
+	let isElementSelectOpen = false;
 	let selectedElementId: CustomElement;
 	let payload: ElementPayload = getDefaultElementPayload();
 	$: isNewElement = !getCurrentItems().some((item) => item.id === selectedItemId);
@@ -36,6 +37,12 @@
 		data: payload,
 		id: 'demo',
 	};
+
+	const openItemSelect = () => {
+		isElementSelectOpen = true;
+	};
+
+	$: open, openItemSelect();
 
 	function updateOverlay() {
 		$electronEmitter.emit('OverlayUpdate', getCurrentOverlay());
@@ -118,7 +125,14 @@
 	>
 		<div class="w-full h-full p-4 px-8 grid grid-cols-7">
 			<div class="w-full h-full col-span-4 overflow-scroll scroll enable-scrollbar">
-				<ElementSelect bind:selectedElementId />
+				<div class="grid grid-flow-col gap-2 items-center">
+					<button
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+						on:click={() => (isElementSelectOpen = true)}
+					>
+						Select
+					</button>
+				</div>
 				{#if selectedElementId}
 					<div class="w-full">
 						{#if payload && selectedItemId}
@@ -158,4 +172,5 @@
 			</div>
 		</div>
 	</div>
+	<ElementSelectModal bind:selectedElementId bind:open={isElementSelectOpen} />
 </Modal>

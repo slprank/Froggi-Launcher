@@ -4,17 +4,8 @@
 	import ElementCategorySelect from './elementCategories/ElementCategorySelect.svelte';
 
 	export let selectedElementId: CustomElement;
-	let open: boolean = !selectedElementId;
+	export let open: boolean = !Boolean(selectedElementId);
 </script>
-
-<div class="grid grid-flow-col gap-2 items-center">
-	<button
-		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
-		on:click={() => (open = true)}
-	>
-		Select
-	</button>
-</div>
 
 <Modal bind:open on:close={() => (open = false)} class="">
 	<div
