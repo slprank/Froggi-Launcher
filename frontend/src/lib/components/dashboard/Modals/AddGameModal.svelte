@@ -7,7 +7,7 @@
 		MatchInfoExtended,
 	} from '$lib/models/types/slippiData';
 	import { currentPlayers, electronEmitter, recentGames } from '$lib/utils/store.svelte';
-	import { Stage } from '$lib/models/constants/stageData';
+	import { STAGE_DATA, Stage } from '$lib/models/constants/stageData';
 	import { Character } from '$lib/models/enum';
 	import { CHARACTERS_EXTERNAL_INTERNAL } from '$lib/models/constants/characterData';
 	import {
@@ -18,6 +18,7 @@
 	import GameStage from './GameStage.svelte';
 	import CharacterIcon from './CharacterIcon.svelte';
 	import Select from '$lib/components/input/Select.svelte';
+	import { cloneDeep } from 'lodash';
 
 	export let open: boolean;
 	export let selectedGameIndex: number;
@@ -31,6 +32,8 @@
 			placements: [
 				{ playerIndex: 0, position: 0 },
 				{ playerIndex: 1, position: 1 },
+				{ playerIndex: 2, position: 1 },
+				{ playerIndex: 3, position: 1 },
 			],
 		},
 		isMock: true,
@@ -99,12 +102,39 @@
 			CHARACTERS_EXTERNAL_INTERNAL[characterId];
 	};
 
-	const addGame = () => {
-		confirmModalOpen = true;
+	const handleStageChange = (event: CustomEvent<Stage>) => {
+		const stageId = Number(event.detail);
+		if (!game.settings) return;
+		game.settings.stageId = stageId;
 	};
 
-	const handleAddGame = () => {
-		open = false;
+	const handleWinnerChange = (playerIndex: number) => {
+		if (!game.gameEnd) return;
+		const placements = cloneDeep(game.gameEnd.placements);
+		for (let placement of placements) {
+			if (placement.playerIndex === playerIndex) {
+				placement.position = 0;
+			} else {
+				placement.position = 1;
+			}
+		}
+		game.gameEnd.placements = placements;
+	};
+
+	const getDisplayName = (playerIndex: number) => {
+		const displayName = $currentPlayers.at(playerIndex)?.displayName;
+		return displayName?.length ? displayName : `Player${playerIndex + 1}`;
+	};
+
+	const hasGameWinner = () => {
+		return (
+			game.gameEnd.placements[$currentPlayers.at(0)?.playerIndex ?? 0].position === 0 ||
+			game.gameEnd.placements[$currentPlayers.at(1)?.playerIndex ?? 1].position === 0
+		);
+	};
+
+	const addGame = () => {
+		confirmModalOpen = true;
 		$electronEmitter.emit('RecentGamesMock', game, selectedGameIndex);
 	};
 </script>
@@ -122,15 +152,11 @@
 			<h1 class="text-white text-3xl font-semibold">Add Game</h1>
 		</div>
 		<div class="flex justify-between gap-4">
-			<h1 class="text-white text-2xl font-semibold">Player1</h1>
-			<h1 class="text-white text-2xl font-semibold">Player2</h1>
-		</div>
-		<div class="flex justify-between gap-4">
 			<h1 class="text-white text-2xl font-semibold">
-				{$currentPlayers.at(0)?.displayName ?? ''}
+				{getDisplayName(0)}
 			</h1>
 			<h1 class="text-white text-2xl font-semibold">
-				{$currentPlayers.at(1)?.displayName ?? ''}
+				{getDisplayName(1)}
 			</h1>
 		</div>
 		<div class="flex gap-4 justify-center items-center">
@@ -142,7 +168,16 @@
 				label={`${$currentPlayers.at(0)?.displayName ?? 'Player1 Character'}`}
 			>
 				{#each Object.entries(Character).filter(([_, name]) => typeof name === 'string') as [id, name]}
-					<option value={id}>{name}</option>
+					<option
+						selected={id ===
+							`${
+								game.settings?.players.at($currentPlayers.at(0)?.playerIndex ?? 0)
+									?.characterId
+							}`}
+						value={id}
+					>
+						{name}
+					</option>
 				{/each}
 			</Select>
 			<Select
@@ -150,7 +185,16 @@
 				label={`${$currentPlayers.at(1)?.displayName ?? 'Player2 Character'}`}
 			>
 				{#each Object.entries(Character).filter(([_, name]) => typeof name === 'string') as [id, name]}
-					<option value={id}>{name}</option>
+					<option
+						selected={id ===
+							`${
+								game.settings?.players.at($currentPlayers.at(1)?.playerIndex ?? 1)
+									?.characterId
+							}`}
+						value={id}
+					>
+						{name}
+					</option>
 				{/each}
 			</Select>
 		</div>
@@ -217,14 +261,60 @@
 				{/each}
 			</div>
 		</div>
-		<div class="relative aspect-video w-full">
-			<GameStage
-				stageId={game?.settings?.stageId}
-				class="aspect-video rounded-md"
-				objectFit="cover"
-			/>
+		<div class="flex gap-4 justify-center items-center">
+			<h1 class="text-white text-2xl font-semibold">Stage</h1>
 		</div>
+		<div class="flex gap-4 items-center">
+			<Select on:change={handleStageChange}>
+				{#each Object.entries(STAGE_DATA) as [id, stage_data]}
+					<option selected={id === `${game?.settings?.stageId}`} value={id}>
+						{stage_data.name}
+					</option>
+				{/each}
+			</Select>
+			<div class="relative aspect-video w-full rounded-md border border-gray-700">
+				<GameStage
+					stageId={game?.settings?.stageId}
+					class="aspect-video rounded-md"
+					objectFit="cover"
+				/>
+			</div>
+		</div>
+		<div class="flex gap-4 justify-center items-center">
+			<h1 class="text-white text-2xl font-semibold">Winner</h1>
+		</div>
+		<div class="flex justify-around gap-4">
+			<button
+				class={`border rounded-md p-4 ${
+					game.gameEnd.placements[$currentPlayers.at(0)?.playerIndex ?? 0].position === 0
+						? 'border-green-600'
+						: 'border white'
+				}`}
+				on:click={() => handleWinnerChange(0)}
+			>
+				<h1 class="text-white text-2xl font-semibold">
+					{getDisplayName(0)}
+				</h1>
+			</button>
+			<button
+				class={`border rounded-md p-4 ${
+					game.gameEnd.placements[$currentPlayers.at(1)?.playerIndex ?? 1].position === 0
+						? 'border-green-600'
+						: 'border white'
+				}`}
+				on:click={() => handleWinnerChange(1)}
+			>
+				<h1 class="text-white text-2xl font-semibold">
+					{getDisplayName(1)}
+				</h1>
+			</button>
+		</div>
+		<button
+			disabled={!hasGameWinner()}
+			class={`border rounded-md p-4 border-white disabled:opacity-50`}
+			on:click={addGame}
+		>
+			<h1 class="text-white text-2xl font-semibold">Add Game</h1>
+		</button>
 	</div>
 </Modal>
-
-<ConfirmModal bind:open={confirmModalOpen} on:confirm={handleAddGame}>Delete Game?</ConfirmModal>

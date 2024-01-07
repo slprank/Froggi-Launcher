@@ -128,7 +128,7 @@ export class ElectronGamesStore {
 		const recentGame = recentGames.at(-1)?.at(-1) ?? null
 		newGame = { ...newGame, isMock: true, settings: { ...newGame.settings, matchInfo: { ...(recentGame?.settings?.matchInfo ?? { gameNumber: null, matchId: "", tiebreakerNumber: 0, mode: "local", }), ...{ gameNumber: null, bestOf: this.storeLiveStats.getBestOf() } } } as GameStartTypeExtended }
 		recentGames = [...recentGames.slice(0, index), [newGame], ...recentGames.slice(index)];
-		this.store.set('player.any.game.recent', recentGames);
+		this.store.set('player.any.game.recent', this.applyRecentGameScore(recentGames));
 	}
 
 	private handleOnlineGame(newGame: GameStats) {
@@ -177,7 +177,7 @@ export class ElectronGamesStore {
 	}
 
 	clearRecentGames() {
-		this.store.set(`player.any.game.recent`, []);
+		this.store.set(`player.any.game.recent`, this.applyRecentGameScore([]));
 	}
 
 	private getAllSets(): Sets | undefined {

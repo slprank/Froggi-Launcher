@@ -18,6 +18,11 @@
 	};
 	$: updateGames($recentGames);
 
+	const getDisplayName = (playerIndex: number) => {
+		const displayName = $currentPlayers.at(playerIndex)?.displayName;
+		return displayName?.length ? displayName : `Player${playerIndex + 1}`;
+	};
+
 	const addGame = (gameIndex: number) => {
 		selectedGameIndex = gameIndex;
 		addGameModalOpen = true;
@@ -31,8 +36,6 @@
 	const handleDelete = () => {
 		$electronEmitter.emit('RecentGamesDelete', selectedGameIndex);
 	};
-
-	$: console.log('games', games);
 </script>
 
 <Modal
@@ -49,10 +52,10 @@
 		</div>
 		<div class="flex justify-between gap-4">
 			<h1 class="text-white text-2xl font-semibold">
-				{$currentPlayers.at(0)?.displayName ?? 'Player1'}
+				{getDisplayName(0)}
 			</h1>
 			<h1 class="text-white text-2xl font-semibold">
-				{$currentPlayers.at(1)?.displayName ?? 'Player2'}
+				{getDisplayName(1)}
 			</h1>
 		</div>
 		<div
@@ -66,21 +69,11 @@
 			>
 				<h1 class="text-white text-shadow-md">+</h1>
 			</button>
-			{#each games
-				.map((game) => game.at(-1))
-				.slice()
-				.reverse() as game, i}
+			{#each games.map((game) => game.at(-1)) as game, i}
 				<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
 					Game {i + 1}
 				</h1>
-				<div class="flex justify-between items-center gap-2 w-full">
-					<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
-						{$currentPlayers.at(0)?.displayName}
-					</h1>
-					<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
-						{$currentPlayers.at(1)?.displayName}
-					</h1>
-				</div>
+
 				<div class="flex justify-center items-center gap-2 w-full">
 					<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
 						{game?.score.at(0) ?? 0} - {game?.score.at(1) ?? 0}
