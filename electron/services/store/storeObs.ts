@@ -3,11 +3,9 @@ import Store from 'electron-store';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
-import { newId } from "../../utils/functions"
 import { Obs, ObsAuth, ObsConnection, ObsInputs, ObsScenes } from '../../../frontend/src/lib/models/types/obsTypes';
-import { OBSRequestTypes, OBSResponseTypes } from 'obs-websocket-js';
+import { OBSResponseTypes } from 'obs-websocket-js';
 import { ConnectionState } from '../../../frontend/src/lib/models/enum';
-import { Command } from '../../../frontend/src/lib/models/types/commandTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 
 
@@ -24,8 +22,17 @@ export class ElectronObsStore {
         this.initListeners();
     }
 
+    setDefaultObsAuth() {
+        const auth = this.getAuth();
+        if (!auth) this.store.set('obs.auth', { ipAddress: '127.0.0.1', port: 4455, password: '' });
+    }
+
     getObs(): Obs | undefined {
         return this.store.get('obs') as Obs;
+    }
+
+    getAuth(): ObsAuth | undefined {
+        return this.store.get('obs.auth') as ObsAuth;
     }
 
     getPassword(): string | undefined {
@@ -56,21 +63,6 @@ export class ElectronObsStore {
         return (this.store.get('obs.connection') ?? {}) as ObsConnection;
     }
 
-    getCommands(): (Command)[] {
-        return (this.store.get('obs.connection.commands') ?? {}) as (Command)[];
-    }
-
-    addCommand<Type extends keyof OBSRequestTypes>(command: Type, payload: OBSRequestTypes[Type]) {
-        const commands = this.getCommands();
-        if (!commands) return;
-        this.store.set('obs.connection.commands', [...commands, { command: command, payload: payload, id: newId() }]);
-    }
-
-    deleteCommand(commandId: string) {
-        const commands = this.getCommands();
-        if (!commands) return;
-        this.store.set('obs.connection.commands', [...commands.filter((command) => command.id !== commandId)]);
-    }
 
     setConnectionState(state: ConnectionState) {
         this.store.set('obs.connection.state', state);
