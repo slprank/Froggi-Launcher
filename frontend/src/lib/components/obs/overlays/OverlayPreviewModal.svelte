@@ -46,7 +46,9 @@
 			<h1 class="font-bold text-3xl text-white">{overlay?.title}</h1>
 		</div>
 		<div
-			class={`flex-1 aspect-[16/9] ${$isMobile && isHorizontal ? "max-h-56" : "max-h-full"} h-full border-2 border-gray-500`}
+			class={`flex-1 aspect-[16/9] ${
+				$isMobile && isHorizontal ? 'max-h-56' : 'max-h-full'
+			} h-full border-2 border-gray-500`}
 			style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
 			bind:this={parentDiv}
 		>
@@ -54,9 +56,7 @@
 				<NonInteractiveIFrame src={url} title="overlay" />
 			</div>
 		</div>
-		<div>
-			<SceneSelect />
-		</div>
+		<SceneSelect />
 		<div class="flex gap-2">
 			<button
 				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"

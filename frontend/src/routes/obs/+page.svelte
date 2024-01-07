@@ -2,8 +2,6 @@
 	import { goto } from '$app/navigation';
 	import { isAuthorized } from '$lib/utils/store.svelte';
 	import { fade } from 'svelte/transition';
-
-	console.log('here');
 </script>
 
 <main
