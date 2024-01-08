@@ -66,8 +66,8 @@
 				{#if edit}
 					<GridElements {dataItem} {edit} />
 					<h1
-						class="text-black text-lg absolute top-0 left-0"
-						style={`filter: drop-shadow(1.2px 1.2px 0.8px white `}
+						class="text-white text-sm absolute top-0 left-0"
+						style={`filter: drop-shadow(1.2px 1.2px 0.8px black `}
 					>
 						{CustomElement[dataItem?.elementId] ?? ''}
 					</h1>
