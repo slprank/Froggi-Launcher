@@ -3,6 +3,7 @@
 	import { autoUpdater, electronEmitter, isElectron } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
 	import type { AutoUpdater } from '$lib/models/types/overlay';
+	import { tooltip } from 'svooltip';
 
 	const getStyle = (autoUpdater: AutoUpdater) => {
 		switch (autoUpdater.status) {
@@ -28,8 +29,6 @@
 			case AutoUpdaterStatus.LookingForUpdate:
 				return 'pulse';
 			case AutoUpdaterStatus.UpdateAvailable:
-				return 'pulse';
-			case AutoUpdaterStatus.DownloadComplete:
 				return 'pulse';
 			default:
 				return '';
@@ -66,9 +65,18 @@
 </script>
 
 {#if $isElectron}
-	{#key $autoUpdater}
+	<div
+		class="relative"
+		use:tooltip={{
+			content: `<p>${$autoUpdater.status}</p>`,
+			html: true,
+			placement: 'left',
+			delay: [1000, 0],
+			offset: 25,
+		}}
+	>
 		<button
-			class="transition fixed opacity-60 hover:opacity-100 border-gray-800 bottom-4 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
+			class="transition opacity-60 hover:opacity-100 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
 			on:click={installUpdate}
 		>
 			<span class={getAnimation($autoUpdater)} />
@@ -79,5 +87,5 @@
 				<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
 			</button>
 		</button>
-	{/key}
+	</div>
 {/if}

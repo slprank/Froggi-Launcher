@@ -30,7 +30,6 @@
 
 .pulse {
 	position: absolute;
-	width: fit-content;
 	border-radius: 100%;
 	opacity: 1;
 	animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;

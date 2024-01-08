@@ -14,6 +14,7 @@
 	import FontSelectorLayer from '../selector/FontSelectLayer.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import SceneSelectOptions from '../selector/SceneSelectOptions.svelte';
+	import { tooltip } from 'svooltip';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -54,9 +55,9 @@
 		class="w-[80vw] h-[80vh] min-w-72 min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		<div class="w-full h-full grid grid-cols-2">
-			<div class="w-ful p-4 px-8 col-span-1 overflow-scroll enable-scrollbar">
-				<div class="w-full grid gap-4">
+		<div class="w-full h-full flex">
+			<div class="w-full p-4 px-8 col-span-1 overflow-scroll enable-scrollbar">
+				<div class="w-full flex flex-col gap-4">
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
 					<div class="w-full flex gap-2">
 						<div class="w-24">
@@ -163,12 +164,16 @@
 							</div>
 						</div>
 					{/if}
-
 					<h1
 						class="text-gray-500 text-lg font-medium text-shadow"
-						data-tooltip={`Delay between each layer to render when displayed`}
+						use:tooltip={{
+							content: 'Delay between each layer rendering',
+							placement: 'top-start',
+							offset: 15,
+							delay: [200, 0],
+						}}
 					>
-						Layers Rendering Delay
+						Layers Render Delay
 					</h1>
 					<div class="w-full flex gap-2">
 						<div class="w-48">
@@ -214,7 +219,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="w-full h-full col-span-1 flex justify-center items-center">
+			<div class="flex-1 p-2 h-full flex justify-center items-center">
 				<div
 					class="bg-center aspect-video w-[35vw] max-w-[500px] border"
 					style={`

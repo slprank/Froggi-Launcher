@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ConnectionState } from '$lib/models/enum';
+	import { tooltip } from 'svooltip';
 	import { fly } from 'svelte/transition';
 
 	export let connectionState: ConnectionState = ConnectionState.None;
@@ -38,6 +39,13 @@
 		class="transition opacity-60 hover:opacity-100 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
 		transition:fly={{ duration: 150, x: -50 }}
 		on:click={click}
+		use:tooltip={{
+			content: `<p>${connectionState}</p>`,
+			html: true,
+			placement: 'left',
+			delay: [1000, 0],
+			offset: 25,
+		}}
 	>
 		<span class={getAnimation(connectionState)} />
 		<button

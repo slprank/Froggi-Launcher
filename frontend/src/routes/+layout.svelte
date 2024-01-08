@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import 'svooltip/styles.css';
 	import '$lib/styles/fonts.css';
 	import '$lib/styles/scrollbar.css';
 	import '$lib/styles/styles.css';

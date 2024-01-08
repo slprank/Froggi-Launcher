@@ -15,6 +15,7 @@
 	import ConnectionStateButton from './ConnectionStateButton.svelte';
 	import ElectronVersionButton from './ElectronVersionButton.svelte';
 	import { notifications } from '../notification/Notifications.svelte';
+	import { Tooltip } from '@svelte-plugins/tooltips';
 
 	function resetVisibilityTimer() {
 		if ($isElectron) {
@@ -61,40 +62,35 @@
 			<div
 				in:fly={{ x: -100, duration: 150 }}
 				out:fly={{ x: -100, duration: 400 }}
-				class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-r-1 border-opacity-25 border-white justify-center items-center space-y-4 z-50"
+				class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-l-1 border-opacity-25 border-white justify-between py-4 items-center space-y-4 z-50"
 			>
+				<div />
 				<BackButton />
 
-				<div
-					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center rounded-2xl text-center align-middle p-1"
-				>
-					<NavButton click={() => goto('/')}>
-						<img src="/image/button-icons/live.png" alt="Placeholder" />
-					</NavButton>
-				</div>
-
-				<div
-					class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
-				>
-					<NavButton click={() => goto('/')}>
-						<img src="/image/button-icons/home.png" alt="home" />
-					</NavButton>
-				</div>
-				<div
-					class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
-				>
-					<NavButton click={() => goto('/leaderboard')}>
-						<img src="/image/button-icons/leaderboard.png" alt="leaderboard" />
-					</NavButton>
-					<NavButton click={() => goto('/replays')}>
-						<img src="/image/button-icons/replay.png" alt="replays" />
-					</NavButton>
-					<NavButton click={() => goto('/achievements')}>
-						<img src="/image/button-icons/trophy.png" alt="achievements" />
-					</NavButton>
-					<NavButton click={() => goto('/profile')}>
-						<img src="/image/button-icons/profile.png" alt="profile" />
-					</NavButton>
+				<div class="flex flex-col gap-2">
+					<div
+						class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
+					>
+						<NavButton click={() => goto('/')}>
+							<img src="/image/button-icons/home.png" alt="home" />
+						</NavButton>
+					</div>
+					<div
+						class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
+					>
+						<NavButton click={() => goto('/leaderboard')}>
+							<img src="/image/button-icons/leaderboard.png" alt="leaderboard" />
+						</NavButton>
+						<NavButton click={() => goto('/replays')}>
+							<img src="/image/button-icons/replay.png" alt="replays" />
+						</NavButton>
+						<NavButton click={() => goto('/achievements')}>
+							<img src="/image/button-icons/trophy.png" alt="achievements" />
+						</NavButton>
+						<NavButton click={() => goto('/profile')}>
+							<img src="/image/button-icons/profile.png" alt="profile" />
+						</NavButton>
+					</div>
 				</div>
 				<ElectronVersionButton />
 			</div>
@@ -102,8 +98,9 @@
 			<div
 				in:fly={{ x: 100, duration: 150 }}
 				out:fly={{ x: 100, duration: 400 }}
-				class="fixed top-0 right-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-l-1 border-opacity-25 border-white justify-center items-center space-y-4 z-50"
+				class="fixed top-0 right-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-l-1 border-opacity-25 border-white justify-between py-4 items-center space-y-4 z-50"
 			>
+				<div />
 				<div
 					class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 				>
@@ -119,12 +116,10 @@
 						<img src="/image/button-icons/settings.png" alt="settings" />
 					</NavButton>
 				</div>
-				<div class="fixed bottom-4">
-					<ConnectionStateButton
-						iconPath="/image/button-icons/dolphin.svg"
-						connectionState={$dolphinState}
-					/>
-				</div>
+				<ConnectionStateButton
+					iconPath="/image/button-icons/dolphin.svg"
+					connectionState={$dolphinState}
+				/>
 			</div>
 		{:else}
 			<div
@@ -151,6 +146,7 @@
 					<NavButton click={() => goto('/profile')}>
 						<img src="/image/button-icons/profile.png" alt="profile" />
 					</NavButton>
+
 					<ConnectionStateButton
 						iconPath="/image/button-icons/obs.png"
 						connectionState={$obsConnection.state}
