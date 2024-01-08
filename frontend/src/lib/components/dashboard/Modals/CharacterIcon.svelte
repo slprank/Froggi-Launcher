@@ -14,7 +14,7 @@
 	<img
 		class="h-full w-full aspect-video"
 		style={`object-fit: ${objectFit};`}
-		src={`/image/characters/${characterId}/0.png`}
+		src={`/image/characters/${characterId}/0/stock.png`}
 		alt="custom"
 	/>
 </div>

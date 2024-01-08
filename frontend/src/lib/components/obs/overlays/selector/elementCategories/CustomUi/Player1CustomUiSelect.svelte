@@ -26,11 +26,18 @@
 		Stocks Remaining
 	</SelectOption>
 	<SelectOption
-		description="Player 1 Character Render"
-		value={CustomElement.InGamePlayer1CharacterRender}
+		description="Player 1 Character Left Side Render"
+		value={CustomElement.InGamePlayer1CharacterRenderLeft}
 		on:select={select}
 	>
-		Character Render
+		Character Render (Left)
+	</SelectOption>
+	<SelectOption
+		description="Player 1 Character Right Side Render"
+		value={CustomElement.InGamePlayer1CharacterRenderRight}
+		on:select={select}
+	>
+		Character Render (Right)
 	</SelectOption>
 	<SelectOption
 		description="Player 1 Character Series Symbols From N64/Melee"

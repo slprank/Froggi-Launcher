@@ -29,7 +29,7 @@
 			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'}; ${
 				dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''
 			};`}
-			src={`/image/characters/${characterId}/0.png`}
+			src={`/image/characters/${characterId}/0/stock.png`}
 			alt="custom"
 		/>
 	</div>

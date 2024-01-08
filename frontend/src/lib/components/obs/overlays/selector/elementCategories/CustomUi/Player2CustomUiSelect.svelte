@@ -26,11 +26,18 @@
 		Remaining Stocks
 	</SelectOption>
 	<SelectOption
-		description="Player 2 Character Render"
-		value={CustomElement.InGamePlayer2CharacterRender}
+		description="Player 2 Character Left Side Render"
+		value={CustomElement.InGamePlayer2CharacterRenderLeft}
 		on:select={select}
 	>
-		Character Render
+		Character Render (Left)
+	</SelectOption>
+	<SelectOption
+		description="Player 2 Character Right Side Render"
+		value={CustomElement.InGamePlayer2CharacterRenderRight}
+		on:select={select}
+	>
+		Character Render (Right)
 	</SelectOption>
 	<SelectOption
 		description="Player 2 Character Series Symbol (Melee)"

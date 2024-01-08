@@ -24,7 +24,7 @@
 			class="h-full w-full aspect-video"
 			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/characters/${character}/0.png`}
+			src={`/image/characters/${character}/0/stock.png`}
 			alt="custom"
 		/>
 	</div>

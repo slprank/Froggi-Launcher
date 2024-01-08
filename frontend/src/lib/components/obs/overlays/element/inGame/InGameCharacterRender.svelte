@@ -44,7 +44,7 @@
 					div?.clientHeight
 				}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-				src={`/image/character-renders/${characterId}/${
+				src={`/image/characters/${characterId}/${
 					playerSettings?.characterColor ?? 0
 				}/vs-${direction}.png`}
 				alt="custom"

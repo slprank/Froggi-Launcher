@@ -16,14 +16,14 @@
 	let characterId: number | null;
 	const updateCharacterId = (): number | null => {
 		return preview
-		? defaultPreviewId
-		: postFrame
-		? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
-		: playerSettings
-		? playerSettings.characterId
-		: null;
+			? defaultPreviewId
+			: postFrame
+			? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
+			: playerSettings
+			? playerSettings.characterId
+			: null;
 	};
-	$: $statsScene, $gameSettings, characterId = updateCharacterId();
+	$: $statsScene, $gameSettings, (characterId = updateCharacterId());
 </script>
 
 {#key $gameSettings}
@@ -38,7 +38,7 @@
 				class="h-full w-full aspect-video"
 				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-				src={`/image/characters/${characterId}/0.png`}
+				src={`/image/characters/${characterId}/0/stock.png`}
 				alt="custom"
 			/>
 		</div>

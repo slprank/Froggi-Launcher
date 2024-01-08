@@ -10,6 +10,6 @@
 	<img
 		class={`aspect-square ${imgClass}`}
 		alt="character icon"
-		src={`/image/characters/${characterId}/0.png`}
+		src={`/image/characters/${characterId}/0/stock.png`}
 	/>
 </div>
