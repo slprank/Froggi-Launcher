@@ -26,11 +26,18 @@
 		Stocks Remaining
 	</SelectOption>
 	<SelectOption
-		description="Current Player Character Render"
-		value={CustomElement.InGameCurrentPlayerCharacterRender}
+		description="Current Player Character Left Side Render"
+		value={CustomElement.InGameCurrentPlayerCharacterRenderLeft}
 		on:select={select}
 	>
-		Character Render
+		Character Render (Left)
+	</SelectOption>
+	<SelectOption
+		description="Current Player Character Right Side Render"
+		value={CustomElement.InGameCurrentPlayerCharacterRenderRight}
+		on:select={select}
+	>
+		Character Render (Right)
 	</SelectOption>
 	<SelectOption
 		description="Current Player Character Series Symbols From N64/Melee"

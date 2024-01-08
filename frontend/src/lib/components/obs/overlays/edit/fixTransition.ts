@@ -58,7 +58,8 @@ const fixInGameSlippiSessionTransition = (item: GridContentItem) => {
     if (
         [
             CustomElement.InGameCurrentPlayerCharacterIcon,
-            CustomElement.InGameCurrentPlayerCharacterRender,
+            CustomElement.InGameCurrentPlayerCharacterRenderLeft,
+            CustomElement.InGameCurrentPlayerCharacterRenderRight,
         ].includes(item.elementId)
     ) {
         newItem.data.animationTrigger.selectedOptions[AnimationTrigger.InGameCurrentPlayerCharacterChange] = true;
@@ -66,7 +67,8 @@ const fixInGameSlippiSessionTransition = (item: GridContentItem) => {
     if (
         [
             CustomElement.InGamePlayer1CharacterIcon,
-            CustomElement.InGamePlayer1CharacterRender,
+            CustomElement.InGamePlayer1CharacterRenderLeft,
+            CustomElement.InGamePlayer1CharacterRenderRight,
         ].includes(item.elementId)
     ) {
         newItem.data.animationTrigger.selectedOptions[AnimationTrigger.InGamePlayer1CharacterChange] = true;
@@ -74,7 +76,8 @@ const fixInGameSlippiSessionTransition = (item: GridContentItem) => {
     if (
         [
             CustomElement.InGamePlayer2CharacterIcon,
-            CustomElement.InGamePlayer2CharacterRender,
+            CustomElement.InGamePlayer2CharacterRenderLeft,
+            CustomElement.InGamePlayer2CharacterRenderRight,
         ].includes(item.elementId)
     ) {
         newItem.data.animationTrigger.selectedOptions[AnimationTrigger.InGamePlayer2CharacterChange] = true;

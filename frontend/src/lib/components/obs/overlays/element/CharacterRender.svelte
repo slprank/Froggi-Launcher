@@ -16,15 +16,15 @@
 </script>
 
 <div
-	class={`w-full h-full ${style.classValue} grid justify-end`}
+	class={`w-full h-full ${style.classValue} flex`}
 	style={`${style.cssValue}; ${
 		dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-	}; `}
+	}; justify-content: ${direction === 'left' ? 'flex-end' : 'flex-start'}`}
 	bind:this={div}
 >
 	{#if div}
 		<img
-			class="h-full aspect-video"
+			class="h-full"
 			style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
 				div?.clientHeight
 			}px;

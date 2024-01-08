@@ -67,13 +67,24 @@
 		defaultPreviewId={Number(CHARACTERS['fox'])}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterRender}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterRenderLeft}
 	<InGameCharacterRender
 		{dataItem}
 		{style}
 		player={$currentPlayer}
 		preview={defaultPreview}
 		defaultPreviewId={Number(CHARACTERS['fox'])}
+		direction={'left'}
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterRenderRight}
+	<InGameCharacterRender
+		{dataItem}
+		{style}
+		player={$currentPlayer}
+		preview={defaultPreview}
+		defaultPreviewId={Number(CHARACTERS['fox'])}
+		direction={'right'}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterSeriesSymbol}
