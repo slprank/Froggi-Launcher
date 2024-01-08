@@ -69,13 +69,15 @@
 							/>
 						</div>
 					</div>
-
-					<FontSelectorLayer bind:font={curScene.font} fontId={'custom'} />
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
 
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Active scenes</h1>
 					<SceneSelectOptions bind:overlay />
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">Background</h1>
+
+					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Default Font:</h1>
+					<FontSelectorLayer bind:font={curScene.font} fontId={'custom'} />
+
+					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Background</h1>
 					<div class="w-full flex gap-2">
 						<div class="w-48">
 							<Select bind:selected={curScene.background.type} label="Type">
@@ -165,7 +167,7 @@
 						</div>
 					{/if}
 					<h1
-						class="text-gray-500 text-lg font-medium text-shadow"
+						class="text-gray-500 text-2xl font-medium text-shadow"
 						use:tooltip={{
 							content: 'Delay between each layer rendering',
 							placement: 'top-start',

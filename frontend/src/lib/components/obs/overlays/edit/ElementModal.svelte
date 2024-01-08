@@ -126,7 +126,7 @@
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="w-full h-full p-4 px-8 grid grid-cols-7">
-			<div class="w-full h-full col-span-4 overflow-scroll scroll enable-scrollbar">
+			<div class="w-full h-full col-span-4 overflow-scroll scroll enable-scrollbar p-2">
 				<div class="grid grid-flow-col gap-2 items-center">
 					<button
 						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"

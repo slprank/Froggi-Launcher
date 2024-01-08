@@ -22,6 +22,7 @@
 		SelectedAnimationTriggerOption,
 		SelectedVisibilityOption,
 	} from '$lib/models/types/animationOption';
+	import { tooltip } from 'svooltip';
 
 	export let selectedItemId: string;
 	export let selectedElementId: number;
@@ -147,7 +148,7 @@
 {#key selectedElementId}
 	{#key loadTrigger}
 		<div
-			class="w-full my-4 grid grid-flow-row gap-8"
+			class="w-full my-4 flex flex-col gap-8"
 			in:fly={{ duration: 250, x: 150, delay: 250 }}
 			out:fly={{ duration: 250, x: 150 }}
 		>
@@ -156,6 +157,13 @@
 					<button
 						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 						on:click={loadStyling}
+						use:tooltip={{
+							content:
+								'Load previously loaded styling and animation settings. This will overwrite the current settings.',
+							placement: 'top-start',
+							offset: 15,
+							delay: [200, 0],
+						}}
 					>
 						Load Style and Animation Settings
 					</button>
@@ -418,7 +426,12 @@
 			<div class="items-center gap-2 flex">
 				<h1
 					class="text-gray-500 text-xl font-medium text-shadow mb-2"
-					data-tooltip="Animations that triggers on in-game events such as taking damage"
+					use:tooltip={{
+						content: 'Animations that triggers on in-game events such as taking damage',
+						placement: 'top-start',
+						offset: 15,
+						delay: [200, 0],
+					}}
 				>
 					Animation Triggers
 				</h1>
@@ -440,7 +453,6 @@
 				<button
 					in:fly={{ duration: 250, x: 100 }}
 					on:click={testAnimationTriggers}
-					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				>
 					Test animation
@@ -450,7 +462,6 @@
 				<button
 					in:fly={{ duration: 250, x: 100 }}
 					on:click={testCustomAnimationTriggers}
-					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				>
 					Test animation
@@ -460,7 +471,13 @@
 			<div class="items-center gap-2 flex">
 				<h1
 					class="text-gray-500 text-xl font-medium text-shadow mb-2"
-					data-tooltip="Animations that triggers on in-game events such as taking damage"
+					use:tooltip={{
+						content:
+							'Conditions that decides when an element should be visible. For example, when a game is paused or if player is alive',
+						placement: 'top-start',
+						offset: 15,
+						delay: [200, 0],
+					}}
 				>
 					Visibility conditions
 				</h1>
@@ -479,7 +496,6 @@
 				<button
 					in:fly={{ duration: 250, x: 100 }}
 					on:click={testVisibilityAnimation}
-					data-tooltip={`in/out animation will be triggered simultaneously, consider applying delay while testing`}
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				>
 					Test animation
@@ -529,6 +545,14 @@
 				<button
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 					on:click={saveStyling}
+					use:tooltip={{
+						content:
+							'Save the current styling and animation settings. This can be loaded later. Does <b>NOT</b> save custom image or font.',
+						placement: 'top-start',
+						offset: 15,
+						delay: [1000, 0],
+						html: true,
+					}}
 				>
 					Save Styling and Animation
 				</button>
