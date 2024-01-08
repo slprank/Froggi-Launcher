@@ -4,13 +4,13 @@
 
 	export let dataItem: GridContentItem;
 	export let characterId: Character | undefined | null;
+	export let characterColorId: number | undefined | null = 0;
 	export let defaultPreview: boolean = false;
 	export let defaultPreviewId: Character;
 	export let style: GridContentItemStyle;
+	export let direction: 'left' | 'right';
 
 	$: character = defaultPreview ? defaultPreviewId : characterId ? characterId : -1;
-
-	// TODO: Include colors
 
 	let div: HTMLElement;
 </script>
@@ -29,7 +29,7 @@
 				div?.clientHeight
 			}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${character}.png`}
+			src={`/image/character-renders/${character}/${characterColorId ?? 0}/${direction}.png`}
 			alt="custom"
 		/>
 	{/if}

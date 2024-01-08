@@ -56,7 +56,7 @@
 		defaultPreviewId={Character.Falcon}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.CurrentSetGame1Player1CharacterRender}
+{#if dataItem?.elementId === CustomElement.CurrentSetGame1Player1CharacterRenderLeft}
 	<CharacterRender
 		{style}
 		{dataItem}
@@ -64,9 +64,21 @@
 			?.characterId}
 		{defaultPreview}
 		defaultPreviewId={Character.Ganondorf}
+		direction="left"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.CurrentSetGame1Player2CharacterRender}
+{#if dataItem?.elementId === CustomElement.CurrentSetGame1Player1CharacterRenderRight}
+	<CharacterRender
+		{style}
+		{dataItem}
+		characterId={game?.settings?.players.at($currentPlayers?.at(0)?.playerIndex ?? 0)
+			?.characterId}
+		{defaultPreview}
+		defaultPreviewId={Character.Ganondorf}
+		direction="right"
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.CurrentSetGame1Player2CharacterRenderLeft}
 	<CharacterRender
 		{style}
 		{dataItem}
@@ -74,6 +86,18 @@
 			?.characterId}
 		{defaultPreview}
 		defaultPreviewId={Character.Falcon}
+		direction="left"
+	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.CurrentSetGame1Player2CharacterRenderRight}
+	<CharacterRender
+		{style}
+		{dataItem}
+		characterId={game?.settings?.players.at($currentPlayers?.at(1)?.playerIndex ?? 1)
+			?.characterId}
+		{defaultPreview}
+		defaultPreviewId={Character.Falcon}
+		direction="right"
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.CurrentSetGame1Player1StocksRemaining}

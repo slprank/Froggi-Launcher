@@ -47,18 +47,32 @@
 		Player 2 Character Icon
 	</SelectOption>
 	<SelectOption
-		description="Recent Game Player 1 Character Render"
-		value={CustomElement.CurrentSetGame4Player1CharacterRender}
+		description="Recent Game 4 Player 1 Character Left Side Render"
+		value={CustomElement.CurrentSetGame4Player1CharacterRenderLeft}
 		on:select={select}
 	>
-		Player 1 Character Render
+		Player 1 Character Render (Left)
 	</SelectOption>
 	<SelectOption
-		description="Recent Game Player 2 Character Render"
-		value={CustomElement.CurrentSetGame4Player2CharacterRender}
+		description="Recent Game 4 Player 1 Character Right Side Render"
+		value={CustomElement.CurrentSetGame4Player1CharacterRenderRight}
 		on:select={select}
 	>
-		Player 2 Character Render
+		Player 1 Character Render (Right)
+	</SelectOption>
+	<SelectOption
+		description="Recent Game 4 Player 2 Character Left Side Render"
+		value={CustomElement.CurrentSetGame4Player2CharacterRenderLeft}
+		on:select={select}
+	>
+		Player 2 Character Render (Left)
+	</SelectOption>
+	<SelectOption
+		description="Recent Game 4 Player 2 Character Right Side Render"
+		value={CustomElement.CurrentSetGame4Player2CharacterRenderRight}
+		on:select={select}
+	>
+		Player 2 Character Render (Right)
 	</SelectOption>
 	<SelectOption
 		description="Recent Game Player 1 Stocks Remaining"
