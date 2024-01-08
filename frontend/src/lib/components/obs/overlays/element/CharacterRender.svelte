@@ -29,7 +29,9 @@
 				div?.clientHeight
 			}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/character-renders/${character}/${characterColorId ?? 0}/${direction}.png`}
+			src={`/image/character-renders/${character}/${
+				characterColorId ?? 0
+			}/vs-${direction}.png`}
 			alt="custom"
 		/>
 	{/if}

@@ -9,6 +9,7 @@
 	export let preview: boolean = false;
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
+	export let direction: 'left' | 'right';
 
 	const playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
 	const postFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
@@ -45,7 +46,7 @@
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 				src={`/image/character-renders/${characterId}/${
 					playerSettings?.characterColor ?? 0
-				}.png`}
+				}/vs-${direction}.png`}
 				alt="custom"
 			/>
 		{/if}
