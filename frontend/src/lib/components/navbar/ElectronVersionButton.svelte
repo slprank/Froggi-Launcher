@@ -64,17 +64,17 @@
 	};
 </script>
 
-{#if $isElectron}
-	<div
-		class="relative"
-		use:tooltip={{
-			content: `<p>${$autoUpdater.status}</p>`,
-			html: true,
-			placement: 'left',
-			delay: [1000, 0],
-			offset: 25,
-		}}
-	>
+<div
+	class="relative"
+	use:tooltip={{
+		content: `<p>${$autoUpdater.status}</p>`,
+		html: true,
+		placement: 'left',
+		delay: [1000, 0],
+		offset: 25,
+	}}
+>
+	{#if $isElectron}
 		<button
 			class="transition opacity-60 hover:opacity-100 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
 			on:click={installUpdate}
@@ -87,5 +87,5 @@
 				<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
 			</button>
 		</button>
-	</div>
-{/if}
+	{/if}
+</div>

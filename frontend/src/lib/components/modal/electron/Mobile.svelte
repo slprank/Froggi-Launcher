@@ -23,7 +23,7 @@
 						Make sure to be connected to the same network
 					</h1>
 					<h1 class="text-gray-500 text-md font-medium text-shadow">
-						App might require a new scan from time to time
+						App might require a new scan if the IP changes
 					</h1>
 				</div>
 			</div>
