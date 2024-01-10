@@ -119,17 +119,10 @@ contextMenu({
 	showCopyImage: false,
 	prepend: (defaultActions, params, browserWindow) => [
 		{
-			label: 'Run function',
-			click: () => {
-				mainWindow.webContents.send('reset-score');
-				mainLog.info('Right click: 1');
-				console.log(defaultActions, params, browserWindow);
-			},
-		},
-		{
 			label: 'Dev',
 			click: () => {
 				mainWindow.openDevTools();
+				console.log(defaultActions, params, browserWindow);
 			},
 		},
 	],
