@@ -32,6 +32,7 @@ const getValidProcesses = (): string[] => {
     let validProcess: string[] = [];
     if (os.platform() === 'win32') validProcess = [
         "Dolphin.exe",
+        "Slippi_Dolphin.exe",
         "Slippi Dolphin.exe",
         "Citrus Dolphin.exe",
         "DolphinWx.exe",
