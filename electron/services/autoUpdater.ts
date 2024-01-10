@@ -98,7 +98,8 @@ export class AutoUpdater {
 
 		this.clientEmitter.on('AutoUpdaterDownloadUpdate', async () => {
 			if (this.status !== AutoUpdaterStatus.UpdateAvailable) return;
-			autoUpdater.downloadUpdate();
+			// Downloads update automatically
+			//autoUpdater.downloadUpdate();
 		});
 
 		this.localEmitter.on('AutoUpdaterStatus', (status) => {
