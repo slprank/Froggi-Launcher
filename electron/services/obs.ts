@@ -32,7 +32,7 @@ export class ObsWebSocket {
 			const scenes = await this.obs.call('GetSceneList');
 			this.storeObs.setScenes(scenes as unknown as ObsScenes);
 		} catch (err) {
-			this.log.error(err);
+			this.log.error(`Could not update scenes:`, err);
 		}
 	};
 
@@ -65,7 +65,7 @@ export class ObsWebSocket {
 
 			this.storeObs.setItems(items);
 		} catch (err) {
-			this.log.error(err);
+			this.log.error(`Could not update items`, err);
 		}
 	};
 
@@ -87,7 +87,7 @@ export class ObsWebSocket {
 				});
 			}
 		} catch (err) {
-			this.log.error(err);
+			this.log.error(`Could not reload browser source`, err);
 		}
 	};
 
@@ -97,7 +97,7 @@ export class ObsWebSocket {
 			if (replayBufferState.outputActive) return;
 			await this.obs.call('StartReplayBuffer');
 		} catch (err) {
-			this.log.error(err);
+			this.log.error(`Could not save Replay Buffer`, err);
 		}
 	};
 
