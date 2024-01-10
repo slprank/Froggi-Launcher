@@ -127,6 +127,6 @@ export class SlippiJs {
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 				clearInterval(dolphinProcessInterval);
 			}
-		}, 1000);
+		}, 5000);
 	}
 }
