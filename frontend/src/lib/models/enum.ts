@@ -70,10 +70,10 @@ export enum ConnectionState {
 
 export enum ElementCategory {
 	Session = 'Current Player Session',
-	GameCustomUi = 'Custom UI',
-	CurrentPlayerCustomUi = 'Current Player Custom UI',
-	Player1CustomUi = 'Player1 Custom UI',
-	Player2CustomUi = 'Player2 Custom UI',
+	GameCustomHud = 'Custom Hud',
+	CurrentPlayerCustomHud = 'Current Player Custom Hud',
+	Player1CustomHud = 'Player1 Custom Hud',
+	Player2CustomHud = 'Player2 Custom Hud',
 	CurrentPlayerPostGameAttackCount = 'Current Player Attack Count',
 	Player1PostGameAttackCount = 'Player1 Attack Count',
 	Player2PostGameAttackCount = 'Player2 Attack Count',

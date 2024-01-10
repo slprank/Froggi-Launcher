@@ -3,12 +3,12 @@
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
-	import CurrentPlayerCustomUiSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomUi/CurrentPlayerCustomUiSelect.svelte';
-	import Player1CustomUiSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomUi/Player1CustomUiSelect.svelte';
-	import Player2CustomUiSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomUi/Player2CustomUiSelect.svelte';
+	import CurrentPlayerCustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/CurrentPlayerCustomHudSelect.svelte';
+	import Player1CustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/Player1CustomHudSelect.svelte';
+	import Player2CustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/Player2CustomHudSelect.svelte';
 	import CustomElementSelect from '$lib/components/obs/overlays/selector/elementCategories/Custom/CustomElementSelect.svelte';
 	import Session from '$lib/components/obs/overlays/selector/elementCategories/Session/Session.svelte';
-	import CustomUiSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomUi/CustomUiSelect.svelte';
+	import CustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/CustomHudSelect.svelte';
 	import RecentGamePlayer1SlippiData from '$lib/components/obs/overlays/selector/elementCategories/SlippiData/Player1SlippiData.svelte';
 	import RecentGamePlayer2SlippiData from '$lib/components/obs/overlays/selector/elementCategories/SlippiData/Player2SlippiData.svelte';
 	import RecentGameCurrentPlayerSlippiData from '$lib/components/obs/overlays/selector/elementCategories/SlippiData/CurrentPlayerSlippiData.svelte';
@@ -38,9 +38,9 @@
 	import Game3Summary from './RecentMatchSummary/Game3.svelte';
 	import Game4Summary from './RecentMatchSummary/Game4.svelte';
 	import Game5Summary from './RecentMatchSummary/Game5.svelte';
-	import CurrentPlayerControllerInput from './CustomUi/CurrentPlayerControllerInput.svelte';
-	import Player1ControllerInput from './CustomUi/Player1ControllerInput.svelte';
-	import Player2ControllerInput from './CustomUi/Player2ControllerInput.svelte';
+	import CurrentPlayerControllerInput from './CustomHud/CurrentPlayerControllerInput.svelte';
+	import Player1ControllerInput from './CustomHud/Player1ControllerInput.svelte';
+	import Player2ControllerInput from './CustomHud/Player2ControllerInput.svelte';
 	import RankChangeData from './SlippiData/RankChangeData.svelte';
 
 	export let selectedElementId: CustomElement;
@@ -59,11 +59,11 @@
 			visible: true,
 		},
 		{
-			category: ElementCategory.GameCustomUi,
+			category: ElementCategory.GameCustomHud,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			category: ElementCategory.CurrentPlayerCustomUi,
+			category: ElementCategory.CurrentPlayerCustomHud,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
@@ -77,11 +77,11 @@
 			].includes($statsScene),
 		},
 		{
-			category: ElementCategory.Player1CustomUi,
+			category: ElementCategory.Player1CustomHud,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			category: ElementCategory.Player2CustomUi,
+			category: ElementCategory.Player2CustomHud,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
@@ -271,17 +271,17 @@
 				{#if selectedCategory === ElementCategory.Custom}
 					<CustomElementSelect on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.GameCustomUi}
-					<CustomUiSelect on:select={select} />
+				{#if selectedCategory === ElementCategory.GameCustomHud}
+					<CustomHudSelect on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.CurrentPlayerCustomUi}
-					<CurrentPlayerCustomUiSelect on:select={select} />
+				{#if selectedCategory === ElementCategory.CurrentPlayerCustomHud}
+					<CurrentPlayerCustomHudSelect on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.Player1CustomUi}
-					<Player1CustomUiSelect on:select={select} />
+				{#if selectedCategory === ElementCategory.Player1CustomHud}
+					<Player1CustomHudSelect on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.Player2CustomUi}
-					<Player2CustomUiSelect on:select={select} />
+				{#if selectedCategory === ElementCategory.Player2CustomHud}
+					<Player2CustomHudSelect on:select={select} />
 				{/if}
 				{#if selectedCategory === ElementCategory.CurrentPlayerControllerInput}
 					<CurrentPlayerControllerInput on:select={select} />
