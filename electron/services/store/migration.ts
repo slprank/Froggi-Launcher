@@ -21,6 +21,11 @@ export const migrateStore = (log: ElectronLog): Store.Options<Record<string, unk
 				log.info('>= 0.1.6');
 				store.delete('obs');
 			},
+			'>=0.4.17': (store) => {
+				store.delete('obs');
+				store.delete('commands');
+				store.delete('stats');
+			}
 		},
 	};
 };
