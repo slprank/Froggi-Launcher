@@ -32,9 +32,9 @@ export class DiscordRpc {
 
 	initDiscordJs() {
 		this.log.info('Initializing Discord RPC');
-		this.initDiscordEvents();
 		this.rpc.on('ready', () => {
 			this.setMenuActivity('Menu');
+			this.initDiscordEvents();
 		});
 	}
 
