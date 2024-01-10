@@ -91,7 +91,7 @@ function createTray(): Tray {
 	const imagePath = path.join(__dirname, '../../build/icon.png');
 	const image = nativeImage.createFromPath(imagePath);
 	tray = new Tray(image.resize({ width: 16, height: 16 }));
-	app.dock.setIcon(image);
+	if (isMac) app.dock.setIcon(image);
 	tray.setToolTip('Froggi');
 
 	const contextMenu = Menu.buildFromTemplate([
