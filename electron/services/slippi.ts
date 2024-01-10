@@ -110,13 +110,16 @@ export class SlippiJs {
 		this.memoryRead.stopMemoryRead();
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu);
+		this.memoryRead.initMemoryRead();
+	}
+
+	private async handleUserSlippiData() {
 		const connectCode = (await findPlayKey()).connectCode;
 		this.storeSettings.setCurrentPlayerConnectCode(connectCode);
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode);
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile);
 		this.storeSession.updateSessionStats(rankedNetplayProfile)
-		this.memoryRead.initMemoryRead();
 	}
 
 	private async startProcessSearchInterval() {
@@ -125,6 +128,7 @@ export class SlippiJs {
 		const dolphinProcessInterval = setInterval(async () => {
 			if (await isDolphinRunning()) {
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+				this.handleUserSlippiData()
 				clearInterval(dolphinProcessInterval);
 			}
 		}, 5000);
