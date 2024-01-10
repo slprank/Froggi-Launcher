@@ -12,10 +12,10 @@
 
 <div class="flex flex-col gap-2">
 	<SelectOption
-		description="Placeholder"
-		value={CustomElement.InGameTimerMinutes}
+		description="Current Player Button A Press"
+		value={CustomElement.InGameCurrentPlayerControllerButtonA}
 		on:select={select}
 	>
-		Placeholder
+		Button A
 	</SelectOption>
 </div>

@@ -45,7 +45,7 @@ const controllerValues = [
 	{ offset: 0x41, type: ByteSize.U8, name: ControllerInputType.IsPlugged },
 ];
 
-const getButtonPresses = (buttonPresses: number | undefined): ControllerButtons | undefined => {
+export const getButtonPresses = (buttonPresses: number | undefined): ControllerButtons | undefined => {
 	if (!buttonPresses) return;
 	return {
 		isAPressed: Boolean(buttonPresses & (1 << 8)),

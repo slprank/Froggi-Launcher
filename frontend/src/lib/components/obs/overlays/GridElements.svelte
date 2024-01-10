@@ -57,9 +57,9 @@
 		(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0
 	}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
 
-	$: strokeSize = getRelativePixelSize(dataItem.data.stroke.size, innerHeight, innerWidth);
-	$: style.stroke = `-webkit-text-stroke-width: ${strokeSize}px;
-						-webkit-text-stroke-color: ${dataItem.data.stroke.color};`;
+	$: strokeSize = getRelativePixelSize(dataItem.data.textStroke.size, innerHeight, innerWidth);
+	$: style.textStroke = `-webkit-text-stroke-width: ${strokeSize}px;
+						-webkit-text-stroke-color: ${dataItem.data.textStroke.color};`;
 
 	$: style.transform = `transform: translate(${dataItem.data.transform.translate.x ?? 0}%, ${
 		dataItem.data.transform.translate.y ?? 0
@@ -87,7 +87,7 @@
 			dataItem.data?.font?.family !== undefined &&
 			`font-family: ${dataItem.data?.font?.family};
 	`
-		}; ${style.stroke};
+		}; ${style.textStroke};
 		${style.transform};
 		${style.shadow};`}
 		bind:this={div}

@@ -35,6 +35,9 @@
 	$: imageSettings = isImageSettings(selectedElementId);
 
 	$: boxSettings = isBoxSettings(selectedElementId);
+	$: controllerButtonSettings = selectedElementId >= 3100 && selectedElementId < 3150;
+	$: controllerAnalogButtonSettings = selectedElementId >= 3150 && selectedElementId < 3160;
+	$: controllerAnalogStickSettings = selectedElementId >= 3160 && selectedElementId < 3170;
 
 	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
 	$: customPercentSettings = selectedElementId >= 1007 && selectedElementId <= 1012;
@@ -50,14 +53,14 @@
 	const isImageSettings = (elementId: number) => {
 		return (elementId >= 6000 && elementId < 7000) || elementId === CustomElement.CustomImage;
 	};
-	const isCustomStringSettings = (elementId: number) => {
-		return elementId >= 1000 && elementId < 2000;
-	};
 	const isCustomBoxSettings = (elementId: number) => {
-		return elementId >= 2000 && elementId < 3000;
+		return elementId >= 3000 && elementId < 4000;
 	};
 	const isCustomImageSettings = (elementId: number) => {
-		return elementId >= 3000 && elementId < 4000;
+		return elementId >= 2000 && elementId < 3000;
+	};
+	const isCustomStringSettings = (elementId: number) => {
+		return elementId >= 1000 && elementId < 2000;
 	};
 
 	const getSettingsType = (elementId: number): StyleSetting | undefined => {
@@ -258,12 +261,12 @@
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
 				<div>
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">
-						Size - ({payload.stroke.size})
+						Size - ({payload.textStroke.size})
 					</h1>
 					<div class="w-full h-fit flex flex-wrap">
 						<div class="w-full">
 							<NumberInput
-								bind:value={payload.stroke.size}
+								bind:value={payload.textStroke.size}
 								min={0}
 								max={100}
 								step={0.1}
@@ -273,7 +276,10 @@
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
 					<div class="w-full h-fit flex flex-wrap">
 						<div class="w-full">
-							<ColorInput bind:valueConcat={payload.stroke.color} opacity={true} />
+							<ColorInput
+								bind:valueConcat={payload.textStroke.color}
+								opacity={true}
+							/>
 						</div>
 					</div>
 				</div>

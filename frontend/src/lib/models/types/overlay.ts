@@ -73,6 +73,10 @@ export interface Css {
 	customText: string | undefined;
 	customImage: string | undefined;
 	opacity: number;
+	fill: string;
+	fillOpacity: number;
+	stroke: string;
+	strokeWidth: number;
 }
 
 export interface CssTransform {
@@ -92,7 +96,7 @@ export interface ElementPayload {
 	percent: Percent
 	shadow: Shadow;
 	string: string | undefined;
-	stroke: Stroke;
+	textStroke: Stroke;
 	transform: CssTransform;
 	visibility: VisibilityAnimations;
 }
@@ -132,7 +136,7 @@ export interface GridContentItemStyle {
 	cssValue: string;
 	classValue: string;
 	shadow: string;
-	stroke: string;
+	textStroke: string;
 	transform: string;
 }
 

@@ -178,6 +178,10 @@
 				customText: undefined,
 				customImage: undefined,
 				opacity: 1,
+				fill: '#ff000000',
+				stroke: '#ff000000',
+				strokeWidth: 3,
+				fillOpacity: 1,
 			},
 			description: '',
 			percent: {
@@ -205,7 +209,7 @@
 				color: '#000000ff',
 			},
 			string: '',
-			stroke: {
+			textStroke: {
 				size: 0,
 				color: '#000000ff',
 			},

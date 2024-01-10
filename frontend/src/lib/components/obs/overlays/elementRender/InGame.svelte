@@ -4,6 +4,7 @@
 	import CurrentPlayerCustomHud from './InGame/CurrentPlayerCustomHud.svelte';
 	import Player1CustomHud from './InGame/Player1CustomHud.svelte';
 	import Player2CustomHud from './InGame/Player2CustomHud.svelte';
+	import CurrentPlayerController from './InGame/CurrentPlayerController.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -14,3 +15,4 @@
 <CurrentPlayerCustomHud {dataItem} {defaultPreview} {style} />
 <Player1CustomHud {dataItem} {defaultPreview} {style} />
 <Player2CustomHud {dataItem} {defaultPreview} {style} />
+<CurrentPlayerController {dataItem} {style} />

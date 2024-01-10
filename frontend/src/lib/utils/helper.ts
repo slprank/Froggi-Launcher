@@ -1,3 +1,5 @@
+import { ControllerButtons } from "$lib/models/types/controller";
+
 export async function asyncForEach(array: any[], callback: Function) {
 	for (let index = 0; index < array.length; index++) {
 		await callback(array[index], index, array);
@@ -35,3 +37,21 @@ export const asyncTimeout = async (ms: number) => {
 		setTimeout(resolve, ms);
 	});
 }
+
+export const getButtonPresses = (buttonPresses: number | undefined): ControllerButtons | undefined => {
+	if (!buttonPresses) return;
+	return {
+		isAPressed: Boolean(buttonPresses & (1 << 8)),
+		isBPressed: Boolean(buttonPresses & (1 << 9)),
+		isDPadLeftPressed: Boolean(buttonPresses & (1 << 0)),
+		isDPadRightPressed: Boolean(buttonPresses & (1 << 1)),
+		isDPadUpPressed: Boolean(buttonPresses & (1 << 3)),
+		isDPadDownPressed: Boolean(buttonPresses & (1 << 2)),
+		isLPressed: Boolean(buttonPresses & (1 << 6)),
+		isRPressed: Boolean(buttonPresses & (1 << 5)),
+		isStartPressed: Boolean(buttonPresses & (1 << 12)),
+		isXPressed: Boolean(buttonPresses & (1 << 10)),
+		isYPressed: Boolean(buttonPresses & (1 << 11)),
+		isZPressed: Boolean(buttonPresses & (1 << 4)),
+	};
+};

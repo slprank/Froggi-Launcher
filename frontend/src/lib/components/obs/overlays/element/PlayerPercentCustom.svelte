@@ -133,7 +133,7 @@
 					'justify-center',
 					'justify-end',
 				)} flex aspect-[23/9] max-h-full w-full items-end justify-end; `}
-				style={`${style.cssValue}; transform: translate(0,25%); ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.stroke}`}
+				style={`${style.cssValue}; transform: translate(0,25%); ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.textStroke}`}
 				bind:this={parent}
 			>
 				{#if parent}

@@ -69,8 +69,8 @@
 		{#if isInGame || defaultPreview}
 			<div class={`w-full h-full absolute`}>
 				<TextFitMulti
-					class={`h-full justify-end `}
-					style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.stroke}`}
+					class={`h-full justify-end`}
+					style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; color: ${percentageColor}; ${style.textStroke}`}
 					maxFont={1000}
 				>
 					{#if !numberOfDecimals}
