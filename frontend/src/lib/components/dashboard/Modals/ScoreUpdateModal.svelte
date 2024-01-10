@@ -128,7 +128,7 @@
 						>
 							<CharacterIcon
 								characterId={game?.settings?.players[
-									$currentPlayers.at(1)?.playerIndex ?? 0
+									$currentPlayers.at(1)?.playerIndex ?? 1
 								]?.characterId ?? 0}
 							/>
 						</div>

@@ -16,10 +16,9 @@
 	let isTagModalOpen = false;
 	let isResetRecentGamesModalOpen = false;
 
-	const getDisplayName = (player: Player | undefined): string => {
-		if (!player) return 'Player';
-		const displayName = player?.displayName;
-		return displayName?.length ? displayName : `Player${player.playerIndex + 1}`;
+	const getDisplayName = (playerIndex: number) => {
+		const displayName = $currentPlayers.at(playerIndex)?.displayName;
+		return displayName?.length ? displayName : `Player${playerIndex + 1}`;
 	};
 
 	const resetScore = () => {
@@ -49,10 +48,10 @@
 	</div>
 	<div class="flex w-full justify-between">
 		<h1 class="text-white text-2xl font-semibold">
-			{getDisplayName($currentPlayers.at(0))}
+			{getDisplayName(0)}
 		</h1>
 		<h1 class="text-white text-2xl font-semibold">
-			{getDisplayName($currentPlayers.at(1))}
+			{getDisplayName(1)}
 		</h1>
 	</div>
 	<div class="flex flex-col gap-2">
