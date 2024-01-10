@@ -46,7 +46,7 @@ export class SlippiJs {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
 		this.startProcessSearchInterval();
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
-			this.log.info('Dolphin Connection State', status);
+			this.log.info('Dolphin Connection State:', ConnectionStatus[status]);
 			if (status === ConnectionStatus.DISCONNECTED) {
 				this.handleDisconnected();
 			}
@@ -93,7 +93,6 @@ export class SlippiJs {
 	}
 
 	private handleDisconnected() {
-		this.log.info('Dolphin Disconnected');
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Disconnected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
 		this.startProcessSearchInterval();
@@ -101,12 +100,11 @@ export class SlippiJs {
 	}
 
 	private handleConnecting() {
-		this.log.info('Dolphin Connecting');
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connecting);
 	}
 
 	private async handleConnected() {
-		this.log.info('Dolphin Connected');
+		this.handleUserSlippiData()
 		this.memoryRead.stopMemoryRead();
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu);
@@ -128,7 +126,6 @@ export class SlippiJs {
 		const dolphinProcessInterval = setInterval(async () => {
 			if (await isDolphinRunning()) {
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
-				this.handleUserSlippiData()
 				clearInterval(dolphinProcessInterval);
 			}
 		}, 5000);

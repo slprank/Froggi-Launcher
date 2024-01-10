@@ -14,8 +14,6 @@
 	import BackButton from '$lib/components/navbar/BackButton.svelte';
 	import ConnectionStateButton from './ConnectionStateButton.svelte';
 	import ElectronVersionButton from './ElectronVersionButton.svelte';
-	import { notifications } from '../notification/Notifications.svelte';
-	import { Tooltip } from '@svelte-plugins/tooltips';
 
 	function resetVisibilityTimer() {
 		if ($isElectron) {
