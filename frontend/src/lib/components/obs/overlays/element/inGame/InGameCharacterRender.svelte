@@ -34,7 +34,7 @@
 		class={`w-full h-full ${style.classValue} flex`}
 		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; justify-content: ${direction === 'left' ? 'flex-end' : 'flex-start'}`}
+		}; justify-content: center`}
 		bind:this={div}
 	>
 		{#if div}

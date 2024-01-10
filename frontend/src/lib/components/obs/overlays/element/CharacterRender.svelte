@@ -27,7 +27,7 @@
 			class="h-full"
 			style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
 				div?.clientHeight
-			}px;
+			}px; justify-content: center;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={`/image/characters/${character}/${characterColorId ?? 0}/vs-${direction}.png`}
 			alt="custom"
