@@ -21,11 +21,19 @@ import { migrateStore } from './services/store/migration';
 import Store from 'electron-store';
 import { ElectronCommandStore } from './services/store/storeCommands';
 
+const mainLog: ElectronLog = setLoggingPath(log);
+
+function setLoggingPath(log: ElectronLog): ElectronLog {
+	try {
+		const appDataPath = getAppDataPath('froggi');
+		log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
+	} catch (err) {
+		log.error(err);
+	}
+	return log;
+}
+
 try {
-
-
-	const mainLog: ElectronLog = setLoggingPath(log);
-
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
@@ -128,17 +136,13 @@ try {
 	});
 
 	function loadVite(port: string) {
-		try {
-			mainWindow.loadURL(`http://127.0.0.1:${port}`).catch((e: any) => {
-				mainLog.error('Error loading URL, retrying', e);
-				setTimeout(() => {
-					loadVite(port);
-				}, 200);
-			});
-		} catch (e) {
-			log.error('Error loading URL, retrying', e);
-			app.quit();
-		}
+		mainWindow.loadURL(`http://127.0.0.1:${port}`).catch((e: any) => {
+			mainLog.error('Error loading URL, retrying', e);
+			setTimeout(() => {
+				loadVite(port);
+			}, 200);
+		});
+
 	}
 
 	function createMainWindow() {
@@ -186,16 +190,12 @@ try {
 		mainWindow.show();
 	});
 
-	function setLoggingPath(log: ElectronLog): ElectronLog {
-		try {
-			const appDataPath = getAppDataPath('froggi');
-			log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
-		} catch (err) {
-			log.error(err);
-		}
-		return log;
-	}
+	process.on('uncaughtException', (error) => {
+		mainLog.error('Uncaught Exception:', error);
+
+		app.exit();
+	});
 
 } catch (err) {
-	log.error(err);
+	mainLog.error(err);
 }
