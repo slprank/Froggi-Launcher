@@ -17,7 +17,7 @@ jobs:
             - name: install dependencies
               run: npm run install:all
             - name: Run Development Server
-              run: timeout 60s npm run dev || exit 0
+              run: timeout 60s npm run dev
             - name: Echo directory
               run: ls
             - name: build
@@ -48,7 +48,7 @@ jobs:
             - name: install dependencies
               run: npm run install:all
             - name: Run Development Server
-              run: timeout 60s npm run dev || exit 0
+              run: timeout 60s npm run dev
             - name: Echo directory
               run: ls
             - name: build
@@ -81,7 +81,7 @@ jobs:
             - name: Echo directory
               run: ls
             - name: Run Development Server
-              run: start cmd /c "timeout /t 30 && npm run dev" || exit 0
+              run: start cmd /c "timeout /t 30 && npm run dev"
             - name: build
               run: npm run build:win
               env:
