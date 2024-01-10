@@ -14,6 +14,7 @@
 	import BackButton from '$lib/components/navbar/BackButton.svelte';
 	import ConnectionStateButton from './ConnectionStateButton.svelte';
 	import ElectronVersionButton from './ElectronVersionButton.svelte';
+	import { tooltip } from 'svooltip';
 
 	function resetVisibilityTimer() {
 		if ($isElectron) {
@@ -62,32 +63,82 @@
 				out:fly={{ x: -100, duration: 400 }}
 				class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-l-1 border-opacity-25 border-white justify-between py-4 items-center space-y-4 z-50"
 			>
-				<div />
 				<BackButton />
+				<div />
 
 				<div class="flex flex-col gap-2">
 					<div
 						class="h-12 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl p-1"
 					>
-						<NavButton click={() => goto('/')}>
-							<img src="/image/button-icons/home.png" alt="home" />
-						</NavButton>
+						<div
+							use:tooltip={{
+								content: `<p>Home</p>`,
+								html: true,
+								placement: 'right',
+								delay: [1000, 0],
+								offset: 25,
+							}}
+						>
+							<NavButton click={() => goto('/')}>
+								<img src="/image/button-icons/home.png" alt="home" />
+							</NavButton>
+						</div>
 					</div>
 					<div
 						class="h-100 w-12 bg-gray-800 bg-opacity-75 justify-center items-center rounded-2xl space-y-2 p-1"
 					>
-						<NavButton click={() => goto('/leaderboard')}>
-							<img src="/image/button-icons/leaderboard.png" alt="leaderboard" />
-						</NavButton>
-						<NavButton click={() => goto('/replays')}>
-							<img src="/image/button-icons/replay.png" alt="replays" />
-						</NavButton>
-						<NavButton click={() => goto('/achievements')}>
-							<img src="/image/button-icons/trophy.png" alt="achievements" />
-						</NavButton>
-						<NavButton click={() => goto('/profile')}>
-							<img src="/image/button-icons/profile.png" alt="profile" />
-						</NavButton>
+						<div
+							use:tooltip={{
+								content: `<p>Leaderboard</p>`,
+								html: true,
+								placement: 'right',
+								delay: [1000, 0],
+								offset: 25,
+							}}
+						>
+							<NavButton click={() => goto('/leaderboard')} disabled={true}>
+								<img src="/image/button-icons/leaderboard.png" alt="leaderboard" />
+							</NavButton>
+						</div>
+						<div
+							use:tooltip={{
+								content: `<p>Replays</p>`,
+								html: true,
+								placement: 'right',
+								delay: [1000, 0],
+								offset: 25,
+							}}
+						>
+							<NavButton click={() => goto('/replays')} disabled={true}>
+								<img src="/image/button-icons/replay.png" alt="replays" />
+							</NavButton>
+						</div>
+						<div
+							use:tooltip={{
+								content: `<p>Achievements</p>`,
+								html: true,
+								placement: 'right',
+								delay: [1000, 0],
+								offset: 25,
+							}}
+						>
+							<NavButton click={() => goto('/achievements')} disabled={true}>
+								<img src="/image/button-icons/trophy.png" alt="achievements" />
+							</NavButton>
+						</div>
+						<div
+							use:tooltip={{
+								content: `<p>Profile</p>`,
+								html: true,
+								placement: 'right',
+								delay: [1000, 0],
+								offset: 25,
+							}}
+						>
+							<NavButton click={() => goto('/profile')} disabled={true}>
+								<img src="/image/button-icons/profile.png" alt="profile" />
+							</NavButton>
+						</div>
 					</div>
 				</div>
 				<ElectronVersionButton />
@@ -107,12 +158,32 @@
 						connectionState={$obsConnection.state}
 						click={() => goto('/obs')}
 					/>
-					<NavButton click={() => (isMobileOpen = true)}>
-						<img src="/image/button-icons/mobile.png" alt="mobile" />
-					</NavButton>
-					<NavButton click={() => goto('/settings')}>
-						<img src="/image/button-icons/settings.png" alt="settings" />
-					</NavButton>
+					<div
+						use:tooltip={{
+							content: `<p>Mobile App</p>`,
+							html: true,
+							placement: 'left',
+							delay: [1000, 0],
+							offset: 25,
+						}}
+					>
+						<NavButton click={() => (isMobileOpen = true)}>
+							<img src="/image/button-icons/mobile.png" alt="mobile" />
+						</NavButton>
+					</div>
+					<div
+						use:tooltip={{
+							content: `<p>Settings</p>`,
+							html: true,
+							placement: 'left',
+							delay: [1000, 0],
+							offset: 25,
+						}}
+					>
+						<NavButton click={() => goto('/settings')}>
+							<img src="/image/button-icons/settings.png" alt="settings" />
+						</NavButton>
+					</div>
 				</div>
 				<ConnectionStateButton
 					iconPath="/image/button-icons/dolphin.svg"
