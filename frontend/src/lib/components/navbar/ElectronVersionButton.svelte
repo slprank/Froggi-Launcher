@@ -75,17 +75,19 @@
 	}}
 >
 	{#if $isElectron}
-		<button
-			class="transition opacity-60 hover:opacity-100 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
-			on:click={installUpdate}
-		>
-			<span class={getAnimation($autoUpdater)} />
+		{#key $autoUpdater}
 			<button
-				class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
-				style={`${getStyle($autoUpdater)}`}
+				class="transition opacity-60 hover:opacity-100 justify-center rounded-2xl text-center align-middle z-50 cursor-pointer"
+				on:click={installUpdate}
 			>
-				<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
+				<span class={getAnimation($autoUpdater)} />
+				<button
+					class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
+					style={`${getStyle($autoUpdater)}`}
+				>
+					<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
+				</button>
 			</button>
-		</button>
+		{/key}
 	{/if}
 </div>
