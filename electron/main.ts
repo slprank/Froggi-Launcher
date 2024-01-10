@@ -47,6 +47,7 @@ try {
 	let tray: Tray;
 
 	function createWindow(): BrowserWindow {
+		log.info("Creating window")
 		let windowState = windowStateManager({
 			defaultWidth: 800,
 			defaultHeight: 600,
