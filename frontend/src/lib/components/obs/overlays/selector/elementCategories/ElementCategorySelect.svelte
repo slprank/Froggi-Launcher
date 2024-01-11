@@ -290,7 +290,7 @@
 					<Player1ControllerInput on:select={select} />
 				{/if}
 				{#if selectedCategory === ElementCategory.Player2ControllerInput}
-					<Player1ControllerInput on:select={select} />
+					<Player2ControllerInput on:select={select} />
 				{/if}
 
 				{#if selectedCategory === ElementCategory.CurrentMatchStats}

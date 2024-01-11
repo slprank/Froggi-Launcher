@@ -5,17 +5,21 @@
 	export let style: GridContentItemStyle;
 	export let isButtonPressed: boolean | undefined;
 	export let button: string | undefined;
+
+	$: console.log('button', isButtonPressed);
 </script>
 
-<div class="w-full h-full flex justify-center object-contain relative">
+<div class="w-full h-full flex justify-center relative">
 	<img
-		style={`absolute ${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+		class="w-full h-full absolute object-contain"
+		style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
 		src={`/image/controller-buttons/${button}-outline.png`}
 		alt="button"
 	/>
 	{#if isButtonPressed}
 		<img
-			style={`absolute ${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+			class="w-full h-full absolute object-contain"
+			style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
 			src={`/image/controller-buttons/${button}-pressed.png`}
 			alt="button"
 		/>

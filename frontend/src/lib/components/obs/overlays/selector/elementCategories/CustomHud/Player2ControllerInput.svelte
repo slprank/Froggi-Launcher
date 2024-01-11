@@ -46,7 +46,7 @@
 		Button Y
 	</SelectOption>
 </div>
-<div class="flex flex-col gap-2">
+<!-- <div class="flex flex-col gap-2">
 	<SelectOption
 		description="Player2 Button L Press"
 		value={CustomElement.InGamePlayer2ControllerButtonL}
@@ -63,7 +63,7 @@
 	>
 		Button R
 	</SelectOption>
-</div>
+</div> -->
 <div class="flex flex-col gap-2">
 	<SelectOption
 		description="Player2 Button Z Press"

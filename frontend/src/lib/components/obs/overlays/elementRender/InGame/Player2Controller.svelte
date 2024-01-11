@@ -14,9 +14,12 @@
 	$: playerController =
 		$gameFrame?.players?.[$currentPlayers.at(1)?.playerIndex ?? 1]?.pre ?? null;
 	$: buttonPresses = getButtonPresses(playerController?.buttons ?? 0);
+
+	$: console.log('controller', playerController);
+	$: console.log('button presses', buttonPresses);
 </script>
 
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonA}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerButtonA}
 	<ControllerInputElement
 		{dataItem}
 		{style}
@@ -24,7 +27,7 @@
 		button="A"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonB}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerButtonB}
 	<ControllerInputElement
 		{dataItem}
 		{style}
@@ -32,7 +35,7 @@
 		button="B"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonX}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerButtonX}
 	<ControllerInputElement
 		{dataItem}
 		{style}
@@ -40,7 +43,7 @@
 		button="X"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonY}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerButtonY}
 	<ControllerInputElement
 		{dataItem}
 		{style}
@@ -48,7 +51,7 @@
 		button="Y"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonL}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerButtonL}
 	<ControllerInputElement
 		{dataItem}
 		{style}
@@ -56,7 +59,7 @@
 		button="L"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonR}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerButtonR}
 	<ControllerInputElement
 		{dataItem}
 		{style}
@@ -64,7 +67,7 @@
 		button="R"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonZ}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerButtonZ}
 	<ControllerInputElement
 		{dataItem}
 		{style}
@@ -72,10 +75,10 @@
 		button="Z"
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerDPad}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerDPad}
 	<ControllerDPadElement {dataItem} {style} {buttonPresses} />
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerAnalogL}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerAnalogL}
 	<ControllerButtonBackAnalogElement
 		{dataItem}
 		{style}
@@ -83,7 +86,7 @@
 		isButtonPressed={buttonPresses?.isLPressed}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerAnalogR}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerAnalogR}
 	<ControllerButtonBackAnalogElement
 		{dataItem}
 		{style}
@@ -91,7 +94,7 @@
 		isButtonPressed={buttonPresses?.isRPressed}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerAnalogStickL}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerAnalogStickL}
 	<ControllerStickAnalogElement
 		{dataItem}
 		{style}
@@ -99,7 +102,7 @@
 		analogYValue={playerController?.joystickY ?? 0}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerAnalogStickR}
+{#if dataItem?.elementId === CustomElement.InGamePlayer2ControllerAnalogStickR}
 	<ControllerStickAnalogElement
 		{dataItem}
 		{style}
