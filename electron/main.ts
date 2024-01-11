@@ -54,6 +54,8 @@ try {
 	let mainWindow: BrowserWindow | any;
 	let tray: Tray;
 
+	app.disableHardwareAcceleration();
+
 	function createWindow(): BrowserWindow {
 		log.info("Creating window")
 		let windowState = windowStateManager({
