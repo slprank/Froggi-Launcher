@@ -10,7 +10,7 @@
 <div class="w-full h-full flex justify-center object-contain relative">
 	<img
 		style={`absolute ${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
-		src={`/image/controller-buttons/texture/${button}-outline.png`}
+		src={`/image/controller-buttons/${button}-outline.png`}
 		alt="button"
 	/>
 	{#if isButtonPressed}

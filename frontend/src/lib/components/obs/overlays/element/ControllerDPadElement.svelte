@@ -5,29 +5,40 @@
 	export let dataItem: GridContentItem;
 	export let style: GridContentItemStyle;
 	export let buttonPresses: ControllerButtons | undefined;
-
-	const getImage = (buttons: ControllerButtons | undefined) => {
-		if (!buttons) return 'DPadNeutral';
-		if (buttons.isDPadUpPressed && buttons.isDPadLeftPressed) return 'DPadTopLeft';
-		if (buttons.isDPadUpPressed && buttons.isDPadRightPressed) return 'DPadTopRight';
-		if (buttons.isDPadDownPressed && buttons.isDPadLeftPressed) return 'DPadDownLeft';
-		if (buttons.isDPadDownPressed && buttons.isDPadRightPressed) return 'DPadDownRight';
-		if (buttons.isDPadUpPressed) return 'DPadUp';
-		if (buttons.isDPadDownPressed) return 'DPadDown';
-		if (buttons.isDPadLeftPressed) return 'DPadLeft';
-		if (buttons.isDPadRightPressed) return 'DPadRight';
-		return 'DPadNeutral';
-	};
-
-	$: pressedButton = getImage(buttonPresses);
 </script>
 
-<div class="w-full h-full flex justify-center object-contain">
+<div class="w-full h-full flex justify-center object-contain relative">
 	<img
-		style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow} ${
-			pressedButton === 'DPadNeutral' ? 'opacity: 0.5' : ''
-		}`}
-		src={`/image/controller-buttons/${pressedButton}.svg`}
+		style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+		src={`/image/controller-buttons/DPadGate.png`}
 		alt="button"
 	/>
+	{#if buttonPresses?.isDPadUpPressed}
+		<img
+			style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+			src={`/image/controller-buttons/DPadUp.png`}
+			alt="button"
+		/>
+	{/if}
+	{#if buttonPresses?.isDPadDownPressed}
+		<img
+			style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+			src={`/image/controller-buttons/DPadDown.png`}
+			alt="button"
+		/>
+	{/if}
+	{#if buttonPresses?.isDPadLeftPressed}
+		<img
+			style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+			src={`/image/controller-buttons/DPadLeft.png`}
+			alt="button"
+		/>
+	{/if}
+	{#if buttonPresses?.isDPadRightPressed}
+		<img
+			style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+			src={`/image/controller-buttons/DPadRight.png`}
+			alt="button"
+		/>
+	{/if}
 </div>
