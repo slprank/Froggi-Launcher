@@ -16,7 +16,11 @@ import {
 	ObsCustomPayload,
 } from '../../../frontend/src/lib/models/types/commandTypes';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
-import { InGameState, LiveStatsScene, NotificationType } from '../../../frontend/src/lib/models/enum';
+import {
+	InGameState,
+	LiveStatsScene,
+	NotificationType,
+} from '../../../frontend/src/lib/models/enum';
 import { PlayerController } from '../../../frontend/src/lib/models/types/controller';
 import { ElectronPlayersStore } from './storePlayers';
 import { ElectronSettingsStore } from './storeSettings';
@@ -25,7 +29,7 @@ import { MessageHandler } from '../messageHandler';
 import { newId } from '../../utils/functions';
 import { ElectronLiveStatsStore } from './storeLiveStats';
 import { isNil } from 'lodash';
-import { getOverlappingCommands } from '../../../frontend/src/lib/utils/controllerCommandHelper';
+import { getSubsetCommands } from '../../../frontend/src/lib/utils/controllerCommandHelper';
 import { OBSRequestTypes } from 'obs-websocket-js';
 import { ObsItem } from '../../../frontend/src/lib/models/types/obsTypes';
 
@@ -101,7 +105,6 @@ export class ElectronCommandStore {
 				[LiveStatsScene.PostSet]: [],
 				[LiveStatsScene.RankChange]: [],
 			}
-
 		);
 	}
 
@@ -126,18 +129,17 @@ export class ElectronCommandStore {
 	}
 
 	getSceneSwitchCommandsState(): boolean {
-		return this.store.get('command.sceneSwitch.enabled') as boolean
+		return this.store.get('command.sceneSwitch.enabled') as boolean;
 	}
 
 	toggleSceneSwitchCommandsState() {
-		const state = this.getSceneSwitchCommandsState()
+		const state = this.getSceneSwitchCommandsState();
 		this.store.set('command.sceneSwitch.enabled', !state);
 	}
 
 	private init() {
 		this.controllerCommands =
-			(this.store.get('command.controller.inputCommands') as ControllerCommand[]) ??
-			[];
+			(this.store.get('command.controller.inputCommands') as ControllerCommand[]) ?? [];
 		this.controllerCommandState =
 			(this.store.get('command.controller.enabled') as boolean) ?? false;
 	}
@@ -172,16 +174,20 @@ export class ElectronCommandStore {
 
 		const buttonInputs = playerControllerInputs?.[controllerIndex].buttons;
 
-		const controllerCommands = getOverlappingCommands(this.controllerCommands, buttonInputs);
+		const controllerCommands = getSubsetCommands(this.controllerCommands, buttonInputs);
 		if (!controllerCommands) return;
 
 		controllerCommands.forEach((controllerCommand) => {
-			this.executeCommand(CommandType.Obs, controllerCommand.command.requestType, controllerCommand.command.payload);
+			this.executeCommand(
+				CommandType.Obs,
+				controllerCommand.command.requestType,
+				controllerCommand.command.payload,
+			);
 		});
 		this.commandTimeout = true;
 		setTimeout(() => {
 			this.commandTimeout = false;
-		}, 100);
+		}, 1000);
 	};
 
 	private handleSceneChangeCommands = (commands: Command[]) => {
@@ -189,22 +195,26 @@ export class ElectronCommandStore {
 		commands?.forEach((command) => {
 			this.executeCommand(command.type, command.requestType, command.payload);
 		});
-	}
+	};
 
-
-	executeCommand = <
-		Type extends keyof PayloadType>
-		(
-			type: CommandType,
-			requestType: RequestType,
-			payload: PayloadType[Type] | any) => {
+	executeCommand = <Type extends keyof PayloadType>(
+		type: CommandType,
+		requestType: RequestType,
+		payload: PayloadType[Type] | any,
+	) => {
 		if (type === CommandType.Obs)
 			this.executeObsCommand(requestType as keyof OBSRequestTypes, payload);
 		if (type === CommandType.ObsCustom)
-			this.executeObsCustomCommand(requestType as ObsCustomRequest, payload as ObsCustomPayload<ObsCustomRequest>);
+			this.executeObsCustomCommand(
+				requestType as ObsCustomRequest,
+				payload as ObsCustomPayload<ObsCustomRequest>,
+			);
 		if (type === CommandType.Overlay)
-			this.executeOverlayCommand(requestType as OverlayRequest, payload as OverlayPayload<OverlayRequest>);
-	}
+			this.executeOverlayCommand(
+				requestType as OverlayRequest,
+				payload as OverlayPayload<OverlayRequest>,
+			);
+	};
 
 	private executeObsCommand = async <T extends keyof OBSRequestTypes>(
 		command: T,
@@ -227,7 +237,7 @@ export class ElectronCommandStore {
 		payload: ObsCustomPayload<T>,
 	) => {
 		switch (command) {
-			case "ToggleSceneItem":
+			case 'ToggleSceneItem':
 				this.toggleSceneItem(payload.itemName);
 		}
 	};
@@ -237,25 +247,33 @@ export class ElectronCommandStore {
 		payload: OverlayPayload<T>,
 	) => {
 		switch (command) {
-			case "ChangeScene":
+			case 'ChangeScene':
 				this.storeLiveStats.setStatsScene(payload.liveStatsScene);
 		}
 	};
 
 	private toggleSceneItem = async (itemName: string) => {
 		try {
-			const scene = (await this.obsWebSocket.obs.call("GetCurrentProgramScene")).currentProgramSceneName;
-			const item = (await this.obsWebSocket.obs.call('GetSceneItemList', { sceneName: scene })).sceneItems.find((item) => item.name === itemName) as unknown as ObsItem;
-			const state = (await this.obsWebSocket.obs.call("GetSceneItemEnabled", { sceneName: scene, sceneItemId: item.sceneItemId })).sceneItemEnabled;
-			this.executeCommand(CommandType.Obs, "SetSceneItemEnabled", {
+			const scene = (await this.obsWebSocket.obs.call('GetCurrentProgramScene'))
+				.currentProgramSceneName;
+			const item = (
+				await this.obsWebSocket.obs.call('GetSceneItemList', { sceneName: scene })
+			).sceneItems.find((item) => item.name === itemName) as unknown as ObsItem;
+			const state = (
+				await this.obsWebSocket.obs.call('GetSceneItemEnabled', {
+					sceneName: scene,
+					sceneItemId: item.sceneItemId,
+				})
+			).sceneItemEnabled;
+			this.executeCommand(CommandType.Obs, 'SetSceneItemEnabled', {
 				sceneName: scene,
 				sceneItemId: item.sceneItemId,
 				enabled: state,
-			})
+			});
 		} catch (err) {
-			this.log.error(err)
+			this.log.error(err);
 		}
-	}
+	};
 
 	private initEventListeners() {
 		this.clientEmitter.on('ExecuteCommand', async (type, command, payload) => {
@@ -269,12 +287,18 @@ export class ElectronCommandStore {
 			if (!commands) return;
 			this.handleSceneChangeCommands(commands);
 		});
-		this.clientEmitter.on('SceneSwitchCommandAdd', (scene: LiveStatsScene, command: Command) => {
-			this.addSceneCommand(scene, command);
-		});
-		this.clientEmitter.on('SceneSwitchCommandDelete', (scene: LiveStatsScene, commandId: string) => {
-			this.deleteSceneCommand(scene, commandId);
-		});
+		this.clientEmitter.on(
+			'SceneSwitchCommandAdd',
+			(scene: LiveStatsScene, command: Command) => {
+				this.addSceneCommand(scene, command);
+			},
+		);
+		this.clientEmitter.on(
+			'SceneSwitchCommandDelete',
+			(scene: LiveStatsScene, commandId: string) => {
+				this.deleteSceneCommand(scene, commandId);
+			},
+		);
 		this.clientEmitter.on('SceneSwitchCommandStateToggle', () => {
 			this.toggleSceneSwitchCommandsState();
 		});
