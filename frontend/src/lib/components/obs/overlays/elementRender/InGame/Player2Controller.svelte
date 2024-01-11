@@ -80,6 +80,7 @@
 		{dataItem}
 		{style}
 		analogValue={playerController?.physicalLTrigger ?? 0}
+		isButtonPressed={buttonPresses?.isLPressed}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerAnalogR}
@@ -87,6 +88,7 @@
 		{dataItem}
 		{style}
 		analogValue={playerController?.physicalRTrigger ?? 0}
+		isButtonPressed={buttonPresses?.isRPressed}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerAnalogStickL}

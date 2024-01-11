@@ -4,13 +4,16 @@
 	export let dataItem: GridContentItem;
 	export let style: GridContentItemStyle;
 	export let analogValue: number | undefined;
+	export let isButtonPressed: boolean | undefined;
+
+	$: analog = isButtonPressed ? 1 : analogValue ?? 0;
 </script>
 
 <div
 	class={`w-full h-full overflow-hidden ${style.classValue} progress-container`}
 	style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
 >
-	<div class="progress-bar" style={`width: ${(analogValue ?? 0) * 100}%`} />
+	<div class="progress-bar" style={`width: ${analog * 100}%`} />
 </div>
 
 <style>

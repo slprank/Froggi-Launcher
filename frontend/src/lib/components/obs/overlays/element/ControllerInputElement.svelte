@@ -7,12 +7,17 @@
 	export let button: string | undefined;
 </script>
 
-<div class="w-full h-full flex justify-center object-contain">
+<div class="w-full h-full flex justify-center object-contain relative">
 	<img
-		style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow} ${
-			!isButtonPressed ? 'opacity: 0.5' : ''
-		}`}
-		src={`/image/controller-buttons/${button}.svg`}
+		style={`absolute ${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+		src={`/image/controller-buttons/texture/${button}-outline.png`}
 		alt="button"
 	/>
+	{#if isButtonPressed}
+		<img
+			style={`absolute ${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+			src={`/image/controller-buttons/${button}-pressed.png`}
+			alt="button"
+		/>
+	{/if}
 </div>
