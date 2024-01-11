@@ -97,6 +97,7 @@
 		{style}
 		analogXValue={playerController?.joystickX ?? 0}
 		analogYValue={playerController?.joystickY ?? 0}
+		ribs={true}
 	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1ControllerAnalogStickR}

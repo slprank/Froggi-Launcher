@@ -5,6 +5,7 @@
 	export let style: GridContentItemStyle;
 	export let analogXValue: number | undefined;
 	export let analogYValue: number | undefined;
+	export let ribs: boolean = false;
 
 	let div: HTMLElement;
 
@@ -30,7 +31,7 @@
 	<img
 		class="w-full h-full absolute object-contain"
 		style={`transform: translate(${analogXValuePercent}px, ${analogYValuePercent}px);`}
-		src="/image/controller-buttons/joystick-ribs-filled.png"
+		src={`/image/controller-buttons/joystick${ribs ? '-ribs' : ''}-filled.png`}
 		alt="Joystick Mask"
 	/>
 </div>

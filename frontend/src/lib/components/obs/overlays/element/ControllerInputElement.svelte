@@ -5,8 +5,6 @@
 	export let style: GridContentItemStyle;
 	export let isButtonPressed: boolean | undefined;
 	export let button: string | undefined;
-
-	$: console.log('button', isButtonPressed);
 </script>
 
 <div class="w-full h-full flex justify-center relative">
