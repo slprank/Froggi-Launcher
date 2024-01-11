@@ -67,9 +67,8 @@ try {
 			minHeight: 600,
 			minWidth: 800,
 			webPreferences: {
-				backgroundThrottling: false,
 				contextIsolation: true,
-				devTools: true ?? dev,
+				devTools: dev,
 				nodeIntegration: true,
 				preload: path.join(__dirname.replace(`\\`, '/'), '/preload.js'),
 				spellcheck: false,
