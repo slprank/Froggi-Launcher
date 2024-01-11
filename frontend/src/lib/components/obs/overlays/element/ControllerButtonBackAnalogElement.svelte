@@ -4,8 +4,6 @@
 	export let dataItem: GridContentItem;
 	export let style: GridContentItemStyle;
 	export let analogValue: number | undefined;
-
-	$: console.log(style);
 </script>
 
 <div
