@@ -4,18 +4,28 @@
 	export let dataItem: GridContentItem;
 	export let style: GridContentItemStyle;
 	export let analogValue: number | undefined;
+
+	$: console.log(style);
 </script>
 
-<div class="w-full h-full flex justify-center object-contain relative">
-	<svg
-		style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
-		class="absolute"
-		width="100%"
-		height="100%"
-		viewBox="0 0 100 100"
-		xmlns="http://www.w3.org/2000/svg"
-	>
-		<circle style="fill: black;" cx="50" cy="50" r="30" />
-		<polygon points="45,5 85,25 85,75 50,95 15,75 15,25" style="fill: black" />
-	</svg>
+<div
+	class={`w-full h-full overflow-hidden ${style.classValue} progress-container`}
+	style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
+>
+	<div class="progress-bar" style={`width: ${(analogValue ?? 0) * 100}%`} />
 </div>
+
+<style>
+	/* Style for the progress bar container */
+	.progress-container {
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+	}
+
+	/* Style for the progress bar */
+	.progress-bar {
+		height: 100%; /* You can adjust the height as needed */
+		background-color: white; /* White color for progress */
+	}
+</style>

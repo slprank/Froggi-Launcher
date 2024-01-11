@@ -22,17 +22,15 @@
 	class="w-full h-full flex justify-center items-center"
 	style={`${style.cssValue}; ${dataItem?.data.advancedStyling}; ${style.shadow}`}
 >
-	<div class="aspect-square relative w-full h-full">
-		<img
-			class="w-full h-full absolute object-contain"
-			src="/image/controller-buttons/textures/joystick-gate.png"
-			alt="Joystick Gate"
-		/>
-		<img
-			class="w-full h-full absolute object-contain"
-			style={`transform: translate(${analogXValuePercent}px, ${analogYValuePercent}px);`}
-			src="/image/controller-buttons/textures/joystick-mask.png"
-			alt="Joystick Mask"
-		/>
-	</div>
+	<img
+		class="w-full h-full absolute object-contain"
+		src="/image/controller-buttons/textures/joystick-gate.png"
+		alt="Joystick Gate"
+	/>
+	<img
+		class="w-full h-full absolute object-contain"
+		style={`transform: translate(${analogXValuePercent}px, ${analogYValuePercent}px);`}
+		src="/image/controller-buttons/textures/joystick-ribs-filled.png"
+		alt="Joystick Mask"
+	/>
 </div>
