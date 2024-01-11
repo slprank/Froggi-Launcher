@@ -29,13 +29,12 @@ export class MemoryRead {
 		await memory.init();
 		this.memoryReadInterval = setInterval(() => {
 			try {
-				this.handleController(memory);
 				this.handleGameState(memory);
-				// TODO: Get Pause
+				this.handleController(memory);
 				// TODO: Get Menu Location
 			} catch (err) {
-				console.error(err);
-				clearInterval(this.memoryReadInterval);
+				this.log.error(err);
+				this.stopMemoryRead();
 			}
 		}, 16);
 	}
