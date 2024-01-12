@@ -6,6 +6,7 @@ import {
 	ConnectionStatus,
 	SlpStream,
 } from '@slippi/slippi-js';
+import { IpcMain } from 'electron';
 import { inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { ConnectionState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
@@ -17,6 +18,7 @@ import { findPlayKey } from '../utils/playkey';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import os from 'os';
 import { MemoryRead } from './memoryRead';
+import { isDolphinRunning } from '../utils/dolphinProcess';
 import { ElectronSessionStore } from './store/storeSession';
 
 @singleton()
@@ -26,6 +28,7 @@ export class SlippiJs {
 	isWindows = os.platform() === 'win32';
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
+		@inject('IpcMain') private ipcMain: IpcMain,
 		@inject('SlpStream') private slpStream: SlpStream,
 		@inject(Api) private api: Api,
 		@inject(ElectronCurrentPlayerStore) private storeCurrentPlayer: ElectronCurrentPlayerStore,
@@ -35,13 +38,13 @@ export class SlippiJs {
 		@inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
 		@inject(MemoryRead) private memoryRead: MemoryRead,
 	) {
-		this.log.info('Initializing SlippiJs');
 		this.initSlippiJs();
 	}
 
 	initSlippiJs() {
+		this.log.info('Initializing SlippiJs');
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
-		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+		this.startProcessSearchInterval();
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('Dolphin Connection State:', ConnectionStatus[status]);
 			if (status === ConnectionStatus.DISCONNECTED) {
@@ -76,13 +79,24 @@ export class SlippiJs {
 			// Log the error messages we get from Dolphin
 			this.log.error('Dolphin connection error', err);
 		});
+
+		this.ipcMain.on('ipc', (_: any, arg: any) => {
+			// Command to connect to Dolphin
+			if (arg === 'connectDolphin') {
+				this.log.info(arg);
+				if (this.dolphinConnection.getStatus() === ConnectionStatus.DISCONNECTED) {
+					// Now try connect to our local Dolphin instance
+					this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+				}
+			}
+		});
 	}
 
 	private handleDisconnected() {
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Disconnected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
+		this.startProcessSearchInterval();
 		this.memoryRead.stopMemoryRead();
-		this.reinitializeSlippiJs();
 	}
 
 	private handleConnecting() {
@@ -106,10 +120,14 @@ export class SlippiJs {
 		this.storeSession.updateSessionStats(rankedNetplayProfile)
 	}
 
-	// Solution to enet crash
-	private reinitializeSlippiJs() {
-		this.log.info('Reinitialize SlippiJs');
-		this.dolphinConnection = new DolphinConnection();
-		this.initSlippiJs();
+	private async startProcessSearchInterval() {
+		this.storeDolphin.setDolphinConnectionState(ConnectionState.Searching);
+		this.log.info('Looking For Dolphin Process');
+		const dolphinProcessInterval = setInterval(async () => {
+			if (await isDolphinRunning()) {
+				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+				clearInterval(dolphinProcessInterval);
+			}
+		}, 5000);
 	}
 }

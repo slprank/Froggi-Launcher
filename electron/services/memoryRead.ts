@@ -31,7 +31,10 @@ export class MemoryRead {
 		await this.memory.init();
 		this.memoryReadInterval = setInterval(() => {
 			try {
-				if (isNil(this.memory)) return;
+				if (isNil(this.memory)) {
+					this.stopMemoryRead();
+					return
+				};
 				this.handleGameState(this.memory);
 				this.handleController(this.memory);
 				// TODO: Get Menu Location
@@ -58,6 +61,7 @@ export class MemoryRead {
 
 	stopMemoryRead() {
 		this.log.info('Stopping memory read');
+		this.memory = null
 		clearInterval(this.memoryReadInterval);
 	}
 }
