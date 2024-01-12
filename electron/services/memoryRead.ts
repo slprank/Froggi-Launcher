@@ -7,16 +7,18 @@ import { MessageHandler } from './messageHandler';
 import DolphinMemory from 'dolphin-memory-reader';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { InGameState } from '../../frontend/src/lib/models/enum';
+import { isNil } from 'lodash';
 
 @singleton()
 export class MemoryRead {
 	private memoryReadInterval: NodeJS.Timeout = {} as NodeJS.Timeout;
 	private isWindows = os.platform() === 'win32';
+	private memory: DolphinMemory | null = null;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) {}
+	) { }
 
 	initMemoryRead() {
 		this.initMemoryReadWin();
@@ -25,16 +27,18 @@ export class MemoryRead {
 	private async initMemoryReadWin() {
 		if (!this.isWindows) return;
 		this.log.info('Initializing Memory Read');
-		const memory = new DolphinMemory();
-		await memory.init();
+		this.memory = new DolphinMemory();
+		await this.memory.init();
 		this.memoryReadInterval = setInterval(() => {
 			try {
-				this.handleGameState(memory);
-				this.handleController(memory);
+				if (isNil(this.memory)) return;
+				this.handleGameState(this.memory);
+				this.handleController(this.memory);
 				// TODO: Get Menu Location
 			} catch (err) {
 				this.log.error(err);
 				this.stopMemoryRead();
+				this.memory = null
 			}
 		}, 16);
 	}
