@@ -1,6 +1,6 @@
 {
 	"name": "froggi",
-	"version": "0.4.26",
+	"version": "0.4.27",
 	"private": true,
 	"description": "Slippi Client",
 	"main": "build_electron/electron/main.js",
@@ -29,7 +29,7 @@
 		"Chrome 89"
 	],
 	"dependencies": {
-		"@slippi/slippi-js": "^6.7.0",
+		"@slippi/slippi-js": "github:SindreVatnaland/slippi-js#dist",
 		"@types/lodash": "^4.14.201",
 		"appdata-path": "^1.0.0",
 		"axios": "^1.6.2",
