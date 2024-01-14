@@ -8,6 +8,7 @@ import DolphinMemory from 'dolphin-memory-reader';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { InGameState } from '../../frontend/src/lib/models/enum';
 import { isNil } from 'lodash';
+import { ElectronSettingsStore } from './store/storeSettings';
 
 @singleton()
 export class MemoryRead {
@@ -17,10 +18,13 @@ export class MemoryRead {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
+		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) { }
 
 	initMemoryRead() {
+		// TODO: Remove this when mainline Memory Read is supported
+		if (this.storeSettings.getSlippiLauncherSettings()?.useNetplayBeta) return;
 		this.initMemoryReadWin();
 	}
 
