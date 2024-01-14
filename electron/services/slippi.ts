@@ -18,6 +18,7 @@ import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import os from 'os';
 import { MemoryRead } from './memoryRead';
 import { ElectronSessionStore } from './store/storeSession';
+import { isDolphinRunning } from '../utils/dolphinProcess';
 
 @singleton()
 export class SlippiJs {
@@ -41,14 +42,15 @@ export class SlippiJs {
 	initSlippiJs() {
 		this.log.info('Initializing SlippiJs');
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
-		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+		this.startProcessSearchInterval();
+
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('Dolphin Connection State:', ConnectionStatus[status]);
 			if (status === ConnectionStatus.DISCONNECTED) {
-				this.handleDisconnected();
+				this.handleDisconnected()
 			}
 			if (status === ConnectionStatus.CONNECTED) {
-				this.handleConnected();
+				await this.handleConnected();
 			}
 			if (status === ConnectionStatus.CONNECTING) {
 				this.handleConnecting();
@@ -83,7 +85,7 @@ export class SlippiJs {
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
 		this.memoryRead.stopMemoryRead();
 		setTimeout(() => {
-			this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+			this.startProcessSearchInterval();
 		}, 1000);
 	}
 
@@ -92,12 +94,12 @@ export class SlippiJs {
 	}
 
 	private async handleConnected() {
-		this.handleUserSlippiData();
+		this.handleUserSlippiData()
 		this.memoryRead.stopMemoryRead();
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu);
-		console.log('init');
 		this.memoryRead.initMemoryRead();
+		this.stopProcessSearchInterval()
 	}
 
 	private async handleUserSlippiData() {
@@ -106,6 +108,22 @@ export class SlippiJs {
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode);
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile);
-		this.storeSession.updateSessionStats(rankedNetplayProfile);
+		this.storeSession.updateSessionStats(rankedNetplayProfile)
+	}
+
+	private async startProcessSearchInterval() {
+		this.stopProcessSearchInterval();
+		this.storeDolphin.setDolphinConnectionState(ConnectionState.Searching);
+		this.log.info('Looking For Dolphin Process');
+		this.dolphinProcessInterval = setInterval(async () => {
+			if (await isDolphinRunning()) {
+				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
+				this.stopProcessSearchInterval();
+			}
+		}, 250);
+	}
+
+	private stopProcessSearchInterval() {
+		clearInterval(this.dolphinProcessInterval);
 	}
 }
