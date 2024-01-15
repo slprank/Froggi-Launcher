@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { getButtonPresses } from '$lib/utils/helper';
+	import { getButtonPressesGame } from '$lib/utils/helper';
 	import { currentPlayer, gameFrame } from '$lib/utils/store.svelte';
 	import ControllerInputElement from '$lib/components/obs/overlays/element/ControllerInputElement.svelte';
 	import ControllerDPadElement from '$lib/components/obs/overlays/element/ControllerDPadElement.svelte';
@@ -12,7 +12,7 @@
 	export let style: GridContentItemStyle;
 
 	$: playerController = $gameFrame?.players?.[$currentPlayer?.playerIndex ?? 0]?.pre ?? null;
-	$: buttonPresses = getButtonPresses(playerController?.buttons ?? 0);
+	$: buttonPresses = getButtonPressesGame(playerController?.buttons ?? 0);
 </script>
 
 {#if dataItem?.elementId === CustomElement.InGameCurrentPlayerControllerButtonA}

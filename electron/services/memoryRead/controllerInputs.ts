@@ -1,7 +1,7 @@
 import DolphinMemory from 'dolphin-memory-reader';
 import { ByteSize } from 'dolphin-memory-reader/dist/types/enum';
+import { getButtonPressesMemory } from '../../../frontend/src/lib/utils/helper';
 import {
-	ControllerButtons,
 	ControllerInputs,
 	PlayerController,
 } from '../../../frontend/src/lib/models/types/controller';
@@ -45,26 +45,6 @@ const controllerValues = [
 	{ offset: 0x41, type: ByteSize.U8, name: ControllerInputType.IsPlugged },
 ];
 
-export const getButtonPresses = (
-	buttonPresses: number | undefined,
-): ControllerButtons | undefined => {
-	if (!buttonPresses) return;
-	return {
-		isAPressed: Boolean(buttonPresses & (1 << 8)),
-		isBPressed: Boolean(buttonPresses & (1 << 9)),
-		isDPadLeftPressed: Boolean(buttonPresses & (1 << 0)),
-		isDPadRightPressed: Boolean(buttonPresses & (1 << 1)),
-		isDPadUpPressed: Boolean(buttonPresses & (1 << 3)),
-		isDPadDownPressed: Boolean(buttonPresses & (1 << 2)),
-		isLPressed: Boolean(buttonPresses & (1 << 6)),
-		isRPressed: Boolean(buttonPresses & (1 << 5)),
-		isStartPressed: Boolean(buttonPresses & (1 << 12)),
-		isXPressed: Boolean(buttonPresses & (1 << 10)),
-		isYPressed: Boolean(buttonPresses & (1 << 11)),
-		isZPressed: Boolean(buttonPresses & (1 << 4)),
-	};
-};
-
 export const getControllerInputs = (memory: DolphinMemory): PlayerController => {
 	const controllerInputs: PlayerController = controllers.reduce(
 		(playerController: PlayerController, controller: number, i: number) => {
@@ -76,7 +56,7 @@ export const getControllerInputs = (memory: DolphinMemory): PlayerController => 
 					return input;
 				}, {} as ControllerInputs),
 			};
-			playerController[i].buttons = getButtonPresses(playerController[i].buttonsPressed);
+			playerController[i].buttons = getButtonPressesMemory(playerController[i].buttonsPressed);
 			playerController[i].isConnected = !playerController[i].isPlugged;
 			return playerController;
 		},
