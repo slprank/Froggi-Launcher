@@ -16,10 +16,6 @@ jobs:
                   node-version: 18.13.0
             - name: install dependencies
               run: npm run install:all
-            - name: install pnpm
-              run: npm install -g pnpm
-            - name: install slippi fork
-              run: pnpm install https://github.com/SindreVatnaland/slippi-js.git
             - name: Echo directory
               run: ls
             - name: build
@@ -49,10 +45,6 @@ jobs:
                   node-version: 18.13.0
             - name: install dependencies
               run: npm run install:all
-            - name: install pnpm
-              run: npm install -g pnpm
-            - name: install slippi fork
-              run: pnpm install https://github.com/SindreVatnaland/slippi-js.git
             - name: Echo directory
               run: ls
             - name: build
@@ -82,10 +74,6 @@ jobs:
                   node-version: 18.13.0
             - name: install dependencies
               run: npm run install
-            - name: install pnpm
-              run: npm install -g pnpm
-            - name: install slippi fork
-              run: pnpm install https://github.com/SindreVatnaland/slippi-js.git
             - name: Echo directory
               run: ls
             - name: build
