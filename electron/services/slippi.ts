@@ -42,6 +42,7 @@ export class SlippiJs {
 	initSlippiJs() {
 		this.log.info('Initializing SlippiJs');
 		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
+		this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 		this.startProcessSearchInterval();
 
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
@@ -120,7 +121,7 @@ export class SlippiJs {
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 				this.stopProcessSearchInterval();
 			}
-		}, 250);
+		}, 1000);
 	}
 
 	private stopProcessSearchInterval() {
