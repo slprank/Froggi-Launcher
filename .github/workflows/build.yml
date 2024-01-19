@@ -19,7 +19,7 @@ jobs:
             - name: Echo directory
               run: ls
             - name: build
-              run: npm run build:mac
+              run: npm run build
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
             - name: Echo directory
               run: ls
             - name: build
-              run: npm run build:linux
+              run: npm run build
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +73,7 @@ jobs:
               with:
                   node-version: 18.13.0
             - name: install dependencies
-              run: npm run install:all
+              run: npm run install
             - name: Echo directory
               run: ls
             - name: build
