@@ -30,7 +30,7 @@
 		"Chrome 89"
 	],
 	"dependencies": {
-		"@slippi/slippi-js": "github:SindreVatnaland/slippi-js#dist",
+		"@slippi/slippi-js": "github:SindreVatnaland/slippi-js",
 		"@types/lodash": "^4.14.201",
 		"appdata-path": "^1.0.0",
 		"axios": "^1.6.2",
