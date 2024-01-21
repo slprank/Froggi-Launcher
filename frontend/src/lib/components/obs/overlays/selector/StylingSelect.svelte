@@ -39,6 +39,8 @@
 	$: controllerAnalogButtonSettings = selectedElementId >= 3150 && selectedElementId < 3160;
 	$: controllerAnalogStickSettings = selectedElementId >= 3160 && selectedElementId < 3170;
 
+	$: svgSettings = selectedElementId >= 3200 && selectedElementId <= 3200; // TODO: Add all buttons as svg
+
 	$: percentSettings = selectedElementId >= 1001 && selectedElementId <= 1006;
 	$: customPercentSettings = selectedElementId >= 1007 && selectedElementId <= 1012;
 
@@ -261,7 +263,7 @@
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
 				<div>
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">
-						Size - ({payload.textStroke.size})
+						Size - ({payload.css.strokeWidth})
 					</h1>
 					<div class="w-full h-fit flex flex-wrap">
 						<div class="w-full">
@@ -279,6 +281,32 @@
 							<ColorInput
 								bind:valueConcat={payload.textStroke.color}
 								opacity={true}
+							/>
+						</div>
+					</div>
+				</div>
+			{/if}
+			{#if svgSettings}
+				<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
+				<div>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">
+						Size - ({payload.textStroke.size})
+					</h1>
+					<div class="w-full h-fit flex flex-wrap">
+						<div class="w-full">
+							<NumberInput
+								bind:value={payload.css.strokeWidth}
+								min={0}
+								max={100}
+								step={0.1}
+							/>
+						</div>
+					</div>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
+					<div class="w-full h-fit flex flex-wrap">
+						<div class="w-full">
+							<ColorInput
+								bind:value={payload.css.stroke}
 							/>
 						</div>
 					</div>

@@ -301,7 +301,6 @@
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
-			console.log(parse);
 			for (const [key, value] of Object.entries(parse) as [
 				key: keyof MessageEvents,
 				value: Parameters<MessageEvents[keyof MessageEvents]>,

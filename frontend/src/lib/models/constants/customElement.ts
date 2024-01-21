@@ -75,6 +75,8 @@ export enum CustomElement {
     InGamePlayer2ControllerAnalogStickL = 3164,
     InGamePlayer2ControllerAnalogStickR = 3165,
 
+    InGamePlayerRadar = 3200,
+
     // String
     // Rank Data
     SlippiRankCurrentPlayerTag = 4000,

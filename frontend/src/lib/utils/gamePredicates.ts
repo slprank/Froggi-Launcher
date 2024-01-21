@@ -70,3 +70,13 @@ export const hasGameBombRain = (game: GameStats): boolean => {
     if (game.settings?.gameInfoBlock?.bombRainEnabled) return true
     return false
 }
+
+export const getOffStageZone = (lines: number[][]) => {
+    const multiplier = 6;
+    const width = (lines[1][0] - lines[0][0]);
+    const height = (lines[1][1] - lines[0][1]);
+    return [
+        [lines[0][0] + width / multiplier, lines[0][1] + height / multiplier],
+        [lines[1][0] - width / multiplier, lines[1][1] - height / multiplier],
+    ];
+};

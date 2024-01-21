@@ -5,6 +5,7 @@
 	import { gameFrame, gameScore, gameSettings } from '$lib/utils/store.svelte';
 	import GameStage from '../../element/GameStage.svelte';
 	import TextElement from '../../element/TextElement.svelte';
+	import InGamePlayerRadar from '../../element/inGame/InGamePlayerRadar.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -94,4 +95,7 @@
 		stageId={$gameSettings?.stageId}
 		fallbackStageId={Stage.BATTLEFIELD}
 	/>
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayerRadar}
+	<InGamePlayerRadar {style} {dataItem} {defaultPreview} stageId={$gameSettings?.stageId} fallbackStageId={Stage.BATTLEFIELD}/>
 {/if}

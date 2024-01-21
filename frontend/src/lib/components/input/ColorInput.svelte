@@ -19,8 +19,6 @@
 		}
 		return hex;
 	};
-
-	// TODO: Add color picker that includes opacity
 </script>
 
 {#if label}

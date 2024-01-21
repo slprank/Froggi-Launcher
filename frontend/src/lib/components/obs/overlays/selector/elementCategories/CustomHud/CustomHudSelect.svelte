@@ -12,6 +12,13 @@
 
 <div class="flex flex-col gap-2">
 	<SelectOption
+		description="Player Radar Hud (From Ultimate)"
+		value={CustomElement.InGamePlayerRadar}
+		on:select={select}
+	>
+		Player Radar
+	</SelectOption>
+	<SelectOption
 		description="Current Stage Image"
 		value={CustomElement.InGameStage}
 		on:select={select}
