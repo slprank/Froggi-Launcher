@@ -19,10 +19,10 @@
 		return preview
 			? defaultPreviewId
 			: postFrame
-			? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
-			: playerSettings
-			? playerSettings.characterId
-			: null;
+				? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
+				: playerSettings
+					? playerSettings.characterId
+					: null;
 	};
 	$: $statsScene, $gameSettings, (characterId = updateCharacterId());
 

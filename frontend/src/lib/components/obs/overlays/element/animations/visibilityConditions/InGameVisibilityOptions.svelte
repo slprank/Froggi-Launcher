@@ -5,11 +5,19 @@
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
-	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
+	import { Player } from '$lib/models/types/slippiData';
+	import { getOffStageZone } from '$lib/utils/gamePredicates';
+	import type {
+		FrameEntryType,
+		GameStartType,
+		PreFrameUpdateType,
+		Stage,
+	} from '@slippi/slippi-js';
 	import { isNil } from 'lodash';
 
 	export const inGameVisibilityOption = (
 		option: SelectedVisibilityOption,
+		currentPlayers: Player[],
 		gameSettings: GameStartType,
 		gameFrame: FrameEntryType | undefined | null,
 		gameState: InGameState,
@@ -57,10 +65,38 @@
 		if (option[VisibilityOption.InGameTie] === VisibilityToggle.False)
 			if (!isGameTie(gameState)) return true;
 
-		if (option[VisibilityOption.InGamePlayerOffStage] === VisibilityToggle.True)
-			if (isOffStage(gameFrame)) return true;
-		if (option[VisibilityOption.InGamePlayerOffStage] === VisibilityToggle.False)
-			if (!isOffStage(gameFrame)) return true;
+		if (option[VisibilityOption.InGamePlayer1OffStage] === VisibilityToggle.True)
+			if (
+				isOffStage(
+					gameFrame?.players?.[currentPlayers.at(0)?.playerIndex ?? 0]?.pre,
+					gameSettings?.stageId,
+				)
+			)
+				return true;
+		if (option[VisibilityOption.InGamePlayer1OffStage] === VisibilityToggle.False)
+			if (
+				!isOffStage(
+					gameFrame?.players?.[currentPlayers.at(0)?.playerIndex ?? 0]?.pre,
+					gameSettings?.stageId,
+				)
+			)
+				return true;
+		if (option[VisibilityOption.InGamePlayer2OffStage] === VisibilityToggle.True)
+			if (
+				isOffStage(
+					gameFrame?.players?.[currentPlayers.at(1)?.playerIndex ?? 1]?.pre,
+					gameSettings?.stageId,
+				)
+			)
+				return true;
+		if (option[VisibilityOption.InGamePlayer2OffStage] === VisibilityToggle.False)
+			if (
+				!isOffStage(
+					gameFrame?.players?.[currentPlayers.at(1)?.playerIndex ?? 1]?.pre,
+					gameSettings?.stageId,
+				)
+			)
+				return true;
 
 		return false;
 	};
@@ -91,8 +127,17 @@
 		return gameState === InGameState.Tie;
 	};
 
-	const isOffStage = (gameFrame: FrameEntryType | null | undefined): boolean => {
-		// TODO: Complete
-		return true;
+	const isOffStage = (
+		playerFrame: PreFrameUpdateType | undefined,
+		stageId: number | undefined | null,
+	): boolean => {
+		if (isNil(playerFrame) || isNil(stageId)) return false;
+		const offStageZone = getOffStageZone(stageId);
+		if (isNil(offStageZone)) return false;
+		if ((playerFrame?.positionX ?? 0) < offStageZone[0][0]) return true;
+		if ((playerFrame?.positionX ?? 0) > offStageZone[1][0]) return true;
+		if ((playerFrame?.positionY ?? 0) < offStageZone[0][1]) return true;
+		if ((playerFrame?.positionY ?? 0) > offStageZone[1][1]) return true;
+		return false;
 	};
 </script>

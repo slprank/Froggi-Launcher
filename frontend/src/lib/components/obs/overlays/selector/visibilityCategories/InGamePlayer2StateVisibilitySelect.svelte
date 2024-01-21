@@ -23,6 +23,14 @@
 	Player 2 Alive
 </SelectOption>
 <SelectOption
+	description="When Player 2 Is Off Stage"
+	value={VisibilityOption.InGamePlayer2OffStage}
+	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer2OffStage]}
+	on:select={select}
+>
+	Player 2 Off Stage
+</SelectOption>
+<SelectOption
 	description="When Player 2 Has 1 Stock Or More"
 	value={VisibilityOption.InGamePlayer2Stock1}
 	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer2Stock1]}

@@ -40,6 +40,7 @@
 		return options.every((option) => {
 			const inGameOptions = inGameVisibilityOption(
 				option,
+				$currentPlayers,
 				$gameSettings,
 				$gameFrame,
 				$gameState,

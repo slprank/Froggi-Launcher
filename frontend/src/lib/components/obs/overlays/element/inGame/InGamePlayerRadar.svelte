@@ -14,17 +14,23 @@
 </script>
 
 {#if stage}
-	<svg class={`w-full h-full flex ${style.classValue} overflow-hidden`} style={`${style.cssValue}; ${
+	<svg
+		class={`w-full h-full flex ${style.classValue} overflow-hidden`}
+		style={`${style.cssValue}; ${
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `} viewBox="-365 -300 730 460" >
-          <g class="-scale-y-100" style={`${style.cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}>
-
-				<StageRender stageId={stage} />
-				{#if !defaultPreview}
-					<PlayerSpot />
-				{/if}
-          </g>
-        </svg>
+		}; `}
+		viewBox="-365 -300 730 550"
+	>
+		<g
+			class="-scale-y-100"
+			style={`${style.cssValue}; ${
+				dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+			}; `}
+		>
+			<StageRender stageId={stage} />
+			{#if !defaultPreview}
+				<PlayerSpot />
+			{/if}
+		</g>
+	</svg>
 {/if}

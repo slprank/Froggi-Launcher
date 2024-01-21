@@ -1,4 +1,4 @@
-import { STAGE_DATA, Stage } from "$lib/models/constants/stageData";
+import { STAGE_DATA, Stage } from "../../lib/models/constants/stageData";
 import type { GameStartMode, GameStats } from "../../lib/models/types/slippiData";
 import type { FrameEntryType, GameStartType } from "@slippi/slippi-js";
 import { isNil } from "lodash";

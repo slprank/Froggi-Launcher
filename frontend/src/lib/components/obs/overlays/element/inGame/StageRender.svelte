@@ -12,6 +12,13 @@
 </script>
 
 {#if !isNil(stage)}
+<rect
+    class="fill-black opacity-50"
+    x={stage.blastZones[0][0]}
+    y={stage.blastZones[0][1]}
+    width={stage.blastZones[1][0] - stage.blastZones[0][0]}
+    height={stage.blastZones[1][1] - stage.blastZones[0][1]}
+/>
 <polyline points={stage.mainStage.join(" ")} />
 {#each stage.platforms as platform}
     <polyline points={platform.join(" ")}  />
@@ -19,12 +26,7 @@
 {#if stage.getRandallPosition}
     <polyline points={stage?.getRandallPosition($gameFrame?.frame ?? 0)?.join(" ")}  />
 {/if}
-<rect
-    x={stage.blastZones[0][0]}
-    y={stage.blastZones[0][1]}
-    width={stage.blastZones[1][0] - stage.blastZones[0][0]}
-    height={stage.blastZones[1][1] - stage.blastZones[0][1]}
-/>
+
 {#if offStageZone}
     <rect
     class="opacity-50"
@@ -34,4 +36,5 @@
         height={offStageZone[1][1] - offStageZone[0][1]}
     />
 {/if}
+
 {/if}

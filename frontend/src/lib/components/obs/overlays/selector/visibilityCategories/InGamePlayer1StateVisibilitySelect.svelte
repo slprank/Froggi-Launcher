@@ -15,12 +15,20 @@
 </script>
 
 <SelectOption
-	description="When Player 1 Is Alive"
-	value={VisibilityOption.InGamePlayer1Alive}
-	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer1Alive]}
+description="When Player 1 Is Alive"
+value={VisibilityOption.InGamePlayer1Alive}
+bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer1Alive]}
+on:select={select}
+>
+Player 1 Alive
+</SelectOption>
+<SelectOption
+	description="When Player 1 Is Off Stage"
+	value={VisibilityOption.InGamePlayer1OffStage}
+	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer1OffStage]}
 	on:select={select}
 >
-	Player 1 Alive
+	Player 1 Off Stage
 </SelectOption>
 <SelectOption
 	description="When Player 1 Has 1 Stock Or More"

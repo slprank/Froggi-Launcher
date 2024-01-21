@@ -34,7 +34,7 @@
 					Math.floor(
 						getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame) / 60,
 					),
-			  )}
+				)}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameTimerSeconds}
@@ -45,7 +45,7 @@
 					Math.floor(
 						getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame) % 60,
 					),
-			  )}
+				)}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameTimerMilliseconds3}
@@ -84,22 +84,28 @@
 			? '480'
 			: Math.ceil(
 					getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame),
-			  ).toFixed(0)}
+				).toFixed(0)}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameStage}
 	{#key $gameSettings}
-	<GameStage
-	{style}
-	{dataItem}
-	{defaultPreview}
-	stageId={$gameSettings?.stageId}
-	fallbackStageId={Stage.BATTLEFIELD}
-	/>
+		<GameStage
+			{style}
+			{dataItem}
+			{defaultPreview}
+			stageId={$gameSettings?.stageId}
+			fallbackStageId={Stage.BATTLEFIELD}
+		/>
 	{/key}
-	{/if}
-	{#if dataItem?.elementId === CustomElement.InGamePlayerRadar}
+{/if}
+{#if dataItem?.elementId === CustomElement.InGamePlayerRadar}
 	{#key $gameSettings}
-	<InGamePlayerRadar {style} {dataItem} {defaultPreview} stageId={$gameSettings?.stageId} fallbackStageId={Stage.DREAMLAND}/>
+		<InGamePlayerRadar
+			{style}
+			{dataItem}
+			{defaultPreview}
+			stageId={$gameSettings?.stageId}
+			fallbackStageId={Stage.DREAMLAND}
+		/>
 	{/key}
 {/if}

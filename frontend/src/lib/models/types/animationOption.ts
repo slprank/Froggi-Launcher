@@ -46,7 +46,8 @@ export enum VisibilityOption {
     InGameEnd = "Game End",
     InGameTime = "Game Time",
     InGameTie = "Game Tie",
-    InGamePlayerOffStage = "Player Off Stage",
+    InGamePlayer1OffStage = "Player 1 Off Stage",
+    InGamePlayer2OffStage = "Player 2 Off Stage",
 
     InGamePlayer1Alive = "Player 1 Alive",
     InGamePlayer1Combo = "Player 1 Combo",

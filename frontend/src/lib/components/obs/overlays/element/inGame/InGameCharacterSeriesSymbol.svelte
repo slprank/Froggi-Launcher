@@ -19,10 +19,10 @@
 	$: externalCharacterId = preview
 		? defaultPreviewId
 		: playerPostFrame
-		? CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame.internalCharacterId ?? -1]
-		: playerSettings
-		? playerSettings.characterId
-		: -1;
+			? CHARACTERS_INTERNAL_EXTERNAL[playerPostFrame.internalCharacterId ?? -1]
+			: playerSettings
+				? playerSettings.characterId
+				: -1;
 	$: characterSeries = CHARACTERS_SERIES[externalCharacterId ?? -1];
 </script>
 
