@@ -166,6 +166,7 @@ export interface StageData {
     topPlatformHeight?: number;
     leftLedgeX: number;
     rightLedgeX: number;
+    viewbox: string;
     platforms: string[][];
     mainStage: string[];
     blastZones: number[][];

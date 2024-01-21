@@ -105,7 +105,7 @@
 			{dataItem}
 			{defaultPreview}
 			stageId={$gameSettings?.stageId}
-			fallbackStageId={Stage.DREAMLAND}
+			fallbackStageId={Stage.BATTLEFIELD}
 		/>
 	{/key}
 {/if}

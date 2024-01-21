@@ -12,6 +12,7 @@ export const STAGE_DATA: { [stageId: number]: StageData } = {
         topPlatformHeight: 42.75,
         leftLedgeX: -63.35,
         rightLedgeX: 63.35,
+        viewbox: "-250 -250 500 435",
         platforms: [
             ["-49.5, 16.125", "-21, 16.125"],
             ["21, 22.125", "49.5, 22.125"],
@@ -69,6 +70,7 @@ export const STAGE_DATA: { [stageId: number]: StageData } = {
         sidePlatformHeight: 25,
         leftLedgeX: -87.75,
         rightLedgeX: 87.75,
+        viewbox: "-280 -220 560 360",
         mainStage: [
             "87.75, 0",
             "87.75, -4",
@@ -109,6 +111,7 @@ export const STAGE_DATA: { [stageId: number]: StageData } = {
         topPlatformHeight: 42,
         leftLedgeX: -56,
         rightLedgeX: 56,
+        viewbox: "-220 -210 435 330",
         mainStage: [
             "-54, -91",
             "-54, -47",
@@ -240,6 +243,7 @@ export const STAGE_DATA: { [stageId: number]: StageData } = {
         topPlatformHeight: 51.4264,
         leftLedgeX: -77.27,
         rightLedgeX: 77.27,
+        viewbox: "-310 -310 620 470",
         platforms: [
             ["-61.393, 30.142", "-31.725, 30.142"],
             ["31.704, 30.243", "63.075, 30.243"],
@@ -272,6 +276,7 @@ export const STAGE_DATA: { [stageId: number]: StageData } = {
         topPlatformHeight: 54.4,
         leftLedgeX: -68.4,
         rightLedgeX: 68.4,
+        viewbox: "-280 -245 560 385",
         mainStage: [
             "-68.4, 0",
             " 68.4, 0",
@@ -313,6 +318,7 @@ export const STAGE_DATA: { [stageId: number]: StageData } = {
         mainPlatformHeight: 0,
         leftLedgeX: -85.5606,
         rightLedgeX: 85.5606,
+        viewbox: "-300 -230 600 405",
         platforms: [],
         mainStage: [
             "-85.6, 0",
