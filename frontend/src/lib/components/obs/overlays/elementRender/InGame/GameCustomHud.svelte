@@ -88,14 +88,18 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameStage}
+	{#key $gameSettings}
 	<GameStage
-		{style}
-		{dataItem}
-		{defaultPreview}
-		stageId={$gameSettings?.stageId}
-		fallbackStageId={Stage.BATTLEFIELD}
+	{style}
+	{dataItem}
+	{defaultPreview}
+	stageId={$gameSettings?.stageId}
+	fallbackStageId={Stage.BATTLEFIELD}
 	/>
-{/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayerRadar}
-	<InGamePlayerRadar {style} {dataItem} {defaultPreview} stageId={$gameSettings?.stageId} fallbackStageId={Stage.BATTLEFIELD}/>
+	{/key}
+	{/if}
+	{#if dataItem?.elementId === CustomElement.InGamePlayerRadar}
+	{#key $gameSettings}
+	<InGamePlayerRadar {style} {dataItem} {defaultPreview} stageId={$gameSettings?.stageId} fallbackStageId={Stage.DREAMLAND}/>
+	{/key}
 {/if}

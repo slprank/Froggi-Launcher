@@ -1,3 +1,4 @@
+import { STAGE_DATA, Stage } from "$lib/models/constants/stageData";
 import type { GameStartMode, GameStats } from "../../lib/models/types/slippiData";
 import type { FrameEntryType, GameStartType } from "@slippi/slippi-js";
 import { isNil } from "lodash";
@@ -71,8 +72,23 @@ export const hasGameBombRain = (game: GameStats): boolean => {
     return false
 }
 
-export const getOffStageZone = (lines: number[][]) => {
-    const multiplier = 6;
+export const getBlastZone = (stage: Stage) => {
+    const stageData = STAGE_DATA[stage];
+    if (!stageData) return;
+    const lines = [
+        [stageData.leftXBoundary, stageData.lowerYBoundary],
+        [stageData.rightXBoundary, stageData.upperYBoundary],
+    ]
+    return [
+        [lines[0][0], lines[0][1]],
+        [lines[1][0], lines[1][1]],
+    ];
+};
+
+export const getOffStageZone = (stage: Stage) => {
+    const lines = getBlastZone(stage);
+    if (!lines) return;
+    const multiplier = 5;
     const width = (lines[1][0] - lines[0][0]);
     const height = (lines[1][1] - lines[0][1]);
     return [

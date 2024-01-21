@@ -166,5 +166,9 @@ export interface StageData {
     topPlatformHeight?: number;
     leftLedgeX: number;
     rightLedgeX: number;
+    platforms: string[][];
+    mainStage: string[];
+    blastZones: number[][];
+    getRandallPosition: ((frame: number) => number[][] | undefined) | undefined;
 }
 
