@@ -42,8 +42,8 @@ export class Api {
 		const characters = playerRank.characters.map(character => {
 			return {
 				...character,
-				characterId: CHARACTERS[character.characterName] as number,
-				gameCountPercent: Number((character.gameCount / (totalGames ? totalGames : 1)).toFixed(1)),
+				characterId: CHARACTERS[character.characterName.toLowerCase()] as number,
+				gameCountPercent: Number((character.gameCount / totalGames * 100).toFixed(1)),
 			}
 		})
 		return {

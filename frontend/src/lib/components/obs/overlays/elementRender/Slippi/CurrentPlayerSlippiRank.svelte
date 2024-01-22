@@ -133,9 +133,7 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `Fox`
-			: $currentPlayer?.rank?.current?.characters.at(0)?.characterName
-				? $currentPlayer?.rank?.current?.characters.at(0)?.characterName
-				: ''}
+			: $currentPlayer?.rank?.current?.characters.at(0)?.characterName ?? ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter1Percent}
@@ -161,9 +159,7 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `Ganondorf`
-			: $currentPlayer?.rank?.current?.characters.at(1)?.characterName
-				? $currentPlayer?.rank?.current?.characters.at(1)?.characterName
-				: ''}
+			: $currentPlayer?.rank?.current?.characters.at(1)?.characterName ?? ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter2Percent}
@@ -189,9 +185,7 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `Falco`
-			: $currentPlayer?.rank?.current?.characters.at(2)?.characterName
-				? $currentPlayer?.rank?.current?.characters.at(2)?.characterName
-				: ''}
+			: $currentPlayer?.rank?.current?.characters.at(2)?.characterName ?? ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter3Percent}

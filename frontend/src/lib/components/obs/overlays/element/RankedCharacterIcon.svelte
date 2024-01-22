@@ -9,12 +9,14 @@
 	export let characterNumber: number;
 	export let defaultPreviewId: number;
 
-	const getCharacterId = () => {
+	const getCharacterId = (): number | undefined => {
 		if (preview) return defaultPreviewId;
 		return player?.rank?.current?.characters.at(characterNumber)?.characterId;
 	};
 
 	let characterId: number | undefined = getCharacterId();
+
+	$: console.log('character', player?.rank?.current?.characters);
 </script>
 
 {#if characterId}
