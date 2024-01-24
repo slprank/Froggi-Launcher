@@ -17,7 +17,7 @@ jobs:
             - name: install pnpm
               run: npm i -g pnpm
             - name: install dependencies
-              run: pnpm run i && cd frontend && pnpm run i && cd ..
+              run: pnpm i && cd frontend && pnpm i && cd ..
             - name: Echo directory
               run: ls
             - name: build
@@ -48,7 +48,7 @@ jobs:
             - name: install pnpm
               run: npm i -g pnpm
             - name: install dependencies
-              run: pnpm run i && cd frontend && pnpm run i && cd ..
+              run: pnpm i && cd frontend && pnpm i && cd ..
             - name: Echo directory
               run: ls
             - name: build
@@ -79,7 +79,7 @@ jobs:
             - name: install pnpm
               run: npm i -g pnpm
             - name: install dependencies
-              run: pnpm run i && cd frontend && pnpm run i && cd ..
+              run: pnpm i && cd frontend && pnpm i && cd ..
             - name: Echo directory
               run: ls
             - name: build
