@@ -14,12 +14,14 @@ jobs:
             - uses: actions/setup-node@master
               with:
                   node-version: 18.13.0
+            - name: install pnpm
+              run: npm i -g pnpm
             - name: install dependencies
-              run: npm run install:all
+              run: pnpm run install:all
             - name: Echo directory
               run: ls
             - name: build
-              run: npm run build
+              run: pnpm run build
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -43,6 +45,8 @@ jobs:
             - uses: actions/setup-node@master
               with:
                   node-version: 18.13.0
+            - name: install pnpm
+              run: npm i -g pnpm
             - name: install dependencies
               run: npm run install:all
             - name: Echo directory
@@ -72,6 +76,8 @@ jobs:
             - uses: actions/setup-node@master
               with:
                   node-version: 18.13.0
+            - name: install pnpm
+              run: npm i -g pnpm
             - name: install dependencies
               run: npm run install:all
             - name: Echo directory
