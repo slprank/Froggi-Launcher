@@ -25,6 +25,7 @@ export class MemoryRead {
 	initMemoryRead() {
 		// TODO: Remove this when mainline Memory Read is supported
 		if (this.storeSettings.getSlippiLauncherSettings()?.useNetplayBeta) return;
+		return;
 		this.initMemoryReadWin();
 	}
 

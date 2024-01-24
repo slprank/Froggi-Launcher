@@ -34,13 +34,14 @@ function setLoggingPath(log: ElectronLog): ElectronLog {
 }
 
 try {
+	mainLog.info('Starting app');
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
 	const isLinux = os.platform() === 'linux';
+	mainLog.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 	const store = new Store(migrateStore(log));
 
-	mainLog.info('mac:', isMac, 'win:', isWindows, 'linux', isLinux);
 
 	const slpParser = new SlpParser();
 	const slpStream = new SlpStream();
