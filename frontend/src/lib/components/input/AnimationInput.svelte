@@ -6,22 +6,19 @@
 	import { notifications } from '../notification/Notifications.svelte';
 	import * as easingFunctions from 'svelte/easing';
 
-	const max = SCENE_TRANSITION_DELAY;
+	export let max: number = SCENE_TRANSITION_DELAY;
 	export let animation: AnimationSettings;
 	export let label: string | undefined = undefined;
 	export let isSceneElementAnimation: boolean = false;
 
 	const fixAnimationInputDelay = () => {
-		if (animation?.options.duration > SCENE_TRANSITION_DELAY) {
-			animation.options.duration = SCENE_TRANSITION_DELAY;
-			notifications.warning(`Duration cannot exceed ${SCENE_TRANSITION_DELAY}ms`, 3000);
+		if (animation?.options.duration > max) {
+			animation.options.duration = max;
+			notifications.warning(`Duration cannot exceed ${max}ms`, 3000);
 		}
-		if (animation?.options.duration + animation?.options.delay > SCENE_TRANSITION_DELAY) {
-			animation.options.delay = SCENE_TRANSITION_DELAY - animation?.options.duration;
-			notifications.warning(
-				`Duration + delay cannot exceed ${SCENE_TRANSITION_DELAY}ms`,
-				3000,
-			);
+		if (animation?.options.duration + animation?.options.delay > max) {
+			animation.options.delay = max - animation?.options.duration;
+			notifications.warning(`Duration + delay cannot exceed ${max}ms`, 3000);
 		}
 		if (animation.type === Animation.None) {
 			animation.options.delay = 0;
@@ -29,7 +26,6 @@
 		}
 	};
 	$: animation, fixAnimationInputDelay();
-	// TODO: Add dropdown for key listening value
 </script>
 
 {#if animation}
@@ -84,7 +80,7 @@
 				{/if}
 
 				{#if animation.type === Animation.Scale}
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale From x</h1>
+					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale</h1>
 					<div class="relative w-full h-11 bg-white rounded-md">
 						<input
 							type="number"

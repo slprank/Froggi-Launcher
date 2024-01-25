@@ -5,5 +5,6 @@ export const MIN = 1
 export const WEBSOCKET_PORT = 3100;
 
 export const SCENE_TRANSITION_DELAY = 1000
+export const ELEMENT_TRANSITION_LIMIT = 5000
 
 

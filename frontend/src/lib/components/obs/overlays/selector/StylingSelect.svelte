@@ -23,6 +23,7 @@
 		SelectedVisibilityOption,
 	} from '$lib/models/types/animationOption';
 	import { tooltip } from 'svooltip';
+	import { ELEMENT_TRANSITION_LIMIT } from '$lib/models/const';
 
 	export let selectedItemId: string;
 	export let selectedElementId: number;
@@ -305,9 +306,7 @@
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">Color</h1>
 					<div class="w-full h-fit flex flex-wrap">
 						<div class="w-full">
-							<ColorInput
-								bind:value={payload.css.stroke}
-							/>
+							<ColorInput bind:value={payload.css.stroke} />
 						</div>
 					</div>
 				</div>
@@ -479,8 +478,16 @@
 			{/if}
 			{#if payload.animationTrigger.selectedOptions && !preAnimatedElement}
 				<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
-					<AnimationInput bind:animation={payload.animationTrigger.in} label="In" />
-					<AnimationInput bind:animation={payload.animationTrigger.out} label="Out" />
+					<AnimationInput
+						bind:animation={payload.animationTrigger.in}
+						label="In"
+						max={ELEMENT_TRANSITION_LIMIT}
+					/>
+					<AnimationInput
+						bind:animation={payload.animationTrigger.out}
+						label="Out"
+						max={ELEMENT_TRANSITION_LIMIT}
+					/>
 				</div>
 			{/if}
 			{#if payload.animationTrigger.selectedOptions && !preAnimatedElement}
@@ -524,8 +531,16 @@
 
 			{#if payload.visibility.selectedOptions.length}
 				<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
-					<AnimationInput bind:animation={payload.visibility.in} label="In" />
-					<AnimationInput bind:animation={payload.visibility.out} label="Out" />
+					<AnimationInput
+						bind:animation={payload.visibility.in}
+						label="In"
+						max={ELEMENT_TRANSITION_LIMIT}
+					/>
+					<AnimationInput
+						bind:animation={payload.visibility.out}
+						label="Out"
+						max={ELEMENT_TRANSITION_LIMIT}
+					/>
 				</div>
 				<button
 					in:fly={{ duration: 250, x: 100 }}
