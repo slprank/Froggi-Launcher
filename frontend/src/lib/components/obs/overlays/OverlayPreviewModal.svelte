@@ -39,7 +39,7 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="min-w-[80vw] min-h-[80vh] max-w-[95vw] max-h-[95vh] overflow-scroll flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
+		class="min-w-[80vw] min-h-[80vh] max-w-[95vw] max-h-[95vh] overflow-y-scrollflex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
 		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
 	>
 		<div>

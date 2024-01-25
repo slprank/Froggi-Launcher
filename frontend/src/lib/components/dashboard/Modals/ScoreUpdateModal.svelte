@@ -59,7 +59,7 @@
 			</h1>
 		</div>
 		<div
-			class="flex-l flex flex-col items-center overflow-scroll gap-4 border border-gray-700 rounded-md p-2"
+			class="flex-l flex flex-col items-center overflow-y-scrollgap-4 border border-gray-700 rounded-md p-2"
 		>
 			<button
 				class="transition duration-100 rounded-md w-full justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"

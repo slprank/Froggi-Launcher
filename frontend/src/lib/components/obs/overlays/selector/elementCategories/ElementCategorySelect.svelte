@@ -266,7 +266,7 @@
 			<div
 				in:fly={{ duration: 250, x: 50, delay: 250 }}
 				out:fly={{ duration: 250, x: 50 }}
-				class="overflow-scroll flex flex-col gap-2"
+				class="overflow-y-scrollflex flex-col gap-2"
 			>
 				{#if selectedCategory === ElementCategory.Custom}
 					<CustomElementSelect on:select={select} />

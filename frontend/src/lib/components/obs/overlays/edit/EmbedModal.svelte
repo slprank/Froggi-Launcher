@@ -17,7 +17,7 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[80vw] h-[80vh] max-h-[600px] min-w-72 overflow-scroll flex rounded-lg bg-transparent m-0 bg-cover bg-center p-8"
+		class="w-[80vw] h-[80vh] max-h-[600px] min-w-72 overflow-y-scrollflex rounded-lg bg-transparent m-0 bg-cover bg-center p-8"
 		style="background-image: url('/image/backgrounds/MeleeMenuRed.png')"
 	>
 		<div
