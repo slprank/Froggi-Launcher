@@ -125,10 +125,19 @@ try {
 
 		const contextMenu = Menu.buildFromTemplate([
 			{
-				label: 'Open',
+				label: 'Show',
 				click: () => {
 					mainWindow.show();
 				},
+			},
+			{
+				label: 'Reload Window',
+				click: () => {
+					mainWindow.reload();
+				},
+			},
+			{
+				type: 'separator'
 			},
 			{
 				label: 'Quit',
