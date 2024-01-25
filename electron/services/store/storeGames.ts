@@ -186,11 +186,12 @@ export class ElectronGamesStore {
 		return this.store.get(`player.${connectCode}.game`) as Sets | undefined;
 	}
 
+	// TODO: Test
 	getRecentSetsByMode(mode: GameStartMode, number = 10): GameStats[] {
 		const sets = this.getAllSets();
 		if (!sets) return [];
 		return (
-			sets[mode]
+			Object.values(sets[mode])
 				?.sort(
 					(a: GameStats, b: GameStats) => (a.timestamp?.valueOf() ?? 0) - (b.timestamp?.valueOf() ?? 0),
 				)
