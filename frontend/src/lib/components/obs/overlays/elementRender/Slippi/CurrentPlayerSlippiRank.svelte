@@ -20,8 +20,8 @@
 		{defaultPreview
 			? `Current Player`
 			: $currentPlayer?.rank?.current?.displayName
-				? $currentPlayer?.rank?.current?.displayName
-				: ''}
+			? $currentPlayer?.rank?.current?.displayName
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerConnectCode}
@@ -29,8 +29,8 @@
 		{defaultPreview
 			? `ABCDEF#0`
 			: $currentPlayer?.rank?.current?.connectCode
-				? $currentPlayer?.rank?.current?.connectCode
-				: ''}
+			? $currentPlayer?.rank?.current?.connectCode
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRankIcon}
@@ -52,8 +52,8 @@
 		{defaultPreview
 			? `1429.3`
 			: player.rank?.current?.rating
-				? player.rank?.current?.rating
-				: ''}
+			? player.rank?.current?.rating
+			: ''}
 	</TextElement>
 {/if}
 
@@ -62,8 +62,8 @@
 		{defaultPreview
 			? `North America`
 			: $currentPlayer?.rank?.current?.continent
-				? $currentPlayer?.rank?.current?.continent
-				: ''}
+			? $currentPlayer?.rank?.current?.continent
+			: ''}
 	</TextElement>
 {/if}
 
@@ -72,8 +72,8 @@
 		{defaultPreview
 			? `NA`
 			: $currentPlayer?.rank?.current?.continentInitials
-				? $currentPlayer?.rank?.current?.continentInitials
-				: ''}
+			? $currentPlayer?.rank?.current?.continentInitials
+			: ''}
 	</TextElement>
 {/if}
 
@@ -82,8 +82,8 @@
 		{defaultPreview
 			? `270`
 			: $currentPlayer?.rank?.current?.dailyGlobalPlacement
-				? $currentPlayer?.rank?.current?.dailyGlobalPlacement
-				: ''}
+			? $currentPlayer?.rank?.current?.dailyGlobalPlacement
+			: ''}
 	</TextElement>
 {/if}
 
@@ -92,8 +92,8 @@
 		{defaultPreview
 			? `138`
 			: $currentPlayer?.rank?.current?.dailyRegionalPlacement
-				? $currentPlayer?.rank?.current?.dailyRegionalPlacement
-				: ''}
+			? $currentPlayer?.rank?.current?.dailyRegionalPlacement
+			: ''}
 	</TextElement>
 {/if}
 
@@ -108,8 +108,8 @@
 		{defaultPreview
 			? `66.7%`
 			: player?.rank?.current?.winsPercent
-				? `${player?.rank?.current?.winsPercent}%`
-				: ''}
+			? `${player?.rank?.current?.winsPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 
@@ -124,8 +124,8 @@
 		{defaultPreview
 			? `33.3%`
 			: player?.rank?.current?.lossesPercent
-				? `${player?.rank?.current?.lossesPercent}%`
-				: ''}
+			? `${player?.rank?.current?.lossesPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 
@@ -141,8 +141,8 @@
 		{defaultPreview
 			? `74.3%`
 			: $currentPlayer?.rank?.current?.characters.at(0)?.gameCountPercent
-				? `${$currentPlayer?.rank?.current?.characters.at(0)?.gameCountPercent}%`
-				: ''}%
+			? `${$currentPlayer?.rank?.current?.characters.at(0)?.gameCountPercent}%`
+			: ''}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter1Icon}
@@ -167,8 +167,8 @@
 		{defaultPreview
 			? `18.3%`
 			: $currentPlayer?.rank?.current?.characters.at(1)?.gameCountPercent
-				? `${$currentPlayer?.rank?.current?.characters.at(1)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayer?.rank?.current?.characters.at(1)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter2Icon}
@@ -193,8 +193,8 @@
 		{defaultPreview
 			? `7.4%`
 			: $currentPlayer?.rank?.current?.characters.at(2)?.gameCountPercent
-				? `${$currentPlayer?.rank?.current?.characters.at(2)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayer?.rank?.current?.characters.at(2)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerCharacter3Icon}
