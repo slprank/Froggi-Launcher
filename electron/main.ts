@@ -82,6 +82,9 @@ try {
 			height: windowState.height,
 		});
 
+		const menu = Menu.buildFromTemplate(createMenu());
+		Menu.setApplicationMenu(menu);
+
 		windowState.manage(mainWindow);
 
 		mainWindow.once('ready-to-show', () => {
@@ -94,6 +97,23 @@ try {
 		});
 
 		return mainWindow;
+	}
+
+	function createMenu(): Electron.MenuItemConstructorOptions[] {
+		return [
+			{
+				label: 'Froggi',
+				submenu: [
+					{
+						label: 'Quit',
+						accelerator: 'CmdOrCtrl+Q',
+						click: () => {
+							app.quit();
+						},
+					},
+				],
+			},
+		]
 	}
 
 	function createTray(): Tray {
@@ -181,7 +201,7 @@ try {
 
 		mainWindow.on('close', (event: Event) => {
 			event.preventDefault();
-			if (isWindows) mainWindow.hide();
+			if (isWindows) mainWindow.minimize();
 			else app.hide();
 		});
 	}
