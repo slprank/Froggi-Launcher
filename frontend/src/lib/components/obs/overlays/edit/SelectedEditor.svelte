@@ -25,14 +25,22 @@
 	let isElementModalOpen = false;
 
 	$: curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? undefined;
-	$: selectedLayer = $currentOverlayEditor?.layerIndex;
+	$currentOverlayEditor?.layerIndex;
 
 	function getItemById() {
-		if (!curOverlay || selectedLayer === undefined || selectedItemId === undefined) return;
-		selectedItemIndex = curOverlay[$statsScene]?.layers[selectedLayer].items
+		if (
+			!curOverlay ||
+			$currentOverlayEditor?.layerIndex === undefined ||
+			selectedItemId === undefined
+		)
+			return;
+		selectedItemIndex = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items
 			.map((i) => i.id)
 			.indexOf(selectedItemId);
-		selectedItem = curOverlay[$statsScene]?.layers[selectedLayer].items[selectedItemIndex];
+		selectedItem =
+			curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items[
+				selectedItemIndex
+			];
 	}
 	$: selectedItemId, getItemById();
 
@@ -40,7 +48,7 @@
 		selectedItemId = undefined;
 		selectedItem = undefined;
 	}
-	$: selectedLayer, $statsScene, clearItem();
+	$: $currentOverlayEditor?.layerIndex, $statsScene, clearItem();
 
 	function handleOverflow() {
 		if (!selectedItem) return;
@@ -55,12 +63,12 @@
 	}
 
 	function copyElement() {
-		if (!curOverlay || selectedLayer === undefined) return;
-		const items = curOverlay[$statsScene]?.layers[selectedLayer].items;
+		if (!curOverlay || $currentOverlayEditor?.layerIndex === undefined) return;
+		const items = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items;
 		const item = items[selectedItemIndex];
 		const newItem = generateNewItem(item.elementId, item.data, items);
 
-		curOverlay[$statsScene]?.layers[selectedLayer].items.push(newItem);
+		curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items.push(newItem);
 		selectedItemId = undefined;
 		selectedItem = undefined;
 		selectedItemIndex = 0;
@@ -69,8 +77,11 @@
 	}
 
 	function deleteElement() {
-		if (!curOverlay || selectedLayer === undefined) return;
-		curOverlay[$statsScene]?.layers[selectedLayer].items.splice(selectedItemIndex, 1);
+		if (!curOverlay || $currentOverlayEditor?.layerIndex === undefined) return;
+		curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items.splice(
+			selectedItemIndex,
+			1,
+		);
 		selectedItemId = undefined;
 		selectedItem = undefined;
 		selectedItemIndex = 0;
@@ -79,11 +90,17 @@
 	}
 
 	function updateSelectItem() {
-		if (!curOverlay || selectedLayer === undefined || selectedItemId === undefined) return;
+		if (
+			!curOverlay ||
+			$currentOverlayEditor?.layerIndex === undefined ||
+			selectedItemId === undefined
+		)
+			return;
 
 		handleOverflow();
 
-		curOverlay[$statsScene].layers[selectedLayer].items[selectedItemIndex] = selectedItem;
+		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items[selectedItemIndex] =
+			selectedItem;
 		updateOverlay(curOverlay);
 	}
 	$: selectedItem, updateSelectItem();
@@ -135,10 +152,6 @@
 		setTimeout(() => (lockOut = false), 100);
 	}
 
-	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
-		selectedLayer = layerIndex;
-	});
-
 	// TODO: Add horizontal center button
 </script>
 
@@ -189,12 +202,7 @@
 		</div>
 		{#key isElementModalOpen}
 			{#key selectedItemId}
-				<ElementModal
-					bind:open={isElementModalOpen}
-					bind:layer={selectedLayer}
-					{selectedItemId}
-					isEdit={true}
-				/>
+				<ElementModal bind:open={isElementModalOpen} {selectedItemId} isEdit={true} />
 			{/key}
 		{/key}
 	{/if}

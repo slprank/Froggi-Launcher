@@ -143,10 +143,12 @@ export class StatsDisplay {
 		gameStats.score = score;
 
 		this.storeGames.setGameScore(gameStats.score);
-		this.storeLiveStats.setGameState(InGameState.Inactive);
 		this.handleGameSetStats(gameStats);
 		this.handlePostGameScene(gameStats);
 		this.storeLiveStats.deleteGameFrame();
+		setTimeout(() => {
+			this.storeLiveStats.setGameState(InGameState.Inactive);
+		}, 5000)
 	}
 
 	private async handlePostGameScene(game: GameStats | null) {

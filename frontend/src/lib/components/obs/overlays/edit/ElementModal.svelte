@@ -7,7 +7,12 @@
 		GridContentItemConfig,
 		Overlay,
 	} from '$lib/models/types/overlay';
-	import { electronEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
+	import {
+		currentOverlayEditor,
+		electronEmitter,
+		overlays,
+		statsScene,
+	} from '$lib/utils/store.svelte';
 	import {
 		generateNewItem,
 		getDefaultElementPayload,
@@ -19,12 +24,10 @@
 	import ElementSelectModal from '../selector/ElementSelectModal.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { fixTransition } from './fixTransition';
-	import { onMount } from 'svelte';
 
 	const overlayId = $page.params.overlay;
 
 	export let open: boolean;
-	export let layer: number | undefined;
 	export let selectedItemId: string | undefined = undefined;
 	export let isEdit: boolean = false;
 
@@ -61,19 +64,20 @@
 
 	function getCurrentItems() {
 		let curOverlay = getCurrentOverlay();
-		return curOverlay[$statsScene]?.layers[layer ?? 0]?.items ?? [];
+		return curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex ?? 0]?.items ?? [];
 	}
 
 	function add() {
 		let items = getCurrentItems();
-		let newItem = generateNewItem(selectedElementId, payload);
+		let newItem = generateNewItem(selectedElementId, payload, items);
 
 		newItem = fixTransition(newItem);
 
 		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
-		$overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
+		$overlays[overlayIndex][$statsScene].layers[$currentOverlayEditor?.layerIndex ?? 0].items =
+			items;
 
 		updateOverlay();
 		open = false;
@@ -103,7 +107,9 @@
 		items = [...items, newItem];
 
 		const overlayIndex = getCurrentOverlayIndex();
-		$overlays[overlayIndex][$statsScene].layers[layer ?? 0].items = items;
+
+		$overlays[overlayIndex][$statsScene].layers[$currentOverlayEditor?.layerIndex ?? 0].items =
+			items;
 
 		updateOverlay();
 		open = false;

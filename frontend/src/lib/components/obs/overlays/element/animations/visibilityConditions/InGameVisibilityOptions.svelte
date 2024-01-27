@@ -42,7 +42,7 @@
 		if (option[VisibilityOption.InGameGo] === VisibilityToggle.False)
 			if (!isGameGo(gameFrame)) return true;
 
-		const seconds = (gameSettings?.startingTimerSeconds ?? 480) - (gameFrame?.frame ?? 0) / 60;
+		const seconds = (gameSettings?.startingTimerSeconds ?? 0) - (gameFrame?.frame ?? 0) / 60;
 		if (option[VisibilityOption.InGameCountdown] === VisibilityToggle.True) {
 			if (isGameCountdown(seconds)) return true;
 		}
@@ -112,7 +112,7 @@
 	};
 
 	const isGameCountdown = (seconds: number) => {
-		return seconds >= 0 && seconds < 5;
+		return seconds > 0 && seconds < 5;
 	};
 
 	const isGameEnd = (gameState: InGameState) => {

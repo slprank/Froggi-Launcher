@@ -147,7 +147,7 @@
 		</div>
 		<SceneEditModal bind:open={isSceneModalOpen} bind:overlay />
 	{/if}
-	<ElementModal bind:open={isElementModalOpen} bind:layer={selectedLayer} {selectedItemId} />
+	<ElementModal bind:open={isElementModalOpen} {selectedItemId} />
 	<PreviewModal bind:open={isPreviewModalOpen} />
 	<EmbedModal bind:open={isEmbedModalOpen} />
 </main>

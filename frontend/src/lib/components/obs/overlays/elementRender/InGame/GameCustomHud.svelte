@@ -22,6 +22,7 @@
 	};
 
 	const addZero = (time: number) => {
+		if (time < 0) return '00';
 		return `${time < 10 ? '0' : ''}${time}`;
 	};
 </script>
@@ -34,7 +35,7 @@
 					Math.floor(
 						getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame) / 60,
 					),
-				)}
+			  )}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameTimerSeconds}
@@ -45,7 +46,7 @@
 					Math.floor(
 						getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame) % 60,
 					),
-				)}
+			  )}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameTimerMilliseconds3}
@@ -84,7 +85,7 @@
 			? '480'
 			: Math.ceil(
 					getTimeSeconds($gameSettings?.startingTimerSeconds, $gameFrame?.frame),
-				).toFixed(0)}
+			  ).toFixed(0)}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameStage}

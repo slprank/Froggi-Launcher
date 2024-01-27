@@ -96,7 +96,6 @@
 			elementId: elementId,
 			data: payload,
 		};
-		console.log(items);
 		if (isNil(items)) return newItem;
 
 		const findPosition = gridHelp.findSpace(newItem, items, COL);
@@ -314,8 +313,6 @@
 	): Promise<number> {
 		let overlay = await getOverlayById(overlayId);
 		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayerIndex;
-
-		console.log(selectedLayerIndex);
 
 		const duplicatedLayer: Layer = {
 			...overlay[statsScene].layers[selectedLayerIndex],

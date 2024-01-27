@@ -25,7 +25,6 @@
 		$overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let items: GridContentItem[] = [];
 	let tempItems: any = undefined;
-	$: selectedLayer = $currentOverlayEditor?.layerIndex;
 
 	function updateScene() {
 		items
@@ -39,9 +38,9 @@
 	}
 
 	function updateLiveScene() {
-		if (selectedLayer === undefined) return;
+		if ($currentOverlayEditor?.layerIndex === undefined) return;
 		curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
-		items = curOverlay[$statsScene]?.layers[selectedLayer]?.items ?? [];
+		items = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex]?.items ?? [];
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
 			item[COL].resizable = true;
@@ -52,11 +51,11 @@
 	function updateOverlay() {
 		if (
 			!tempItems ||
-			selectedLayer === undefined ||
-			curOverlay[$statsScene]?.layers[selectedLayer].items == tempItems
+			$currentOverlayEditor?.layerIndex === undefined ||
+			curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items == tempItems
 		)
 			return;
-		curOverlay[$statsScene].layers[selectedLayer].items = tempItems;
+		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items = tempItems;
 
 		$electronEmitter.emit('OverlayUpdate', curOverlay);
 		tempItems = undefined;
