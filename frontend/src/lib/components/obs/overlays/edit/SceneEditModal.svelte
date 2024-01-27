@@ -56,7 +56,7 @@
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
 		<div class="w-full h-full flex">
-			<div class="w-full p-4 px-8 col-span-1 overflow-y-scrollenable-scrollbar">
+			<div class="w-full p-4 px-8 col-span-1 overflow-y-scroll enable-scrollbar">
 				<div class="w-full flex flex-col gap-4">
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
 					<div class="w-full flex gap-2">

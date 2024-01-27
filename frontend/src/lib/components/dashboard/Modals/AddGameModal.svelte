@@ -160,7 +160,7 @@
 			</div>
 		</div>
 		<div
-			class="flex flex-col flex-1 gap-8 overflow-y-scrollp-2 border border-zinc-700 rounded-md"
+			class="flex flex-col flex-1 gap-8 overflow-y-scroll sp-2 border border-zinc-700 rounded-md"
 		>
 			<div class="flex gap-4 justify-center items-center">
 				<h1 class="text-white text-2xl font-semibold">Character</h1>
