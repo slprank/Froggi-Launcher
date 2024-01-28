@@ -86,7 +86,7 @@ export class StatsDisplay {
 	}
 
 	private resetPauseInterval() {
-		if (this.isWin && !this.storeSettings.getSlippiLauncherSettings()?.useNetplayBeta) return; // Windows utilized memory reads
+		if (this.isWin) return;
 		this.stopPauseInterval();
 		this.pauseInterval = setTimeout(() => {
 			this.handleGamePaused();
