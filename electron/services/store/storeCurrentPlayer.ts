@@ -11,6 +11,7 @@ import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { ElectronLiveStatsStore } from './storeLiveStats';
 import { MessageHandler } from '../messageHandler';
 import { ElectronSessionStore } from './storeSession';
+import { isMatch } from 'lodash';
 
 @singleton()
 export class ElectronCurrentPlayerStore {
@@ -62,9 +63,9 @@ export class ElectronCurrentPlayerStore {
 		this.updateCurrentPlayerRankHistory(rankStats);
 	}
 
-	getPlayerRankHistory(): RankedNetplayProfile[] | undefined {
+	getPlayerRankHistory(): RankedNetplayProfile[] {
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-		if (!connectCode) return;
+		if (!connectCode) return [];
 		return (this.store.get(`player.${connectCode}.rank.history`) ??
 			[]) as RankedNetplayProfile[];
 	}
@@ -72,6 +73,7 @@ export class ElectronCurrentPlayerStore {
 	updateCurrentPlayerRankHistory(rankStats: RankedNetplayProfile) {
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
 		let history = this.getPlayerRankHistory();
+		if (isMatch(history.at(-1) ?? {}, rankStats)) return;
 		if (!rankStats || !connectCode || !history) return;
 		this.store.set(`player.${connectCode}.rank.history`, [...history, rankStats]);
 	}
