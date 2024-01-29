@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isNil } from 'lodash';
+	import { cloneDeep, isNil } from 'lodash';
 	import { createEventDispatcher } from 'svelte';
 
 	export let autofocus: number | undefined = undefined;
@@ -12,11 +12,9 @@
 	export let step: number | undefined = undefined;
 	export let stringFormat: string = '{0}';
 
-	const dispatch = createEventDispatcher();
+	let tempValue = cloneDeep(value) ?? 0;
 
-	function handleChange(value: number | null) {
-		dispatch('change', value);
-	}
+	const dispatch = createEventDispatcher();
 
 	const updateConcatValue = (value: number | null) => {
 		if (isNil(value)) return;
@@ -24,13 +22,24 @@
 	};
 	$: updateConcatValue(value);
 
-	const revertToMax = () => {
-		if (isNil(value)) return;
-		if (value > max) {
-			value = max;
+	const fixValue = () => {
+		console.log(min, max, tempValue);
+		if (isNil(tempValue) || typeof tempValue === 'string') {
+			value = 0;
+			tempValue = 0;
 		}
+		if (tempValue > max) {
+			value = max;
+			tempValue = max;
+		}
+		if (tempValue < min) {
+			value = min;
+			tempValue = max;
+		}
+		value = tempValue;
+		dispatch('change', value);
 	};
-	$: value, revertToMax();
+	$: tempValue, fixValue();
 </script>
 
 {#key autofocus}
@@ -47,8 +56,7 @@
 				step={step ?? 1}
 				{min}
 				{max}
-				bind:value
-				on:change={(e) => handleChange(value)}
+				bind:value={tempValue}
 			/>
 		</div>
 	</div>

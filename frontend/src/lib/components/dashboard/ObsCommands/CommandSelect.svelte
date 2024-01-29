@@ -117,6 +117,8 @@
 			</Select>
 		{:else if typeof command.payload?.[option] === 'string'}
 			<TextInput bind:value={command.payload[option]} label={option} />
+		{:else if typeof command.payload?.[option] === 'number' && option === 'inputVolumeMul'}
+			<NumberInput bind:value={command.payload[option]} label={option} max={1} step={0.01} />
 		{:else if typeof command.payload?.[option] === 'number'}
 			<NumberInput bind:value={command.payload[option]} label={option} />
 		{/if}
