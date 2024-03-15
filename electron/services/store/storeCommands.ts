@@ -98,6 +98,7 @@ export class ElectronCommandStore {
 	getSceneCommands(): SceneSwitchCommands {
 		return (
 			(this.store.get('command.sceneSwitch') as SceneSwitchCommands) ?? {
+				enabled: false,
 				[LiveStatsScene.WaitingForDolphin]: [],
 				[LiveStatsScene.Menu]: [],
 				[LiveStatsScene.InGame]: [],
@@ -109,8 +110,8 @@ export class ElectronCommandStore {
 	}
 
 	getSceneCommandsByScene(scene: LiveStatsScene): Command[] {
-		const commands = this.getSceneCommands();
-		return commands[scene];
+		const sceneCommands = this.getSceneCommands();
+		return sceneCommands[scene];
 	}
 
 	setSceneCommands(value: SceneSwitchCommands) {
@@ -129,11 +130,12 @@ export class ElectronCommandStore {
 	}
 
 	getSceneSwitchCommandsState(): boolean {
-		return this.store.get('command.sceneSwitch.enabled') as boolean;
+		return this.getSceneCommands().enabled;
 	}
 
 	toggleSceneSwitchCommandsState() {
 		const state = this.getSceneSwitchCommandsState();
+		if (isNil(state)) return;
 		this.store.set('command.sceneSwitch.enabled', !state);
 	}
 
