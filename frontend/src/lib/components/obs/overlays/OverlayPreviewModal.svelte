@@ -1,7 +1,13 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import NonInteractiveIFrame from './preview/NonInteractiveIFrame.svelte';
-	import { urls, isElectron, statsScene, isMobile } from '$lib/utils/store.svelte';
+	import {
+		urls,
+		isElectron,
+		statsScene,
+		isMobile,
+		electronEmitter,
+	} from '$lib/utils/store.svelte';
 	import SceneSelect from './selector/SceneSelect.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import {
@@ -21,6 +27,11 @@
 	let isEmbedModalOpen = false;
 
 	$: url = `${$isElectron ? $urls?.local : $urls.external}/obs/overlay/${overlay?.id}/layers`;
+
+	function downloadOverlay() {
+		if (!overlay) return;
+		$electronEmitter.emit('OverlayDownload', overlay.id);
+	}
 
 	const createDuplicateOverlay = () => {
 		if (!overlay) return;
@@ -80,6 +91,14 @@
 					on:click={() => (isEmbedModalOpen = true)}
 				>
 					Embed
+				</button>
+			{/if}
+			{#if $isElectron}
+				<button
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"
+					on:click={downloadOverlay}
+				>
+					Download
 				</button>
 			{/if}
 			{#if !$isElectron}

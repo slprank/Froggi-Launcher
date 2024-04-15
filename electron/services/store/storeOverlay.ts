@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import type { Overlay, OverlayEditor } from '../../../frontend/src/lib/models/types/overlay';
+import type { GridContentItem, Overlay, OverlayEditor } from '../../../frontend/src/lib/models/types/overlay';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -7,6 +7,7 @@ import { newId } from '../../utils/functions';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { BrowserWindow, dialog } from 'electron';
 import fs from 'fs';
+import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 
 @singleton()
 export class ElectronOverlayStore {
@@ -41,6 +42,28 @@ export class ElectronOverlayStore {
 		return overlays?.findIndex((overlay: any) => overlay.id == overlayId) ?? undefined;
 	}
 
+	removeDuplicateItems(overlays: Overlay[]): Overlay[] {
+		overlays.forEach(overlay => {
+			Object.keys(LiveStatsScene)
+				.filter(key => isNaN(Number(key)))
+				.forEach(key => {
+					const statsScene = LiveStatsScene[key as keyof typeof LiveStatsScene]
+					overlay[statsScene].layers.forEach(layer => {
+						layer.items.reduce((acc: GridContentItem[], currentItem) => {
+							const existingItem = acc.find((item) => item.id === currentItem.id);
+
+							if (!existingItem) {
+								acc.push(currentItem);
+							}
+
+							return acc;
+						}, []);
+					});
+				});
+		})
+		return overlays;
+	}
+
 	updateOverlay(overlay: Overlay): void {
 		if (!overlay) return;
 		let overlays = this.getOverlays();
@@ -49,6 +72,7 @@ export class ElectronOverlayStore {
 		overlayIndex === undefined || overlayIndex === -1
 			? overlays.push(overlay)
 			: (overlays[overlayIndex] = overlay);
+		overlays = this.removeDuplicateItems(overlays);
 		this.setOverlays(overlays);
 	}
 

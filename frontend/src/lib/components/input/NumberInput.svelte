@@ -12,7 +12,7 @@
 	export let step: number | undefined = undefined;
 	export let stringFormat: string = '{0}';
 
-	let tempValue = cloneDeep(value) ?? 0;
+	$: tempValue = cloneDeep(value) ?? 0;
 
 	const dispatch = createEventDispatcher();
 

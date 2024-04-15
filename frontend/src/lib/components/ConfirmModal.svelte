@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
+	import { electronEmitter } from '$lib/utils/store.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 
