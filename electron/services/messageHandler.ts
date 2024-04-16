@@ -87,6 +87,7 @@ export class MessageHandler {
 				key: keyof MessageEvents,
 				value: Parameters<MessageEvents[keyof MessageEvents]>,
 			]) {
+				console.log('Electron:', key, value);
 				this.clientEmitter.emit(key as any, ...(value as any));
 			}
 		});
@@ -100,10 +101,14 @@ export class MessageHandler {
 		try {
 			this.webSocketWorker.on('message', (value: string) => {
 				const parse = JSON.parse(value);
-				for (const [key, value] of Object.entries(parse) as [
+				console.log('WebSocket Parse:', parse);
+				for (let [key, value] of Object.entries(parse) as [
 					key: keyof MessageEvents,
 					value: Parameters<MessageEvents[keyof MessageEvents]>,
 				]) {
+					if (["socketId", "AuthorizationKey"].includes(key as string)) {
+						value = [value] as any;
+					}
 					sendAuthenticatedMessage(
 						parse['socketId'],
 						parse['AuthorizationKey'],
@@ -113,6 +118,7 @@ export class MessageHandler {
 						key as keyof MessageEvents,
 						value as any,
 					);
+					this.initData(parse['socketId']);
 				}
 			});
 		} catch (err) {
@@ -199,8 +205,9 @@ export class MessageHandler {
 		this.clientEmitter.on('InitData', (socketId: string) => {
 			this.initData(socketId);
 		});
-		this.clientEmitter.on('InitAuthentication', (payload) => {
-			this.sendAuthorizedMessage(payload[0], payload[1] ?? '');
+		this.clientEmitter.on('InitAuthentication', (socketId, authKey) => {
+			console.log("payload", socketId, authKey)
+			this.sendAuthorizedMessage(socketId, authKey ?? '');
 		});
 		this.clientEmitter.on('Notification', (message: string, type: NotificationType) => {
 			this.sendMessage('Notification', message, type);

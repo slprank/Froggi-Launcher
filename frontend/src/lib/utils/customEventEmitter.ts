@@ -80,7 +80,7 @@ export interface MessageEvents {
 
 	AuthorizationKey: (key: string) => void;
 	AuthorizationKeyUpdate: (key: string) => void;
-	InitAuthentication: (payload: [socketId: string, authKey: string]) => void;
+	InitAuthentication: (socketId: string, authKey: string) => void;
 
 	ControllerCommand: (command: Controller) => void;
 	ControllerCommandAdd: (command: ControllerCommand) => void;

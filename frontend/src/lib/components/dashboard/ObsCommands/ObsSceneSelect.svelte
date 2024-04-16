@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { CommandType } from '$lib/models/types/commandTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 
-	const SwitchScene = (sceneName: string) => {
+	const switchScene = (sceneName: string) => {
 		$electronEmitter.emit('ExecuteCommand', CommandType.Obs, 'SetCurrentProgramScene', {
 			sceneName: sceneName,
 		});
@@ -24,7 +25,7 @@
 						: 'border-white'
 				}`}
 				on:click={() => {
-					SwitchScene(scene?.sceneName);
+					switchScene(scene?.sceneName);
 				}}
 			>
 				{scene?.sceneName}

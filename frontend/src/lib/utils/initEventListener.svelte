@@ -310,7 +310,8 @@
 
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = async () => {
-			_electronEmitter.onAny(async (event, data) => {
+			_electronEmitter.onAny(async (event, ...data) => {
+				console.log(event, data);
 				const _authorizationKey = await getAuthorizationKey();
 				socket.send(
 					JSON.stringify({
