@@ -106,9 +106,7 @@ export class MessageHandler {
 					key: keyof MessageEvents,
 					value: Parameters<MessageEvents[keyof MessageEvents]>,
 				]) {
-					if (["socketId", "AuthorizationKey"].includes(key as string)) {
-						value = [value] as any;
-					}
+					if (["socketId", "AuthorizationKey"].includes(key as string)) continue;
 					sendAuthenticatedMessage(
 						parse['socketId'],
 						parse['AuthorizationKey'],
