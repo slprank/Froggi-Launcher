@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { BestOf } from '$lib/models/enum';
 	import { Player } from '$lib/models/types/slippiData';
 	import {
 		currentPlayers,
@@ -93,7 +94,7 @@
 		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
 		on:click={updateBestOf}
 	>
-		Update Best Of - ({$gameSettings?.matchInfo?.bestOf})
+		Update Best Of - ({$gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3})
 	</button>
 </div>
 
