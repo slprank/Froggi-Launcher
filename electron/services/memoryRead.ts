@@ -18,7 +18,7 @@ export class MemoryRead {
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) { }
+	) {}
 
 	initMemoryRead() {
 		this.initMemoryReadWin();
@@ -33,15 +33,15 @@ export class MemoryRead {
 			try {
 				if (isNil(this.memory)) {
 					this.stopMemoryRead();
-					return
-				};
+					return;
+				}
 				this.handleGameState(this.memory);
 				this.handleController(this.memory);
 				// TODO: Get Menu Location
 			} catch (err) {
 				this.log.error(err);
 				this.stopMemoryRead();
-				this.memory = null
+				this.memory = null;
 			}
 		}, 16);
 	}
@@ -61,7 +61,7 @@ export class MemoryRead {
 
 	stopMemoryRead() {
 		this.log.info('Stopping memory read');
-		this.memory = null
+		this.memory = null;
 		clearInterval(this.memoryReadInterval);
 	}
 }
