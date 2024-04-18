@@ -47,7 +47,7 @@ export class SlippiJs {
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
 			this.log.info('Dolphin Connection State:', ConnectionStatus[status]);
 			if (status === ConnectionStatus.DISCONNECTED) {
-				this.handleDisconnected()
+				this.handleDisconnected();
 			}
 			if (status === ConnectionStatus.CONNECTED) {
 				await this.handleConnected();
@@ -94,12 +94,12 @@ export class SlippiJs {
 	}
 
 	private async handleConnected() {
-		this.handleUserSlippiData()
+		this.handleUserSlippiData();
 		this.memoryRead.stopMemoryRead();
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connected);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu);
 		this.memoryRead.initMemoryRead();
-		this.stopProcessSearchInterval()
+		this.stopProcessSearchInterval();
 	}
 
 	private async handleUserSlippiData() {
@@ -108,7 +108,7 @@ export class SlippiJs {
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode);
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile);
-		this.storeSession.updateSessionStats(rankedNetplayProfile)
+		this.storeSession.updateSessionStats(rankedNetplayProfile);
 	}
 
 	private async startProcessSearchInterval() {
@@ -116,11 +116,12 @@ export class SlippiJs {
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Searching);
 		this.log.info('Looking For Dolphin Process');
 		this.dolphinProcessInterval = setInterval(async () => {
-			if (await isDolphinRunning()) {
+			if (await isDolphinRunning(this.isWindows)) {
+				this.log.info('Dolphin Found');
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 				this.stopProcessSearchInterval();
 			}
-		}, 1000);
+		}, 5000);
 	}
 
 	private stopProcessSearchInterval() {

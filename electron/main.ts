@@ -42,7 +42,6 @@ try {
 
 	const store = new Store(migrateStore(log));
 
-
 	const slpParser = new SlpParser();
 	const slpStream = new SlpStream();
 	const localEmitter = new TypedEmitter();
@@ -55,10 +54,10 @@ try {
 	let mainWindow: BrowserWindow | any;
 	let tray: Tray;
 
-	app.disableHardwareAcceleration();
+	//app.disableHardwareAcceleration();
 
 	function createWindow(): BrowserWindow {
-		log.info("Creating window")
+		log.info('Creating window');
 		let windowState = windowStateManager({
 			defaultWidth: 800,
 			defaultHeight: 600,
@@ -113,7 +112,7 @@ try {
 					},
 				],
 			},
-		]
+		];
 	}
 
 	function createTray(): Tray {
@@ -137,7 +136,7 @@ try {
 				},
 			},
 			{
-				type: 'separator'
+				type: 'separator',
 			},
 			{
 				label: 'Quit',
@@ -173,7 +172,6 @@ try {
 				loadVite(port);
 			}, 200);
 		});
-
 	}
 
 	function createMainWindow() {
@@ -226,7 +224,6 @@ try {
 
 		app.exit();
 	});
-
 } catch (err) {
 	mainLog.error(err);
 }
