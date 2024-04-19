@@ -1,6 +1,12 @@
 import type { ActionCountsType, FrameEntryType, GameEndType, GameStartType, OverallType, PlayerType, StatsType } from "@slippi/slippi-js";
 import type { BestOf } from "../enum";
 
+export interface SlippiCharacter {
+    character: string;
+    gameCount: number;
+    id: number;
+}
+
 export interface Character {
     characterName: string;
     characterId: number;

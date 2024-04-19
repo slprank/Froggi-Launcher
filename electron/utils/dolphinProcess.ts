@@ -30,7 +30,8 @@ export const getProcessPid = async (): Promise<number | undefined> => {
 // 	return false;
 // };
 
-export const isDolphinRunning = async (isWindows: boolean) => {
+export const isDolphinRunning = async () => {
+	const isWindows = os.platform() === 'win32';
 	const validProcesses = getValidProcesses();
 	const exec = require('child_process').exec;
 	const command = isWindows

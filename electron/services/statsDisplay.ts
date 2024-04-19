@@ -154,12 +154,14 @@ export class StatsDisplay {
 	private async handlePostGameScene(game: GameStats | null) {
 		if (isNil(game)) return;
 
+		const playerConnectCode = this.storeSettings.getCurrentPlayerConnectCode()
+
 		const bestOf = this.storeLiveStats.getBestOf();
 		const isPostSet = game.score.some((score) => score >= Math.ceil(bestOf / 2));
 		if (isPostSet) {
-			if (game.settings?.matchInfo?.mode === 'ranked') {
+			if (game.settings?.matchInfo?.mode === 'ranked' && !isNil(playerConnectCode)) {
 				const currentPlayerRankStats = await this.api.getPlayerRankStats(
-					this.storeSettings.getCurrentPlayerConnectCode(),
+					playerConnectCode,
 				);
 				this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
 			}

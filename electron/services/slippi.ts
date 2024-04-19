@@ -106,6 +106,7 @@ export class SlippiJs {
 		const connectCode = (await findPlayKey()).connectCode;
 		this.storeSettings.setCurrentPlayerConnectCode(connectCode);
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode);
+		console.log('rankedNetplayProfile', rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile);
 		this.storeSession.updateSessionStats(rankedNetplayProfile);
@@ -116,7 +117,7 @@ export class SlippiJs {
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Searching);
 		this.log.info('Looking For Dolphin Process');
 		this.dolphinProcessInterval = setInterval(async () => {
-			if (await isDolphinRunning(this.isWindows)) {
+			if (await isDolphinRunning()) {
 				this.log.info('Dolphin Found');
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 				this.stopProcessSearchInterval();
