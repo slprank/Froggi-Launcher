@@ -15,7 +15,7 @@ export const getProcessPid = async (): Promise<number | undefined> => {
 	return undefined;
 };
 
-// This solution was so slow on windows that it stacked powershell processes over time if it didnt find dolphin instantly, resulting in a crash.
+// This solution was so slow on windows that it stacked powershell processes over time if it didn't find dolphin instantly, resulting in a crash.
 // export const isDolphinRunning = async (): Promise<boolean> => {
 // 	const validProcesses = getValidProcesses();
 
@@ -55,19 +55,19 @@ export const isDolphinRunning = async () => {
 };
 
 const getValidProcesses = (): string[] => {
-	let validProcess: string[] = [];
 	if (os.platform() === 'win32')
-		validProcess = [
+		return [
 			'Dolphin.exe',
-			'Code',
 			'Slippi_Dolphin.exe',
+			'Slippi_Dolphin',
 			'Slippi Dolphin.exe',
+			'Slippi Dolphin',
 			'Citrus Dolphin.exe',
 			'DolphinWx.exe',
 			'DolphinQt2.exe',
 		];
 	if (os.platform() === 'linux')
-		validProcess = [
+		return [
 			'AppRun',
 			'AppRun.wrapped',
 			'dolphin-emu',
@@ -80,11 +80,11 @@ const getValidProcesses = (): string[] => {
 			'slippi-r10-netplay',
 		];
 	if (os.platform() === 'darwin')
-		validProcess = [
+		return [
 			'Slippi Dolphin.app',
 			'Slippi Dolphin',
 			'Slippi_Dolphin.app',
 			'Slippi_Dolphin',
 		];
-	return validProcess;
+	return [];
 };
