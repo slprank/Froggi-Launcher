@@ -35,7 +35,7 @@ export const isDolphinRunning = async () => {
 	const validProcesses = getValidProcesses();
 	const exec = require('child_process').exec;
 	const command = isWindows
-		? `Get-Process | Select-Object -ExpandProperty ProcessName`
+		? `tasklist`
 		: `ps -e -o comm=`;
 	const shell = isWindows ? 'powershell.exe' : '/bin/bash';
 	return await new Promise((resolve) => {
@@ -59,9 +59,7 @@ const getValidProcesses = (): string[] => {
 		return [
 			'Dolphin.exe',
 			'Slippi_Dolphin.exe',
-			'Slippi_Dolphin',
 			'Slippi Dolphin.exe',
-			'Slippi Dolphin',
 			'Citrus Dolphin.exe',
 			'DolphinWx.exe',
 			'DolphinQt2.exe',
