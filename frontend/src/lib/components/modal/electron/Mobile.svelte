@@ -31,7 +31,7 @@
 				<div class="w-48 h-48 border-4 border-zinc-700 text-center grid gap-2">
 					<QrCode value={$urls?.external} size="192" />
 					<div class="flex">
-						<h1 class="text-gray-500 text-md font-medium text-shadow">
+						<h1 class="text-gray-500 text-md font-medium text-shadow underline">
 							{$urls?.external}
 						</h1>
 						<Clipboard

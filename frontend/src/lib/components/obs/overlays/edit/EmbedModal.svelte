@@ -55,6 +55,22 @@
 				<h1 class="text-gray-500 text-md font-medium text-shadow text-center">
 					You can add as many browser sources as you want
 				</h1>
+				<div class="flex">
+					<h1 class="text-gray-500 text-md font-medium text-shadow underline">
+						{localUrl}
+					</h1>
+					<Clipboard
+						text={`${localUrl}`}
+						let:copy
+						on:copy={() => {
+							notifications.success('Copied to clipboard!', 2000);
+						}}
+					>
+						<button on:click={copy} class="w-5 h-5 invert transition">
+							<img src="/image/button-icons/copy.png" alt="copy" />
+						</button>
+					</Clipboard>
+				</div>
 				<Clipboard
 					text={localUrl}
 					let:copy
@@ -91,6 +107,22 @@
 			</div>
 			<QrCode value={`${externalUrl}`} size="192" />
 
+			<div class="flex">
+				<h1 class="text-gray-500 text-md font-medium text-shadow underline">
+					{externalUrl}
+				</h1>
+				<Clipboard
+					text={`${externalUrl}`}
+					let:copy
+					on:copy={() => {
+						notifications.success('Copied to clipboard!', 2000);
+					}}
+				>
+					<button on:click={copy} class="w-5 h-5 invert transition">
+						<img src="/image/button-icons/copy.png" alt="copy" />
+					</button>
+				</Clipboard>
+			</div>
 			<Clipboard
 				text={externalUrl}
 				let:copy
