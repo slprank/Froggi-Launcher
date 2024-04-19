@@ -159,12 +159,14 @@ export class StatsDisplay {
 		const bestOf = this.storeLiveStats.getBestOf();
 		const isPostSet = game.score.some((score) => score >= Math.ceil(bestOf / 2));
 		if (isPostSet) {
-			if (game.settings?.matchInfo?.mode === 'ranked' && !isNil(playerConnectCode)) {
-				const currentPlayerRankStats = await this.api.getPlayerRankStats(
-					playerConnectCode,
-				);
-				this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
-			}
+			setTimeout(async () => {
+				if (game.settings?.matchInfo?.mode === 'ranked' && !isNil(playerConnectCode)) {
+					const currentPlayerRankStats = await this.api.getPlayerRankStats(
+						playerConnectCode,
+					);
+					this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
+				}
+			});
 			return this.storeLiveStats.setStatsSceneTimeout(
 				LiveStatsScene.PostSet,
 				LiveStatsScene.Menu,

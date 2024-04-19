@@ -41,7 +41,6 @@ export const isDolphinRunning = async () => {
 	return await new Promise((resolve) => {
 		exec(command, { shell: shell }, (_: Error, stdout: string) => {
 			if (stdout) {
-				console.log(stdout);
 				stdout = stdout.toLowerCase();
 				for (const process of validProcesses) {
 					if (stdout.includes(process.toLowerCase())) {
