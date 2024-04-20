@@ -104,7 +104,13 @@
 		newItem = fixTransition(newItem);
 
 		items = items.filter((item) => item.id != selectedItemId);
-		items = [...items, newItem];
+		items = [...items, newItem].reduce((acc: GridContentItem[], item: GridContentItem) => {
+			const exists = acc.some((existingItem) => existingItem.id === item.id);
+			if (!exists) {
+				acc.push(item);
+			}
+			return acc;
+		}, []);
 
 		const overlayIndex = getCurrentOverlayIndex();
 
