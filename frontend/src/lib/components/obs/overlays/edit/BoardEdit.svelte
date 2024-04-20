@@ -24,7 +24,7 @@
 	let curOverlay =
 		$overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let items: GridContentItem[] = [];
-	let tempItems: any = undefined;
+	let tempItems: GridContentItem[] | undefined = undefined;
 
 	function updateScene() {
 		items
@@ -55,7 +55,17 @@
 			curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items == tempItems
 		)
 			return;
-		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items = tempItems;
+
+		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items = tempItems.reduce(
+			(acc: GridContentItem[], item: GridContentItem) => {
+				const exists = acc.some((existingItem) => existingItem.id === item.id);
+				if (!exists) {
+					acc.push(item);
+				}
+				return acc;
+			},
+			[],
+		);
 
 		$electronEmitter.emit('OverlayUpdate', curOverlay);
 		tempItems = undefined;
