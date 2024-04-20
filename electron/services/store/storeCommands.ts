@@ -120,9 +120,13 @@ export class ElectronCommandStore {
 
 	addSceneCommand(scene: LiveStatsScene, command: Command) {
 		const sceneCommands = this.getSceneCommands();
+		if (isNil(sceneCommands[scene])) {
+			sceneCommands[scene] = [];
+		}
 		sceneCommands[scene] = [...sceneCommands[scene], { ...command, id: newId() }];
 		this.setSceneCommands(sceneCommands);
 	}
+
 	deleteSceneCommand(scene: LiveStatsScene, commandId: string) {
 		const sceneCommands = this.getSceneCommands();
 		sceneCommands[scene] = sceneCommands[scene].filter((command) => command.id !== commandId);
