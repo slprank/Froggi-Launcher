@@ -3,6 +3,7 @@
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { currentPlayers, postGame } from '$lib/utils/store.svelte';
 	import TextElement from '$lib/components/obs/overlays/element/TextElement.svelte';
+	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -15,103 +16,91 @@
 
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountAirDodge}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.airDodgeCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.airDodgeCount
-			: defaultPreview
+		{defaultPreview
 			? `53`
+			: ![player1ActionCounts?.airDodgeCount, player1Index].some(isNil)
+			? player1ActionCounts?.airDodgeCount
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountDashDance}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.dashDanceCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.dashDanceCount
-			: defaultPreview
+		{defaultPreview
 			? `137`
+			: ![player1ActionCounts?.dashDanceCount, player1Index].some(isNil)
+			? player1ActionCounts?.dashDanceCount
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountLedgeGrab}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.dashDanceCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.dashDanceCount
-			: defaultPreview
+		{defaultPreview
 			? `19`
+			: ![player1ActionCounts?.dashDanceCount, player1Index].some(isNil)
+			? player1ActionCounts?.dashDanceCount
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountRoll}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.rollCount, player1Index].some((e) => e === undefined || e === null)
-			? player1ActionCounts?.rollCount
-			: defaultPreview
+		{defaultPreview
 			? `13`
+			: ![player1ActionCounts?.rollCount, player1Index].some(isNil)
+			? player1ActionCounts?.rollCount
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountSpotDodge}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.spotDodgeCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.spotDodgeCount
-			: defaultPreview
+		{defaultPreview
 			? `18`
+			: ![player1ActionCounts?.spotDodgeCount, player1Index].some(isNil)
+			? player1ActionCounts?.spotDodgeCount
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountWaveDash}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.wavedashCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.wavedashCount
-			: defaultPreview
+		{defaultPreview
 			? `63`
+			: ![player1ActionCounts?.wavedashCount, player1Index].some(isNil)
+			? player1ActionCounts?.wavedashCount
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountWaveLand}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.wavelandCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.wavelandCount
-			: defaultPreview
+		{defaultPreview
 			? `37`
+			: ![player1ActionCounts?.wavelandCount, player1Index].some(isNil)
+			? player1ActionCounts?.wavelandCount
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGrabTotal}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.grabCount, player1Index].some((e) => e === undefined || e === null)
+		{defaultPreview
+			? `14`
+			: ![player1ActionCounts?.grabCount, player1Index].some(isNil)
 			? (player1ActionCounts?.grabCount.success ?? 0) +
 			  (player1ActionCounts?.grabCount.fail ?? 0)
-			: defaultPreview
-			? `14`
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGrabSuccess}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.grabCount.success, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.grabCount.success
-			: defaultPreview
+		{defaultPreview
 			? `9`
+			: ![player1ActionCounts?.grabCount.success, player1Index].some(isNil)
+			? player1ActionCounts?.grabCount.success
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGrabSuccessPercent}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.grabCount, player1Index].some((e) => e === undefined || e === null)
+		{defaultPreview
+			? `64.2`
+			: ![player1ActionCounts?.grabCount, player1Index].some(isNil)
 			? Number(
 					(
 						(player1ActionCounts?.grabCount.success ?? 0) /
@@ -119,25 +108,23 @@
 							(player1ActionCounts?.grabCount.fail ?? 0))
 					).toFixed(1),
 			  ) * 100
-			: defaultPreview
-			? `64.2`
 			: '0.0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGrabFail}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.grabCount.fail, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.grabCount.fail
-			: defaultPreview
+		{defaultPreview
 			? `5`
+			: ![player1ActionCounts?.grabCount.fail, player1Index].some(isNil)
+			? player1ActionCounts?.grabCount.fail
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGrabFailPercent}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.grabCount, player1Index].some((e) => e === undefined || e === null)
+		{defaultPreview
+			? `37.8`
+			: ![player1ActionCounts?.grabCount, player1Index].some(isNil)
 			? Number(
 					(
 						(player1ActionCounts?.grabCount.fail ?? 0) /
@@ -145,43 +132,37 @@
 							(player1ActionCounts?.grabCount.fail ?? 0))
 					).toFixed(1),
 			  ) * 100
-			: defaultPreview
-			? `37.8`
 			: '0.0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechTotal}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
+		{defaultPreview
+			? `23`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
 			? (player1ActionCounts?.groundTechCount.neutral ?? 0) +
 			  (player1ActionCounts?.groundTechCount.in ?? 0) +
 			  (player1ActionCounts?.groundTechCount.away ?? 0) +
 			  (player1ActionCounts?.groundTechCount.fail ?? 0)
-			: defaultPreview
-			? `23`
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechSuccess}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
+		{defaultPreview
+			? `22`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
 			? (player1ActionCounts?.groundTechCount.neutral ?? 0) +
 			  (player1ActionCounts?.groundTechCount.in ?? 0) +
 			  (player1ActionCounts?.groundTechCount.away ?? 0)
-			: defaultPreview
-			? `22`
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechSuccessPercent}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
+		{defaultPreview
+			? `95.6`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
 			? Number(
 					(
 						((player1ActionCounts?.groundTechCount.neutral ?? 0) +
@@ -193,60 +174,50 @@
 							(player1ActionCounts?.groundTechCount.away ?? 0))
 					).toFixed(),
 			  ) * 100
-			: defaultPreview
-			? `95.6`
 			: '0.0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechIn}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.groundTechCount.in
-			: defaultPreview
+		{defaultPreview
 			? `8`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
+			? player1ActionCounts?.groundTechCount.in
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechAway}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.groundTechCount.away
-			: defaultPreview
+		{defaultPreview
 			? `11`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
+			? player1ActionCounts?.groundTechCount.away
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechNeutral}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.groundTechCount.neutral
-			: defaultPreview
+		{defaultPreview
 			? `3`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
+			? player1ActionCounts?.groundTechCount.neutral
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechFail}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.groundTechCount.fail
-			: defaultPreview
+		{defaultPreview
 			? `1`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
+			? player1ActionCounts?.groundTechCount.fail
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountGroundTechFailPercent}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.groundTechCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
+		{defaultPreview
+			? `4.4`
+			: ![player1ActionCounts?.groundTechCount, player1Index].some(isNil)
 			? Number(
 					(
 						(player1ActionCounts?.groundTechCount.fail ?? 0) /
@@ -254,41 +225,35 @@
 							(player1ActionCounts?.groundTechCount.neutral ?? 0) +
 							(player1ActionCounts?.groundTechCount.in ?? 0) +
 							(player1ActionCounts?.groundTechCount.away ?? 0))
-					).toFixed(),
+					).toFixed(1),
 			  ) * 100
-			: defaultPreview
-			? `4.4`
 			: '0.0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountLCancelTotal}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.lCancelCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
+		{defaultPreview
+			? `54`
+			: ![player1ActionCounts?.lCancelCount, player1Index].some(isNil)
 			? (player1ActionCounts?.lCancelCount.success ?? 0) +
 			  (player1ActionCounts?.lCancelCount.fail ?? 0)
-			: defaultPreview
-			? `54`
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountLCancelSuccess}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.lCancelCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.lCancelCount.success
-			: defaultPreview
+		{defaultPreview
 			? `42`
+			: ![player1ActionCounts?.lCancelCount, player1Index].some(isNil)
+			? player1ActionCounts?.lCancelCount.success
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountLCancelSuccessPercent}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.lCancelCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
+		{defaultPreview
+			? `77.8`
+			: ![player1ActionCounts?.lCancelCount, player1Index].some(isNil)
 			? Number(
 					(
 						(player1ActionCounts?.lCancelCount.success ?? 0) /
@@ -296,27 +261,23 @@
 							(player1ActionCounts?.lCancelCount.fail ?? 0))
 					).toFixed(1) ?? 0.0,
 			  ) * 100
-			: defaultPreview
-			? `77.8`
 			: '0.0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountLCancelFail}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.lCancelCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
-			? player1ActionCounts?.lCancelCount.fail
-			: defaultPreview
+		{defaultPreview
 			? `12`
+			: ![player1ActionCounts?.lCancelCount, player1Index].some(isNil)
+			? player1ActionCounts?.lCancelCount.fail
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountLCancelFailPercent}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.lCancelCount, player1Index].some(
-			(e) => e === undefined || e === null,
-		)
+		{defaultPreview
+			? `22.2`
+			: ![player1ActionCounts?.lCancelCount, player1Index].some(isNil)
 			? Number(
 					(
 						(player1ActionCounts?.lCancelCount.fail ?? 0) /
@@ -324,56 +285,54 @@
 							(player1ActionCounts?.lCancelCount.fail ?? 0))
 					).toFixed(1),
 			  ) * 100
-			: defaultPreview
-			? `22.2`
 			: '0.0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountThrowTotal}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.throwCount, player1Index].some((e) => e === undefined || e === null)
+		{defaultPreview
+			? `17`
+			: ![player1ActionCounts?.throwCount, player1Index].some(isNil)
 			? (player1ActionCounts?.throwCount.up ?? 0) +
 			  (player1ActionCounts?.throwCount.forward ?? 0) +
 			  (player1ActionCounts?.throwCount.back ?? 0) +
 			  (player1ActionCounts?.throwCount.down ?? 0)
-			: defaultPreview
-			? `17`
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountThrowUp}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.throwCount, player1Index].some((e) => e === undefined || e === null)
-			? player1ActionCounts?.throwCount.up
-			: defaultPreview
+		{defaultPreview
 			? `8`
+			: ![player1ActionCounts?.throwCount, player1Index].some(isNil)
+			? player1ActionCounts?.throwCount.up
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountThrowDown}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.throwCount, player1Index].some((e) => e === undefined || e === null)
-			? player1ActionCounts?.throwCount.down
-			: defaultPreview
+		{defaultPreview
 			? `2`
+			: ![player1ActionCounts?.throwCount, player1Index].some(isNil)
+			? player1ActionCounts?.throwCount.down
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountThrowBack}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.throwCount, player1Index].some((e) => e === undefined || e === null)
-			? player1ActionCounts?.throwCount.back
-			: defaultPreview
+		{defaultPreview
 			? `3`
+			: ![player1ActionCounts?.throwCount, player1Index].some(isNil)
+			? player1ActionCounts?.throwCount.back
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGamePlayer1ActionCountThrowForward}
 	<TextElement {style} {dataItem}>
-		{![player1ActionCounts?.throwCount, player1Index].some((e) => e === undefined || e === null)
-			? player1ActionCounts?.throwCount.forward
-			: defaultPreview
+		{defaultPreview
 			? `4`
+			: ![player1ActionCounts?.throwCount, player1Index].some(isNil)
+			? player1ActionCounts?.throwCount.forward
 			: '0'}
 	</TextElement>
 {/if}

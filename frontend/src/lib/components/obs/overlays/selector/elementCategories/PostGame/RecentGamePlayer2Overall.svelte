@@ -6,6 +6,7 @@
 	const dispatch = createEventDispatcher();
 
 	function select(customElement: CustomEvent<CustomElement>) {
+		console.log('selected', customElement.detail);
 		dispatch('select', customElement.detail);
 	}
 </script>

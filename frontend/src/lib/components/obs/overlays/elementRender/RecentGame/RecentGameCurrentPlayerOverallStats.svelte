@@ -3,6 +3,7 @@
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { currentPlayer, postGame } from '$lib/utils/store.svelte';
 	import TextElement from '$lib/components/obs/overlays/element/TextElement.svelte';
+	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -18,188 +19,160 @@
 
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallBeneficialTradeCount}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.beneficialTradeRatio.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.beneficialTradeRatio.count
-			: defaultPreview
+		{defaultPreview
 			? `8`
+			: ![currentPlayerOverall?.beneficialTradeRatio.count, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.beneficialTradeRatio.count
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallBeneficialTradeRatio}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.beneficialTradeRatio.ratio, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? (currentPlayerOverall?.beneficialTradeRatio?.ratio ?? 0) * 100
-			: defaultPreview
+		{defaultPreview
 			? `75.0`
+			: ![currentPlayerOverall?.beneficialTradeRatio.ratio, currentPlayerIndex].some(isNil)
+			? (currentPlayerOverall?.beneficialTradeRatio?.ratio ?? 0) * 100
 			: '0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallCounterHitCount}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.counterHitRatio?.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.counterHitRatio.count
-			: defaultPreview
+		{defaultPreview
 			? `10`
+			: ![currentPlayerOverall?.counterHitRatio?.count, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.counterHitRatio.count
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallCounterHitRatio}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.counterHitRatio.ratio, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? (currentPlayerOverall?.counterHitRatio.ratio ?? 0) * 100
-			: defaultPreview
+		{defaultPreview
 			? `60.0`
+			: ![currentPlayerOverall?.counterHitRatio.ratio, currentPlayerIndex].some(isNil)
+			? (currentPlayerOverall?.counterHitRatio.ratio ?? 0) * 100
 			: '0.0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDamageTotal}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.totalDamage, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.totalDamage.toFixed(1)
-			: defaultPreview
+		{defaultPreview
 			? `420.7`
+			: ![currentPlayerOverall?.totalDamage, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.totalDamage.toFixed(1)
 			: '0.0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallOpeningsTotal}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.openingsPerKill?.total, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.openingsPerKill.total
-			: defaultPreview
+		{defaultPreview
 			? `27`
+			: ![currentPlayerOverall?.openingsPerKill?.total, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.openingsPerKill.total
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDamagePerOpening}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.damagePerOpening.ratio, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.damagePerOpening.ratio?.toFixed(1)
-			: defaultPreview
+		{defaultPreview
 			? `15.6`
+			: ![currentPlayerOverall?.damagePerOpening.ratio, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.damagePerOpening.ratio?.toFixed(1)
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallOpeningsPerKill}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.openingsPerKill.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.openingsPerKill.count.toFixed(1) ?? '0.0'
-			: defaultPreview
+		{defaultPreview
 			? `6.7`
+			: ![currentPlayerOverall?.openingsPerKill.count, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.openingsPerKill.count.toFixed(1) ?? '0.0'
 			: '0.0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDigitalInputsTotal}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.digitalInputsPerMinute.total, currentPlayerIndex].includes(
-			undefined,
-		)
-			? currentPlayerOverall?.digitalInputsPerMinute.total
-			: defaultPreview
+		{defaultPreview
 			? `945`
+			: ![currentPlayerOverall?.digitalInputsPerMinute.total, currentPlayerIndex].includes(
+					undefined,
+			  )
+			? currentPlayerOverall?.digitalInputsPerMinute.total
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDigitalInputsPerMinute}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.digitalInputsPerMinute.count, currentPlayerIndex].includes(
-			undefined,
-		)
-			? currentPlayerOverall?.digitalInputsPerMinute.count.toFixed(0)
-			: defaultPreview
+		{defaultPreview
 			? `315`
+			: ![currentPlayerOverall?.digitalInputsPerMinute.count, currentPlayerIndex].includes(
+					undefined,
+			  )
+			? currentPlayerOverall?.digitalInputsPerMinute.count.toFixed(0)
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDigitalInputsPerSecond}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.digitalInputsPerMinute.count, currentPlayerIndex].includes(
-			undefined,
-		)
-			? ((currentPlayerOverall?.digitalInputsPerMinute?.count ?? 0) / 60).toFixed(2)
-			: defaultPreview
+		{defaultPreview
 			? `5.25`
+			: ![currentPlayerOverall?.digitalInputsPerMinute.count, currentPlayerIndex].includes(
+					undefined,
+			  )
+			? ((currentPlayerOverall?.digitalInputsPerMinute?.count ?? 0) / 60).toFixed(2)
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallInputsTotal}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.inputsPerMinute.total, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.inputsPerMinute.total
-			: defaultPreview
+		{defaultPreview
 			? `1200`
+			: ![currentPlayerOverall?.inputsPerMinute.total, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.inputsPerMinute.total
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallInputsPerMinute}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.inputsPerMinute.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.inputsPerMinute.count.toFixed(0)
-			: defaultPreview
+		{defaultPreview
 			? `400`
+			: ![currentPlayerOverall?.inputsPerMinute.count, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.inputsPerMinute.count.toFixed(0)
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallInputsPerSecond}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.inputsPerMinute.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? ((currentPlayerOverall?.inputsPerMinute.count ?? 0) / 60).toFixed(2)
-			: defaultPreview
+		{defaultPreview
 			? `6.67`
+			: ![currentPlayerOverall?.inputsPerMinute.count, currentPlayerIndex].some(isNil)
+			? ((currentPlayerOverall?.inputsPerMinute.count ?? 0) / 60).toFixed(2)
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallNeutralWinsCount}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.neutralWinRatio.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerOverall?.neutralWinRatio.count
-			: defaultPreview
+		{defaultPreview
 			? `18`
+			: ![currentPlayerOverall?.neutralWinRatio.count, currentPlayerIndex].some(isNil)
+			? currentPlayerOverall?.neutralWinRatio.count
 			: '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallNeutralWinsRatio}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerOverall?.neutralWinRatio.ratio, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? (currentPlayerOverall?.neutralWinRatio?.ratio ?? 0 * 100).toFixed(1)
-			: defaultPreview
+		{defaultPreview
 			? `56.0`
+			: ![currentPlayerOverall?.neutralWinRatio.ratio, currentPlayerIndex].some(isNil)
+			? (currentPlayerOverall?.neutralWinRatio?.ratio ?? 0 * 100).toFixed(1)
 			: '0'}%
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallStocksRemaining}
 	<TextElement {style} {dataItem}>
-		{![currentPlayerStocks?.count, currentPlayerIndex].some(
-			(e) => e === undefined || e === null,
-		)
-			? currentPlayerStocks?.count ?? 0
-			: defaultPreview
+		{defaultPreview
 			? `2`
+			: ![currentPlayerStocks?.count, currentPlayerIndex].some(isNil)
+			? currentPlayerStocks?.count ?? 0
 			: '0'}
 	</TextElement>
 {/if}

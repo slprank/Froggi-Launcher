@@ -15,6 +15,7 @@
 	import { addFont } from '../CustomFontHandler.svelte';
 	import { asyncForEach } from '$lib/utils/helper';
 	import { notifyDisabledScene } from './OverlayHandler.svelte';
+	import BoardGrid from './BoardGrid.svelte';
 
 	const overlayId = $page.params.overlay;
 
@@ -49,6 +50,7 @@
 	$: $statsScene || $currentOverlayEditor || $overlays, updateLiveScene();
 
 	function updateOverlay() {
+		console.log(curOverlay);
 		if (
 			!tempItems ||
 			$currentOverlayEditor?.layerIndex === undefined ||
@@ -110,6 +112,10 @@
 				style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
 				class="w-full h-full overflow-hidden relative"
 			>
+				<BoardGrid
+					rows={curOverlay.aspectRatio.height * 2}
+					cols={curOverlay.aspectRatio.width * 2}
+				/>
 				<BoardContainer bind:scene={curOverlay[$statsScene]} edit={true} />
 				<div class="w-full h-full z-2 absolute">
 					<Grid
