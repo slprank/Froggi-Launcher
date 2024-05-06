@@ -62,8 +62,8 @@
 		{![player2Overall?.totalDamage, player2Index].some((e) => e === undefined || e === null)
 			? player2Overall?.totalDamage.toFixed(1)
 			: defaultPreview
-			? `420`
-			: '0'}
+			? `300.0`
+			: '0.0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.PostGameMatchPlayer2OverallOpeningsTotal}

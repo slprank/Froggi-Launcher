@@ -62,7 +62,7 @@
 		{![player1Overall?.totalDamage, player1Index].some((e) => e === undefined || e === null)
 			? player1Overall?.totalDamage.toFixed(1)
 			: defaultPreview
-			? `420.7`
+			? `360.5`
 			: '0.0'}
 	</TextElement>
 {/if}

@@ -56,7 +56,7 @@
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerOverallDamageTotal}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `420.7`
+			? `360.5`
 			: ![currentPlayerOverall?.totalDamage, currentPlayerIndex].some(isNil)
 			? currentPlayerOverall?.totalDamage.toFixed(1)
 			: '0.0'}

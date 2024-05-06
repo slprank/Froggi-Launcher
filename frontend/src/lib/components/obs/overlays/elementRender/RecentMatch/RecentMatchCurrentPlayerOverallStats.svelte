@@ -64,7 +64,7 @@
 		)
 			? currentPlayerOverall?.totalDamage.toFixed(1)
 			: defaultPreview
-			? `420.7`
+			? `360.5`
 			: '0.0'}
 	</TextElement>
 {/if}
