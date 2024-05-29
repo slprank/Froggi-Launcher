@@ -74,7 +74,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2OverallDamagePerOpening}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `15.6`
+			? `13.3`
 			: ![player2Overall?.damagePerOpening.ratio, player2Index].some(isNil)
 			? player2Overall?.damagePerOpening.ratio?.toFixed(1)
 			: '0.0'}

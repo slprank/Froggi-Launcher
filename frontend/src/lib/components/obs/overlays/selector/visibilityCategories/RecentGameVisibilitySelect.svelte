@@ -24,7 +24,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 1 Won The Previous Game"
-	value={VisibilityOption.PostGameCurrentPlayerWin}
+	value={VisibilityOption.PostGamePlayer1Win}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer1Win]}
 	on:select={select}
 >
@@ -32,7 +32,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 2 Won The Previous Game"
-	value={VisibilityOption.PostGamePlayer1Win}
+	value={VisibilityOption.PostGamePlayer2Win}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer2Win]}
 	on:select={select}
 >
@@ -48,7 +48,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 1 Had 2 or More Stocks Remaining"
-	value={VisibilityOption.PostGamePlayer1Stock1}
+	value={VisibilityOption.PostGamePlayer1Stock2}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer1Stock2]}
 	on:select={select}
 >
@@ -56,7 +56,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 1 Had 3 or More Stocks Remaining"
-	value={VisibilityOption.PostGamePlayer1Stock1}
+	value={VisibilityOption.PostGamePlayer1Stock3}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer1Stock3]}
 	on:select={select}
 >
@@ -64,7 +64,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 1 Had 4 or More Stocks Remaining"
-	value={VisibilityOption.PostGamePlayer1Stock1}
+	value={VisibilityOption.PostGamePlayer1Stock4}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer1Stock4]}
 	on:select={select}
 >
@@ -80,7 +80,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 2 Had 2 or More Stocks Remaining"
-	value={VisibilityOption.PostGamePlayer2Stock1}
+	value={VisibilityOption.PostGamePlayer2Stock2}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer2Stock2]}
 	on:select={select}
 >
@@ -88,7 +88,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 2 Had 3 or More Stocks Remaining"
-	value={VisibilityOption.PostGamePlayer2Stock1}
+	value={VisibilityOption.PostGamePlayer2Stock3}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer2Stock3]}
 	on:select={select}
 >
@@ -96,7 +96,7 @@
 </SelectOption>
 <SelectOption
 	description="If Player 2 Had 4 or More Stocks Remaining"
-	value={VisibilityOption.PostGamePlayer2Stock1}
+	value={VisibilityOption.PostGamePlayer2Stock4}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGamePlayer2Stock4]}
 	on:select={select}
 >

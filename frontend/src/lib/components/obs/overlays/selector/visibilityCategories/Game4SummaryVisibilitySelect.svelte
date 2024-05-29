@@ -56,7 +56,7 @@
 </SelectOption>
 <SelectOption
 	description="Current Set Game 4 or 2nd Most Recent Game - If Player 1 Had 2 or More Stocks Remaining"
-	value={VisibilityOption.PostGame4SummaryPlayer1Stock1}
+	value={VisibilityOption.PostGame4SummaryPlayer1Stock2}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame4SummaryPlayer1Stock2]}
 	on:select={select}
 >
@@ -64,7 +64,7 @@
 </SelectOption>
 <SelectOption
 	description="Current Set Game 4 or 2nd Most Recent Game - If Player 1 Had 3 or More Stocks Remaining"
-	value={VisibilityOption.PostGame4SummaryPlayer1Stock1}
+	value={VisibilityOption.PostGame4SummaryPlayer1Stock3}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame4SummaryPlayer1Stock3]}
 	on:select={select}
 >
@@ -72,7 +72,7 @@
 </SelectOption>
 <SelectOption
 	description="Current Set Game 4 or 2nd Most Recent Game - If Player 1 Had 4 or More Stocks Remaining"
-	value={VisibilityOption.PostGame4SummaryPlayer1Stock1}
+	value={VisibilityOption.PostGame4SummaryPlayer1Stock4}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame4SummaryPlayer1Stock4]}
 	on:select={select}
 >
@@ -88,7 +88,7 @@
 </SelectOption>
 <SelectOption
 	description="Current Set Game 4 or 2nd Most Recent Game - If Player 2 Had 2 or More Stocks Remaining"
-	value={VisibilityOption.PostGame4SummaryPlayer2Stock1}
+	value={VisibilityOption.PostGame4SummaryPlayer2Stock2}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame4SummaryPlayer2Stock2]}
 	on:select={select}
 >
@@ -96,7 +96,7 @@
 </SelectOption>
 <SelectOption
 	description="Current Set Game 4 or 2nd Most Recent Game - If Player 2 Had 3 or More Stocks Remaining"
-	value={VisibilityOption.PostGame4SummaryPlayer2Stock1}
+	value={VisibilityOption.PostGame4SummaryPlayer2Stock3}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame4SummaryPlayer2Stock3]}
 	on:select={select}
 >
@@ -104,7 +104,7 @@
 </SelectOption>
 <SelectOption
 	description="Current Set Game 4 or 2nd Most Recent Game - If Player 2 Had 4 or More Stocks Remaining"
-	value={VisibilityOption.PostGame4SummaryPlayer2Stock1}
+	value={VisibilityOption.PostGame4SummaryPlayer2Stock4}
 	bind:selected={selectedVisibilityOption[VisibilityOption.PostGame4SummaryPlayer2Stock4]}
 	on:select={select}
 >

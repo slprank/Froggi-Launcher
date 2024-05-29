@@ -99,7 +99,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2ActionCountGrabSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `64.2%`
+			? `64.2`
 			: ![player2ActionCounts?.grabCount, player2Index].some(isNil)
 			? Number(
 					(
@@ -123,7 +123,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2ActionCountGrabFailPercent}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `37.8%`
+			? `37.8`
 			: ![player2ActionCounts?.grabCount, player2Index].some(isNil)
 			? Number(
 					(
@@ -161,7 +161,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2ActionCountGroundTechSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `95.6%`
+			? `95.6`
 			: ![player2ActionCounts?.groundTechCount, player2Index].some(isNil)
 			? Number(
 					(
@@ -216,7 +216,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2ActionCountGroundTechFailPercent}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `4.4%`
+			? `4.4`
 			: ![player2ActionCounts?.groundTechCount.fail, player2Index].some(isNil)
 			? Number(
 					(
@@ -252,7 +252,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2ActionCountLCancelSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `77.8%`
+			? `77.8`
 			: ![player2ActionCounts?.lCancelCount, player2Index].some(isNil)
 			? Number(
 					(
@@ -276,7 +276,7 @@
 {#if dataItem?.elementId === CustomElement.PostGamePlayer2ActionCountLCancelFailPercent}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
-			? `22.2%`
+			? `22.2`
 			: ![player2ActionCounts?.lCancelCount.fail, player2Index].some(isNil)
 			? Number(
 					(

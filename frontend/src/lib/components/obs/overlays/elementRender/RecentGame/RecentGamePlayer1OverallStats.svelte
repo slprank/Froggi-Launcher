@@ -85,7 +85,7 @@
 		{![player1Overall?.openingsPerKill.count, player1Index].some(isNil)
 			? player1Overall?.openingsPerKill.count.toFixed(1)
 			: defaultPreview
-			? `6.7`
+			? `5.6`
 			: '0.0'}
 	</TextElement>
 {/if}
