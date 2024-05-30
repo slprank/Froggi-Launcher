@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
+	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;
@@ -15,11 +16,9 @@
 	};
 
 	let characterId: number | undefined = getCharacterId();
-
-	$: console.log('character', player?.rank?.current?.characters);
 </script>
 
-{#if characterId}
+{#if !isNil(characterId)}
 	<div
 		class={`w-full h-full ${style.classValue}`}
 		style={`${style.cssValue}; ${

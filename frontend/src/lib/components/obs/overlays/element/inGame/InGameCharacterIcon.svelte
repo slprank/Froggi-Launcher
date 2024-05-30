@@ -3,6 +3,7 @@
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
 	import { gameFrame, gameSettings, statsScene } from '$lib/utils/store.svelte';
+	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
 	export let player: Player | undefined;
@@ -18,16 +19,16 @@
 		return preview
 			? defaultPreviewId
 			: postFrame
-				? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
-				: playerSettings
-					? playerSettings.characterId
-					: null;
+			? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
+			: playerSettings
+			? playerSettings.characterId
+			: null;
 	};
 	$: $statsScene, $gameSettings, (characterId = updateCharacterId());
 </script>
 
 {#key $gameSettings}
-	{#if characterId}
+	{#if !isNil(characterId)}
 		<div
 			class={`w-full h-full flex ${style.classValue}`}
 			style={`${style.cssValue}; ${
