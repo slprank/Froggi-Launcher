@@ -312,7 +312,9 @@
 		selectedLayerIndex: number,
 	): Promise<number> {
 		let overlay = await getOverlayById(overlayId);
-		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayerIndex;
+		console.log('overlay', overlay, statsScene, selectedLayerIndex);
+		if (isNil(overlay) || !overlay?.[statsScene].layers.length) return selectedLayerIndex;
+		console.log('post');
 
 		const duplicatedLayer: Layer = {
 			...overlay[statsScene].layers[selectedLayerIndex],

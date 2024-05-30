@@ -41,9 +41,9 @@
 		{#if div}
 			<img
 				class="h-full"
-				style={`object-fit: cover; ${'object-position: 100% 0;'};  height: ${
-					div?.clientHeight
-				}px;
+				style={`object-fit: cover; object-position: ${
+					direction === 'left' ? 100 : 0
+				}% 0;  height: ${div?.clientHeight}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 				src={`/image/characters/${characterId}/${
 					playerSettings?.characterColor ?? 0

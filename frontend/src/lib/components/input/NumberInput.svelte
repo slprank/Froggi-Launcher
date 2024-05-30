@@ -23,7 +23,6 @@
 	$: updateConcatValue(value);
 
 	const fixValue = () => {
-		console.log(min, max, tempValue);
 		if (isNil(tempValue) || typeof tempValue === 'string') {
 			value = 0;
 			tempValue = 0;

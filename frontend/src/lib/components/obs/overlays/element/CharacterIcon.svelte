@@ -10,8 +10,6 @@
 	export let style: GridContentItemStyle;
 
 	$: character = defaultPreview ? defaultPreviewId : characterId ? characterId : -1;
-
-	$: console.log(defaultPreview, defaultPreviewId, characterId, character);
 	// TODO: Include colors
 </script>
 

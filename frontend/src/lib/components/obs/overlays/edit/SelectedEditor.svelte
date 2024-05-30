@@ -15,6 +15,7 @@
 		generateNewItem,
 		updateOverlay,
 	} from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
+	import { isNil } from 'lodash';
 
 	const overlayId = $page.params.overlay;
 	export let selectedItemId: string | undefined;
@@ -34,9 +35,14 @@
 			selectedItemId === undefined
 		)
 			return;
-		selectedItemIndex = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items
+		selectedItemIndex = curOverlay[$statsScene]?.layers[
+			$currentOverlayEditor?.layerIndex
+		]?.items
 			.map((i) => i.id)
 			.indexOf(selectedItemId);
+
+		if (isNil(selectedItemIndex)) return;
+
 		selectedItem =
 			curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items[
 				selectedItemIndex

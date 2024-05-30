@@ -14,13 +14,6 @@ export enum CustomElement {
     InGamePlayer1PercentDecimalCustom = 1011,
     InGamePlayer2PercentDecimalCustom = 1012,
 
-    InGameCurrentPlayerComboCounter = 1020,
-    InGamePlayer1ComboCounter = 1021,
-    InGamePlayer2ComboCounter = 1022,
-    InGameCurrentPlayerStocksRemaining = 1023,
-    InGamePlayer1StocksRemaining = 1024,
-    InGamePlayer2StocksRemaining = 1025,
-
     // Custom Image
     CustomImage = 2000,
     InGameCurrentPlayerCharacterRenderLeft = 2001,
@@ -173,6 +166,13 @@ export enum CustomElement {
     InGameTimerMilliseconds2 = 4303,
     InGameTimerMilliseconds3 = 4304,
     InGameTimerSecondsCountdown = 4305,
+
+    InGameCurrentPlayerComboCounter = 4310,
+    InGamePlayer1ComboCounter = 4311,
+    InGamePlayer2ComboCounter = 4312,
+    InGameCurrentPlayerStocksRemaining = 4313,
+    InGamePlayer1StocksRemaining = 4314,
+    InGamePlayer2StocksRemaining = 4315,
 
     // Match
 

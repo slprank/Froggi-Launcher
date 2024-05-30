@@ -51,7 +51,7 @@
 		player={$currentPlayer}
 	/>
 {/if}
-{#if dataItem?.elementId === CustomElement.InGamePlayer1StocksRemaining}
+{#if dataItem?.elementId === CustomElement.InGameCurrentPlayerStocksRemaining}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? 4
