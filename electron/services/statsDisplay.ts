@@ -166,8 +166,8 @@ export class StatsDisplay {
 					);
 					this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
 				}
-			});
-			return this.storeLiveStats.setStatsSceneTimeout(
+			}, 2000);
+			this.storeLiveStats.setStatsSceneTimeout(
 				LiveStatsScene.PostSet,
 				LiveStatsScene.Menu,
 				60000,
