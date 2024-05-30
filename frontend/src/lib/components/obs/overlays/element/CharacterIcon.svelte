@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Character } from '$lib/models/enum';
+	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
 	export let characterId: Character | undefined | null;
@@ -10,10 +11,11 @@
 
 	$: character = defaultPreview ? defaultPreviewId : characterId ? characterId : -1;
 
+	$: console.log(defaultPreview, defaultPreviewId, characterId, character);
 	// TODO: Include colors
 </script>
 
-{#if character}
+{#if !isNil(character)}
 	<div
 		class={`w-full h-full flex ${style.classValue}`}
 		style={`${style.cssValue}; ${
