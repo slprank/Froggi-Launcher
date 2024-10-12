@@ -1,4 +1,5 @@
-import { OBSRequestTypes } from "obs-websocket-js/dist/types"
+// @ts-ignore
+import { OBSRequestTypes } from "obs-websocket-js/dist/types" // Wont compile without this
 import { LiveStatsScene } from "../enum"
 import { ControllerButtons } from "./controller"
 
