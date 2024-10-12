@@ -99,8 +99,7 @@
 
 	let innerHeight: number;
 	$: rowHeight =
-		((borderHeight ?? 0) * (curOverlay.aspectRatio.width / curOverlay.aspectRatio.width) ??
-			innerHeight) / ROW;
+		((borderHeight ?? 0) * (curOverlay.aspectRatio.width / curOverlay.aspectRatio.width)) / ROW;
 </script>
 
 <svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />

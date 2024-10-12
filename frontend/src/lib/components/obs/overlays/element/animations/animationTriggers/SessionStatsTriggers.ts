@@ -8,7 +8,7 @@ import type {
 
 export const sessionStatsTrigger = (
 	option: SelectedAnimationTriggerOption,
-	sessionStats: SessionStats,
+	sessionStats: SessionStats | undefined,
 	prevSessionStats: SessionStats | undefined,
 ) => {
 	if (!sessionStats || !prevSessionStats) return;

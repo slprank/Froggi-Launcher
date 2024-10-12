@@ -18,7 +18,7 @@ webSocketServer.on('connection', (socket: WebSocket) => {
     connections.push(connection);
     initSocket(socket);
     initData(connection.id);
-    console.log("New WebSocket Connection", connections.length);
+    console.log("Websocket connections:", connections.length);
 
 });
 
@@ -37,6 +37,7 @@ const initSocket = (socket: WebSocket) => {
         if (index > -1) {
             connections.splice(index, 1);
             console.log('Connection removed');
+            console.log("Websocket connections:", connections.length);
         }
         console.log('WebSocket closed:', connections.length);
     });

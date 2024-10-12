@@ -13,12 +13,12 @@
 	} from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import RightClick from '$lib/components/context/RightClick.svelte';
+	import LayerPreview from './LayerPreview.svelte';
 
 	export let curOverlay: Overlay;
 	export let layer: Layer;
 	export let layerIndex: number;
 	export let selectedLayerIndex: number = 0;
-	export let src: string;
 	export let scrollToBottom: Function;
 
 	$: isSelected = selectedLayerIndex === layerIndex;
@@ -88,11 +88,7 @@
 					on:click={() => changeEditLayer(layerIndex)}
 				>
 					<div class="h-16 aspect-video rounded-sm">
-						<NonInteractiveIFrame
-							class="h-16 w-full border border-zinc-700"
-							src={`${src}/${layer.id}`}
-							title={`layer-${layer.id}`}
-						/>
+						<LayerPreview bind:layerId={layer.id} bind:overlayId={curOverlay.id} />
 					</div>
 				</button>
 			</div>

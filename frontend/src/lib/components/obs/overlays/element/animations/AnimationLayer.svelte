@@ -8,6 +8,8 @@
 		currentPlayers,
 		gameScore,
 		sessionStats,
+		isIframe,
+		isElectron,
 	} from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
 	import {
@@ -40,7 +42,7 @@
 	let prevSettings: GameStartTypeExtended | undefined;
 	let prevSessionStats: SessionStats | undefined;
 	const updateKeyValue = (): number | undefined => {
-		if (!dataItem) return;
+		if (!dataItem || $isIframe || $isElectron) return;
 		const option = dataItem.data.animationTrigger.selectedOptions;
 
 		if (inGameStateTrigger(option, $gameSettings, $gameFrame, prevGameFrame))

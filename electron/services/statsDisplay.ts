@@ -76,8 +76,8 @@ export class StatsDisplay {
 		this.slpParser.on(
 			SlpParserEvent.FRAME,
 			debounce(
-				async (frameEntry: FrameEntryType) => {
-					await this.handleGameFrame(frameEntry);
+				(frameEntry: FrameEntryType) => {
+					this.handleGameFrame(frameEntry);
 				},
 				2,
 				{ trailing: true, maxWait: 2 },

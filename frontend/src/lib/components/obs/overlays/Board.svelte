@@ -18,11 +18,10 @@
 			updateFixedLayerItems(curOverlay[$statsScene].layers);
 			curStatsScene = $statsScene;
 			return;
-		} else {
-			curStatsScene = curOverlay?.[$statsScene].active
-				? $statsScene
-				: curOverlay?.[$statsScene].fallback ?? LiveStatsScene.Menu;
 		}
+		curStatsScene = curOverlay?.[$statsScene].active
+			? $statsScene
+			: curOverlay?.[$statsScene].fallback ?? LiveStatsScene.Menu;
 		updateFixedLayerItems(curOverlay[curStatsScene].layers);
 	}
 	$: layerIds, $statsScene, $overlays, updateCurrentScene();
@@ -71,7 +70,10 @@
 
 {#if curScene && rowHeight && fixedLayers}
 	{#await updateFont() then}
-		<div class="w-full h-full overflow-hidden relative" style={`font-family: ${font};`}>
+		<div
+			class="w-full h-full overflow-hidden relative origin-top-left"
+			style={`font-family: ${font};`}
+		>
 			{#key curScene && curStatsScene}
 				<BoardContainer
 					scene={curScene}
