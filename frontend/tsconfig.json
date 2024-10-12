@@ -19,5 +19,12 @@
 			"$lib/*": ["src/lib/*"]
 		}
 	},
-	"include": ["."]
+	"include": ["."],
+	"exclude": [
+		"postcss.config.cjs",
+		"src/routes/+layout.js",
+		"src/service-worker.js",
+		"svelte.config.js",
+		"vite.config.js"
+	]
 }

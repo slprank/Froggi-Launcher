@@ -17,10 +17,8 @@
 
 	let selectedLayerIndex: number = 0;
 
-	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/overlay/${overlayId}/layers`;
-
 	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
-	$: layers = curOverlay ? curOverlay?.[$statsScene]?.layers : undefined;
+	$: layers = curOverlay && $statsScene in curOverlay ? curOverlay[$statsScene].layers : [];
 
 	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
 		selectedLayerIndex = layerIndex;
@@ -38,7 +36,7 @@
 </script>
 
 {#if layers && curOverlay}
-	<div class="max-h-full border-1 flex flex-col border-zinc-700">
+	<div class="h-full border-1 flex flex-col border-zinc-700">
 		<div
 			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
 		>
@@ -74,7 +72,7 @@
 				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Del</h1>
 			</div>
 		</div>
-		<div class={`w-full max-h-full overflow-auto`} bind:this={scrollElement}>
+		<div class={`w-full max-h-full overflow-auto flex-1`} bind:this={scrollElement}>
 			<div class="w-full h-6 items-center overflow-hidden">
 				<button
 					class="w-full h-full justify-center bg-black bg-opacity-40 hover:bg-opacity-60"
@@ -85,13 +83,10 @@
 					<h1 class="text-white text-shadow-md">+</h1>
 				</button>
 			</div>
-
-			{#each layers as layer, layerIndex (layer.id)}
-				<div class="w-full" animate:flip={{ duration: 250 }} id={layer.id}>
+			{#each layers as layer, layerIndex (layerIndex)}
+				<div class="w-full visible" animate:flip={{ duration: 250 }} id={layer.id}>
 					<LayerDisplayRow
 						{curOverlay}
-						{src}
-						{layer}
 						{layerIndex}
 						{scrollToBottom}
 						bind:selectedLayerIndex

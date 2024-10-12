@@ -22,7 +22,6 @@
 	let menu = { x: 0, y: 0, w: 0, h: 0 };
 	let browser = { x: 0, y: 0, w: 0, h: 0 };
 	let showMenu = false;
-	let content: HTMLElement;
 
 	const elementId = newId();
 
@@ -65,7 +64,7 @@
 	}
 </script>
 
-<div bind:this={content} id={elementId} class="w-full h-full">
+<div id={elementId} class="w-full h-full">
 	<slot />
 </div>
 

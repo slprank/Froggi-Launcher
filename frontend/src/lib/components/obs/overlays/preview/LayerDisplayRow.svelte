@@ -16,7 +16,6 @@
 	import LayerPreview from './LayerPreview.svelte';
 
 	export let curOverlay: Overlay;
-	export let layer: Layer;
 	export let layerIndex: number;
 	export let selectedLayerIndex: number = 0;
 	export let scrollToBottom: Function;
@@ -31,8 +30,12 @@
 		selectedLayerIndex = layerIndex;
 	};
 
+	$: layer = curOverlay[$statsScene]?.layers[layerIndex];
+
 	const handleChecked = () => {
 		if (!curOverlay) return;
+		curOverlay[$statsScene].layers[layerIndex].preview =
+			!curOverlay[$statsScene].layers[layerIndex].preview;
 		updateOverlay(curOverlay);
 	};
 </script>
@@ -71,12 +74,14 @@
 			style={`${isSelected && 'background-color: rgba(255, 255, 255, 0.10);'}`}
 		>
 			<div class="col-span-1 grid justify-center">
-				<input
-					type="checkbox"
-					class="w-12 h-12"
-					bind:checked={curOverlay[$statsScene].layers[layerIndex].preview}
-					on:change={handleChecked}
-				/>
+				{#key layer}
+					<input
+						type="checkbox"
+						class="w-12 h-12"
+						checked={layer.preview}
+						on:change={handleChecked}
+					/>
+				{/key}
 			</div>
 
 			<div
@@ -147,7 +152,7 @@
 			<button
 				class="w-full h-full justify-center bg-black bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
-					if (isLastRow) setTimeout(scrollToBottom);
+					if (isLastRow) setTimeout(scrollToBottom, 50);
 					await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
 				}}
 			>
