@@ -12,7 +12,7 @@ on:
 
 jobs:
     deploy:
-        runs-on: ${{ github.event.inputs.runs-on }}
+        runs-on: ${{ inputs['runs-on'] }}
         environment: production
         permissions: write-all
         steps:
