@@ -5,7 +5,7 @@ import type {
 	RankedNetplayProfile,
 } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { ElectronSettingsStore } from './storeSettings';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { ElectronLiveStatsStore } from './storeLiveStats';

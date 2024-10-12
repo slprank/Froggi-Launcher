@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { inject, injectable } from 'tsyringe';
 import { Character, Player, RankedNetplayProfile, SlippiCharacter } from '../../frontend/src/lib/models/types/slippiData';
 import { PlayerType } from '@slippi/slippi-js';

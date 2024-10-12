@@ -4,7 +4,7 @@ import Store from 'electron-store';
 import type { Url } from '../../../frontend/src/lib/models/types/overlay';
 import type { SlippiLauncherSettings } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import getAppDataPath from 'appdata-path';
 import fs from 'fs';
 import os from 'os';

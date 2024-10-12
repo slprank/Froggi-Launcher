@@ -1,5 +1,6 @@
 import os from 'os';
 import find from 'find-process';
+import child_process, { ExecException } from 'child_process';
 
 export const getProcessPid = async (): Promise<number | undefined> => {
 	const validProcesses = getValidProcesses();
@@ -33,13 +34,13 @@ export const getProcessPid = async (): Promise<number | undefined> => {
 export const isDolphinRunning = async () => {
 	const isWindows = os.platform() === 'win32';
 	const validProcesses = getValidProcesses();
-	const exec = require('child_process').exec;
+	const exec = child_process.exec;
 	const command = isWindows
 		? `tasklist`
 		: `ps -e -o comm=`;
 	const shell = isWindows ? 'powershell.exe' : '/bin/bash';
 	return await new Promise((resolve) => {
-		exec(command, { shell: shell }, (_: Error, stdout: string) => {
+		exec(command, { shell: shell }, (_: ExecException | null, stdout: string) => {
 			if (stdout) {
 				stdout = stdout.toLowerCase();
 				for (const process of validProcesses) {

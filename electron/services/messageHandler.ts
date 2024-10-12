@@ -1,5 +1,6 @@
-import { BrowserWindow, IpcMain } from 'electron';
-import { ElectronLog } from 'electron-log';
+import { BrowserWindow } from 'electron';
+import type { IpcMain } from 'electron';
+import type { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
@@ -17,11 +18,13 @@ import { Worker } from 'worker_threads';
 import { sendAuthenticatedMessage } from '../../frontend/src/lib/utils/websocketAuthentication';
 import { NotificationType } from '../../frontend/src/lib/models/enum';
 import { ElectronCommandStore } from './store/storeCommands';
+import express from 'express';
+import cors from 'cors';
+import http from 'http';
 
 @singleton()
 export class MessageHandler {
-	private app: any;
-	private express: any;
+	private app: any = express();
 	private server: any;
 	private webSocketWorker: Worker = new Worker(
 		path.join(__dirname, 'workers/websocketWorker.js'),
@@ -50,11 +53,6 @@ export class MessageHandler {
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 	) {
 		this.log.info('Initializing Message Handler');
-		this.express = require('express');
-		const cors = require('cors');
-		const http = require('http');
-
-		this.app = this.express();
 
 		this.app.use(cors());
 		this.server = http.createServer(this.app);
@@ -67,7 +65,7 @@ export class MessageHandler {
 
 	private initHtml() {
 		this.log.info('Initializing HTML');
-		const staticServe = this.express.static(path.join(this.rootDir + '/build'));
+		const staticServe = express.static(path.join(this.rootDir + '/build'));
 		try {
 			this.app.use('/', staticServe);
 			this.app.use('*', staticServe);

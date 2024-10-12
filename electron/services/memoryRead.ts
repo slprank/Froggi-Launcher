@@ -1,4 +1,4 @@
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import os from 'os';
 import { getControllerInputs } from './memoryRead/controllerInputs';
@@ -18,7 +18,7 @@ export class MemoryRead {
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
-	) {}
+	) { }
 
 	initMemoryRead() {
 		this.initMemoryReadWin();

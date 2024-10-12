@@ -7,7 +7,7 @@ import {
 	SlpStream,
 } from '@slippi/slippi-js';
 import { inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { ConnectionState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';

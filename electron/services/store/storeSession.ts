@@ -2,7 +2,7 @@
 import Store from 'electron-store';
 import type { RankedNetplayProfile, SessionStats } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { dateTimeNow, getHoursDifference } from '../../utils/functions';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';

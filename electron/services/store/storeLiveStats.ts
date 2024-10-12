@@ -1,7 +1,7 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
 import { delay, inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 import { BestOf, InGameState, LiveStatsScene } from '../../../frontend/src/lib/models/enum';

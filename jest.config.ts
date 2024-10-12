@@ -1,3 +1,4 @@
+
 const { compilerOptions } = require('./electron/tsconfig')
 
 export default {

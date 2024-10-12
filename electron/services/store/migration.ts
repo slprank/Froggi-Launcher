@@ -1,4 +1,4 @@
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import Store from 'electron-store';
 
 export const migrateStore = (log: ElectronLog): Store.Options<Record<string, unknown>> => {

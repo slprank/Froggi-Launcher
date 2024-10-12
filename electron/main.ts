@@ -3,7 +3,8 @@ import { app, BrowserWindow, IpcMain, ipcMain, Menu, nativeImage, Tray } from 'e
 import contextMenu from 'electron-context-menu';
 import { container } from 'tsyringe';
 import getAppDataPath from 'appdata-path';
-import log, { ElectronLog } from 'electron-log';
+import log from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import serve from 'electron-serve';
 import windowStateManager from 'electron-window-state';
 import path from 'path';

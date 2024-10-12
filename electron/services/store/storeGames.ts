@@ -8,7 +8,7 @@ import type {
 	Sets,
 } from '../../../frontend/src/lib/models/types/slippiData';
 import { delay, inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { PlayerType } from '@slippi/slippi-js';
 import { ElectronSettingsStore } from './storeSettings';

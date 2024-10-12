@@ -1,4 +1,4 @@
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { ProgressInfo, UpdateDownloadedEvent, UpdateInfo, autoUpdater } from 'electron-updater';
 import { delay, inject, injectable } from 'tsyringe';
 import { MessageHandler } from './messageHandler';

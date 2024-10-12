@@ -1,7 +1,7 @@
 // https://www.npmjs.com/package/electron-store
 import Store from 'electron-store';
 import { delay, inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import {
 	CommandType,
 	Controller,

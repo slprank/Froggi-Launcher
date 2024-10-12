@@ -105,7 +105,9 @@ export interface MessageEvents {
 }
 
 export class TypedEmitter extends localEmitter {
+	// @ts-ignore
 	private _untypedOn = this.on;
+	// @ts-ignore
 	private _untypedEmit = this.emit;
 	public on = <K extends keyof MessageEvents>(event: K, listener: MessageEvents[K]): this =>
 		this._untypedOn(event, listener);

@@ -1,7 +1,7 @@
 import Store from 'electron-store';
 import type { GridContentItem, Overlay, OverlayEditor } from '../../../frontend/src/lib/models/types/overlay';
 import { delay, inject, singleton } from 'tsyringe';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
 import { newId } from '../../utils/functions';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';

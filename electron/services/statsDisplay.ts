@@ -11,7 +11,7 @@ import {
 	SlpStreamEvent,
 	SlpRawEventPayload,
 } from '@slippi/slippi-js';
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Api } from './api';
 import {
@@ -33,6 +33,7 @@ import { debounce, isNil } from 'lodash';
 import { getWinnerIndex } from '../../frontend/src/lib/utils/gamePredicates';
 import { Command } from '../../frontend/src/lib/models/types/overlay';
 import { MessageHandler } from './messageHandler';
+import path from 'path';
 
 @singleton()
 export class StatsDisplay {
@@ -233,7 +234,6 @@ export class StatsDisplay {
 
 	private async getGameFiles(): Promise<string[] | undefined> {
 		const re = new RegExp('^Game_.*.slp$');
-		const path = require('path');
 
 		const slippiSettings = this.storeSettings.getSlippiLauncherSettings();
 		this.log.info('Settings:', slippiSettings);

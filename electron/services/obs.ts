@@ -1,6 +1,6 @@
 // https://github.com/obs-websocket-community-projects/obs-websocket-js
 
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import OBSWebSocket, { OBSRequestTypes } from 'obs-websocket-js';
 import { ElectronObsStore } from './store/storeObs';

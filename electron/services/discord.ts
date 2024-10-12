@@ -1,4 +1,4 @@
-import { ElectronLog } from 'electron-log';
+import type { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Client, Presence } from 'discord-rpc';
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
