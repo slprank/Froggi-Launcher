@@ -92,7 +92,7 @@
 					class="w-full h-full transition"
 					on:click={() => changeEditLayer(layerIndex)}
 				>
-					<div class="h-16 aspect-video rounded-sm">
+					<div class="h-16 aspect-video rounded-sm border border-zinc-400">
 						<LayerPreview bind:layerId={layer.id} bind:overlayId={curOverlay.id} />
 					</div>
 				</button>
