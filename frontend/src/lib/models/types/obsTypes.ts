@@ -1,4 +1,5 @@
-import type { OBSRequestTypes } from "obs-websocket-js/dist/types";
+// @ts-ignore
+import type { OBSRequestTypes } from "obs-websocket-js/dist/types"; // Wont compile without this
 import type { ConnectionState } from "../enum";
 import type { OverlayLayout } from "./overlay";
 
