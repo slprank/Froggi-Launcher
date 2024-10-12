@@ -4,9 +4,6 @@ on:
     push:
         branches: ['main']
 
-concurrency:
-    group: iac
-
 jobs:
     deploy_macos:
         uses: ./.github/workflows/deploy.yml

@@ -11,7 +11,7 @@ on:
                 type: string
 
 jobs:
-    iac_prod:
+    deploy:
         runs-on: ${{ github.event.inputs.runs-on }}
         environment: production
         permissions: write-all
