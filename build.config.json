@@ -16,7 +16,12 @@
 	},
 	"linux": {
 		"icon": "bin/static/icon.png",
-		"target": ["default"]
+		"target": [
+			{
+				"target": "AppImage",
+				"arch": ["x64"]
+			}
+		]
 	},
 	"mac": {
 		"icon": "bin/static/icon.png",
