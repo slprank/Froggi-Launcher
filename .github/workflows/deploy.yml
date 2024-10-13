@@ -32,6 +32,6 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
                   file: ${{ inputs['file'] }}
-                  tags: false
+                  tags: true
                   draft: false
                   tag_name: ${{ github.ref_name }}
