@@ -65,9 +65,10 @@
 		const id = newId();
 		return {
 			id: id,
-			title: `New Overlay - ${id}`,
-			description: 'Scene Description',
 			defaultScene: LiveStatsScene.Menu,
+			description: 'Scene Description',
+			isDemo: false,
+			title: `New Overlay - ${id}`,
 			aspectRatio: aspect,
 			[LiveStatsScene.WaitingForDolphin]: getDefaultScene(newId()),
 			[LiveStatsScene.Menu]: getDefaultScene(newId()),

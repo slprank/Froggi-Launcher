@@ -18,6 +18,7 @@
 	import { goto } from '$app/navigation';
 	import type { Overlay } from '$lib/models/types/overlay';
 	import EmbedModal from './edit/EmbedModal.svelte';
+	import { tooltip } from 'svooltip';
 
 	export let open = false;
 	export let overlay: Overlay | undefined;
@@ -45,6 +46,12 @@
 	};
 
 	$: $statsScene, notifyDisabledScene(overlay, $statsScene);
+
+	const availableClass =
+		'transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100';
+	const unavailableInfo =
+		'Cannot perform this action on a demo overlay, try duplicating it first.';
+
 	let parentDiv: HTMLElement | undefined;
 </script>
 
@@ -70,7 +77,17 @@
 		<SceneSelect />
 		<div class="flex gap-2">
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"
+				class={availableClass}
+				disabled={overlay?.isDemo}
+				use:tooltip={overlay?.isDemo
+					? {
+							content: `<p>${unavailableInfo}</p>`,
+							html: true,
+							placement: 'top',
+							delay: [250, 0],
+							offset: 25,
+					  }
+					: {}}
 				on:click={() => {
 					goto(`/obs/overlay/${overlay?.id}`);
 				}}
@@ -78,24 +95,26 @@
 				Open
 			</button>
 			{#if $isElectron}
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"
-					on:click={createDuplicateOverlay}
-				>
-					Duplicate
-				</button>
+				<button class={availableClass} on:click={createDuplicateOverlay}>Duplicate</button>
 			{/if}
 			{#if $isElectron}
-				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"
-					on:click={() => (isEmbedModalOpen = true)}
-				>
+				<button class={availableClass} on:click={() => (isEmbedModalOpen = true)}>
 					Embed
 				</button>
 			{/if}
 			{#if $isElectron}
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"
+					class={availableClass}
+					disabled={overlay?.isDemo}
+					use:tooltip={overlay?.isDemo
+						? {
+								content: `<p>${unavailableInfo}</p>`,
+								html: true,
+								placement: 'top',
+								delay: [250, 0],
+								offset: 25,
+						  }
+						: {}}
 					on:click={downloadOverlay}
 				>
 					Save
@@ -103,7 +122,7 @@
 			{/if}
 			{#if !$isElectron}
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-18 my-4"
+					class={availableClass}
 					on:click={() => {
 						goto(`/obs/overlay/${overlay?.id}/layers/external`);
 					}}
@@ -113,7 +132,17 @@
 			{/if}
 			{#if $isElectron}
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"
+					disabled={overlay?.isDemo}
+					class={availableClass}
+					use:tooltip={overlay?.isDemo
+						? {
+								content: `<p>${unavailableInfo}</p>`,
+								html: true,
+								placement: 'top',
+								delay: [250, 0],
+								offset: 25,
+						  }
+						: {}}
 					on:click={() => {
 						deleteOverlayModalOpen = true;
 					}}

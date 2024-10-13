@@ -12,10 +12,10 @@ import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 
 @singleton()
 export class ElectronOverlayStore {
-	store: Store = new Store();
 	constructor(
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
 		@inject('ElectronLog') private log: ElectronLog,
+		@inject('ElectronStore') private store: Store,
 		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 	) {
@@ -67,7 +67,7 @@ export class ElectronOverlayStore {
 	}
 
 	updateOverlay(overlay: Overlay): void {
-		if (!overlay) return;
+		if (!overlay || overlay.isDemo) return;
 		let overlays = this.getOverlays();
 		if (!overlays) return;
 		const overlayIndex = this.getOverlayIndex(overlay.id);
@@ -82,20 +82,29 @@ export class ElectronOverlayStore {
 		const overlay = this.getOverlayById(overlayId);
 		let overlays = this.getOverlays();
 		if (!overlays) return;
-		overlays.push({ ...overlay, id: newId(), title: `${overlay.title} - copy` });
+		overlays.push({ ...overlay, id: newId(), title: `${overlay.title} - copy`, isDemo: false });
 		this.setOverlays(overlays);
 	}
 
-	uploadOverlay(overlay: Overlay): void {
+	uploadOverlay(overlay: Overlay, overlayId: string | undefined = undefined): void {
 		let overlays = this.getOverlays();
 		if (!overlays) return;
-		overlay.id = newId();
+		overlay.id = overlayId ?? newId();
 		overlays.push(overlay);
+
+		function unique(overlays: Overlay[]) {
+			var seen = new Set();
+			return overlays.filter((overlay) => seen.has(overlay.id) ? false : (seen.add(overlay.id), true));
+		}
+
+		overlays = unique(overlays);
 		this.setOverlays(overlays);
 	}
 
 	deleteOverlay(overlayId: string): void {
 		if (!overlayId) return;
+		let overlay = this.getOverlayById(overlayId);
+		if (!overlay || overlay.isDemo) return;
 		let overlays = this.getOverlays();
 		if (!overlays) return;
 		overlays = overlays.filter((overlay: Overlay) => overlay.id !== overlayId);
@@ -164,6 +173,13 @@ export class ElectronOverlayStore {
 
 	private initDemoOverlays() {
 		const overlayFiles = fs.readdirSync(path.join(__dirname, "/../../demo-overlays"));
-		console.log(overlayFiles);
+
+		overlayFiles.forEach((file) => {
+			const overlayRaw = fs.readFileSync(path.join(__dirname, "/../../demo-overlays", file), 'utf8');
+			const overlay: Overlay = { ...JSON.parse(overlayRaw), isDemo: true } as Overlay;
+			const demoId = file.replace(/\s+|\.json$/g, '');
+			this.uploadOverlay(overlay, demoId);
+		});
+
 	}
 }

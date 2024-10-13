@@ -29,9 +29,8 @@ export class ElectronGamesStore {
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
-		@inject(delay(() => ElectronCurrentPlayerStore))
-		@inject(delay(() => Store)) private store: Store,
-		private storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject(delay(() => ElectronCurrentPlayerStore)) private storeCurrentPlayer: ElectronCurrentPlayerStore,
+		@inject('ElectronStore') private store: Store,
 	) {
 		this.log.info('Initializing Game Store');
 		this.initEventListeners();

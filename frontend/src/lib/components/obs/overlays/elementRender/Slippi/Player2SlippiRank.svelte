@@ -36,12 +36,14 @@
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Continent}
-	{defaultPreview ? `S. America` : $currentPlayers?.at(1)?.rank?.current?.continent ?? ''}
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? `N. America` : $currentPlayers?.at(1)?.rank?.current?.continent ?? ''}
+	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2ContinentInitials}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `SA` : $currentPlayers?.at(1)?.rank?.current?.continentInitials ?? ''}
+		{defaultPreview ? `NA` : $currentPlayers?.at(1)?.rank?.current?.continentInitials ?? ''}
 	</TextElement>
 {/if}
 
@@ -72,8 +74,8 @@
 		{defaultPreview
 			? `90%`
 			: !isNil($currentPlayers?.at(1)?.rank?.current?.winsPercent)
-				? `${$currentPlayers?.at(1)?.rank?.current?.winsPercent}%`
-				: '100%'}
+			? `${$currentPlayers?.at(1)?.rank?.current?.winsPercent}%`
+			: '100%'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Losses}
@@ -87,8 +89,8 @@
 		{defaultPreview
 			? `10.0%`
 			: !isNil($currentPlayers?.at(1)?.rank?.current?.lossesPercent)
-				? `${$currentPlayers?.at(1)?.rank?.current?.lossesPercent}%`
-				: '0%'}
+			? `${$currentPlayers?.at(1)?.rank?.current?.lossesPercent}%`
+			: '0%'}
 	</TextElement>
 {/if}
 
@@ -104,8 +106,8 @@
 		{defaultPreview
 			? `82.0%`
 			: !isNil($currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.gameCountPercent)
-				? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(0)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character1Icon}
@@ -130,8 +132,8 @@
 		{defaultPreview
 			? `13.8%`
 			: !isNil($currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.gameCountPercent)
-				? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(1)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character2Icon}
@@ -156,8 +158,8 @@
 		{defaultPreview
 			? `4.2%`
 			: !isNil($currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.gameCountPercent)
-				? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayers?.at(1)?.rank?.current?.characters.at(2)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Character3Icon}

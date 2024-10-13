@@ -164,6 +164,7 @@ export interface OverlayLayout {
 
 export interface Overlay {
 	aspectRatio: AspectRatio;
+	isDemo: boolean;
 	description: string;
 	id: string;
 	title: string;
