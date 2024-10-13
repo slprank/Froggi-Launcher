@@ -34,4 +34,4 @@ jobs:
                   file: ${{ inputs['file'] }}
                   tags: false
                   draft: false
-                  tag_name: v0.0.${{ github.run_number }}
+                  tag_name: v0.0.0
