@@ -6,6 +6,7 @@ import { MessageHandler } from '../messageHandler';
 import { newId } from '../../utils/functions';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 import { BrowserWindow, dialog } from 'electron';
+import path from 'path';
 import fs from 'fs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 
@@ -21,6 +22,7 @@ export class ElectronOverlayStore {
 		this.log.info('Initializing Obs Overlay Store');
 		this.initListeners();
 		this.initSvelteListeners();
+		this.initDemoOverlays();
 	}
 
 	getOverlays(): Overlay[] {
@@ -158,5 +160,10 @@ export class ElectronOverlayStore {
 			const overlay = fs.readFileSync(filePaths[0], 'utf8');
 			this.uploadOverlay(JSON.parse(overlay));
 		});
+	}
+
+	private initDemoOverlays() {
+		const overlayFiles = fs.readdirSync(path.join(__dirname, "/../../demo-overlays"));
+		console.log(overlayFiles);
 	}
 }

@@ -98,7 +98,7 @@
 					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4"
 					on:click={downloadOverlay}
 				>
-					Download
+					Save
 				</button>
 			{/if}
 			{#if !$isElectron}

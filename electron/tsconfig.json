@@ -24,12 +24,14 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"esModuleInterop": true,
-		"isolatedModules": true
+		"isolatedModules": true,
+		"resolveJsonModule": true
 	},
 	"include": [
 		".",
 		"../test",
 		"../frontend/src/lib/utils/gamePredicates.ts",
+		"../demo-overlays",
 		"services/workers/websocketWorker.ts"
 	],
 	"exclude": ["node_modules"]

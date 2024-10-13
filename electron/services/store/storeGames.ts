@@ -23,7 +23,6 @@ import { ElectronLiveStatsStore } from './storeLiveStats';
 
 @singleton()
 export class ElectronGamesStore {
-	private store = new Store();
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
@@ -31,6 +30,7 @@ export class ElectronGamesStore {
 		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 		@inject(delay(() => ElectronCurrentPlayerStore))
+		@inject(delay(() => Store)) private store: Store,
 		private storeCurrentPlayer: ElectronCurrentPlayerStore,
 	) {
 		this.log.info('Initializing Game Store');
@@ -110,7 +110,8 @@ export class ElectronGamesStore {
 	}
 
 	getRecentGames(): GameStats[][] {
-		return (this.store.get(`player.any.game.recent`) ?? []) as GameStats[][];
+		const recentGames = (this.store.get(`player.any.game.recent`) ?? []) as GameStats[][];
+		return recentGames
 	}
 
 	addRecentGames(newGame: GameStats) {
