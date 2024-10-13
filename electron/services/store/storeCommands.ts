@@ -154,13 +154,15 @@ export class ElectronCommandStore {
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
 		const players = this.storePlayer.getCurrentPlayers();
 		const player = players?.find((player) => player.connectCode === connectCode);
-		if (players?.some((player) => player.connectCode) && !player) return;
+
+		const isSpectating = players?.some((player) => player.connectCode) && !player
+		if (isSpectating) return;
 		const isGameActive = [InGameState.Running, InGameState.Paused].includes(
 			this.storeLiveStats.getGameState(),
 		);
 		const lowestActiveControllerIndex = Number(
 			Object.entries(playerControllerInputs)?.find(
-				(controller) => controller[1].isConnected,
+				([_, controller]) => controller.isConnected,
 			)?.[0],
 		);
 		const lowestIndex = isGameActive
