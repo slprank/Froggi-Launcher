@@ -90,6 +90,7 @@ export class ElectronOverlayStore {
 		let overlays = this.getOverlays();
 		if (!overlays) return;
 		overlay.id = overlayId ?? newId();
+		overlays = [...overlays.filter((o) => o.id !== overlay.id), overlay];
 		overlays.push(overlay);
 
 		function unique(overlays: Overlay[]) {
