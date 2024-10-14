@@ -78,9 +78,11 @@ export const player1InGameTrigger = (
 
 	if (option[AnimationTrigger.InGamePlayer1StockLost])
 		trigger =
-			(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
-			(prevGameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
+			(prevGameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
+			(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
 			trigger;
+
+
 
 	if (option[AnimationTrigger.InGamePlayer1CharacterChange]) {
 		trigger =
@@ -109,8 +111,8 @@ export const player2InGameTrigger = (
 
 	if (option[AnimationTrigger.InGamePlayer2StockLost])
 		trigger =
-			(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
-			(prevGameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
+			(prevGameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) >
+			(gameFrame?.players?.[player.playerIndex]?.post.stocksRemaining ?? 0) ||
 			trigger;
 
 	if (option[AnimationTrigger.InGamePlayer2CharacterChange])

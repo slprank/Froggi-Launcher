@@ -13,8 +13,6 @@
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
-
-	console.log($gameFrame);
 </script>
 
 {#if dataItem?.elementId === CustomElement.InGamePlayer1Percent}
