@@ -21,29 +21,35 @@
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1RankIcon}
-	<PlayerRankIcon {dataItem} {style} player={$currentPlayers.at(0)} preview={defaultPreview} />
+	<PlayerRankIcon
+		{dataItem}
+		{style}
+		player={$currentPlayers.at(0)}
+		preview={defaultPreview}
+		fallbackIcon={'SILVER 2'}
+	/>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1RankText}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `Silver 2` : $currentPlayers?.at(0)?.rank?.current?.rank ?? ''}
+		{defaultPreview ? `Silver 2` : $currentPlayers?.at(0)?.rank?.current?.rank ?? 'Unranked'}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Rating}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `1174.0` : $currentPlayers?.at(0)?.rank?.current?.rating ?? ''}
+		{defaultPreview ? `1174.0` : $currentPlayers?.at(0)?.rank?.current?.rating ?? '-'}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Continent}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `Europe` : $currentPlayers?.at(0)?.rank?.current?.continent ?? ''}
+		{defaultPreview ? `Europe` : $currentPlayers?.at(0)?.rank?.current?.continent ?? 'N/A'}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1ContinentInitials}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `EU` : $currentPlayers?.at(0)?.rank?.current?.continentInitials ?? ''}
+		{defaultPreview ? `EU` : $currentPlayers?.at(0)?.rank?.current?.continentInitials ?? 'N/A'}
 	</TextElement>
 {/if}
 
@@ -74,8 +80,8 @@
 		{defaultPreview
 			? `80.0%`
 			: !isNil($currentPlayers?.at(0)?.rank?.current?.winsPercent)
-				? `${$currentPlayers?.at(0)?.rank?.current?.winsPercent}%`
-				: '100%'}
+			? `${$currentPlayers?.at(0)?.rank?.current?.winsPercent}%`
+			: '100%'}
 	</TextElement>
 {/if}
 
@@ -90,8 +96,8 @@
 		{defaultPreview
 			? `20.0%`
 			: !isNil($currentPlayers?.at(0)?.rank?.current?.lossesPercent)
-				? `${$currentPlayers?.at(0)?.rank?.current?.lossesPercent}%`
-				: '0%'}
+			? `${$currentPlayers?.at(0)?.rank?.current?.lossesPercent}%`
+			: '0%'}
 	</TextElement>
 {/if}
 
@@ -107,8 +113,8 @@
 		{defaultPreview
 			? `75.0%`
 			: !isNil($currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.gameCountPercent)
-				? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(0)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character1Icon}
@@ -133,8 +139,8 @@
 		{defaultPreview
 			? `20.4%`
 			: !isNil($currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.gameCountPercent)
-				? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(1)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character2Icon}
@@ -159,8 +165,8 @@
 		{defaultPreview
 			? `4.6%`
 			: !isNil($currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.gameCountPercent)
-				? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.gameCountPercent}%`
-				: ''}
+			? `${$currentPlayers?.at(0)?.rank?.current?.characters.at(2)?.gameCountPercent}%`
+			: ''}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer1Character3Icon}

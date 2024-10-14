@@ -25,25 +25,25 @@
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2RankText}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `Silver 1` : $currentPlayers?.at(1)?.rank?.current?.rank ?? ''}
+		{defaultPreview ? `Silver 1` : $currentPlayers?.at(1)?.rank?.current?.rank ?? 'Unranked'}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Rating}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `1100.0` : $currentPlayers?.at(1)?.rank?.current?.rating ?? ''}
+		{defaultPreview ? `1100.0` : $currentPlayers?.at(1)?.rank?.current?.rating ?? '-'}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2Continent}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `N. America` : $currentPlayers?.at(1)?.rank?.current?.continent ?? ''}
+		{defaultPreview ? `N. America` : $currentPlayers?.at(1)?.rank?.current?.continent ?? 'N/A'}
 	</TextElement>
 {/if}
 
 {#if dataItem?.elementId === CustomElement.SlippiRankPlayer2ContinentInitials}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `NA` : $currentPlayers?.at(1)?.rank?.current?.continentInitials ?? ''}
+		{defaultPreview ? `NA` : $currentPlayers?.at(1)?.rank?.current?.continentInitials ?? 'N/A'}
 	</TextElement>
 {/if}
 

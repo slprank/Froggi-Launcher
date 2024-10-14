@@ -179,7 +179,7 @@
 				customImage: undefined,
 				opacity: 1,
 				fill: '#ff000000',
-				stroke: '#ff000000',
+				stroke: '#ffffff',
 				strokeWidth: 3,
 				fillOpacity: 1,
 			},

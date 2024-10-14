@@ -21,7 +21,7 @@
 			? `Current Player`
 			: $currentPlayer?.rank?.current?.displayName
 			? $currentPlayer?.rank?.current?.displayName
-			: ''}
+			: 'Current Player'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerConnectCode}
@@ -44,7 +44,11 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRankText}
 	<TextElement {style} {dataItem}>
-		{defaultPreview ? `GOLD 2` : player.rank?.current?.rank ? player.rank?.current?.rank : ''}
+		{defaultPreview
+			? `GOLD 2`
+			: player.rank?.current?.rank
+			? player.rank?.current?.rank
+			: 'Unranked'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.SlippiRankCurrentPlayerRating}
@@ -53,7 +57,7 @@
 			? `1429.3`
 			: player.rank?.current?.rating
 			? player.rank?.current?.rating
-			: ''}
+			: '-'}
 	</TextElement>
 {/if}
 
@@ -63,7 +67,7 @@
 			? `North America`
 			: $currentPlayer?.rank?.current?.continent
 			? $currentPlayer?.rank?.current?.continent
-			: ''}
+			: 'N/A'}
 	</TextElement>
 {/if}
 
@@ -73,7 +77,7 @@
 			? `NA`
 			: $currentPlayer?.rank?.current?.continentInitials
 			? $currentPlayer?.rank?.current?.continentInitials
-			: ''}
+			: 'N/A'}
 	</TextElement>
 {/if}
 
@@ -83,7 +87,7 @@
 			? `270`
 			: $currentPlayer?.rank?.current?.dailyGlobalPlacement
 			? $currentPlayer?.rank?.current?.dailyGlobalPlacement
-			: ''}
+			: 'N/A'}
 	</TextElement>
 {/if}
 
@@ -93,7 +97,7 @@
 			? `138`
 			: $currentPlayer?.rank?.current?.dailyRegionalPlacement
 			? $currentPlayer?.rank?.current?.dailyRegionalPlacement
-			: ''}
+			: 'N/A'}
 	</TextElement>
 {/if}
 

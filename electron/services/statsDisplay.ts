@@ -114,7 +114,9 @@ export class StatsDisplay {
 
 		this.storeLiveStats.setGameState(InGameState.Running);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame);
-		this.storePlayers.setCurrentPlayers(currentPlayers);
+		if (currentPlayers.every((player) => player.rank)) {
+			this.storePlayers.setCurrentPlayers(currentPlayers);
+		}
 		this.storeLiveStats.setGameSettings(settings);
 
 		const previousGame = this.storeGames.getRecentGames()?.at(0)?.at(0);
