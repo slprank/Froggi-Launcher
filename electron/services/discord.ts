@@ -84,8 +84,8 @@ export class DiscordRpc {
 			const player1 = players?.at(0);
 			const player2 = players?.at(1);
 
-			const player1frame = frame.players[player1?.playerIndex ?? 0]?.post;
-			const player2frame = frame.players[player2?.playerIndex ?? 0]?.post;
+			const player1frame = frame.players?.[player1?.playerIndex ?? 0]?.post;
+			const player2frame = frame.players?.[player2?.playerIndex ?? 0]?.post;
 
 			const timer = futureTimerEpoch(
 				8 * 60 * 1000 -

@@ -86,14 +86,14 @@
 					{#each [...Array(4).keys()].reverse() as stock}
 						<div
 							class={`${
-								(game?.lastFrame?.players[$currentPlayers.at(0)?.playerIndex ?? 0]
+								(game?.lastFrame?.players?.[$currentPlayers.at(0)?.playerIndex ?? 0]
 									?.post.stocksRemaining ?? 0) > stock
 									? 'opacity-100'
 									: 'opacity-50'
 							} h-8`}
 						>
 							<CharacterIcon
-								characterId={game?.settings?.players[
+								characterId={game?.settings?.players?.[
 									$currentPlayers.at(0)?.playerIndex ?? 0
 								]?.characterId ?? 0}
 							/>
@@ -120,14 +120,14 @@
 					{#each [...Array(4).keys()] as stock}
 						<div
 							class={`${
-								(game?.lastFrame?.players[$currentPlayers.at(1)?.playerIndex ?? 0]
+								(game?.lastFrame?.players?.[$currentPlayers.at(1)?.playerIndex ?? 0]
 									?.post.stocksRemaining ?? 0) > stock
 									? 'opacity-100'
 									: 'opacity-50'
 							} h-8`}
 						>
 							<CharacterIcon
-								characterId={game?.settings?.players[
+								characterId={game?.settings?.players?.[
 									$currentPlayers.at(1)?.playerIndex ?? 1
 								]?.characterId ?? 0}
 							/>

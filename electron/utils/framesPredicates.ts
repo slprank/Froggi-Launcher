@@ -7,7 +7,7 @@ export function isGrabbed(
     playerIndex: number,
     frame: FrameEntryType,
 ): boolean {
-    const actionStateId = frame.players[playerIndex]?.post.actionStateId;
+    const actionStateId = frame.players?.[playerIndex]?.post.actionStateId;
     if (!actionStateId) {
         return false;
     }
@@ -18,7 +18,7 @@ export function isGroundedControl(
     playerIndex: number,
     frame: FrameEntryType,
 ): boolean {
-    const actionStateId = frame.players[playerIndex]?.post.actionStateId;
+    const actionStateId = frame.players?.[playerIndex]?.post.actionStateId;
     if (!actionStateId) {
         return false;
     }
@@ -33,7 +33,7 @@ export function isInHitStun(
     playerIndex: number,
     frame: FrameEntryType,
 ): boolean {
-    const actionStateId = frame.players[playerIndex]?.post.actionStateId;
+    const actionStateId = frame.players?.[playerIndex]?.post.actionStateId;
     if (!actionStateId) {
         return false;
     }
@@ -44,7 +44,7 @@ export function isDead(
     playerIndex: number,
     frame: FrameEntryType,
 ): boolean {
-    const actionStateId = frame.players[playerIndex]?.post.actionStateId;
+    const actionStateId = frame.players?.[playerIndex]?.post.actionStateId;
     if (!actionStateId) {
         return false;
     }
@@ -52,7 +52,7 @@ export function isDead(
 }
 
 export const isOffStage = (stageId: number, frame: FrameEntryType, playerIndex: number): boolean => {
-    const postFrame = frame.players[playerIndex]?.post
+    const postFrame = frame.players?.[playerIndex]?.post
     if (!postFrame) return false;
     const positionX = (postFrame.positionX ?? 0)
     const positionY = postFrame.positionY ?? 0

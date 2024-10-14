@@ -55,7 +55,7 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? 4
-			: $gameFrame?.players[$currentPlayer?.playerIndex ?? 0]?.post.stocksRemaining ?? '0'}
+			: $gameFrame?.players?.[$currentPlayer?.playerIndex ?? 0]?.post.stocksRemaining ?? '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGameCurrentPlayerCharacterIcon}
@@ -110,6 +110,7 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? '3'
-			: $gameFrame?.players[$currentPlayer?.playerIndex ?? 0]?.post.currentComboCount ?? '0'}
+			: $gameFrame?.players?.[$currentPlayer?.playerIndex ?? 0]?.post.currentComboCount ??
+			  '0'}
 	</TextElement>
 {/if}

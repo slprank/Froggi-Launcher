@@ -13,6 +13,8 @@
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
+
+	console.log($gameFrame);
 </script>
 
 {#if dataItem?.elementId === CustomElement.InGamePlayer1Percent}
@@ -55,8 +57,8 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? 4
-			: $gameFrame?.players[$currentPlayers?.at(0)?.playerIndex ?? 0]?.post.stocksRemaining ??
-			  '0'}
+			: $gameFrame?.players?.[$currentPlayers?.at(0)?.playerIndex ?? 0]?.post
+					.stocksRemaining ?? '0'}
 	</TextElement>
 {/if}
 {#if dataItem?.elementId === CustomElement.InGamePlayer1CharacterIcon}
@@ -111,7 +113,7 @@
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? 3
-			: $gameFrame?.players[$currentPlayers?.at(0)?.playerIndex ?? 0]?.post
+			: $gameFrame?.players?.[$currentPlayers?.at(0)?.playerIndex ?? 0]?.post
 					.currentComboCount ?? '0'}
 	</TextElement>
 {/if}

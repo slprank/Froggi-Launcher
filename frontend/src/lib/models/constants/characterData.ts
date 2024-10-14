@@ -4,7 +4,7 @@ interface CharacterMap {
 
 export const CHARACTERS: CharacterMap = {
     "captain falcon": 0,
-    0: "Captain Falcon",
+    0: "captain falcon",
     "donkey kong": 1,
     1: "Donkey Kong",
     "fox": 2,
@@ -59,7 +59,7 @@ export const CHARACTERS: CharacterMap = {
 
 export enum Character {
     "Captain Falcon" = 0,
-    "donkey kong" = 1,
+    "Donkey kong" = 1,
     "Fox" = 2,
     "Game and Watch" = 3,
     "Kirby" = 4,
