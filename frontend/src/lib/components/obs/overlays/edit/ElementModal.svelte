@@ -77,17 +77,6 @@
 
 		const overlayIndex = getCurrentOverlayIndex();
 
-		console.log(
-			'items',
-			items,
-			'overlayIndex',
-			overlayIndex,
-			'statsScene',
-			$statsScene,
-			'layerIndex',
-			$currentOverlayEditor?.layerIndex ?? 0,
-		);
-
 		$overlays[overlayIndex][$statsScene].layers[$currentOverlayEditor?.layerIndex ?? 0].items =
 			items;
 

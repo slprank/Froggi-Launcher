@@ -264,7 +264,7 @@
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
 				<div>
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">
-						Size - ({payload.css.strokeWidth})
+						Size - ({payload.textStroke.size})
 					</h1>
 					<div class="w-full h-fit flex flex-wrap">
 						<div class="w-full">
@@ -291,7 +291,7 @@
 				<h1 class="text-gray-500 text-lg font-medium text-shadow">Stroke</h1>
 				<div>
 					<h1 class="text-gray-500 text-lg font-medium text-shadow">
-						Size - ({payload.textStroke.size})
+						Size - ({payload.css.strokeWidth})
 					</h1>
 					<div class="w-full h-fit flex flex-wrap">
 						<div class="w-full">
