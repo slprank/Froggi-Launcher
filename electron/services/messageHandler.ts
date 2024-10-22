@@ -53,7 +53,6 @@ export class MessageHandler {
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 	) {
 		this.log.info('Initializing Message Handler');
-
 		this.app.use(cors());
 		this.server = http.createServer(this.app);
 
@@ -202,7 +201,6 @@ export class MessageHandler {
 			this.initData(socketId);
 		});
 		this.clientEmitter.on('InitAuthentication', (socketId, authKey) => {
-			console.log("payload", socketId, authKey)
 			this.sendAuthorizedMessage(socketId, authKey ?? '');
 		});
 		this.clientEmitter.on('Notification', (message: string, type: NotificationType) => {

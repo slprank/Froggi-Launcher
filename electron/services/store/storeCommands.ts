@@ -185,8 +185,8 @@ export class ElectronCommandStore {
 		const controllerCommands = getSubsetCommands(this.controllerCommands, buttonInputs);
 		if (!controllerCommands) return;
 
-		controllerCommands.forEach((controllerCommand) => {
-			this.executeCommand(
+		controllerCommands.forEach(async (controllerCommand) => {
+			await this.executeCommand(
 				CommandType.Obs,
 				controllerCommand.command.requestType,
 				controllerCommand.command.payload,
@@ -198,27 +198,27 @@ export class ElectronCommandStore {
 		}, 1000);
 	};
 
-	private handleSceneChangeCommands = (commands: Command[]) => {
+	private handleSceneChangeCommands = async (commands: Command[]) => {
 		if (!this.getSceneSwitchCommandsState()) return;
-		commands?.forEach((command) => {
-			this.executeCommand(command.type, command.requestType, command.payload);
+		commands?.forEach(async (command) => {
+			await this.executeCommand(command.type, command.requestType, command.payload);
 		});
 	};
 
-	executeCommand = <Type extends keyof PayloadType>(
+	executeCommand = async <Type extends keyof PayloadType>(
 		type: CommandType,
 		requestType: RequestType,
 		payload: PayloadType[Type] | any,
 	) => {
 		if (type === CommandType.Obs)
-			this.executeObsCommand(requestType as keyof OBSRequestTypes, payload);
+			await this.executeObsCommand(requestType as keyof OBSRequestTypes, payload);
 		if (type === CommandType.ObsCustom)
-			this.executeObsCustomCommand(
+			await this.executeObsCustomCommand(
 				requestType as ObsCustomRequest,
 				payload as ObsCustomPayload<ObsCustomRequest>,
 			);
 		if (type === CommandType.Overlay)
-			this.executeOverlayCommand(
+			await this.executeOverlayCommand(
 				requestType as OverlayRequest,
 				payload as OverlayPayload<OverlayRequest>,
 			);
@@ -246,7 +246,7 @@ export class ElectronCommandStore {
 	) => {
 		switch (command) {
 			case 'ToggleSceneItem':
-				this.toggleSceneItem(payload.itemName);
+				await this.toggleSceneItem(payload.itemName);
 		}
 	};
 

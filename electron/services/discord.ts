@@ -2,12 +2,14 @@ import type { ElectronLog } from 'electron-log';
 import { delay, inject, singleton } from 'tsyringe';
 import { Client, Presence } from 'discord-rpc';
 import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import type { FrameEntryType } from '@slippi/slippi-js/dist/types';
 import { GameStartType } from '@slippi/slippi-js';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { ElectronGamesStore } from './store/storeGames';
 import { ElectronCurrentPlayerStore } from './store/storeCurrentPlayer';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
+import { debounce } from 'lodash';
 
 @singleton()
 export class DiscordRpc {
@@ -77,7 +79,7 @@ export class DiscordRpc {
 			this.updateActivity();
 		});
 
-		this.localEmitter.on("GameFrame", (frame) => {
+		this.localEmitter.on("GameFrame", debounce((frame: FrameEntryType | undefined | null) => {
 			if (!frame) return;
 			if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.InGame) return;
 			const players = this.storePlayers.getCurrentPlayers();
@@ -112,7 +114,7 @@ export class DiscordRpc {
 			};
 
 			this.updateActivity();
-		});
+		}, 1000, { trailing: true, maxWait: 1200 }));
 
 		this.localEmitter.on("PostGameStats", () => {
 			const players = this.storePlayers.getCurrentPlayers();

@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@dimfeld/svelte-lazyload": "^0.0.4",
 		"@leveluptuts/svelte-fit": "^1.0.3",
-		"@slippi/slippi-js": "^6.7.0",
+		"@slippi/slippi-js": "github:SindreVatnaland/slippi-js#dist",
 		"@types/lodash": "^4.14.202",
 		"cors": "^2.8.5",
 		"eventemitter2": "^6.4.9",
