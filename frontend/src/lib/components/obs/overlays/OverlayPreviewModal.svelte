@@ -76,24 +76,36 @@
 		</div>
 		<SceneSelect />
 		<div class="flex gap-2">
-			<button
-				class={availableClass}
-				disabled={overlay?.isDemo && !$isElectron}
-				use:tooltip={overlay?.isDemo
-					? {
-							content: `<p>${unavailableInfo}</p>`,
-							html: true,
-							placement: 'top',
-							delay: [250, 0],
-							offset: 25,
-					  }
-					: {}}
-				on:click={() => {
-					goto(`/obs/overlay/${overlay?.id}`);
-				}}
-			>
-				{$isElectron ? 'Edit' : 'View'}
-			</button>
+			{#if $isElectron}
+				<button
+					class={availableClass}
+					disabled={overlay?.isDemo}
+					use:tooltip={overlay?.isDemo
+						? {
+								content: `<p>${unavailableInfo}</p>`,
+								html: true,
+								placement: 'top',
+								delay: [250, 0],
+								offset: 25,
+						  }
+						: {}}
+					on:click={() => {
+						goto(`/obs/overlay/${overlay?.id}`);
+					}}
+				>
+					Edit
+				</button>
+			{/if}
+			{#if !$isElectron}
+				<button
+					class={availableClass}
+					on:click={() => {
+						goto(`/obs/overlay/${overlay?.id}`);
+					}}
+				>
+					View
+				</button>
+			{/if}
 			{#if $isElectron}
 				<button class={availableClass} on:click={createDuplicateOverlay}>Duplicate</button>
 			{/if}

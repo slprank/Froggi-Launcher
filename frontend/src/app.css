@@ -50,3 +50,7 @@ button:active {
 		padding-right: 4.5rem;
 	}
 }
+
+img {
+	pointer-events: none;
+}

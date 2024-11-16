@@ -22,19 +22,34 @@
 	export let borderHeight: number | undefined = undefined;
 	export let selectedItemId: string | undefined = undefined;
 
+	let divRef: HTMLElement | undefined;
+
 	let curOverlay =
 		$overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let items: GridContentItem[] = [];
 	let tempItems: GridContentItem[] | undefined = undefined;
 
+	function removeDuplicates(items: GridContentItem[]) {
+		const seenIds = new Set();
+		items = items.filter((item) => {
+			if (seenIds.has(item.id)) {
+				return false; // Exclude this item
+			}
+			seenIds.add(item.id);
+			return true; // Include this item
+		});
+		return items;
+	}
+
 	function updateScene() {
+		items = removeDuplicates(items);
 		items
-			.map((item: any) => item[COL])
-			.filter((item: any) => item.y + item.h > ROW + 1)
-			.forEach((item: any) => {
+			.map((item) => item[COL])
+			.filter((item) => item.y + item.h > ROW + 1)
+			.filter((item) => item.y < ROW + 1)
+			.forEach((item) => {
 				item.h = ROW - item.y;
 			});
-		items = items.filter((item: any) => item[COL].y < ROW + 1);
 		tempItems = items;
 	}
 
@@ -50,7 +65,6 @@
 	$: $statsScene || $currentOverlayEditor || $overlays, updateLiveScene();
 
 	function updateOverlay() {
-		console.log(curOverlay);
 		if (
 			!tempItems ||
 			$currentOverlayEditor?.layerIndex === undefined ||
@@ -97,12 +111,39 @@
 	};
 	updateFont();
 
+	const clearSelected = () => {
+		selectedItemId = undefined;
+	};
+
+	const handlerKeyPress = (e: KeyboardEvent) => {
+		console.log(e.key);
+		if (e.key === 'Backspace' && selectedItemId) {
+			tempItems = items.filter((item) => item.id !== selectedItemId);
+		}
+		if (e.key === 'Escape') {
+			clearSelected();
+		}
+		updateOverlay();
+	};
+
+	function handleClickOutside(event: MouseEvent) {
+		if (divRef && !divRef.contains(event.target as any)) {
+			clearSelected();
+		}
+	}
+
 	let innerHeight: number;
 	$: rowHeight =
 		((borderHeight ?? 0) * (curOverlay.aspectRatio.width / curOverlay.aspectRatio.width)) / ROW;
 </script>
 
-<svelte:window bind:innerHeight on:mousedown={fixElements} on:mouseup={updateOverlay} />
+<svelte:window
+	bind:innerHeight
+	on:mousedown={fixElements}
+	on:mouseup={updateOverlay}
+	on:click={handleClickOutside}
+	on:keydown={handlerKeyPress}
+/>
 
 {#await updateFont() then}
 	{#key $statsScene}
@@ -110,6 +151,7 @@
 			<div
 				style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
 				class="w-full h-full overflow-hidden relative"
+				bind:this={divRef}
 			>
 				<BoardGrid
 					rows={curOverlay.aspectRatio.height * 2}
@@ -134,7 +176,9 @@
 						<div class="w-full h-full relative">
 							<div
 								class={`w-full h-full absolute ${
-									selectedItemId === dataItem?.id ? 'outline outline-red-500' : ''
+									selectedItemId === dataItem?.id
+										? 'outline outline-1 outline-red-500'
+										: ''
 								}`}
 							>
 								<GridContent edit={true} {dataItem} />
