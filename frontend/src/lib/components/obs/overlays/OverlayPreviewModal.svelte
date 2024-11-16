@@ -78,7 +78,7 @@
 		<div class="flex gap-2">
 			<button
 				class={availableClass}
-				disabled={overlay?.isDemo}
+				disabled={overlay?.isDemo && !$isElectron}
 				use:tooltip={overlay?.isDemo
 					? {
 							content: `<p>${unavailableInfo}</p>`,
@@ -92,7 +92,7 @@
 					goto(`/obs/overlay/${overlay?.id}`);
 				}}
 			>
-				Open
+				{$isElectron ? 'Edit' : 'View'}
 			</button>
 			{#if $isElectron}
 				<button class={availableClass} on:click={createDuplicateOverlay}>Duplicate</button>
@@ -123,6 +123,16 @@
 			{#if !$isElectron}
 				<button
 					class={availableClass}
+					disabled={overlay?.isDemo}
+					use:tooltip={overlay?.isDemo
+						? {
+								content: `<p>${unavailableInfo}</p>`,
+								html: true,
+								placement: 'top',
+								delay: [250, 0],
+								offset: 25,
+						  }
+						: {}}
 					on:click={() => {
 						goto(`/obs/overlay/${overlay?.id}/layers/external`);
 					}}
