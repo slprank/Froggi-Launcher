@@ -12,6 +12,7 @@
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { initClient } from '$lib/utils/init.svelte';
 	import { page } from '$app/stores';
+	import { ScreenWakeLock } from 'svelte-screen-wake-lock';
 
 	let ready: boolean = false;
 
@@ -46,6 +47,8 @@
 	<Toast />
 	<slot />
 {/if}
+
+<ScreenWakeLock />
 
 <style>
 	:root {
