@@ -25,6 +25,7 @@ jobs:
                   node-version: 20.15.1
 
             - name: Decode and import signing certificate
+              if: runner.os == 'macOS'
               run: |
                   echo "${{ secrets.MACOS_CERTIFICATE }}" | base64 --decode > certificate.p12
 

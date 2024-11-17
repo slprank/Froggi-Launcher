@@ -27,8 +27,8 @@
 		"icon": "bin/static/icon.png",
 		"target": ["default"],
 		"extraResources": ["res", "favicon.png"],
-		"entitlements": "build/entitlements.mac.plist",
-		"entitlementsInherit": "build/entitlements.mac.plist"
+		"entitlements": "entitlements.mac.plist",
+		"entitlementsInherit": "entitlements.mac.plist"
 	},
 	"executableName": "Froggi",
 	"files": [
