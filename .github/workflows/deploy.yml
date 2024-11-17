@@ -16,17 +16,39 @@ jobs:
         environment: production
         permissions: write-all
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@master
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup Node.js
+              uses: actions/setup-node@master
               with:
                   node-version: 20.15.1
+
+            - name: Decode and import signing certificate
+              run: |
+                  echo "${{ secrets.MACOS_CERTIFICATE }}" | base64 --decode > certificate.p12
+
+                  security create-keychain -p "" build.keychain
+
+                  security import certificate.p12 -k build.keychain -P "${{ secrets.MACOS_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
+
+                  security list-keychains -s build.keychain
+                  security unlock-keychain -p "" build.keychain
+
+                  security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+              env:
+                  MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+                  MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+
             - name: install dependencies
               run: npm run install:all
+
             - name: build
               run: npm run build
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
             - uses: xresloader/upload-to-github-release@v1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

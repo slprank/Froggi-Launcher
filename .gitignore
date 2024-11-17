@@ -3,10 +3,12 @@ node_modules
 
 dist
 build
+!build/entitlements.mac.plist
 build_electron
 package
 package-lock
 out
+
 
 .env
 .env.*
