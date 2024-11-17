@@ -11,7 +11,7 @@ jobs:
         uses: ./.github/workflows/deploy.yml
         secrets: inherit
         with:
-            file: './dist/*.dmg; ./dist/*mac.zip; latest-mac.yml;'
+            file: './dist/*.dmg; ./dist/*mac.zip; ./dist/*.zip.blockmap; ./dist/latest-mac.yml;'
             runs-on: 'macos-latest'
 
     deploy_linux:
@@ -25,5 +25,5 @@ jobs:
         uses: ./.github/workflows/deploy.yml
         secrets: inherit
         with:
-            file: './dist/*.exe; ./dist/latest.yml;'
+            file: './dist/*.exe; ./dist/*.exe.blockmap; ./dist/latest.yml;'
             runs-on: 'windows-latest'
