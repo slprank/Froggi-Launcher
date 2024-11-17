@@ -1,6 +1,5 @@
 <script lang="ts" context="module">
 	import { initElectronEvents, initWebSocket } from '$lib/utils/initEventListener.svelte';
-	import { initNoSleep } from '$lib/utils/noSleep.svelte';
 	import { isBrowser, isElectron } from '$lib/utils/store.svelte';
 	import { getElectronEmitter } from '$lib/utils/fetchSubscriptions.svelte';
 	import { extendStringFormat } from './extendString';
@@ -19,7 +18,6 @@
 			isElectron.subscribe((x: boolean) => resolve(x)),
 		);
 		if (isBrowserWindow) {
-			initNoSleep();
 			await initWebSocket();
 			initServiceWorker();
 		}

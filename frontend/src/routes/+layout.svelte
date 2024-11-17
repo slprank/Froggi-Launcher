@@ -7,7 +7,7 @@
 	import '$lib/styles/tooltip.css';
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
-	import { isAuthorized, isElectron, isOverlayPage, localEmitter } from '$lib/utils/store.svelte';
+	import { isElectron, isOverlayPage, localEmitter } from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { initClient } from '$lib/utils/init.svelte';

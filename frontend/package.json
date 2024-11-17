@@ -20,7 +20,6 @@
 		"froggi": "file:..",
 		"got": "^12.6.1",
 		"lodash": "^4.17.21",
-		"nosleep.js": "^0.12.0",
 		"svelte-ace": "^1.0.21",
 		"svelte-clipboard": "^1.0.0",
 		"svelte-device-info": "^1.0.0",
