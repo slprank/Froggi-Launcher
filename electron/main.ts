@@ -183,6 +183,7 @@ try {
 		if (!dev) serveURL(mainWindow);
 
 		mainWindow.webContents.once('dom-ready', async () => {
+			container.register<Electron.App>('App', { useValue: app });
 			container.register<BrowserWindow>('BrowserWindow', { useValue: mainWindow });
 			container.register<TypedEmitter>('LocalEmitter', { useValue: localEmitter });
 			container.register<TypedEmitter>('ClientEmitter', { useValue: clientEmitter });

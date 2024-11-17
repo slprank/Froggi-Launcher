@@ -9,6 +9,7 @@ import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 export class AutoUpdater {
 	private status: AutoUpdaterStatus;
 	constructor(
+		@inject('App') private app: Electron.App,
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('LocalEmitter') private localEmitter: TypedEmitter,
 		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
@@ -88,6 +89,7 @@ export class AutoUpdater {
 			if (this.status !== AutoUpdaterStatus.DownloadComplete) return;
 			this.log.info('Quit and install');
 			autoUpdater.quitAndInstall();
+			this.app.quit();
 		});
 
 		this.clientEmitter.on('AutoUpdaterCheckForUpdate', async () => {
