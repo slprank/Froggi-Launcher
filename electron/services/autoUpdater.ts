@@ -27,7 +27,7 @@ export class AutoUpdater {
 		this.messageHandler.sendMessage('AutoUpdaterVersion', autoUpdater.currentVersion.version);
 
 		autoUpdater.on('checking-for-update', () => {
-			this.log.info('Checking for update');
+			this.log.info('Checking for Update');
 			this.messageHandler.sendMessage(
 				'AutoUpdaterStatus',
 				AutoUpdaterStatus.LookingForUpdate,
@@ -44,7 +44,7 @@ export class AutoUpdater {
 		});
 
 		autoUpdater.on('update-available', (info: UpdateInfo) => {
-			this.log.info(`update available: ${info.version}`);
+			this.log.info(`Update Available: ${info.version}`);
 			this.messageHandler.sendMessage(
 				'Notification',
 				'Update Available',
@@ -85,7 +85,6 @@ export class AutoUpdater {
 		});
 
 		this.clientEmitter.on('AutoUpdaterInstall', async () => {
-			this.log.info('Quit and install');
 			if (this.status !== AutoUpdaterStatus.DownloadComplete) return;
 			this.log.info('Quit and install');
 			autoUpdater.quitAndInstall();
