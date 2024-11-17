@@ -11,19 +11,19 @@ jobs:
         uses: ./.github/workflows/deploy.yml
         secrets: inherit
         with:
-            file: './dist/*.dmg; ./dist/*.dmg.blockmap; ./dist/*mac.zip; ./dist/*.zip.blockmap; ./dist/latest-mac.yml;'
+            file: './dist/*.dmg; ./dist/*mac.zip; latest-mac.yml;'
             runs-on: 'macos-latest'
 
     deploy_linux:
         uses: ./.github/workflows/deploy.yml
         secrets: inherit
         with:
-            file: './dist/*.AppImage; ./dist/builder-debug.yml; ./dist/latest-linux.yml;'
+            file: './dist/*.AppImage; ./dist/latest-linux.yml;'
             runs-on: 'ubuntu-latest'
 
     deploy_windows:
         uses: ./.github/workflows/deploy.yml
         secrets: inherit
         with:
-            file: './dist/*.exe; ./dist/*.exe.blockmap; ./dist/builder-debug.yml; ./dist/latest.yml;'
+            file: './dist/*.exe; ./dist/latest.yml;'
             runs-on: 'windows-latest'
