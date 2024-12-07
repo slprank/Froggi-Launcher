@@ -13,15 +13,27 @@
 	<b>Add new</b>
 </h2>
 
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/find-overlays.png"
+	alt="Navigate overlay page"
+/>
+
 <h2>
 	Here you will get an option to select <b>Horizontal</b>
 	,
 	<b>Vertical</b>
 	or
 	<b>Import</b>
-	. The horizontal overlay is most commonly used for embedding in OBS while Vertical is mostly for
-	mobile devices.
+	. The horizontal overlays are commonly used for embedding in OBS, while the Vertical overlays are
+	commonly used for mobile devices or vertical screens.
 </h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/create-new-overlay.png"
+	alt="Create a new overlay"
+/>
 
 <h2>
 	It is possible to save and share overlays you have created with others. Therefore you also have
@@ -33,4 +45,55 @@
 	<b>Horizontal</b>
 </h2>
 
-<h1>TODO: Insert gif/video here</h1>
+<h2>
+	The new overlay will show up in the list of overlays with the name <b>
+		New overlay - {'{overlay id}'}
+	</b>
+	.
+</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/find-new-overlay.png"
+	alt="Find new overlay"
+/>
+
+<h2>
+	Click on the overlay and a popup will appear with the overlay editor. <br />
+	Here you will be able to preview the overlay and its different scenes.
+</h2>
+<h2>
+	Clicking on a scene will show all elements in that scene with its appropriate transitions. Note
+	that this preview will display any elements that may be hidden in a live preview.
+</h2>
+<h2>
+	Click the
+	<b>Edit</b>
+	button to start editing the overlay.
+	<br />
+	Click the
+	<b>Duplicate</b>
+	button to create a copy of the overlay.
+	<br />
+	Click the
+	<b>Embed</b>
+	button to get the embed code for the overlay.
+	<br />
+	Click the
+	<b>Save</b>
+	button to save the overlay as a file on your computer. That you can share with others. Click the
+	<b>Delete</b>
+	button to delete the overlay.
+</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/overlay-popup.png"
+	alt="Find new overlay"
+/>
+
+<h2>
+	Click the
+	<b>Edit</b>
+	button to start editing the overlay.
+</h2>

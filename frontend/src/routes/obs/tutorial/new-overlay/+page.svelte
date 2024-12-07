@@ -5,6 +5,8 @@
 	import WhatToLearn from '$lib/components/tutorial/new-overlay/WhatToLearn.svelte';
 	import CreateNewOverlay from '$lib/components/tutorial/new-overlay/CreateNewOverlay.svelte';
 	import OpenInSeparateWindow from '$lib/components/tutorial/new-overlay/OpenInSeparateWindow.svelte';
+	import InitOverlayConfigurations from '$lib/components/tutorial/new-overlay/InitOverlayConfigurations.svelte';
+	import AddSimpleTextElement from '$lib/components/tutorial/new-overlay/AddSimpleTextElement.svelte';
 
 	let pageIndex = Number($page.url.searchParams.get('page') || 0);
 
@@ -14,16 +16,24 @@
 			component: WhatToLearn,
 		},
 		{
-			title: 'What is a scene?',
-			component: WhatIsAScene,
-		},
-		{
 			title: 'Follow in separate window',
 			component: OpenInSeparateWindow,
 		},
 		{
 			title: 'Create a new overlay',
 			component: CreateNewOverlay,
+		},
+		{
+			title: 'What is a scene?',
+			component: WhatIsAScene,
+		},
+		{
+			title: 'Init overlay configurations',
+			component: InitOverlayConfigurations,
+		},
+		{
+			title: 'Add simple text element',
+			component: AddSimpleTextElement,
 		},
 	];
 

@@ -25,7 +25,7 @@
 	let imageOptions: string[] = [];
 
 	function getImageOptions() {
-		const modules = import.meta.glob('../../../../../static/image/backgrounds/**/**.png');
+		const modules = import.meta.glob('../../../../../../static/image/backgrounds/**.png');
 		for (let image in modules) {
 			imageOptions.push(image);
 		}
@@ -59,15 +59,13 @@
 			<div class="w-full p-4 px-8 col-span-1 overflow-y-scroll enable-scrollbar">
 				<div class="w-full flex flex-col gap-4">
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
-					<div class="w-full flex gap-2">
-						<div class="w-24">
-							<TextInput
-								bind:value={overlay.title}
-								label="Title"
-								bind:autofocus
-								autoFocusValue={1}
-							/>
-						</div>
+					<div class="w-48 flex gap-2">
+						<TextInput
+							bind:value={overlay.title}
+							label="Title"
+							bind:autofocus
+							autoFocusValue={1}
+						/>
 					</div>
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
 

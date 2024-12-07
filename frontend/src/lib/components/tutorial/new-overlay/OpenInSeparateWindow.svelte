@@ -24,5 +24,6 @@
 {/if}
 <h2>
 	This external view can also be used as a secondary screen while editing overlays and to operate
-	OBS indirectly. But for this tutorial, it is not necessary.
+	OBS indirectly. But for this tutorial, we will just use it to follow the tutorial in an external
+	window.
 </h2>
