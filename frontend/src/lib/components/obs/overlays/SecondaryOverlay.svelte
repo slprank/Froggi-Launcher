@@ -10,11 +10,6 @@
 
 	const overlayId = $page.params.overlay;
 	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
-
-	onMount(() => {
-		if (!curOverlay) return;
-		//updateFont(curOverlay);
-	});
 </script>
 
 {#if curOverlay}

@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { isElectron, isPWA, localEmitter } from '$lib/utils/store.svelte';
+	import { isPWA } from '$lib/utils/store.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
 
 	let isPwaOpen = !$isPWA;
-
 </script>
 
 <div>

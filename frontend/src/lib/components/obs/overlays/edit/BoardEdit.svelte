@@ -21,8 +21,6 @@
 	export let borderHeight: number | undefined = undefined;
 	export let selectedItemId: string | undefined = undefined;
 
-	let divRef: HTMLElement | undefined;
-
 	let curOverlay =
 		$overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
 	let items: GridContentItem[] = [];
@@ -134,7 +132,6 @@
 		<div
 			style={`font-family: ${curOverlay[$statsScene]?.font?.family};`}
 			class="w-full h-full overflow-hidden relative"
-			bind:this={divRef}
 		>
 			<BoardGrid
 				rows={curOverlay.aspectRatio.height * 2}

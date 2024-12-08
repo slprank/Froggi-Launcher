@@ -3,31 +3,14 @@
 	import { GridContentItem, Layer, Overlay } from '$lib/models/types/overlay';
 	import { asyncForEach } from '$lib/utils/helper';
 
-	async function storeFontInCache(fontName: string, fontBase64: string) {
-		const cache = await caches.open('font-cache');
-		const blob = new Blob([fontBase64], { type: 'font/woff2' });
-		const response = new Response(blob);
-		await cache.put(fontName, response);
-	}
-
-	async function loadFontFromCache(fontName: string) {
-		const cache = await caches.open('font-cache');
-		const response = await cache.match(fontName);
-		if (!response) return null;
-		const blob = await response.blob();
-		return URL.createObjectURL(blob);
-	}
-
 	export const addFont = async (base64: string | undefined, fontName: string) => {
-		if (!base64 || document.fonts.check(`12px ${fontName}`)) {
-			return; // Font is already in document.fonts
+		if (!base64) {
+			return;
 		}
-
-		const fontUrl = (await loadFontFromCache(fontName)) || `url(${base64})`;
-		const new_font = new FontFace(fontName, fontUrl);
+		const new_font = new FontFace(fontName, `url(${base64})`);
 		const loadedFace = await new_font.load();
 		document.fonts.add(loadedFace);
-		await storeFontInCache(fontName, base64);
+		document.fonts.ready;
 	};
 
 	export const updateFont = async (overlay: Overlay) => {

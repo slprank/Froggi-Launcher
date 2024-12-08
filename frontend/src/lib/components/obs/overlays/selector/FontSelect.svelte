@@ -10,7 +10,7 @@
 	export let fontId: string;
 
 	const updateFont = async () => {
-		addFont(font?.base64, fontId);
+		addFont(font?.base64 ?? '', fontId);
 	};
 	$: font, updateFont();
 </script>
