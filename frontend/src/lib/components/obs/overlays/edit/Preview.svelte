@@ -6,8 +6,6 @@
 	$: overlayId = $page.params.overlay;
 	$: url = isElectron ? $urls?.local : $urls?.external;
 	$: src = `${url}/obs/overlay/${overlayId}/layers`;
-
-	$: console.log('src', src);
 </script>
 
 {#if url}

@@ -73,7 +73,11 @@
 					<SceneSelectOptions bind:overlay />
 
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Default Font:</h1>
-					<FontSelectorLayer bind:font={curScene.font} fontId={'custom'} />
+					<FontSelectorLayer
+						bind:font={curScene.font}
+						fontId={$statsScene}
+						curOverlay={overlay}
+					/>
 
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Background</h1>
 					<div class="w-full flex gap-2">

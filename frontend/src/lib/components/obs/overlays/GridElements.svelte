@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { addFont } from './CustomFontHandler.svelte';
 	import { getRelativePixelSize } from '$lib/utils/helper';
 	import SlippiRank from './elementRender/SlippiRank.svelte';
 	import Custom from './elementRender/Custom.svelte';
@@ -54,7 +53,7 @@
 	$: shadowSizeX = getRelativePixelSize(dataItem?.data.shadow?.x, innerHeight, innerWidth);
 	$: shadowSizeY = getRelativePixelSize(dataItem?.data.shadow?.y, innerHeight, innerWidth);
 	$: style.shadow = `filter: drop-shadow(${shadowSizeX}px ${shadowSizeY}px ${
-		(dataItem?.data.shadow.spread ?? 0) - 1 ?? 0
+		(dataItem?.data.shadow.spread ?? 0) - 1
 	}px ${dataItem?.data.shadow?.color ?? '#000000'});`;
 
 	$: strokeSize = getRelativePixelSize(dataItem.data.textStroke.size, innerHeight, innerWidth);
@@ -68,58 +67,46 @@
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
-
-	let fontTrigger = 0;
-	const updateFont = async () => {
-		await addFont(dataItem.data.font.base64, dataItem.id);
-		await document.fonts.ready;
-		setTimeout(() => (fontTrigger = Math.random()), 50);
-	};
-	$: dataItem.data.font.base64, updateFont();
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
 
-{#await updateFont() then}
-	<div
-		class="w-full h-full hide-siblings"
-		style={`${
-			dataItem.data?.font?.family !== undefined &&
-			`font-family: ${dataItem.data?.font?.family};
+<div
+	class="w-full h-full hide-siblings"
+	style={`${
+		dataItem.data?.font?.family !== undefined &&
+		`font-family: ${dataItem.data?.font?.family};
 	`
-		}; ${style.textStroke};
+	}; ${style.textStroke};
 		${style.transform};
 		${style.shadow};`}
-		bind:this={div}
-	>
-		{#if div}
-			{#key dataItem}
-				{#key fontTrigger}
-					<div class="w-full h-full">
-						<Custom {dataItem} {style} />
+	bind:this={div}
+>
+	{#if div}
+		{#key dataItem}
+			<div class="w-full h-full">
+				<Custom {dataItem} {style} />
 
-						<InGame {dataItem} {defaultPreview} {style} />
+				<InGame {dataItem} {defaultPreview} {style} />
 
-						<Match {dataItem} {defaultPreview} {style} />
+				<Match {dataItem} {defaultPreview} {style} />
 
-						<RecentGame {dataItem} {defaultPreview} {style} />
+				<RecentGame {dataItem} {defaultPreview} {style} />
 
-						<RecentMatch {dataItem} {defaultPreview} {style} />
+				<RecentMatch {dataItem} {defaultPreview} {style} />
 
-						<RecentMatchSummary {dataItem} {defaultPreview} {style} />
+				<RecentMatchSummary {dataItem} {defaultPreview} {style} />
 
-						<SlippiRank {dataItem} {defaultPreview} {style} />
+				<SlippiRank {dataItem} {defaultPreview} {style} />
 
-						<Session {dataItem} {defaultPreview} {style} />
+				<Session {dataItem} {defaultPreview} {style} />
 
-						<!-- Post Game Stats -->
-						<!-- Post Set Stats -->
-					</div>
-				{/key}
-			{/key}
-		{/if}
-	</div>
-{/await}
+				<!-- Post Game Stats -->
+				<!-- Post Set Stats -->
+			</div>
+		{/key}
+	{/if}
+</div>
 
 <style>
 	.hide-siblings :not(:first-child) {

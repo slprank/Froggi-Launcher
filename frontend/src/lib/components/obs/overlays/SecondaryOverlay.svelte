@@ -3,7 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import Board from '$lib/components/obs/overlays/Board.svelte';
 	import { page } from '$app/stores';
-	import { addFont } from '$lib/components/obs/overlays/CustomFontHandler.svelte';
+	import { onMount } from 'svelte';
 
 	export let layerIds: string[] | undefined = undefined;
 	export let preview: boolean = false;
@@ -11,17 +11,10 @@
 	const overlayId = $page.params.overlay;
 	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
 
-	const updateFont = async () => {
+	onMount(() => {
 		if (!curOverlay) return;
-		await addFont(curOverlay[$statsScene].font.base64);
-		curOverlay[$statsScene].layers
-			?.map((layer) => layer.items)
-			.flat()
-			.map(async (item) => await addFont(item.data.font.base64, item.id))
-			.every((x) => x);
-		await document.fonts.ready;
-	};
-	updateFont();
+		//updateFont(curOverlay);
+	});
 </script>
 
 {#if curOverlay}

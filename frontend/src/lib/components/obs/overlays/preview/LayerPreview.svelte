@@ -5,7 +5,6 @@
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { Layer, Overlay, Scene } from '$lib/models/types/overlay';
 	import { overlays, statsScene } from '$lib/utils/store.svelte';
-	import { addFont } from '../CustomFontHandler.svelte';
 	import GridContent from '../GridContent.svelte';
 	import Grid from 'svelte-grid';
 

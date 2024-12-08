@@ -2,17 +2,24 @@
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import Select from '$lib/components/input/Select.svelte';
-	import type { Font } from '$lib/models/types/overlay';
+	import type { Font, Overlay } from '$lib/models/types/overlay';
+	import { statsScene } from '$lib/utils/store.svelte';
+	import { addFont } from '../CustomFontHandler.svelte';
 
 	export let font: Font;
 	export let fontId: string;
+
+	const updateFont = async () => {
+		addFont(font?.base64, fontId);
+	};
+	$: font, updateFont();
 </script>
 
 <div class="w-full flex gap-2">
 	<div class="w-36 h-full">
 		<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
 		<Select bind:selected={font.family}>
-			<option value={undefined} selected>Default</option>
+			<option value={$statsScene} selected>Default</option>
 			<option value={'sans-serif'} selected>Sans Serif</option>
 			<option value={'Melee'}>Melee</option>
 			<option value={'Ultimate'}>Ultimate</option>

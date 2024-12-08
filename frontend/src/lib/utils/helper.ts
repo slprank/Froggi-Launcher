@@ -73,3 +73,4 @@ export const getButtonPressesGame = (buttonPresses: number | undefined): Control
 		isZPressed: Boolean(buttonPresses & (1 << 4)),
 	};
 };
+

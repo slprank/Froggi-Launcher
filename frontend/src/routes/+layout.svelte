@@ -32,6 +32,7 @@
 			document.body.style.backgroundColor = 'black';
 		}
 	};
+
 	$: updateBackgroundColor($page.url.pathname);
 </script>
 
