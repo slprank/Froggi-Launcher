@@ -25,8 +25,8 @@
 	$: isVerticalScreen = innerHeight > innerWidth;
 	$: isHorizontalScreen = !isVerticalScreen;
 
-	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/overlay/${overlayId}/layers`;
-	$: console.log('src', src);
+	$: url = isElectron ? $urls?.local : $urls?.external;
+	$: src = `${url}/obs/overlay/${overlayId}/layers`;
 
 	const reset = () => {
 		base64 = '';
@@ -62,9 +62,11 @@
 					}');
 					opacity: ${imageOpacity}`}
 				/>
-				<div class="w-full h-full absolute">
-					<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
-				</div>
+				{#if url}
+					<div class="w-full h-full absolute">
+						<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
+					</div>
+				{/if}
 			</div>
 			<div class="w-full p-2 grid grid-flow-row gap-2">
 				<SceneSelect />
@@ -98,9 +100,11 @@
 					}');
 					opacity: ${imageOpacity}`}
 				/>
-				<div class="w-full h-full absolute">
-					<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
-				</div>
+				{#if url}
+					<div class="w-full h-full absolute">
+						<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
+					</div>
+				{/if}
 			</div>
 			<div class="w-full p-2 grid grid-flow-row gap-2">
 				<SceneSelect />

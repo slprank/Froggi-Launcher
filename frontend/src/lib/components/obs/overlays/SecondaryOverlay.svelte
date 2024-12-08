@@ -24,15 +24,13 @@
 	updateFont();
 </script>
 
-{#await updateFont() then}
-	{#if curOverlay}
-		<div
-			class="fixed h-full w-full bg-cover bg-center"
-			style="margin: 0; padding: 0"
-			in:fade={{ delay: 50, duration: 150 }}
-			out:fade={{ duration: 300 }}
-		>
-			<Board bind:curOverlay bind:layerIds {preview} />
-		</div>
-	{/if}
-{/await}
+{#if curOverlay}
+	<div
+		class="fixed h-full w-full bg-cover bg-center"
+		style="margin: 0; padding: 0"
+		in:fade={{ delay: 50, duration: 150 }}
+		out:fade={{ duration: 300 }}
+	>
+		<Board bind:curOverlay bind:layerIds {preview} />
+	</div>
+{/if}

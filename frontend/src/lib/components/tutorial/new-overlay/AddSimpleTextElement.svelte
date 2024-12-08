@@ -20,5 +20,14 @@
 
 <h2>
 	Here we can start by clicking the <b>Add new element</b>
-	 button.
+	button. Select the only
+	<b>Custom</b>
+	category and
+	<b>Custom Text</b>
 </h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/select-custom-text.png"
+	alt="Select custom text"
+/>

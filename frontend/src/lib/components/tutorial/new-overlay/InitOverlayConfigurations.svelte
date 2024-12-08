@@ -5,8 +5,8 @@
 <h1 class="text-2xl font-semibold">Init overlay configurations</h1>
 
 <h2>
-	Before starting with adding elements into an overlay, we can start with settings some default
-	scene transitions and font.
+	Before we start adding elements into an overlay, we can start with configuring some default
+	scene transitions, font and title.
 </h2>
 
 <h2>
@@ -77,8 +77,8 @@
 </h2>
 
 <h2>
-	There exists pre-made demo overlays that includes these scenes that you can create a copy of and
-	use as inspiration.
+	There are included pre-made demo overlays with these scenes already created. Create a copy of
+	these and use them as inspiration.
 </h2>
 
 <h2>
@@ -99,7 +99,7 @@
 
 <h2>
 	For this tutorial, we will choose <b>Roboto Bold Italic</b>
-	. But you can change it to something to your liking.
+	. But you can change it to your liking.
 </h2>
 
 <img
@@ -131,16 +131,15 @@
 <h2>For this tutorial, it is not necessary to apply any background and we will keep it empty.</h2>
 
 <h2>
-	Over to the fun part we can apply transitions to the scenes. Here you can select between a few
-	preset transitions where you can change properties like duration, delay and easing.
+	<br />
+	Over to the fun part we can apply transitions to the scenes. Here you can select between a few preset
+	transitions where you can change properties like duration, delay and easing.
 </h2>
 
 <h2>
-	As many scenes may include multiple layers it is possible to change the <b>
-		Layers rendering delay
-	</b>
-	. This is used to delay the rendering of the layers in the scene from the back to the front if you
-	want to create some space in the transition.
+	As many scenes may include multiple layers, we change the <b>Layers rendering delay</b>
+	. This is used to delay the rendering of the layers in the scene from the back to the front for creating
+	some space in the transition.
 </h2>
 
 <h2>

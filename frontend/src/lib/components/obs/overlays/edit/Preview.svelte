@@ -3,10 +3,15 @@
 	import { isElectron, urls } from '$lib/utils/store.svelte';
 	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
 
-	const overlayId = $page.params.overlay;
-	$: src = `${$isElectron ? $urls?.local : $urls?.external}/obs/overlay/${overlayId}/layers`;
+	$: overlayId = $page.params.overlay;
+	$: url = isElectron ? $urls?.local : $urls?.external;
+	$: src = `${url}/obs/overlay/${overlayId}/layers`;
+
+	$: console.log('src', src);
 </script>
 
-<div class={`w-full h-full border-2 border-zinc-700 overflow-hidden shadow-md my-2`}>
-	<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
-</div>
+{#if url}
+	<div class={`w-full h-full border-2 border-zinc-700 overflow-hidden shadow-md my-2`}>
+		<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
+	</div>
+{/if}

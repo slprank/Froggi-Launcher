@@ -7,6 +7,7 @@
 	import { createAnimation } from './element/animations/Animations.svelte';
 	import GridElements from '$lib/components/obs/overlays/GridElements.svelte';
 	import VisibilityAnimationLayer from './element/animations/VisibilityAnimationLayer.svelte';
+	import { Element } from 'svelte/types/compiler/interfaces';
 
 	export let additionalDelay: number = 0;
 	export let curScene: Scene | undefined = undefined;
@@ -29,8 +30,8 @@
 		return createAnimation(
 			node,
 			curScene.animation.in,
-			boardHeight ?? innerHeight,
-			boardWidth ?? innerWidth,
+			boardHeight,
+			boardWidth,
 			delay,
 			dataItem,
 		);
@@ -38,14 +39,7 @@
 
 	const animateOut = (node: Element): TransitionConfig => {
 		if (edit || !curScene) return fly(node, { duration: 0 });
-		return createAnimation(
-			node,
-			curScene.animation.out,
-			boardHeight ?? innerHeight,
-			boardWidth ?? innerWidth,
-			0,
-			dataItem,
-		);
+		return createAnimation(node, curScene.animation.out, boardHeight, boardWidth, 0, dataItem);
 	};
 
 	let div: HTMLElement | undefined;

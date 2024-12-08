@@ -1,13 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/models/const';
-	import {
-		currentOverlayEditor,
-		localEmitter,
-		obs,
-		overlays,
-		statsScene,
-	} from '$lib/utils/store.svelte';
+	import { currentOverlayEditor, overlays, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import ElementModal from '$lib/components/obs/overlays/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
@@ -157,8 +151,6 @@
 		lockOut = true;
 		setTimeout(() => (lockOut = false), 100);
 	}
-
-	// TODO: Add horizontal center button
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -167,7 +159,7 @@
 	Selected element
 </h1>
 <div class="h-16">
-	{#if selectedItem !== undefined}
+	{#if !isNil(selectedItem)}
 		<div class="w-full flex gap-2">
 			<div transition:fly={{ duration: 250, y: 30 }}>
 				<NumberInput bind:value={selectedItem[COL].x} max={COL} label={`X - ${COL}`} />

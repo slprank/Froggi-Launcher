@@ -33,10 +33,10 @@
 		const seenIds = new Set();
 		items = items.filter((item) => {
 			if (seenIds.has(item.id)) {
-				return false; // Exclude this item
+				return false;
 			}
 			seenIds.add(item.id);
-			return true; // Include this item
+			return true;
 		});
 		return items;
 	}
@@ -116,7 +116,6 @@
 	};
 
 	const handlerKeyPress = (e: KeyboardEvent) => {
-		console.log(e.key);
 		if (e.key === 'Backspace' && selectedItemId) {
 			tempItems = items.filter((item) => item.id !== selectedItemId);
 		}
@@ -125,12 +124,6 @@
 		}
 		updateOverlay();
 	};
-
-	function handleClickOutside(event: MouseEvent) {
-		if (divRef && !divRef.contains(event.target as any)) {
-			clearSelected();
-		}
-	}
 
 	let innerHeight: number;
 	$: rowHeight =
@@ -141,7 +134,6 @@
 	bind:innerHeight
 	on:mousedown={fixElements}
 	on:mouseup={updateOverlay}
-	on:click={handleClickOutside}
 	on:keydown={handlerKeyPress}
 />
 
@@ -170,7 +162,9 @@
 						on:change={updateScene}
 						on:pointerup={(e) => {
 							selectedItemId = undefined;
-							setTimeout(() => (selectedItemId = e.detail.id), 20);
+							setTimeout(() => {
+								selectedItemId = e.detail.id;
+							}, 20);
 						}}
 					>
 						<div class="w-full h-full relative">

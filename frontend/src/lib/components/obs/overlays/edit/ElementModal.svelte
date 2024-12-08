@@ -24,6 +24,7 @@
 	import ElementSelectModal from '../selector/ElementSelectModal.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { fixTransition } from './fixTransition';
+	import { isNil } from 'lodash';
 
 	const overlayId = $page.params.overlay;
 
@@ -122,6 +123,8 @@
 		open = false;
 	}
 
+	$: selectedItemId;
+
 	function updatePayload() {
 		if (!selectedItemId) return;
 		let items = getCurrentItems();
@@ -131,6 +134,8 @@
 		selectedElementId = item.elementId;
 	}
 	updatePayload();
+
+	$: console.log(selectedElementId);
 </script>
 
 <Modal bind:open class="rounded-lg" on:close={() => (open = false)}>
@@ -148,27 +153,20 @@
 						Select
 					</button>
 				</div>
-				{#if selectedElementId}
-					<div class="w-full">
-						{#if payload && selectedItemId}
-							<StylingSelect
-								bind:selectedElementId
-								bind:payload
-								bind:selectedItemId
-							/>
-						{/if}
-					</div>
-					<button
-						transition:fly={{ duration: 250, x: 150 }}
-						class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-						on:click={update}
-					>
-						{isNewElement ? 'Add' : 'Update'}
-					</button>
-				{/if}
+				<div class="w-full">
+					{#if !isNil(selectedElementId)}
+						<StylingSelect bind:selectedElementId bind:payload bind:selectedItemId />
+					{/if}
+				</div>
+				<button
+					transition:fly={{ duration: 250, x: 150 }}
+					class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					on:click={update}
+				>
+					{isNewElement ? 'Add' : 'Update'}
+				</button>
 			</div>
 			<div class="w-full h-full col-span-3 grid justify-center content-center gap-12">
-				<!-- Set array to 2 if you want drag/drop preview-->
 				{#each [...Array(2).keys()] as i}
 					<div
 						class="w-[30vw] max-w-full max-h-[30vh] aspect-video bg-cover bg-center border z-0 flex items-center justify-center relative"

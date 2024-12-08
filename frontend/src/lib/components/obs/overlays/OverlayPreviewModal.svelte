@@ -27,7 +27,8 @@
 	let deleteOverlayModalOpen = false;
 	let isEmbedModalOpen = false;
 
-	$: url = `${$isElectron ? $urls?.local : $urls.external}/obs/overlay/${overlay?.id}/layers`;
+	$: url = $isElectron ? $urls?.local : $urls.external;
+	$: src = `${url}/obs/overlay/${overlay?.id}/layers`;
 
 	function downloadOverlay() {
 		if (!overlay) return;
@@ -70,9 +71,13 @@
 			style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
 			bind:this={parentDiv}
 		>
-			<div style={`height: ${parentDiv?.clientHeight}px; width: ${parentDiv?.clientWidth}px`}>
-				<NonInteractiveIFrame src={url} title="overlay" />
-			</div>
+			{#if url}
+				<div
+					style={`height: ${parentDiv?.clientHeight}px; width: ${parentDiv?.clientWidth}px`}
+				>
+					<NonInteractiveIFrame {src} title="overlay" />
+				</div>
+			{/if}
 		</div>
 		<SceneSelect />
 		<div class="flex gap-2">
