@@ -221,6 +221,10 @@ try {
 		mainWindow.show();
 	});
 
+	app.on('before-quit', () => {
+		app.quit();
+	});
+
 	process.on('uncaughtException', (error) => {
 		mainLog.error('Uncaught Exception:', error);
 

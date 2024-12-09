@@ -71,9 +71,11 @@ export class ElectronOverlayStore {
 		let overlays = this.getOverlays();
 		if (!overlays) return;
 		const overlayIndex = this.getOverlayIndex(overlay.id);
-		overlayIndex === undefined || overlayIndex === -1
-			? overlays.push(overlay)
-			: (overlays[overlayIndex] = overlay);
+		if (overlayIndex === -1) {
+			overlays.push(overlay);
+		} else {
+			overlays[overlayIndex] = overlay;
+		}
 		overlays = this.removeDuplicateItems(overlays);
 		this.setOverlays(overlays);
 	}
