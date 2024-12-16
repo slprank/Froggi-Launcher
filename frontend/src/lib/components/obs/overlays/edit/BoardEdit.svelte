@@ -21,8 +21,7 @@
 	export let borderHeight: number | undefined = undefined;
 	export let selectedItemId: string | undefined = undefined;
 
-	let curOverlay =
-		$overlays?.find((overlay: Overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+	let curOverlay = $overlays[overlayId] ?? ({} as Overlay);
 	let items: GridContentItem[] = [];
 	let tempItems: GridContentItem[] | undefined = undefined;
 
@@ -52,7 +51,7 @@
 
 	function updateLiveScene() {
 		if ($currentOverlayEditor?.layerIndex === undefined) return;
-		curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+		curOverlay = $overlays[overlayId] ?? ({} as Overlay);
 		items = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex]?.items ?? [];
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
@@ -80,7 +79,7 @@
 			[],
 		);
 
-		$electronEmitter.emit('OverlayUpdate', curOverlay);
+		$electronEmitter.emit('SceneUpdate', curOverlay.id, $statsScene, curOverlay[$statsScene]);
 		tempItems = undefined;
 		floatElements();
 	}

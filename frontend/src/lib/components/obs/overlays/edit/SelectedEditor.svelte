@@ -19,7 +19,7 @@
 
 	let isElementModalOpen = false;
 
-	$: curOverlay = $overlays?.find((overlay) => overlay.id === overlayId) ?? undefined;
+	$: curOverlay = $overlays[overlayId];
 	$currentOverlayEditor?.layerIndex;
 
 	function getItemById() {
@@ -73,7 +73,7 @@
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
-		updateOverlay(curOverlay);
+		updateOverlay(curOverlay, $statsScene);
 	}
 
 	function deleteElement() {
@@ -86,7 +86,7 @@
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
-		updateOverlay(curOverlay);
+		updateOverlay(curOverlay, $statsScene);
 	}
 
 	function updateSelectItem() {
@@ -101,7 +101,7 @@
 
 		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items[selectedItemIndex] =
 			selectedItem;
-		updateOverlay(curOverlay);
+		updateOverlay(curOverlay, $statsScene);
 	}
 	$: selectedItem, updateSelectItem();
 

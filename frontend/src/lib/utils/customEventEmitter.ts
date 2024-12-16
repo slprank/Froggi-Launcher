@@ -21,7 +21,7 @@ import type {
 	NotificationType,
 } from '../models/enum';
 import type { PlayerController } from '../models/types/controller';
-import type { Overlay, OverlayEditor, Url } from '../models/types/overlay';
+import type { Overlay, OverlayEditor, Scene, Url } from '../models/types/overlay';
 import type {
 	CurrentPlayer,
 	GameStartTypeExtended,
@@ -70,12 +70,13 @@ export interface MessageEvents {
 	Obs: (obs: Obs | undefined) => void;
 	ObsAuth: (auth: ObsAuth) => void;
 	ObsConnection: (connection: ObsConnection) => void;
-	Overlays: (overlays: Overlay[] | undefined) => void;
+	Overlays: (overlays: Record<string, Overlay> | undefined) => void;
 	OverlayDelete: (overlayId: string) => void;
 	OverlayDownload: (overlayId: string) => void;
 	OverlayDuplicate: (overlayId: string) => void;
 	OverlayUpdate: (overlay: Overlay) => void;
 	OverlayUpload: () => void;
+	SceneUpdate: (overlayId: string, liveStatsScene: LiveStatsScene, scene: Scene) => void;
 	SelectedItemChange: (itemId: string) => void;
 
 	AuthorizationKey: (key: string) => void;

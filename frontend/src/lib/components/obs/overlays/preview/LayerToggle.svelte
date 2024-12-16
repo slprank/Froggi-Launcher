@@ -17,7 +17,7 @@
 
 	let selectedLayerIndex: number = 0;
 
-	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
+	$: curOverlay = $overlays[overlayId];
 	$: layers = curOverlay && $statsScene in curOverlay ? curOverlay[$statsScene].layers : [];
 
 	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {

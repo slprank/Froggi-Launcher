@@ -112,26 +112,16 @@
 	export async function getOverlayById(
 		overlayId: string | undefined,
 	): Promise<Overlay | undefined> {
+		if (isNil(overlayId)) return;
 		return await new Promise<Overlay | undefined>((resolve) => {
-			overlays?.subscribe((overlays) =>
-				resolve(overlays?.find((overlay: Overlay) => overlay.id === overlayId)),
-			);
+			overlays?.subscribe((overlays) => resolve(overlays[overlayId]));
 		});
 	}
 
-	export async function getOverlayIndexById(overlayId: string): Promise<number | undefined> {
-		let curOverlay = await getOverlayById(overlayId);
-		return await new Promise<number | undefined>((resolve) =>
-			overlays?.subscribe((overlays) =>
-				resolve(overlays.indexOf(curOverlay ?? ({} as Overlay))),
-			),
-		);
-	}
-
-	export async function updateOverlay(overlay: Overlay) {
+	export async function updateOverlay(overlay: Overlay, statsScene: LiveStatsScene) {
 		await new Promise(() =>
 			electronEmitter.subscribe((electronEmitter) =>
-				electronEmitter.emit('OverlayUpdate', overlay),
+				electronEmitter.emit('SceneUpdate', overlay.id, statsScene, overlay[statsScene]),
 			),
 		);
 	}
@@ -245,18 +235,18 @@
 	): Promise<number> {
 		const newLayerId = newId();
 
-		const index = await getOverlayIndexById(overlayId);
-		const overlays = await getOverlays();
+		const overlay = await getOverlayById(overlayId);
 
-		if (index === undefined) return 0;
-		const overlay = overlays[index];
+		if (isNil(overlay)) return 0;
+
 		const layersLength = overlay[statsScene]?.layers.length;
 		overlay[statsScene]?.layers.splice(indexPlacement ?? layersLength, 0, {
 			id: newLayerId,
 			items: [],
 			preview: true,
 		});
-		updateOverlay(overlay);
+
+		updateOverlay(overlay, statsScene);
 
 		return overlay![statsScene]?.layers.length - 1;
 	}
@@ -267,9 +257,12 @@
 		selectedLayer: number,
 	): Promise<number> {
 		let updatedOverlay = await getOverlayById(overlayId);
+
+		if (isNil(updatedOverlay)) return 0;
+
 		if (
 			selectedLayer === undefined ||
-			selectedLayer >= updatedOverlay![statsScene]?.layers.length - 1
+			selectedLayer >= updatedOverlay[statsScene]?.layers.length - 1
 		)
 			return 0;
 		[
@@ -279,9 +272,8 @@
 			updatedOverlay![statsScene].layers[selectedLayer + 1],
 			updatedOverlay![statsScene].layers[selectedLayer],
 		];
-		const index = await getOverlayIndexById(overlayId);
-		if (isNil(index) || isNil(updatedOverlay)) return 0;
-		updateOverlay(updatedOverlay);
+
+		updateOverlay(updatedOverlay, statsScene);
 
 		return selectedLayer + 1;
 	}
@@ -292,6 +284,9 @@
 		selectedLayer: number,
 	): Promise<number> {
 		let updatedOverlay = await getOverlayById(overlayId);
+
+		if (isNil(updatedOverlay)) return 0;
+
 		if (selectedLayer === undefined || selectedLayer === 0) return 0;
 		[
 			updatedOverlay![statsScene].layers[selectedLayer],
@@ -300,9 +295,8 @@
 			updatedOverlay![statsScene].layers[selectedLayer - 1],
 			updatedOverlay![statsScene].layers[selectedLayer],
 		];
-		const index = await getOverlayIndexById(overlayId);
-		if (isNil(index) || isNil(updatedOverlay)) return 0;
-		updateOverlay(updatedOverlay);
+
+		updateOverlay(updatedOverlay, statsScene);
 
 		return selectedLayer - 1;
 	}
@@ -329,7 +323,7 @@
 			...layers.slice(selectedLayerIndex),
 		];
 
-		updateOverlay(overlay);
+		updateOverlay(overlay, statsScene);
 
 		return selectedLayerIndex + 1;
 	}
@@ -343,7 +337,7 @@
 		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayerIndex;
 
 		overlay[statsScene].layers.splice(selectedLayerIndex, 1);
-		updateOverlay(overlay);
+		updateOverlay(overlay, statsScene);
 
 		return selectedLayerIndex - 1;
 	}

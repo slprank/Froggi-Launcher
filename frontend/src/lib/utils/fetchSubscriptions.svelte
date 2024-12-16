@@ -2,7 +2,12 @@
 	import { page } from '$app/stores';
 	import type { InGameState } from '$lib/models/enum';
 	import type { Overlay } from '$lib/models/types/overlay';
-	import type { CurrentPlayer, GameStats, Player, Session } from '$lib/models/types/slippiData';
+	import type {
+		CurrentPlayer,
+		GameStats,
+		Player,
+		SessionStats,
+	} from '$lib/models/types/slippiData';
 	import {
 		currentPlayer,
 		currentPlayers,
@@ -68,7 +73,15 @@
 	export async function getOverlays(): Promise<Overlay[]> {
 		return await new Promise<Overlay[]>((resolve) => {
 			overlays.subscribe((overlays) => {
-				resolve(overlays);
+				resolve(Object.values(overlays));
+			});
+		});
+	}
+
+	export async function getOverlayById(overlayId: string): Promise<Overlay | undefined> {
+		return await new Promise<Overlay>((resolve) => {
+			overlays.subscribe((overlays) => {
+				resolve(overlays[overlayId]);
 			});
 		});
 	}
@@ -134,14 +147,14 @@
 		});
 	}
 
-	export async function getSession(): Promise<Session | undefined> {
-		return await new Promise<Session | undefined>((resolve) => {
+	export async function getSession(): Promise<SessionStats | undefined> {
+		return await new Promise<SessionStats | undefined>((resolve) => {
 			sessionStats.subscribe((stats) => {
 				resolve(stats);
 			});
 		});
 	}
-	
+
 	export async function getIsIframe(): Promise<boolean> {
 		return await new Promise<boolean>((resolve) => {
 			isIframe.subscribe((value) => {

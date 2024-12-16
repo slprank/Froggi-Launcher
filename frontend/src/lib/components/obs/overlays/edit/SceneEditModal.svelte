@@ -44,7 +44,7 @@
 	async function handleUpdate() {
 		notifications.success('Overlay updated!', 3000);
 		open = false;
-		await updateOverlay(overlay);
+		await updateOverlay(overlay, $statsScene);
 	}
 
 	let autofocus: number = 0;

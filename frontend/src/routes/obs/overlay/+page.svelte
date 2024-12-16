@@ -5,7 +5,6 @@
 	import OverlayPreviewModal from '$lib/components/obs/overlays/OverlayPreviewModal.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
 	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
-	import { Tooltip, tooltip } from '@svelte-plugins/tooltips';
 
 	let newOverlayModalOpen = false;
 	let overlayPreviewOpen = false;
@@ -35,19 +34,17 @@
 		<div
 			class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 border border-gray-500 rounded-md p-4"
 		>
-			{#each $overlays.sort((a, b) => a.title.localeCompare(b.title)) ?? [] as overlay, i}
-				
-					<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
-						<button
+			{#each Object.values($overlays).sort( (a, b) => a.title.localeCompare(b.title), ) ?? [] as overlay, i}
+				<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
+					<button
 						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
 						on:click={() => {
 							openPreview(overlay.id);
 						}}
 					>
-					{overlay.title}
-				</button>
-			</div>
-
+						{overlay.title}
+					</button>
+				</div>
 			{/each}
 		</div>
 		{#if $isElectron}

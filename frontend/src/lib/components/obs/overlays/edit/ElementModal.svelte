@@ -24,7 +24,7 @@
 	import ElementSelectModal from '../selector/ElementSelectModal.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { fixTransition } from './fixTransition';
-	import { isNil } from 'lodash';
+	import { isNil, isNull } from 'lodash';
 
 	const overlayId = $page.params.overlay;
 
@@ -51,20 +51,23 @@
 	$: open, openItemSelect();
 
 	function updateOverlay() {
-		$electronEmitter.emit('OverlayUpdate', getCurrentOverlay());
+		const currentOverlay = getCurrentOverlay();
+		if (isNil(currentOverlay)) return;
+		$electronEmitter.emit(
+			'SceneUpdate',
+			currentOverlay.id,
+			$statsScene,
+			currentOverlay[$statsScene],
+		);
 	}
 
-	function getCurrentOverlay() {
-		return $overlays?.find((overlay) => overlay.id === overlayId) ?? ({} as Overlay);
+	function getCurrentOverlay(): Overlay | undefined {
+		return $overlays[overlayId];
 	}
 
-	function getCurrentOverlayIndex() {
-		const overlay = getCurrentOverlay();
-		return $overlays.indexOf(overlay);
-	}
-
-	function getCurrentItems() {
+	function getCurrentItems(): GridContentItem[] {
 		let curOverlay = getCurrentOverlay();
+		if (isNil(curOverlay)) return [];
 		return curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex ?? 0]?.items ?? [];
 	}
 
@@ -76,10 +79,13 @@
 
 		items = [...items, newItem];
 
-		const overlayIndex = getCurrentOverlayIndex();
+		const currentOverlay = getCurrentOverlay();
 
-		$overlays[overlayIndex][$statsScene].layers[$currentOverlayEditor?.layerIndex ?? 0].items =
-			items;
+		if (isNil(currentOverlay)) return;
+
+		$overlays[currentOverlay.id][$statsScene].layers[
+			$currentOverlayEditor?.layerIndex ?? 0
+		].items = items;
 
 		updateOverlay();
 		open = false;
@@ -114,10 +120,13 @@
 			return acc;
 		}, []);
 
-		const overlayIndex = getCurrentOverlayIndex();
+		const currentOverlay = getCurrentOverlay();
 
-		$overlays[overlayIndex][$statsScene].layers[$currentOverlayEditor?.layerIndex ?? 0].items =
-			items;
+		if (isNil(currentOverlay)) return;
+
+		$overlays[currentOverlay.id][$statsScene].layers[
+			$currentOverlayEditor?.layerIndex ?? 0
+		].items = items;
 
 		updateOverlay();
 		open = false;
@@ -176,7 +185,9 @@
 					>
 						<div
 							class={`w-full h-[50%] border bg-${i ? 'black' : 'white'} 'absolute'`}
-							style={`font-family: ${getCurrentOverlay()[$statsScene]?.font?.family}`}
+							style={`font-family: ${
+								getCurrentOverlay()?.[$statsScene]?.font?.family
+							}`}
 						>
 							<GridContent bind:demoItem preview={true} />
 						</div>

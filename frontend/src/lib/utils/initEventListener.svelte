@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { NotificationType } from '$lib/models/enum';
-	import type { AutoUpdater } from '$lib/models/types/overlay';
+	import type { AutoUpdater, Overlay } from '$lib/models/types/overlay';
 
 	import {
 		currentPlayer,
@@ -199,6 +199,19 @@
 					const value = payload[0] as Parameters<MessageEvents['ControllerCommand']>[0];
 					if (!value) return;
 					controller.set(value);
+				})();
+				break;
+			case 'SceneUpdate':
+				(() => {
+					const [overlayId, liveStatsScene, scene] = payload as Parameters<
+						MessageEvents['SceneUpdate']
+					>;
+					if (isNil(overlayId) || isNil(liveStatsScene) || isNil(scene)) return;
+					console.log('Update scene');
+					overlays.update((prev: Record<string, Overlay>) => {
+						prev[overlayId][liveStatsScene] = scene;
+						return prev;
+					});
 				})();
 				break;
 			case 'SceneSwitchCommands':

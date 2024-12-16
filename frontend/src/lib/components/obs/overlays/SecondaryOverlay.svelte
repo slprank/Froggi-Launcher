@@ -9,7 +9,7 @@
 	export let preview: boolean = false;
 
 	const overlayId = $page.params.overlay;
-	$: curOverlay = $overlays.find((overlay) => overlay.id === overlayId);
+	$: curOverlay = $overlays[overlayId];
 </script>
 
 {#if curOverlay}

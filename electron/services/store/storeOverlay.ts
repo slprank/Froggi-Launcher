@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import type { GridContentItem, Overlay, OverlayEditor } from '../../../frontend/src/lib/models/types/overlay';
+import type { GridContentItem, Overlay, OverlayEditor, Scene } from '../../../frontend/src/lib/models/types/overlay';
 import { delay, inject, singleton } from 'tsyringe';
 import type { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -9,6 +9,7 @@ import { BrowserWindow, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
+import { isNil } from 'lodash';
 
 @singleton()
 export class ElectronOverlayStore {
@@ -25,93 +26,73 @@ export class ElectronOverlayStore {
 		this.initDemoOverlays();
 	}
 
-	getOverlays(): Overlay[] {
-		return (this.store.get('obs.layout.overlays') ?? []) as Overlay[];
+	getOverlays(): Record<string, Overlay> {
+		return (this.store.get('obs.layout.overlays') ?? {}) as Record<string, Overlay>
 	}
 
-	setOverlays(value: Overlay[]) {
+	setOverlay(value: Overlay) {
 		if (!value) return;
-		this.store.set('obs.layout.overlays', value);
+		this.store.set(`obs.layout.overlays.${value.id}`, value);
+		const overlays = this.getOverlays();
+		this.messageHandler.sendMessage('Overlays', overlays);
 	}
 
-	getOverlayById(overlayId: string): Overlay {
-		const overlays = this.getOverlays();
-		return overlays?.find((overlay: Overlay) => overlay.id === overlayId) as Overlay;
+	getScene(overlayId: string, statsScene: string): Scene {
+		return this.store.get(`obs.layout.overlays.${overlayId}.${statsScene}`) as Scene
 	}
 
-	getOverlayIndex(overlayId: string): number {
-		const overlays = this.getOverlays();
-		return overlays?.findIndex((overlay: any) => overlay.id == overlayId) ?? undefined;
+	setScene(overlayId: string, statsScene: LiveStatsScene, scene: Scene) {
+		this.store.set(`obs.layout.overlays.${overlayId}.${statsScene}`, scene)
+		this.messageHandler.sendMessage('SceneUpdate', overlayId, statsScene, scene)
+	}
+
+	getOverlayById(overlayId: string): Overlay | undefined {
+		return this.store.get(`obs.layout.overlays.${overlayId}`) as Overlay;
 	}
 
 	removeDuplicateItems(overlays: Overlay[]): Overlay[] {
-		overlays.forEach(overlay => {
-			Object.keys(LiveStatsScene)
-				.filter(key => isNaN(Number(key)))
-				.forEach(key => {
-					const statsScene = LiveStatsScene[key as keyof typeof LiveStatsScene]
-					overlay[statsScene].layers.forEach(layer => {
-						layer.items.reduce((acc: GridContentItem[], currentItem) => {
-							const existingItem = acc.find((item) => item.id === currentItem.id);
-
-							if (!existingItem) {
-								acc.push(currentItem);
-							}
-
-							return acc;
-						}, []);
-					});
-				});
-		})
+		overlays.forEach(this.removeDuplicateOverlayItems)
 		return overlays;
+	}
+
+	removeDuplicateOverlayItems(overlay: Overlay): Overlay {
+		Object.keys(LiveStatsScene)
+			.filter(key => isNaN(Number(key)))
+			.forEach(key => {
+				const statsScene = LiveStatsScene[key as keyof typeof LiveStatsScene]
+				overlay[statsScene].layers.forEach(layer => {
+					layer.items.reduce((acc: GridContentItem[], currentItem) => {
+						const existingItem = acc.find((item) => item.id === currentItem.id);
+
+						if (!existingItem) {
+							acc.push(currentItem);
+						}
+
+						return acc;
+					}, []);
+				});
+			});
+		return overlay;
 	}
 
 	updateOverlay(overlay: Overlay): void {
 		if (!overlay || overlay.isDemo) return;
-		let overlays = this.getOverlays();
-		if (!overlays) return;
-		const overlayIndex = this.getOverlayIndex(overlay.id);
-		if (overlayIndex === -1) {
-			overlays.push(overlay);
-		} else {
-			overlays[overlayIndex] = overlay;
-		}
-		overlays = this.removeDuplicateItems(overlays);
-		this.setOverlays(overlays);
+		this.setOverlay(overlay)
 	}
 
 	duplicateOverlay(overlayId: string): void {
 		const overlay = this.getOverlayById(overlayId);
-		let overlays = this.getOverlays();
-		if (!overlays) return;
-		overlays.push({ ...overlay, id: newId(), title: `${overlay.title} - copy`, isDemo: false });
-		this.setOverlays(overlays);
+		if (isNil(overlay)) return;
+		this.setOverlay({ ...overlay, id: newId(), title: `${overlay.title} - copy`, isDemo: false });
 	}
 
 	uploadOverlay(overlay: Overlay, overlayId: string | undefined = undefined): void {
-		let overlays = this.getOverlays();
-		if (!overlays) return;
 		overlay.id = overlayId ?? newId();
-		overlays = [...overlays.filter((o) => o.id !== overlay.id), overlay];
-		overlays.push(overlay);
-
-		function unique(overlays: Overlay[]) {
-			var seen = new Set();
-			return overlays.filter((overlay) => seen.has(overlay.id) ? false : (seen.add(overlay.id), true));
-		}
-
-		overlays = unique(overlays);
-		this.setOverlays(overlays);
+		this.setOverlay(overlay)
 	}
 
 	deleteOverlay(overlayId: string): void {
-		if (!overlayId) return;
-		let overlay = this.getOverlayById(overlayId);
-		if (!overlay || overlay.isDemo) return;
-		let overlays = this.getOverlays();
-		if (!overlays) return;
-		overlays = overlays.filter((overlay: Overlay) => overlay.id !== overlayId);
-		this.setOverlays(overlays);
+		this.store.delete(`obs.layout.overlays.${overlayId}`)
 	}
 
 	setCurrentLayoutIndex(index: number) {
@@ -123,9 +104,6 @@ export class ElectronOverlayStore {
 	}
 
 	initListeners() {
-		this.store.onDidChange('obs.layout.overlays', (value) => {
-			this.messageHandler.sendMessage('Overlays', value as Overlay[]);
-		});
 		this.store.onDidChange('obs.layout.current', (value) => {
 			this.messageHandler.sendMessage('CurrentOverlayEditor', value as OverlayEditor);
 		});
@@ -135,6 +113,10 @@ export class ElectronOverlayStore {
 		this.clientEmitter.on('OverlayUpdate', async (overlay) => {
 			this.updateOverlay(overlay);
 		});
+
+		this.clientEmitter.on('SceneUpdate', async (overlayId, statsScene, scene) => {
+			this.setScene(overlayId, statsScene, scene)
+		})
 
 		this.clientEmitter.on('OverlayDuplicate', async (overlayId) => {
 			this.duplicateOverlay(overlayId);

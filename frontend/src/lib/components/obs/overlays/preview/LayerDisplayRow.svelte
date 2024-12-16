@@ -36,7 +36,7 @@
 		if (!curOverlay) return;
 		curOverlay[$statsScene].layers[layerIndex].preview =
 			!curOverlay[$statsScene].layers[layerIndex].preview;
-		updateOverlay(curOverlay);
+		updateOverlay(curOverlay, $statsScene);
 	};
 </script>
 
@@ -152,7 +152,7 @@
 			<button
 				class="w-full h-full justify-center bg-black bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
-					if (isLastRow) setTimeout(scrollToBottom, 50);
+					if (isLastRow) setTimeout(() => scrollToBottom(), 50);
 					await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
 				}}
 			>
