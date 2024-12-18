@@ -223,6 +223,7 @@
 				break;
 			case 'Overlays':
 				(() => {
+					console.log('overlays');
 					const value = payload[0] as Parameters<MessageEvents['Overlays']>[0];
 					if (!value) return;
 					overlays.set(value);

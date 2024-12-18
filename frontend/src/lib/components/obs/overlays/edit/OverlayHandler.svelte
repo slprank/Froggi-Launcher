@@ -48,7 +48,7 @@
 			},
 			fallback: LiveStatsScene.Menu,
 			font: {
-				family: 'sans-serif',
+				family: 'default',
 				base64: undefined,
 			},
 			layers: [

@@ -13,8 +13,6 @@
 	$: overlayId = $page.params.overlay;
 
 	const getFont = (font: Font | undefined) => {
-		console.log('Get font', font);
-		console.log($overlays[overlayId]);
 		if (font?.family === 'default') {
 			return $overlays[overlayId][$statsScene].font.family;
 		}

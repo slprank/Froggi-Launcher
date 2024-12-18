@@ -33,8 +33,7 @@ export class ElectronOverlayStore {
 	setOverlay(value: Overlay) {
 		if (!value) return;
 		this.store.set(`obs.layout.overlays.${value.id}`, value);
-		const overlays = this.getOverlays();
-		this.messageHandler.sendMessage('Overlays', overlays);
+		this.emitOverlayUpdate()
 	}
 
 	getScene(overlayId: string, statsScene: string): Scene {
@@ -93,6 +92,7 @@ export class ElectronOverlayStore {
 
 	deleteOverlay(overlayId: string): void {
 		this.store.delete(`obs.layout.overlays.${overlayId}`)
+		this.emitOverlayUpdate()
 	}
 
 	setCurrentLayoutIndex(index: number) {
@@ -101,6 +101,11 @@ export class ElectronOverlayStore {
 
 	setCurrentItemId(itemId: string) {
 		this.store.set('obs.layout.current.itemId', itemId);
+	}
+
+	emitOverlayUpdate() {
+		const overlays = this.getOverlays();
+		this.messageHandler.sendMessage('Overlays', overlays);
 	}
 
 	initListeners() {
