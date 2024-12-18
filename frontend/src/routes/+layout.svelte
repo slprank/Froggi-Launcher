@@ -12,6 +12,7 @@
 		isElectron,
 		isOverlayPage,
 		localEmitter,
+		urls,
 	} from '$lib/utils/store.svelte';
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
@@ -50,7 +51,7 @@
 	</div>
 {/if}
 
-{#if ready}
+{#if ready && $urls}
 	<Navbar />
 	<GlobalModal />
 	<Toast />

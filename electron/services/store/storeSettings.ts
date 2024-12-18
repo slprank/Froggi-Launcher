@@ -10,6 +10,7 @@ import fs from 'fs';
 import os from 'os';
 import { ElectronCurrentPlayerStore } from './storeCurrentPlayer';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
+import { BACKEND_PORT } from '../../../frontend/src/lib/models/const';
 
 @singleton()
 export class ElectronSettingsStore {
@@ -93,8 +94,10 @@ export class ElectronSettingsStore {
 
 	getLocalUrl(): Url {
 		return {
-			local: `http://127.0.0.1:${this.port}`,
 			external: `http://${ip.address()}:${this.port}`,
+			externalResource: `http://${ip.address()}:${BACKEND_PORT}`,
+			local: `http://127.0.0.1:${this.port}`,
+			localResource: `http://127.0.0.1:${BACKEND_PORT}`,
 		};
 	}
 

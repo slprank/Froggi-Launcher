@@ -228,5 +228,7 @@ export interface Stroke {
 
 export interface Url {
 	external: string;
+	externalResource: string;
 	local: string;
+	localResource: string
 }

@@ -62,35 +62,37 @@
 
 <svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
 
-{#if curScene && rowHeight && fixedLayers}
-	<div class="w-full h-full overflow-hidden relative origin-top-left">
-		{#key curScene && curStatsScene}
-			<BoardContainer
-				scene={curScene}
-				bind:boardHeight={innerHeight}
-				bind:boardWidth={innerWidth}
-			/>
-			{#each fixedLayers as layer, i}
-				<div class="w-full h-full z-2 absolute">
-					<Grid
-						items={layer.items}
-						bind:rowHeight
-						gap={[0, 0]}
-						let:dataItem
-						cols={[[COL, COL]]}
-						fastStart={true}
-					>
-						<GridContent
-							{preview}
-							{dataItem}
-							{curScene}
-							additionalDelay={SCENE_TRANSITION_DELAY +
-								curScene.animation.layerRenderDelay * i}
-						/>
-					</Grid>
-				</div>
-			{/each}
-		{/key}
-		<div class="w-full h-full z-8 absolute" />
-	</div>
-{/if}
+{#await updateFont(curOverlay) then}
+	{#if curScene && rowHeight && fixedLayers}
+		<div class="w-full h-full overflow-hidden relative origin-top-left">
+			{#key curScene && curStatsScene}
+				<BoardContainer
+					scene={curScene}
+					bind:boardHeight={innerHeight}
+					bind:boardWidth={innerWidth}
+				/>
+				{#each fixedLayers as layer, i}
+					<div class="w-full h-full z-2 absolute">
+						<Grid
+							items={layer.items}
+							bind:rowHeight
+							gap={[0, 0]}
+							let:dataItem
+							cols={[[COL, COL]]}
+							fastStart={true}
+						>
+							<GridContent
+								{preview}
+								{dataItem}
+								{curScene}
+								additionalDelay={SCENE_TRANSITION_DELAY +
+									curScene.animation.layerRenderDelay * i}
+							/>
+						</Grid>
+					</div>
+				{/each}
+			{/key}
+			<div class="w-full h-full z-8 absolute" />
+		</div>
+	{/if}
+{/await}

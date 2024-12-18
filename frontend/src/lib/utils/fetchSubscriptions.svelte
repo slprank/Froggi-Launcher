@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { page } from '$app/stores';
 	import type { InGameState } from '$lib/models/enum';
-	import type { Overlay } from '$lib/models/types/overlay';
+	import type { Overlay, Url } from '$lib/models/types/overlay';
 	import type {
 		CurrentPlayer,
 		GameStats,
@@ -24,6 +24,8 @@
 		overlays,
 		authorizationKey,
 		isIframe,
+		urls,
+		isElectron,
 	} from '$lib/utils/store.svelte';
 	import type { FrameEntryType, GameStartType } from '@slippi/slippi-js';
 	import type { Page } from '@sveltejs/kit';
@@ -159,6 +161,22 @@
 		return await new Promise<boolean>((resolve) => {
 			isIframe.subscribe((value) => {
 				resolve(value);
+			});
+		});
+	}
+
+	export async function getUrls(): Promise<Url> {
+		return await new Promise<Url>((resolve) => {
+			urls.subscribe((urls) => {
+				resolve(urls);
+			});
+		});
+	}
+
+	export async function getIsElectron(): Promise<boolean> {
+		return await new Promise<boolean>((resolve) => {
+			isElectron.subscribe((isElectron) => {
+				resolve(isElectron);
 			});
 		});
 	}

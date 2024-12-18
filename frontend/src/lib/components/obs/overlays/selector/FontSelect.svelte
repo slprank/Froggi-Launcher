@@ -12,7 +12,6 @@
 	export let fontId: string;
 
 	$: overlayId = $page.params.overlay;
-	$: url = $isElectron ? $urls?.local : $urls?.external;
 
 	const getFont = (font: Font | undefined) => {
 		if (font?.family === 'default') {
@@ -23,9 +22,8 @@
 
 	$: fontFamily = getFont(font);
 
-	// TODO: Fix URL - local and correct port
 	const updateFontSrc = (event: CustomEvent<string>) => {
-		font.src = `${url}`;
+		font.src = `${event.detail}`;
 	};
 
 	const updateFont = async () => {

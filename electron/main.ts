@@ -22,6 +22,7 @@ import { migrateStore } from './services/store/migration';
 import Store from 'electron-store';
 import { ElectronCommandStore } from './services/store/storeCommands';
 import { FileUpload } from './services/fileUpload';
+import { BACKEND_PORT, VITE_PORT } from '../frontend/src/lib/models/const';
 
 const mainLog: ElectronLog = setLoggingPath(log);
 
@@ -51,7 +52,7 @@ try {
 
 	const serveURL = serve({ directory: '.' });
 	const dev = !app.isPackaged;
-	const port = dev ? '5173' : `3200`;
+	const port = dev ? `${VITE_PORT}` : `${BACKEND_PORT}`;
 
 	let mainWindow: BrowserWindow | any;
 	let tray: Tray;
