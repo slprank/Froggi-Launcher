@@ -103,7 +103,7 @@ export interface ElementPayload {
 
 export interface Font {
 	family: string | undefined;
-	base64: string | undefined;
+	src: string | undefined;
 }
 
 export interface GridContentItem {

@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
-	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
+	import FileUpload from '$lib/components/input/FileUpload.svelte';
+	// import FileToBase64Input from '$lib/components/input/FileUpload.svelte';
 	import Select from '$lib/components/input/Select.svelte';
 	import type { Font } from '$lib/models/types/overlay';
-	import { overlays, statsScene } from '$lib/utils/store.svelte';
+	import { isElectron, overlays, statsScene, urls } from '$lib/utils/store.svelte';
 	import { addFont } from '../CustomFontHandler.svelte';
 
 	export let font: Font;
 	export let fontId: string;
 
 	$: overlayId = $page.params.overlay;
+	$: url = $isElectron ? $urls?.local : $urls?.external;
 
 	const getFont = (font: Font | undefined) => {
 		if (font?.family === 'default') {
@@ -21,8 +23,13 @@
 
 	$: fontFamily = getFont(font);
 
+	// TODO: Fix URL - local and correct port
+	const updateFontSrc = (event: CustomEvent<string>) => {
+		font.src = `${url}`;
+	};
+
 	const updateFont = async () => {
-		addFont(font?.base64 ?? '', fontId);
+		addFont(font.src ?? '', fontId);
 	};
 	$: font, updateFont();
 </script>
@@ -42,10 +49,12 @@
 			<option value={fontId}>Custom</option>
 		</Select>
 	</div>
-	<FileToBase64Input
+	<FileUpload
+		directory="font"
+		fileName={fontId}
 		label="Custom"
-		acceptedExtensions=".woff2, .woff, .otf, .ttf"
-		bind:base64={font.base64}
+		acceptedExtensions={['.woff2, .woff, .otf, .ttf']}
+		on:change={updateFontSrc}
 	/>
 	<TextFitMulti
 		class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"

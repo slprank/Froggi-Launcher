@@ -9,7 +9,7 @@
 	import TextInput from '$lib/components/input/TextInput.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { updateOverlay } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
-	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
+	import FileUpload from '$lib/components/input/FileUpload.svelte';
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import FontSelectorLayer from '../selector/FontSelectLayer.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
@@ -106,10 +106,14 @@
 						{/if}
 						{#if curScene.background.type === SceneBackground.ImageCustom}
 							<div class="w-24">
-								<FileToBase64Input
-									bind:base64={curScene.background.customImage.src}
+								<FileUpload
+									fileName={$statsScene}
+									directory={'image'}
 									label="Upload"
-									acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
+									acceptedExtensions={['.jpg', '.jpeg', '.png', '.gif', '.svg']}
+									on:change={(event) => {
+										curScene.background.customImage.name = event.detail;
+									}}
 								/>
 							</div>
 							<div class="w-24">

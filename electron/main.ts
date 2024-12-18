@@ -21,6 +21,7 @@ import { DiscordRpc } from './services/discord';
 import { migrateStore } from './services/store/migration';
 import Store from 'electron-store';
 import { ElectronCommandStore } from './services/store/storeCommands';
+import { FileUpload } from './services/fileUpload';
 
 const mainLog: ElectronLog = setLoggingPath(log);
 
@@ -196,7 +197,7 @@ try {
 				useValue: `${__dirname}/../..`.replaceAll('\\', '/'),
 			});
 			container.register<string>('AppDir', {
-				useValue: dev ? getAppDataPath('froggi') : getAppDataPath('Electron'),
+				useValue: dev ? getAppDataPath('Electron') : getAppDataPath('froggi'),
 			});
 			container.register<string>('Port', { useValue: port });
 			container.register<boolean>('Dev', { useValue: dev });
@@ -209,6 +210,7 @@ try {
 			container.resolve(ObsWebSocket);
 			container.resolve(SlippiJs);
 			container.resolve(AutoUpdater);
+			container.resolve(FileUpload);
 		});
 
 		mainWindow.on('close', (event: Event) => {

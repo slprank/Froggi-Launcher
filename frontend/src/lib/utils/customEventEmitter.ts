@@ -52,6 +52,8 @@ export interface MessageEvents {
 	GameState: (state: InGameState | undefined) => void;
 	InitElectron: () => void;
 	InitData: (socketId: string, authorizeKey: string | undefined) => void;
+	ImportCustomFile: (overlayId: string, directory: string, fileName: string, acceptedExtensions: string[]) => void;
+	ImportCustomFileComplete: (fileName: string) => void;
 	LayerPreviewChange: (layerIndex: number) => void;
 	CurrentMatch: (match: Match) => void;
 	MemoryControllerInput: (controllerInputs: PlayerController) => void;

@@ -32,6 +32,7 @@
 		getAuthorizationKey,
 		getElectronEmitter,
 		getIsIframe,
+		getLocalEmitter,
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
@@ -47,6 +48,7 @@
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
+		const _localEmitter = await getLocalEmitter();
 		switch (topic) {
 			case 'AuthorizationKey':
 				(() => {
@@ -295,6 +297,7 @@
 
 	export const initElectronEvents = async () => {
 		console.log('Initializing electron');
+		const _localEmitter = await getLocalEmitter();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse) as [
@@ -302,6 +305,7 @@
 				value: Parameters<MessageEvents[keyof MessageEvents]>,
 			]) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));
+				_localEmitter.emit(key as keyof MessageEvents, ...(value as any));
 			}
 		});
 
@@ -315,6 +319,7 @@
 		const _page = await getPage();
 		console.log('Initializing websocket');
 
+		const _localEmitter = await getLocalEmitter();
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
@@ -323,13 +328,13 @@
 				value: Parameters<MessageEvents[keyof MessageEvents]>,
 			]) {
 				messageDataHandler(key as keyof MessageEvents, ...(value as any));
+				_localEmitter.emit(key as keyof MessageEvents, ...(value as any));
 			}
 		});
 
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = async () => {
 			_electronEmitter.onAny(async (event, ...data) => {
-				console.log(event, data);
 				const _authorizationKey = await getAuthorizationKey();
 				socket.send(
 					JSON.stringify({

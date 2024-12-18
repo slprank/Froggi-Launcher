@@ -8,7 +8,6 @@
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import CodeInput from '$lib/components/input/CodeInput.svelte';
 	import { fly } from 'svelte/transition';
-	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import ShadowSelect from './ShadowSelect.svelte';
 	import { localEmitter, statsScene } from '$lib/utils/store.svelte';
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
@@ -24,6 +23,7 @@
 	} from '$lib/models/types/animationOption';
 	import { tooltip } from 'svooltip';
 	import { ELEMENT_TRANSITION_LIMIT } from '$lib/models/const';
+	import FileUpload from '$lib/components/input/FileUpload.svelte';
 
 	export let selectedItemId: string;
 	export let selectedElementId: number;
@@ -194,10 +194,14 @@
 				<h1 class="text-gray-500 text-xl font-medium text-shadow">Select Image</h1>
 				<div class="w-full h-fit flex flex-wrap">
 					<div class="w-full h-24">
-						<FileToBase64Input
-							bind:base64={payload.image.src}
+						<FileUpload
+							fileName={selectedItemId}
+							directory="image"
 							label="Upload"
-							acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'}
+							acceptedExtensions={['.jpg', '.jpeg', '.png', '.gif', '.svg']}
+							on:change={(event) => {
+								payload.image.name = event.detail;
+							}}
 						/>
 					</div>
 				</div>
