@@ -18,6 +18,7 @@ import { Worker } from 'worker_threads';
 import { sendAuthenticatedMessage } from '../../frontend/src/lib/utils/websocketAuthentication';
 import { NotificationType } from '../../frontend/src/lib/models/enum';
 import { ElectronCommandStore } from './store/storeCommands';
+import fs from "fs"
 import express from 'express';
 import cors from 'cors';
 import http from 'http';
@@ -31,6 +32,7 @@ export class MessageHandler {
 	);
 
 	constructor(
+		@inject('AppDir') private appDir: string,
 		@inject('Dev') private dev: boolean,
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
 		@inject('ElectronLog') private log: ElectronLog,
@@ -57,23 +59,32 @@ export class MessageHandler {
 		this.server = http.createServer(this.app);
 
 		this.initElectronMessageHandler();
-		if (!this.dev) this.initHtml();
+		this.initHtml();
 		this.initWebSocket();
 		this.initEventListeners();
 	}
 
 	private initHtml() {
 		this.log.info('Initializing HTML');
-		const staticServe = express.static(path.join(this.rootDir + '/build'));
+		this.tryCreatePublicDir(this.appDir + '/public')
+
+		const staticFrontendServe = express.static(path.join(this.rootDir + '/build'));
+		const staticFileServe = express.static(path.join(this.appDir + '/public'));
 		try {
-			this.app.use('/', staticServe);
-			this.app.use('*', staticServe);
+			if (!this.dev) this.app.use('/', staticFrontendServe);
+			this.app.use('/public', staticFileServe);
 
 			this.server.listen(3200, (_: any) => {
 				console.log(`listening on *:${this.port}`);
 			});
 		} catch (err) {
 			this.log.error(err);
+		}
+	}
+
+	private tryCreatePublicDir(dir: string) {
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir, { recursive: true });
 		}
 	}
 

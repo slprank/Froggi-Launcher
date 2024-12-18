@@ -32,6 +32,7 @@
 		"../test",
 		"../frontend/src/lib/utils/gamePredicates.ts",
 		"../demo-overlays",
+		"../public",
 		"services/workers/websocketWorker.ts"
 	],
 	"exclude": ["node_modules"]

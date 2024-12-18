@@ -195,6 +195,9 @@ try {
 			container.register<string>('RootDir', {
 				useValue: `${__dirname}/../..`.replaceAll('\\', '/'),
 			});
+			container.register<string>('AppDir', {
+				useValue: dev ? getAppDataPath('froggi') : getAppDataPath('Electron'),
+			});
 			container.register<string>('Port', { useValue: port });
 			container.register<boolean>('Dev', { useValue: dev });
 
