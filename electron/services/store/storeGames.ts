@@ -140,7 +140,7 @@ export class ElectronGamesStore {
 			),
 		);
 
-		const otherGames = prevGames.filter(
+		const remainingGames = prevGames.filter(
 			(game) =>
 				game.at(0)?.settings?.matchInfo.matchId !==
 				currentGame?.at(0)?.settings?.matchInfo.matchId,
@@ -148,8 +148,8 @@ export class ElectronGamesStore {
 		if (newGame.settings?.matchInfo.tiebreakerNumber !== 0) {
 			return this.store.set('player.any.game.recent', [
 				[...(currentGame ?? []), newGame],
-				...(otherGames ?? []),
-			]);
+				...(remainingGames ?? []),
+			].slice(0, 10));
 		}
 		return this.store.set('player.any.game.recent', this.applyRecentGameScore([...prevGames, [newGame]]));
 	}
@@ -165,7 +165,7 @@ export class ElectronGamesStore {
 			return this.store.set(`player.any.game.recent`, [
 				[...(currentGame ?? []), newGame],
 				...(filteredGames ?? []),
-			]);
+			].slice(0, 10));
 		}
 		return this.store.set(`player.any.game.recent`, this.applyRecentGameScore([...prevGames, [newGame]]));
 	}
