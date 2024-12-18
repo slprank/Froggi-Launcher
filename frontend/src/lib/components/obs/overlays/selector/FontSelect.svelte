@@ -1,13 +1,27 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import TextFitMulti from '$lib/components/TextFitMulti.svelte';
 	import FileToBase64Input from '$lib/components/input/FileToBase64Input.svelte';
 	import Select from '$lib/components/input/Select.svelte';
-	import type { Font, Overlay } from '$lib/models/types/overlay';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import type { Font } from '$lib/models/types/overlay';
+	import { overlays, statsScene } from '$lib/utils/store.svelte';
 	import { addFont } from '../CustomFontHandler.svelte';
 
 	export let font: Font;
 	export let fontId: string;
+
+	$: overlayId = $page.params.overlay;
+
+	const getFont = (font: Font | undefined) => {
+		console.log('Get font', font);
+		console.log($overlays[overlayId]);
+		if (font?.family === 'default') {
+			return $overlays[overlayId][$statsScene].font.family;
+		}
+		return font?.family;
+	};
+
+	$: fontFamily = getFont(font);
 
 	const updateFont = async () => {
 		addFont(font?.base64 ?? '', fontId);
@@ -19,7 +33,7 @@
 	<div class="w-36 h-full">
 		<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
 		<Select bind:selected={font.family}>
-			<option value={$statsScene} selected>Default</option>
+			<option value={'default'} selected>Default</option>
 			<option value={'sans-serif'} selected>Sans Serif</option>
 			<option value={'Melee'}>Melee</option>
 			<option value={'Ultimate'}>Ultimate</option>
@@ -37,7 +51,7 @@
 	/>
 	<TextFitMulti
 		class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
-		style={`font-family: ${font?.family}`}
+		style={`font-family: ${fontFamily}`}
 	>
 		Super Smash Bros
 	</TextFitMulti>

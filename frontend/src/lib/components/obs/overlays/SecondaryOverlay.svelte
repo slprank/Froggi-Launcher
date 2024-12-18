@@ -3,7 +3,6 @@
 	import { fade } from 'svelte/transition';
 	import Board from '$lib/components/obs/overlays/Board.svelte';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
 
 	export let layerIds: string[] | undefined = undefined;
 	export let preview: boolean = false;

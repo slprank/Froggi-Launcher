@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
+	import type { Font, GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { getRelativePixelSize } from '$lib/utils/helper';
 	import SlippiRank from './elementRender/SlippiRank.svelte';
 	import Custom from './elementRender/Custom.svelte';
@@ -9,12 +9,16 @@
 	import Session from './elementRender/Session.svelte';
 	import RecentMatchSummary from './elementRender/RecentMatchSummary.svelte';
 	import Match from './elementRender/Match.svelte';
+	import { overlays, statsScene } from '$lib/utils/store.svelte';
+	import { page } from '$app/stores';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
 	export let preview: boolean = false;
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;
+
+	$: overlayId = $page.params.overlay;
 
 	let div: HTMLElement;
 	$: boardWidth = div?.clientWidth ?? 0;
@@ -50,6 +54,15 @@
 		];
 	};
 
+	const getFont = (font: Font | undefined) => {
+		console.log('Get font', font);
+		console.log($overlays[overlayId]);
+		if (font?.family === 'default') {
+			return $overlays[overlayId][$statsScene].font.family;
+		}
+		return font?.family;
+	};
+
 	$: shadowSizeX = getRelativePixelSize(dataItem?.data.shadow?.x, innerHeight, innerWidth);
 	$: shadowSizeY = getRelativePixelSize(dataItem?.data.shadow?.y, innerHeight, innerWidth);
 	$: style.shadow = `filter: drop-shadow(${shadowSizeX}px ${shadowSizeY}px ${
@@ -64,6 +77,8 @@
 		dataItem.data.transform.translate.y ?? 0
 	}%) scale(${dataItem.data.transform.scale}) rotate(${dataItem.data.transform.rotate ?? 0}deg);`;
 
+	$: fontFamily = getFont(dataItem.data?.font);
+
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
@@ -73,11 +88,8 @@
 
 <div
 	class="w-full h-full hide-siblings"
-	style={`${
-		dataItem.data?.font?.family !== undefined &&
-		`font-family: ${dataItem.data?.font?.family};
-	`
-	}; ${style.textStroke};
+	style={`${`font-family: ${fontFamily};
+	`}; ${style.textStroke};
 		${style.transform};
 		${style.shadow};`}
 	bind:this={div}
