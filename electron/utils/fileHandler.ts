@@ -35,7 +35,6 @@ function base64ToFile(base64String: string, filePath: string) {
 export const getCustomFiles = (customFileDir: string): ShareCustomFiles => {
     if (!fs.existsSync(customFileDir)) return {}
     const entries = fs.readdirSync(customFileDir);
-    console.log("subdir", entries)
     const shareCustomFiles = entries.reduce((acc: ShareCustomFiles, entry) => {
         const subDir = `${customFileDir}/${entry}`
         const files = listAllFiles(subDir)

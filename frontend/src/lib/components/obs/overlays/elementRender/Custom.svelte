@@ -38,7 +38,7 @@
 			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			src={`${url}/public/custom/${overlayId}/image/${encodeURI(
-				dataItem?.data.image.src ?? '',
+				dataItem?.data.image.name ?? '',
 			)}`}
 			alt="custom"
 		/>

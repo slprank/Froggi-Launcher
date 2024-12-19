@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import type { GridContentItem, Overlay, OverlayEditor, Scene, SharedOverlay } from '../../../frontend/src/lib/models/types/overlay';
+import type { GridContentItem, Layer, Overlay, OverlayEditor, Scene, SharedOverlay } from '../../../frontend/src/lib/models/types/overlay';
 import { delay, inject, singleton } from 'tsyringe';
 import type { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -9,7 +9,7 @@ import { BrowserWindow, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
-import { isNil } from 'lodash';
+import { isNil, kebabCase } from 'lodash';
 import { getCustomFiles, saveCustomFiles } from '../../utils/fileHandler';
 
 @singleton()
@@ -76,6 +76,37 @@ export class ElectronOverlayStore {
 		return overlay;
 	}
 
+	cleanupCustomResources() {
+		console.log("Here")
+		const overlays = this.getOverlays()
+		Object.values(overlays).forEach(overlay => {
+			const itemsKebabId = Object.values(LiveStatsScene).map(statsScene => {
+				return overlay[statsScene].layers?.map((layer: Layer) => layer.items).flat()
+			}).flat()
+				.map(item => kebabCase(item.id))
+			const customFileEntry = path.join(this.appDir, "public", "custom", overlay.id)
+			if (!fs.existsSync(customFileEntry)) {
+				this.log.info("Path:", customFileEntry, "does not exist")
+				return;
+			}
+			const storedCustomTypes = fs.readdirSync(customFileEntry, { withFileTypes: true })
+				.filter(dirent => dirent.isDirectory())
+				.map(dirent => dirent.name);
+			storedCustomTypes.forEach(type => {
+				const fileTypeDir = path.join(customFileEntry, type)
+				const existingFiles = fs.readdirSync(fileTypeDir, { withFileTypes: true })
+					.map(dirent => dirent.name)
+				existingFiles.forEach(file => {
+					// Deletes all files with name unlike any item id's
+					if (itemsKebabId.some(id => file.includes(id))) return;
+					const filePath = path.join(fileTypeDir, file)
+					fs.rmSync(filePath)
+				})
+			})
+		})
+
+	}
+
 	updateOverlay(overlay: Overlay): void {
 		if (!overlay || overlay.isDemo) return;
 		this.setOverlay(overlay)
@@ -123,6 +154,8 @@ export class ElectronOverlayStore {
 	}
 
 	private initSvelteListeners() {
+		this.clientEmitter.on('CleanupCustomResources', this.cleanupCustomResources.bind(this));
+
 		this.clientEmitter.on('OverlayUpdate', async (overlay) => {
 			this.updateOverlay(overlay);
 		});

@@ -111,7 +111,6 @@ export class MessageHandler {
 		try {
 			this.webSocketWorker.on('message', (value: string) => {
 				const parse = JSON.parse(value);
-				console.log('WebSocket Parse:', parse);
 				for (let [key, value] of Object.entries(parse) as [
 					key: keyof MessageEvents,
 					value: Parameters<MessageEvents[keyof MessageEvents]>,

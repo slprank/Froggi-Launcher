@@ -85,6 +85,7 @@ export interface MessageEvents {
 	AuthorizationKeyUpdate: (key: string) => void;
 	InitAuthentication: (socketId: string, authKey: string) => void;
 
+	CleanupCustomResources: () => void;
 	ControllerCommand: (command: Controller) => void;
 	ControllerCommandAdd: (command: ControllerCommand) => void;
 	ControllerCommandDelete: (commandId: string) => void;
@@ -103,6 +104,7 @@ export interface MessageEvents {
 	TestAnimationTrigger: () => void;
 	TestCustomAnimationTrigger: () => void;
 	TestVisibilityTrigger: () => void;
+
 
 	Ping: () => void;
 }

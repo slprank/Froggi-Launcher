@@ -27,6 +27,7 @@
 		authorizationKey,
 		sceneSwitch,
 		controller,
+		isElectron,
 	} from '$lib/utils/store.svelte';
 	import {
 		getAuthorizationKey,
@@ -48,7 +49,6 @@
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
-		const _localEmitter = await getLocalEmitter();
 		switch (topic) {
 			case 'AuthorizationKey':
 				(() => {
@@ -70,8 +70,8 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['Authorize']>[0];
 					if (isNil(value)) return;
-					isAuthorized.update((prev) => {
-						if (prev === value) return prev;
+					isAuthorized.update(() => {
+						if (isElectron) return true;
 						if (value) {
 							notifications.success('Authorized', 1500);
 						} else {
@@ -209,7 +209,6 @@
 						MessageEvents['SceneUpdate']
 					>;
 					if (isNil(overlayId) || isNil(liveStatsScene) || isNil(scene)) return;
-					console.log('Update scene');
 					overlays.update((prev: Record<string, Overlay>) => {
 						prev[overlayId][liveStatsScene] = scene;
 						return prev;
@@ -225,7 +224,6 @@
 				break;
 			case 'Overlays':
 				(() => {
-					console.log('overlays');
 					const value = payload[0] as Parameters<MessageEvents['Overlays']>[0];
 					if (!value) return;
 					overlays.set(value);

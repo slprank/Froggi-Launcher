@@ -5,6 +5,7 @@
 	import OverlayPreviewModal from '$lib/components/obs/overlays/OverlayPreviewModal.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
 	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	let newOverlayModalOpen = false;
 	let overlayPreviewOpen = false;
