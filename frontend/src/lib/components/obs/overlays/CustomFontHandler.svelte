@@ -14,7 +14,7 @@
 			document.fonts.add(loadedFace);
 			document.fonts.ready;
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			console.log(src);
 		}
 	};

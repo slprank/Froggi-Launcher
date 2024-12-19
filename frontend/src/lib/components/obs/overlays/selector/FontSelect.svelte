@@ -6,12 +6,14 @@
 	import Select from '$lib/components/input/Select.svelte';
 	import type { Font } from '$lib/models/types/overlay';
 	import { isElectron, overlays, statsScene, urls } from '$lib/utils/store.svelte';
+	import { isNil } from 'lodash';
 	import { addFont } from '../CustomFontHandler.svelte';
 
 	export let font: Font;
 	export let fontId: string;
 
 	$: overlayId = $page.params.overlay;
+	const url = $isElectron ? $urls.localResource : $urls.externalResource;
 
 	const getFont = (font: Font | undefined) => {
 		if (font?.family === 'default') {
@@ -27,7 +29,9 @@
 	};
 
 	const updateFont = async () => {
-		addFont(font.src ?? '', fontId);
+		if (isNil(font.src)) return;
+		const src = `${url}/public/custom/${overlayId}/font/${font.src}`;
+		addFont(src, fontId);
 	};
 	$: font, updateFont();
 </script>
