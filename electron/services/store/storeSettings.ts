@@ -96,8 +96,8 @@ export class ElectronSettingsStore {
 		return {
 			external: `http://${ip.address()}:${this.port}`,
 			externalResource: `http://${ip.address()}:${BACKEND_PORT}`,
-			local: `http://127.0.0.1:${this.port}`,
-			localResource: `http://127.0.0.1:${BACKEND_PORT}`,
+			local: `http://localhost:${this.port}`,
+			localResource: `http://localhost:${BACKEND_PORT}`,
 		};
 	}
 

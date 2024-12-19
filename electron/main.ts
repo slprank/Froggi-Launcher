@@ -73,7 +73,7 @@ try {
 			minWidth: 800,
 			webPreferences: {
 				contextIsolation: true,
-				devTools: dev,
+				devTools: true, // dev,
 				nodeIntegration: true,
 				preload: path.join(__dirname.replace(`\\`, '/'), '/preload.js'),
 				spellcheck: false,
@@ -169,7 +169,7 @@ try {
 	});
 
 	function loadVite(port: string) {
-		mainWindow.loadURL(`http://127.0.0.1:${port}`).catch((e: any) => {
+		mainWindow.loadURL(`http://localhost:${port}`).catch((e: any) => {
 			mainLog.error('Error loading URL, retrying', e);
 			setTimeout(() => {
 				loadVite(port);

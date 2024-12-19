@@ -4,7 +4,7 @@
 	import { electronEmitter, obs } from '$lib/utils/store.svelte';
 	import { cloneDeep } from 'lodash';
 
-	const defaultAuth = { ipAddress: '127.0.0.1', port: 4455, password: '' };
+	const defaultAuth = { ipAddress: 'localhost', port: 4455, password: '' };
 	let authValidator = { ipAddress: false, port: false, password: false };
 
 	let auth = $obs?.auth ?? cloneDeep(defaultAuth);
