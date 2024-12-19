@@ -71,9 +71,11 @@ export class MessageHandler {
 		const staticFrontendServe = express.static(path.join(this.rootDir + '/build'));
 		const staticFileServe = express.static(path.join(this.appDir + '/public'));
 		try {
-			if (!this.dev) this.app.use('/', staticFrontendServe);
 			this.app.use('/public', staticFileServe);
-
+			if (!this.dev) {
+				this.app.use('/', staticFrontendServe);
+				this.app.use('*', staticFrontendServe);
+			}
 			this.server.listen(3200, (_: any) => {
 				console.log(`listening on *:${this.port}`);
 			});

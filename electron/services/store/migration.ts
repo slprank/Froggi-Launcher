@@ -1,5 +1,6 @@
 import type { ElectronLog } from 'electron-log';
 import Store from 'electron-store';
+import { Overlay } from '../../../frontend/src/lib/models/types/overlay';
 
 export const migrateStore = (log: ElectronLog): Store.Options<Record<string, unknown>> => {
 	log.info('Initializing Migrations');
@@ -25,6 +26,9 @@ export const migrateStore = (log: ElectronLog): Store.Options<Record<string, unk
 				store.delete('obs');
 				store.delete('commands');
 				store.delete('stats');
+			},
+			'>=0.6.15': (store) => {
+				store.delete('obs.layout.overlays')
 			}
 		},
 	};

@@ -4,7 +4,7 @@
 	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
 
 	$: overlayId = $page.params.overlay;
-	$: url = isElectron ? $urls?.local : $urls?.external;
+	$: url = $isElectron ? $urls?.local : $urls?.external;
 	$: src = `${url}/obs/overlay/${overlayId}/layers`;
 </script>
 

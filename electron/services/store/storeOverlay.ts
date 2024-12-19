@@ -85,8 +85,8 @@ export class ElectronOverlayStore {
 		this.setOverlay({ ...overlay, id: newId(), title: `${overlay.title} - copy`, isDemo: false });
 	}
 
-	uploadOverlay(overlay: Overlay, overlayId: string | undefined = undefined): void {
-		overlay.id = overlayId ?? newId();
+	uploadOverlay(overlay: Overlay, overlayId: string = newId()): void {
+		overlay.id = overlayId
 		this.setOverlay(overlay)
 	}
 
