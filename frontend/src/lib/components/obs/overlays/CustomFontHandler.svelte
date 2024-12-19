@@ -26,8 +26,16 @@
 		console.log('url', url);
 		await asyncForEach(Object.values(LiveStatsScene), async (statsScene: LiveStatsScene) => {
 			if (!overlay) return;
-			await addFont(overlay[statsScene]?.font?.src, overlay[statsScene]?.font?.family ?? '');
-			const items = overlay[statsScene].layers?.map((layer: Layer) => layer.items).flat();
+			const items = [
+				...overlay[statsScene].layers?.map((layer: Layer) => layer.items).flat(),
+			];
+
+			const sceneFont = overlay[statsScene].font;
+			if (sceneFont.src) {
+				const src = `${url}/public/custom/${overlay.id}/font/${sceneFont.src}`;
+				console.log('url', src);
+				await addFont(src, statsScene);
+			}
 
 			await asyncForEach(items, async (item: GridContentItem) => {
 				if (!item.data.font.src) return;

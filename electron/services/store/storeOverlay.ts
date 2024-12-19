@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import type { GridContentItem, Overlay, OverlayEditor, Scene } from '../../../frontend/src/lib/models/types/overlay';
+import type { GridContentItem, Overlay, OverlayEditor, Scene, SharedOverlay } from '../../../frontend/src/lib/models/types/overlay';
 import { delay, inject, singleton } from 'tsyringe';
 import type { ElectronLog } from 'electron-log';
 import { MessageHandler } from '../messageHandler';
@@ -10,10 +10,12 @@ import path from 'path';
 import fs from 'fs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { isNil } from 'lodash';
+import { getCustomFiles, saveCustomFiles } from '../../utils/fileHandler';
 
 @singleton()
 export class ElectronOverlayStore {
 	constructor(
+		@inject('AppDir') private appDir: string,
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('ElectronStore') private store: Store,
@@ -82,7 +84,11 @@ export class ElectronOverlayStore {
 	duplicateOverlay(overlayId: string): void {
 		const overlay = this.getOverlayById(overlayId);
 		if (isNil(overlay)) return;
-		this.setOverlay({ ...overlay, id: newId(), title: `${overlay.title} - copy`, isDemo: false });
+		const newOverlay = { ...overlay, id: newId(), title: `${overlay.title} - copy`, isDemo: false }
+		this.setOverlay(newOverlay);
+		const source = path.join(this.appDir, "public", "custom", overlayId)
+		const destination = path.join(this.appDir, "public", "custom", newOverlay.id)
+		fs.cp(source, destination, { recursive: true }, (err => this.log.error(err)));
 	}
 
 	uploadOverlay(overlay: Overlay, overlayId: string = newId()): void {
@@ -92,7 +98,9 @@ export class ElectronOverlayStore {
 
 	deleteOverlay(overlayId: string): void {
 		this.store.delete(`obs.layout.overlays.${overlayId}`)
-		setTimeout(this.emitOverlayUpdate, 20)
+		setTimeout(this.emitOverlayUpdate.bind(this), 20)
+		const source = path.join(this.appDir, "public", "custom", overlayId)
+		fs.rm(source, { recursive: true }, (err => this.log.error(err)))
 	}
 
 	setCurrentLayoutIndex(index: number) {
@@ -146,8 +154,15 @@ export class ElectronOverlayStore {
 				filters: [{ name: 'json', extensions: ['json'] }],
 				nameFieldLabel: overlay.title,
 			});
+			const appDirCustomFilesDir = `${this.appDir}/public/custom/${overlayId}`
+			const entries = getCustomFiles(appDirCustomFilesDir);
+			console.log(entries)
+			const shareOverlay: SharedOverlay = {
+				...overlay,
+				customFiles: entries
+			}
 			if (canceled || !filePath) return;
-			fs.writeFileSync(filePath, JSON.stringify(overlay), 'utf-8');
+			fs.writeFileSync(filePath, JSON.stringify(shareOverlay), 'utf-8');
 		});
 
 		this.clientEmitter.on('OverlayUpload', async () => {
@@ -156,8 +171,13 @@ export class ElectronOverlayStore {
 				filters: [{ name: 'json', extensions: ['json'] }],
 			});
 			if (canceled) return;
-			const overlay = fs.readFileSync(filePaths[0], 'utf8');
-			this.uploadOverlay(JSON.parse(overlay));
+			const sharedOverlay = JSON.parse(fs.readFileSync(filePaths[0], 'utf8')) as SharedOverlay;
+			const { customFiles, ...overlay } = sharedOverlay;
+			overlay.id = newId()
+
+			const customFileDir = path.join(this.appDir, "public", "custom", overlay.id)
+			saveCustomFiles(customFileDir, customFiles)
+			this.uploadOverlay(overlay, overlay.id);
 		});
 	}
 

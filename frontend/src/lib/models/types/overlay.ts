@@ -221,6 +221,19 @@ export interface Shadow {
 	color: string;
 }
 
+export interface ShareCustomFile {
+	base64: string;
+	fileName: string;
+}
+
+export interface ShareCustomFiles {
+	[dir: string]: ShareCustomFile[]
+}
+
+export type SharedOverlay = Overlay & {
+	customFiles: ShareCustomFiles;
+}
+
 export interface Stroke {
 	size: number;
 	color: string;

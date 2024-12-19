@@ -4,11 +4,13 @@ import { delay, inject, injectable } from 'tsyringe';
 import { MessageHandler } from './messageHandler';
 import { AutoUpdaterStatus, NotificationType } from '../../frontend/src/lib/models/enum';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
+import { App } from 'electron';
 
 @injectable()
 export class AutoUpdater {
 	private status: AutoUpdaterStatus;
 	constructor(
+		@inject('App') private app: App,
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('LocalEmitter') private localEmitter: TypedEmitter,
 		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
@@ -88,6 +90,7 @@ export class AutoUpdater {
 			if (this.status !== AutoUpdaterStatus.DownloadComplete) return;
 			this.log.info('Quit and install');
 			autoUpdater.quitAndInstall();
+			this.app.exit()
 		});
 
 		this.clientEmitter.on('AutoUpdaterCheckForUpdate', async () => {
