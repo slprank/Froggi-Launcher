@@ -1,6 +1,5 @@
 import type { ElectronLog } from 'electron-log';
 import Store from 'electron-store';
-import { Overlay } from '../../../frontend/src/lib/models/types/overlay';
 
 export const migrateStore = (log: ElectronLog): Store.Options<Record<string, unknown>> => {
 	log.info('Initializing Migrations');
