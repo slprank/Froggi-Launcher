@@ -2,16 +2,20 @@
 	import { SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { SceneBackground } from '$lib/models/enum';
 	import type { Scene } from '$lib/models/types/overlay';
-	import { gameSettings, postGame } from '$lib/utils/store.svelte';
+	import { gameSettings, isElectron, postGame, urls } from '$lib/utils/store.svelte';
 	import type { AnimationConfig } from 'svelte/animate';
 	import { createAnimation } from './element/animations/Animations.svelte';
 	import { fly } from 'svelte/transition';
+	import { page } from '$app/stores';
 
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;
 	export let edit: boolean = false;
 	export let preview: boolean = false;
 	export let scene: Scene;
+
+	const url = $isElectron ? $urls.localResource : $urls.externalResource;
+	const overlayId = $page.params.overlay;
 
 	let innerHeight: number;
 	let innerWidth: number;
@@ -35,8 +39,6 @@
 			boardWidth ?? innerWidth,
 		);
 	};
-
-	// TODO: In game/Post game uses different stageId
 </script>
 
 <svelte:window bind:innerHeight bind:innerWidth />
@@ -57,7 +59,9 @@
 				}
 				${
 					scene?.background.type === SceneBackground.ImageCustom
-						? `background-image: url('${scene.background.customImage.src}'); 
+						? `background-image: url('${url}/public/custom/${overlayId}/image/${
+								scene.background.customImage.name
+						  }'); 
 						background-size: ${scene.background.customImage.objectFit ?? 'cover'};`
 						: ''
 				}

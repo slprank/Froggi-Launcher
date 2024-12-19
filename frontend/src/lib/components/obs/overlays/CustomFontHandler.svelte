@@ -8,10 +8,15 @@
 		if (!src) {
 			return;
 		}
-		const new_font = new FontFace(fontName, `url(${src})`);
-		const loadedFace = await new_font.load();
-		document.fonts.add(loadedFace);
-		document.fonts.ready;
+		try {
+			const new_font = new FontFace(fontName, `url(${src})`);
+			const loadedFace = await new_font.load();
+			document.fonts.add(loadedFace);
+			document.fonts.ready;
+		} catch (err) {
+			console.log(err);
+			console.log(src);
+		}
 	};
 
 	export const updateFont = async (overlay: Overlay) => {

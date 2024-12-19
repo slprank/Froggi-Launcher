@@ -92,7 +92,7 @@ export class ElectronOverlayStore {
 
 	deleteOverlay(overlayId: string): void {
 		this.store.delete(`obs.layout.overlays.${overlayId}`)
-		this.emitOverlayUpdate()
+		setTimeout(this.emitOverlayUpdate, 20)
 	}
 
 	setCurrentLayoutIndex(index: number) {

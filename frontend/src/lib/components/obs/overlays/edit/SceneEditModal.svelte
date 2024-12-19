@@ -2,7 +2,7 @@
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { LiveStatsScene, SceneBackground } from '$lib/models/enum';
 	import type { Overlay } from '$lib/models/types/overlay';
-	import { statsScene } from '$lib/utils/store.svelte';
+	import { isElectron, statsScene, urls } from '$lib/utils/store.svelte';
 	import Select from '$lib/components/input/Select.svelte';
 	import ColorInput from '$lib/components/input/ColorInput.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
@@ -21,6 +21,8 @@
 
 	$: curScene = overlay[$statsScene];
 	$: previewBackgroundType = curScene.background.type;
+
+	const resourceUrl = $isElectron ? $urls.localResource : $urls.localResource;
 
 	let imageOptions: string[] = [];
 
@@ -110,7 +112,14 @@
 									fileName={$statsScene}
 									directory={'image'}
 									label="Upload"
-									acceptedExtensions={['.jpg', '.jpeg', '.png', '.gif', '.svg']}
+									acceptedExtensions={[
+										'.jpg',
+										'.jpeg',
+										'.png',
+										'.gif',
+										'.svg',
+										'.webp',
+									]}
 									on:change={(event) => {
 										curScene.background.customImage.name = event.detail;
 									}}
@@ -242,7 +251,11 @@
 						}
 						${
 							previewBackgroundType === SceneBackground.ImageCustom
-								? `background-image: url('${curScene.background.customImage.src}');
+								? `background-image: url('${`${resourceUrl}/public/custom/${
+										overlay.id
+								  }/image/${encodeURI(
+										curScene.background.customImage.name ?? '',
+								  )}`}');
 									background-size: ${curScene.background.customImage.objectFit};`
 								: ''
 						}

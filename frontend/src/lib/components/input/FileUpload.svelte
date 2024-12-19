@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { electronEmitter, localEmitter } from '$lib/utils/store.svelte';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { kebabCase } from 'lodash';
+	import { createEventDispatcher } from 'svelte';
 
 	export let acceptedExtensions: string[] = [];
 	export let label: string | undefined = undefined;
@@ -17,13 +18,14 @@
 			'ImportCustomFile',
 			overlayId,
 			directory,
-			fileName,
+			kebabCase(fileName),
 			acceptedExtensions,
 		);
 	};
 
-	$localEmitter.on('ImportCustomFileComplete', (fileName) => {
-		dispatch('change', fileName);
+	$localEmitter.on('ImportCustomFileComplete', (reportedFileName) => {
+		if (!acceptedExtensions.some((extension) => reportedFileName.includes(extension))) return;
+		dispatch('change', reportedFileName);
 	});
 </script>
 

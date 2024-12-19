@@ -1,10 +1,16 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
+	import { isElectron, urls } from '$lib/utils/store.svelte';
 	import TextElement from '../element/TextElement.svelte';
 
 	export let dataItem: GridContentItem;
 	export let style: GridContentItemStyle;
+
+	const overlayId = $page.params.overlay;
+
+	const url = $isElectron ? $urls.localResource : $urls.externalResource;
 </script>
 
 {#if dataItem?.elementId === CustomElement.CustomString}
@@ -31,7 +37,9 @@
 			class="w-full h-full"
 			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={dataItem?.data.image.src}
+			src={`${url}/public/custom/${overlayId}/image/${encodeURI(
+				dataItem?.data.image.src ?? '',
+			)}`}
 			alt="custom"
 		/>
 	</div>
