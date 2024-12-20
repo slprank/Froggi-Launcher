@@ -101,7 +101,7 @@
 			visible: [LiveStatsScene.RankChange].includes($statsScene),
 		},
 		{
-			category: ElementCategory.CurrentPlayerSlippiData,
+			category: ElementCategory.CurrentPlayerData,
 			visible: [
 				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
@@ -110,7 +110,7 @@
 			].includes($statsScene),
 		},
 		{
-			category: ElementCategory.Player1SlippiData,
+			category: ElementCategory.Player1Data,
 			visible: [
 				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
@@ -119,7 +119,7 @@
 			].includes($statsScene),
 		},
 		{
-			category: ElementCategory.Player2SlippiData,
+			category: ElementCategory.Player2Data,
 			visible: [
 				LiveStatsScene.Menu,
 				LiveStatsScene.InGame,
@@ -305,13 +305,13 @@
 						<RankChangeData on:select={select} />
 					</div>
 				{/if}
-				{#if selectedCategory === ElementCategory.CurrentPlayerSlippiData}
+				{#if selectedCategory === ElementCategory.CurrentPlayerData}
 					<RecentGameCurrentPlayerSlippiData on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.Player1SlippiData}
+				{#if selectedCategory === ElementCategory.Player1Data}
 					<RecentGamePlayer1SlippiData on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.Player2SlippiData}
+				{#if selectedCategory === ElementCategory.Player2Data}
 					<RecentGamePlayer2SlippiData on:select={select} />
 				{/if}
 

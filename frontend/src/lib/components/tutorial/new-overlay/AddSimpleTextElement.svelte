@@ -95,7 +95,7 @@
 
 <h2>
 	A button on top of the <b>Style</b>
-	 window will the be visible. Clicking it will overwrite the existing styles with the saved one.
+	window will the be visible. Clicking it will overwrite the existing styles with the saved one.
 </h2>
 
 <h2>This will help a lot when multiple elements needs to be styled the same way.</h2>
@@ -110,3 +110,60 @@
 	Play around with any options you like and hit <b>Add</b>
 	in the bottom when you are ready to continue.
 </h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-edit-window.png"
+	alt="Add element"
+/>
+
+<h2>
+	The element should be added to the <b>Edit</b>
+	window where you can resize it by dragging the bottom right corner, and movie it around.
+</h2>
+
+<h2>
+	When a element is highlighted you will be able to fine tune the position and size using the
+	inputs appearing on top.
+</h2>
+
+<h2>
+	Optionally when an element is highlighted you can use the arrow key to move it around, and by
+	holding <b>Shift</b>
+	also resize.
+</h2>
+
+<h2>
+	To remove the highlight, press <b>esc</b>
+	or if you want a quick delete press
+	<b>backspace</b>
+</h2>
+
+<br />
+
+<h1 class="text-lg font-bold">Overlay preview</h1>
+
+<h2>
+	In the top left you will see a preview. This preview will always use <b>Mock</b>
+	data and will always be visible, regardless of the visibility condition.
+</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-overlay.png"
+	alt="Preview overlay"
+/>
+
+<br />
+
+<h1 class="text-lg font-bold">Layers</h1>
+
+<h2>Below the overlay you can see the layers used to build a scene.</h2>
+
+<h2>Here you can rearrange layers and create new ones.</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-layers.png"
+	alt="Preview layers"
+/>

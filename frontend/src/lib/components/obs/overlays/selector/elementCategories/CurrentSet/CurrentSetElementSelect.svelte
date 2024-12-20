@@ -26,20 +26,6 @@
 		Best Of
 	</SelectOption>
 	<SelectOption
-		description="Player 1 Tag"
-		value={CustomElement.MatchPlayer1Tag}
-		on:select={select}
-	>
-		Player 1 Tag
-	</SelectOption>
-	<SelectOption
-		description="Player 2 Tag"
-		value={CustomElement.MatchPlayer2Tag}
-		on:select={select}
-	>
-		Player 2 Tag
-	</SelectOption>
-	<SelectOption
 		description="Player 1 Current Match Score"
 		value={CustomElement.MatchPlayer1Score}
 		on:select={select}

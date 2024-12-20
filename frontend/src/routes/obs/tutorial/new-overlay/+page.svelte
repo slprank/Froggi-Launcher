@@ -7,6 +7,7 @@
 	import OpenInSeparateWindow from '$lib/components/tutorial/new-overlay/OpenInSeparateWindow.svelte';
 	import InitOverlayConfigurations from '$lib/components/tutorial/new-overlay/InitOverlayConfigurations.svelte';
 	import AddSimpleTextElement from '$lib/components/tutorial/new-overlay/AddSimpleTextElement.svelte';
+	import SessionStatsMenuScene from '$lib/components/tutorial/new-overlay/SessionStatsMenuScene.svelte';
 
 	let pageIndex = Number($page.url.searchParams.get('page') || 0);
 
@@ -34,6 +35,10 @@
 		{
 			title: 'Add simple text element',
 			component: AddSimpleTextElement,
+		},
+		{
+			title: 'Add session stats to Menu scene',
+			component: SessionStatsMenuScene,
 		},
 	];
 

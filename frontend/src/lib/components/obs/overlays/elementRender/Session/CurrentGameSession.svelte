@@ -36,6 +36,6 @@
 {/if}
 {#if dataItem?.elementId === CustomElement.SessionRating}
 	<TextElement {style} {dataItem}>
-		{rating ? `${rating > 0 ? '+' : ''}${rating.toFixed(1)}` : defaultPreview ? `+13` : ''}
+		{rating ? `${rating > 0 ? '+' : ''}${rating.toFixed(1)}` : defaultPreview ? `+130` : ''}
 	</TextElement>
 {/if}
