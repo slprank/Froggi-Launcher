@@ -7,7 +7,7 @@
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import {
 		generateNewItem,
-		updateOverlay,
+		updateScene,
 	} from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import { isNil } from 'lodash';
 
@@ -73,7 +73,7 @@
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
-		updateOverlay(curOverlay, $statsScene);
+		updateScene(curOverlay, $statsScene);
 	}
 
 	function deleteElement() {
@@ -86,7 +86,7 @@
 		selectedItem = undefined;
 		selectedItemIndex = 0;
 
-		updateOverlay(curOverlay, $statsScene);
+		updateScene(curOverlay, $statsScene);
 	}
 
 	function updateSelectItem() {
@@ -101,7 +101,7 @@
 
 		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items[selectedItemIndex] =
 			selectedItem;
-		updateOverlay(curOverlay, $statsScene);
+		updateScene(curOverlay, $statsScene);
 	}
 	$: selectedItem, updateSelectItem();
 

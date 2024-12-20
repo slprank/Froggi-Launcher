@@ -96,6 +96,10 @@
 			out:fly={{ duration: 250, x: 50 }}
 			class="overflow-y-scroll flex flex-col gap-2"
 		>
+			<!-- TODO: Implement -->
+			<!-- {#if selectedCategory === AnimationTriggerCategory.DolphinState}
+				<GameStateAnimationTriggerSelect on:select={select} {selectedOption} />
+			{/if} -->
 			{#if selectedCategory === AnimationTriggerCategory.GameState}
 				<GameStateAnimationTriggerSelect on:select={select} {selectedOption} />
 			{/if}

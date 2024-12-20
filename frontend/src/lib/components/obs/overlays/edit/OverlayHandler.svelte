@@ -118,7 +118,15 @@
 		});
 	}
 
-	export async function updateOverlay(overlay: Overlay, statsScene: LiveStatsScene) {
+	export async function updateOverlay(overlay: Overlay) {
+		await new Promise(() =>
+			electronEmitter.subscribe((electronEmitter) =>
+				electronEmitter.emit('OverlayUpdate', overlay),
+			),
+		);
+	}
+
+	export async function updateScene(overlay: Overlay, statsScene: LiveStatsScene) {
 		await new Promise(() =>
 			electronEmitter.subscribe((electronEmitter) =>
 				electronEmitter.emit('SceneUpdate', overlay.id, statsScene, overlay[statsScene]),
@@ -246,7 +254,7 @@
 			preview: true,
 		});
 
-		updateOverlay(overlay, statsScene);
+		updateScene(overlay, statsScene);
 
 		return overlay![statsScene]?.layers.length - 1;
 	}
@@ -273,7 +281,7 @@
 			updatedOverlay![statsScene].layers[selectedLayer],
 		];
 
-		updateOverlay(updatedOverlay, statsScene);
+		updateScene(updatedOverlay, statsScene);
 
 		return selectedLayer + 1;
 	}
@@ -296,7 +304,7 @@
 			updatedOverlay![statsScene].layers[selectedLayer],
 		];
 
-		updateOverlay(updatedOverlay, statsScene);
+		updateScene(updatedOverlay, statsScene);
 
 		return selectedLayer - 1;
 	}
@@ -323,7 +331,7 @@
 			...layers.slice(selectedLayerIndex),
 		];
 
-		updateOverlay(overlay, statsScene);
+		updateScene(overlay, statsScene);
 
 		return selectedLayerIndex + 1;
 	}
@@ -337,7 +345,7 @@
 		if (isNil(overlay) || overlay?.[statsScene].layers.length <= 1) return selectedLayerIndex;
 
 		overlay[statsScene].layers.splice(selectedLayerIndex, 1);
-		updateOverlay(overlay, statsScene);
+		updateScene(overlay, statsScene);
 
 		return selectedLayerIndex - 1;
 	}

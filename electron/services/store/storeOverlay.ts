@@ -129,7 +129,7 @@ export class ElectronOverlayStore {
 
 	deleteOverlay(overlayId: string): void {
 		this.store.delete(`obs.layout.overlays.${overlayId}`)
-		setTimeout(this.emitOverlayUpdate.bind(this), 20)
+		setTimeout(this.emitOverlayUpdate.bind(this), 100)
 		const source = path.join(this.appDir, "public", "custom", overlayId)
 		fs.rm(source, { recursive: true }, (err => this.log.error(err)))
 	}

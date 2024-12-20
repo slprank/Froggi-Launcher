@@ -91,7 +91,9 @@
 				class={`max-w-full max-h-full flex-1 flex flex-col gap-2 justify-start items-center py-2 overflow-scroll`}
 			>
 				<div class="flex flex-col items-center">
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">Overlay</h1>
+					<h1 class="text-gray-500 text-lg font-medium text-shadow">
+						Overlay - {overlay.title}
+					</h1>
 					<div class="flex gap-2 justify-center items-center">
 						<button
 							class="transition bg-black bg-opacity-30 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"

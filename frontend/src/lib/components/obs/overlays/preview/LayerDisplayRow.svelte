@@ -9,7 +9,7 @@
 		moveLayerDown,
 		moveLayerUp,
 		newLayer,
-		updateOverlay,
+		updateScene,
 	} from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import RightClick from '$lib/components/context/RightClick.svelte';
@@ -36,7 +36,7 @@
 		if (!curOverlay) return;
 		curOverlay[$statsScene].layers[layerIndex].preview =
 			!curOverlay[$statsScene].layers[layerIndex].preview;
-		updateOverlay(curOverlay, $statsScene);
+		updateScene(curOverlay, $statsScene);
 	};
 </script>
 

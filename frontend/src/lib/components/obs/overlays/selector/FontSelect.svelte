@@ -41,7 +41,7 @@
 		<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
 		<Select bind:selected={font.family}>
 			<option value={'default'} selected>Default</option>
-			<option value={'sans-serif'} selected>Sans Serif</option>
+			<option value={'sans-serif'}>Sans Serif</option>
 			<option value={'Melee'}>Melee</option>
 			<option value={'Ultimate'}>Ultimate</option>
 			<option value={'A-OTF Folk Pro M'}>A-OTF Folk Pro M</option>

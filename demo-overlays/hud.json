@@ -68,7 +68,7 @@
 		},
 		"fallback": "Menu",
 		"font": {
-			"family": "sans-serif"
+			"family": "Roboto Bold Italic"
 		},
 		"layers": [
 			{
@@ -139,7 +139,7 @@
 		},
 		"fallback": "Menu",
 		"font": {
-			"family": "sans-serif"
+			"family": "Roboto Bold Italic"
 		},
 		"layers": [
 			{
@@ -210,7 +210,7 @@
 		},
 		"fallback": "Menu",
 		"font": {
-			"family": "sans-serif"
+			"family": "Roboto Bold Italic"
 		},
 		"layers": [
 			{
@@ -4865,7 +4865,7 @@
 		},
 		"fallback": "Menu",
 		"font": {
-			"family": "sans-serif"
+			"family": "Roboto Bold Italic"
 		},
 		"layers": [
 			{
@@ -4936,7 +4936,7 @@
 		},
 		"fallback": "Menu",
 		"font": {
-			"family": "sans-serif"
+			"family": "Roboto Bold Italic"
 		},
 		"layers": [
 			{
@@ -5007,7 +5007,7 @@
 		},
 		"fallback": "Menu",
 		"font": {
-			"family": "sans-serif"
+			"family": "Roboto Bold Italic"
 		},
 		"layers": [
 			{

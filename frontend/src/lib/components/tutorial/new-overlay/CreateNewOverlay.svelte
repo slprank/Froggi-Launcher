@@ -77,11 +77,13 @@
 	<br />
 	Click the
 	<b>Embed</b>
-	button to get the embed code for the overlay.
+	button to get instructions to embed the overlay.
 	<br />
 	Click the
 	<b>Save</b>
-	button to save the overlay as a file on your computer. That you can share with others. Click the
+	button to save the overlay as a file on your computer which you can share with others.
+	<br />
+	Click the
 	<b>Delete</b>
 	button to delete the overlay.
 </h2>

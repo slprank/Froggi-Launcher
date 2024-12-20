@@ -32,16 +32,23 @@
 	alt="Change title"
 />
 
+<br />
+
+<h1 class="text-lg font-bold">Default scenes</h1>
+
 <h2>
 	Next we can look at the active scenes. The selected and active scenes will display when the game
 	is in that specific state.
 </h2>
-<h2>If a scene is not selected, it will fall back to one of the other scenes.</h2>
+<h2>
+	If a scene is not active, it will fall back to one of the other selected scenes, which will show
+	up to the right of the inactive ones.
+</h2>
 <h2>
 	This is useful if you want to create an overlay where you only want to display a single scene.
-	For example if you want to create an overlay to display controller inputs when a game is active,
+	For example, you want to create an overlay to display controller inputs when a game is active,
 	but blank otherwise. Then you can select the <b>InGame</b>
-	scene and leave the other scenes fall back to an empty scene.
+	scene and leave the other scenes to fall back to an empty scene.
 </h2>
 
 <img
@@ -81,10 +88,16 @@
 	these and use them as inspiration.
 </h2>
 
+<br />
+
+<h1 class="text-lg font-bold">Default font</h1>
+
 <h2>
 	Next we can look at the default font settings. Here you can change the default font for the
-	entire overlay.
+	entire overlay, per scene.
 </h2>
+
+<h2>Select a scene and update the following properties to your liking</h2>
 
 <img
 	class="rounded-sm border"
@@ -92,15 +105,16 @@
 	alt="Change font"
 />
 
-<h2>
-	When selecting a scene, you can update the default font for that scene. Either use the preset
-	fonts that are available or upload your own custom font.
-</h2>
+<h2>Any changes made below the scene selection only targets the selected scene</h2>
 
 <h2>
 	For this tutorial, we will choose <b>Roboto Bold Italic</b>
 	. But you can change it to your liking.
 </h2>
+
+<br />
+
+<h1 class="text-lg font-bold">Background</h1>
 
 <img
 	class="rounded-sm border"
@@ -108,19 +122,31 @@
 	alt="Change background"
 />
 
+<h2>Next wen can add a background for the scene.</h2>
+
 <h2>
-	This also applies to the background settings. Here you can change the background for a scene. <br
-	/>
-	You can select between no background, a color, an image or a custom image.
-	<br />
+	You can select between these options:
+	<b>
+		<br />
+		No background
+		<br />
+		A color
+		<br />
+		An image
+		<br />
+		A custom image
+		<br />
+	</b>
+</h2>
+<h2>
 	If you select
 	<b>{LiveStatsScene.InGame}</b>
 	,
 	<b>{LiveStatsScene.PostGame}</b>
 	or
 	<b>{LiveStatsScene.PostSet}</b>
-	you will get the option to select a stage image. This can be useful in overlays that is used on external
-	displays.
+	you will get the option to select a
+	<b>Stage image</b>
 </h2>
 
 <h2>
@@ -130,22 +156,30 @@
 
 <h2>For this tutorial, it is not necessary to apply any background and we will keep it empty.</h2>
 
+<br />
+
+<h1 class="text-lg font-bold">Transitions</h1>
+
 <h2>
-	<br />
-	Over to the fun part we can apply transitions to the scenes. Here you can select between a few preset
-	transitions where you can change properties like duration, delay and easing.
+	Over to the fun part where we can apply transitions to the scenes. Here you can choose between a
+	few preset transitions where you can change properties like <b>duration</b>
+	,
+	<b>delay</b>
+	and
+	<b>easing</b>
+	.
 </h2>
 
 <h2>
 	As many scenes may include multiple layers, we change the <b>Layers rendering delay</b>
-	. This is used to delay the rendering of the layers in the scene from the back to the front for creating
-	some space in the transition.
+	. This is used to delay rendering between the layers in the scene from the back to front. This can
+	help creating some space in the transition.
 </h2>
 
 <h2>
 	For this tutorial we will select the <b>Fly Automatic</b>
 	transition for all scenes. This will make the elements fly from an angle relative to their placement
-	into the scene.
+	on the scene.
 </h2>
 
 <img
