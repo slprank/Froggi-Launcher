@@ -7,8 +7,23 @@
 
 <h2>For good measures we will create a new layer where we can place the timer.</h2>
 
-<img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/select-percent.png"
-	alt="Select percent"
-/>
+<img class="rounded-sm border" src="/image/tutorial/new-overlay/add-timer.png" alt="Add timer" />
+
+<h2>The timer is split up in separate components due to flexibility.</h2>
+
+<h2>
+	To add a traditional timer, we need to stitch together the minute/seconds/milliseconds between
+	multiple components.
+</h2>
+
+<h2>
+	If you want it to act like in the vanilla game you have to apply these conditions:
+	<br />
+	Game is
+	<b>not</b>
+	paused
+	<br />
+	Game is active
+	<br />
+	 Game is not having a Countdown (Last 5 seconds of a match)
+</h2>

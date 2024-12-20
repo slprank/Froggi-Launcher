@@ -13,6 +13,7 @@
 	import CreateLayers from '$lib/components/tutorial/new-overlay/CreateLayers.svelte';
 	import CreateHudElements from '$lib/components/tutorial/new-overlay/CreateHudElements.svelte';
 	import CreateTimer from '$lib/components/tutorial/new-overlay/CreateTimer.svelte';
+	import CreateUltimateUi from '$lib/components/tutorial/new-overlay/CreateUltimateUi.svelte';
 
 	let scrollElement: HTMLElement;
 	const scrollToTop = () => {
@@ -66,6 +67,10 @@
 		{
 			title: 'Add timer',
 			component: CreateTimer,
+		},
+		{
+			title: 'Add Ultimate UI Component',
+			component: CreateUltimateUi,
 		},
 	];
 
