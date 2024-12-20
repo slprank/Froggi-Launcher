@@ -56,7 +56,10 @@
 
 	const getFont = (font: Font | undefined) => {
 		if (font?.family === 'default') {
-			return $overlays[overlayId]?.[$statsScene].font.family;
+			if ($overlays[overlayId][$statsScene].active)
+				return $overlays[overlayId][$statsScene].font.family;
+			const fallbackScene = $overlays[overlayId][$statsScene].fallback;
+			return $overlays[overlayId][fallbackScene].font.family;
 		}
 		return font?.family;
 	};

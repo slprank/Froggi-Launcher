@@ -52,7 +52,7 @@
 
 	const initializeFonts = async () => {
 		await updateFont(curOverlay);
-		ready = true;
+		setTimeout(() => (ready = true));
 	};
 
 	initializeFonts();

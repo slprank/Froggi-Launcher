@@ -15,9 +15,13 @@
 	$: overlayId = $page.params.overlay;
 	const url = $isElectron ? $urls.localResource : $urls.externalResource;
 
-	const getFont = (font: Font | undefined) => {
+	const getFont = (font: Font | undefined): string | undefined => {
 		if (font?.family === 'default') {
-			return $overlays[overlayId][$statsScene].font.family;
+			if ($overlays[overlayId][$statsScene].active)
+				return $overlays[overlayId][$statsScene].font.family;
+			const fallbackScene = $overlays[overlayId][$statsScene].fallback;
+			if (isNil(fallbackScene)) return;
+			return $overlays[overlayId][fallbackScene].font.family;
 		}
 		return font?.family;
 	};
