@@ -25,5 +25,11 @@
 	<br />
 	Game is active
 	<br />
-	 Game is not having a Countdown (Last 5 seconds of a match)
+	Game is not having a Countdown (Last 5 seconds of a match)
 </h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-timer.png"
+	alt="Add timer"
+/>

@@ -26,7 +26,7 @@ export const inGameStateTrigger = (
 
 	if (option[AnimationTrigger.InGameGameCountdown])
 		trigger =
-			(currentSecond > 0 && currentSecond < 6 && currentSecond < (prevSecond ?? 0)) ||
+			(currentSecond > 0 && currentSecond < 6 && currentSecond != (prevSecond ?? 0)) ||
 			trigger;
 
 	return trigger;
