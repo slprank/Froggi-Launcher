@@ -23,7 +23,6 @@
 		const urls = await getUrls();
 		const isElectron = await getIsElectron();
 		const url = isElectron ? urls?.localResource : urls?.externalResource;
-		console.log('url', url);
 		await asyncForEach(Object.values(LiveStatsScene), async (statsScene: LiveStatsScene) => {
 			if (!overlay) return;
 			const items = [

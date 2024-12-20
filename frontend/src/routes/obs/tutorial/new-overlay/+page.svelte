@@ -8,6 +8,15 @@
 	import InitOverlayConfigurations from '$lib/components/tutorial/new-overlay/InitOverlayConfigurations.svelte';
 	import AddSimpleTextElement from '$lib/components/tutorial/new-overlay/AddSimpleTextElement.svelte';
 	import SessionStatsMenuScene from '$lib/components/tutorial/new-overlay/SessionStatsMenuScene.svelte';
+	import { isNil } from 'lodash';
+	import CreateCustomHud from '$lib/components/tutorial/new-overlay/CreateCustomHud.svelte';
+	import CreateLayers from '$lib/components/tutorial/new-overlay/CreateLayers.svelte';
+
+	let scrollElement: HTMLElement;
+	const scrollToTop = () => {
+		if (isNil(scrollElement)) return;
+		scrollElement.scroll({ top: 0 });
+	};
 
 	let pageIndex = Number($page.url.searchParams.get('page') || 0);
 
@@ -40,17 +49,27 @@
 			title: 'Add session stats to Menu scene',
 			component: SessionStatsMenuScene,
 		},
+		{
+			title: 'Build modern hud',
+			component: CreateCustomHud,
+		},
+		{
+			title: 'Add layers',
+			component: CreateLayers,
+		},
 	];
 
 	const handlePrevious = () => {
 		if (pageIndex > 0) {
 			pageIndex--;
+			scrollToTop();
 		}
 	};
 
 	const handleNext = () => {
 		if (pageIndex < scenes.length - 1) {
 			pageIndex++;
+			scrollToTop();
 		}
 	};
 </script>
@@ -61,12 +80,13 @@
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class="w-full max-w-2xl h-full flex flex-col justify-center items-center p-8 gap-4">
+	<div class="w-full max-w-3xl h-full flex flex-col justify-center items-center p-8 gap-4">
 		<div>
 			<h1 class="text-white font-bold text-4xl">Tutorial</h1>
 		</div>
 		<div
 			class="flex-1 flex flex-col justify-start items-start h-full w-full text-white gap-4 overflow-scroll border-t border-b border-white p-2"
+			bind:this={scrollElement}
 		>
 			{#if scenes[pageIndex]}
 				<svelte:component this={scenes[pageIndex].component} />
