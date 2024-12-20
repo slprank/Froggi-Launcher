@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
@@ -8,7 +8,7 @@
 	import { getWinnerIndex } from '$lib/utils/gamePredicates';
 
 	export const postGame1SummaryVisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		players: Player[],
 		player: CurrentPlayer | undefined,
 		recentGames: GameStats[][],

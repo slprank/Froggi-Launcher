@@ -71,7 +71,7 @@
 />
 
 <h2>
-	Then click the <b>New Option</b>
+	Then click the <b>New condition</b>
 </h2>
 
 <img
@@ -89,34 +89,36 @@
 <h2>Here you will get a couple of options depending on the category.</h2>
 
 <h2>
-	How this works is that any option you click on will turn <b>Red</b>
+	How this works is that any option you click on will turn <b>Green</b>
 	or
-	<b>Green</b>
-	signifying if you want the condition to be true or false.
+	<b>Red</b>
+	signifying if you want the condition to be true or false, respectfully.
 </h2>
 
-<h2>In this case this means that this element will become visible if the game is paused</h2>
+<h2>In this case that means the element will become visible if the game is paused</h2>
 
-<h2>You can apply multiple conditions between multiple categories on a single option.</h2>
+<h2>You can apply multiple options between multiple categories.</h2>
 
 <h2>
-	Condition applied to a single option works as an <b>or</b>
-	operation. This means that only one of the conditions needs to be true to make the element visible.
-	This will be further explored further down in this step.
+	Options applied to a single condition works as an <b>or</b>
+	operation. This means that only one of the options needs to be true to make the element visible.
+	This will be further explored.
 </h2>
 
 <h2>
-	If you want multiple conditions to be meet, you will need to create a new <b>Option</b>
-	for each condition.
+	If you want multiple options to be met before becoming visible, you will need to create a <b>
+		New Condition
+	</b>
+	for each option you want satisfied.
 </h2>
 
 <h2>
 	For the <b>Paused</b>
 	element, only a single
-	<b>Option</b>
+	<b>Condition</b>
 	with the
 	<b>Game Paused</b>
-	condition is required.
+	option is required.
 </h2>
 
 <h2>
@@ -141,5 +143,5 @@
 
 <h2>
 	Press <b>Test Animation</b>
-	 see how to transition looks and tweak it to you liking.
+	see how to transition looks and tweak it to you liking.
 </h2>

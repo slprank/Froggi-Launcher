@@ -3,10 +3,10 @@
 	import SelectOption from './SelectVisibilityOption.svelte';
 	import {
 		VisibilityOption,
-		type SelectedVisibilityOption,
+		type SelectedVisibilityCondition,
 	} from '$lib/models/types/animationOption';
 
-	export let selectedVisibilityOption: SelectedVisibilityOption;
+	export let selectedVisibilityOption: SelectedVisibilityCondition;
 	const dispatch = createEventDispatcher();
 
 	function select(event: CustomEvent<VisibilityOption>) {
@@ -15,12 +15,12 @@
 </script>
 
 <SelectOption
-description="When Player 1 Is Alive"
-value={VisibilityOption.InGamePlayer1Alive}
-bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer1Alive]}
-on:select={select}
+	description="When Player 1 Is Alive"
+	value={VisibilityOption.InGamePlayer1Alive}
+	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer1Alive]}
+	on:select={select}
 >
-Player 1 Alive
+	Player 1 Alive
 </SelectOption>
 <SelectOption
 	description="When Player 1 Is Off Stage"

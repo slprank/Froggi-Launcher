@@ -90,11 +90,11 @@
 		createAnimation(
 			node,
 			{
-				type: defaultPreview ? Animation.None : Animation.Percent,
+				type: Animation.Percent,
 				options: {
 					duration: 11 * 16,
-					x: 20,
-					y: 20,
+					x: 15,
+					y: 15,
 					delay: 0,
 					easing: 'cubicInOut',
 					start: 0,

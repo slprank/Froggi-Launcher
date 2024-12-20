@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
@@ -9,7 +9,7 @@
 	import type { FrameEntryType } from '@slippi/slippi-js';
 
 	export const inGamePlayer2VisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		gameFrame: FrameEntryType | null | undefined,
 		players: Player[],
 	) => {

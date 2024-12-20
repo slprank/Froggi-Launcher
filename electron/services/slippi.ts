@@ -119,7 +119,7 @@ export class SlippiJs {
 		this.dolphinProcessInterval = setInterval(async () => {
 			if (await isDolphinRunning()) {
 				this.log.info('Dolphin Found');
-				this.dolphinConnection.connect('localhost', Ports.DEFAULT);
+				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);
 				this.stopProcessSearchInterval();
 			}
 		}, 5000);

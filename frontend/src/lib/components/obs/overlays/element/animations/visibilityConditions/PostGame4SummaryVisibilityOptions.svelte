@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
@@ -8,7 +8,7 @@
 	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
 
 	export const postGame4SummaryVisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		players: Player[],
 		player: CurrentPlayer | undefined,
 		recentGames: GameStats[][],

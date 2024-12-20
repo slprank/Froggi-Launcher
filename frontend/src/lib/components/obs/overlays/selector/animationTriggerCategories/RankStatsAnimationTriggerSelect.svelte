@@ -2,11 +2,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import {
 		AnimationTrigger,
-		type SelectedAnimationTriggerOption,
+		type SelectedAnimationTriggerCondition,
 	} from '$lib/models/types/animationOption';
 	import SelectAnimationTriggerOption from './SelectAnimationTriggerOption.svelte';
 
-	export let selectedOption: SelectedAnimationTriggerOption;
+	export let selectedOption: SelectedAnimationTriggerCondition;
 	const dispatch = createEventDispatcher();
 
 	function select(event: CustomEvent<AnimationTrigger>) {

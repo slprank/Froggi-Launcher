@@ -1,6 +1,6 @@
 import {
 	AnimationTrigger,
-	type SelectedAnimationTriggerOption,
+	type SelectedAnimationTriggerCondition,
 } from '$lib/models/types/animationOption';
 import type {
 	CurrentPlayer,
@@ -10,7 +10,7 @@ import type {
 import type { FrameEntryType } from '@slippi/slippi-js';
 
 export const inGameStateTrigger = (
-	option: SelectedAnimationTriggerOption,
+	option: SelectedAnimationTriggerCondition,
 	gameSettings: GameStartTypeExtended,
 	gameFrame: FrameEntryType | null | undefined,
 	prevGameFrame: FrameEntryType | null | undefined,
@@ -33,7 +33,7 @@ export const inGameStateTrigger = (
 };
 
 export const currentPlayerInGameTrigger = (
-	option: SelectedAnimationTriggerOption,
+	option: SelectedAnimationTriggerCondition,
 	player: CurrentPlayer | undefined,
 	gameFrame: FrameEntryType | null | undefined,
 	prevGameFrame: FrameEntryType | null | undefined,
@@ -63,7 +63,7 @@ export const currentPlayerInGameTrigger = (
 };
 
 export const player1InGameTrigger = (
-	option: SelectedAnimationTriggerOption,
+	option: SelectedAnimationTriggerCondition,
 	player: Player | undefined,
 	gameFrame: FrameEntryType | null | undefined,
 	prevGameFrame: FrameEntryType | null | undefined,
@@ -96,7 +96,7 @@ export const player1InGameTrigger = (
 
 
 export const player2InGameTrigger = (
-	option: SelectedAnimationTriggerOption,
+	option: SelectedAnimationTriggerCondition,
 	player: Player | undefined,
 	gameFrame: FrameEntryType | null | undefined,
 	prevGameFrame: FrameEntryType | null | undefined,

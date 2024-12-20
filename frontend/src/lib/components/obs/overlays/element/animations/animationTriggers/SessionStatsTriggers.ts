@@ -1,13 +1,13 @@
 import {
 	AnimationTrigger,
-	type SelectedAnimationTriggerOption,
+	type SelectedAnimationTriggerCondition,
 } from '$lib/models/types/animationOption';
 import type {
 	SessionStats,
 } from '$lib/models/types/slippiData';
 
 export const sessionStatsTrigger = (
-	option: SelectedAnimationTriggerOption,
+	option: SelectedAnimationTriggerCondition,
 	sessionStats: SessionStats | undefined,
 	prevSessionStats: SessionStats | undefined,
 ) => {

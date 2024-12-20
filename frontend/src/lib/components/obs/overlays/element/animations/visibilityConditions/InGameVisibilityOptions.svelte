@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { InGameState } from '$lib/models/enum';
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
@@ -16,7 +16,7 @@
 	import { isNil } from 'lodash';
 
 	export const inGameVisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		currentPlayers: Player[],
 		gameSettings: GameStartType,
 		gameFrame: FrameEntryType | undefined | null,

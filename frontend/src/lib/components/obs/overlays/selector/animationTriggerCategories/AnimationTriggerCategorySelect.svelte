@@ -12,10 +12,10 @@
 	import {
 		AnimationTrigger,
 		AnimationTriggerCategory,
-		type SelectedAnimationTriggerOption,
+		type SelectedAnimationTriggerCondition,
 	} from '$lib/models/types/animationOption';
 
-	export let selectedOption: SelectedAnimationTriggerOption;
+	export let selectedOption: SelectedAnimationTriggerCondition;
 
 	function select(event: CustomEvent<AnimationTrigger>) {
 		selectedOption[event.detail] = !selectedOption[event.detail];

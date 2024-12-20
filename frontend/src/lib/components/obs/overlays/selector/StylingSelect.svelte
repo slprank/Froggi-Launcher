@@ -18,8 +18,8 @@
 	import VisibilitySelect from './VisibilitySelect.svelte';
 	import AnimationTriggerSelect from './AnimationTriggerSelect.svelte';
 	import type {
-		SelectedAnimationTriggerOption,
-		SelectedVisibilityOption,
+		SelectedAnimationTriggerCondition,
+		SelectedVisibilityCondition,
 	} from '$lib/models/types/animationOption';
 	import { tooltip } from 'svooltip';
 	import { ELEMENT_TRANSITION_LIMIT } from '$lib/models/const';
@@ -143,10 +143,10 @@
 		$localEmitter.emit('TestVisibilityTrigger');
 	};
 
-	const handleVisibilityUpdate = (event: CustomEvent<SelectedVisibilityOption[]>) => {
+	const handleVisibilityUpdate = (event: CustomEvent<SelectedVisibilityCondition[]>) => {
 		payload.visibility.selectedOptions = event.detail;
 	};
-	const handleTriggerUpdate = (event: CustomEvent<SelectedAnimationTriggerOption>) => {
+	const handleTriggerUpdate = (event: CustomEvent<SelectedAnimationTriggerCondition>) => {
 		payload.animationTrigger.selectedOptions = event.detail;
 	};
 </script>

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
+	import type { SelectedAnimationTriggerCondition } from '$lib/models/types/animationOption';
 	import AnimationTriggerCategorySelect from './animationTriggerCategories/AnimationTriggerCategorySelect.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	export let selectedOption: SelectedAnimationTriggerOption;
+	export let selectedOption: SelectedAnimationTriggerCondition;
 	let tempSelectedOptions = selectedOption;
 	let open: boolean = false;
 

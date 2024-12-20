@@ -12,6 +12,7 @@
 	import CreateCustomHud from '$lib/components/tutorial/new-overlay/CreateCustomHud.svelte';
 	import CreateLayers from '$lib/components/tutorial/new-overlay/CreateLayers.svelte';
 	import CreateHudElements from '$lib/components/tutorial/new-overlay/CreateHudElements.svelte';
+	import CreateTimer from '$lib/components/tutorial/new-overlay/CreateTimer.svelte';
 
 	let scrollElement: HTMLElement;
 	const scrollToTop = () => {
@@ -59,8 +60,12 @@
 			component: CreateLayers,
 		},
 		{
-			title: 'Add HUD Elements',
+			title: 'Add HUD elements',
 			component: CreateHudElements,
+		},
+		{
+			title: 'Add timer',
+			component: CreateTimer,
 		},
 	];
 

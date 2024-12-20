@@ -16,7 +16,7 @@
 	//@ts-ignore
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { electronEmitter, overlays } from '$lib/utils/store.svelte';
-	import type { SelectedAnimationTriggerOption } from '$lib/models/types/animationOption';
+	import type { SelectedAnimationTriggerCondition } from '$lib/models/types/animationOption';
 	import { getOverlays } from '$lib/utils/fetchSubscriptions.svelte';
 	import isNil from 'lodash/isNil';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
@@ -157,7 +157,7 @@
 			animationTrigger: {
 				in: getDefaultAnimations(SCENE_TRANSITION_DELAY),
 				out: getDefaultAnimations(),
-				selectedOptions: {} as SelectedAnimationTriggerOption,
+				selectedOptions: {} as SelectedAnimationTriggerCondition,
 			},
 			class: {
 				rounded: '',

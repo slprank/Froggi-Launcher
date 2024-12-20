@@ -1,13 +1,13 @@
 <script lang="ts" context="module">
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
 	import type { GameStats, Player } from '$lib/models/types/slippiData';
 
 	export const postGameVisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		players: Player[],
 		player: Player | undefined,
 		gameStats: GameStats,

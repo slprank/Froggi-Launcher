@@ -3,10 +3,10 @@
 	import SelectOption from './SelectVisibilityOption.svelte';
 	import {
 		VisibilityOption,
-		type SelectedVisibilityOption,
+		type SelectedVisibilityCondition,
 	} from '$lib/models/types/animationOption';
 
-	export let selectedVisibilityOption: SelectedVisibilityOption;
+	export let selectedVisibilityOption: SelectedVisibilityCondition;
 	const dispatch = createEventDispatcher();
 
 	function select(event: CustomEvent<VisibilityOption>) {

@@ -1,13 +1,13 @@
 <script lang="ts" context="module">
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
 	import type { Session } from '$lib/models/types/slippiData';
 
 	export const sessionVisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		session: Session | undefined,
 	) => {
 		const wins = (session?.currentRankStats.wins ?? 0) - (session?.startRankStats.wins ?? 0);

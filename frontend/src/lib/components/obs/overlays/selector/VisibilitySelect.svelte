@@ -1,16 +1,16 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { SelectedVisibilityOption } from '$lib/models/types/animationOption';
+	import type { SelectedVisibilityCondition } from '$lib/models/types/animationOption';
 	import VisibilityCategorySelect from './visibilityCategories/VisibilityCategorySelect.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fly } from 'svelte/transition';
 
-	export let selectedVisibilityOptions: SelectedVisibilityOption[] = [];
-	let tempSelectedOptions: SelectedVisibilityOption[] = selectedVisibilityOptions;
+	export let selectedVisibilityOptions: SelectedVisibilityCondition[] = [];
+	let tempSelectedOptions: SelectedVisibilityCondition[] = selectedVisibilityOptions;
 	let open: boolean = false;
 
-	const addNewOption = () => {
-		tempSelectedOptions = [...tempSelectedOptions, {} as SelectedVisibilityOption];
+	const addNewCondition = () => {
+		tempSelectedOptions = [...tempSelectedOptions, {} as SelectedVisibilityCondition];
 	};
 
 	const removeOption = (index: number) => {
@@ -61,9 +61,9 @@
 		<div class="w-48 flex items-end">
 			<button
 				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
-				on:click={addNewOption}
+				on:click={addNewCondition}
 			>
-				New Options
+				New Condition
 			</button>
 		</div>
 		<div class="w-48 flex items-end">

@@ -40,3 +40,51 @@
 </h2>
 
 <h2>If you want to customize the animations yourself, select the non pre animated component.</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-percent.png"
+	alt="Select percent"
+/>
+
+<h2>After adding both player percentages, they should look something like this.</h2>
+
+<h2>Now, try to add the character series icon behind the percentage.</h2>
+
+<br />
+
+<h1 class="text-lg font-semibold">Adding stock icons</h1>
+
+<h2>Now we can try to add stocks.</h2>
+
+<h2>Create a new layer and add a character stock</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/add-stock-icon.png"
+	alt="Add stock icon"
+/>
+
+<h2>
+	What we will do with stocks are to create 4 duplicates of this component. Each of the icons will
+	have a different visibility condition which is bound to the amount of stocks that are left.
+</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/apply-stock-visibility-condition.png"
+	alt="Apply stock visibility condition"
+/>
+
+<h2>
+	Add this icon the the scene as it looks in the game. Press the <b>Copy</b>
+	button on top to duplicate the element and edit the visibility condition.
+</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-finalized-stock.png"
+	alt="Apply stock visibility condition"
+/>
+
+<h2>This is how the finalized preview should look</h2>

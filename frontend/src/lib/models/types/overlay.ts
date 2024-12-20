@@ -1,7 +1,7 @@
 import type { Animation, AutoUpdaterStatus, LiveStatsScene, SceneBackground } from '../enum';
 import type { COL } from '../const';
 import type { CustomElement } from '../constants/customElement';
-import type { SelectedAnimationTriggerOption, SelectedVisibilityOption } from './animationOption';
+import type { SelectedAnimationTriggerCondition, SelectedVisibilityCondition } from './animationOption';
 
 export interface AutoUpdater {
 	progress: string | undefined;
@@ -190,13 +190,13 @@ export interface Position {
 export interface VisibilityAnimations {
 	in: AnimationSettings
 	out: AnimationSettings
-	selectedOptions: SelectedVisibilityOption[]
+	selectedOptions: SelectedVisibilityCondition[]
 }
 
 export interface TriggerAnimation {
 	in: AnimationSettings
 	out: AnimationSettings
-	selectedOptions: SelectedAnimationTriggerOption
+	selectedOptions: SelectedAnimationTriggerCondition
 }
 
 export interface SceneAnimation extends Animations {

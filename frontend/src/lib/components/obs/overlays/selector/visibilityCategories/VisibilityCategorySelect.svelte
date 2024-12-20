@@ -15,13 +15,13 @@
 	import RankStatsVisibilitySelect from './RankStatsVisibilitySelect.svelte';
 	import {
 		VisibilityCategory,
-		type SelectedVisibilityOption,
+		type SelectedVisibilityCondition,
 		type VisibilityOption,
 	} from '$lib/models/types/animationOption';
 	import { VisibilityToggle } from '$lib/models/types/animationOption';
 	import MatchStatsVisibilitySelect from './MatchStatsVisibilitySelect.svelte';
 
-	export let selectedVisibilityOption: SelectedVisibilityOption;
+	export let selectedVisibilityOption: SelectedVisibilityCondition;
 
 	function select(event: CustomEvent<VisibilityOption>) {
 		switch (selectedVisibilityOption[event.detail]) {

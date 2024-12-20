@@ -1,11 +1,11 @@
 import {
 	AnimationTrigger,
-	type SelectedAnimationTriggerOption,
+	type SelectedAnimationTriggerCondition,
 } from '$lib/models/types/animationOption';
 import type { CurrentPlayerRank } from '$lib/models/types/slippiData';
 
 export const rankStateTrigger = (
-	option: SelectedAnimationTriggerOption,
+	option: SelectedAnimationTriggerCondition,
 	rank: CurrentPlayerRank | undefined,
 	prevRank: CurrentPlayerRank | undefined,
 ) => {

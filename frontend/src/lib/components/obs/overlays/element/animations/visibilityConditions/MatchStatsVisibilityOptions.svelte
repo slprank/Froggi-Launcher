@@ -1,13 +1,13 @@
 <script lang="ts" context="module">
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
 	import { isNil } from 'lodash';
 
 	export const matchStatsVisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		gameScore: number[],
 	) => {
 		if (option[VisibilityOption.MatchStatsPlayer1Score1] === VisibilityToggle.True)

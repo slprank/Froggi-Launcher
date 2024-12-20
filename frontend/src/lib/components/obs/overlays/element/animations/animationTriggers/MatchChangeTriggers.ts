@@ -1,10 +1,10 @@
 import {
 	AnimationTrigger,
-	type SelectedAnimationTriggerOption,
+	type SelectedAnimationTriggerCondition,
 } from '$lib/models/types/animationOption';
 import { GameStartTypeExtended, Player } from '$lib/models/types/slippiData';
 
-export const matchStateTrigger = (option: SelectedAnimationTriggerOption, currentPlayers: Player[], prevPlayers: Player[] | undefined, score: number[], prevScore: number[] | undefined, gameSettings: GameStartTypeExtended, prevSettings: GameStartTypeExtended | undefined) => {
+export const matchStateTrigger = (option: SelectedAnimationTriggerCondition, currentPlayers: Player[], prevPlayers: Player[] | undefined, score: number[], prevScore: number[] | undefined, gameSettings: GameStartTypeExtended, prevSettings: GameStartTypeExtended | undefined) => {
 	let trigger = false;
 
 	if (option[AnimationTrigger.MatchBestOfChange])

@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import {
-		SelectedVisibilityOption,
+		SelectedVisibilityCondition,
 		VisibilityOption,
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
@@ -8,7 +8,7 @@
 	import { getCurrentPlayer } from '$lib/utils/fetchSubscriptions.svelte';
 
 	export const rankVisibilityOption = (
-		option: SelectedVisibilityOption,
+		option: SelectedVisibilityCondition,
 		player: CurrentPlayer | undefined,
 	) => {
 		const prevRank = player?.rank.history?.at(-1);

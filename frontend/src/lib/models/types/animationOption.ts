@@ -182,11 +182,11 @@ export enum AnimationTriggerCategory {
     SessionStats = "Session Stats"
 }
 
-export type SelectedAnimationTriggerOption = {
+export type SelectedAnimationTriggerCondition = {
     [option in AnimationTrigger]: boolean;
 };
 
-export type SelectedVisibilityOption = {
+export type SelectedVisibilityCondition = {
     [option in VisibilityOption]: VisibilityToggle;
 };
 
