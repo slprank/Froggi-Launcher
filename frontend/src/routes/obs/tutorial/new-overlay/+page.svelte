@@ -11,6 +11,7 @@
 	import { isNil } from 'lodash';
 	import CreateCustomHud from '$lib/components/tutorial/new-overlay/CreateCustomHud.svelte';
 	import CreateLayers from '$lib/components/tutorial/new-overlay/CreateLayers.svelte';
+	import CreateHudElements from '$lib/components/tutorial/new-overlay/CreateHudElements.svelte';
 
 	let scrollElement: HTMLElement;
 	const scrollToTop = () => {
@@ -56,6 +57,10 @@
 		{
 			title: 'Add layers',
 			component: CreateLayers,
+		},
+		{
+			title: 'Add HUD Elements',
+			component: CreateHudElements,
 		},
 	];
 

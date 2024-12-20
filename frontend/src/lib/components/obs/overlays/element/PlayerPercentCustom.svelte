@@ -108,10 +108,10 @@
 
 	onMount(() => {
 		const handler = () => {
-			const tempTrigger = trigger;
-			trigger = Math.random();
+			const tempFramePercent = framePercent;
+			framePercent = `${Math.random()}`;
 			setTimeout(() => {
-				trigger = tempTrigger;
+				framePercent = tempFramePercent;
 			});
 		};
 
@@ -163,7 +163,7 @@
 							<div
 								in:animation|local
 								class="flex h-full items-end justify-center pb-[2.25%]"
-								style={`font-size: ${parent?.clientHeight * 0.8 ?? 0}px`}
+								style={`font-size: ${parent?.clientHeight * 0.8}px`}
 							>
 								%
 							</div>
@@ -174,21 +174,21 @@
 							<div
 								in:animation|local
 								class="flex h-full items-end justify-center pb-[6%]"
-								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								style={`font-size: ${parent?.clientHeight * 0.55}px`}
 							>
 								.
 							</div>
 							<div
 								in:animation|local
 								class="flex h-full items-end justify-center pb-[6%]"
-								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								style={`font-size: ${parent?.clientHeight * 0.55}px`}
 							>
 								{defaultPreview ? 0 : decimals.at(0) ?? ''}
 							</div>
 							<div
 								in:animation|local
 								class="flex h-full items-end justify-center pb-[6%]"
-								style={`font-size: ${parent?.clientHeight * 0.55 ?? 0}px`}
+								style={`font-size: ${parent?.clientHeight * 0.55}px`}
 							>
 								%
 							</div>

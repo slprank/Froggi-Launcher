@@ -243,7 +243,9 @@
 <div class="w-full h-full flex flex-col gap-2">
 	<div class="w-full">
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Category</h1>
-		<div class="w-lg 3xl:w-full flex flex-wrap gap-2 max-h-[13rem] min-h-[9rem] overflow-auto">
+		<div
+			class="w-lg 3xl:w-full flex flex-wrap gap-2 max-h-[13rem] min-h-[9rem] overflow-auto border-t border-b p-2"
+		>
 			{#each buttons.filter((b) => b.visible) as button}
 				<div class="grid gap-2 justify-start items-start">
 					<button
@@ -260,7 +262,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="w-full flex-1 overflow-scroll">
+	<div class="w-full flex-1 overflow-scroll border-t border-b">
 		<h1 class="text-gray-500 text-lg font-medium text-shadow">Element</h1>
 		{#key selectedCategory}
 			<div
