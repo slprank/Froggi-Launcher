@@ -136,7 +136,7 @@
 <h2>
 	To remove the highlight, press <b>esc</b>
 	or if you want a quick delete press
-	<b>backspace</b>
+	<b>del</b>
 </h2>
 
 <br />
