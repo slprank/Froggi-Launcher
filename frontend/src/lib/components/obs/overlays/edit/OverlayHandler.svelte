@@ -17,7 +17,7 @@
 	import gridHelp from 'svelte-grid/build/helper/index.mjs';
 	import { electronEmitter, overlays } from '$lib/utils/store.svelte';
 	import type { SelectedAnimationTriggerCondition } from '$lib/models/types/animationOption';
-	import { getOverlays } from '$lib/utils/fetchSubscriptions.svelte';
+	import { getElectronEmitter, getOverlays } from '$lib/utils/fetchSubscriptions.svelte';
 	import isNil from 'lodash/isNil';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { newId } from '$lib/utils/helper';
@@ -313,25 +313,9 @@
 		overlayId: string,
 		statsScene: LiveStatsScene,
 		selectedLayerIndex: number,
-	): Promise<number> {
-		let overlay = await getOverlayById(overlayId);
-		if (isNil(overlay) || !overlay?.[statsScene].layers.length) return selectedLayerIndex;
-
-		const duplicatedLayer: Layer = {
-			...overlay[statsScene].layers[selectedLayerIndex],
-			id: newId(),
-		};
-
-		const layers: Layer[] = [...overlay[statsScene].layers];
-		overlay[statsScene].layers = [
-			...layers.slice(0, selectedLayerIndex),
-			duplicatedLayer,
-			...layers.slice(selectedLayerIndex),
-		];
-
-		updateScene(overlay, statsScene);
-
-		return selectedLayerIndex + 1;
+	) {
+		const _electronEmitter = await getElectronEmitter();
+		_electronEmitter.emit('SceneLayerDuplicate', overlayId, statsScene, selectedLayerIndex);
 	}
 
 	export async function deleteLayer(

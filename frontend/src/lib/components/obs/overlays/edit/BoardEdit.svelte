@@ -114,6 +114,8 @@
 
 	updateFont(curOverlay);
 
+	$: console.log(selectedItemId);
+
 	let innerHeight: number;
 	$: rowHeight =
 		((borderHeight ?? 0) * (curOverlay.aspectRatio.width / curOverlay.aspectRatio.width)) / ROW;

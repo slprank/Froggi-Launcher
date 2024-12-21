@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Layer, Overlay } from '$lib/models/types/overlay';
 	import { fly } from 'svelte/transition';
-	import NonInteractiveIFrame from './NonInteractiveIFrame.svelte';
 	import { electronEmitter, statsScene } from '$lib/utils/store.svelte';
 	import {
 		deleteLayer,

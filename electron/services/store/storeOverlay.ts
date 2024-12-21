@@ -9,7 +9,7 @@ import { BrowserWindow, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
-import { isNil, kebabCase } from 'lodash';
+import { cloneDeep, isNil, kebabCase } from 'lodash';
 import { getCustomFiles, saveCustomFiles } from '../../utils/fileHandler';
 
 @singleton()
@@ -133,6 +133,56 @@ export class ElectronOverlayStore {
 		fs.rm(source, { recursive: true }, (err => this.log.error(err)))
 	}
 
+	duplicateSceneLayer(overlayId: string, statsScene: LiveStatsScene, layerIndex: number) {
+		let overlay = this.getOverlayById(overlayId);
+		if (isNil(overlay) || !overlay?.[statsScene].layers.length) return;
+
+		const duplicatedLayer: Layer = cloneDeep({
+			...overlay[statsScene].layers[layerIndex],
+			id: newId(),
+		});
+
+		const customFileDir = path.join(this.appDir, "public", "custom", overlayId)
+		const entries = fs.readdirSync(customFileDir, { withFileTypes: true})
+			.filter(dirent => dirent.isDirectory())
+			.map(dirent => dirent.name);
+
+		entries.forEach(entry => {
+			const entryDir = path.join(customFileDir, entry)
+			const files = fs.readdirSync(entryDir, { withFileTypes: true })
+				.filter(dirent => dirent.isFile)
+				.map(dirent => dirent.name);
+			
+			duplicatedLayer.items.forEach(item => {
+				const prevId = `${item.id}`
+				item.id = newId()
+				const commonFile = files.find(file => file.includes(kebabCase(prevId)))
+				if (!commonFile) return;
+				const extname = path.extname(commonFile);
+				const source = path.join(entryDir, commonFile)
+				const targetFileName = `${kebabCase(item.id)}${extname}` 
+				const target = path.join(entryDir, targetFileName)
+				fs.copyFileSync(source, target)
+				switch (entry) {
+					case "font":
+						item.data.font.src = targetFileName;
+						break;
+					case "image":
+						item.data.image.name = targetFileName
+				}
+			})
+		})
+
+		const layers: Layer[] = [...overlay[statsScene].layers];
+		overlay[statsScene].layers = [
+			...layers.slice(0, layerIndex),
+			duplicatedLayer,
+			...layers.slice(layerIndex),
+		];
+
+		this.setOverlay(overlay)
+	}
+
 	setCurrentLayoutIndex(index: number) {
 		this.store.set('obs.layout.current.layerIndex', index);
 	}
@@ -170,6 +220,8 @@ export class ElectronOverlayStore {
 		this.clientEmitter.on('OverlayDelete', (overlayId) => {
 			this.deleteOverlay(overlayId);
 		});
+
+		this.clientEmitter.on('SceneLayerDuplicate', this.duplicateSceneLayer.bind(this))
 
 		this.clientEmitter.on('SelectedItemChange', (itemId) => {
 			this.setCurrentItemId(itemId);
