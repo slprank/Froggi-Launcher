@@ -316,6 +316,7 @@
 	) {
 		const _electronEmitter = await getElectronEmitter();
 		_electronEmitter.emit('SceneLayerDuplicate', overlayId, statsScene, selectedLayerIndex);
+		return selectedLayerIndex;
 	}
 
 	export async function deleteLayer(

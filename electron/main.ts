@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { app, BrowserWindow, IpcMain, ipcMain, Menu, nativeImage, Tray } from 'electron';
+import { app, BrowserWindow, IpcMain, ipcMain, Menu, nativeImage, Tray, Notification } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { container } from 'tsyringe';
 import getAppDataPath from 'appdata-path';
@@ -56,8 +56,7 @@ try {
 
 	let mainWindow: BrowserWindow | any;
 	let tray: Tray;
-
-	//app.disableHardwareAcceleration();
+	let notification: Notification;
 
 	function createWindow(): BrowserWindow {
 		log.info('Creating window');
@@ -96,6 +95,13 @@ try {
 
 		mainWindow.on('close', () => {
 			windowState.saveState(mainWindow);
+
+			notification.show();
+
+			tray.displayBalloon({
+				title: 'App Running',
+				content: 'Click to exit the app.'
+			});
 		});
 
 		return mainWindow;
@@ -153,6 +159,21 @@ try {
 		return tray;
 	}
 
+	function createNotification(): Notification {
+		return new Notification({
+			title: "App running",
+			body: 'The window has been closed, but the app is still running in the tray.',
+			urgency: "critical",
+			closeButtonText: "Dismiss",
+			actions: [
+				{
+					type: "button",
+					text: "Quit App"
+				},
+			]
+		});
+	}
+
 	contextMenu({
 		showLookUpSelection: false,
 		showSearchWithGoogle: false,
@@ -179,7 +200,23 @@ try {
 
 	function createMainWindow() {
 		mainWindow = createWindow();
+		notification = createNotification();
 		createTray();
+
+		notification.addListener("click", () => {
+			app.show();
+		});
+
+		notification.addListener("close", () => {
+			app.hide()
+		})
+
+		notification.addListener("action", (_, index) => {
+			if (index === 0) {
+				app.exit();
+			}
+		});
+
 
 		if (dev) loadVite(port);
 		if (!dev) serveURL(mainWindow);
