@@ -78,6 +78,7 @@ export interface MessageEvents {
 	OverlayDuplicate: (overlayId: string) => void;
 	OverlayUpdate: (overlay: Overlay) => void;
 	OverlayUpload: () => void;
+	SceneItemDuplicate: (overlayId: string, liveStatsScene: LiveStatsScene, layerIndex: number, prevItemId: string) => void;
 	SceneLayerDuplicate: (overlayId: string, liveStatsScene: LiveStatsScene, layerIndex: number) => void;
 	SceneUpdate: (overlayId: string, liveStatsScene: LiveStatsScene, scene: Scene) => void;
 	SelectedItemChange: (itemId: string) => void;

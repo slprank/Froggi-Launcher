@@ -11,6 +11,10 @@ import fs from 'fs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { cloneDeep, isNil, kebabCase } from 'lodash';
 import { findFilesStartingWith, getCustomFiles, saveCustomFiles } from '../../utils/fileHandler';
+import { COL } from '../../../frontend/src/lib/models/const';
+//@ts-ignore
+import gridHelp from "../../utils/gridHelp.js"
+
 
 @singleton()
 export class ElectronOverlayStore {
@@ -77,7 +81,7 @@ export class ElectronOverlayStore {
 	}
 
 	cleanupCustomResources() {
-		const overlays = this.getOverlays()
+		let overlays = this.getOverlays()
 		Object.values(overlays).forEach(overlay => {
 			const itemsKebabId = Object.values(LiveStatsScene).map(statsScene => {
 				return overlay[statsScene].layers?.map((layer: Layer) => layer.items).flat()
@@ -133,8 +137,47 @@ export class ElectronOverlayStore {
 		fs.rm(source, { recursive: true }, (err => this.log.error(err)))
 	}
 
+	async duplicateSceneLayerItem(overlayId: string, statsScene: LiveStatsScene, layerIndex: number, itemId: string) {
+		const overlay = this.getOverlayById(overlayId);
+		if (isNil(overlay) || !overlay?.[statsScene].layers.length) return;
+
+		const layer = overlay[statsScene].layers[layerIndex]
+		const prevItem = layer.items.find(item => item.id === itemId);
+
+		if (isNil(prevItem)) return
+		let newItem = cloneDeep({...prevItem, id: newId()}) as GridContentItem
+
+		const findPosition = gridHelp.findSpace(newItem, layer.items, COL);
+
+		newItem = {
+			...newItem,
+			[COL]: {
+				...newItem[COL],
+				...findPosition,
+			},
+		};
+
+		const customFileDir = path.join(this.appDir, "public", "custom", overlayId)
+		const prevFileName = kebabCase(prevItem?.id)
+		const newFileName = kebabCase(newItem?.id)
+		
+		const files = findFilesStartingWith(customFileDir, prevFileName)
+		files.forEach(file => {
+			const source = file;
+			const target = file.replace(prevFileName, newFileName) 
+			fs.copyFileSync(source, target)
+		})
+		// Currently not a flexible solution
+		newItem.data.font.src = prevItem.data.font.src?.replace(prevFileName, newFileName)
+		newItem.data.image.name = prevItem.data.image.name?.replace(prevFileName, newFileName)
+
+		layer.items.push(newItem);
+
+		this.setOverlay(overlay)
+	}
+
 	duplicateSceneLayer(overlayId: string, statsScene: LiveStatsScene, layerIndex: number) {
-		let overlay = this.getOverlayById(overlayId);
+		const overlay = this.getOverlayById(overlayId);
 		if (isNil(overlay) || !overlay?.[statsScene].layers.length) return;
 
 		const duplicatedLayer: Layer = cloneDeep({
@@ -207,6 +250,8 @@ export class ElectronOverlayStore {
 		this.clientEmitter.on('OverlayDelete', (overlayId) => {
 			this.deleteOverlay(overlayId);
 		});
+
+		this.clientEmitter.on('SceneItemDuplicate', this.duplicateSceneLayerItem.bind(this))
 
 		this.clientEmitter.on('SceneLayerDuplicate', this.duplicateSceneLayer.bind(this))
 

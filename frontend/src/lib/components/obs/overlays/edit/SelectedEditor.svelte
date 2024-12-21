@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { COL, ROW, MIN } from '$lib/models/const';
-	import { currentOverlayEditor, overlays, statsScene } from '$lib/utils/store.svelte';
+	import {
+		currentOverlayEditor,
+		electronEmitter,
+		overlays,
+		statsScene,
+	} from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import ElementModal from '$lib/components/obs/overlays/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
-	import {
-		generateNewItem,
-		updateScene,
-	} from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
+	import { updateScene } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import { isNil } from 'lodash';
 
 	const overlayId = $page.params.overlay;
@@ -66,14 +68,14 @@
 		if (!curOverlay || $currentOverlayEditor?.layerIndex === undefined) return;
 		const items = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items;
 		const item = items[selectedItemIndex];
-		const newItem = generateNewItem(item.elementId, item.data, items);
 
-		curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items.push(newItem);
-		selectedItemId = undefined;
-		selectedItem = undefined;
-		selectedItemIndex = 0;
-
-		updateScene(curOverlay, $statsScene);
+		$electronEmitter.emit(
+			'SceneItemDuplicate',
+			overlayId,
+			$statsScene,
+			$currentOverlayEditor.layerIndex,
+			item.id,
+		);
 	}
 
 	function deleteElement() {
@@ -176,7 +178,9 @@
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 200 }}>
 				<button
 					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-					on:click={() => (isElementModalOpen = true)}
+					on:click={() => {
+						isElementModalOpen = true;
+					}}
 				>
 					Edit
 				</button>

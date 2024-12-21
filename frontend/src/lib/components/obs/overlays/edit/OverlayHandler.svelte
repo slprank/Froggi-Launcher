@@ -49,7 +49,7 @@
 			fallback: LiveStatsScene.Menu,
 			font: {
 				family: 'default',
-				base64: undefined,
+				src: '',
 			},
 			layers: [
 				{
@@ -187,8 +187,8 @@
 				endColor: '#6f1622',
 			},
 			font: {
-				family: undefined,
-				base64: undefined,
+				family: 'default',
+				src: undefined,
 			},
 			image: {
 				name: undefined,

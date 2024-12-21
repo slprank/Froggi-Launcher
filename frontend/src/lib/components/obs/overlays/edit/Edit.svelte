@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
-	import { electronEmitter, localEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
+	import { electronEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
 	import BoardEdit from '$lib/components/obs/overlays/edit/BoardEdit.svelte';
 	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import Preview from './Preview.svelte';
