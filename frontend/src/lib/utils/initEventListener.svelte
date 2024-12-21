@@ -316,7 +316,6 @@
 	export const initWebSocket = async () => {
 		const _page = await getPage();
 		console.log('Initializing websocket');
-
 		const _localEmitter = await getLocalEmitter();
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
 		socket.addEventListener('message', ({ data }: { data: any }) => {

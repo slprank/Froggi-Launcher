@@ -46,7 +46,7 @@
 		open = false;
 	};
 
-	$: $statsScene, notifyDisabledScene(overlay, $statsScene);
+	$: notifyDisabledScene(overlay, $statsScene);
 
 	const availableClass =
 		'transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100';

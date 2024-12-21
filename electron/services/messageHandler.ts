@@ -97,7 +97,6 @@ export class MessageHandler {
 				key: keyof MessageEvents,
 				value: Parameters<MessageEvents[keyof MessageEvents]>,
 			]) {
-				console.log('Electron:', key, value);
 				this.clientEmitter.emit(key as any, ...(value as any));
 			}
 		});

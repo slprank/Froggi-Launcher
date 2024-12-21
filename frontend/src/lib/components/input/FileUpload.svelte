@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { electronEmitter, localEmitter } from '$lib/utils/store.svelte';
 	import { kebabCase } from 'lodash';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let acceptedExtensions: string[] = [];
 	export let label: string | undefined = undefined;
@@ -23,9 +23,15 @@
 		);
 	};
 
-	$localEmitter.on('ImportCustomFileComplete', (reportedFileName) => {
-		if (!acceptedExtensions.some((extension) => reportedFileName.includes(extension))) return;
-		dispatch('change', reportedFileName);
+	onMount(() => {
+		$localEmitter.on('ImportCustomFileComplete', (reportedFileName) => {
+			if (!acceptedExtensions.some((extension) => reportedFileName.includes(extension)))
+				return;
+			dispatch('change', reportedFileName);
+		});
+		return () => {
+			$localEmitter.off('ImportCustomFileComplete', () => {});
+		};
 	});
 </script>
 

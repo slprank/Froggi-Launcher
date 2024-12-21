@@ -12,6 +12,7 @@
 	import LayerDisplayRow from '$lib/components/obs/overlays/preview/LayerDisplayRow.svelte';
 	import { newLayer } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import { flip } from 'svelte/animate';
+	import { onMount } from 'svelte';
 
 	const overlayId: string | undefined = $page.params.overlay;
 
@@ -20,8 +21,13 @@
 	$: curOverlay = $overlays[overlayId];
 	$: layers = curOverlay && $statsScene in curOverlay ? curOverlay[$statsScene].layers : [];
 
-	$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
-		selectedLayerIndex = layerIndex;
+	onMount(() => {
+		$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
+			selectedLayerIndex = layerIndex;
+		});
+		return () => {
+			$localEmitter.on('LayerPreviewChange', () => {});
+		};
 	});
 
 	let scrollElement: HTMLElement;

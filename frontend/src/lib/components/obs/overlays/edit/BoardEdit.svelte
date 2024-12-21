@@ -96,7 +96,7 @@
 		});
 	}
 
-	$: $statsScene, notifyDisabledScene(curOverlay, $statsScene);
+	$: notifyDisabledScene(curOverlay, $statsScene);
 
 	const clearSelected = () => {
 		selectedItemId = undefined;
@@ -113,8 +113,6 @@
 	};
 
 	updateFont(curOverlay);
-
-	$: console.log(selectedItemId);
 
 	let innerHeight: number;
 	$: rowHeight =
