@@ -10,7 +10,7 @@ import path from 'path';
 import fs from 'fs';
 import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
 import { cloneDeep, isNil, kebabCase } from 'lodash';
-import { getCustomFiles, saveCustomFiles } from '../../utils/fileHandler';
+import { findFilesStartingWith, getCustomFiles, saveCustomFiles } from '../../utils/fileHandler';
 
 @singleton()
 export class ElectronOverlayStore {
@@ -143,34 +143,21 @@ export class ElectronOverlayStore {
 		});
 
 		const customFileDir = path.join(this.appDir, "public", "custom", overlayId)
-		const entries = fs.readdirSync(customFileDir, { withFileTypes: true})
-			.filter(dirent => dirent.isDirectory())
-			.map(dirent => dirent.name);
 
-		entries.forEach(entry => {
-			const entryDir = path.join(customFileDir, entry)
-			const files = fs.readdirSync(entryDir, { withFileTypes: true })
-				.filter(dirent => dirent.isFile)
-				.map(dirent => dirent.name);
-			
-			duplicatedLayer.items.forEach(item => {
-				const prevId = `${item.id}`
-				item.id = newId()
-				const commonFile = files.find(file => file.includes(kebabCase(prevId)))
-				if (!commonFile) return;
-				const extname = path.extname(commonFile);
-				const source = path.join(entryDir, commonFile)
-				const targetFileName = `${kebabCase(item.id)}${extname}` 
-				const target = path.join(entryDir, targetFileName)
+		duplicatedLayer.items.forEach(item => {
+			const prevId = `${item.id}`
+			const prevFileName = kebabCase(prevId)
+			item.id = newId()
+			const newFileName = kebabCase(item.id)
+			const files = findFilesStartingWith(customFileDir, prevFileName)
+			files.forEach(file => {
+				const source = file;
+				const target = file.replace(prevFileName, newFileName) 
 				fs.copyFileSync(source, target)
-				switch (entry) {
-					case "font":
-						item.data.font.src = targetFileName;
-						break;
-					case "image":
-						item.data.image.name = targetFileName
-				}
 			})
+			// Currently not a flexible solution
+			item.data.font.src = item.data.font.src?.replace(prevFileName, newFileName)
+			item.data.image.name = item.data.image.name?.replace(prevFileName, newFileName)
 		})
 
 		const layers: Layer[] = [...overlay[statsScene].layers];

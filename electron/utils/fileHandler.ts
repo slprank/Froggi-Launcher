@@ -60,3 +60,23 @@ export const saveCustomFiles = (customFileDir: string, customFiles: ShareCustomF
         })
     })
 }
+
+export function findFilesStartingWith(dir: string, prefix: string) {
+    let results: string[] = [];
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+  
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        // Recurse into subdirectories
+        results = results.concat(findFilesStartingWith(fullPath, prefix));
+      } else {
+        // Check if file name starts with the given prefix
+        if (entry.name.startsWith(prefix)) {
+          results.push(fullPath);
+        }
+      }
+    }
+  
+    return results;
+  }
