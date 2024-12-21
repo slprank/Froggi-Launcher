@@ -67,54 +67,56 @@
 					</h1>
 				{:else}
 					<div class="w-full h-full" in:animateIn out:animateOut bind:this={parent}>
-						<VisibilityAnimationLayer
-							animationIn={(node) =>
-								createAnimation(
-									node,
-									dataItem?.data.visibility.in,
-									parent?.clientHeight ?? 0,
-									parent?.clientWidth ?? 0,
-									0,
-									dataItem,
-								)}
-							animationOut={(node) =>
-								createAnimation(
-									node,
-									dataItem?.data.visibility.out,
-									parent?.clientHeight ?? 0,
-									parent?.clientWidth ?? 0,
-									0,
-									dataItem,
-								)}
-							{dataItem}
-							{edit}
-							{preview}
-						>
-							<AnimationLayer
+						{#if parent}
+							<VisibilityAnimationLayer
 								animationIn={(node) =>
 									createAnimation(
 										node,
-										dataItem?.data.animationTrigger.in,
-										boardHeight,
-										boardWidth,
+										dataItem?.data.visibility.in,
+										parent?.clientHeight ?? 0,
+										parent?.clientWidth ?? 0,
 										0,
 										dataItem,
 									)}
 								animationOut={(node) =>
 									createAnimation(
 										node,
-										dataItem?.data.animationTrigger.out,
-										boardHeight,
-										boardWidth,
+										dataItem?.data.visibility.out,
+										parent?.clientHeight ?? 0,
+										parent?.clientWidth ?? 0,
 										0,
 										dataItem,
 									)}
 								{dataItem}
 								{edit}
+								{preview}
 							>
-								<GridElements {dataItem} {preview} />
-							</AnimationLayer>
-						</VisibilityAnimationLayer>
+								<AnimationLayer
+									animationIn={(node) =>
+										createAnimation(
+											node,
+											dataItem?.data.animationTrigger.in,
+											boardHeight,
+											boardWidth,
+											0,
+											dataItem,
+										)}
+									animationOut={(node) =>
+										createAnimation(
+											node,
+											dataItem?.data.animationTrigger.out,
+											boardHeight,
+											boardWidth,
+											0,
+											dataItem,
+										)}
+									{dataItem}
+									{edit}
+								>
+									<GridElements {dataItem} {preview} />
+								</AnimationLayer>
+							</VisibilityAnimationLayer>
+						{/if}
 					</div>
 				{/if}
 			</div>
