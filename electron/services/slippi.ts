@@ -106,7 +106,6 @@ export class SlippiJs {
 		const connectCode = (await findPlayKey()).connectCode;
 		this.storeSettings.setCurrentPlayerConnectCode(connectCode);
 		const rankedNetplayProfile = await this.api.getPlayerRankStats(connectCode);
-		console.log('rankedNetplayProfile', rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(rankedNetplayProfile);
 		this.storeCurrentPlayer.setCurrentPlayerNewRankStats(rankedNetplayProfile);
 		this.storeSession.updateSessionStats(rankedNetplayProfile);

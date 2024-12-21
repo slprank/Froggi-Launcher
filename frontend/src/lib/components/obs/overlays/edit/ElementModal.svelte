@@ -96,7 +96,6 @@
 		let prevItem = items.find((item) => item.id === selectedItemId);
 
 		if (!prevItem) {
-			console.log('Add', selectedItemId, items);
 			add();
 			return;
 		}
@@ -144,10 +143,6 @@
 		selectedElementId = item.elementId;
 	}
 	updatePayload();
-
-	$: console.log(selectedItemId);
-
-	$: console.log(selectedElementId);
 </script>
 
 <Modal bind:open class="rounded-lg" on:close={() => (open = false)}>

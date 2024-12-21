@@ -63,7 +63,6 @@ export class Api {
 
 		const data = response?.data.data;
 
-		console.log("data", data.getConnectCode.user)
 		let player: any = await data?.getConnectCode?.user;
 
 		if (!response) return;

@@ -77,7 +77,6 @@ export class ElectronOverlayStore {
 	}
 
 	cleanupCustomResources() {
-		console.log("Here")
 		const overlays = this.getOverlays()
 		Object.values(overlays).forEach(overlay => {
 			const itemsKebabId = Object.values(LiveStatsScene).map(statsScene => {
@@ -189,7 +188,6 @@ export class ElectronOverlayStore {
 			});
 			const appDirCustomFilesDir = `${this.appDir}/public/custom/${overlayId}`
 			const entries = getCustomFiles(appDirCustomFilesDir);
-			console.log(entries)
 			const shareOverlay: SharedOverlay = {
 				...overlay,
 				customFiles: entries

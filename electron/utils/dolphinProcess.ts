@@ -16,21 +16,6 @@ export const getProcessPid = async (): Promise<number | undefined> => {
 	return undefined;
 };
 
-// This solution was so slow on windows that it stacked powershell processes over time if it didn't find dolphin instantly, resulting in a crash.
-// export const isDolphinRunning = async (): Promise<boolean> => {
-// 	const validProcesses = getValidProcesses();
-
-// 	for (const processName of validProcesses) {
-// 		const processes = await find('name', processName);
-// 		console.log('processes', processes);
-// 		if (processes.length > 0) {
-// 			return true;
-// 		}
-// 	}
-
-// 	return false;
-// };
-
 export const isDolphinRunning = async () => {
 	const isWindows = os.platform() === 'win32';
 	const validProcesses = getValidProcesses();
