@@ -63,6 +63,7 @@ export const saveCustomFiles = (customFileDir: string, customFiles: ShareCustomF
 
 export function findFilesStartingWith(dir: string, prefix: string) {
     let results: string[] = [];
+    if (!fs.existsSync(dir)) return [];
     const entries = fs.readdirSync(dir, { withFileTypes: true });
   
     for (const entry of entries) {

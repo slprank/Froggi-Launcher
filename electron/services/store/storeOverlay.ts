@@ -165,6 +165,7 @@ export class ElectronOverlayStore {
 		files.forEach(file => {
 			const source = file;
 			const target = file.replace(prevFileName, newFileName) 
+			if (!fs.existsSync(source)) return;
 			fs.copyFileSync(source, target)
 		})
 		// Currently not a flexible solution

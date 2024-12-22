@@ -103,7 +103,7 @@
 	};
 
 	const handlerKeyPress = (e: KeyboardEvent) => {
-		if (e.key === 'del' && selectedItemId) {
+		if (e.key === 'Del' && selectedItemId) {
 			tempItems = items.filter((item) => item.id !== selectedItemId);
 		}
 		if (e.key === 'Escape') {

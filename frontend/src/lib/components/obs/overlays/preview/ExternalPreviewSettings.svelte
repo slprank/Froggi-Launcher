@@ -12,7 +12,10 @@
 		class="w-full col-span-3 grid items-center"
 		data-tooltip="Set a temporary background image (Only visible if a background isn't already set)"
 	>
-		<FileToBase64Input bind:base64 acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg'} />
+		<FileToBase64Input
+			bind:base64
+			acceptedExtensions={'.jpg, .jpeg, .png, .gif, .svg, .webp'}
+		/>
 	</div>
 	<div class="w-full col-span-2 grid items-center">
 		<SliderInput min={0} max={1} step={0.01} bind:value={imageOpacity} />

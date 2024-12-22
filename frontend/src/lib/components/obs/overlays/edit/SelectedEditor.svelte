@@ -64,17 +64,15 @@
 			selectedItem[COL].h = ROW - selectedItem[COL].y;
 	}
 
-	function copyElement() {
+	function copyElement(itemId: string) {
 		if (!curOverlay || $currentOverlayEditor?.layerIndex === undefined) return;
-		const items = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items;
-		const item = items[selectedItemIndex];
 
 		$electronEmitter.emit(
 			'SceneItemDuplicate',
 			overlayId,
 			$statsScene,
 			$currentOverlayEditor.layerIndex,
-			item.id,
+			itemId,
 		);
 	}
 
@@ -150,9 +148,14 @@
 		if (e.key === 'Del') {
 			deleteElement();
 		}
+		if (e.key === 'Esc') {
+			clearItem();
+		}
 		lockOut = true;
 		setTimeout(() => (lockOut = false), 100);
 	}
+
+	$: console.log(selectedItemId);
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -161,7 +164,7 @@
 	Selected element
 </h1>
 <div class="h-16">
-	{#if !isNil(selectedItem)}
+	{#if selectedItem}
 		<div class="w-full flex gap-2">
 			<div transition:fly={{ duration: 250, y: 30 }}>
 				<NumberInput bind:value={selectedItem[COL].x} max={COL} label={`X - ${COL}`} />
@@ -188,7 +191,7 @@
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
 					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-					on:click={copyElement}
+					on:click={() => copyElement(selectedItemId)}
 				>
 					Copy
 				</button>
@@ -196,7 +199,7 @@
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
 					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
-					on:click={deleteElement}
+					on:click={() => deleteElement(selectedItemId)}
 				>
 					Delete
 				</button>
