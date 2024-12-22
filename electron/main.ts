@@ -157,8 +157,8 @@ try {
 	function createNotification(): Notification {
 		return new Notification({
 			title: "App running",
-			body: 'The window has been closed, but the app is still running in the tray.',
-			urgency: "critical",
+			body: 'The window has been closed, but the app is still running in the background.',
+			urgency: "low",
 			actions: [
 				{
 					type: "button",
