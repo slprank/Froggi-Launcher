@@ -97,11 +97,6 @@ try {
 			windowState.saveState(mainWindow);
 
 			notification.show();
-
-			tray.displayBalloon({
-				title: 'App Running',
-				content: 'Click to exit the app.'
-			});
 		});
 
 		return mainWindow;
@@ -164,7 +159,6 @@ try {
 			title: "App running",
 			body: 'The window has been closed, but the app is still running in the tray.',
 			urgency: "critical",
-			closeButtonText: "Dismiss",
 			actions: [
 				{
 					type: "button",
@@ -204,11 +198,11 @@ try {
 		createTray();
 
 		notification.addListener("click", () => {
-			app.show();
+			mainWindow.show();
 		});
 
 		notification.addListener("close", () => {
-			app.hide()
+			mainWindow.hide();
 		})
 
 		notification.addListener("action", (_, index) => {
