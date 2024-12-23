@@ -137,16 +137,6 @@
 		additionalDelay: number = 0,
 		dataItem: GridContentItem | undefined = undefined,
 	): AnimationConfig => {
-		console.log({
-			start: Number(animation?.options.start),
-			x: getRelativePixelSize(animation?.options.x ?? 0, height, width).toFixed(),
-			y: getRelativePixelSize(animation?.options.y ?? 0, height, width).toFixed(),
-			scale: 0,
-			duration: Number(animation.options.duration),
-			delay: Number((animation?.options.delay ?? 0) + additionalDelay),
-			easing: getEasing(animation?.options.easing ?? ''),
-		});
-
 		if (!animation) {
 			console.error('No animation settings provided');
 			return {
