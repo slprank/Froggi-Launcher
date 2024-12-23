@@ -11,9 +11,11 @@
 		option: SelectedVisibilityCondition,
 		player: CurrentPlayer | undefined,
 	) => {
-		const prevRank = player?.rank.history?.at(-1);
-		const currentRank = player?.rank.current;
-		const newRank = player?.rank.new;
+		const prevRank = player?.rank?.history?.at(-1);
+		const currentRank = player?.rank?.current;
+		const newRank = player?.rank?.new;
+
+		if (!prevRank || !currentRank || !newRank) return;
 
 		if (option[VisibilityOption.RankStatsBeforeRankUpdated] === VisibilityToggle.True)
 			if (currentRank !== newRank) return true;
