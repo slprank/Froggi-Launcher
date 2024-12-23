@@ -41,9 +41,13 @@
 	import type { MessageEvents } from './customEventEmitter';
 	import { debounce, isNil } from 'lodash';
 
-	const debouncedSetGameFrame = debounce((value: Parameters<MessageEvents['GameFrame']>[0]) => {
-		gameFrame.set(value);
-	}, 20);
+	const debouncedSetGameFrame = debounce(
+		(value: Parameters<MessageEvents['GameFrame']>[0]) => {
+			gameFrame.set(value);
+		},
+		10,
+		{ trailing: true },
+	);
 
 	async function messageDataHandler<J extends keyof MessageEvents>(
 		topic: J,

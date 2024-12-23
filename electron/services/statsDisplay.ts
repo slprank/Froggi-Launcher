@@ -80,8 +80,8 @@ export class StatsDisplay {
 				(frameEntry: FrameEntryType) => {
 					this.handleGameFrame(frameEntry);
 				},
-				20,
-				{ trailing: true, maxWait: 10 },
+				10,
+				{ trailing: true},
 			),
 		);
 	}
@@ -109,6 +109,7 @@ export class StatsDisplay {
 	}
 
 	async handleGameStart(settings: GameStartType | null) {
+		console.log(settings)
 		if (!settings) return;
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings);
 
