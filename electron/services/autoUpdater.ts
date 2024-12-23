@@ -25,11 +25,11 @@ export class AutoUpdater {
 
 	private async initListeners() {
 		if (this.dev) return;
-		this.log.info('Current Version:', autoUpdater.currentVersion);
+		this.log.verbose('Current Version:', autoUpdater.currentVersion);
 		this.messageHandler.sendMessage('AutoUpdaterVersion', autoUpdater.currentVersion.version);
 
 		autoUpdater.on('checking-for-update', () => {
-			this.log.info('Checking for Update');
+			this.log.verbose('Checking for Update');
 			this.messageHandler.sendMessage(
 				'AutoUpdaterStatus',
 				AutoUpdaterStatus.LookingForUpdate,
@@ -37,7 +37,7 @@ export class AutoUpdater {
 		});
 
 		autoUpdater.on('update-not-available', () => {
-			this.log.info('Update Not Available');
+			this.log.verbose('Update Not Available');
 			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.UpToDate);
 			this.messageHandler.sendMessage(
 				'AutoUpdaterVersion',
@@ -46,7 +46,7 @@ export class AutoUpdater {
 		});
 
 		autoUpdater.on('update-available', (info: UpdateInfo) => {
-			this.log.info(`Update Available: ${info.version}`);
+			this.log.verbose(`Update Available: ${info.version}`);
 			this.messageHandler.sendMessage(
 				'Notification',
 				'Update Available',
@@ -56,7 +56,7 @@ export class AutoUpdater {
 		});
 
 		autoUpdater.on('download-progress', (progress: ProgressInfo) => {
-			this.log.info(`Downloading: ${progress.percent.toFixed()}`);
+			this.log.verbose(`Downloading: ${progress.percent.toFixed()}`);
 			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.Downloading);
 			this.messageHandler.sendMessage(
 				'AutoUpdaterProgress',
@@ -65,9 +65,8 @@ export class AutoUpdater {
 		});
 
 		autoUpdater.on('update-downloaded', (data: UpdateDownloadedEvent) => {
-			this.log.info(`Download Complete`);
-			this.log.info(`New Version: ${data.version}`);
-			this.log.info(
+			this.log.verbose(`Download Complete: ${data.version}`);
+			this.log.debug(
 				`Download Url: https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
 			this.messageHandler.sendMessage(
@@ -88,7 +87,7 @@ export class AutoUpdater {
 
 		this.clientEmitter.on('AutoUpdaterInstall', async () => {
 			if (this.status !== AutoUpdaterStatus.DownloadComplete) return;
-			this.log.info('Quit and install');
+			this.log.warn('Quit and install');
 			autoUpdater.quitAndInstall();
 			this.app.exit()
 		});

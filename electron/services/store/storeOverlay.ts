@@ -89,7 +89,7 @@ export class ElectronOverlayStore {
 				.map(item => kebabCase(item.id))
 			const customFileEntry = path.join(this.appDir, "public", "custom", overlay.id)
 			if (!fs.existsSync(customFileEntry)) {
-				this.log.info("Path:", customFileEntry, "does not exist")
+				this.log.verbose("Path:", customFileEntry, "does not exist")
 				return;
 			}
 			const storedCustomTypes = fs.readdirSync(customFileEntry, { withFileTypes: true })
@@ -271,13 +271,13 @@ export class ElectronOverlayStore {
 				filters: [{ name: 'json', extensions: ['json'] }],
 				nameFieldLabel: overlay.title,
 			});
+			if (canceled || !filePath) return;
 			const appDirCustomFilesDir = `${this.appDir}/public/custom/${overlayId}`
 			const entries = getCustomFiles(appDirCustomFilesDir);
 			const shareOverlay: SharedOverlay = {
 				...overlay,
 				customFiles: entries
 			}
-			if (canceled || !filePath) return;
 			fs.writeFileSync(filePath, JSON.stringify(shareOverlay), 'utf-8');
 		});
 

@@ -37,7 +37,6 @@ export class MemoryRead {
 				}
 				this.handleGameState(this.memory);
 				this.handleController(this.memory);
-				// TODO: Get Menu Location
 			} catch (err) {
 				this.log.error(err);
 				this.stopMemoryRead();
@@ -60,7 +59,7 @@ export class MemoryRead {
 	};
 
 	stopMemoryRead() {
-		this.log.info('Stopping memory read');
+		this.log.warn('Stopping memory read');
 		this.memory = null;
 		clearInterval(this.memoryReadInterval);
 	}

@@ -239,7 +239,7 @@ export class StatsDisplay {
 		const re = new RegExp('^Game_.*.slp$');
 
 		const slippiSettings = this.storeSettings.getSlippiLauncherSettings();
-		this.log.info('Settings:', slippiSettings);
+		this.log.debug('Settings:', slippiSettings);
 
 		if (!slippiSettings?.rootSlpPath) return;
 
@@ -309,7 +309,7 @@ export class StatsDisplay {
 			);
 		});
 		if (!file) return null;
-		this.log.info('Analyzing recent game file:', file);
+		this.log.debug('Analyzing recent game file:', file);
 		let game = new SlippiGame(file);
 		return this.getGameStats(game, gameEnd);
 	}

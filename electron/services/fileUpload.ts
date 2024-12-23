@@ -7,7 +7,7 @@ import fs from "fs";
 import path from "path";
 
 @singleton()
-export class FileUpload {
+export class FileHandler {
 	constructor(
 		@inject('AppDir') private appDir: string,
 		@inject('BrowserWindow') private mainWindow: BrowserWindow,
@@ -25,7 +25,7 @@ export class FileUpload {
 			filters: [{ name: '', extensions: acceptedExtensions }],
 		});
 		if (canceled) {
-			this.log.info("Uploading custom file canceled")
+			this.log.warn("Uploading custom file canceled")
 			return
 		};
 		const fileExtension = path.extname(filePaths[0]);
@@ -40,9 +40,22 @@ export class FileUpload {
 		this.messageHandler.sendMessage("ImportCustomFileComplete", newFileName)
 	};
 
+	async saveLogs() {
+		const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, {
+			filters: [{ name: 'main', extensions: ['log'] }],
+		});
+
+		if (canceled) return;
+
+		const logPath = path.join(this.appDir, "main.log");
+
+		fs.copyFileSync(logPath, filePath)
+	}
+	
 	private initEventListeners() {
 		this.clientEmitter.on("ImportCustomFile", (overlayId: string, directory: string, fileName: string, acceptedExtensions: string[]) => {
 			this.uploadFile(overlayId, directory, fileName, acceptedExtensions)
 		});
+		this.clientEmitter.on("SaveLogs", this.saveLogs.bind(this));
 	}
 }

@@ -103,6 +103,8 @@ export class ElectronSettingsStore {
 		};
 	}
 
+
+
 	initStoreListeners() {
 		this.store.onDidChange(`settings.currentPlayer`, async () => {
 			this.storeCurrentPlayer.updateCurrentPlayerConnectCode();

@@ -21,22 +21,32 @@ import { DiscordRpc } from './services/discord';
 import { migrateStore } from './services/store/migration';
 import Store from 'electron-store';
 import { ElectronCommandStore } from './services/store/storeCommands';
-import { FileUpload } from './services/fileUpload';
+import { FileHandler } from './services/fileUpload';
 import { BACKEND_PORT, VITE_PORT } from '../frontend/src/lib/models/const';
 
-const mainLog: ElectronLog = setLoggingPath(log);
+let mainLog: ElectronLog = log
 
-function setLoggingPath(log: ElectronLog): ElectronLog {
+function setLoggingPath(log: ElectronLog, appName: string): ElectronLog {
 	try {
-		const appDataPath = getAppDataPath('froggi');
-		log.transports.file.resolvePath = () => path.join(`${appDataPath}/froggi.log`);
+		const appDataPath = getAppDataPath(appName);
+		log.transports.file.resolvePath = () => 
+			path.join(`${appDataPath}/main.log`
+			);
+
+			log.transports.file.level = "verbose"
+
 	} catch (err) {
 		log.error(err);
 	}
+
+
 	return log;
 }
 
 try {
+	const dev = !app.isPackaged;
+	const appName = dev ? "Electron" : "froggi";
+	mainLog = setLoggingPath(log, appName);
 	mainLog.info('Starting app');
 	const isMac = os.platform() === 'darwin';
 	const isWindows = os.platform() === 'win32';
@@ -51,7 +61,6 @@ try {
 	const clientEmitter = new TypedEmitter();
 
 	const serveURL = serve({ directory: '.' });
-	const dev = !app.isPackaged;
 	const port = dev ? `${VITE_PORT}` : `${BACKEND_PORT}`;
 
 	let mainWindow: BrowserWindow | any;
@@ -243,7 +252,7 @@ try {
 			container.resolve(ObsWebSocket);
 			container.resolve(SlippiJs);
 			container.resolve(AutoUpdater);
-			container.resolve(FileUpload);
+			container.resolve(FileHandler);
 		});
 
 		mainWindow.on('close', (event: Event) => {

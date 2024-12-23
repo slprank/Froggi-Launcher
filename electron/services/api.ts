@@ -11,18 +11,6 @@ export class Api {
 		this.log.info("Initializing Api")
 	}
 
-	// async getPlayerRankStats(connectCode: string | undefined): Promise<RankedNetplayProfile | undefined> {
-	// 	if (!connectCode) return undefined;
-	// 	try {
-	// 		const rankData = (await axios.get(`http://slprank.com/rank/${connectCode.replace('#', '-')}?raw`)).data as RankedNetplayProfile
-	// 		this.log.info("Fetched user:", this.enrichData(rankData, connectCode))
-	// 		return this.enrichData(rankData, connectCode)
-	// 	} catch (err) {
-	// 		this.log.error(err);
-	// 		return
-	// 	}
-	// }
-
 	async getPlayerWithRankStats(player: PlayerType): Promise<Player | undefined> {
 		try {
 			const rankData = await this.getPlayerRankStats(player.connectCode);

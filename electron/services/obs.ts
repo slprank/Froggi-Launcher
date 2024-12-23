@@ -113,7 +113,7 @@ export class ObsWebSocket {
 				await this.obs.connect(`ws://${ipAddress}:${port}`, password);
 			} catch {
 				this.log.error(
-					`Could not connect to OBS: ${`ws://${ipAddress}:${port}`} - (Failed connection attempts may cause lag spikes)`,
+					`Could not connect to OBS: ${`ws://${ipAddress}:${port}`}`,
 				);
 			}
 		}, 5000);
