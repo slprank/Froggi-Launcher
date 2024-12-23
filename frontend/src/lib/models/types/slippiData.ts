@@ -17,7 +17,7 @@ export interface Character {
 
 export interface CurrentPlayer extends Player {
     game: PlayerGame
-    rank: CurrentPlayerRank
+    rank: CurrentPlayerRank | undefined
 }
 
 export interface CurrentPlayerRank extends Rank {

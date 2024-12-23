@@ -30,7 +30,7 @@ export class ElectronSessionStore {
     resetSessionStats() {
         const player = this.storeCurrentPlayer.getCurrentPlayer();
         if (!player) return;
-        const currentRankedStats = player.rank.current;
+        const currentRankedStats = player.rank?.current;
         if (!currentRankedStats) return;
         const session: SessionStats = {
             startRankStats: currentRankedStats,

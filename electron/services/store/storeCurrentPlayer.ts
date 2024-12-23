@@ -87,7 +87,7 @@ export class ElectronCurrentPlayerStore {
 			10000,
 		);
 		setTimeout(() => {
-			this.setCurrentPlayerCurrentRankStats(player.rank.new);
+			this.setCurrentPlayerCurrentRankStats(player.rank?.new);
 		}, 5000);
 	}
 

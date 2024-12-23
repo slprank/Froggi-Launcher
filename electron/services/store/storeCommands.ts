@@ -180,7 +180,7 @@ export class ElectronCommandStore {
 
 		if (isNil(controllerIndex)) return;
 
-		const buttonInputs = playerControllerInputs?.[controllerIndex].buttons;
+		const buttonInputs = playerControllerInputs?.[controllerIndex]?.buttons;
 
 		const controllerCommands = getSubsetCommands(this.controllerCommands, buttonInputs);
 		if (!controllerCommands) return;
