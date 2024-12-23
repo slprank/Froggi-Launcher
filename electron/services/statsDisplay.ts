@@ -300,13 +300,16 @@ export class StatsDisplay {
 		if (!files || !files.length) return null;
 		const matchId = settings?.matchInfo?.matchId ?? '';
 		const gameNumber = settings?.matchInfo?.gameNumber ?? 0;
+		const randomSeed = settings?.randomSeed;
 		const file = files.find((file) => {
 			const settings = new SlippiGame(file).getSettings();
-			return (
-				settings?.matchInfo?.matchId === matchId &&
-				settings?.matchInfo?.gameNumber === gameNumber &&
-				settings?.matchInfo?.tiebreakerNumber === 0
-			);
+			return matchId
+			? (
+					settings?.matchInfo?.matchId === matchId &&
+					settings?.matchInfo?.gameNumber === gameNumber &&
+					settings?.matchInfo?.tiebreakerNumber === 0
+				)
+			: settings?.randomSeed === randomSeed;
 		});
 		if (!file) return null;
 		this.log.debug('Analyzing recent game file:', file);
