@@ -90,6 +90,7 @@
 								{dataItem}
 								{edit}
 								{preview}
+								isDemo={!!demoItem}
 							>
 								<AnimationLayer
 									animationIn={(node) =>
@@ -112,6 +113,7 @@
 										)}
 									{dataItem}
 									{edit}
+									isDemo={!!demoItem}
 								>
 									<GridElements {dataItem} {preview} />
 								</AnimationLayer>

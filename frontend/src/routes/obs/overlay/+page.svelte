@@ -5,7 +5,6 @@
 	import OverlayPreviewModal from '$lib/components/obs/overlays/OverlayPreviewModal.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
 	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
-	import { onDestroy, onMount } from 'svelte';
 
 	let newOverlayModalOpen = false;
 	let overlayPreviewOpen = false;
@@ -14,6 +13,13 @@
 		selectedOverlay = await getOverlayById(overlayId);
 		overlayPreviewOpen = true;
 	};
+
+	$: customOverlays = (
+		Object.values($overlays).sort((a, b) => a.title.localeCompare(b.title)) ?? []
+	).filter((overlay) => !overlay.isDemo);
+	$: demoOverlays = (
+		Object.values($overlays).sort((a, b) => a.title.localeCompare(b.title)) ?? []
+	).filter((overlay) => overlay.isDemo);
 
 	let selectedOverlay: Overlay | undefined = undefined;
 </script>
@@ -25,28 +31,50 @@
 	out:fade={{ duration: 300 }}
 >
 	<div
-		class={`w-full h-full gap-4 flex flex-col justify-between items-center ${
+		class={`w-full h-full max-h-full gap-4 flex flex-col justify-between items-center ${
 			$isMobile && 'pb-18'
 		}`}
 	>
 		<div>
 			<h1 class="text-4xl font-bold text-white shadow-md">Overlays</h1>
 		</div>
-		<div
-			class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 border border-gray-500 rounded-md p-4"
-		>
-			{#each Object.values($overlays).sort( (a, b) => a.title.localeCompare(b.title), ) ?? [] as overlay, i}
-				<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
-					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
-						on:click={() => {
-							openPreview(overlay.id);
-						}}
-					>
-						{overlay.title}
-					</button>
-				</div>
-			{/each}
+		<div class="w-full border border-gray-500">
+			<h1 class="text-2xl font-bold text-white shadow-md w-full text-center">Demo</h1>
+			<div
+				class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
+			>
+				{#each demoOverlays as overlay, i}
+					<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
+						<button
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
+							on:click={() => {
+								openPreview(overlay.id);
+							}}
+						>
+							{overlay.title}
+						</button>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="flex-1 w-full border border-gray-500 overflow-scroll">
+			<h1 class="text-2xl font-bold text-white shadow-md w-full text-center">Custom</h1>
+			<div
+				class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
+			>
+				{#each customOverlays as overlay, i}
+					<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
+						<button
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
+							on:click={() => {
+								openPreview(overlay.id);
+							}}
+						>
+							{overlay.title}
+						</button>
+					</div>
+				{/each}
+			</div>
 		</div>
 		{#if $isElectron}
 			<div>

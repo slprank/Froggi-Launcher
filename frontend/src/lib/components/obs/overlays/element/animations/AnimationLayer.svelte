@@ -33,6 +33,7 @@
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
+	export let isDemo: boolean = false;
 
 	let key: number | undefined = 0;
 	let prevGameFrame: FrameEntryType | null | undefined;
@@ -84,6 +85,7 @@
 	$: $gameFrame, $currentPlayer, $gameSettings, $sessionStats, updateTriggerValues();
 
 	onMount(() => {
+		if (!isDemo) return;
 		const handler = () => {
 			const tempTrigger = key;
 			key = Math.random();

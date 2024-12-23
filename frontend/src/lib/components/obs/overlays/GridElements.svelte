@@ -11,6 +11,7 @@
 	import Match from './elementRender/Match.svelte';
 	import { overlays, statsScene } from '$lib/utils/store.svelte';
 	import { page } from '$app/stores';
+	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
 	export let edit: boolean = false;
@@ -55,6 +56,7 @@
 	};
 
 	const getFont = (font: Font | undefined) => {
+		if (isNil($overlays[overlayId])) return;
 		if (font?.family === 'default') {
 			if ($overlays[overlayId][$statsScene].active)
 				return $overlays[overlayId][$statsScene].font.family;

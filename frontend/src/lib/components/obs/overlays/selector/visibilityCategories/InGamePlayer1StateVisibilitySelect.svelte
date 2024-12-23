@@ -23,6 +23,14 @@
 	Player 1 Alive
 </SelectOption>
 <SelectOption
+	description="When Player 1 Is Entering On Halo"
+	value={VisibilityOption.InGamePlayer1EnteringHalo}
+	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer1EnteringHalo]}
+	on:select={select}
+>
+	Player 1 Entering Halo
+</SelectOption>
+<SelectOption
 	description="When Player 1 Is Off Stage"
 	value={VisibilityOption.InGamePlayer1OffStage}
 	bind:selected={selectedVisibilityOption[VisibilityOption.InGamePlayer1OffStage]}

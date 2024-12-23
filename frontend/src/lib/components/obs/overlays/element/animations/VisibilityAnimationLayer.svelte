@@ -25,102 +25,93 @@
 	import { sessionVisibilityOption } from './visibilityConditions/SessionVisibilityOptions.svelte';
 	import { matchStatsVisibilityOption } from './visibilityConditions/MatchStatsVisibilityOptions.svelte';
 	import { rankVisibilityOption } from './visibilityConditions/RankVisibilityOptions.svelte';
+	import { InGameState } from '$lib/models/enum';
+	import { FrameEntryType } from '@slippi/slippi-js';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
 	export let preview: boolean;
 	export let edit: boolean = false;
+	export let isDemo: boolean = false;
 
-	$: visible = true;
-	const updateVisibilityValue = (dataItem: GridContentItem) => {
+	let visible = true;
+	const updateVisibilityValue = (
+		dataItem: GridContentItem,
+		gameState: InGameState,
+		gameFrame: FrameEntryType | null | undefined,
+	) => {
 		if (edit || preview) return true;
 
 		const options = dataItem.data.visibility.selectedOptions;
 
-		return options.every((option) => {
-			const inGameOptions = inGameVisibilityOption(
-				option,
-				$currentPlayers,
-				$gameSettings,
-				$gameFrame,
-				$gameState,
-			);
-			const inGamePlayer1Options = inGamePlayer1VisibilityOption(
-				option,
-				$gameFrame,
-				$currentPlayers,
-			);
-			const inGamePlayer2Options = inGamePlayer2VisibilityOption(
-				option,
-				$gameFrame,
-				$currentPlayers,
-			);
-			const matchStatsOptions = matchStatsVisibilityOption(option, $gameScore);
-			const postGameOptions = postGameVisibilityOption(
-				option,
-				$currentPlayers,
-				$currentPlayer,
-				$postGame,
-			);
-			const postGame1SummaryOptions = postGame1SummaryVisibilityOption(
-				option,
-				$currentPlayers,
-				$currentPlayer,
-				$recentGames,
-			);
-			const postGame2SummaryOptions = postGame2SummaryVisibilityOption(
-				option,
-				$currentPlayers,
-				$currentPlayer,
-				$recentGames,
-			);
-			const postGame3SummaryOptions = postGame3SummaryVisibilityOption(
-				option,
-				$currentPlayers,
-				$currentPlayer,
-				$recentGames,
-			);
-			const postGame4SummaryOptions = postGame4SummaryVisibilityOption(
-				option,
-				$currentPlayers,
-				$currentPlayer,
-				$recentGames,
-			);
-			const postGame5SummaryOptions = postGame5SummaryVisibilityOption(
-				option,
-				$currentPlayers,
-				$currentPlayer,
-				$recentGames,
-			);
-			const rankOptions = rankVisibilityOption(option, $currentPlayer);
-			const sessionOptions = sessionVisibilityOption(option, $sessionStats);
+		if (!options || options.length === 0) {
+			return false;
+		}
 
-			return (
-				inGameOptions ||
-				inGamePlayer1Options ||
-				inGamePlayer2Options ||
-				matchStatsOptions ||
-				postGameOptions ||
-				postGame1SummaryOptions ||
-				postGame2SummaryOptions ||
-				postGame3SummaryOptions ||
-				postGame4SummaryOptions ||
-				postGame5SummaryOptions ||
-				rankOptions ||
-				sessionOptions
-			);
+		visible = options.every((option) => {
+			if (
+				inGameVisibilityOption(
+					option,
+					$currentPlayers,
+					$gameSettings,
+					gameFrame,
+					gameState,
+				) ||
+				inGamePlayer1VisibilityOption(option, gameFrame, $currentPlayers) ||
+				inGamePlayer2VisibilityOption(option, gameFrame, $currentPlayers) ||
+				matchStatsVisibilityOption(option, $gameScore) ||
+				postGameVisibilityOption(option, $currentPlayers, $currentPlayer, $postGame) ||
+				postGame1SummaryVisibilityOption(
+					option,
+					$currentPlayers,
+					$currentPlayer,
+					$recentGames,
+				) ||
+				postGame2SummaryVisibilityOption(
+					option,
+					$currentPlayers,
+					$currentPlayer,
+					$recentGames,
+				) ||
+				postGame3SummaryVisibilityOption(
+					option,
+					$currentPlayers,
+					$currentPlayer,
+					$recentGames,
+				) ||
+				postGame4SummaryVisibilityOption(
+					option,
+					$currentPlayers,
+					$currentPlayer,
+					$recentGames,
+				) ||
+				postGame5SummaryVisibilityOption(
+					option,
+					$currentPlayers,
+					$currentPlayer,
+					$recentGames,
+				) ||
+				rankVisibilityOption(option, $currentPlayer) ||
+				sessionVisibilityOption(option, $sessionStats)
+			) {
+				return true;
+			}
+			return false;
 		});
 	};
 
 	$: {
-		$gameState, $gameFrame, (visible = updateVisibilityValue(dataItem));
+		updateVisibilityValue(dataItem, $gameState, $gameFrame);
 	}
 
 	onMount(() => {
-		if (!edit && !preview) return;
+		if (!isDemo) return;
 		$localEmitter.on('TestVisibilityTrigger', () => {
 			visible = !visible;
 		});
+		return () => {
+			$localEmitter.off('TestVisibilityTrigger', () => {});
+		};
 	});
 </script>
 
@@ -128,7 +119,7 @@
 	<div class="w-full h-full absolute top-0 left-0">
 		<slot />
 	</div>
-{:else if visible}
+{:else if Boolean(visible)}
 	<div class="w-full h-full" in:animationIn|local out:animationOut|local>
 		<slot />
 	</div>

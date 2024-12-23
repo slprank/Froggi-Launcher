@@ -1,6 +1,6 @@
 import { STAGE_DATA, Stage } from "../../lib/models/constants/stageData";
 import type { GameStartMode, GameStats } from "../../lib/models/types/slippiData";
-import type { FrameEntryType, GameStartType } from "@slippi/slippi-js";
+import type { GameStartType, PostFrameUpdateType } from "@slippi/slippi-js";
 import { isNil } from "lodash";
 
 // TODO: Figure out how tied game placements look
@@ -48,23 +48,31 @@ export const getGameMode = (settings: GameStartType): GameStartMode => {
 }
 
 
-export const getComboCount = (frame: FrameEntryType | null | undefined, playerIndex: number) => {
-    return frame?.players[playerIndex]?.post.currentComboCount ?? 0;
+export const getComboCount = (postFrame: PostFrameUpdateType | undefined) => {
+    if (isNil(postFrame)) return false;
+    return postFrame.currentComboCount ?? 0;
 };
 
 export const hasStocksRemaining = (
-    frame: FrameEntryType | null | undefined,
-    playerIndex: number,
+    postFrame: PostFrameUpdateType | undefined,
     stocks: number,
 ) => {
-    return (frame?.players?.[playerIndex]?.post.stocksRemaining ?? 0) >= stocks;
+    if (isNil(postFrame)) return false;
+    return (postFrame.stocksRemaining ?? 0) >= stocks;
 };
 
 export const isPlayerAlive = (
-    frame: FrameEntryType | null | undefined,
-    playerIndex: number,
+    postFrame: PostFrameUpdateType | undefined,
 ) => {
-    return (frame?.players?.[playerIndex]?.post.actionStateId ?? 0) <= 10;
+    if (isNil(postFrame)) return false;
+    return (postFrame.actionStateId ?? 0) >= 14;
+};
+
+export const isPlayerEnteringOnHalo = (
+    postFrame: PostFrameUpdateType | undefined,
+) => {
+    if (isNil(postFrame)) return false;
+    return (postFrame.actionStateId ?? 0) === 12;
 };
 
 export const hasGameBombRain = (game: GameStats): boolean => {

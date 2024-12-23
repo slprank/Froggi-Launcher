@@ -134,7 +134,6 @@
 		if (isNil(playerFrame) || isNil(stageId)) return false;
 		const offStageZone = getOffStageZone(stageId);
 		if (isNil(offStageZone)) return false;
-		if (Number(playerFrame.actionStateId) < 14) return false; // If dead or on holo
 		if ((playerFrame?.positionX ?? 0) < offStageZone[0][0]) return true;
 		if ((playerFrame?.positionX ?? 0) > offStageZone[1][0]) return true;
 		if ((playerFrame?.positionY ?? 0) < offStageZone[0][1]) return true;

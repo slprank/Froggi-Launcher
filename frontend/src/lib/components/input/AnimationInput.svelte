@@ -16,6 +16,10 @@
 			animation.options.duration = max;
 			notifications.warning(`Duration cannot exceed ${max}ms`, 3000);
 		}
+		if (animation?.options.duration < 0) {
+			animation.options.duration = 0;
+			notifications.warning(`Duration cannot be negative`, 3000);
+		}
 		if (animation?.options.duration + animation?.options.delay > max) {
 			animation.options.delay = max - animation?.options.duration;
 			notifications.warning(`Duration + delay cannot exceed ${max}ms`, 3000);
@@ -25,6 +29,7 @@
 			animation.options.duration = 0;
 		}
 	};
+
 	$: animation, fixAnimationInputDelay();
 </script>
 

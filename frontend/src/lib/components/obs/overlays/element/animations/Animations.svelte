@@ -37,6 +37,7 @@
 			y: y,
 			x: x,
 			easing: getEasing(option.easing),
+			tick: () => {},
 		});
 	};
 
@@ -49,20 +50,16 @@
 		if (!dataItem) return fly(node, { duration: 0 });
 		const delay =
 			dataItem[COL]?.y +
-				option.delay +
-				Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
-				additionalDelay ?? 0;
+			option.delay +
+			Math.abs(dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) +
+			additionalDelay;
 		const y = getRelativePixelSize(
 			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
-			innerWidth,
-			innerHeight,
 		);
 		const x = getRelativePixelSize(
 			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
-			innerWidth,
-			innerHeight,
 		);
-		return fly(node, { duration: option.duration, x: x, y: y, delay: delay });
+		return fly(node, { duration: option.duration, x: x, y: y, delay: delay, tick: () => {} });
 	};
 
 	function roundaboutTransform(
@@ -113,11 +110,12 @@
 				);
 				return `transform: ${transformed};`;
 			},
+			tick: () => {},
 		};
 	}
 
 	const emptyAnimation = (node: Element, delay: number): AnimationConfig => {
-		return fly(node, { delay: delay, duration: 0 });
+		return fly(node, { delay: delay, duration: 0, tick: () => {} });
 	};
 
 	const getEasing = (easing: string): EasingFunction => {
@@ -139,14 +137,33 @@
 		additionalDelay: number = 0,
 		dataItem: GridContentItem | undefined = undefined,
 	): AnimationConfig => {
+		console.log({
+			start: Number(animation?.options.start),
+			x: getRelativePixelSize(animation?.options.x ?? 0, height, width).toFixed(),
+			y: getRelativePixelSize(animation?.options.y ?? 0, height, width).toFixed(),
+			scale: 0,
+			duration: Number(animation.options.duration),
+			delay: Number((animation?.options.delay ?? 0) + additionalDelay),
+			easing: getEasing(animation?.options.easing ?? ''),
+		});
+
+		if (!animation) {
+			console.error('No animation settings provided');
+			return {
+				tick: () => {},
+			};
+		}
+
 		const transition = getTransition(animation?.type);
+
 		if (transition)
 			return transition(node, {
-				...animation?.options,
-				x: getRelativePixelSize(animation?.options.x ?? 0, height, width),
-				y: getRelativePixelSize(animation?.options.y ?? 0, height, width),
+				start: Number(animation.options.start),
+				x: getRelativePixelSize(animation?.options.x ?? 0, height, width).toFixed(),
+				y: getRelativePixelSize(animation?.options.y ?? 0, height, width).toFixed(),
 				scale: 0,
-				delay: (animation?.options.delay ?? 0) + additionalDelay,
+				duration: Number(Math.abs(animation.options.duration)),
+				delay: Number((animation?.options.delay ?? 0) + additionalDelay),
 				easing: getEasing(animation?.options.easing ?? ''),
 			});
 
