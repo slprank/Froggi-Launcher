@@ -24,7 +24,7 @@ export class ElectronObsStore {
 
     setDefaultObsAuth() {
         const auth = this.getAuth();
-        if (!auth) this.store.set('obs.auth', { ipAddress: 'localhost', port: 4455, password: '' });
+        if (!auth) this.store.set('obs.auth', { ipAddress: '127.0.0.1', port: 4455, password: '' });
     }
 
     getObs(): Obs | undefined {

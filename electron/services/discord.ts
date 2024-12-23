@@ -42,9 +42,11 @@ export class DiscordRpc {
 
 	initDiscordEvents = () => {
 		this.localEmitter.on("LiveStatsSceneChange", (scene: LiveStatsScene) => {
-			if ([LiveStatsScene.Menu].includes(scene)) {
-				this.setMenuActivity('Menu');
+			if ([LiveStatsScene.InGame].includes(scene)) {
+				this.setMenuActivity('In Game');
+				return;
 			}
+			this.setMenuActivity('Menu');
 		});
 
 		this.localEmitter.on("GameSettings", (settings: GameStartType | undefined) => {
