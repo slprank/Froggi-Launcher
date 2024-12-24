@@ -25,5 +25,8 @@ jobs:
         uses: ./.github/workflows/deploy.yml
         secrets: inherit
         with:
-            file: './dist/*.exe; ./dist/*.exe.blockmap; ./dist/latest.yml;'
+            file: |
+                ./dist/*.exe
+                ./dist/*.exe.blockmap
+                ./dist/latest.yml
             runs-on: 'windows-latest'

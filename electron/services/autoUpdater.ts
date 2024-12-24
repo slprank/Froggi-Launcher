@@ -95,13 +95,12 @@ export class AutoUpdater {
 
 		this.clientEmitter.on('AutoUpdaterCheckForUpdate', async () => {
 			if (this.status !== AutoUpdaterStatus.UpToDate) return;
-			autoUpdater.checkForUpdates();
+			autoUpdater.checkForUpdatesAndNotify();
 		});
 
 		this.clientEmitter.on('AutoUpdaterDownloadUpdate', async () => {
 			if (this.status !== AutoUpdaterStatus.UpdateAvailable) return;
-			// Downloads update automatically
-			//autoUpdater.downloadUpdate();
+			autoUpdater.downloadUpdate();
 		});
 
 		this.localEmitter.on('AutoUpdaterStatus', (status) => {
