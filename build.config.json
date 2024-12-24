@@ -14,6 +14,12 @@
 			}
 		]
 	},
+	"nsis": {
+		"oneClick": true,
+		"perMachine": false,
+		"allowToChangeInstallationDirectory": false,
+		"differentialPackage": true
+	},
 	"linux": {
 		"icon": "bin/static/icon.png",
 		"target": [

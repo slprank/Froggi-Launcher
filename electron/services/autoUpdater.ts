@@ -5,7 +5,6 @@ import { MessageHandler } from './messageHandler';
 import { AutoUpdaterStatus, NotificationType } from '../../frontend/src/lib/models/enum';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { App } from 'electron';
-import os from "os";
 
 @injectable()
 export class AutoUpdater {
@@ -20,11 +19,6 @@ export class AutoUpdater {
 	) {
 		this.log.info('Initializing Auto Updater');
 		this.initListeners();
-		
-		if (os.platform() === "win32") {
-			const customFeedUrl = 'https://github.com/slprank/Froggi-Launcher/releases/download/latest/';
-      autoUpdater.setFeedURL(customFeedUrl);
-		}
 
 		autoUpdater.checkForUpdates();
 		autoUpdater.autoInstallOnAppQuit = true;
