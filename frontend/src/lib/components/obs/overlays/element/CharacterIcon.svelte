@@ -2,30 +2,38 @@
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Character } from '$lib/models/enum';
 	import { isNil } from 'lodash';
+	import { PlayerType } from '@slippi/slippi-js';
+	import { gameSettings, gameState, postGame } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
-	export let characterId: Character | undefined | null;
+	export let player: PlayerType | undefined | null;
 	export let defaultPreview: boolean = false;
 	export let defaultPreviewId: Character;
 	export let style: GridContentItemStyle;
 
-	$: character = defaultPreview ? defaultPreviewId : characterId ? characterId : -1;
+	$: characterId = defaultPreview ? defaultPreviewId : player ? player.characterId : undefined;
+	$: characterColorId = defaultPreview
+		? 0
+		: $gameSettings.players[player?.playerIndex ?? 0].characterColor ?? undefined;
+
 	// TODO: Include colors
 </script>
 
-{#if !isNil(character)}
-	<div
-		class={`w-full h-full flex ${style.classValue}`}
-		style={`${style.cssValue}; ${
-			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
-		}; `}
-	>
-		<img
-			class="h-full w-full aspect-video"
-			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+{#if !isNil(characterId)}
+	{#key player}
+		<div
+			class={`w-full h-full flex ${style.classValue}`}
+			style={`${style.cssValue}; ${
+				dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
+			}; `}
+		>
+			<img
+				class="h-full w-full aspect-video"
+				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`/image/characters/${character}/0/stock.png`}
-			alt="custom"
-		/>
-	</div>
+				src={`/image/characters/${characterId}/${characterColorId}/stock.png`}
+				alt="custom"
+			/>
+		</div>
+	{/key}
 {/if}

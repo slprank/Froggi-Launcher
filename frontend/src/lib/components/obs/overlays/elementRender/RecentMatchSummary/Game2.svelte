@@ -15,6 +15,9 @@
 
 	$: gameNumber = $recentGames.length > 5 ? -4 : 1;
 	$: game = $recentGames.at(gameNumber)?.at(0);
+
+	$: player1 = game?.settings?.players.at($currentPlayers?.at(0)?.playerIndex ?? 0);
+	$: player2 = game?.settings?.players.at($currentPlayers?.at(1)?.playerIndex ?? 1);
 </script>
 
 {#if dataItem?.elementId === CustomElement.CurrentSetGame2Stage}
@@ -40,8 +43,7 @@
 	<CharacterIcon
 		{style}
 		{dataItem}
-		characterId={game?.settings?.players.at($currentPlayers?.at(0)?.playerIndex ?? 0)
-			?.characterId}
+		player={player1}
 		{defaultPreview}
 		defaultPreviewId={Character.Ganondorf}
 	/>
@@ -50,8 +52,7 @@
 	<CharacterIcon
 		{style}
 		{dataItem}
-		characterId={game?.settings?.players.at($currentPlayers?.at(1)?.playerIndex ?? 1)
-			?.characterId}
+		player={player2}
 		{defaultPreview}
 		defaultPreviewId={Character.Falcon}
 	/>
@@ -60,8 +61,7 @@
 	<CharacterRender
 		{style}
 		{dataItem}
-		characterId={game?.settings?.players.at($currentPlayers?.at(0)?.playerIndex ?? 0)
-			?.characterId}
+		player={player1}
 		{defaultPreview}
 		defaultPreviewId={Character.Ganondorf}
 		direction="left"
@@ -71,8 +71,7 @@
 	<CharacterRender
 		{style}
 		{dataItem}
-		characterId={game?.settings?.players.at($currentPlayers?.at(0)?.playerIndex ?? 0)
-			?.characterId}
+		player={player1}
 		{defaultPreview}
 		defaultPreviewId={Character.Ganondorf}
 		direction="right"
@@ -82,8 +81,7 @@
 	<CharacterRender
 		{style}
 		{dataItem}
-		characterId={game?.settings?.players.at($currentPlayers?.at(1)?.playerIndex ?? 1)
-			?.characterId}
+		player={player2}
 		{defaultPreview}
 		defaultPreviewId={Character.Falcon}
 		direction="left"
@@ -93,8 +91,7 @@
 	<CharacterRender
 		{style}
 		{dataItem}
-		characterId={game?.settings?.players.at($currentPlayers?.at(1)?.playerIndex ?? 1)
-			?.characterId}
+		player={player2}
 		{defaultPreview}
 		defaultPreviewId={Character.Falcon}
 		direction="right"

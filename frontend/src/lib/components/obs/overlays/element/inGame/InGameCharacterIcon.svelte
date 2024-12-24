@@ -2,7 +2,7 @@
 	import { CHARACTERS_INTERNAL_EXTERNAL } from '$lib/models/constants/characterData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import type { Player } from '$lib/models/types/slippiData';
-	import { gameFrame, gameSettings, statsScene } from '$lib/utils/store.svelte';
+	import { gameFrame, gameSettings } from '$lib/utils/store.svelte';
 	import { isNil } from 'lodash';
 
 	export let dataItem: GridContentItem;
@@ -11,20 +11,14 @@
 	export let style: GridContentItemStyle;
 	export let defaultPreviewId: number;
 
-	const playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
-	const postFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
+	$: postFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 
-	let characterId: number | null;
-	const updateCharacterId = (): number | null => {
-		return preview
-			? defaultPreviewId
-			: postFrame
-			? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
-			: playerSettings
-			? playerSettings.characterId
-			: null;
-	};
-	$: $statsScene, $gameSettings, (characterId = updateCharacterId());
+	$: characterId = preview
+		? defaultPreviewId
+		: CHARACTERS_INTERNAL_EXTERNAL[postFrame?.internalCharacterId ?? -1] ?? 0;
+	$: characterColorId = preview
+		? 0
+		: $gameSettings.players[player?.playerIndex ?? 0].characterColor ?? 0;
 </script>
 
 {#key $gameSettings}
@@ -39,7 +33,7 @@
 				class="h-full w-full aspect-video"
 				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-				src={`/image/characters/${characterId}/0/stock.png`}
+				src={`/image/characters/${characterId}/${characterColorId}/stock.png`}
 				alt="custom"
 			/>
 		</div>

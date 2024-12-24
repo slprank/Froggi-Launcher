@@ -12,20 +12,14 @@
 	export let defaultPreviewId: number;
 	export let direction: 'left' | 'right';
 
-	const playerSettings = $gameSettings.players?.[player?.playerIndex ?? 0];
-	const postFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
+	$: postFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
 
-	let characterId: number | null;
-	const updateCharacterId = (): number | null => {
-		return preview
-			? defaultPreviewId
-			: postFrame
-			? CHARACTERS_INTERNAL_EXTERNAL[postFrame.internalCharacterId ?? -1]
-			: playerSettings
-			? playerSettings.characterId
-			: null;
-	};
-	$: $statsScene, $gameSettings, (characterId = updateCharacterId());
+	$: characterId = preview
+		? defaultPreviewId
+		: CHARACTERS_INTERNAL_EXTERNAL[postFrame?.internalCharacterId ?? -1] ?? 0;
+	$: characterColorId = preview
+		? 0
+		: $gameSettings.players[player?.playerIndex ?? 0].characterColor ?? 0;
 
 	let div: HTMLElement;
 </script>
@@ -45,9 +39,7 @@
 					direction === 'left' ? 100 : 0
 				}% 0;  height: ${div?.clientHeight}px;
 		${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-				src={`/image/characters/${characterId}/${
-					playerSettings?.characterColor ?? 0
-				}/vs-${direction}.png`}
+				src={`/image/characters/${characterId}/${characterColorId}/vs-${direction}.png`}
 				alt="custom"
 			/>
 		{/if}
