@@ -45,8 +45,8 @@
 		(value: Parameters<MessageEvents['GameFrame']>[0]) => {
 			gameFrame.set(value);
 		},
-		16,
-		{ trailing: true, maxWait: 32 },
+		10,
+		{ trailing: true },
 	);
 
 	async function messageDataHandler<J extends keyof MessageEvents>(
