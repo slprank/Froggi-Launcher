@@ -55,34 +55,35 @@ export class ElectronOverlayStore {
 		return this.store.get(`obs.layout.overlays.${overlayId}`) as Overlay;
 	}
 
-	removeDuplicateItems(overlays: Overlay[]): Overlay[] {
-		overlays.forEach(this.removeDuplicateOverlayItems)
-		return overlays;
+	removeDuplicateItems(): void {
+		let overlays = Object.values(this.getOverlays())
+		overlays.forEach(this.removeDuplicateOverlayItems.bind(this))
 	}
 
 	removeDuplicateOverlayItems(overlay: Overlay): Overlay {
 		Object.keys(LiveStatsScene)
 			.filter(key => isNaN(Number(key)))
 			.forEach(key => {
-				const statsScene = LiveStatsScene[key as keyof typeof LiveStatsScene]
+				const statsScene = LiveStatsScene[key as keyof typeof LiveStatsScene];
 				overlay[statsScene].layers.forEach(layer => {
-					layer.items.reduce((acc: GridContentItem[], currentItem) => {
-						const existingItem = acc.find((item) => item.id === currentItem.id);
-
+					layer.items = layer.items.reduce((acc: GridContentItem[], currentItem) => {
+						const existingItem = acc.find(item => item.id === currentItem.id);
 						if (!existingItem) {
 							acc.push(currentItem);
 						}
-
 						return acc;
 					}, []);
 				});
 			});
+		
+		this.setOverlay(overlay)
+	
 		return overlay;
 	}
 
 	cleanupCustomResources() {
-		let overlays = this.getOverlays()
-		Object.values(overlays).forEach(overlay => {
+		let overlays = Object.values(this.getOverlays())
+		overlays.forEach(overlay => {
 			const itemsKebabId = Object.values(LiveStatsScene).map(statsScene => {
 				return overlay[statsScene].layers?.map((layer: Layer) => layer.items).flat()
 			}).flat()
@@ -115,7 +116,7 @@ export class ElectronOverlayStore {
 		this.setOverlay(overlay)
 	}
 
-	duplicateOverlay(overlayId: string): void {
+	copyOverlay(overlayId: string): void {
 		const overlay = this.getOverlayById(overlayId);
 		if (isNil(overlay)) return;
 		const newOverlay = { ...overlay, id: newId(), title: `${overlay.title} - copy`, isDemo: false }
@@ -137,7 +138,7 @@ export class ElectronOverlayStore {
 		fs.rm(source, { recursive: true }, (err => this.log.error(err)))
 	}
 
-	async duplicateSceneLayerItem(overlayId: string, statsScene: LiveStatsScene, layerIndex: number, itemId: string) {
+	async copySceneLayerItem(overlayId: string, statsScene: LiveStatsScene, layerIndex: number, itemId: string) {
 		const overlay = this.getOverlayById(overlayId);
 		if (isNil(overlay) || !overlay?.[statsScene].layers.length) return;
 
@@ -234,7 +235,10 @@ export class ElectronOverlayStore {
 	}
 
 	private initSvelteListeners() {
-		this.clientEmitter.on('CleanupCustomResources', this.cleanupCustomResources.bind(this));
+		this.clientEmitter.on('CleanupCustomResources', async () => {
+			this.removeDuplicateItems();
+			this.cleanupCustomResources();
+		});
 
 		this.clientEmitter.on('OverlayUpdate', async (overlay) => {
 			this.updateOverlay(overlay);
@@ -245,14 +249,14 @@ export class ElectronOverlayStore {
 		})
 
 		this.clientEmitter.on('OverlayDuplicate', async (overlayId) => {
-			this.duplicateOverlay(overlayId);
+			this.copyOverlay(overlayId);
 		});
 
 		this.clientEmitter.on('OverlayDelete', (overlayId) => {
 			this.deleteOverlay(overlayId);
 		});
 
-		this.clientEmitter.on('SceneItemDuplicate', this.duplicateSceneLayerItem.bind(this))
+		this.clientEmitter.on('SceneItemDuplicate', this.copySceneLayerItem.bind(this))
 
 		this.clientEmitter.on('SceneLayerDuplicate', this.duplicateSceneLayer.bind(this))
 
