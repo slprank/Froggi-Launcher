@@ -26,7 +26,7 @@
 			selectedLayerIndex = layerIndex;
 		});
 		return () => {
-			$localEmitter.on('LayerPreviewChange', () => {});
+			$localEmitter.off('LayerPreviewChange', () => {});
 		};
 	});
 

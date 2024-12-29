@@ -45,8 +45,8 @@
 		(value: Parameters<MessageEvents['GameFrame']>[0]) => {
 			gameFrame.set(value);
 		},
-		10,
-		{ trailing: true },
+		16,
+		{ trailing: true, maxWait: 32 },
 	);
 
 	async function messageDataHandler<J extends keyof MessageEvents>(
@@ -146,7 +146,7 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['GameSettings']>[0];
 					if (!value) return;
-					console.log(value);
+					console.log('Settings', value);
 					gameSettings.set(value);
 				})();
 				break;

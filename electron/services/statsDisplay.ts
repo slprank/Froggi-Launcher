@@ -141,10 +141,9 @@ export class StatsDisplay {
 		let gameStats = await this.getRecentGameStats(settings, gameEnd);
 		if (!gameStats) return;
 
-		const winnerIndex = getWinnerIndex(gameStats);
 		let score = this.storeGames.getGameScore();
-		if (!isNil(winnerIndex)) score[winnerIndex ?? 0] += 1;
-		gameStats.score = score;
+
+		gameStats.score = this.handleScore(gameStats, score)
 
 		this.storeGames.setGameScore(gameStats.score);
 		this.handleGameSetStats(gameStats);
@@ -153,6 +152,12 @@ export class StatsDisplay {
 		setTimeout(() => {
 			this.storeLiveStats.setGameState(InGameState.Inactive);
 		}, 5000)
+	}
+
+	private handleScore(gameStats: GameStats, score: number[]): number[] {
+		const winnerIndex = getWinnerIndex(gameStats);
+		if (!isNil(winnerIndex)) score[winnerIndex ?? 0] += 1;
+		return score
 	}
 
 	private async handlePostGameScene(game: GameStats | null) {
