@@ -90,7 +90,7 @@ export class AutoUpdater {
 			if (this.status !== AutoUpdaterStatus.DownloadComplete) return;
 			this.log.warn('Quit and install');
 			autoUpdater.quitAndInstall();
-			this.app.exit()
+			setTimeout(this.app.exit.bind(this), 1000)
 		});
 
 		this.clientEmitter.on('AutoUpdaterCheckForUpdate', async () => {
