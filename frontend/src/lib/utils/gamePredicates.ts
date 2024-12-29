@@ -114,6 +114,7 @@ export const isLrasEnding = (gameEnd: GameEndType) => {
    return gameEnd.gameEndMethod == 7
 }
 
+// Inspired from this https://github.com/Sheepolution/Melee-Ghost-Streamer/blob/7c9dd6662e6c3d2850ccfc29afc805f7a9a4ecf3/app/src/compute.js#L20
 export const isHandwarmers = (gameStats: GameStats): boolean => {
     if (isNil(gameStats)) return false;
     if (isNil(gameStats.settings)) return false
