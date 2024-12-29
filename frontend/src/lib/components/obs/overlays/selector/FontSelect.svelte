@@ -62,10 +62,10 @@
 		acceptedExtensions={['.woff2', '.woff', '.otf', '.ttf']}
 		on:change={updateFontSrc}
 	/>
-	<TextFitMulti
-		class="w-36 h-full pt-[1.25em] grid justify-center items-center text-gray-500 text-shadow"
+	<h1
+		class="text-2xl h-full grid text-start justify-center items-center text-gray-500 text-shadow"
 		style={`font-family: ${fontFamily}`}
 	>
 		Super Smash Bros
-	</TextFitMulti>
+	</h1>
 </div>

@@ -195,4 +195,7 @@
 	lasts a full second and this will give a nice and smooth transition between the scenes.
 </h2>
 
-<h2>Remember to update the transition and font for all the selected scenes</h2>
+<h2>
+	Remember to update the transition and font for all the selected scenes, by changing the scene
+	and applying the desired configurations
+</h2>

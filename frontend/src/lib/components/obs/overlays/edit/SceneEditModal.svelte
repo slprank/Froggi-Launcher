@@ -57,26 +57,44 @@
 		class="w-[80vw] h-[80vh] min-w-72 min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
 		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
 	>
-		<div class="w-full h-full flex">
-			<div class="w-full p-4 px-8 col-span-1 overflow-y-scroll enable-scrollbar">
-				<div class="w-full flex flex-col gap-4">
-					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
-					<div class="w-48 flex gap-2">
-						<TextInput
-							bind:value={overlay.title}
-							label="Title"
-							bind:autofocus
-							autoFocusValue={1}
-						/>
+		<div class="w-full max-h-full h-full flex gap-8 p-4 justify-between">
+			<div class="h-full flex flex-col justify-between">
+				<div class="max-h-full h-full overflow-auto justify-between">
+					<div>
+						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
+						<div class="w-48 flex gap-2">
+							<TextInput
+								bind:value={overlay.title}
+								label="Title"
+								bind:autofocus
+								autoFocusValue={1}
+							/>
+						</div>
 					</div>
-					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
 
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">Active scenes</h1>
-					<SceneSelectOptions bind:overlay />
+					<div>
+						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
 
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">Active scenes</h1>
+						<SceneSelectOptions bind:overlay />
+					</div>
+				</div>
+				<div class="w-48 flex items-end">
+					<button
+						class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+						on:click={handleUpdate}
+					>
+						Update
+					</button>
+				</div>
+			</div>
+			<div class="overflow-scroll max-h-full flex flex-col gap-4">
+				<div class="w-full">
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Default Font:</h1>
 					<FontSelectorLayer bind:font={curScene.font} fontId={$statsScene} />
+				</div>
 
+				<div class="flex flex-col gap-2">
 					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Background</h1>
 					<div class="w-full flex gap-2">
 						<div class="w-48">
@@ -153,9 +171,51 @@
 						{/if}
 					</div>
 
+					<div
+						class="bg-center aspect-video w-[35vw] max-w-[600px] border"
+						style={`
+						${
+							previewBackgroundType === SceneBackground.Color
+								? `background: ${curScene.background.color};`
+								: ''
+						}
+							${
+								previewBackgroundType === SceneBackground.Image
+									? `background-image: url('/image/backgrounds/${
+											curScene.background.image.src
+									  }');
+									background-size: ${curScene.background.image.objectFit ?? 'cover'};`
+									: ''
+							}
+									${
+										previewBackgroundType === SceneBackground.ImageCustom
+											? `background-image: url('${`${resourceUrl}/public/custom/${
+													overlay.id
+											  }/image/${encodeURI(
+													curScene.background.customImage.name ?? '',
+											  )}`}');
+											background-size: ${curScene.background.customImage.objectFit};`
+											: ''
+									}
+											${
+												previewBackgroundType ===
+												SceneBackground.InGameImageStage
+													? `background-image: url('/image/stages/8.png');`
+													: ''
+											}
+												${
+													previewBackgroundType ===
+													SceneBackground.PostGameImageStage
+														? `background-image: url('/image/stages/8.png');`
+														: ''
+												}
+													${curScene.background.opacity !== undefined ? `opacity: ${curScene.background.opacity / 100};` : ''}
+													background-repeat: no-repeat;`}
+					/>
+
 					{#if curScene.background.type !== SceneBackground.None}
-						<div class="flex">
-							<div class="w-full">
+						<div class="flex gap-4">
+							<div class="max-w-full">
 								<h1 class="text-gray-500 text-lg font-medium text-shadow">
 									Background Transition - In
 								</h1>
@@ -165,7 +225,7 @@
 									/>
 								</div>
 							</div>
-							<div class="w-full">
+							<div class="max-w-full">
 								<h1 class="text-gray-500 text-lg font-medium text-shadow">
 									Background Transition - Out
 								</h1>
@@ -177,6 +237,8 @@
 							</div>
 						</div>
 					{/if}
+				</div>
+				<div>
 					<h1
 						class="text-gray-500 text-2xl font-medium text-shadow"
 						use:tooltip={{
@@ -197,81 +259,31 @@
 							/>
 						</div>
 					</div>
-					<div class="flex">
-						<div class="w-full">
-							<h1 class="text-gray-500 text-lg font-medium text-shadow">
-								Element Transition - In
-							</h1>
-							<div class="w-48">
-								<AnimationInput
-									bind:animation={curScene.animation.in}
-									isSceneElementAnimation={true}
-								/>
-							</div>
-						</div>
-						<div class="w-full">
-							<h1 class="text-gray-500 text-lg font-medium text-shadow">
-								Element Transition - Out
-							</h1>
-							<div class="w-48">
-								<AnimationInput
-									bind:animation={curScene.animation.out}
-									isSceneElementAnimation={true}
-								/>
-							</div>
+				</div>
+				<div class="flex gap-4">
+					<div class="max-w-full">
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Element Transition - In
+						</h1>
+						<div class="w-48">
+							<AnimationInput
+								bind:animation={curScene.animation.in}
+								isSceneElementAnimation={true}
+							/>
 						</div>
 					</div>
-
-					<div class="w-48 flex items-end">
-						<button
-							class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
-							on:click={handleUpdate}
-						>
-							Update
-						</button>
+					<div class="max-w-full">
+						<h1 class="text-gray-500 text-lg font-medium text-shadow">
+							Element Transition - Out
+						</h1>
+						<div class="w-48">
+							<AnimationInput
+								bind:animation={curScene.animation.out}
+								isSceneElementAnimation={true}
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="flex-1 p-2 h-full flex justify-center items-center">
-				<div
-					class="bg-center aspect-video w-[35vw] max-w-[500px] border"
-					style={`
-						${
-							previewBackgroundType === SceneBackground.Color
-								? `background: ${curScene.background.color};`
-								: ''
-						}
-						${
-							previewBackgroundType === SceneBackground.Image
-								? `background-image: url('/image/backgrounds/${
-										curScene.background.image.src
-								  }');
-									background-size: ${curScene.background.image.objectFit ?? 'cover'};`
-								: ''
-						}
-						${
-							previewBackgroundType === SceneBackground.ImageCustom
-								? `background-image: url('${`${resourceUrl}/public/custom/${
-										overlay.id
-								  }/image/${encodeURI(
-										curScene.background.customImage.name ?? '',
-								  )}`}');
-									background-size: ${curScene.background.customImage.objectFit};`
-								: ''
-						}
-						${
-							previewBackgroundType === SceneBackground.InGameImageStage
-								? `background-image: url('/image/stages/8.png');`
-								: ''
-						}
-						${
-							previewBackgroundType === SceneBackground.PostGameImageStage
-								? `background-image: url('/image/stages/8.png');`
-								: ''
-						}
-						${curScene.background.opacity !== undefined ? `opacity: ${curScene.background.opacity / 100};` : ''}
-						background-repeat: no-repeat;`}
-				/>
 			</div>
 		</div>
 	</div>

@@ -12,7 +12,15 @@
 	that popup as soon as a game ends.
 </h2>
 
-<h2>First we can start off with creating a layer in the bottom to add a countdown element to.</h2>
+<h2>
+	First we can start off with creating a layer in the bottom and add a countdown element on it.
+</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/add-timer-countdown.png"
+	alt="Add timer countdown"
+/>
 
 <h2>
 	We want to only display the countdown the last 5 seconds of a game. Thus we want to apply the <b

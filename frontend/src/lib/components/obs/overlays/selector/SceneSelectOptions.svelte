@@ -49,7 +49,7 @@
 	<div class="w-lg 3xl:w-full grid grid-flow-row gap-2">
 		{#each options as button}
 			<div class="grid grid-flow-col gap-2 justify-start items-start w-full">
-				<div class="w-4 h-4 grid justify-center items-center">
+				<div class="flex w-4 h-4 items-center justify-center">
 					<input
 						type="checkbox"
 						value={button.liveScene}
