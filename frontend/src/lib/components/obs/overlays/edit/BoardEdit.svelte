@@ -25,16 +25,16 @@
 	let items: GridContentItem[] = [];
 	let tempItems: GridContentItem[] | undefined = undefined;
 
-	function removeDuplicates(items: GridContentItem[]) {
-		const seenIds = new Set();
-		items = items.filter((item) => {
-			if (seenIds.has(item.id)) {
-				return false;
-			}
-			seenIds.add(item.id);
-			return true;
-		});
-		return items;
+	function removeDuplicates(items: GridContentItem[]): GridContentItem[] {
+		return [
+			...items.reduce((acc: GridContentItem[], item: GridContentItem) => {
+				const existingItem = acc.find((existingItem) => existingItem.id === item.id);
+				if (!existingItem) {
+					acc.push(item);
+				}
+				return acc;
+			}, []),
+		];
 	}
 
 	function updateScene() {
@@ -46,7 +46,7 @@
 			.forEach((item) => {
 				item.h = ROW - item.y;
 			});
-		tempItems = items;
+		tempItems = [...items];
 	}
 
 	function updateLiveScene() {
@@ -61,23 +61,10 @@
 	$: $statsScene || $currentOverlayEditor || $overlays, updateLiveScene();
 
 	function updateOverlay() {
-		if (
-			!tempItems ||
-			$currentOverlayEditor?.layerIndex === undefined ||
-			curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items == tempItems
-		)
-			return;
+		if (!tempItems || $currentOverlayEditor?.layerIndex === undefined) return;
 
-		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items = tempItems.reduce(
-			(acc: GridContentItem[], item: GridContentItem) => {
-				const exists = acc.some((existingItem) => existingItem.id === item.id);
-				if (!exists) {
-					acc.push(item);
-				}
-				return acc;
-			},
-			[],
-		);
+		curOverlay[$statsScene].layers[$currentOverlayEditor?.layerIndex].items =
+			removeDuplicates(tempItems);
 
 		$electronEmitter.emit('SceneUpdate', curOverlay.id, $statsScene, curOverlay[$statsScene]);
 		tempItems = undefined;
@@ -102,7 +89,7 @@
 		selectedItemId = undefined;
 	};
 
-	const handlerKeyPress = (e: KeyboardEvent) => {
+	const handleKeyPress = (e: KeyboardEvent) => {
 		if (e.key === 'Del' && selectedItemId) {
 			tempItems = items.filter((item) => item.id !== selectedItemId);
 		}
@@ -114,6 +101,14 @@
 
 	updateFont(curOverlay);
 
+	const handleError = (e: ErrorEvent) => {
+		$electronEmitter.emit('Log', e.message, e.type);
+		// @ts-ignore
+		setTimeout(() => {
+			location.reload();
+		});
+	};
+
 	let innerHeight: number;
 	$: rowHeight =
 		((borderHeight ?? 0) * (curOverlay.aspectRatio.width / curOverlay.aspectRatio.width)) / ROW;
@@ -123,7 +118,8 @@
 	bind:innerHeight
 	on:mousedown={fixElements}
 	on:mouseup={updateOverlay}
-	on:keydown={handlerKeyPress}
+	on:keydown={handleKeyPress}
+	on:error={handleError}
 />
 
 {#key $statsScene}
