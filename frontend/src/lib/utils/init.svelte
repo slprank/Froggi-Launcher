@@ -3,10 +3,22 @@
 	import { isBrowser, isElectron } from '$lib/utils/store.svelte';
 	import { getElectronEmitter } from '$lib/utils/fetchSubscriptions.svelte';
 	import { extendStringFormat } from './extendString';
+	import { LogType } from 'vite';
 
 	export const initClient = async () => {
 		extendStringFormat();
+		await initLogging();
 		await initDevices();
+	};
+
+	const initLogging = async () => {
+		const _electronEmitter = await getElectronEmitter();
+		console.log = (message: string) => {
+			_electronEmitter.emit('Log', message, 'info');
+		};
+		console.error = (message: string) => {
+			_electronEmitter.emit('Log', message, 'error');
+		};
 	};
 
 	const initDevices = async () => {

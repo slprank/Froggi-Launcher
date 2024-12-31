@@ -146,7 +146,6 @@
 				(() => {
 					const value = payload[0] as Parameters<MessageEvents['GameSettings']>[0];
 					if (!value) return;
-					console.log('Settings', value);
 					gameSettings.set(value);
 				})();
 				break;

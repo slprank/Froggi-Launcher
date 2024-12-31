@@ -23,6 +23,7 @@ import Store from 'electron-store';
 import { ElectronCommandStore } from './services/store/storeCommands';
 import { FileHandler } from './services/fileUpload';
 import { BACKEND_PORT, VITE_PORT } from '../frontend/src/lib/models/const';
+import { FrontendLogger } from './services/frontendLogger';
 
 let mainLog: ElectronLog = log
 
@@ -253,6 +254,7 @@ try {
 			container.resolve(SlippiJs);
 			container.resolve(AutoUpdater);
 			container.resolve(FileHandler);
+			container.resolve(FrontendLogger);
 		});
 
 		mainWindow.on('close', (event: Event) => {

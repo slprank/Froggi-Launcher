@@ -32,6 +32,7 @@ import type {
 } from '../models/types/slippiData';
 import type { FrameEntryType } from '@slippi/slippi-js';
 import localEmitter from 'eventemitter2';
+import { LogType } from 'vite';
 
 export interface MessageEvents {
 	Authorize: (isAuthorized: boolean) => void;
@@ -55,6 +56,7 @@ export interface MessageEvents {
 	ImportCustomFile: (overlayId: string, directory: string, fileName: string, acceptedExtensions: string[]) => void;
 	ImportCustomFileComplete: (fileName: string) => void;
 	LayerPreviewChange: (layerIndex: number) => void;
+	Log: (message: string, severity: LogType) => void;
 	CurrentMatch: (match: Match) => void;
 	MemoryControllerInput: (controllerInputs: PlayerController) => void;
 	Notification: (message: string, type: NotificationType) => void;
