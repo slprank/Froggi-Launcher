@@ -67,6 +67,8 @@ export interface MessageEvents {
 	RecentGamesReset: () => void; // Here
 	RecentGamesMock: (game: GameStats, index: number) => void; // Here
 	RecentRankedSets: (games: GameStats[]) => void;
+	RemoveDuplicateItems: () => void;
+	RemoveDuplicateItemsByOverlayId: (overlayId: string) => void;
 	SessionStats: (session: SessionStats | undefined) => void;
 	LiveStatsSceneChange: (scene: LiveStatsScene) => void;
 	Url: (url: Url) => void;
@@ -91,6 +93,7 @@ export interface MessageEvents {
 	InitAuthentication: (socketId: string, authKey: string) => void;
 
 	CleanupCustomResources: () => void;
+	CleanupCustomResourcesByOverlayId: (overlayId: string) => void;
 	ControllerCommand: (command: Controller) => void;
 	ControllerCommandAdd: (command: ControllerCommand) => void;
 	ControllerCommandDelete: (commandId: string) => void;

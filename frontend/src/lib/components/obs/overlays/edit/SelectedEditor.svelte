@@ -154,8 +154,6 @@
 		lockOut = true;
 		setTimeout(() => (lockOut = false), 100);
 	}
-
-	$: console.log(selectedItemId);
 </script>
 
 <svelte:window on:keydown={handleKeydown} />

@@ -5,6 +5,7 @@
 	import { COL, ROW, SCENE_TRANSITION_DELAY } from '$lib/models/const';
 	import { Layer, Overlay, Scene } from '$lib/models/types/overlay';
 	import { overlays, statsScene } from '$lib/utils/store.svelte';
+	import { isNil } from 'lodash';
 	import GridContent from '../GridContent.svelte';
 	import Grid from 'svelte-grid';
 
@@ -19,6 +20,23 @@
 		overlay = await getOverlayById(overlayId);
 		if (!overlay) return;
 		layer = overlay[$statsScene].layers.filter((layer) => layerId === layer.id).at(0);
+
+		if (!isNil(layer)) {
+			layer.items = [
+				...layer?.items.map((item) => {
+					return {
+						...item,
+						[COL]: {
+							...item[COL],
+							customResizer: true,
+							fixed: true,
+							resizable: false,
+						},
+					};
+				}),
+			];
+		}
+
 		scene = overlay[$statsScene];
 	};
 	$: layerId, $statsScene, $overlays, getOverlay();
@@ -39,7 +57,7 @@
 		bind:clientHeight={windowHeight}
 	>
 		{#if windowHeight && rowHeight}
-			<div class="w-full h-full absolute">
+			<div class="w-full h-full absolute origin-top-left">
 				<Grid
 					items={layer.items}
 					{rowHeight}

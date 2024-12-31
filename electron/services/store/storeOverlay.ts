@@ -59,6 +59,12 @@ export class ElectronOverlayStore {
 		let overlays = Object.values(this.getOverlays())
 		overlays.forEach(this.removeDuplicateOverlayItems.bind(this))
 	}
+	
+	removeDuplicateItemsByOverlayId(overlayId: string): void {
+		let overlay = this.getOverlayById(overlayId) 
+		if (isNil(overlay)) return;
+		this.removeDuplicateOverlayItems(overlay)
+	}
 
 	removeDuplicateOverlayItems(overlay: Overlay): Overlay {
 		Object.keys(LiveStatsScene)
@@ -83,32 +89,35 @@ export class ElectronOverlayStore {
 
 	cleanupCustomResources() {
 		let overlays = Object.values(this.getOverlays())
-		overlays.forEach(overlay => {
-			const itemsKebabId = Object.values(LiveStatsScene).map(statsScene => {
-				return overlay[statsScene].layers?.map((layer: Layer) => layer.items).flat()
-			}).flat()
-				.map(item => kebabCase(item.id))
-			const customFileEntry = path.join(this.appDir, "public", "custom", overlay.id)
-			if (!fs.existsSync(customFileEntry)) {
-				this.log.verbose("Path:", customFileEntry, "does not exist")
-				return;
-			}
-			const storedCustomTypes = fs.readdirSync(customFileEntry, { withFileTypes: true })
-				.filter(dirent => dirent.isDirectory())
-				.map(dirent => dirent.name);
-			storedCustomTypes.forEach(type => {
-				const fileTypeDir = path.join(customFileEntry, type)
-				const existingFiles = fs.readdirSync(fileTypeDir, { withFileTypes: true })
-					.map(dirent => dirent.name)
-				existingFiles.forEach(file => {
-					// Deletes all files with name unlike any item id's
-					if (itemsKebabId.some(id => file.includes(id))) return;
-					const filePath = path.join(fileTypeDir, file)
-					fs.rmSync(filePath)
-				})
+		overlays.forEach((overlay) => this.cleanupCustomResourceByOverlayId(overlay.id))
+	}
+
+	cleanupCustomResourceByOverlayId(overlayId: string) {
+		const overlay = this.getOverlayById(overlayId)
+		if (isNil(overlay)) return;
+		const itemsKebabId = Object.values(LiveStatsScene).map(statsScene => {
+			return overlay[statsScene].layers?.map((layer: Layer) => layer.items).flat()
+		}).flat()
+			.map(item => kebabCase(item.id))
+		const customFileEntry = path.join(this.appDir, "public", "custom", overlay.id)
+		if (!fs.existsSync(customFileEntry)) {
+			this.log.verbose("Path:", customFileEntry, "does not exist")
+			return;
+		}
+		const storedCustomTypes = fs.readdirSync(customFileEntry, { withFileTypes: true })
+			.filter(dirent => dirent.isDirectory())
+			.map(dirent => dirent.name);
+		storedCustomTypes.forEach(type => {
+			const fileTypeDir = path.join(customFileEntry, type)
+			const existingFiles = fs.readdirSync(fileTypeDir, { withFileTypes: true })
+				.map(dirent => dirent.name)
+			existingFiles.forEach(file => {
+				// Deletes all files with name different from any item id's
+				if (itemsKebabId.some(id => file.includes(id))) return;
+				const filePath = path.join(fileTypeDir, file)
+				fs.rmSync(filePath)
 			})
 		})
-
 	}
 
 	updateOverlay(overlay: Overlay): void {
@@ -235,10 +244,13 @@ export class ElectronOverlayStore {
 	}
 
 	private initSvelteListeners() {
-		this.clientEmitter.on('CleanupCustomResources', async () => {
-			this.removeDuplicateItems();
-			this.cleanupCustomResources();
-		});
+		this.clientEmitter.on('CleanupCustomResources', this.cleanupCustomResources.bind(this));
+
+		this.clientEmitter.on("RemoveDuplicateItems", this.removeDuplicateItems.bind(this)); 
+
+		this.clientEmitter.on('CleanupCustomResourcesByOverlayId', this.cleanupCustomResourceByOverlayId.bind(this)); 
+
+		this.clientEmitter.on("RemoveDuplicateItemsByOverlayId", this.removeDuplicateItemsByOverlayId.bind(this));
 
 		this.clientEmitter.on('OverlayUpdate', async (overlay) => {
 			this.updateOverlay(overlay);

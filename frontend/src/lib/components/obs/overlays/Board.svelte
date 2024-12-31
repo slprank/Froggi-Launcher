@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { isElectron, obs, overlays, statsScene } from '$lib/utils/store.svelte';
+	import {
+		electronEmitter,
+		isElectron,
+		obs,
+		overlays,
+		statsScene,
+	} from '$lib/utils/store.svelte';
 	import Grid from 'svelte-grid';
 	import GridContent from './GridContent.svelte';
 	import type { Layer, Overlay, Scene } from '$lib/models/types/overlay';
@@ -42,6 +48,8 @@
 								[COL]: {
 									...item[COL],
 									customResizer: true,
+									fixed: true,
+									resizable: false,
 								},
 							};
 						}),
@@ -62,12 +70,27 @@
 	$: rowHeight = innerHeight / ROW;
 	$: curScene = curOverlay[curStatsScene];
 
+	const handleError = (e: ErrorEvent) => {
+		$electronEmitter.emit('Log', e.message, e.type);
+		$electronEmitter.emit('CleanupCustomResources');
+		$electronEmitter.emit('RemoveDuplicateItems');
+		setTimeout(() => {
+			refreshExternal();
+		});
+	};
+
 	const refreshExternal = async () => {
+		// @ts-ignore
 		if (!$isElectron) location.reload();
 	};
 </script>
 
-<svelte:window bind:innerHeight bind:innerWidth on:resize={refreshExternal} />
+<svelte:window
+	bind:innerHeight
+	bind:innerWidth
+	on:resize={refreshExternal}
+	on:error={handleError}
+/>
 
 {#if curScene && rowHeight && fixedLayers && ready}
 	<div class="w-full h-full overflow-hidden relative origin-top-left">

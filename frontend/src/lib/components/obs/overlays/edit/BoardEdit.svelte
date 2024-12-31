@@ -52,7 +52,9 @@
 	function updateLiveScene() {
 		if ($currentOverlayEditor?.layerIndex === undefined) return;
 		curOverlay = $overlays[overlayId] ?? ({} as Overlay);
-		items = curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex]?.items ?? [];
+		items = removeDuplicates(
+			curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex]?.items ?? [],
+		);
 		items?.forEach((item: any) => {
 			item[COL].draggable = true;
 			item[COL].resizable = true;
@@ -103,8 +105,10 @@
 
 	const handleError = (e: ErrorEvent) => {
 		$electronEmitter.emit('Log', e.message, e.type);
-		// @ts-ignore
+		$electronEmitter.emit('CleanupCustomResources');
+		$electronEmitter.emit('RemoveDuplicateItems');
 		setTimeout(() => {
+			// @ts-ignore
 			location.reload();
 		});
 	};
