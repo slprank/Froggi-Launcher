@@ -15,6 +15,7 @@
 	import CreateTimer from '$lib/components/tutorial/new-overlay/CreateTimer.svelte';
 	import CreateUltimateUi from '$lib/components/tutorial/new-overlay/CreateUltimateUi.svelte';
 	import CreateGameEnd from '$lib/components/tutorial/new-overlay/CreateGameEnd.svelte';
+	import FinalCustomHudPreview from '$lib/components/tutorial/new-overlay/FinalCustomHudPreview.svelte';
 
 	let scrollElement: HTMLElement;
 	const scrollToTop = () => {
@@ -76,6 +77,10 @@
 		{
 			title: 'Add Game End',
 			component: CreateGameEnd,
+		},
+		{
+			title: 'Final Preview',
+			component: FinalCustomHudPreview,
 		},
 	];
 

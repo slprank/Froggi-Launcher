@@ -17,21 +17,21 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[80vw] h-[80vh] max-h-[600px] min-w-72 overflow-y-scroll flex rounded-lg bg-transparent m-0 bg-cover bg-center p-8"
+		class="w-[80vw] h-[80vh] max-h-[600px] min-w-72 overflow-y-scroll flex rounded-lg bg-transparent m-0 bg-cover bg-center p-8 gap-16 justify-between"
 		style="background-image: url('/image/backgrounds/MeleeMenuRed.png')"
 	>
-		<div
-			class="flex-1 place-items-center rounded-md flex flex-col justify-between items-center gap-4"
-		>
-			<div class="flex flex-col justify-center items-center w-[80%]">
-				<h1 class="text-white font-medium text-shadow text-2xl">Embed on local devices</h1>
-				<h1 class="text-gray-500 text-md font-medium text-shadow text-center">
-					This is a local URL and could be used on the device Web Browser or Embed to
-					local applications such as OBS.
+		<div class="rounded-md flex flex-col justify-between items-center gap-4 w-[50%]">
+			<div class="flex flex-col w-full">
+				<h1 class="text-white font-medium text-shadow text-2xl w-full">
+					Embed on local devices
+				</h1>
+				<h1 class="text-slate-300 text-md font-medium text-shadow w-full">
+					This is a local URL and could be used to embed the overlay on <b>this</b>
+					device. Paste it in the Web Browser or Embed it to local applications such as OBS.
 				</h1>
 			</div>
-			<div class="flex flex-col justify-center items-center w-[80%] gap-2">
-				<div class="flex gap-2 justify-center items-center">
+			<div class="flex flex-col w-full gap-2">
+				<div class="flex gap-2 items-center">
 					<div class="flex-1">
 						<img
 							src="/image/example-images/obs-add-browser.png"
@@ -46,17 +46,16 @@
 						/>
 					</div>
 				</div>
-				<h1 class="text-gray-500 text-md font-medium text-shadow text-center">
-					Embed to OBS by adding a new browser source and inserting URL.
+				<h1 class="text-slate-300 text-md font-medium text-shadow text-start w-full">
+					Embed to OBS by adding a new browser source and insert the URL.
 				</h1>
-				<h1 class="text-gray-500 text-md font-medium text-shadow text-center">
-					Remember setting a 1920x1080 resolution.
+				<h1 class="text-slate-300 text-md font-medium text-shadow text-start w-full">
+					Use a resolution of 1920x1080 resolution if the overlay is horizontal. Otherwise
+					use 1080x1920.
 				</h1>
-				<h1 class="text-gray-500 text-md font-medium text-shadow text-center">
-					You can add as many browser sources as you want
-				</h1>
-				<div class="flex">
-					<h1 class="text-gray-500 text-md font-medium text-shadow underline">
+
+				<div class="flex justify-center">
+					<h1 class="text-slate-300 text-md font-medium text-shadow underline">
 						{localUrl}
 					</h1>
 					<Clipboard
@@ -86,29 +85,29 @@
 					</button>
 				</Clipboard>
 			</div>
-			<h1 class="text-gray-500 text-md font-medium text-shadow">
+			<h1 class="text-slate-300 text-md font-medium text-shadow w-full">
 				This URL can only be used on the current local device.
 			</h1>
 		</div>
 		<div
-			class="flex-1 place-items-center rounded-md flex flex-col justify-between items-center gap-4"
+			class="place-items-center rounded-md flex flex-col justify-between items-center gap-4 w-[50%]"
 		>
-			<div class="flex flex-col justify-center items-center w-[80%]">
-				<h1 class="text-white font-medium text-shadow text-2xl">
+			<div class="flex flex-col justify-center items-center">
+				<h1 class="text-white font-medium text-shadow text-2xl w-full">
 					Embed on external devices
 				</h1>
-				<h1 class="text-gray-500 text-md font-medium text-shadow text-center">
+				<h1 class="text-slate-300 text-md font-medium text-shadow w-full">
 					This is an external URL and can be opened on any device connected to the same
-					network.
+					local network.
 				</h1>
-				<h1 class="text-gray-500 text-md font-medium text-shadow text-center">
+				<h1 class="text-slate-300 text-md font-medium text-shadow w-full">
 					Mobile/Tablets/Laptops/Projectors
 				</h1>
 			</div>
 			<QrCode value={`${externalUrl}`} size="192" />
 
 			<div class="flex">
-				<h1 class="text-gray-500 text-md font-medium text-shadow underline">
+				<h1 class="text-slate-300 text-md font-medium text-shadow underline w-full">
 					{externalUrl}
 				</h1>
 				<Clipboard
@@ -132,25 +131,17 @@
 			>
 				<button
 					on:click={copy}
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
 				>
 					Copy external URL
 				</button>
 			</Clipboard>
-			<div class="flex flex-col justify-center items-center w-[80%]">
-				<h1 class="text-gray-500 text-md font-medium text-shadow">
-					This URL should not be used on local device as ip address might change.
-				</h1>
-				<h1 class="text-gray-500 text-md font-medium text-shadow">
-					Consider setting a static local ip-address on this device.
-				</h1>
-			</div>
+			<h1 class="text-slate-300 text-md font-medium text-shadow w-full">
+				Consider setting a static local ip-address on this device.
+			</h1>
 		</div>
 	</div>
 </Modal>
 
 <style>
-	h1 {
-		text-align: center;
-	}
 </style>

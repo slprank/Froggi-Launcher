@@ -81,3 +81,11 @@
 	src="/image/tutorial/new-overlay/apply-game-end-visibility-condition.png"
 	alt="Add timer"
 />
+
+<h2>The layers should look something like this:</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-game-end.png"
+	alt="Preview game end"
+/>
