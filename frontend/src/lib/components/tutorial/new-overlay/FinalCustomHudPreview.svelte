@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 </script>
 
 <h1 class="text-2xl font-semibold">Final Preview</h1>
@@ -25,3 +26,40 @@
 	src="/image/tutorial/new-overlay/preview-embed-overlay.png"
 	alt="Preview embed overlay"
 />
+
+<h2>This button should provide two different URL's to embed the overlay.</h2>
+
+<h2>
+	One of these are the <b>Local</b>
+	URL. This can and should only be used by the device running
+	<b>Froggi</b>
+	.
+</h2>
+
+<h2>
+	The other URL is the <b>External</b>
+	URL. This is for external devices such as other PC's or mobile devices that is available in the same
+	local network.
+</h2>
+
+<h2>Lets copy the local URL and embed it to OBS.</h2>
+
+<h2>This should look something like this:</h2>
+
+<img
+	class="rounded-sm border"
+	src="/image/tutorial/new-overlay/preview-final-overlay.gif"
+	alt="Preview final overlay"
+/>
+
+<h2>
+	Lets move over to the next tutorial where we will deep diver into how to integrate <b>Froggi</b>
+	 with OBS.
+</h2>
+
+<button
+	class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+	on:click={() => goto('/obs/tutorial/integrate-obs')}
+>
+	Integrate with OBS
+</button>

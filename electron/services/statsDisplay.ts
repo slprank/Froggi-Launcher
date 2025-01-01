@@ -80,8 +80,8 @@ export class StatsDisplay {
 				(frameEntry: FrameEntryType) => {
 					this.handleGameFrame(frameEntry);
 				},
-				10,
-				{ trailing: true},
+				16,
+				{ trailing: true },
 			),
 		);
 	}
@@ -309,12 +309,12 @@ export class StatsDisplay {
 		const file = files.find((file) => {
 			const settings = new SlippiGame(file).getSettings();
 			return matchId
-			? (
+				? (
 					settings?.matchInfo?.matchId === matchId &&
 					settings?.matchInfo?.gameNumber === gameNumber &&
 					settings?.matchInfo?.tiebreakerNumber === 0
 				)
-			: settings?.randomSeed === randomSeed;
+				: settings?.randomSeed === randomSeed;
 		});
 		if (!file) return null;
 		this.log.debug('Analyzing recent game file:', file);
