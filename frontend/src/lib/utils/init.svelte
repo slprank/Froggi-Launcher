@@ -12,7 +12,7 @@
 
 	const initLogging = async () => {
 		const _electronEmitter = await getElectronEmitter();
-		console.log = (...message: [string]) => {
+		console.info = (...message: [string]) => {
 			_electronEmitter.emit('Log', message.join(' '), 'info');
 		};
 		console.error = (...message: [string]) => {

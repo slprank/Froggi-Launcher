@@ -13,7 +13,7 @@ export class FrontendLogger {
 
 	}
 	initListeners() {
-		this.log.info('Init fronten logging');
+		this.log.info('Init frontend logging');
 		this.clientEmitter.on("Log", (message: string, severity: "info" | "warn" | "error") => {
 			this.log[severity](`Frontend Log: ${message}`)
 		})

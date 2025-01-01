@@ -15,6 +15,7 @@
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import SceneSelectOptions from '../selector/SceneSelectOptions.svelte';
 	import { tooltip } from 'svooltip';
+	import { fly } from 'svelte/transition';
 
 	export let open: boolean;
 	export let overlay: Overlay;
@@ -88,92 +89,118 @@
 					</button>
 				</div>
 			</div>
-			<div class="overflow-scroll max-h-full flex flex-col gap-4">
-				<div class="w-full">
-					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Default Font:</h1>
-					<FontSelectorLayer bind:font={curScene.font} fontId={$statsScene} />
-				</div>
-
-				<div class="flex flex-col gap-2">
-					<h1 class="text-gray-500 text-2xl font-medium text-shadow">Background</h1>
-					<div class="w-full flex gap-2">
-						<div class="w-48">
-							<Select bind:selected={curScene.background.type} label="Type">
-								<option value={SceneBackground.None}>None</option>
-								<option value={SceneBackground.Color}>Color</option>
-								<option value={SceneBackground.Image}>Image</option>
-								<option value={SceneBackground.ImageCustom}>Custom Image</option>
-								{#if $statsScene === LiveStatsScene.InGame}
-									<option value={SceneBackground.InGameImageStage}>Stage</option>
-								{/if}
-								{#if [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene)}
-									<option value={SceneBackground.PostGameImageStage}>
-										Stage
-									</option>
-								{/if}
-							</Select>
-						</div>
-						{#if curScene.background.type === SceneBackground.Image}
-							<div class="w-24">
-								<Select bind:selected={curScene.background.image.src} label="Image">
-									{#each imageOptions as image, i}
-										<option selected={i === 0} value={image}>
-											{image.split('.')[0]}
-										</option>
-									{/each}
-								</Select>
-							</div>
-						{/if}
-						{#if curScene.background.type === SceneBackground.ImageCustom}
-							<div class="w-24">
-								<FileUpload
-									fileName={$statsScene}
-									directory={'image'}
-									label="Upload"
-									acceptedExtensions={[
-										'.jpg',
-										'.jpeg',
-										'.png',
-										'.gif',
-										'.svg',
-										'.webp',
-									]}
-									on:change={(event) => {
-										curScene.background.customImage.name = event.detail;
-									}}
-								/>
-							</div>
-							<div class="w-24">
-								<Select
-									bind:selected={curScene.background.customImage.objectFit}
-									label="Object fit"
-								>
-									<option selected value="cover">Cover</option>
-									<option value="contain">Contain</option>
-								</Select>
-							</div>
-						{/if}
-						{#if curScene.background.type === SceneBackground.Color}
-							<div class="w-24">
-								<ColorInput bind:value={curScene.background.color} label="Color" />
-							</div>
-						{/if}
-						{#if curScene.background.type !== SceneBackground.None}
-							<div class="w-24">
-								<NumberInput
-									bind:value={curScene.background.opacity}
-									label="Opacity"
-									max={100}
-									bind:autofocus
-									autoFocusValue={2}
-								/>
-							</div>
-						{/if}
-					</div>
-
+			<div class="overflow-scroll max-h-full w-full relative">
+				{#key $statsScene}
 					<div
-						class="bg-center aspect-video w-[35vw] max-w-[600px] border"
-						style={`
+						class="flex flex-col gap-4 w-full h-full absolute"
+						out:fly={{ duration: 250, x: 150 }}
+						in:fly={{ duration: 250, delay: 250, x: 150 }}
+					>
+						<div class="w-full">
+							<h1 class="text-gray-500 text-2xl font-medium text-shadow">
+								{$statsScene}:
+							</h1>
+						</div>
+						<div class="w-full">
+							<h1 class="text-gray-500 text-2xl font-medium text-shadow">
+								Default Font:
+							</h1>
+							<FontSelectorLayer bind:font={curScene.font} fontId={$statsScene} />
+						</div>
+
+						<div class="flex flex-col gap-2">
+							<h1 class="text-gray-500 text-2xl font-medium text-shadow">
+								Background
+							</h1>
+							<div class="w-full flex gap-2">
+								<div class="w-48">
+									<Select bind:selected={curScene.background.type} label="Type">
+										<option value={SceneBackground.None}>None</option>
+										<option value={SceneBackground.Color}>Color</option>
+										<option value={SceneBackground.Image}>Image</option>
+										<option value={SceneBackground.ImageCustom}>
+											Custom Image
+										</option>
+										{#if $statsScene === LiveStatsScene.InGame}
+											<option value={SceneBackground.InGameImageStage}>
+												Stage
+											</option>
+										{/if}
+										{#if [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene)}
+											<option value={SceneBackground.PostGameImageStage}>
+												Stage
+											</option>
+										{/if}
+									</Select>
+								</div>
+								{#if curScene.background.type === SceneBackground.Image}
+									<div class="w-24">
+										<Select
+											bind:selected={curScene.background.image.src}
+											label="Image"
+										>
+											{#each imageOptions as image, i}
+												<option selected={i === 0} value={image}>
+													{image.split('.')[0]}
+												</option>
+											{/each}
+										</Select>
+									</div>
+								{/if}
+								{#if curScene.background.type === SceneBackground.ImageCustom}
+									<div class="w-24">
+										<FileUpload
+											fileName={$statsScene}
+											directory={'image'}
+											label="Upload"
+											acceptedExtensions={[
+												'.jpg',
+												'.jpeg',
+												'.png',
+												'.gif',
+												'.svg',
+												'.webp',
+											]}
+											on:change={(event) => {
+												curScene.background.customImage.name = event.detail;
+											}}
+										/>
+									</div>
+									<div class="w-24">
+										<Select
+											bind:selected={curScene.background.customImage
+												.objectFit}
+											label="Object fit"
+										>
+											<option selected value="cover">Cover</option>
+											<option value="contain">Contain</option>
+										</Select>
+									</div>
+								{/if}
+								{#if curScene.background.type === SceneBackground.Color}
+									<div class="w-24">
+										<ColorInput
+											bind:value={curScene.background.color}
+											label="Color"
+										/>
+									</div>
+								{/if}
+								{#if curScene.background.type !== SceneBackground.None}
+									<div class="w-24">
+										<NumberInput
+											bind:value={curScene.background.opacity}
+											label="Opacity"
+											max={100}
+											bind:autofocus
+											autoFocusValue={2}
+										/>
+									</div>
+								{/if}
+							</div>
+
+							<div
+								class="bg-center aspect-video w-[35vw] max-w-[600px] border"
+								style={`
 						${
 							previewBackgroundType === SceneBackground.Color
 								? `background: ${curScene.background.color};`
@@ -211,79 +238,81 @@
 												}
 													${curScene.background.opacity !== undefined ? `opacity: ${curScene.background.opacity / 100};` : ''}
 													background-repeat: no-repeat;`}
-					/>
+							/>
 
-					{#if curScene.background.type !== SceneBackground.None}
+							{#if curScene.background.type !== SceneBackground.None}
+								<div class="flex gap-4">
+									<div class="max-w-full">
+										<h1 class="text-gray-500 text-lg font-medium text-shadow">
+											Background Transition - In
+										</h1>
+										<div class="w-48">
+											<AnimationInput
+												bind:animation={curScene.background.animation.in}
+											/>
+										</div>
+									</div>
+									<div class="max-w-full">
+										<h1 class="text-gray-500 text-lg font-medium text-shadow">
+											Background Transition - Out
+										</h1>
+										<div class="w-48">
+											<AnimationInput
+												bind:animation={curScene.background.animation.out}
+											/>
+										</div>
+									</div>
+								</div>
+							{/if}
+						</div>
+						<div>
+							<h1
+								class="text-gray-500 text-2xl font-medium text-shadow"
+								use:tooltip={{
+									content: 'Delay between each layer rendering',
+									placement: 'top-start',
+									offset: 15,
+									delay: [200, 0],
+								}}
+							>
+								Layers Render Delay
+							</h1>
+							<div class="w-full flex gap-2">
+								<div class="w-48">
+									<NumberInput
+										bind:value={curScene.animation.layerRenderDelay}
+										max={SCENE_TRANSITION_DELAY}
+										label="Delay"
+									/>
+								</div>
+							</div>
+						</div>
 						<div class="flex gap-4">
 							<div class="max-w-full">
 								<h1 class="text-gray-500 text-lg font-medium text-shadow">
-									Background Transition - In
+									Element Transition - In
 								</h1>
 								<div class="w-48">
 									<AnimationInput
-										bind:animation={curScene.background.animation.in}
+										bind:animation={curScene.animation.in}
+										isSceneElementAnimation={true}
 									/>
 								</div>
 							</div>
 							<div class="max-w-full">
 								<h1 class="text-gray-500 text-lg font-medium text-shadow">
-									Background Transition - Out
+									Element Transition - Out
 								</h1>
 								<div class="w-48">
 									<AnimationInput
-										bind:animation={curScene.background.animation.out}
+										bind:animation={curScene.animation.out}
+										isSceneElementAnimation={true}
 									/>
 								</div>
 							</div>
 						</div>
-					{/if}
-				</div>
-				<div>
-					<h1
-						class="text-gray-500 text-2xl font-medium text-shadow"
-						use:tooltip={{
-							content: 'Delay between each layer rendering',
-							placement: 'top-start',
-							offset: 15,
-							delay: [200, 0],
-						}}
-					>
-						Layers Render Delay
-					</h1>
-					<div class="w-full flex gap-2">
-						<div class="w-48">
-							<NumberInput
-								bind:value={curScene.animation.layerRenderDelay}
-								max={SCENE_TRANSITION_DELAY}
-								label="Delay"
-							/>
-						</div>
 					</div>
-				</div>
-				<div class="flex gap-4">
-					<div class="max-w-full">
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Element Transition - In
-						</h1>
-						<div class="w-48">
-							<AnimationInput
-								bind:animation={curScene.animation.in}
-								isSceneElementAnimation={true}
-							/>
-						</div>
-					</div>
-					<div class="max-w-full">
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">
-							Element Transition - Out
-						</h1>
-						<div class="w-48">
-							<AnimationInput
-								bind:animation={curScene.animation.out}
-								isSceneElementAnimation={true}
-							/>
-						</div>
-					</div>
-				</div>
+				{/key}
 			</div>
 		</div>
 	</div>
