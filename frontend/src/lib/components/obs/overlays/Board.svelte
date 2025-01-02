@@ -13,6 +13,7 @@
 	import { LiveStatsScene } from '$lib/models/enum';
 	import BoardContainer from '$lib/components/obs/overlays/BoardContainer.svelte';
 	import { updateFont } from './CustomFontHandler.svelte';
+	import { debounce } from 'lodash';
 
 	export let curOverlay: Overlay;
 	export let layerIds: string[] | undefined;
@@ -88,7 +89,7 @@
 <svelte:window
 	bind:innerHeight
 	bind:innerWidth
-	on:resize={refreshExternal}
+	on:resize={debounce(refreshExternal, 16)}
 	on:error={handleError}
 />
 
