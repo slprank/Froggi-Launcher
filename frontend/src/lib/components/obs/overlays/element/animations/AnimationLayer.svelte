@@ -21,7 +21,6 @@
 	import { rankStateTrigger } from '$lib/components/obs/overlays/element/animations/animationTriggers/RankChangeTriggers';
 	import { matchStateTrigger } from '$lib/components/obs/overlays/element/animations/animationTriggers/MatchChangeTriggers';
 	import type { FrameEntryType } from '@slippi/slippi-js';
-	import { cloneDeep } from 'lodash';
 	import {
 		CurrentPlayer,
 		GameStartTypeExtended,
@@ -74,12 +73,12 @@
 
 	const updateTriggerValues = () => {
 		key = updateKeyValue();
-		prevGameFrame = cloneDeep($gameFrame);
-		prevScore = cloneDeep($gameScore);
-		prevSettings = cloneDeep($gameSettings);
-		prevPlayer = cloneDeep($currentPlayer);
-		prevPlayers = cloneDeep($currentPlayers);
-		prevSessionStats = cloneDeep($sessionStats);
+		prevGameFrame = { ...($gameFrame ?? {}) } as FrameEntryType;
+		prevScore = { ...$gameScore };
+		prevSettings = { ...$gameSettings };
+		prevPlayer = { ...$currentPlayer };
+		prevPlayers = { ...$currentPlayers };
+		prevSessionStats = { ...($sessionStats ?? {}) } as SessionStats;
 	};
 
 	$: $gameFrame, $currentPlayer, $gameSettings, $sessionStats, updateTriggerValues();
