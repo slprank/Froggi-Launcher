@@ -66,7 +66,10 @@ export const isPlayerAlive = (
     postFrame: PostFrameUpdateType | undefined,
 ) => {
     if (isNil(postFrame)) return false;
-    return (postFrame.actionStateId ?? 0) >= 14;
+    const actionStateId = postFrame?.actionStateId
+    const actionStateCounter = postFrame?.actionStateCounter
+    if (isNil(actionStateId) || isNil(actionStateCounter)) return;
+    return (actionStateId ?? 0) > 10 || ((actionStateId ?? 0) <= 10 && actionStateCounter != -1);
 };
 
 export const isPlayerEnteringOnHalo = (
@@ -107,11 +110,11 @@ export const getOffStageZone = (stage: Stage) => {
 };
 
 export const isPauseEnabled = (settings: GameStartType) => {
-   return (settings.gameInfoBlock?.gameBitfield3 ?? 0) < 142 
+    return (settings.gameInfoBlock?.gameBitfield3 ?? 0) < 142
 }
 
 export const isLrasEnding = (gameEnd: GameEndType) => {
-   return gameEnd.gameEndMethod == 7
+    return gameEnd.gameEndMethod == 7
 }
 
 // Inspired from this https://github.com/Sheepolution/Melee-Ghost-Streamer/blob/7c9dd6662e6c3d2850ccfc29afc805f7a9a4ecf3/app/src/compute.js#L20

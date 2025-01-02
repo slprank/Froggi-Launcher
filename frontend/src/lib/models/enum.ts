@@ -139,10 +139,6 @@ export enum NotificationType {
 	Success = 'Success',
 }
 
-export enum PlayerActionState {
-	Dead = 0,
-}
-
 export enum SceneBackground {
 	None = 'None',
 	Color = 'Color',

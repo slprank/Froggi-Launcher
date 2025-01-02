@@ -1,8 +1,6 @@
 import { FrameEntryType } from "@slippi/slippi-js";
 import { STAGE_DATA } from "../../frontend/src/lib/models/constants/stageData"
 
-
-
 export function isGrabbed(
     playerIndex: number,
     frame: FrameEntryType,
@@ -38,17 +36,6 @@ export function isInHitStun(
         return false;
     }
     return (actionStateId >= 0x4b && actionStateId <= 0x5b) || actionStateId === 0x26
-}
-
-export function isDead(
-    playerIndex: number,
-    frame: FrameEntryType,
-): boolean {
-    const actionStateId = frame.players?.[playerIndex]?.post.actionStateId;
-    if (!actionStateId) {
-        return false;
-    }
-    return actionStateId >= 0x00 && actionStateId <= 0x0a;
 }
 
 export const isOffStage = (stageId: number, frame: FrameEntryType, playerIndex: number): boolean => {
