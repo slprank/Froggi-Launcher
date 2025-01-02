@@ -34,7 +34,10 @@ function base64ToFile(base64String: string, filePath: string) {
 
 export const getCustomFiles = (customFileDir: string): ShareCustomFiles => {
     if (!fs.existsSync(customFileDir)) return {}
-    const entries = fs.readdirSync(customFileDir);
+    const dirents = fs.readdirSync(customFileDir, { withFileTypes: true });
+    const entries = dirents
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name)
     const shareCustomFiles = entries.reduce((acc: ShareCustomFiles, entry) => {
         const subDir = `${customFileDir}/${entry}`
         const files = listAllFiles(subDir)
@@ -65,19 +68,19 @@ export function findFilesStartingWith(dir: string, prefix: string) {
     let results: string[] = [];
     if (!fs.existsSync(dir)) return [];
     const entries = fs.readdirSync(dir, { withFileTypes: true });
-  
+
     for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        // Recurse into subdirectories
-        results = results.concat(findFilesStartingWith(fullPath, prefix));
-      } else {
-        // Check if file name starts with the given prefix
-        if (entry.name.startsWith(prefix)) {
-          results.push(fullPath);
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            // Recurse into subdirectories
+            results = results.concat(findFilesStartingWith(fullPath, prefix));
+        } else {
+            // Check if file name starts with the given prefix
+            if (entry.name.startsWith(prefix)) {
+                results.push(fullPath);
+            }
         }
-      }
     }
-  
+
     return results;
-  }
+}

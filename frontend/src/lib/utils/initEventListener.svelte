@@ -312,6 +312,7 @@
 		});
 
 		const _electronEmitter = await getElectronEmitter();
+		_electronEmitter.offAny(console.log);
 		_electronEmitter.onAny((event, ...data) => {
 			window.electron.send('message', JSON.stringify({ [event as string]: data }));
 		});
@@ -322,6 +323,7 @@
 		console.log('Initializing websocket');
 		const _localEmitter = await getLocalEmitter();
 		const socket = new WebSocket(`ws://${_page.url.hostname}:${WEBSOCKET_PORT}`);
+		socket.removeEventListener('message', console.log);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse) as [
@@ -335,6 +337,7 @@
 
 		const _electronEmitter = await getElectronEmitter();
 		socket.onopen = async () => {
+			_electronEmitter.offAny(console.log);
 			_electronEmitter.onAny(async (event, ...data) => {
 				const _authorizationKey = await getAuthorizationKey();
 				socket.send(
@@ -347,6 +350,7 @@
 			_electronEmitter.emit('Ping');
 		};
 		socket.onclose = () => {
+			socket.removeEventListener('message', console.log);
 			setTimeout(reload, 1000);
 		};
 	};

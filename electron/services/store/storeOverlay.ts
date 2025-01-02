@@ -59,9 +59,9 @@ export class ElectronOverlayStore {
 		let overlays = Object.values(this.getOverlays())
 		overlays.forEach(this.removeDuplicateOverlayItems.bind(this))
 	}
-	
+
 	removeDuplicateItemsByOverlayId(overlayId: string): void {
-		let overlay = this.getOverlayById(overlayId) 
+		let overlay = this.getOverlayById(overlayId)
 		if (isNil(overlay)) return;
 		this.removeDuplicateOverlayItems(overlay)
 	}
@@ -81,9 +81,9 @@ export class ElectronOverlayStore {
 					}, []);
 				});
 			});
-		
+
 		this.setOverlay(overlay)
-	
+
 		return overlay;
 	}
 
@@ -155,7 +155,7 @@ export class ElectronOverlayStore {
 		const prevItem = layer.items.find(item => item.id === itemId);
 
 		if (isNil(prevItem)) return
-		let newItem = cloneDeep({...prevItem, id: newId()}) as GridContentItem
+		let newItem = cloneDeep({ ...prevItem, id: newId() }) as GridContentItem
 
 		const findPosition = gridHelp.findSpace(newItem, layer.items, COL);
 
@@ -170,11 +170,11 @@ export class ElectronOverlayStore {
 		const customFileDir = path.join(this.appDir, "public", "custom", overlayId)
 		const prevFileName = kebabCase(prevItem?.id)
 		const newFileName = kebabCase(newItem?.id)
-		
+
 		const files = findFilesStartingWith(customFileDir, prevFileName)
 		files.forEach(file => {
 			const source = file;
-			const target = file.replace(prevFileName, newFileName) 
+			const target = file.replace(prevFileName, newFileName)
 			if (!fs.existsSync(source)) return;
 			fs.copyFileSync(source, target)
 		})
@@ -206,7 +206,7 @@ export class ElectronOverlayStore {
 			const files = findFilesStartingWith(customFileDir, prevFileName)
 			files.forEach(file => {
 				const source = file;
-				const target = file.replace(prevFileName, newFileName) 
+				const target = file.replace(prevFileName, newFileName)
 				fs.copyFileSync(source, target)
 			})
 			// Currently not a flexible solution
@@ -246,9 +246,9 @@ export class ElectronOverlayStore {
 	private initSvelteListeners() {
 		this.clientEmitter.on('CleanupCustomResources', this.cleanupCustomResources.bind(this));
 
-		this.clientEmitter.on("RemoveDuplicateItems", this.removeDuplicateItems.bind(this)); 
+		this.clientEmitter.on("RemoveDuplicateItems", this.removeDuplicateItems.bind(this));
 
-		this.clientEmitter.on('CleanupCustomResourcesByOverlayId', this.cleanupCustomResourceByOverlayId.bind(this)); 
+		this.clientEmitter.on('CleanupCustomResourcesByOverlayId', this.cleanupCustomResourceByOverlayId.bind(this));
 
 		this.clientEmitter.on("RemoveDuplicateItemsByOverlayId", this.removeDuplicateItemsByOverlayId.bind(this));
 
@@ -315,6 +315,12 @@ export class ElectronOverlayStore {
 
 	private initDemoOverlays() {
 		const overlayFiles = fs.readdirSync(path.join(__dirname, "/../../demo-overlays"));
+
+		const overlays = this.getOverlays();
+
+		Object.values(overlays).filter(overlay => overlay.isDemo).forEach(overlay => {
+			this.deleteOverlay(overlay.id)
+		})
 
 		overlayFiles.forEach((file) => {
 			const overlayRaw = fs.readFileSync(path.join(__dirname, "/../../demo-overlays", file), 'utf8');
