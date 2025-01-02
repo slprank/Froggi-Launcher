@@ -46,15 +46,13 @@
 
 <h2>This should look something like this:</h2>
 
-<img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/preview-final-overlay.gif"
-	alt="Preview final overlay"
-/>
+<video src="/image/tutorial/new-overlay/preview-embed-overlay.mp4" autoplay loop>
+	<track kind="captions" />
+</video>
 
 <h2>
 	Lets move over to the next tutorial where we will deep diver into how to integrate <b>Froggi</b>
-	 with OBS.
+	with OBS.
 </h2>
 
 <button

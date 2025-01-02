@@ -12,4 +12,6 @@
 	other external devices in your local network.
 </h2>
 
-<h1>TODO: Insert gif/video here</h1>
+<video src="/image/tutorial/new-overlay/preview-embed-overlay.mp4" autoplay loop>
+	<track kind="captions" />
+</video>
