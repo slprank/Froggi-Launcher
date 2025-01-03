@@ -10,7 +10,7 @@
 	class="flex flex-col gap-4 w-full items-center justify-start overflow-auto py-4 border border-gray-500 rounded-md p-4"
 >
 	<div>
-		<h1 class="text-4xl font-bold">Logs</h1>
+		<h1 class="text-4xl font-bold color-secondary">Logs</h1>
 	</div>
 	<div class="w-full flex justify-center">
 		<button

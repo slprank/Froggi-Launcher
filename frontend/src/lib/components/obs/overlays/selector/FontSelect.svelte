@@ -42,7 +42,7 @@
 
 <div class="w-full flex gap-2">
 	<div class="w-36 h-full">
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">Font</h1>
+		<h1 class="text-sm font-medium">Font</h1>
 		<Select bind:selected={font.family}>
 			<option value={'default'} selected>Default</option>
 			<option value={'sans-serif'}>Sans Serif</option>
@@ -63,7 +63,7 @@
 		on:change={updateFontSrc}
 	/>
 	<h1
-		class="text-2xl h-full grid text-start justify-center items-center text-gray-500 text-shadow"
+		class="text-2xl h-full grid text-start justify-center items-center color-secondary"
 		style={`font-family: ${fontFamily}`}
 	>
 		Super Smash Bros

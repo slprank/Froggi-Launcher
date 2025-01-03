@@ -14,22 +14,22 @@
 </script>
 
 {#if label}
-	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
+	<h1 class="color-secondary text-sm font-medium">{label}</h1>
 {/if}
 
 {#if value}
 	<div class="w-full flex flex-col gap-2 justify-start items-start">
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">
+		<h1 class="text-sm font-medium color-secondary">
 			Spread - {value?.spread ?? 0}px
 		</h1>
 		<NumberInput bind:value={value.spread} min={0} max={50} />
 		<ColorInput bind:value={value.color} label={'Color'} />
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">
+		<h1 class="text-sm font-medium color-secondary">
 			Shift Horizontal - {value?.x ?? 0}px
 		</h1>
 		<NumberInput bind:value={value.x} min={-50} max={50} />
 
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">
+		<h1 class="text-sm font-medium color-secondary">
 			Shift Vertical - {value?.y ?? 0}px
 		</h1>
 		<NumberInput bind:value={value.y} min={-50} max={50} />

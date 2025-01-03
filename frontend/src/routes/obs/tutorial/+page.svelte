@@ -5,7 +5,7 @@
 </script>
 
 <main
-	class="fixed h-screen w-screen bg-cover bg-center"
+	class="fixed h-screen w-screen bg-cover bg-center color-secondary"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >

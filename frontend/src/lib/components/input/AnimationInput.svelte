@@ -36,10 +36,10 @@
 {#if animation}
 	<div class="w-full">
 		{#if label}
-			<h1 class="text-gray-500 text-md font-medium text-shadow">{label}</h1>
+			<h1 class="color-secondary text-md font-medium">{label}</h1>
 		{/if}
 		<div class="w-full">
-			<h1 class="text-gray-500 text-sm font-medium text-shadow">Type</h1>
+			<h1 class="color-secondary text-sm font-medium">Type</h1>
 			<div class="relative w-full bg-white rounded-md">
 				<Select bind:selected={animation.type}>
 					<option selected value={Animation.None}>None</option>
@@ -57,11 +57,11 @@
 
 			{#if animation?.type !== Animation.None}
 				{#if [Animation.Fly, Animation.FlyRandom, Animation.Slide].includes(animation.type)}
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">X-distance - px</h1>
+					<h1 class="color-secondary text-sm font-medium">X-distance - px</h1>
 					<div class="relative w-full h-11 bg-white rounded-md">
 						<input
 							type="number"
-							class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
+							class="peer border-secondary block w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
 							id="numberInput"
 							step={1}
 							min={-max}
@@ -70,11 +70,11 @@
 						/>
 					</div>
 
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Y-distance - px</h1>
+					<h1 class="color-secondary text-sm font-medium">Y-distance - px</h1>
 					<div class="relative w-full h-11 bg-white rounded-md">
 						<input
 							type="number"
-							class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
+							class="peer block border-secondary w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
 							id="numberInput"
 							step={max / 100}
 							min={-max}
@@ -85,11 +85,11 @@
 				{/if}
 
 				{#if animation.type === Animation.Scale}
-					<h1 class="text-gray-500 text-sm font-medium text-shadow">Scale</h1>
+					<h1 class="color-secondary text-sm font-medium">Scale</h1>
 					<div class="relative w-full h-11 bg-white rounded-md">
 						<input
 							type="number"
-							class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
+							class="peer block w-full h-full border-secondary rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
 							id="numberInput"
 							step={0.01}
 							min={0}
@@ -98,11 +98,11 @@
 						/>
 					</div>
 				{/if}
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Duration - ms</h1>
+				<h1 class="color-secondary text-sm font-medium">Duration - ms</h1>
 				<div class="relative w-full h-11 bg-white rounded-md">
 					<input
 						type="number"
-						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
+						class="peer block w-full h-full border-secondary rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
 						id="numberInput"
 						step={max / 100}
 						min={0}
@@ -110,11 +110,11 @@
 						bind:value={animation.options.duration}
 					/>
 				</div>
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Delay - ms</h1>
+				<h1 class="color-secondary text-sm font-medium">Delay - ms</h1>
 				<div class="relative w-full h-11 bg-white rounded-md">
 					<input
 						type="number"
-						class="peer block bg-white w-full h-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 dark:bg-gray-700 dark:text-white"
+						class="peer block w-full h-full rounded border-secondary border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
 						id="numberInput"
 						step={max / 100}
 						min={0}
@@ -122,15 +122,13 @@
 						bind:value={animation.options.delay}
 					/>
 				</div>
-				<h1 class="text-gray-500 text-sm font-medium text-shadow">Easing</h1>
-				<div class="relative w-full bg-white rounded-md">
-					<Select bind:selected={animation.options.easing}>
-						<option selected value={undefined}>None</option>
-						{#each Object.keys(easingFunctions) as easingName}
-							<option value={easingName}>{easingName}</option>
-						{/each}
-					</Select>
-				</div>
+				<h1 class="color-secondary text-sm font-medium">Easing</h1>
+				<Select bind:selected={animation.options.easing}>
+					<option selected value={undefined}>None</option>
+					{#each Object.keys(easingFunctions) as easingName}
+						<option value={easingName}>{easingName}</option>
+					{/each}
+				</Select>
 			{/if}
 		</div>
 	</div>

@@ -28,16 +28,16 @@
 	class="flex flex-col gap-4 w-full items-center justify-start overflow-auto py-4 border-secondary rounded-md p-4"
 >
 	<div>
-		<h1 class="text-4xl font-bold">Authorization</h1>
+		<h1 class="text-4xl font-bold color-secondary">Authorization</h1>
 	</div>
-	<h1 class="text-xl font-bold">
+	<h1 class="text-xl font-bold color-secondary">
 		Authentication - <span class={`${$isAuthorized ? 'text-green-500' : 'text-red-700}'}`}>
 			{!$isAuthorized ? 'Not ' : ''}Authorized
 		</span>
 	</h1>
 	<div class="flex flex-col gap-2">
 		<h1
-			class="font-md text-center"
+			class="font-md text-center color-secondary"
 			use:tooltip={{
 				content: 'Pass key for authorizing external devices',
 				html: true,

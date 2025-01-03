@@ -28,8 +28,10 @@
 				</div>
 			</div>
 			<div class="col-span-1 place-items-center grid rounded-md">
-				<div class="w-48 h-48 border-4 border-zinc-700 text-center grid gap-2">
-					<QrCode value={$urls?.external} size="192" />
+				<div class="text-center grid gap-2">
+					<div>
+						<QrCode value={$urls?.external} />
+					</div>
 					<div class="flex">
 						<h1 class="text-gray-500 text-md font-medium text-shadow underline">
 							{$urls?.external}

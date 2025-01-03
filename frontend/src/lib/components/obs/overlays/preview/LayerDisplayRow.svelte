@@ -91,24 +91,22 @@
 					class="w-full h-full transition"
 					on:click={() => changeEditLayer(layerIndex)}
 				>
-					<div class="h-16 aspect-video rounded-sm border border-zinc-400">
+					<div class="h-16 aspect-video rounded-sm border-secondary">
 						<LayerPreview bind:layerId={layer.id} bind:overlayId={curOverlay.id} />
 					</div>
 				</button>
 			</div>
 			<button
-				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md transition"
+				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white transition"
 				on:click={() => changeEditLayer(layerIndex)}
 			>
 				<div class="w-full h-full grid justify-center items-center text-[1.5em]">
 					{layerIndex + 1}
 				</div>
 			</button>
-			<div
-				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white shadow-md"
-			>
+			<div class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white">
 				<button
-					class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md hover:scale-[1.05]"
+					class="w-8 h-12 grid justify-center text-lg font-bold text-white hover:scale-[1.05]"
 					on:click={async () => {
 						changeEditLayer(await moveLayerUp(curOverlay.id, $statsScene, layerIndex));
 					}}
@@ -116,7 +114,7 @@
 					<img src="/image/button-icons/up.png" alt="up" style="filter: invert(1)" />
 				</button>
 				<button
-					class="w-8 h-12 grid justify-center text-lg font-bold text-white shadow-md hover:scale-[1.05]"
+					class="w-8 h-12 grid justify-center text-lg font-bold text-white hover:scale-[1.05]"
 					on:click={async () => {
 						changeEditLayer(
 							await moveLayerDown(curOverlay.id, $statsScene, layerIndex),
@@ -133,10 +131,10 @@
 				</button>
 			</div>
 			<div
-				class="w-full h-full col-span-1 grid justify-center items-center text-lg font-bold text-white shadow-md"
+				class="w-full h-full col-span-1 grid justify-center items-center text-lg font-bold text-white"
 			>
 				<button
-					class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white shadow-md hover:scale-[1.05]"
+					class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white hover:scale-[1.05]"
 					on:click={async () => (deleteLayerModalOpen = true)}
 				>
 					<img
@@ -155,7 +153,7 @@
 					await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
 				}}
 			>
-				<h1 class="text-white text-shadow-md">+</h1>
+				<h1 class="text-white">+</h1>
 			</button>
 		</div>
 		<ConfirmModal

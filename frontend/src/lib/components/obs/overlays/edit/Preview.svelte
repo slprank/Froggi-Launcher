@@ -9,7 +9,7 @@
 </script>
 
 {#if url}
-	<div class={`w-full h-full border-2 border-zinc-700 overflow-hidden shadow-md my-2`}>
+	<div class={`w-full h-full border-secondary overflow-hidden shadow-md my-2`}>
 		<NonInteractiveIFrame {src} title="preview" class="w-full h-full" />
 	</div>
 {/if}

@@ -23,12 +23,12 @@
 
 <div class="w-full">
 	{#if label}
-		<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
+		<h1 class="color-secondary text-sm font-medium">{label}</h1>
 	{/if}
 	<div class="h-10 flex items-center">
 		<input
 			type="range"
-			class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+			class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer background-secondary-color"
 			{step}
 			{min}
 			{max}

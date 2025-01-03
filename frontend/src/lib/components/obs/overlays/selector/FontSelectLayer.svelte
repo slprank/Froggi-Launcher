@@ -6,8 +6,6 @@
 	export let fontId: string;
 </script>
 
-<div class="w-full flex gap-2">
-	{#key font.base64}
-		<FontSelect bind:font bind:fontId />
-	{/key}
+<div class="w-full flex gap-2 color-secondary">
+	<FontSelect bind:font bind:fontId />
 </div>

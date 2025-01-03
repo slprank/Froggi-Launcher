@@ -240,17 +240,19 @@
 	];
 </script>
 
-<div class="w-full h-full flex flex-col gap-2">
+<div class="w-full h-full flex flex-col gap-2 color-secondary">
 	<div class="w-full">
-		<h1 class="text-gray-500 text-lg font-medium text-shadow">Category</h1>
+		<h1 class="text-lg font-medium">Category</h1>
 		<div
 			class="w-lg 3xl:w-full flex flex-wrap gap-2 max-h-[13rem] min-h-[9rem] overflow-auto border-t border-b p-2"
 		>
 			{#each buttons.filter((b) => b.visible) as button}
 				<div class="grid gap-2 justify-start items-start">
 					<button
-						class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
-							selectedCategory === button.category ? 'border-red-500' : 'border-white'
+						class={`transition bg-black hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl rounded ${
+							selectedCategory === button.category
+								? 'border-secondary bg-opacity-50'
+								: 'border-white bg-opacity-25'
 						}`}
 						on:click={() => {
 							selectedCategory = button.category;
@@ -262,13 +264,13 @@
 			{/each}
 		</div>
 	</div>
-	<div class="w-full flex-1 overflow-scroll border-t border-b">
-		<h1 class="text-gray-500 text-lg font-medium text-shadow">Element</h1>
+	<div class="w-full flex-1 overflow-auto border-t border-b">
+		<h1 class="text-lg font-medium color-secondary">Element</h1>
 		{#key selectedCategory}
 			<div
 				in:fly={{ duration: 250, x: 50, delay: 250 }}
 				out:fly={{ duration: 250, x: 50 }}
-				class="overflow-y-scroll flex flex-col gap-2"
+				class="overflow-y-auto flex flex-col gap-2 color-secondary"
 			>
 				{#if selectedCategory === ElementCategory.Custom}
 					<CustomElementSelect on:select={select} />

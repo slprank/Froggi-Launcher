@@ -22,11 +22,11 @@
 </script>
 
 {#if label}
-	<h1 class="text-gray-500 text-sm font-medium text-shadow">{label}</h1>
+	<h1 class="color-secondary text-sm font-medium">{label}</h1>
 {/if}
 <div class="w-full h-12 grid grid-flow-col gap-4 grid-cols-2">
 	<input
-		class="w-full h-11 rounded-md col-span-1 dark:bg-gray-700"
+		class="w-full h-11 rounded-md col-span-1"
 		type="color"
 		id="head"
 		name="head"
@@ -34,7 +34,7 @@
 	/>
 	{#if opacity}
 		<input
-			class="w-full h-11 rounded-md col-span-1 dark:bg-gray-700"
+			class="w-full h-11 rounded-md col-span-1"
 			type="range"
 			id="head"
 			name="head"

@@ -49,7 +49,7 @@
 	$: notifyDisabledScene(overlay, $statsScene);
 
 	const availableClass =
-		'transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100';
+		'transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-36 h-20 my-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 border-secondary';
 	const unavailableInfo =
 		'Cannot perform this action on a demo overlay, try duplicating it first.';
 
@@ -58,16 +58,15 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="min-w-[80vw] min-h-[80vh] max-w-[95vw] max-h-[95vh] overflow-y-scroll flex flex-col gap-4 justify-between items-center bg-cover bg-center rounded-md border border-zinc-700 p-4"
-		style="background-image: url('/image/backgrounds/MeleeMenuGreen.png')"
+		class="min-w-[80vw] min-h-[80vh] max-w-[95vw] max-h-[95vh] overflow-y-scroll flex flex-col gap-4 justify-between items-center bg-cover bg-center border-secondary rounded-md p-4 background-primary-color color-secondary"
 	>
 		<div>
-			<h1 class="font-bold text-3xl text-white">{overlay?.title}</h1>
+			<h1 class="font-bold text-3xl">{overlay?.title}</h1>
 		</div>
 		<div
 			class={`flex-1 aspect-[16/9] ${
 				$isMobile && isHorizontal ? 'max-h-56' : 'max-h-full'
-			} h-full border-2 border-gray-500`}
+			} h-full border-secondary`}
 			style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
 			bind:this={parentDiv}
 		>

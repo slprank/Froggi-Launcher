@@ -36,16 +36,8 @@ main {
 	background-color: #fbf0e5;
 }
 
-p,
-h1,
-h2,
-h3 {
+.color-secondary {
 	color: #450d21;
-}
-
-hr {
-	color: #450d21;
-	border: #450d21;
 }
 
 .border-secondary {
@@ -56,6 +48,14 @@ hr {
 
 .border-secondary-color {
 	border-color: #450d21;
+}
+
+.background-primary-color {
+	background-color: #fbf0e5;
+}
+
+.background-secondary-color {
+	background-color: #450d21;
 }
 
 button:active {
