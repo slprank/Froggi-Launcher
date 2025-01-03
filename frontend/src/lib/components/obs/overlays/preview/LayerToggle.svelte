@@ -1,13 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import {
-		isElectron,
-		localEmitter,
-		obs,
-		overlays,
-		statsScene,
-		urls,
-	} from '$lib/utils/store.svelte';
+	import { localEmitter, overlays, statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import LayerDisplayRow from '$lib/components/obs/overlays/preview/LayerDisplayRow.svelte';
 	import { newLayer } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';

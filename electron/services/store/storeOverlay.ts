@@ -14,6 +14,7 @@ import { findFilesStartingWith, getCustomFiles, saveCustomFiles } from '../../ut
 import { COL } from '../../../frontend/src/lib/models/const';
 //@ts-ignore
 import gridHelp from "../../utils/gridHelp.js"
+import { ElectronFroggiStore } from './storeFroggi';
 
 
 @singleton()
@@ -25,6 +26,7 @@ export class ElectronOverlayStore {
 		@inject('ElectronStore') private store: Store,
 		@inject('ClientEmitter') private clientEmitter: TypedEmitter,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+		@inject(ElectronFroggiStore) private froggiStore: ElectronFroggiStore,
 	) {
 		this.log.info('Initializing Obs Overlay Store');
 		this.initListeners();
@@ -38,7 +40,9 @@ export class ElectronOverlayStore {
 
 	setOverlay(value: Overlay) {
 		if (!value) return;
-		this.store.set(`obs.layout.overlays.${value.id}`, value);
+		const froggiConfig = this.froggiStore.getFroggiConfig();
+		const overlay = { ...value, froggiVersion: froggiConfig.version } as Overlay
+		this.store.set(`obs.layout.overlays.${value.id}`, overlay);
 		this.emitOverlayUpdate()
 	}
 
@@ -137,6 +141,7 @@ export class ElectronOverlayStore {
 
 	uploadOverlay(overlay: Overlay, overlayId: string = newId()): void {
 		overlay.id = overlayId
+		// TODO: Handle version
 		this.setOverlay(overlay)
 	}
 

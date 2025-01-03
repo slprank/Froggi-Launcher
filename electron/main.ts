@@ -30,11 +30,11 @@ let mainLog: ElectronLog = log
 function setLoggingPath(log: ElectronLog, appName: string): ElectronLog {
 	try {
 		const appDataPath = getAppDataPath(appName);
-		log.transports.file.resolvePath = () => 
+		log.transports.file.resolvePath = () =>
 			path.join(`${appDataPath}/main.log`
 			);
 
-			log.transports.file.level = "verbose"
+		log.transports.file.level = "verbose"
 
 	} catch (err) {
 		log.error(err);

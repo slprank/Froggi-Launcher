@@ -3,12 +3,6 @@ import type { COL } from '../const';
 import type { CustomElement } from '../constants/customElement';
 import type { SelectedAnimationTriggerCondition, SelectedVisibilityCondition } from './animationOption';
 
-export interface AutoUpdater {
-	progress: string | undefined;
-	status: AutoUpdaterStatus;
-	version: string | undefined;
-}
-
 export interface Animations {
 	in: AnimationSettings
 	out: AnimationSettings
@@ -165,6 +159,7 @@ export interface OverlayLayout {
 export interface Overlay {
 	aspectRatio: AspectRatio;
 	isDemo: boolean;
+	froggiVersion: string;
 	description: string;
 	id: string;
 	title: string;
