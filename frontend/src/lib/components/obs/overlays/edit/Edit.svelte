@@ -61,21 +61,18 @@
 
 <main
 	class="fixed h-screen w-screen bg-cover bg-center"
-	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
+	style="background-color: #FBF0E5"
 	in:fade={{ delay: 50, duration: 150 }}
 >
 	{#if overlay && boardHeight && boardWidth}
 		<div class={`w-full h-full justify-center flex gap-4`}>
 			{#if displayPreview}
-				<div
-					class="h-[96vh] p-2[rem] flex flex-col justify-start items-center gap-4 overflow-hidden"
-				>
+				<div class="h-full flex flex-col justify-start items-center gap-4">
 					<div
-						class="flex"
-						style={`min-height: ${
-							((isVertical ? 350 : 400) * (overlay?.aspectRatio.height ?? 0)) /
-							(overlay?.aspectRatio.width ?? 0)
-						}px; min-width: ${isVertical ? 350 : 400}px`}
+						class={`flex w-full`}
+						style={`max-width: ${isVertical ? 300 : 500}px; aspect-ratio: ${
+							overlay.aspectRatio.width
+						}/${overlay.aspectRatio.height}`}
 					>
 						<Preview />
 					</div>
@@ -91,7 +88,7 @@
 				class={`max-w-full max-h-full flex-1 flex flex-col gap-2 justify-start items-center py-2 overflow-scroll`}
 			>
 				<div class="flex flex-col items-center">
-					<h1 class="text-gray-500 text-lg font-medium text-shadow">
+					<h1 class="text-lg font-medium text-shadow">
 						Overlay - {overlay.title}
 					</h1>
 					<div class="flex gap-2 justify-center items-center">

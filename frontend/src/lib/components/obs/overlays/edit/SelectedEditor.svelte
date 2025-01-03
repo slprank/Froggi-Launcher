@@ -11,7 +11,7 @@
 	import ElementModal from '$lib/components/obs/overlays/edit/ElementModal.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import { updateScene } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
-	import { isNil } from 'lodash';
+	import { debounce, isNil } from 'lodash';
 
 	const overlayId = $page.params.overlay;
 	export let selectedItemId: string | undefined;
@@ -49,6 +49,7 @@
 	function clearItem() {
 		selectedItemId = undefined;
 		selectedItem = undefined;
+		selectedItemIndex = 0;
 	}
 	$: $currentOverlayEditor?.layerIndex, $statsScene, clearItem();
 
@@ -64,8 +65,8 @@
 			selectedItem[COL].h = ROW - selectedItem[COL].y;
 	}
 
-	function copyElement(itemId: string) {
-		if (!curOverlay || $currentOverlayEditor?.layerIndex === undefined) return;
+	function copyElement(itemId: string | undefined) {
+		if (!curOverlay || isNil($currentOverlayEditor?.layerIndex) || isNil(itemId)) return;
 
 		$electronEmitter.emit(
 			'SceneItemDuplicate',
@@ -76,12 +77,12 @@
 		);
 	}
 
-	function deleteElement() {
-		if (!curOverlay || $currentOverlayEditor?.layerIndex === undefined) return;
-		curOverlay[$statsScene]?.layers[$currentOverlayEditor?.layerIndex].items.splice(
-			selectedItemIndex,
-			1,
-		);
+	function deleteElement(itemId: string | undefined) {
+		if (!curOverlay || isNil($currentOverlayEditor?.layerIndex) || isNil(itemId)) return;
+		curOverlay[$statsScene].layers[$currentOverlayEditor.layerIndex].items = curOverlay[
+			$statsScene
+		]?.layers[$currentOverlayEditor.layerIndex].items.filter((item) => item.id != itemId);
+
 		selectedItemId = undefined;
 		selectedItem = undefined;
 		selectedItemIndex = 0;
@@ -108,7 +109,7 @@
 	let lockOut = false;
 
 	function handleKeydown(e: KeyboardEvent) {
-		if (lockOut || !selectedItemId || !selectedItem) return;
+		if (!selectedItemId || !selectedItem) return;
 		if (e.shiftKey) {
 			if (e.key === 'ArrowDown') {
 				selectedItem[COL].h += 1;
@@ -124,12 +125,12 @@
 			}
 			return;
 		}
-		if (e.ctrlKey) {
+		if (e.ctrlKey || e.cmdKey) {
 			if (e.key === 'c') {
-				copyElement();
+				copyElement(selectedItemId);
 			}
 			if (e.key === 'Backspace') {
-				deleteElement();
+				deleteElement(selectedItemId);
 			}
 			return;
 		}
@@ -146,7 +147,7 @@
 			selectedItem[COL].x += 1;
 		}
 		if (e.key === 'Del') {
-			deleteElement();
+			deleteElement(selectedItemId);
 		}
 		if (e.key === 'Esc') {
 			clearItem();
@@ -156,13 +157,13 @@
 	}
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window on:keydown={debounce(handleKeydown, 50)} />
 
 <h1 class="text-gray-500 text-lg font-medium text-shadow" transition:fly={{ duration: 250, y: 50 }}>
 	Selected element
 </h1>
 <div class="h-16">
-	{#if selectedItem}
+	{#if !isNil(selectedItem)}
 		<div class="w-full flex gap-2">
 			<div transition:fly={{ duration: 250, y: 30 }}>
 				<NumberInput bind:value={selectedItem[COL].x} max={COL} label={`X - ${COL}`} />
