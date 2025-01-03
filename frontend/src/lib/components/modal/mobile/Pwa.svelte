@@ -1,13 +1,49 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
+	let deviceType: 'iOS' | 'Android' | 'other' = 'other';
+
+	onMount(() => {
+		// Check if window and navigator are available
+		if (typeof window !== 'undefined' && navigator?.userAgent) {
+			const userAgent = navigator.userAgent.toLowerCase();
+
+			if (userAgent.includes('android')) {
+				deviceType = 'Android';
+			} else if (
+				userAgent.includes('iphone') ||
+				userAgent.includes('ipad') ||
+				userAgent.includes('ipod')
+			) {
+				deviceType = 'iOS';
+			} else {
+				deviceType = 'other';
+			}
+		}
+	});
 </script>
 
 <div
-	class="w-[95vw] h-[350px] max-w-[624px] min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
-	style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+	class="w-[95vw] max-w-[624px] min-w-lg place-items-center bg-cover bg-center border-secondary background-primary-color p-4"
 >
-	<div class="h-full w-full grid place-items-center p-4">
-		<h1 class="text-white text-xl font-medium text-shadow">
-			Add page to home screen for the best experience
+	<div class="w-full grid place-items-center">
+		<h1 class="color-secondary text-xl font-medium">
+			Add to <b>Home Screen</b>
+			for the best experience.
 		</h1>
 	</div>
+	{#if deviceType === 'iOS'}
+		<div class="w-full flex flex-col gap-2">
+			<img
+				class="rounded-sm border-secondary"
+				src="/image/tutorial/embed/add-to-homescreen-ios-1.png"
+				alt="Add app to homescreen"
+			/>
+			<img
+				class="rounded-sm border-secondary"
+				src="/image/tutorial/embed/add-to-homescreen-ios-2.png"
+				alt="Add app to homescreen"
+			/>
+		</div>
+	{/if}
 </div>

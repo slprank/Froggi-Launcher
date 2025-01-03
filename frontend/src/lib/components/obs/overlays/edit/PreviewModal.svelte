@@ -17,22 +17,23 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[80vw] h-80 max-w-[800px] flex rounded-lg bg-transparent m-0 bg-cover bg-center p-4"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-[80vw] h-80 max-w-[800px] flex rounded-lg bg-transparent m-0 bg-cover bg-center p-4 background-primary-color"
 	>
 		<div class="flex-1 flex flex-col justify-between items-center w-[80%]">
-			<h1 class="text-white text-xl font-medium text-shadow">Open Preview In New Window</h1>
+			<h1 class="text-xl font-medium color-secondary">Open Preview In New Window</h1>
 			<a target="popup" href={`${localUrl}`} on:click={() => (open = false)}>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-24 h-10 px-2 xl:text-xl border-secondary"
 				>
 					Popup
 				</button>
 			</a>
 		</div>
 		<div class="flex-1 flex flex-col justify-between items-center rounded-md">
-			<h1 class="text-white text-xl font-medium text-shadow">Open on external device</h1>
-			<QrCode value={`${externalUrl}`} size="192" />
+			<h1 class="text-xl font-medium color-secondary">Open on external device</h1>
+			<div class="border-secondary" style="border-width: 0.125em">
+				<QrCode value={`${externalUrl}`} />
+			</div>
 			<Clipboard
 				text={`${externalUrl}`}
 				let:copy
@@ -42,7 +43,7 @@
 			>
 				<button
 					on:click={copy}
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				>
 					Copy external URL
 				</button>

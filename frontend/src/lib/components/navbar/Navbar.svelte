@@ -194,22 +194,20 @@
 			<div
 				in:fly={{ y: 100, duration: 150 }}
 				out:fly={{ y: 100, duration: 400 }}
-				class={`fixed grid justify-center w-screen h-16 m-0 bg-black bg-opacity-60 border-t-1 border-opacity-25 bottom-0 border-white z-50 ${
-					$isMobile ? 'pb-4 h-20' : ''
-				}`}
+				class={`fixed grid justify-center w-screen h-16 m-0 bg-black bg-opacity-60 border-t-1 border-opacity-25 bottom-0 border-white z-50 p-1`}
 			>
 				<div
-					class={`flex justify-evenly content-center place-items-center w-screen ${
+					class={`flex justify-evenly content-center items-center w-screen ${
 						$isMobile ? 'max-w-lg' : 'max-w-xl'
 					}`}
 				>
 					<NavButton click={() => goto('/')}>
 						<img src="/image/button-icons/home.png" alt="home" />
 					</NavButton>
-					<NavButton click={() => goto('/leaderboard')}>
+					<NavButton click={() => goto('/leaderboard')} disabled={true}>
 						<img src="/image/button-icons/leaderboard.png" alt="leaderboard" />
 					</NavButton>
-					<NavButton click={() => goto('/achievements')}>
+					<NavButton click={() => goto('/achievements')} disabled={true}>
 						<img src="/image/button-icons/trophy.png" alt="achievements" />
 					</NavButton>
 					<NavButton click={() => goto('/profile')}>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { AutoUpdaterStatus } from '$lib/models/enum';
+	import { AutoUpdater } from '$lib/models/types/autoUpdaterTypes';
 	import { autoUpdater, electronEmitter, isElectron } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
-	import type { AutoUpdater } from '$lib/models/types/overlay';
 	import { tooltip } from 'svooltip';
 
 	const getStyle = (autoUpdater: AutoUpdater) => {
@@ -81,10 +81,12 @@
 		>
 			<span class={getAnimation($autoUpdater)} />
 			<button
-				class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
-				style={`${getStyle($autoUpdater)}`}
+				class={`w-10 border-secondary bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
+				style={`${getStyle($autoUpdater)}; border-radius: 1rem; height: 2.5em`}
 			>
-				<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
+				<div class="h-6">
+					<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
+				</div>
 			</button>
 		</button>
 	{/if}

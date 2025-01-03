@@ -40,7 +40,7 @@
 	export const isIframe = writable<boolean>(window.self !== window.top);
 	export const isOverlayPage = writable<boolean>(true);
 
-	export const isPWA = writable<boolean>(
+	export const isPwa = writable<boolean>(
 		window.electron ||
 			(!window.electron && browser && !Device.isMobile && !Device.isTablet) ||
 			!!(

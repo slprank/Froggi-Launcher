@@ -10,44 +10,44 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[95vw] h-[350px] max-w-[624px] min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-[95vw] h-[350px] max-w-[624px] min-w-lg place-items-center bg-cover bg-center background-primary-color border-secondary"
 	>
-		<div class="h-full w-full grid grid-cols-2">
-			<div class="col-span-1 place-items-center grid">
-				<div class="grid w-full h-48 px-4">
-					<h1 class="text-white text-xl font-medium text-shadow">
-						Add page to the home screen to get the best experience
-					</h1>
-					<h1 class="text-gray-500 text-md font-medium text-shadow">
-						Make sure to be connected to the same network
-					</h1>
-					<h1 class="text-gray-500 text-md font-medium text-shadow">
-						App might require a new scan if the IP changes
-					</h1>
-				</div>
+		<div class="h-full w-full grid grid-cols-2 p-4">
+			<div class="col-span-1 flex flex-col items-center w-full h-full px-4 gap-2">
+				<h1 class="color-secondary text-xl font-medium">
+					Scan the QR code to open the app on your phone!
+				</h1>
+				<h1 class="color-secondary text-xl font-medium">
+					Add page to the home screen to get the best mobile experience
+				</h1>
+				<h1 class="color-secondary text-md font-medium">
+					Make sure to be connected to the same network
+				</h1>
+				<h1 class="color-secondary text-md font-medium">
+					App might require a new scan if the local IP-address changes
+				</h1>
 			</div>
-			<div class="col-span-1 place-items-center grid rounded-md">
-				<div class="text-center grid gap-2">
-					<div>
-						<QrCode value={$urls?.external} />
-					</div>
-					<div class="flex">
-						<h1 class="text-gray-500 text-md font-medium text-shadow underline">
-							{$urls?.external}
-						</h1>
-						<Clipboard
-							text={`${$urls?.external}`}
-							let:copy
-							on:copy={() => {
-								notifications.success('Copied to clipboard!', 2000);
-							}}
-						>
-							<button on:click={copy} class="w-5 h-5 invert transition">
-								<img src="/image/button-icons/copy.png" alt="copy" />
-							</button>
-						</Clipboard>
-					</div>
+			<div
+				class="col-span-1 place-items-center flex flex-col rounded-md text-center justify-center gap-2 h-full"
+			>
+				<div class="border-secondary" style="border-width: 0.125em">
+					<QrCode value={$urls?.external} />
+				</div>
+				<div class="flex">
+					<h1 class="color-secondary text-md font-medium underline">
+						{$urls?.external}
+					</h1>
+					<Clipboard
+						text={`${$urls?.external}`}
+						let:copy
+						on:copy={() => {
+							notifications.success('Copied to clipboard!', 2000);
+						}}
+					>
+						<button on:click={copy} class="w-5 h-5 invert transition">
+							<img src="/image/button-icons/copy.png" alt="copy" />
+						</button>
+					</Clipboard>
 				</div>
 			</div>
 		</div>

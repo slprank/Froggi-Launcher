@@ -45,7 +45,7 @@
 		<div class="w-full flex flex-col justify-center" bind:this={parentDiv}>
 			<div>
 				<TextFitMulti
-					class="h-16 w-full text-gray-500 text-md font-medium text-shadow justify-center underline"
+					class="h-16 w-full color-secondary text-md font-medium text-shadow justify-center underline"
 				>
 					{curOverlay?.title ?? 'Preview'}
 				</TextFitMulti>

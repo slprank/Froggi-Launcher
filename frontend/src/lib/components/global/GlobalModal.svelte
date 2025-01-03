@@ -1,9 +1,16 @@
 <script lang="ts">
-	import { isPWA } from '$lib/utils/store.svelte';
+	import { isPwa } from '$lib/utils/store.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import Pwa from '$lib/components/modal/mobile/Pwa.svelte';
+	import { onMount } from 'svelte';
 
-	let isPwaOpen = !$isPWA;
+	let isPwaOpen = false;
+
+	onMount(() => {
+		setTimeout(() => {
+			isPwaOpen = !$isPwa;
+		}, 1500);
+	});
 </script>
 
 <div>
