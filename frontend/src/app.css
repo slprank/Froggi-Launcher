@@ -50,6 +50,10 @@ main {
 	border-color: #450d21;
 }
 
+.outline-secondary-color {
+	outline-color: #450d21;
+}
+
 .background-primary-color {
 	background-color: #fbf0e5;
 }

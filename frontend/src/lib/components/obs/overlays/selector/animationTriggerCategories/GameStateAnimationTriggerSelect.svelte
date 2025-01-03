@@ -15,7 +15,7 @@
 </script>
 
 <SelectAnimationTriggerOption
-	description="While Game Is Counting Down From 5"
+	description="Every second counting down from 5"
 	value={AnimationTrigger.InGameGameCountdown}
 	bind:selected={selectedOption[AnimationTrigger.InGameGameCountdown]}
 	on:select={select}

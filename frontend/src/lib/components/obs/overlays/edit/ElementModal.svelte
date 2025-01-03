@@ -24,7 +24,7 @@
 	import ElementSelectModal from '../selector/ElementSelectModal.svelte';
 	import type { CustomElement } from '$lib/models/constants/customElement';
 	import { fixTransition } from './fixTransition';
-	import { isNil, isNull } from 'lodash';
+	import { isNil } from 'lodash';
 
 	const overlayId = $page.params.overlay;
 
@@ -153,7 +153,7 @@
 			<div class="w-full h-full col-span-4 overflow-y-scroll scroll enable-scrollbar p-2">
 				<div class="grid grid-flow-col gap-2 items-center">
 					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border border-white rounded"
+						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border-secondary"
 						on:click={() => (isElementSelectOpen = true)}
 					>
 						Select
@@ -166,7 +166,7 @@
 				</div>
 				<button
 					transition:fly={{ duration: 250, x: 150 }}
-					class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+					class="transition w-24 bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 					on:click={update}
 				>
 					{isNewElement ? 'Add' : 'Update'}
@@ -175,13 +175,12 @@
 			<div class="w-full h-full col-span-3 grid justify-center content-center gap-12">
 				{#each [...Array(2).keys()] as i}
 					<div
-						class="w-[30vw] max-w-full max-h-[30vh] aspect-video bg-cover bg-center border z-0 flex items-center justify-center relative"
-						style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
+						class="w-[30vw] max-w-full max-h-[30vh] aspect-video border-secondary bg-cover bg-center border z-0 flex items-center justify-center relative"
 						in:fade={{ delay: 50, duration: 150 }}
 						out:fade={{ duration: 300 }}
 					>
 						<div
-							class={`w-full h-[50%] border bg-${i ? 'black' : 'white'} 'absolute'`}
+							class={`w-full h-[50%] bg-${i ? 'black' : 'white'} 'absolute'`}
 							style={`font-family: ${
 								getCurrentOverlay()?.[$statsScene]?.font?.family
 							}`}

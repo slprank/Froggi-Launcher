@@ -158,7 +158,7 @@
 						<div
 							class={`w-full h-full absolute ${
 								selectedItemId === dataItem?.id
-									? 'outline outline-1 outline-red-500'
+									? 'outline outline-1 outline-secondary-color'
 									: ''
 							}`}
 						>

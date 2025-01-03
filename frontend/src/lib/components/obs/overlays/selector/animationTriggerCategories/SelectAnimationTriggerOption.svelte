@@ -15,16 +15,17 @@
 
 <div class="flex flex-row items-center gap-2">
 	<button
-		class={`w-80 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-105 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-2 rounded ${
-			selected && 'border-green-700'
+		class={`w-80 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-105 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl rounded-sm ${
+			selected ? 'border-secondary bg-opacity-50' : 'border-white'
 		}`}
+		style={`${selected ? 'border-width: 0.125em' : ''}`}
 		on:click={() => {
 			select(value);
 		}}
 	>
 		<slot />
 	</button>
-	<h1 class="text-gray-300 text-md font-medium text-shadow">
+	<h1 class="color-secondary text-md font-medium">
 		{description}
 	</h1>
 </div>

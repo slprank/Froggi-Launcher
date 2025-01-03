@@ -14,7 +14,7 @@ export enum AnimationTrigger {
     InGamePlayer2CharacterChange = "Player2 Character Change",
 
     MatchBestOfChange = "Match Best Of Change",
-    MatchGameModeChange = "Match Best Of Change",
+    MatchGameModeChange = "Match Game Mode Change",
     MatchPlayer1TagChange = "Player 1 Tag Change",
     MatchPlayer2TagChange = "Player 2 Tag Change",
     MatchPlayer1ScoreChange = "Player 1 Score Change",
@@ -56,7 +56,7 @@ export enum VisibilityOption {
     InGamePlayer1Stock2 = "Player 1 Stock 2",
     InGamePlayer1Stock3 = "Player 1 Stock 3",
     InGamePlayer1Stock4 = "Player 1 Stock 4",
-    
+
     InGamePlayer2Alive = "Player 2 Alive",
     InGamePlayer2Combo = "Player 2 Combo",
     InGamePlayer2EnteringHalo = "Player 2 Entering Halo",
