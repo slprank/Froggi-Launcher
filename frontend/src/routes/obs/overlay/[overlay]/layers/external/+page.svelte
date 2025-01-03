@@ -41,10 +41,7 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 {#if isVerticalScreen}
-	<div
-		class={`flex flex-col bg-cover bg-center items-start`}
-		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png')`}
-	>
+	<div class={`flex flex-col bg-cover bg-center items-start`} style={`height: 100svh;`}>
 		<div class="w-full flex flex-col justify-center" bind:this={parentDiv}>
 			<div>
 				<TextFitMulti
@@ -81,9 +78,7 @@
 {#if isHorizontalScreen}
 	<div
 		class={`flex flex-row bg-cover bg-center items-center py-4 px-18 gap-2`}
-		style={`height: 100svh; background-image: url('/image/backgrounds/MeleeMenuGreen.png'); padding-bottom: ${
-			$isMobile && '5em'
-		}`}
+		style={`height: 100svh; padding-bottom: ${$isMobile && '5em'}`}
 	>
 		<div class="w-full gap-2 flex flex-col justify-center">
 			<TextFitMulti

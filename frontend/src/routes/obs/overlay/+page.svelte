@@ -26,7 +26,6 @@
 
 <main
 	class="fixed h-screen w-screen bg-cover bg-center"
-	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
@@ -36,17 +35,17 @@
 		}`}
 	>
 		<div>
-			<h1 class="text-4xl font-bold text-white shadow-md">Overlays</h1>
+			<h1 class="text-4xl font-bold">Overlays</h1>
 		</div>
-		<div class="w-full border border-gray-500">
-			<h1 class="text-2xl font-bold text-white shadow-md w-full text-center">Demo</h1>
+		<div class="w-full border-secondary rounded-sm">
+			<h1 class="text-2xl font-bold w-full text-center">Demo</h1>
 			<div
 				class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
 			>
 				{#each demoOverlays as overlay, i}
 					<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
 						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] my-4"
 							on:click={() => {
 								openPreview(overlay.id);
 							}}
@@ -57,15 +56,15 @@
 				{/each}
 			</div>
 		</div>
-		<div class="flex-1 w-full border border-gray-500 overflow-scroll">
-			<h1 class="text-2xl font-bold text-white shadow-md w-full text-center">Custom</h1>
+		<div class="flex-1 w-full border-secondary overflow-scroll">
+			<h1 class="text-2xl font-bold w-full text-center">Custom</h1>
 			<div
 				class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
 			>
 				{#each customOverlays as overlay, i}
 					<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
 						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 min-h-[5rem] my-4"
+							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 min-h-[5rem] my-4"
 							on:click={() => {
 								openPreview(overlay.id);
 							}}
@@ -79,7 +78,7 @@
 		{#if $isElectron}
 			<div>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 text-3xl font-semibold text-white text-md whitespace-nowrap p-4 border border-white rounded"
+					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 text-3xl font-semibold text-white text-md whitespace-nowrap p-4 border-secondary rounded"
 					on:click={() => (newOverlayModalOpen = true)}
 				>
 					Add new

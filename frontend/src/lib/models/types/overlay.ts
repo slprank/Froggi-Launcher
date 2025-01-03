@@ -1,4 +1,4 @@
-import type { Animation, AutoUpdaterStatus, LiveStatsScene, SceneBackground } from '../enum';
+import type { Animation, LiveStatsScene, SceneBackground } from '../enum';
 import type { COL } from '../const';
 import type { CustomElement } from '../constants/customElement';
 import type { SelectedAnimationTriggerCondition, SelectedVisibilityCondition } from './animationOption';

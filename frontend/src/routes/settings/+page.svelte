@@ -6,13 +6,12 @@
 
 <main
 	class="fixed h-screen w-screen bg-cover bg-center"
-	style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class={`w-full h-full  px-2 gap-4 flex flex-col items-center`}>
+	<div class={`w-full h-full px-2 gap-4 flex flex-col items-center`}>
 		<div>
-			<h1 class="text-4xl font-bold text-white shadow-md">Settings</h1>
+			<h1 class="text-4xl font-bold">Settings</h1>
 		</div>
 		<Authorization />
 		<SaveLogs />

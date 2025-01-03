@@ -33,6 +33,29 @@ body {
 main {
 	padding: 0.5rem;
 	padding-bottom: 4.5rem;
+	background-color: #fbf0e5;
+}
+
+p,
+h1,
+h2,
+h3 {
+	color: #450d21;
+}
+
+hr {
+	color: #450d21;
+	border: #450d21;
+}
+
+.border-secondary {
+	border-width: 1px;
+	border-color: #450d21;
+	border-radius: 0.125rem;
+}
+
+.border-secondary-color {
+	border-color: #450d21;
 }
 
 button:active {

@@ -6,7 +6,6 @@
 
 <main
 	class="fixed h-screen w-screen place-items-center bg-black bg-cover bg-center text-center"
-	style="background-image: url('/image/backgrounds/MeleeWallpaper.png'); padding: 0"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >

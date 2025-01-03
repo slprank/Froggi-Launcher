@@ -46,7 +46,22 @@
 
 <h2>This should look something like this:</h2>
 
-<video src="/image/tutorial/new-overlay/preview-embed-overlay.mp4" autoplay loop>
+<video
+	src="/image/tutorial/new-overlay/preview-embed-custom-overlay.mp4"
+	autoplay
+	loop
+	muted={true}
+>
+	<track kind="captions" />
+</video>
+
+<h2>
+	Or if you want to take this even further you can do something like the
+	<b>Hud</b>
+	demo overlay, which is included with the app.
+</h2>
+
+<video src="/image/tutorial/new-overlay/preview-embed-demo-overlay.mp4" autoplay loop muted={true}>
 	<track kind="captions" />
 </video>
 

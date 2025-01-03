@@ -12,6 +12,12 @@
 	other external devices in your local network.
 </h2>
 
-<video src="/image/tutorial/new-overlay/preview-embed-overlay.mp4" autoplay loop>
+<video
+	src="/image/tutorial/new-overlay/preview-embed-demo-overlay.mp4"
+	class="border-secondary"
+	autoplay
+	loop
+	muted={true}
+>
 	<track kind="captions" />
 </video>
