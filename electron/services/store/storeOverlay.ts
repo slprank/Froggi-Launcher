@@ -318,15 +318,21 @@ export class ElectronOverlayStore {
 
 		const overlays = this.getOverlays();
 
-		Object.values(overlays).filter(overlay => overlay.isDemo).forEach(overlay => {
-			this.deleteOverlay(overlay.id)
-		})
+		Object.values(overlays)
+			.filter(overlay => overlay.isDemo)
+			.forEach(overlay => {
+				this.deleteOverlay(overlay.id)
+			})
 
 		overlayFiles.forEach((file) => {
-			const overlayRaw = fs.readFileSync(path.join(__dirname, "/../../demo-overlays", file), 'utf8');
-			const overlay: Overlay = { ...JSON.parse(overlayRaw), isDemo: true } as Overlay;
-			const demoId = file.replace(/\s+|\.json$/g, '');
-			this.uploadOverlay(overlay, demoId);
+			try {
+				const overlayRaw = fs.readFileSync(path.join(__dirname, "/../../demo-overlays", file), 'utf8');
+				const overlay: Overlay = { ...JSON.parse(overlayRaw), isDemo: true } as Overlay;
+				const demoId = file.replace(/\s+|\.json$/g, '');
+				this.uploadOverlay(overlay, demoId);
+			} catch (e) {
+				this.log.error(e)
+			}
 		});
 
 	}
