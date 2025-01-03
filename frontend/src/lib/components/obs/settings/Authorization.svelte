@@ -31,8 +31,8 @@
 		<h1 class="text-4xl font-bold color-secondary">Authorization</h1>
 	</div>
 	<h1 class="text-xl font-bold color-secondary">
-		Authentication - <span class={`${$isAuthorized ? 'text-green-500' : 'text-red-700}'}`}>
-			{!$isAuthorized ? 'Not ' : ''}Authorized
+		Authentication - <span class={`${$isAuthorized ? 'text-green-500' : 'text-secondary'}`}>
+			{!$isAuthorized ? 'Unauthorized' : 'Authorized'}
 		</span>
 	</h1>
 	<div class="flex flex-col gap-2">
@@ -49,14 +49,14 @@
 			Authorization Key
 		</h1>
 		<input
-			class="w-full rounded-md p-2 disabled:grayscale"
+			class="w-full rounded-md p-2 disabled:grayscale border-secondary"
 			type="text"
 			bind:value={authKey}
 			disabled={!$isElectron && $isAuthorized}
 		/>
 		{#if $isElectron}
 			<button
-				class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer"
+				class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer border-secondary"
 				on:click={updateKey}
 			>
 				Update
@@ -64,7 +64,7 @@
 		{/if}
 		{#if !$isElectron}
 			<button
-				class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0"
+				class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0 border-secondary"
 				on:click={authenticate}
 				disabled={$isAuthorized}
 			>
