@@ -34,6 +34,8 @@ main {
 	padding: 0.5rem;
 	padding-bottom: 4.5rem;
 	background-color: #fbf0e5;
+	padding-left: 4.5rem;
+	padding-right: 4.5rem;
 }
 
 .color-secondary {
@@ -69,12 +71,6 @@ button:active {
 @media (hover: hover) {
 	button:hover {
 		transform: scale(1.02);
-	}
-
-	main {
-		padding: 0.5rem;
-		padding-left: 4.5rem;
-		padding-right: 4.5rem;
 	}
 }
 

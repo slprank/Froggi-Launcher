@@ -5,14 +5,11 @@
 </script>
 
 <main
-	class="fixed h-screen w-screen place-items-center bg-black bg-cover bg-center text-center"
+	class="fixed h-screen w-screen place-items-center bg-black bg-cover bg-center text-center background-primary-color"
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >
-	<div class="grid grid-flow-row gap-4 justify-center">
-		Game State: {$gameState}
-	</div>
-	<div class="fixed place-items-center grid h-screen w-screen bg-gradient-to-t from-black z-40">
+	<div class="fixed place-items-center grid h-screen w-screen z-40">
 		<Logo />
 	</div>
 </main>

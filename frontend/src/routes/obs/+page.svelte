@@ -11,7 +11,7 @@
 >
 	<div class="w-full h-full flex flex-col justify-center items-center p-8">
 		<div>
-			<h1 class="font-bold text-4xl">OBS</h1>
+			<h1 class="font-bold text-4xl color-secondary">OBS</h1>
 		</div>
 		<div class="flex-1 flex flex-col justify-center items-center h-full w-full">
 			<button

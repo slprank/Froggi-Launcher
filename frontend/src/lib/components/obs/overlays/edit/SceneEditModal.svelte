@@ -55,18 +55,17 @@
 
 <Modal bind:open class="rounded-lg" on:close={clear}>
 	<div
-		class="w-[80vw] h-[80vh] min-w-72 min-w-lg place-items-center bg-cover bg-center rounded-md border border-zinc-700"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-[80vw] h-[80vh] min-w-72 min-w-lg place-items-center bg-cover bg-center border-secondary background-primary-color"
 	>
 		<div class="w-full max-h-full h-full flex gap-8 p-4 justify-between">
 			<div class="h-full flex flex-col justify-between">
 				<div class="max-h-full h-full overflow-auto justify-between">
 					<div>
-						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Overlay:</h1>
+						<h1 class="color-secondary text-2xl font-medium">Overlay:</h1>
 						<div class="w-48 flex gap-2">
 							<TextInput
 								bind:value={overlay.title}
-								label="Title"
+								label="Overlay title"
 								bind:autofocus
 								autoFocusValue={1}
 							/>
@@ -74,15 +73,15 @@
 					</div>
 
 					<div>
-						<h1 class="text-gray-500 text-2xl font-medium text-shadow">Scene:</h1>
+						<h1 class="text-2xl font-medium color-secondary">Scene:</h1>
 
-						<h1 class="text-gray-500 text-lg font-medium text-shadow">Active scenes</h1>
+						<h1 class="text-lg font-medium color-secondary">Active scenes</h1>
 						<SceneSelectOptions bind:overlay />
 					</div>
 				</div>
 				<div class="w-48 flex items-end">
 					<button
-						class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+						class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
 						on:click={handleUpdate}
 					>
 						Update
@@ -97,21 +96,17 @@
 						in:fly={{ duration: 250, delay: 250, x: 150 }}
 					>
 						<div class="w-full">
-							<h1 class="text-gray-500 text-2xl font-medium text-shadow">
+							<h1 class="text-2xl font-medium">
 								{$statsScene}:
 							</h1>
 						</div>
 						<div class="w-full">
-							<h1 class="text-gray-500 text-2xl font-medium text-shadow">
-								Default Font:
-							</h1>
+							<h1 class="text-2xl font-medium">Default Font:</h1>
 							<FontSelectorLayer bind:font={curScene.font} fontId={$statsScene} />
 						</div>
 
 						<div class="flex flex-col gap-2">
-							<h1 class="text-gray-500 text-2xl font-medium text-shadow">
-								Background
-							</h1>
+							<h1 class="text-2xl font-medium">Background</h1>
 							<div class="w-full flex gap-2">
 								<div class="w-48">
 									<Select bind:selected={curScene.background.type} label="Type">
@@ -199,7 +194,7 @@
 							</div>
 
 							<div
-								class="bg-center aspect-video w-[35vw] max-w-[600px] border"
+								class="bg-center aspect-video w-[35vw] max-w-[600px] border-secondary"
 								style={`
 						${
 							previewBackgroundType === SceneBackground.Color
@@ -243,7 +238,7 @@
 							{#if curScene.background.type !== SceneBackground.None}
 								<div class="flex gap-4">
 									<div class="max-w-full">
-										<h1 class="text-gray-500 text-lg font-medium text-shadow">
+										<h1 class=" text-lg font-medium color-secondary">
 											Background Transition - In
 										</h1>
 										<div class="w-48">
@@ -253,7 +248,7 @@
 										</div>
 									</div>
 									<div class="max-w-full">
-										<h1 class="text-gray-500 text-lg font-medium text-shadow">
+										<h1 class=" text-lg font-medium color-secondary">
 											Background Transition - Out
 										</h1>
 										<div class="w-48">
@@ -267,7 +262,7 @@
 						</div>
 						<div>
 							<h1
-								class="text-gray-500 text-2xl font-medium text-shadow"
+								class=" text-2xl font-medium color-secondary"
 								use:tooltip={{
 									content: 'Delay between each layer rendering',
 									placement: 'top-start',
@@ -289,7 +284,7 @@
 						</div>
 						<div class="flex gap-4">
 							<div class="max-w-full">
-								<h1 class="text-gray-500 text-lg font-medium text-shadow">
+								<h1 class=" text-lg font-medium color-secondary">
 									Element Transition - In
 								</h1>
 								<div class="w-48">
@@ -300,7 +295,7 @@
 								</div>
 							</div>
 							<div class="max-w-full">
-								<h1 class="text-gray-500 text-lg font-medium text-shadow">
+								<h1 class=" text-lg font-medium color-secondary">
 									Element Transition - Out
 								</h1>
 								<div class="w-48">
