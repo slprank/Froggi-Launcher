@@ -19,9 +19,9 @@
 	{#each scenes ?? [] as scene}
 		<div class="flex gap-2 justify-start items-center" in:fly={{ duration: 250, x: 150 }}>
 			<button
-				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
+				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded-sm ${
 					$obsConnection.scenes?.currentProgramSceneName === scene.sceneName
-						? 'border-red-500'
+						? 'border-secondary bg-opacity-50'
 						: 'border-white'
 				}`}
 				on:click={() => {
