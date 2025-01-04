@@ -143,27 +143,26 @@
 	class="w-[95vw] max-w-[600px] max-h-[80vh] min-w-72 flex justify-center"
 >
 	<div
-		class="w-[600px] h-[80vh] min-w-lg flex flex-col gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-[600px] h-[80vh] min-w-lg flex flex-col gap-8 bg-cover bg-center border-secondary background-primary-color p-8"
 	>
 		<div>
 			<div class="flex gap-4 justify-center items-center">
-				<h1 class="text-white text-3xl font-semibold">Add Game</h1>
+				<h1 class="color-secondary text-3xl font-semibold">Add Game</h1>
 			</div>
 			<div class="flex justify-between gap-4">
-				<h1 class="text-white text-2xl font-semibold">
+				<h1 class="color-secondary text-2xl font-semibold">
 					{getDisplayName(0)}
 				</h1>
-				<h1 class="text-white text-2xl font-semibold">
+				<h1 class="color-secondary text-2xl font-semibold">
 					{getDisplayName(1)}
 				</h1>
 			</div>
 		</div>
 		<div
-			class="flex flex-col flex-1 gap-8 overflow-y-scroll sp-2 border border-zinc-700 rounded-md"
+			class="flex flex-col flex-1 gap-8 overflow-y-scroll sp-2 border-t border-b border-secondary-color py-2"
 		>
 			<div class="flex gap-4 justify-center items-center">
-				<h1 class="text-white text-2xl font-semibold">Character</h1>
+				<h1 class="color-secondary text-2xl font-semibold">Character</h1>
 			</div>
 			<div class="flex justify-between gap-4">
 				<Select
@@ -206,7 +205,7 @@
 				</Select>
 			</div>
 			<div class="flex gap-4 justify-center items-center">
-				<h1 class="text-white text-2xl font-semibold">Stocks</h1>
+				<h1 class="color-secondary text-2xl font-semibold">Stocks</h1>
 			</div>
 			<div class="flex justify-between gap-18">
 				<div class="flex gap-2">
@@ -233,22 +232,22 @@
 						</button>
 					{/each}
 					<button
-						class="transition duration-100 w-14 p-2 rounded-md justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
+						class="transition duration-100 w-14 p-2 rounded-md justify-center bg-black border-secondary bg-opacity-40 hover:bg-opacity-60"
 						on:click={() => {
 							handleStockChange($currentPlayers.at(0)?.playerIndex ?? 0, 0);
 						}}
 					>
-						<h1 class="text-white text-shadow-md">None</h1>
+						<h1 class="text-white">None</h1>
 					</button>
 				</div>
 				<div class="flex gap-2">
 					<button
-						class="transition duration-100 w-14 p-2 rounded-md justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
+						class="transition duration-100 w-14 p-2 rounded-md justify-center bg-black border-secondary bg-opacity-40 hover:bg-opacity-60"
 						on:click={() => {
 							handleStockChange($currentPlayers.at(1)?.playerIndex ?? 1, 0);
 						}}
 					>
-						<h1 class="text-white text-shadow-md">None</h1>
+						<h1 class="text-white">None</h1>
 					</button>
 					{#each [...Array(4).keys()] as stock}
 						<button
@@ -275,7 +274,7 @@
 				</div>
 			</div>
 			<div class="flex gap-4 justify-center items-center">
-				<h1 class="text-white text-2xl font-semibold">Stage</h1>
+				<h1 class="color-secondary text-2xl font-semibold">Stage</h1>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Select on:change={handleStageChange}>
@@ -285,7 +284,7 @@
 						</option>
 					{/each}
 				</Select>
-				<div class="relative aspect-video w-full rounded-md border border-gray-700">
+				<div class="relative aspect-video w-full border-secondary">
 					<GameStage
 						stageId={game?.settings?.stageId}
 						class="aspect-video rounded-md"
@@ -294,14 +293,14 @@
 				</div>
 			</div>
 			<div class="flex gap-4 justify-center items-center">
-				<h1 class="text-white text-2xl font-semibold">Winner</h1>
+				<h1 class="color-secondary text-2xl font-semibold">Winner</h1>
 			</div>
 			<div class="flex justify-around gap-4">
 				<button
-					class={`border rounded-md p-4 ${
+					class={`border bg-black bg-opacity-25 rounded-sm p-4 ${
 						game.gameEnd.placements[$currentPlayers.at(0)?.playerIndex ?? 0]
 							.position === 0
-							? 'border-green-600'
+							? 'border-secondary bg-opacity-50'
 							: 'border white'
 					}`}
 					on:click={() => handleWinnerChange(0)}
@@ -311,10 +310,10 @@
 					</h1>
 				</button>
 				<button
-					class={`border rounded-md p-4 ${
+					class={`border bg-black bg-opacity-25 rounded-sm p-4 ${
 						game.gameEnd.placements[$currentPlayers.at(1)?.playerIndex ?? 1]
 							.position === 0
-							? 'border-green-600'
+							? 'border-secondary bg-opacity-50'
 							: 'border white'
 					}`}
 					on:click={() => handleWinnerChange(1)}
@@ -324,13 +323,13 @@
 					</h1>
 				</button>
 			</div>
-			<button
-				disabled={!hasGameWinner()}
-				class={`border rounded-md p-4 border-white disabled:opacity-50`}
-				on:click={addGame}
-			>
-				<h1 class="text-white text-2xl font-semibold">Add Game</h1>
-			</button>
 		</div>
+		<button
+			disabled={!hasGameWinner()}
+			class={`border-secondary bg-black bg-opacity-25 p-4 disabled:opacity-50`}
+			on:click={addGame}
+		>
+			<h1 class="text-white text-2xl font-semibold">Add Game</h1>
+		</button>
 	</div>
 </Modal>

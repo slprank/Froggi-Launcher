@@ -20,11 +20,10 @@
 	class="w-[95vw] max-w-[600px] min-w-72 flex justify-center"
 >
 	<div
-		class="w-full h-full min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-full h-full min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border-secondary background-primary-color p-8"
 	>
 		<div class="flex gap-2 justify-center items-center">
-			<h1 class="text-white text-3xl font-semibold">Tag</h1>
+			<h1 class="color-secondary text-3xl font-semibold">Tag</h1>
 		</div>
 		<div class="flex gap-2 justify-between">
 			<div class="flex flex-col">
@@ -41,7 +40,7 @@
 			</div>
 		</div>
 		<button
-			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
 			on:click={updateTag}
 		>
 			Update

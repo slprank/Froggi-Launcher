@@ -44,17 +44,16 @@
 	class="w-[95vw] max-w-[600px] max-h-[80vh] min-w-72 flex justify-center"
 >
 	<div
-		class="w-full max-h-[80vh] min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-full max-h-[80vh] min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center border-secondary background-primary-color p-8"
 	>
 		<div class="flex gap-4 justify-center items-center">
-			<h1 class="text-white text-3xl font-semibold">Games</h1>
+			<h1 class="color-secondary text-3xl font-semibold">Games</h1>
 		</div>
 		<div class="flex justify-between gap-4">
-			<h1 class="text-white text-2xl font-semibold">
+			<h1 class="color-secondary text-2xl font-semibold">
 				{getDisplayName(0)}
 			</h1>
-			<h1 class="text-white text-2xl font-semibold">
+			<h1 class="color-secondary text-2xl font-semibold">
 				{getDisplayName(1)}
 			</h1>
 		</div>
@@ -62,7 +61,7 @@
 			class="flex-l flex flex-col items-center overflow-y-scroll gap-4 border border-gray-700 rounded-md p-2"
 		>
 			<button
-				class="transition duration-100 rounded-md w-full justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
+				class="transition duration-100 rounded-md w-full justify-center bg-black border-secondary bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
 					addGame(0);
 				}}
@@ -70,7 +69,7 @@
 				<h1 class="text-white text-shadow-md">+</h1>
 			</button>
 			{#each games.map((game) => game.at(-1)) as game, i}
-				<h1 class="text-white text-shadow-md text-center text-xl font-semibold">
+				<h1 class="color-secondary text-center text-xl font-semibold">
 					Game {i + 1}
 					<span class={`${game?.isMock ? 'text-red-700' : ''}`}>
 						{game?.isMock ? '*' : ''}
@@ -78,7 +77,7 @@
 				</h1>
 
 				<div class="flex justify-center items-center gap-2 w-full">
-					<h1 class="text-white text-shadow-md text-center text-2xl font-semibold">
+					<h1 class="color-secondary text-center text-2xl font-semibold">
 						{game?.score.at(0) ?? 0} - {game?.score.at(1) ?? 0}
 					</h1>
 				</div>
@@ -136,7 +135,7 @@
 				</div>
 
 				<button
-					class="transition duration-100 w-full rounded-md justify-center bg-black border border-white bg-opacity-40 hover:bg-opacity-60"
+					class="transition duration-100 w-full rounded-md justify-center bg-black border-secondary bg-opacity-40 hover:bg-opacity-60"
 					on:click={async () => {
 						addGame(i + 1);
 					}}
@@ -145,7 +144,7 @@
 				</button>
 			{:else}
 				<div class="flex gap-4 justify-center items-center">
-					<h1 class="text-white text-3xl font-semibold">No Games</h1>
+					<h1 class="color-secondary text-3xl font-semibold">No Games</h1>
 				</div>
 			{/each}
 		</div>
