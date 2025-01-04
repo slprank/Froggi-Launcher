@@ -66,34 +66,33 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="max-h-[80vh] max-w-[400px] w-screen h-full min-w-lg flex flex-col justify-between gap-8 bg-cover bg-center rounded-md border border-zinc-700 p-8 overflow-y-scroll"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="max-h-[80vh] max-w-[400px] w-screen h-full min-w-lg flex flex-col justify-between gap-4 bg-cover bg-center border-secondary background-primary-color p-8 overflow-y-scroll"
 	>
-		<h1 class="flex text-2xl font-bold text-white shadow-md">Button Combinations</h1>
-		<div class="flex flex-col flex-1 overflow-y-scroll gap-4 min-h-40">
-			<div class="flex flex-col gap-4">
-				<div class="flex flex-col gap-2 pr-4">
-					{#each getKeys() as key}
-						<div class="flex justify-between items-center gap-2">
-							<img
-								class="aspect-square w-12 h-12"
-								src={`/image/controller-buttons/${filterKey(key)}.svg`}
-								alt={key}
-							/>
-							<input
-								type="checkbox"
-								class="w-12 h-12"
-								bind:checked={controllerCommand.inputs[key]}
-							/>
-						</div>
-					{/each}
-				</div>
+		<h1 class="flex text-2xl font-bold color-secondary">Button Combinations</h1>
+		<div
+			class="flex flex-col flex-1 overflow-y-scroll gap-4 min-h-40 border-b border-t border-secondary-color py-2"
+		>
+			<div class="flex flex-col gap-2 pr-4">
+				{#each getKeys() as key}
+					<div class="flex justify-between items-center gap-2">
+						<img
+							class="aspect-square w-12 h-12"
+							src={`/image/controller-buttons/${filterKey(key)}.svg`}
+							alt={key}
+						/>
+						<input
+							type="checkbox"
+							class="w-12 h-12"
+							bind:checked={controllerCommand.inputs[key]}
+						/>
+					</div>
+				{/each}
 			</div>
 		</div>
 		{#if Object.values(controllerCommand.inputs).some((input) => input)}
-			<div class="flex flex-col gap-4" in:fly={{ x: 150, duration: 250 }}>
-				<h1 class="text-2xl font-bold text-white shadow-md">Selected Buttons</h1>
-				<div class="flex gap-2">
+			<div class="flex flex-col gap-2" in:fly={{ x: 150, duration: 250 }}>
+				<h1 class="text-2xl font-bold color-secondary">Selected Buttons</h1>
+				<div class="flex gap-2 max-w-full overflow-auto">
 					{#each selectedKeys as key (key)}
 						<img
 							animate:flip={{ duration: 250 }}
@@ -105,17 +104,19 @@
 				</div>
 			</div>
 			{#if overlappingCommands.length}
-				<div class="flex flex-col gap-4">
-					<h1 class="text-2xl font-bold text-white shadow-md">Overlapping Commands</h1>
-					{#each overlappingCommands as command}
-						<ButtonCommand controllerCommand={command} />
-					{/each}
+				<div class="flex flex-col gap-2">
+					<h1 class="text-2xl font-bold color-secondary">Overlapping Commands</h1>
+					<div class="max-w-full overflow-auto">
+						{#each overlappingCommands as command}
+							<ButtonCommand controllerCommand={command} />
+						{/each}
+					</div>
 				</div>
 			{/if}
 		{/if}
 		<CommandSelect bind:command={controllerCommand.command} />
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border border-white rounded"
+			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 p-2 xl:text-xl border-secondary"
 			on:click={addCommand}
 		>
 			Add Command

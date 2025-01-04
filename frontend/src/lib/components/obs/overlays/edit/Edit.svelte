@@ -60,7 +60,7 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 <main
-	class="fixed h-screen w-screen bg-cover bg-center color-secondary"
+	class="fixed w-screen bg-cover bg-center color-secondary"
 	style="background-color: #FBF0E5"
 	in:fade={{ delay: 50, duration: 150 }}
 >

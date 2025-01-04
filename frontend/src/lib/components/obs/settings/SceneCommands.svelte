@@ -29,7 +29,7 @@
 
 {#if !isNil(sceneCommands)}
 	<div class="flex flex-col gap-2 font-bold">
-		<h1 class="text-3xl font-bold text-white shadow-md text-center">Scene Switching</h1>
+		<h1 class="text-3xl font-bold color-secondary text-center">Scene Switching</h1>
 		<ToggleSceneSwitchCommand />
 		<div
 			class="flex flex-col justify-between gap-8 items-center"
@@ -37,22 +37,22 @@
 		>
 			{#each scenes as scene}
 				<div class="w-full flex flex-col gap-4">
-					<h1 class="text-white text-2xl">{scene}:</h1>
+					<h1 class="color-secondary text-2xl">{scene}:</h1>
 					{#each sceneCommands[scene] ?? [] as command}
 						<div class="flex flex-col w-full">
-							<h1 class="text-white text-lg">{command.requestType}:</h1>
+							<h1 class="color-secondary text-lg">{command.requestType}:</h1>
 							{#each Object.keys(command?.payload ?? {}) as key}
 								<div class="flex gap-2 justify-between">
-									<h1 class="text-white text-md">
+									<h1 class="color-secondary text-md">
 										{key}
 									</h1>
-									<h1 class="text-white text-md">
+									<h1 class="color-secondary text-md">
 										{command?.payload?.[key]}
 									</h1>
 								</div>
 							{/each}
 							<button
-								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 text-xl border border-white rounded"
+								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 text-xl border-secondary"
 								on:click={() => {
 									selectedScene = scene;
 									selectedCommand = command;
@@ -66,12 +66,12 @@
 				</div>
 			{/each}
 			<button
-				class="transition w-full bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 text-2xl border border-white rounded"
+				class="transition w-full bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 text-2xl border-secondary"
 				on:click={() => {
 					isSceneCommandModalOpen = true;
 				}}
 			>
-				Add Command
+				Add New Command
 			</button>
 		</div>
 	</div>

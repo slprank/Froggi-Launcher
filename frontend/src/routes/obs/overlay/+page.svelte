@@ -25,7 +25,8 @@
 </script>
 
 <main
-	class="fixed h-screen w-screen bg-cover bg-center"
+	class="fixed w-screen bg-cover bg-center"
+	style={`height: 100vh; `}
 	in:fade={{ delay: 50, duration: 150 }}
 	out:fade={{ duration: 300 }}
 >

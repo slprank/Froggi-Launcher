@@ -20,26 +20,26 @@
 		style="background-image: url('/image/backgrounds/MeleeMenuPurple.png')"
 	>
 		<div class="flex gap-2 justify-center items-center">
-			<h1 class="text-white text-3xl font-semibold shadow-md">Obs Settings</h1>
+			<h1 class="text-3xl font-semibold color-secondary">Obs Settings</h1>
 		</div>
 		<div class="flex flex-col gap-8 overflow-scroll">
 			<ToggleControllerCommand />
 			<ToggleSceneSwitchCommand />
 
 			<div class="flex flex-col gap-2">
-				<h1 class="text-white text-xl font-semibold shadow-md">Change Overlay Scene:</h1>
+				<h1 class="text-xl font-semibold color-secondary">Change Overlay Scene:</h1>
 				<SceneSelect />
 			</div>
 			<div>
-				<h1 class="text-white text-xl font-semibold shadow-md">Change OBS Scene:</h1>
+				<h1 class="text-xl font-semibold color-secondary">Change OBS Scene:</h1>
 				<ObsSceneSelect />
 			</div>
 			<div class="flex flex-col gap-2">
-				<h1 class="text-white text-xl font-semibold shadow-md">Scene Items Control:</h1>
+				<h1 class="text-xl font-semibold color-secondary">Scene Items Control:</h1>
 				<ObsItemControl />
 			</div>
 			<div class="flex flex-col gap-2">
-				<h1 class="text-white text-xl font-semibold shadow-md">Volume Control:</h1>
+				<h1 class="text-xl font-semibold color-secondary">Volume Control:</h1>
 				<ObsVolumeControl />
 			</div>
 		</div>

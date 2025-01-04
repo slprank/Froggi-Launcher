@@ -1,5 +1,4 @@
 <script lang="ts">
-	import SmashGg from '$lib/components/dashboard/SmashGG.svelte';
 	import { DashboardOption } from '$lib/models/enum';
 	import { fade, fly } from 'svelte/transition';
 	import OverlayScenes from '$lib/components/dashboard/OverlayScenes.svelte';
@@ -17,29 +16,22 @@
 	<div
 		class="w-full h-full flex flex-col overflow-y-scroll items-center justify-start p-4 pb-24 gap-8"
 	>
-		<h1 class="text-white text-4xl font-bold">Dashboard</h1>
+		<h1 class="color-secondary text-4xl font-bold">Dashboard</h1>
 		<div class="flex gap-2">
-			<button
-				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
-					dashboardOption === DashboardOption.Offline ? 'border-red-700' : 'border-white'
-				}`}
-				on:click={() => {
-					dashboardOption = DashboardOption.Offline;
-				}}
-			>
-				Offline
-			</button>
-			<button
-				disabled
-				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${
-					dashboardOption === DashboardOption.SmashGG ? 'border-red-700' : 'border-white'
-				} disabled:opacity-50 disabled:cursor-not-allowed`}
-				on:click={() => {
-					dashboardOption = DashboardOption.SmashGG;
-				}}
-			>
-				SmashGG
-			</button>
+			{#each Object.values(DashboardOption) as option}
+				<button
+					class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary ${
+						dashboardOption === option
+							? 'border-secondary bg-opacity-50'
+							: 'border-white'
+					}`}
+					on:click={() => {
+						dashboardOption = option;
+					}}
+				>
+					{option}
+				</button>
+			{/each}
 		</div>
 		{#key dashboardOption}
 			<div
@@ -48,10 +40,10 @@
 				out:fly={{ duration: 250, x: 200 }}
 			>
 				<div class="absolute flex flex-col gap-8 py-4">
-					{#if dashboardOption === DashboardOption.SmashGG}
-						<SmashGg />
-					{/if}
 					<Default />
+					<div class="flex gap-2 justify-center items-center">
+						<h1 class="color-secondary text-3xl font-semibold">Stream Commands</h1>
+					</div>
 					<OverlayScenes />
 					<ReplayBufferHandler />
 				</div>

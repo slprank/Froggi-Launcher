@@ -13,12 +13,12 @@
 
 	const isValidIpAddress = (ipAddress: string) => {
 		const ipv4Regex =
-			/^(localhost|127(?:\.[0-9]{1,3}){2}\.[0-9]{1,3}|(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+			/^(localhost|(?:25[0-5]|2[0-4]\d|[01]?\d?\d)0–255(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d?\d)){3})$/;
 		return ipv4Regex.test(ipAddress);
 	};
 
 	const handleIpAddressChange = (event: CustomEvent<string>) => {
-		const ipAddress = event.detail;
+		const ipAddress = event.detail.trim();
 		auth.ipAddress = ipAddress;
 	};
 
@@ -28,7 +28,7 @@
 	};
 
 	const handlePortChange = (event: CustomEvent<string>) => {
-		const port = Number(event.detail);
+		const port = event.detail.trim();
 		auth.port = port;
 	};
 
@@ -60,12 +60,12 @@
 </script>
 
 <div class="w-full max-w-[25rem] justify-center items-center item flex flex-col gap-4">
-	<h1 class="text-2xl text-white">Websocket Settings</h1>
+	<h1 class="text-2xl color-secondary">Websocket Settings</h1>
 
 	<div class={`flex flex-col gap-2 p-2 `}>
 		<h1
 			class={`text-xl font-semibold text-nowrap ${
-				!authValidator.ipAddress ? 'text-red-700' : 'text-white'
+				!authValidator.ipAddress ? 'color-secondary' : 'text-green-700'
 			}`}
 		>
 			Local Ip Address:
@@ -75,7 +75,7 @@
 	<div class="flex flex-col gap-2 p-2">
 		<h1
 			class={`text-xl font-semibold text-nowrap ${
-				!authValidator.port ? 'text-red-700' : 'text-white'
+				!authValidator.port ? 'color-secondary' : 'text-green-700'
 			}`}
 		>
 			Port:
@@ -85,18 +85,18 @@
 	<div class="flex flex-col gap-2 p-2">
 		<h1
 			class={`text-xl font-semibold text-nowrap ${
-				!authValidator.password ? 'text-red-700' : 'text-white'
+				!authValidator.password ? 'color-secondary' : 'text-green-700'
 			}`}
 		>
 			Password:
 		</h1>
 		<TextInput value={auth.password} on:change={(e) => (auth.password = e.detail)} />
 	</div>
-	<button class="p-2 border rounded-md" on:click={updateAuth}>
-		<h1 class="text-white text-xl font-semibold">Update</h1>
+	<button class="p-2 border-secondary" on:click={updateAuth}>
+		<h1 class="color-secondary text-xl font-semibold">Update</h1>
 	</button>
 	<hr />
-	<button class="p-2 border rounded-md" on:click={resetToDefault}>
-		<h1 class="text-white text-xl font-semibold">Reset To Default</h1>
+	<button class="p-2 border-secondary" on:click={resetToDefault}>
+		<h1 class="color-secondary text-xl font-semibold">Reset To Default</h1>
 	</button>
 </div>

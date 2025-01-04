@@ -56,8 +56,7 @@ export enum Character {
 }
 
 export enum DashboardOption {
-	Offline = 'Offline',
-	SmashGG = 'SmashGG',
+	Offline = 'Default',
 }
 
 export enum ConnectionState {

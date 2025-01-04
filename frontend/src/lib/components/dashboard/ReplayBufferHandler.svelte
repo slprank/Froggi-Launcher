@@ -19,7 +19,7 @@
 
 <div class="flex flex-col gap-2">
 	<button
-		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border rounded`}
+		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
 		on:click={saveReplayBuffer}
 	>
 		Save Replay Buffer
