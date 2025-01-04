@@ -58,24 +58,18 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="min-w-[80vw] min-h-[80vh] max-w-[95vw] max-h-[95vh] overflow-y-scroll flex flex-col gap-4 justify-between items-center bg-cover bg-center border-secondary rounded-md p-4 background-primary-color color-secondary"
+		class="min-w-[80vw] min-h-[80vh] max-w-[80vw] max-h-[95vh] overflow-y-scroll flex flex-col gap-4 justify-between items-center bg-cover bg-center border-secondary rounded-md p-4 background-primary-color color-secondary"
 	>
 		<div>
 			<h1 class="font-bold text-3xl">{overlay?.title}</h1>
 		</div>
 		<div
-			class={`flex-1 aspect-[16/9] ${
-				$isMobile && isHorizontal ? 'max-h-56' : 'max-h-full'
-			} h-full border-secondary`}
+			class={`max-h-full max-w-full w-full h-full border-secondary`}
 			style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
 			bind:this={parentDiv}
 		>
 			{#if url}
-				<div
-					style={`height: ${parentDiv?.clientHeight}px; width: ${parentDiv?.clientWidth}px`}
-				>
-					<NonInteractiveIFrame {src} title="overlay" />
-				</div>
+				<NonInteractiveIFrame {src} title="overlay" />
 			{/if}
 		</div>
 		<SceneSelect />
