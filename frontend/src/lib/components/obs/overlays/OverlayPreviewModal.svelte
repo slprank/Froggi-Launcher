@@ -23,7 +23,6 @@
 	export let open = false;
 	export let overlay: Overlay | undefined;
 
-	$: isHorizontal = (overlay?.aspectRatio.width ?? 0) > (overlay?.aspectRatio.height ?? 0);
 	let deleteOverlayModalOpen = false;
 	let isEmbedModalOpen = false;
 
@@ -54,7 +53,25 @@
 		'Cannot perform this action on a demo overlay, try duplicating it first.';
 
 	let parentDiv: HTMLElement | undefined;
+
+	let previewSize = {
+		width: 0,
+		height: 0,
+	};
+
+	const handleResize = () => {
+		previewSize = {
+			height: parentDiv?.clientHeight ?? 0,
+			width:
+				(parentDiv?.clientHeight ?? 0) *
+				((overlay?.aspectRatio.width ?? 0) / (overlay?.aspectRatio.height ?? 0)),
+		};
+	};
+
+	$: parentDiv, handleResize();
 </script>
+
+<svelte:window on:resize={handleResize} />
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
@@ -64,12 +81,17 @@
 			<h1 class="font-bold text-3xl">{overlay?.title}</h1>
 		</div>
 		<div
-			class={`max-h-full max-w-full w-full h-full border-secondary`}
+			class={`max-h-full max-w-full w-full h-full flex justify-center`}
 			style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
 			bind:this={parentDiv}
 		>
 			{#if url}
-				<NonInteractiveIFrame {src} title="overlay" />
+				<div
+					class="border-secondary"
+					style={`height: ${previewSize.height}px; width: ${previewSize.width}px; aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
+				>
+					<NonInteractiveIFrame {src} title="overlay" />
+				</div>
 			{/if}
 		</div>
 		<SceneSelect />

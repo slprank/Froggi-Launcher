@@ -59,7 +59,7 @@
 	>
 		<div class="w-full max-h-full h-full flex gap-8 p-4 justify-between">
 			<div class="h-full flex flex-col justify-between">
-				<div class="max-h-full h-full overflow-auto justify-between">
+				<div class="max-h-full h-full overflow-auto flex flex-col gap-4">
 					<div>
 						<h1 class="color-secondary text-2xl font-medium">Overlay:</h1>
 						<div class="w-48 flex gap-2">
@@ -74,8 +74,12 @@
 
 					<div>
 						<h1 class="text-2xl font-medium color-secondary">Scene:</h1>
-
-						<h1 class="text-lg font-medium color-secondary">Active scenes</h1>
+						<div class="flex gap-8 justify-between">
+							<h1 class="text-lg font-medium color-secondary w-[50%]">
+								Active scenes
+							</h1>
+							<h1 class="text-lg font-medium color-secondary w-[50%]">Fallback</h1>
+						</div>
 						<SceneSelectOptions bind:overlay />
 					</div>
 				</div>

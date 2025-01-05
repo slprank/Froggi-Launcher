@@ -15,22 +15,18 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/open-settings.png"
 	alt="Open settings"
 />
 
 <h2>
 	Here we can start by changing the name of the overlay to something that is more fitting. <br />
-	As we want to create a custom HUD for a game, we can name it
+	As we want to create a custom HUD for the game, we can name it
 	<b>Custom HUD</b>
 </h2>
 
-<img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/change-title.png"
-	alt="Change title"
-/>
+<img class="border-secondary" src="/image/tutorial/new-overlay/edit-title.png" alt="Edit title" />
 
 <br />
 
@@ -52,8 +48,8 @@
 </h2>
 
 <img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/active-scenes.png"
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/edit-active-scenes.png"
 	alt="Active scenes"
 />
 
@@ -99,11 +95,7 @@
 
 <h2>Select a scene and update the following properties to your liking</h2>
 
-<img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/change-font.png"
-	alt="Change font"
-/>
+<img class="border-secondary" src="/image/tutorial/new-overlay/edit-font.png" alt="Edit font" />
 
 <h2>Any changes made below the scene selection only targets the selected scene</h2>
 
@@ -117,9 +109,9 @@
 <h1 class="text-lg font-bold">Background</h1>
 
 <img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/change-background.png"
-	alt="Change background"
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/edit-background.png"
+	alt="Edit background"
 />
 
 <h2>Next wen can add a background for the scene.</h2>
@@ -150,8 +142,8 @@
 </h2>
 
 <h2>
-	These background can apply transitions to them. This can be useful if you want to apply a fade
-	or other transitions between scenes.
+	These background can also have transitions applied to them. This can be useful if you want to
+	apply a fade or other transitions when changing scenes.
 </h2>
 
 <h2>For this tutorial, it is not necessary to apply any background and we will keep it empty.</h2>
@@ -183,8 +175,8 @@
 </h2>
 
 <img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/update-scene-transition.png"
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/edit-scene-transitions.png"
 	alt="Update scene transition"
 />
 
@@ -199,3 +191,10 @@
 	Remember to update the transition and font for all the selected scenes, by changing the scene
 	and applying the desired configurations
 </h2>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>
