@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import type { SelectedAnimationTriggerCondition } from '$lib/models/types/animationOption';
+	import { fly } from 'svelte/transition';
 	import AnimationTriggerCategorySelect from './animationTriggerCategories/AnimationTriggerCategorySelect.svelte';
 	import { createEventDispatcher } from 'svelte';
 
@@ -14,6 +15,10 @@
 		dispatch('update', tempSelectedOptions);
 		open = false;
 	}
+
+	$: tempActiveOption = Object.entries(tempSelectedOptions)
+		.filter(([_, value]) => value)
+		.map(([key]) => key);
 </script>
 
 <div class="grid grid-flow-col gap-2 items-center">
@@ -27,11 +32,27 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[70vw] h-[70vh] bg-cover bg-center p-4 overflow-auto grid gap-8 background-primary-color"
+		class="w-[80vw] h-[80vh] bg-cover bg-center p-4 overflow-auto flex flex-col gap-4 background-primary-color"
 	>
-		<div>
+		<div class="flex-1 overflow-scroll">
 			<AnimationTriggerCategorySelect bind:selectedOption={tempSelectedOptions} />
 		</div>
+
+		<h1 class="color-secondary text-sm font-bold">Triggers:</h1>
+		{#if tempActiveOption.length}
+			<div
+				in:fly={{ duration: 250, x: 100, delay: 250 }}
+				out:fly={{ duration: 250, x: 100 }}
+				class="max-h-24 overflow-auto"
+			>
+				{#each tempActiveOption as activeOption, i}
+					<span class="color-secondary text-sm"><b>{activeOption}</b></span>
+					{#if tempActiveOption.length != i + 1}
+						<span class="color-secondary text-sm">{'or '}</span>
+					{/if}
+				{/each}
+			</div>
+		{/if}
 
 		<div class="w-48 flex items-end">
 			<button

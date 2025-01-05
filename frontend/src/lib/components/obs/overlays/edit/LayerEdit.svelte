@@ -21,7 +21,7 @@
 	$: curScene = overlay[$statsScene];
 </script>
 
-<h1 class="text-gray-500 text-lg font-medium text-shadow">Layers</h1>
+<h1 class="color-secondary text-lg font-medium">Layers</h1>
 <div class="w-full flex gap-2">
 	<div class="w-24">
 		<Select bind:selected={selectedLayer} on:change={changeLayer}>
