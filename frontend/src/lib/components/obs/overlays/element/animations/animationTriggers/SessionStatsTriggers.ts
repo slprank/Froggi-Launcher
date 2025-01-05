@@ -5,14 +5,19 @@ import {
 import type {
 	SessionStats,
 } from '$lib/models/types/slippiData';
+import { isNil } from 'lodash';
 
 export const sessionStatsTrigger = (
 	option: SelectedAnimationTriggerCondition,
 	sessionStats: SessionStats | undefined,
 	prevSessionStats: SessionStats | undefined,
 ) => {
-	if (!sessionStats || !prevSessionStats) return;
+	if (isNil(sessionStats) || isNil(prevSessionStats) || isNil(sessionStats.currentRankStats) || isNil(sessionStats.startRankStats)) return;
+	if (isNil(sessionStats.currentRankStats) || isNil(sessionStats.startRankStats)) return;
+	if (isNil(prevSessionStats.currentRankStats) || isNil(prevSessionStats.startRankStats)) return;
 	let trigger = false;
+
+
 
 	const totalSessionGames = sessionStats.currentRankStats.totalGames - sessionStats.currentRankStats.totalGames
 	const prevTotalSessionGames = prevSessionStats.startRankStats.totalGames - prevSessionStats.startRankStats.totalGames

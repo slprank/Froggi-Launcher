@@ -36,7 +36,7 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[70vw] h-[70vh] bg-cover bg-center p-16 overflow-auto grid gap-8 divide-y-1 background-primary-color"
+		class="w-[70vw] h-[70vh] bg-cover bg-center p-4 overflow-auto grid gap-8 divide-y-1 background-primary-color"
 	>
 		{#each tempSelectedOptions as option, i (i)}
 			<div transition:fly={{ duration: 250, x: 150 }}>

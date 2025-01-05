@@ -59,7 +59,7 @@ export class Api {
 			connectCode: connectCode,
 			displayName: player.displayName,
 			totalGames: player.rankedNetplayProfile.characters
-				.map((c: any) => c.gameCount)
+				.map((c: any) => c?.gameCount ?? 0)
 				.reduce((a: number, b: number) => a + b, 0),
 
 			characters: player?.rankedNetplayProfile?.characters
@@ -95,7 +95,7 @@ export class Api {
 
 	private enrichData(playerRank: RankedNetplayProfile, connectCode: string): RankedNetplayProfile {
 		const continentInitials = playerRank.continent?.split('_').length == 2 ? playerRank.continent.split('_').map(c => c[0]).join('') : playerRank.continent?.substring(0, 2) ?? '';
-		const totalGames = (playerRank.characters?.length ?? 0) ? playerRank.characters?.map(c => c.gameCount).reduce((a: number, b: number) => a + b) : 0;
+		const totalGames = (playerRank.characters?.length) ? playerRank.characters?.map(c => c.gameCount).reduce((a: number, b: number) => a + b) : 0;
 		const totalSets = (playerRank?.wins ?? 0) + (playerRank.losses ?? 0);
 		const winsPercent = (playerRank?.wins ?? 0) / (totalSets ? totalSets : 1);
 		const lossesPercent = (playerRank?.losses ?? 0) / (totalSets ? totalSets : 1);

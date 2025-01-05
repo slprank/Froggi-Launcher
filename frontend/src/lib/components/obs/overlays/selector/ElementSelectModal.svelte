@@ -8,9 +8,7 @@
 </script>
 
 <Modal bind:open on:close={() => (open = false)} class="">
-	<div
-		class="bg-cover bg-center p-16 w-[70vw] h-[70vh] border-secondary background-primary-color"
-	>
+	<div class="bg-cover bg-center p-4 w-[70vw] h-[70vh] border-secondary background-primary-color">
 		<ElementCategorySelect bind:selectedElementId bind:open />
 	</div>
 </Modal>

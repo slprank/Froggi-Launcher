@@ -146,9 +146,9 @@ export interface RankedNetplayProfile {
 }
 
 export interface SessionStats {
-    startRankStats: RankedNetplayProfile,
+    startRankStats: RankedNetplayProfile | undefined,
     startTime: Date,
-    currentRankStats: RankedNetplayProfile,
+    currentRankStats: RankedNetplayProfile | undefined,
     latestUpdate: Date
 };
 

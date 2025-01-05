@@ -13,13 +13,13 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/select-scene.png"
 	alt="Select scene"
 />
 
 <h2>
-	Here we can start by clicking the <b>Add new element</b>
+	From here we can click the <b>Add new element</b>
 	button. Select the only
 	<b>Custom</b>
 	category and
@@ -27,7 +27,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/select-custom-text.png"
 	alt="Select custom text"
 />
@@ -48,7 +48,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/style-custom-text.png"
 	alt="Style custom text"
 />
@@ -61,7 +61,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/element-preview.png"
 	alt="Element preview"
 />
@@ -87,11 +87,7 @@
 	<b>Image</b>
 </h2>
 
-<img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/add-element.png"
-	alt="Add element"
-/>
+<img class="border-secondary" src="/image/tutorial/new-overlay/add-element.png" alt="Add element" />
 
 <h2>
 	A button on top of the <b>Style</b>
@@ -101,7 +97,7 @@
 <h2>This will help a lot when multiple elements needs to be styled the same way.</h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/load-styling.png"
 	alt="Add element"
 />
@@ -112,7 +108,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-edit-window.png"
 	alt="Add element"
 />
@@ -149,7 +145,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-overlay.png"
 	alt="Preview overlay"
 />
@@ -158,12 +154,12 @@
 
 <h1 class="text-lg font-bold">Layers</h1>
 
-<h2>Below the overlay you can see the layers used to build a scene.</h2>
+<h2>Below the overlay preview you can see the layers used to build a scene.</h2>
 
 <h2>Here you can rearrange layers and create new ones.</h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-layers.png"
 	alt="Preview layers"
 />
