@@ -150,8 +150,10 @@
 		class="w-[90vw] h-[90vh] min-w-lg place-items-start bg-cover bg-center rounded-md border-secondary background-primary-color"
 	>
 		<div class="w-full h-full p-4 px-8 grid grid-cols-7">
-			<div class="w-full h-full col-span-4 overflow-y-scroll scroll enable-scrollbar p-2">
-				<div class="grid grid-flow-col gap-2 items-center">
+			<div
+				class="w-full h-full col-span-4 overflow-y-scroll scroll enable-scrollbar p-2 flex flex-col gap-4"
+			>
+				<div class="flex flex-col gap-2 items-center">
 					<button
 						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border-secondary"
 						on:click={() => (isElementSelectOpen = true)}
@@ -159,7 +161,7 @@
 						Select
 					</button>
 				</div>
-				<div class="w-full">
+				<div class="w-full flex-1 overflow-auto border-b border-t border-secondary-color">
 					{#if !isNil(selectedElementId)}
 						<StylingSelect bind:selectedElementId bind:payload bind:selectedItemId />
 					{/if}

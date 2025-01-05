@@ -17,7 +17,7 @@
 	text when game starts.
 </h2>
 
-<img class="rounded-sm border" src="/image/tutorial/new-overlay/add-layer.png" alt="Add layer" />
+<img class="border-secondary" src="/image/tutorial/new-overlay/add-layer.png" alt="Add layer" />
 
 <h2>
 	Create two new layers above the <b>Pause</b>
@@ -25,7 +25,10 @@
 </h2>
 
 <h2>
-	As the topmost layers are rendered first, this is essential to get the into elements to display
+	The topmost layers are rendered first. Therefore it is essential to get the <b>Ready</b>
+	and
+	<b>Go</b>
+	elements on the top layers to display in time.
 </h2>
 
 <h2>
@@ -34,11 +37,17 @@
 </h2>
 
 <h2>
-	Create two options where on have an inverted (Red) <b>Game Paused</b>
+	Create two visibility conditions where one have a <b>Game Paused</b>
 	selected. And the other have the
 	<b>Ready</b>
 	selected
 </h2>
+
+<img
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/preview-ready-conditions.png"
+	alt="Preview ready conditions"
+/>
 
 <h2>
 	This tells the program that the element is visible when the game is <b>not</b>
@@ -48,8 +57,8 @@
 </h2>
 
 <img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/transition-ready.png"
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/add-transition-ready.png"
 	alt="Add ready transition"
 />
 
@@ -59,7 +68,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-hud-text.png"
 	alt="Preview intro and pause text"
 />

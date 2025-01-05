@@ -150,8 +150,8 @@
 />
 
 <h2>
-	The transition properties shown in the image above have the element enter from the left and exit
-	to the right.
+	The transition properties, shown in the image above, have the element enter from the left and
+	exit to the right.
 </h2>
 
 <h2>
