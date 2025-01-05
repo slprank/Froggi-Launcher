@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--primary-color: #fbf0e5;
+	--secondary-color: #450d21;
+}
+
 body::-webkit-scrollbar {
 	background-color: #fff;
 	width: 16px;
@@ -32,35 +37,35 @@ body {
 
 main {
 	padding: 0.5rem;
-	background-color: #fbf0e5;
+	background-color: var(--primary-color);
 	padding-left: 4.5rem;
 	padding-right: 4.5rem;
 }
 
 .color-secondary {
-	color: #450d21;
+	color: var(--secondary-color);
 }
 
 .border-secondary {
 	border-width: 1px;
-	border-color: #450d21;
+	border-color: var(--secondary-color);
 	border-radius: 0.125rem;
 }
 
 .border-secondary-color {
-	border-color: #450d21;
+	border-color: var(--secondary-color);
 }
 
 .outline-secondary-color {
-	outline-color: #450d21;
+	outline-color: var(--secondary-color);
 }
 
 .background-primary-color {
-	background-color: #fbf0e5;
+	background-color: var(--primary-color);
 }
 
 .background-secondary-color {
-	background-color: #450d21;
+	background-color: var(--secondary-color);
 }
 
 button:active {

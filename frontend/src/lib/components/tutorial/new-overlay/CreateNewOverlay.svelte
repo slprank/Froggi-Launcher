@@ -8,13 +8,13 @@
 <h2>
 	Click on the <b>OBS</b>
 	icon on the right,
-	<b>Custom Overlays</b>
+	<b>Overlays</b>
 	then
 	<b>Add new</b>
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/find-overlays.png"
 	alt="Navigate overlay page"
 />
@@ -30,14 +30,14 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/create-new-overlay.png"
 	alt="Create a new overlay"
 />
 
 <h2>
-	It is possible to save and share overlays you have created with others. Therefore you also have
-	the options to import others overlays. Be weary, only import overlays from trusted sources.
+	You can save and share overlays you have created with others. Thus there are an options to
+	import others overlays. Be weary, only import overlays from trusted sources.
 </h2>
 
 <h2>
@@ -53,18 +53,19 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/find-new-overlay.png"
 	alt="Find new overlay"
 />
 
 <h2>
-	Click on the overlay and a popup will appear with the overlay editor. <br />
+	Click on the overlay and a preview of the overlay will appear. <br />
 	Here you will be able to preview the overlay and its different scenes.
 </h2>
 <h2>
-	Clicking on a scene will show all elements in that scene with its appropriate transitions. Note
-	that this preview will display any elements that may be hidden in a live preview.
+	Clicking on a scene will show all elements in that <b>scene</b>
+	 with its appropriate transitions. Note that this preview will display any elements containing mock
+	data that may otherwise be hidden in a live preview.
 </h2>
 <h2>
 	Click the
@@ -89,8 +90,8 @@
 </h2>
 
 <img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/overlay-popup.png"
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/preview-overlay-popup.png"
 	alt="Find new overlay"
 />
 
@@ -99,3 +100,10 @@
 	<b>Edit</b>
 	button to start editing the overlay.
 </h2>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

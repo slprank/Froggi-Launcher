@@ -7,8 +7,8 @@
 
 {#if $isElectron}
 	<h2>
-		If you find it easier to follow this tutorial in a separate window, you can open it by
-		clicking this button:
+		If you find it easier to follow this tutorial while having it open in a separate window, you
+		can open it by clicking this button:
 	</h2>
 	<a target="popup" href={`${localUrl}`}>
 		<button
@@ -27,3 +27,10 @@
 	OBS indirectly. But for this tutorial, we will just use it to follow the tutorial in an external
 	window.
 </h2>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

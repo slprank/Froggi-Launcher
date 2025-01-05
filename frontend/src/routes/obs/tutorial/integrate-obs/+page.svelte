@@ -41,10 +41,10 @@
 >
 	<div class="w-full max-w-3xl h-full flex flex-col justify-center items-center p-8 gap-4">
 		<div>
-			<h1 class="text-white font-bold text-4xl">Tutorial</h1>
+			<h1 class="color-secondary font-bold text-4xl">Tutorial</h1>
 		</div>
 		<div
-			class="flex-1 flex flex-col justify-start items-start h-full w-full text-white gap-4 overflow-scroll border-t border-b border-white p-2"
+			class="flex-1 flex flex-col justify-start items-start h-full w-full text-white gap-4 overflow-scroll border-t border-b border-secondary-color p-2"
 			bind:this={scrollElement}
 		>
 			{#if scenes[pageIndex]}
@@ -56,14 +56,14 @@
 		<div class="flex justify-between w-full">
 			<button
 				disabled={pageIndex === 0}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4 disabled:opacity-50"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary-color w-40 h-20 my-4 disabled:opacity-50"
 				on:click={handlePrevious}
 			>
 				Previous
 			</button>
 			<button
 				disabled={pageIndex === scenes.length - 1}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4 disabled:opacity-50"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary-color w-40 h-20 my-4 disabled:opacity-50"
 				on:click={handleNext}
 			>
 				Next

@@ -27,27 +27,26 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[400px] min-w-lg flex flex-col gap-4 justify-between bg-cover bg-center rounded-md border border-zinc-700 p-4"
-		style="background-image: url('/image/backgrounds/MeleeMenuAll.png')"
+		class="w-[400px] min-w-lg flex flex-col gap-4 justify-between bg-cover bg-center boarder-secondary background-primary-color p-4"
 	>
-		<h1 class="text-center text-white text-2xl font-semibold text-shadow">New overlay</h1>
+		<h1 class="text-center color-secondary text-2xl font-semibold">New overlay</h1>
 		<div class="flex flex-col flex-1 gap-4">
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				on:click={createHorizontalOverlay}
 			>
 				Create Blank - Horizontal
 			</button>
 
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				on:click={createVerticalOverlay}
 			>
 				Create Blank - Vertical
 			</button>
 
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border border-white rounded"
+				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				on:click={importOverlay}
 				data-tooltip="Import overlay"
 			>

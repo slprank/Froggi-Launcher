@@ -139,7 +139,10 @@ export class StatsDisplay {
 		this.handleInGameState(gameEnd, latestGameFrame);
 
 		let gameStats = await this.getRecentGameStats(settings, gameEnd);
-		if (!gameStats) return;
+		if (!gameStats) {
+			this.storeLiveStats.setStatsScene(LiveStatsScene.Menu)
+			return;
+		};
 
 		let score = this.storeGames.getGameScore();
 
