@@ -78,6 +78,14 @@ button:active {
 	}
 }
 
+@media (orientation: portrait) {
+	main {
+		padding: 0.5rem;
+		background-color: var(--primary-color);
+		padding-bottom: 4.5rem;
+	}
+}
+
 img {
 	pointer-events: none;
 }

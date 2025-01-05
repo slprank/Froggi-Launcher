@@ -38,7 +38,7 @@
 		<div>
 			<h1 class="text-4xl font-bold color-secondary">Overlays</h1>
 		</div>
-		<div class="w-full border-secondary rounded-sm">
+		<div class="w-full border-secondary rounded-sm max-h-[50%]">
 			<h1 class="text-2xl font-bold w-full text-center color-secondary">Demo</h1>
 			<div
 				class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
