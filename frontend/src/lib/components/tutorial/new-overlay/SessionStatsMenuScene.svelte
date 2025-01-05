@@ -12,7 +12,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/select-menu-scene.png"
 	alt="Select menu scene"
 />
@@ -42,14 +42,14 @@
 </h2>
 
 <img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/menu-element-categories.png"
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/preview-menu-element-categories.png"
 	alt="Select menu scene"
 />
 
 <h2>
-	We can start by adding the <b>Match</b>
-	stats with player name and score.
+	We can start by adding information about the players, then add <b>Match</b>
+	stats with players score.
 </h2>
 
 <h2>
@@ -67,7 +67,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/add-player-tag.png"
 	alt="Add player tag"
 />
@@ -79,7 +79,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/style-player-tag.png"
 	alt="Style player tag"
 />
@@ -91,7 +91,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-player-tags.png"
 	alt="Preview player tag"
 />
@@ -112,7 +112,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/select-match-score.png"
 	alt="Select match score"
 />
@@ -120,7 +120,7 @@
 <h2>Center them and use the same width will look like this.</h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-match-score.png"
 	alt="Preview match score"
 />
@@ -131,7 +131,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-match-score-dash.png"
 	alt="Preview match score"
 />
@@ -141,7 +141,7 @@
 <h1 class="text-lg font-bold">Adding session stats</h1>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/add-session-stats.png"
 	alt="Adding session stats"
 />
@@ -159,7 +159,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/preview-session-stats.png"
 	alt="Adding session stats"
 />
@@ -170,11 +170,15 @@
 
 <h2>
 	If animations are applied correctly from the <b>Overlay Configurations</b>
-	 step, the animations while switching scene should look something like this
+	step, the animations while switching scene should look something like this
 </h2>
 
-<img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/preview-animations.gif"
-	alt="Preview animations"
-/>
+<video
+	src="/image/tutorial/new-overlay/preview-animation.mp4"
+	class="border-secondary"
+	autoplay
+	loop
+	muted={true}
+>
+	<track kind="captions" />
+</video>

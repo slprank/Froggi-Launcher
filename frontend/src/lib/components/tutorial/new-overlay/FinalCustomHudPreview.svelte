@@ -48,6 +48,7 @@
 
 <video
 	src="/image/tutorial/new-overlay/preview-embed-custom-overlay.mp4"
+	class="border-secondary"
 	autoplay
 	loop
 	muted={true}
@@ -61,7 +62,13 @@
 	demo overlay, which is included with the app.
 </h2>
 
-<video src="/image/tutorial/new-overlay/preview-embed-demo-overlay.mp4" autoplay loop muted={true}>
+<video
+	src="/image/tutorial/new-overlay/preview-embed-demo-overlay.mp4"
+	class="border-secondary"
+	autoplay
+	loop
+	muted={true}
+>
 	<track kind="captions" />
 </video>
 
