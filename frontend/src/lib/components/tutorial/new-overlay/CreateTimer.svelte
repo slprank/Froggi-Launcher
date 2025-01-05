@@ -33,3 +33,10 @@
 	src="/image/tutorial/new-overlay/preview-timer.png"
 	alt="Add timer"
 />
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

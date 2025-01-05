@@ -83,3 +83,10 @@
 >
 	Integrate with OBS
 </button>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

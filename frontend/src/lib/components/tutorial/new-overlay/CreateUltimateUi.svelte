@@ -34,3 +34,10 @@
 	When conditions are applied, we can add a transition that has a delayed out transition. This
 	allows the radar to stay active for little longer.
 </h2>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

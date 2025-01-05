@@ -163,3 +163,10 @@
 	src="/image/tutorial/new-overlay/preview-layers.png"
 	alt="Preview layers"
 />
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

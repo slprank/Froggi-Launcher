@@ -182,3 +182,10 @@
 >
 	<track kind="captions" />
 </video>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

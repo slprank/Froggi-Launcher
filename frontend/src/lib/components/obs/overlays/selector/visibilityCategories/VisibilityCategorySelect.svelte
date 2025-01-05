@@ -134,7 +134,7 @@
 		<div
 			in:fly={{ duration: 250, x: 50, delay: 250 }}
 			out:fly={{ duration: 250, x: 50 }}
-			class="overflow-scroll"
+			class="overflow-auto"
 		>
 			{#if selectedCategory === VisibilityCategory.Session}
 				<div class="flex flex-col gap-2">

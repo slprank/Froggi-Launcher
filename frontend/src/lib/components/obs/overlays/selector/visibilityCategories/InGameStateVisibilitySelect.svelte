@@ -20,7 +20,7 @@
 	bind:selected={selectedVisibilityOption[VisibilityOption.InGameRunning]}
 	on:select={select}
 >
-	Game Active
+	Game Running
 </SelectOption>
 <SelectOption
 	description="While Game Is Paused"

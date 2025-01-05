@@ -88,3 +88,10 @@
 />
 
 <h2>This is how the finalized preview should look</h2>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

@@ -72,5 +72,12 @@
 
 <h2>
 	You can also click on the <b>Preview</b>
-	 button which will allow you to open a preview window on an external screen or device.
+	button which will allow you to open a preview window on an external screen or device.
 </h2>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

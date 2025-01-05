@@ -20,7 +20,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/select-in-game-scene.png"
 	alt="Select in game scene"
 />
@@ -50,7 +50,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/add-custom-pause.png"
 	alt="Add custom pause"
 />
@@ -65,7 +65,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/select-visibility-condition.png"
 	alt="Select visibility condition"
 />
@@ -75,13 +75,13 @@
 </h2>
 
 <img
-	class="rounded-sm border"
-	src="/image/tutorial/new-overlay/apply-visibility-options.png"
-	alt="Apply visibility options"
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/create-visibility-condition.png"
+	alt="Create visibility options"
 />
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/apply-game-paused-visibility-condition.png"
 	alt="Apply visibility options"
 />
@@ -95,15 +95,28 @@
 	signifying if you want the condition to be true or false, respectfully.
 </h2>
 
-<h2>In this case that means the element will become visible if the game is paused</h2>
+<h2>
+	In this case that we will click on the condition once. This will turn the condition to <b>
+		Green
+	</b>
+	meaning the element will become visible if the game is paused
+</h2>
 
-<h2>You can apply multiple options between multiple categories.</h2>
+<h2>You can apply multiple conditions between multiple categories.</h2>
 
 <h2>
 	Options applied to a single condition works as an <b>or</b>
 	operation. This means that only one of the options needs to be true to make the element visible.
 	This will be further explored.
 </h2>
+
+<h2>The applied conditions will be displayed below the options</h2>
+
+<img
+	class="border-secondary"
+	src="/image/tutorial/new-overlay/preview-applied-conditions.png"
+	alt="Apply visibility options"
+/>
 
 <h2>
 	If you want multiple options to be met before becoming visible, you will need to create a <b>
@@ -126,7 +139,7 @@
 </h2>
 
 <img
-	class="rounded-sm border"
+	class="border-secondary"
 	src="/image/tutorial/new-overlay/apply-visibility-condition-animation.png"
 	alt="Apply visibility transitions"
 />
@@ -145,3 +158,10 @@
 	Press <b>Test Animation</b>
 	see how to transition looks and tweak it to you liking.
 </h2>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

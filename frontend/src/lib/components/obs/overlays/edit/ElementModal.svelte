@@ -147,7 +147,7 @@
 
 <Modal bind:open class="rounded-lg" on:close={() => (open = false)}>
 	<div
-		class="w-[80vw] h-[80vh] min-w-lg place-items-start bg-cover bg-center rounded-md border-secondary background-primary-color"
+		class="w-[90vw] h-[90vh] min-w-lg place-items-start bg-cover bg-center rounded-md border-secondary background-primary-color"
 	>
 		<div class="w-full h-full p-4 px-8 grid grid-cols-7">
 			<div class="w-full h-full col-span-4 overflow-y-scroll scroll enable-scrollbar p-2">

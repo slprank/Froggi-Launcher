@@ -37,3 +37,10 @@
 	</div>
 	<div class="flex items-center">- 10 Seconds after a rank game while updating rank</div>
 </div>
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>

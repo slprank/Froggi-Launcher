@@ -89,3 +89,10 @@
 	src="/image/tutorial/new-overlay/preview-game-end.png"
 	alt="Preview game end"
 />
+
+<style>
+	h1,
+	h2 {
+		color: var(--secondary-color);
+	}
+</style>
