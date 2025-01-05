@@ -138,16 +138,16 @@
 	Then scroll down and press <b>Update</b>
 </h2>
 
+<h2>
+	When you return to the <b>Style</b>
+	page there will an option to apply transitions.
+</h2>
+
 <img
 	class="border-secondary"
 	src="/image/tutorial/new-overlay/apply-visibility-condition-animation.png"
 	alt="Apply visibility transitions"
 />
-
-<h2>
-	When you return to the <b>Style</b>
-	page there will an option to apply transitions.
-</h2>
 
 <h2>
 	The transition properties shown in the image above have the element enter from the left and exit

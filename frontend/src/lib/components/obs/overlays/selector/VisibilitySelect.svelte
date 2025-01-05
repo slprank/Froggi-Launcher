@@ -67,11 +67,10 @@
 
 						{#if tempActiveConditions[i].length}
 							<div
-								class="color-secondary text-sm font-bold"
 								in:fly={{ duration: 250, x: 100, delay: 250 }}
 								out:fly={{ duration: 250, x: 100 }}
 							>
-								Condition:
+								<h1 class="color-secondary text-sm font-bold">Condition:</h1>
 								{#each tempActiveConditions[i] as activeCondition, j}
 									<h1 class="color-secondary text-sm">{activeCondition.title}</h1>
 									{#if tempActiveConditions[i].length != j + 1}
@@ -107,7 +106,7 @@
 
 		<div>
 			{#if tempActiveConditions.length}
-				<h1 class="color-secondary fond-bold">Combined conditions:</h1>
+				<h1 class="color-secondary font-bold">Combined conditions:</h1>
 			{/if}
 			<div class="max-h-28 overflow-auto">
 				{#each tempActiveConditions as activeConditions, i}
