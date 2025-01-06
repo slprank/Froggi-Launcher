@@ -54,29 +54,30 @@ export class AutoUpdater {
 				NotificationType.Success,
 			);
 			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.UpdateAvailable);
+			this.messageHandler.sendMessage(
+				'AutoUpdaterDownloadUrl',
+				`https://github.com/slprank/Froggi-Launcher/releases/download/${info.releaseName}/${info.files[0].url}`,
+			);
 		});
 
 		autoUpdater.on('download-progress', (progress: ProgressInfo) => {
-			this.log.verbose(`Downloading: ${progress.percent.toFixed()}`);
+			const percent = progress.percent.toFixed(1)
+			this.log.verbose(`Downloading: ${percent}`);
 			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.Downloading);
 			this.messageHandler.sendMessage(
 				'AutoUpdaterProgress',
-				`${Number(progress.percent.toFixed())}`,
+				`${Number(percent)}`,
 			);
 		});
 
 		autoUpdater.on('update-downloaded', (data: UpdateDownloadedEvent) => {
 			this.log.verbose(`Download Complete: ${data.version}`);
-			this.log.debug(
+			this.log.info(
 				`Download Url: https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
 			this.messageHandler.sendMessage(
 				'AutoUpdaterStatus',
 				AutoUpdaterStatus.DownloadComplete,
-			);
-			this.messageHandler.sendMessage(
-				'AutoUpdaterDownloadUrl',
-				`https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
 			);
 			this.messageHandler.sendMessage('AutoUpdaterProgress', '100');
 			this.messageHandler.sendMessage(
