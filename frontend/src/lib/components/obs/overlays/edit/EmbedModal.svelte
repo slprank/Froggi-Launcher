@@ -90,7 +90,9 @@
 			class="place-items-center rounded-md flex flex-col justify-between items-center gap-4 w-[50%]"
 		>
 			<div class="flex flex-col justify-center items-center">
-				<h1 class="font-medium text-2xl w-full">Embed on external devices</h1>
+				<h1 class="font-medium text-2xl w-full color-secondary">
+					Embed on external devices
+				</h1>
 				<h1 class="color-secondary text-md font-medium w-full">
 					This is an external URL and can be opened on any device connected to the same
 					local network.
