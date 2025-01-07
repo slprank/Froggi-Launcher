@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { NotificationType } from '$lib/models/enum';
-	import type { AutoUpdater, Overlay } from '$lib/models/types/overlay';
+	import type { Overlay } from '$lib/models/types/overlay';
 
 	import {
 		currentPlayer,
@@ -40,6 +40,7 @@
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
 	import { debounce, isNil } from 'lodash';
+	import { AutoUpdater } from '$lib/models/types/autoUpdaterTypes';
 
 	const debouncedSetGameFrame = debounce(
 		(value: Parameters<MessageEvents['GameFrame']>[0]) => {

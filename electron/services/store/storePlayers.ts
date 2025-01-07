@@ -30,6 +30,12 @@ export class ElectronPlayersStore {
     }
 
     setCurrentPlayers(players: (Player | PlayerType)[]) {
+        players.forEach(player => {
+            if ('rank' in player) {
+                player.connectCode = player.rank?.current?.connectCode ?? "";
+                player.displayName = player.rank?.current?.displayName ?? "";
+            }
+        });
         this.store.set('stats.currentPlayers', players?.filter(player => player));
     }
 

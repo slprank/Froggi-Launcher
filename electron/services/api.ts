@@ -15,8 +15,8 @@ export class Api {
 		try {
 			const rankData = await this.getPlayerRankStats(player.connectCode);
 			if (!rankData) return;
-			this.log.info("Fetched user:", this.enrichData(rankData, player.connectCode))
-			return { ...player, rank: { current: this.enrichData(rankData, player.connectCode) } }
+			this.log.info("Fetched user:", this.enrichData(rankData))
+			return { ...player, rank: { current: this.enrichData(rankData) } }
 		} catch (err) {
 			this.log.error(err);
 			return
@@ -90,10 +90,10 @@ export class Api {
 			winsPercent: 0
 		};
 
-		return this.enrichData(rankData, connectCode);
+		return this.enrichData(rankData);
 	}
 
-	private enrichData(playerRank: RankedNetplayProfile, connectCode: string): RankedNetplayProfile {
+	private enrichData(playerRank: RankedNetplayProfile): RankedNetplayProfile {
 		const continentInitials = playerRank.continent?.split('_').length == 2 ? playerRank.continent.split('_').map(c => c[0]).join('') : playerRank.continent?.substring(0, 2) ?? '';
 		const totalGames = (playerRank.characters?.length) ? playerRank.characters?.map(c => c.gameCount).reduce((a: number, b: number) => a + b) : 0;
 		const totalSets = (playerRank?.wins ?? 0) + (playerRank.losses ?? 0);
@@ -115,7 +115,6 @@ export class Api {
 		return {
 			...playerRank,
 			continentInitials: continentInitials,
-			connectCode: connectCode,
 			characters: characters,
 			lossesPercent: Number(lossesPercent.toFixed(1)),
 			rank: rank,

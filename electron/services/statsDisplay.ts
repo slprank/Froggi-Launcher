@@ -242,7 +242,7 @@ export class StatsDisplay {
 			await Promise.all(
 				currentPlayers.map(async (player: PlayerType) => {
 					if (player.connectCode === currentPlayer?.connectCode)
-						return currentPlayer
+						return { ...player, rank: { current: currentPlayer?.rank?.current } }
 					return await this.api.getPlayerWithRankStats(player);
 				}),
 			)
