@@ -21,7 +21,6 @@ export class MemoryRead {
 	) { }
 
 	initMemoryRead() {
-		return;
 		this.initMemoryReadWin();
 	}
 

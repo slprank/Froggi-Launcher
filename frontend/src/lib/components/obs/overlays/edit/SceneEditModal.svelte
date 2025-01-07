@@ -92,7 +92,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="overflow-scroll max-h-full w-full relative">
+			<div class="overflow-auto max-h-full w-full relative">
 				{#key $statsScene}
 					<div
 						class="flex flex-col gap-4 w-full h-full absolute"

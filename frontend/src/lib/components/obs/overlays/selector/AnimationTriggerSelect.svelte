@@ -34,7 +34,7 @@
 	<div
 		class="w-[80vw] h-[80vh] bg-cover bg-center p-4 overflow-auto flex flex-col gap-4 background-primary-color"
 	>
-		<div class="flex-1 overflow-scroll">
+		<div class="flex-1 overflow-auto">
 			<AnimationTriggerCategorySelect bind:selectedOption={tempSelectedOptions} />
 		</div>
 

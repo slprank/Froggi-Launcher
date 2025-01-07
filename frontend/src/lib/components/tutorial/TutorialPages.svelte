@@ -45,7 +45,7 @@
 			<h1 class="color-secondary font-bold text-4xl">Tutorial</h1>
 		</div>
 		<div
-			class="flex-1 flex flex-col justify-start items-start h-full w-full gap-4 overflow-scroll border-t border-b border-secondary-color p-2"
+			class="flex-1 flex flex-col justify-start items-start h-full w-full gap-4 overflow-auto border-t border-b border-secondary-color p-2"
 			bind:this={scrollElement}
 		>
 			{#if scenes[pageIndex]}

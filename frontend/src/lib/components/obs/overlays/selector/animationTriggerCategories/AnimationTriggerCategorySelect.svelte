@@ -96,7 +96,7 @@
 		<div
 			in:fly={{ duration: 250, x: 50, delay: 250 }}
 			out:fly={{ duration: 250, x: 50 }}
-			class="overflow-y-scroll flex flex-col gap-2"
+			class="overflow-y-auto flex flex-col gap-2"
 		>
 			<!-- TODO: Implement -->
 			<!-- {#if selectedCategory === AnimationTriggerCategory.DolphinState}

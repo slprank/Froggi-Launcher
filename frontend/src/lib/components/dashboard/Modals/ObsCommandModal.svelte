@@ -21,7 +21,7 @@
 		<div class="flex gap-2 justify-center items-center">
 			<h1 class="text-3xl font-semibold color-secondary">Obs Settings</h1>
 		</div>
-		<div class="flex flex-col gap-8 overflow-scroll">
+		<div class="flex flex-col gap-8 overflow-auto">
 			<ToggleControllerCommand />
 			<ToggleSceneSwitchCommand />
 

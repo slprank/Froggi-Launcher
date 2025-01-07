@@ -151,7 +151,7 @@
 	>
 		<div class="w-full h-full p-4 px-8 grid grid-cols-7">
 			<div
-				class="w-full h-full col-span-4 overflow-y-scroll scroll enable-scrollbar p-2 flex flex-col gap-4"
+				class="w-full h-full col-span-4 overflow-y-auto scroll enable-autobar p-2 flex flex-col gap-4"
 			>
 				<div class="flex flex-col gap-2 items-center">
 					<button

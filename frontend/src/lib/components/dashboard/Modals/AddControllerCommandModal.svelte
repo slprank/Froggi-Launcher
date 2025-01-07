@@ -66,11 +66,11 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="max-h-[80vh] max-w-[400px] w-screen h-full min-w-lg flex flex-col justify-between gap-4 bg-cover bg-center border-secondary background-primary-color p-8 overflow-y-scroll"
+		class="max-h-[80vh] max-w-[400px] w-screen h-full min-w-lg flex flex-col justify-between gap-4 bg-cover bg-center border-secondary background-primary-color p-8 overflow-y-auto"
 	>
 		<h1 class="flex text-2xl font-bold color-secondary">Button Combinations</h1>
 		<div
-			class="flex flex-col flex-1 overflow-y-scroll gap-4 min-h-40 border-b border-t border-secondary-color py-2"
+			class="flex flex-col flex-1 overflow-y-auto gap-4 min-h-40 border-b border-t border-secondary-color py-2"
 		>
 			<div class="flex flex-col gap-2 pr-4">
 				{#each getKeys() as key}

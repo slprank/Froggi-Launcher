@@ -46,42 +46,44 @@
 		<div>
 			<h1 class="text-4xl font-bold color-secondary">Overlays</h1>
 		</div>
-		<div class="w-full border-secondary rounded-sm max-h-[50%]">
-			<h1 class="text-2xl font-bold w-full text-center color-secondary">Demo</h1>
-			<div
-				class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
-			>
-				{#each demoOverlays as overlay, i}
-					<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
-						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] my-4"
-							on:click={() => {
-								openPreview(overlay.id);
-							}}
-						>
-							{overlay.title}
-						</button>
-					</div>
-				{/each}
+		<div class="w-full h-full flex-1 flex flex-col gap-2 overflow-auto">
+			<div class="w-full border-secondary rounded-sm max-h-[50%]">
+				<h1 class="text-2xl font-bold w-full text-center color-secondary">Demo</h1>
+				<div
+					class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
+				>
+					{#each demoOverlays as overlay, i}
+						<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
+							<button
+								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] my-4"
+								on:click={() => {
+									openPreview(overlay.id);
+								}}
+							>
+								{overlay.title}
+							</button>
+						</div>
+					{/each}
+				</div>
 			</div>
-		</div>
-		<div class="flex-1 w-full border-secondary overflow-scroll">
-			<h1 class="text-2xl font-bold w-full text-center color-secondary">Custom</h1>
-			<div
-				class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
-			>
-				{#each customOverlays as overlay, i}
-					<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
-						<button
-							class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 min-h-[5rem] my-4"
-							on:click={() => {
-								openPreview(overlay.id);
-							}}
-						>
-							{overlay.title}
-						</button>
-					</div>
-				{/each}
+			<div class="flex-1 flex flex-col w-full border-secondary">
+				<h1 class="text-2xl font-bold w-full text-center color-secondary">Custom</h1>
+				<div
+					class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
+				>
+					{#each customOverlays as overlay, i}
+						<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
+							<button
+								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 min-h-[5rem] my-4"
+								on:click={() => {
+									openPreview(overlay.id);
+								}}
+							>
+								{overlay.title}
+							</button>
+						</div>
+					{/each}
+				</div>
 			</div>
 		</div>
 		{#if $isElectron}

@@ -159,7 +159,7 @@
 			</div>
 		</div>
 		<div
-			class="flex flex-col flex-1 gap-8 overflow-y-scroll sp-2 border-t border-b border-secondary-color py-2"
+			class="flex flex-col flex-1 gap-8 overflow-y-auto sp-2 border-t border-b border-secondary-color py-2"
 		>
 			<div class="flex gap-4 justify-center items-center">
 				<h1 class="color-secondary text-2xl font-semibold">Character</h1>

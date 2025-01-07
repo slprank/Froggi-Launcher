@@ -40,7 +40,7 @@
 {/key}
 
 <style>
-	*::-webkit-scrollbar {
+	*::-webkit-autobar {
 		display: none;
 	}
 </style>

@@ -106,7 +106,7 @@
 				<ExternalPreviewSettings bind:base64 bind:imageOpacity {reset} />
 			</div>
 		</div>
-		<div class={`w-[50em] h-full overflow-y-scroll`}>
+		<div class={`w-[50em] h-full overflow-y-auto`}>
 			<LayerToggle />
 		</div>
 	</div>

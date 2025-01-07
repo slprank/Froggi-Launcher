@@ -45,7 +45,7 @@
 				</MultiSelect>
 			</div>
 		</div>
-		<div class="max-h-full overflow-scroll" in:fly={{ y: 100, duration: 1500, delay: 300 }}>
+		<div class="max-h-full overflow-auto" in:fly={{ y: 100, duration: 1500, delay: 300 }}>
 			<div class="w-full h-12 grid grid-cols-12 col-span-12 min-w-2xl max-w-6xl">
 				<div
 					class="w-full h-full grid grid-cols-12 col-span-12 border-b-1 border-gray-500 rounded-t-md bg-black bg-opacity-50"

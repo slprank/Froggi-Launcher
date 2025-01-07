@@ -17,7 +17,7 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="w-[80vw] h-[80vh] max-h-[600px] min-w-72 overflow-y-scroll flex rounded-lg bg-transparent m-0 bg-cover bg-center p-8 gap-16 justify-between background-primary-color"
+		class="w-[80vw] h-[80vh] max-h-[600px] min-w-72 overflow-y-auto flex rounded-lg bg-transparent m-0 bg-cover bg-center p-8 gap-16 justify-between background-primary-color"
 	>
 		<div class="rounded-md flex flex-col justify-between items-center gap-4 w-[50%]">
 			<div class="flex flex-col w-full">

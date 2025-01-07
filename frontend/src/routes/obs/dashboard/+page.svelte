@@ -14,7 +14,7 @@
 	out:fade={{ duration: 300 }}
 >
 	<div
-		class="w-full h-full flex flex-col overflow-y-scroll items-center justify-start p-4 pb-24 gap-8"
+		class="w-full h-full flex flex-col overflow-y-auto items-center justify-start p-4 pb-24 gap-8"
 	>
 		<h1 class="color-secondary text-4xl font-bold">Dashboard</h1>
 		<div class="flex gap-2">

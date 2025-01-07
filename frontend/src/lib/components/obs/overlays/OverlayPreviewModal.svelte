@@ -75,7 +75,7 @@
 
 <Modal bind:open on:close={() => (open = false)}>
 	<div
-		class="min-w-[80vw] min-h-[80vh] max-w-[80vw] max-h-[95vh] overflow-y-scroll flex flex-col gap-4 justify-between items-center bg-cover bg-center border-secondary rounded-md p-4 background-primary-color color-secondary"
+		class="min-w-[80vw] min-h-[80vh] max-w-[80vw] max-h-[95vh] overflow-y-auto flex flex-col gap-4 justify-between items-center bg-cover bg-center border-secondary rounded-md p-4 background-primary-color color-secondary"
 	>
 		<div>
 			<h1 class="font-bold text-3xl">{overlay?.title}</h1>

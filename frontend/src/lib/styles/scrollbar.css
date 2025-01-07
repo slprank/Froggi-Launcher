@@ -1,17 +1,17 @@
-*::-webkit-scrollbar :not(.view-scrollbar) {
+*::-webkit-autobar :not(.view-autobar) {
 	display: none;
 }
 
-* :not(.view-scrollbar) {
+* :not(.view-autobar) {
 	-webkit-user-select: none; /* Safari */
 	-ms-user-select: none; /* IE 10 and IE 11 */
 	user-select: none; /* Standard syntax */
 }
 
-::-webkit-scrollbar-track {
+::-webkit-autobar-track {
 	display: none;
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-autobar-thumb {
 	background-color: transparent;
 }
