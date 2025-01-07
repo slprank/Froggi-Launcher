@@ -1,6 +1,6 @@
 {
 	"name": "froggi",
-	"version": "0.7.25",
+	"version": "0.7.26",
 	"private": true,
 	"description": "Slippi Client",
 	"main": "build_electron/electron/main.js",
@@ -102,8 +102,8 @@
 		},
 		"publish": {
 			"provider": "github",
-			"owner": "slprank",
-			"repo": "Froggi-Launcher"
+			"owner": "SindreVatnaland",
+			"repo": "Froggi"
 		}
 	}
 }
