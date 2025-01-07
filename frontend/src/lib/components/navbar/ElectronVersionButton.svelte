@@ -55,12 +55,17 @@
 	};
 
 	const installUpdate = () => {
-		if ($autoUpdater.status === AutoUpdaterStatus.DownloadComplete)
-			$electronEmitter.emit('AutoUpdaterInstall');
-		if ($autoUpdater.status === AutoUpdaterStatus.UpToDate)
-			$electronEmitter.emit('AutoUpdaterCheckForUpdate');
-		if ($autoUpdater.status === AutoUpdaterStatus.UpdateAvailable)
-			$electronEmitter.emit('AutoUpdaterDownloadUpdate');
+		switch ($autoUpdater.status) {
+			case AutoUpdaterStatus.UpdateAvailable:
+				$electronEmitter.emit('AutoUpdaterDownloadUpdate');
+				break;
+			case AutoUpdaterStatus.DownloadComplete:
+				$electronEmitter.emit('AutoUpdaterInstall');
+				break;
+			default:
+				$electronEmitter.emit('AutoUpdaterCheckForUpdate');
+				break;
+		}
 	};
 </script>
 
@@ -84,7 +89,7 @@
 				class={`h-10 w-10 bg-gray-600 bg-opacity-75 justify-center rounded-2xl p-1 col-auto`}
 				style={`${getStyle($autoUpdater)}`}
 			>
-				<div class="h-2 w-full">
+				<div class="max-h-2 w-full">
 					<TextFitMulti>{`${getContent($autoUpdater)}`}</TextFitMulti>
 				</div>
 			</button>
