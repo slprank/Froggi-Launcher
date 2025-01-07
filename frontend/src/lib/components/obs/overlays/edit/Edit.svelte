@@ -45,13 +45,13 @@
 	let innerHeight: number;
 	$: displayPreview = innerWidth > 1024;
 
-	$: isVertical = (overlay?.aspectRatio.height ?? 0) > (overlay?.aspectRatio.width ?? 0);
+	$: isVertical = (overlay?.aspectRatio?.height ?? 0) > (overlay?.aspectRatio?.width ?? 0);
 	$: horizontalWidth = Math.floor(innerWidth - (displayPreview ? 580 : 144));
 	$: horizontalHeight = Math.floor((horizontalWidth / 16) * 9);
 
 	$: verticalHeight = innerHeight - (displayPreview ? 320 : 400);
 	$: verticalWidth =
-		(verticalHeight * (overlay?.aspectRatio.width ?? 0)) / (overlay?.aspectRatio.height ?? 0);
+		(verticalHeight * (overlay?.aspectRatio?.width ?? 0)) / (overlay?.aspectRatio?.height ?? 0);
 
 	$: boardWidth = isVertical ? verticalWidth : horizontalWidth;
 	$: boardHeight = isVertical ? verticalHeight : horizontalHeight;
@@ -60,7 +60,7 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 <main
-	class="fixed w-screen bg-cover bg-center color-secondary"
+	class="fixed w-screen h-screen bg-cover bg-center color-secondary"
 	style="background-color: #FBF0E5"
 	in:fade={{ delay: 50, duration: 150 }}
 >
@@ -85,7 +85,7 @@
 			{/if}
 
 			<div
-				class={`max-w-full max-h-full flex-1 flex flex-col gap-2 justify-start items-center py-2 overflow-scroll`}
+				class={`max-w-full flex-1 flex flex-col gap-2 justify-start items-center py-2 overflow-auto`}
 			>
 				<div class="flex flex-col items-center">
 					<h1 class="text-lg font-medium color-secondary">

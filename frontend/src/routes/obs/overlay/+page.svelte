@@ -14,6 +14,12 @@
 		overlayPreviewOpen = true;
 	};
 
+	const handleError = (e: any) => {
+		console.error(e);
+		// @ts-ignore
+		setTimeout(location.reload, 1000);
+	};
+
 	$: customOverlays = (
 		Object.values($overlays).sort((a, b) => a.title.localeCompare(b.title)) ?? []
 	).filter((overlay) => !overlay.isDemo);
@@ -23,6 +29,8 @@
 
 	let selectedOverlay: Overlay | undefined = undefined;
 </script>
+
+<svelte:window on:error={handleError} />
 
 <main
 	class="fixed w-screen bg-cover bg-center"

@@ -82,8 +82,8 @@
 					<h1 class="text-white text-shadow-md">+</h1>
 				</button>
 			</div>
-			{#each layers as layer, layerIndex (layerIndex)}
-				<div class="w-full visible" animate:flip={{ duration: 250 }} id={layer.id}>
+			{#each layers as layer, layerIndex (layer.id)}
+				<div class="w-full visible" animate:flip={{ duration: 80 }} id={layer.id}>
 					<LayerDisplayRow
 						{curOverlay}
 						{layerIndex}

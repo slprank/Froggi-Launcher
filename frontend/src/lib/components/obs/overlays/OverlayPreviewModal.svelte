@@ -64,7 +64,7 @@
 			height: parentDiv?.clientHeight ?? 0,
 			width:
 				(parentDiv?.clientHeight ?? 0) *
-				((overlay?.aspectRatio.width ?? 0) / (overlay?.aspectRatio.height ?? 0)),
+				((overlay?.aspectRatio?.width ?? 0) / (overlay?.aspectRatio?.height ?? 0)),
 		};
 	};
 
@@ -82,13 +82,13 @@
 		</div>
 		<div
 			class={`max-h-full max-w-full w-full h-full flex justify-center`}
-			style={`aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
+			style={`aspect-ratio: ${overlay?.aspectRatio?.width}/${overlay?.aspectRatio?.height}`}
 			bind:this={parentDiv}
 		>
 			{#if url}
 				<div
 					class="border-secondary"
-					style={`height: ${previewSize.height}px; width: ${previewSize.width}px; aspect-ratio: ${overlay?.aspectRatio.width}/${overlay?.aspectRatio.height}`}
+					style={`height: ${previewSize?.height}px; width: ${previewSize?.width}px; aspect-ratio: ${overlay?.aspectRatio?.width}/${overlay?.aspectRatio?.height}`}
 				>
 					<NonInteractiveIFrame {src} title="overlay" />
 				</div>
