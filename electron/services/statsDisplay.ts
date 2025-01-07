@@ -109,13 +109,15 @@ export class StatsDisplay {
 	}
 
 	async handleGameStart(settings: GameStartType | null) {
-		console.log(settings)
+		this.log.info("Game start:", settings)
 		if (!settings) return;
 		const currentPlayers = await this.getCurrentPlayersWithRankStats(settings);
 
+		this.log.info("Current players:", currentPlayers)
+
 		this.storeLiveStats.setGameState(InGameState.Running);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame);
-		if (currentPlayers.every((player) => player.rank)) {
+		if (currentPlayers.every((player) => !isNil(player.rank))) {
 			this.storePlayers.setCurrentPlayers(currentPlayers);
 		}
 		this.storeLiveStats.setGameSettings(settings);
@@ -219,6 +221,8 @@ export class StatsDisplay {
 	}
 
 	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
+		this.log.info("Getting current players with rank stats")
+		this.log.info("Game Start:", settings)
 		const isNewGame = this.storeLiveStats.getGameSettings()?.matchInfo?.matchId !== settings?.matchInfo?.matchId;
 		const currentPlayers = settings.players.filter((player) => player);
 
@@ -232,11 +236,13 @@ export class StatsDisplay {
 					};
 				});
 
+		const currentPlayer = this.storeCurrentPlayer.getCurrentPlayer();
+
 		return (
 			await Promise.all(
 				currentPlayers.map(async (player: PlayerType) => {
-					if (player.connectCode === this.storeSettings.getCurrentPlayerConnectCode())
-						return this.storeCurrentPlayer.getCurrentPlayer();
+					if (player.connectCode === currentPlayer?.connectCode)
+						return currentPlayer
 					return await this.api.getPlayerWithRankStats(player);
 				}),
 			)
