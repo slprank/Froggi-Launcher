@@ -27,6 +27,9 @@ import { FrontendLogger } from './services/frontendLogger';
 
 let mainLog: ElectronLog = log
 
+console.log = mainLog.info;
+console.error = mainLog.error;
+
 function setLoggingPath(log: ElectronLog, appName: string): ElectronLog {
 	try {
 		const appDataPath = getAppDataPath(appName);

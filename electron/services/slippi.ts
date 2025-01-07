@@ -73,11 +73,6 @@ export class SlippiJs {
 			// Log the error messages we get from Dolphin
 			this.log.error('Dolphin connection error', err);
 		});
-
-		this.dolphinConnection.on(ConnectionEvent.ERROR, (err) => {
-			// Log the error messages we get from Dolphin
-			this.log.error('Dolphin connection error', err);
-		});
 	}
 
 	private handleDisconnected() {

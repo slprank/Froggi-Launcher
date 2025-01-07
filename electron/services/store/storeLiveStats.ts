@@ -45,8 +45,8 @@ export class ElectronLiveStatsStore {
 	}
 
 	setStatsSceneTimeout(firstScene: LiveStatsScene, secondScene: LiveStatsScene, ms: number) {
+		this.log.info('Setting scene to', firstScene, "for", ms, "ms", "then to", secondScene);
 		this.store.set('stats.scene', firstScene);
-
 		this.sceneTimeout = setTimeout(() => {
 			this.store.set('stats.scene', secondScene);
 		}, ms);
@@ -71,6 +71,7 @@ export class ElectronLiveStatsStore {
 	}
 
 	setGameState(state: InGameState) {
+		this.log.info('Setting game state to', state);
 		this.gameState = state;
 		this.messageHandler.sendMessage('GameState', state as InGameState);
 	}
