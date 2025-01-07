@@ -63,3 +63,11 @@ export interface ObsAuth {
     password: string,
 }
 
+export interface ObsWebsocketConfig {
+    alerts_enabled: boolean,
+    auth_required: boolean,
+    first_load: boolean,
+    server_enabled: boolean,
+    server_password: string,
+    server_port: number,
+  }

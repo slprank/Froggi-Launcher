@@ -72,12 +72,9 @@
 	$: curScene = curOverlay[curStatsScene];
 
 	const handleError = (e: ErrorEvent) => {
-		$electronEmitter.emit('Log', e.message, e.type);
 		$electronEmitter.emit('CleanupCustomResources');
 		$electronEmitter.emit('RemoveDuplicateItems');
-		setTimeout(() => {
-			refreshExternal();
-		});
+		setTimeout(refreshExternal, 2000);
 	};
 
 	const refreshExternal = async () => {
@@ -89,7 +86,7 @@
 <svelte:window
 	bind:innerHeight
 	bind:innerWidth
-	on:resize={debounce(refreshExternal, 16)}
+	on:resize={debounce(refreshExternal, 1000)}
 	on:error={handleError}
 />
 

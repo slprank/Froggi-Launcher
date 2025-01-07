@@ -12,6 +12,7 @@ import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter
 @singleton()
 export class ElectronObsStore {
     private store: Store = new Store();
+    private obsConnectionState: ConnectionState = this.store.get('obs.connection.state') as ConnectionState;
     constructor(
         @inject("ElectronLog") private log: ElectronLog,
         @inject("ClientEmitter") private clientEmitter: TypedEmitter,
@@ -63,8 +64,12 @@ export class ElectronObsStore {
         return (this.store.get('obs.connection') ?? {}) as ObsConnection;
     }
 
+    getConnectionState(): ConnectionState {
+        return this.obsConnectionState; 
+    }
 
     setConnectionState(state: ConnectionState) {
+        this.obsConnectionState = state;
         this.store.set('obs.connection.state', state);
     }
 

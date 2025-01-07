@@ -13,9 +13,7 @@
 
 	const handleError = (e: Error) => {
 		console.error(e);
-		setTimeout(() => {
-			location.reload();
-		});
+		setTimeout(location.reload, 2000);
 	};
 </script>
 

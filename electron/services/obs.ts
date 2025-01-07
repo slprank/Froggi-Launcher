@@ -7,11 +7,14 @@ import { ElectronObsStore } from './store/storeObs';
 import { ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
 import { MessageHandler } from './messageHandler';
 import { NotificationType, ConnectionState } from '../../frontend/src/lib/models/enum';
+import { isObsRunning, isObsWEbsocketEnabled } from '../utils/obsProcess';
 
 @singleton()
 export class ObsWebSocket {
 	obs = new OBSWebSocket();
 	private obsConnectionInterval: NodeJS.Timeout | undefined;
+	private obsProcessInterval: NodeJS.Timeout | undefined;
+	private shouldSendNotification = true;
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject(ElectronObsStore) private storeObs: ElectronObsStore,
@@ -127,16 +130,17 @@ export class ObsWebSocket {
 
 	private initObsWebSocket = async () => {
 		this.obs.on('ConnectionClosed', async () => {
-			this.searchForObs();
+			this.startProcessSearchInterval();
+			this.shouldSendNotification = true;
 			this.log.info('OBS Connection Closed');
 		});
 		this.obs.on('ConnectionError', () => {
-			this.searchForObs();
+			this.startProcessSearchInterval();
 			this.log.error('OBS Connection Error');
 		});
 		this.obs.on('ConnectionOpened', () => {
 			this.storeObs.setConnectionState(ConnectionState.Connected);
-			setTimeout(this.initConnection, 1000);
+			setTimeout(this.initConnection.bind(this), 1000);
 			this.log.info('OBS Connection Opened');
 		});
 
@@ -160,8 +164,38 @@ export class ObsWebSocket {
 			this.storeObs.setReplayBufferState(state);
 		});
 
-		this.searchForObs();
+		this.startProcessSearchInterval();
 	};
+
+	private async startProcessSearchInterval() {
+			this.stopProcessSearchInterval();
+			this.storeObs.setConnectionState(ConnectionState.Searching);
+			this.log.info('Looking For OBS Process');
+			this.obsProcessInterval = setInterval(async () => {
+				const isRunning = await isObsRunning();
+				if(!isRunning) return;
+				const isWebsocketEnabled = isObsWEbsocketEnabled()
+
+				if (isWebsocketEnabled) {
+					this.searchForObs();
+					this.stopProcessSearchInterval();
+					return;
+				}
+
+				if (this.shouldSendNotification) {
+					this.messageHandler.sendMessage(
+						'Notification',
+						'OBS Websocket is not enabled',
+						NotificationType.Warning,
+					);
+					this.shouldSendNotification = false;
+				}
+			}, 5000);
+		}
+
+		private stopProcessSearchInterval() {
+			clearInterval(this.obsProcessInterval);
+		}
 
 	executeCommand = async <T extends keyof OBSRequestTypes>(
 		command: T,

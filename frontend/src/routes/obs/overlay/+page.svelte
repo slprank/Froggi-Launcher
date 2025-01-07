@@ -17,7 +17,7 @@
 	const handleError = (e: any) => {
 		console.error(e);
 		// @ts-ignore
-		setTimeout(location.reload, 1000);
+		setTimeout(location.reload, 2000);
 	};
 
 	$: customOverlays = (

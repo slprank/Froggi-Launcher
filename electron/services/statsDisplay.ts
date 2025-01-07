@@ -80,8 +80,8 @@ export class StatsDisplay {
 				(frameEntry: FrameEntryType) => {
 					this.handleGameFrame(frameEntry);
 				},
-				16,
-				{ trailing: true },
+				2,
+				{ trailing: true, maxWait: 160 },
 			),
 		);
 	}

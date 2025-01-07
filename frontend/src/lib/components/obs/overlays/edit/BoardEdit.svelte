@@ -104,13 +104,12 @@
 	updateFont(curOverlay);
 
 	const handleError = (e: ErrorEvent) => {
-		$electronEmitter.emit('Log', e.message, e.type);
 		$electronEmitter.emit('CleanupCustomResources');
 		$electronEmitter.emit('RemoveDuplicateItems');
 		setTimeout(() => {
 			// @ts-ignore
 			location.reload();
-		});
+		}, 2000);
 	};
 
 	let innerHeight: number;
