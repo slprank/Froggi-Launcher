@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { AutoUpdaterStatus } from '$lib/models/enum';
+	import { AutoUpdater } from '$lib/models/types/autoUpdaterTypes';
 	import { autoUpdater, electronEmitter, isElectron } from '$lib/utils/store.svelte';
 	import TextFitMulti from '../TextFitMulti.svelte';
-	import type { AutoUpdater } from '$lib/models/types/overlay';
 	import { tooltip } from 'svooltip';
 
 	const getStyle = (autoUpdater: AutoUpdater) => {

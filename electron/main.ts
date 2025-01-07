@@ -116,7 +116,7 @@ try {
 	}
 
 	function createMenu(): Electron.MenuItemConstructorOptions[] {
-		return [
+		if (isMac) return [
 			{
 				label: 'Froggi',
 				submenu: [
@@ -130,6 +130,7 @@ try {
 				],
 			},
 		];
+		return []
 	}
 
 	function createTray(): Tray {
