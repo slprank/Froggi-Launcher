@@ -18,12 +18,12 @@
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { initClient } from '$lib/utils/init.svelte';
 	import { page } from '$app/stores';
-	import { ScreenWakeLock } from 'svelte-screen-wake-lock';
 
 	let ready: boolean = false;
 
 	onMount(async () => {
 		await initClient();
+		await initWakeLock();
 		ready = true;
 
 		$localEmitter.setMaxListeners(100);
@@ -42,6 +42,11 @@
 		}
 	};
 
+	const initWakeLock = () => {
+		if (!('wakeLock' in navigator)) return;
+		navigator.wakeLock.request();
+	};
+
 	$: updateBackgroundColor($page.url.pathname);
 </script>
 
@@ -57,8 +62,6 @@
 	<Toast />
 	<slot />
 {/if}
-
-<ScreenWakeLock />
 
 <style>
 	:root {

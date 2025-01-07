@@ -39,6 +39,8 @@ export class ElectronLiveStatsStore {
 	}
 
 	setStatsScene(scene: LiveStatsScene) {
+		this.log.info('Setting scene to', scene);
+		clearTimeout(this.sceneTimeout);
 		this.store.set('stats.scene', scene ?? LiveStatsScene.WaitingForDolphin);
 	}
 
@@ -118,7 +120,6 @@ export class ElectronLiveStatsStore {
 
 	initListeners() {
 		this.store.onDidChange('stats.scene', (value) => {
-			clearTimeout(this.sceneTimeout);
 			this.messageHandler.sendMessage('LiveStatsSceneChange', value as LiveStatsScene);
 		});
 		this.store.onDidChange(`stats.currentPlayers`, async (value) => {

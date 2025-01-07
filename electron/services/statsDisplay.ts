@@ -117,7 +117,7 @@ export class StatsDisplay {
 
 		this.storeLiveStats.setGameState(InGameState.Running);
 		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame);
-		if (currentPlayers.every((player) => !isNil(player.rank))) {
+		if (currentPlayers.every((player) => "rank" in player)) {
 			this.storePlayers.setCurrentPlayers(currentPlayers);
 		}
 		this.storeLiveStats.setGameSettings(settings);
@@ -137,6 +137,7 @@ export class StatsDisplay {
 		latestGameFrame: FrameEntryType | null,
 		settings: GameStartType,
 	) {
+		this.log.info("Game end:", gameEnd)
 		this.stopPauseInterval();
 		this.handleInGameState(gameEnd, latestGameFrame);
 
