@@ -7,7 +7,7 @@ export const migrateStore = (log: ElectronLog): Store.Options<Record<string, unk
 		beforeEachMigration: (store, context) => {
 			log.info(`Migrate store from ${context.fromVersion} → ${context.toVersion}`);
 			log.info(context);
-			store.set("froggi.version", context.toVersion)
+			store.set("settings.froggi.version", context.toVersion)
 		},
 		migrations: {
 			'>=0.2.0': (store) => {

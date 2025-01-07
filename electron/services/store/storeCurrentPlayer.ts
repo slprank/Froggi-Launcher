@@ -66,11 +66,15 @@ export class ElectronCurrentPlayerStore {
 	getPlayerRankHistory(): RankedNetplayProfile[] {
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
 		if (!connectCode) return [];
+		return [];
+		// TODO Move this to sqlite
 		return (this.store.get(`player.${connectCode}.rank.history`) ??
 			[]) as RankedNetplayProfile[];
 	}
 
 	updateCurrentPlayerRankHistory(rankStats: RankedNetplayProfile) {
+		return;
+		// TODO: Move this to sqlite
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
 		let history = this.getPlayerRankHistory();
 		if (isMatch(history.at(-1) ?? {}, rankStats)) return;

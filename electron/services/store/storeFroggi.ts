@@ -15,6 +15,6 @@ export class ElectronFroggiStore {
     }
 
     getFroggiConfig(): Froggi {
-        return (this.store.get("froggi") ?? {}) as Froggi
+        return (this.store.get("settings.froggi") ?? {}) as Froggi
     }
 }

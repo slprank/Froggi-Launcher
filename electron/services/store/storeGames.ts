@@ -35,6 +35,7 @@ export class ElectronGamesStore {
 		this.log.info('Initializing Game Store');
 		this.initEventListeners();
 		this.initStoreListeners();
+		// Move this to SQLite
 	}
 
 	getRecentDirectSets() {
