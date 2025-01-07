@@ -29,6 +29,7 @@ export class ElectronOverlayStore {
 		@inject(ElectronFroggiStore) private froggiStore: ElectronFroggiStore,
 	) {
 		this.log.info('Initializing Obs Overlay Store');
+		this.migrateOverlays();
 		this.initListeners();
 		this.initSvelteListeners();
 		this.initDemoOverlays();
@@ -340,5 +341,17 @@ export class ElectronOverlayStore {
 			}
 		});
 
+	}
+
+	private migrateOverlays(): void {
+		const overlays = this.getOverlays();
+		Object.values(overlays).forEach(overlay => {
+			if (!overlay.froggiVersion) {
+				overlay.froggiVersion = "0.0.0"
+			}
+			// Migrate overlay
+			// Compare version and migrate
+		})
+		this.store.set('obs.layout.overlays', overlays)
 	}
 }
