@@ -12,11 +12,6 @@
 		info: '#5bc0de',
 		default: '#aaaaaa',
 	};
-
-	const setOverlayPage = (pathname: string) => {
-		isOverlayPage.set(pathname.startsWith('/obs/overlay/'));
-	};
-	$: setOverlayPage($page.url.pathname);
 </script>
 
 {#if $isElectron || !$isOverlayPage}

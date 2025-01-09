@@ -34,20 +34,25 @@
 		};
 	});
 
-	const updateBackgroundColor = (url: string) => {
+	const updateBackgroundColor = () => {
 		if ($isOverlayPage && !$isElectron) {
 			document.body.style.backgroundColor = 'transparent';
 		} else {
-			document.body.style.backgroundColor = 'black';
+			document.body.style.backgroundColor = 'var(--primary-color)';
 		}
 	};
+
+	$: $isOverlayPage, updateBackgroundColor();
+
+	const setOverlayPage = (pathname: string) => {
+		isOverlayPage.set(pathname.startsWith('/obs/overlay/'));
+	};
+	$: setOverlayPage($page.url.pathname);
 
 	const initWakeLock = () => {
 		if (!('wakeLock' in navigator)) return;
 		navigator.wakeLock.request();
 	};
-
-	$: updateBackgroundColor($page.url.pathname);
 </script>
 
 {#if $isElectron}

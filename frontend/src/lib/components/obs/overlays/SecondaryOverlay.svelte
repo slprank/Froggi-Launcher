@@ -3,7 +3,6 @@
 	import { fade } from 'svelte/transition';
 	import Board from '$lib/components/obs/overlays/Board.svelte';
 	import { page } from '$app/stores';
-	import { add_location } from 'svelte/internal';
 
 	export let layerIds: string[] | undefined = undefined;
 	export let preview: boolean = false;
@@ -21,7 +20,7 @@
 
 {#if curOverlay}
 	<div
-		class="fixed h-full w-full bg-cover bg-center"
+		class="fixed h-full w-full"
 		style="margin: 0; padding: 0"
 		in:fade={{ delay: 50, duration: 150 }}
 		out:fade={{ duration: 300 }}
