@@ -1,5 +1,5 @@
 {
-	"id": "HUD",
+	"id": "hud",
 	"title": "HUD",
 	"description": "Scene Description",
 	"defaultScene": "Menu",
