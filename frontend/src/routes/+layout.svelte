@@ -23,7 +23,7 @@
 
 	onMount(async () => {
 		await initClient();
-		await initWakeLock();
+		initWakeLock();
 		ready = true;
 
 		$localEmitter.setMaxListeners(100);

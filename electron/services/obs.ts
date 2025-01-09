@@ -7,7 +7,7 @@ import { ElectronObsStore } from './store/storeObs';
 import { ObsInputs, ObsItem, ObsScenes } from '../../frontend/src/lib/models/types/obsTypes';
 import { MessageHandler } from './messageHandler';
 import { NotificationType, ConnectionState } from '../../frontend/src/lib/models/enum';
-import { isObsRunning, isObsWEbsocketEnabled } from '../utils/obsProcess';
+import { getObsWebsocketConfig, isObsRunning } from '../utils/obsProcess';
 
 @singleton()
 export class ObsWebSocket {
@@ -168,34 +168,38 @@ export class ObsWebSocket {
 	};
 
 	private async startProcessSearchInterval() {
-			this.stopProcessSearchInterval();
-			this.storeObs.setConnectionState(ConnectionState.Searching);
-			this.log.info('Looking For OBS Process');
-			this.obsProcessInterval = setInterval(async () => {
-				const isRunning = await isObsRunning();
-				if(!isRunning) return;
-				const isWebsocketEnabled = isObsWEbsocketEnabled()
+		this.stopProcessSearchInterval();
+		this.storeObs.setConnectionState(ConnectionState.Searching);
+		this.log.info('Looking For OBS Process');
+		this.obsProcessInterval = setInterval(async () => {
+			const isRunning = await isObsRunning();
+			if (!isRunning) return;
+			const obsWebsocketConfig = getObsWebsocketConfig()
 
-				if (isWebsocketEnabled) {
-					this.searchForObs();
-					this.stopProcessSearchInterval();
-					return;
-				}
+			if (!obsWebsocketConfig) return;
 
-				if (this.shouldSendNotification) {
-					this.messageHandler.sendMessage(
-						'Notification',
-						'OBS Websocket is not enabled',
-						NotificationType.Warning,
-					);
-					this.shouldSendNotification = false;
-				}
-			}, 5000);
-		}
+			if (obsWebsocketConfig?.server_enabled) {
+				this.storeObs.setPort(String(obsWebsocketConfig?.server_port ?? '4455'));
+				this.storeObs.setPassword(obsWebsocketConfig?.server_password ?? '');
+				this.searchForObs();
+				this.stopProcessSearchInterval();
+				return;
+			}
 
-		private stopProcessSearchInterval() {
-			clearInterval(this.obsProcessInterval);
-		}
+			if (this.shouldSendNotification) {
+				this.messageHandler.sendMessage(
+					'Notification',
+					'OBS Websocket is not enabled',
+					NotificationType.Warning,
+				);
+				this.shouldSendNotification = false;
+			}
+		}, 5000);
+	}
+
+	private stopProcessSearchInterval() {
+		clearInterval(this.obsProcessInterval);
+	}
 
 	executeCommand = async <T extends keyof OBSRequestTypes>(
 		command: T,

@@ -56,8 +56,8 @@ export class ElectronObsStore {
         return (this.store.get('obs.auth.port') ?? "4455") as string;
     }
 
-    setPort(ip: string) {
-        this.store.set('obs.auth.port', ip);
+    setPort(port: string) {
+        this.store.set('obs.auth.port', port);
     }
 
     getConnection(): ObsConnection {
@@ -65,7 +65,7 @@ export class ElectronObsStore {
     }
 
     getConnectionState(): ConnectionState {
-        return this.obsConnectionState; 
+        return this.obsConnectionState;
     }
 
     setConnectionState(state: ConnectionState) {

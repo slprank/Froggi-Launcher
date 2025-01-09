@@ -71,7 +71,6 @@ const initData = (socketId: string) => {
 }
 
 const initAuthentication = (socketId: string, authKey: string) => {
-    console.log("InitAuthentication", socketId, authKey)
     parentPort?.postMessage(JSON.stringify({
         ["InitAuthentication"]: [socketId, authKey],
     }));
