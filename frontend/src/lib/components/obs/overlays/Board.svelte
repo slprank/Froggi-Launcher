@@ -14,6 +14,7 @@
 	import BoardContainer from '$lib/components/obs/overlays/BoardContainer.svelte';
 	import { updateFont } from './CustomFontHandler.svelte';
 	import { debounce } from 'lodash';
+	import { onMount } from 'svelte';
 
 	export let curOverlay: Overlay;
 	export let layerIds: string[] | undefined;
@@ -81,43 +82,49 @@
 		// @ts-ignore
 		if (!$isElectron) location.reload();
 	};
+
+	const handleResize = (e: UIEvent & { currentTarget: EventTarget & Window }) => {
+		innerHeight = e.currentTarget.window.innerHeight;
+		innerWidth = e.currentTarget.window.innerWidth;
+	};
+
+	onMount(() => {
+		handleResize({ currentTarget: window } as any);
+	});
 </script>
 
-<svelte:window
-	bind:innerHeight
-	bind:innerWidth
-	on:resize={debounce(refreshExternal, 1000)}
-	on:error={handleError}
-/>
+<svelte:window on:resize={debounce(handleResize, 1000)} on:error={handleError} />
 
 {#if curScene && rowHeight && fixedLayers && ready}
 	<div class="w-full h-full overflow-hidden relative origin-top-left">
 		{#key curScene && curStatsScene}
-			<BoardContainer
-				scene={curScene}
-				bind:boardHeight={innerHeight}
-				bind:boardWidth={innerWidth}
-			/>
-			{#each fixedLayers as layer, i}
-				<div class="w-full h-full z-2 absolute">
-					<Grid
-						items={layer.items}
-						bind:rowHeight
-						gap={[0, 0]}
-						let:dataItem
-						cols={[[COL, COL]]}
-						fastStart={true}
-					>
-						<GridContent
-							{preview}
-							{dataItem}
-							{curScene}
-							additionalDelay={SCENE_TRANSITION_DELAY +
-								curScene.animation.layerRenderDelay * i}
-						/>
-					</Grid>
-				</div>
-			{/each}
+			{#key innerHeight * innerWidth}
+				<BoardContainer
+					scene={curScene}
+					bind:boardHeight={innerHeight}
+					bind:boardWidth={innerWidth}
+				/>
+				{#each fixedLayers as layer, i}
+					<div class="w-full h-full z-2 absolute">
+						<Grid
+							items={layer.items}
+							bind:rowHeight
+							gap={[0, 0]}
+							let:dataItem
+							cols={[[COL, COL]]}
+							fastStart={true}
+						>
+							<GridContent
+								{preview}
+								{dataItem}
+								{curScene}
+								additionalDelay={SCENE_TRANSITION_DELAY +
+									curScene.animation.layerRenderDelay * i}
+							/>
+						</Grid>
+					</div>
+				{/each}
+			{/key}
 		{/key}
 		<div class="w-full h-full z-8 absolute" />
 	</div>
