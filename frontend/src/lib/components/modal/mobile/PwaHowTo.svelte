@@ -37,12 +37,12 @@
 			<img
 				class="rounded-sm border-secondary"
 				src="/image/tutorial/embed/add-to-homescreen-ios-1.png"
-				alt="Add app to homescreen"
+				alt="Add app to home screen"
 			/>
 			<img
 				class="rounded-sm border-secondary"
 				src="/image/tutorial/embed/add-to-homescreen-ios-2.png"
-				alt="Add app to homescreen"
+				alt="Add app to home screen"
 			/>
 		</div>
 	{/if}
