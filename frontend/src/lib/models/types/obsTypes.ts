@@ -59,7 +59,7 @@ export interface ObsInputs {
 
 export interface ObsAuth {
     ipAddress: string,
-    port: number,
+    port: string,
     password: string,
 }
 
@@ -70,4 +70,4 @@ export interface ObsWebsocketConfig {
     server_enabled: boolean,
     server_password: string,
     server_port: number,
-  }
+}

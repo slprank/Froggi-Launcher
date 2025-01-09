@@ -4,7 +4,7 @@
 	import { electronEmitter, obs } from '$lib/utils/store.svelte';
 	import { cloneDeep } from 'lodash';
 
-	const defaultAuth = { ipAddress: 'localhost', port: 4455, password: '' };
+	const defaultAuth = { ipAddress: 'localhost', port: '4455', password: '' };
 	let authValidator = { ipAddress: false, port: false, password: false };
 
 	let auth = $obs?.auth ?? cloneDeep(defaultAuth);
@@ -22,9 +22,9 @@
 		auth.ipAddress = ipAddress;
 	};
 
-	const isValidPort = (port: number) => {
+	const isValidPort = (port: string) => {
 		const portRegex = /^(0|[1-9]\d{0,4})$/;
-		return portRegex.test(port.toString()) && port <= 65535;
+		return portRegex.test(port.toString()) && Number(port) <= 65535;
 	};
 
 	const handlePortChange = (event: CustomEvent<string>) => {

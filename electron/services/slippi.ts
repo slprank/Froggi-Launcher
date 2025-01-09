@@ -8,7 +8,7 @@ import {
 } from '@slippi/slippi-js';
 import { inject, singleton } from 'tsyringe';
 import type { ElectronLog } from 'electron-log';
-import { ConnectionState, LiveStatsScene } from '../../frontend/src/lib/models/enum';
+import { ConnectionState, LiveStatsScene, NotificationType } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { Api } from './api';
@@ -19,6 +19,7 @@ import os from 'os';
 import { MemoryRead } from './memoryRead';
 import { ElectronSessionStore } from './store/storeSession';
 import { isDolphinRunning } from '../utils/dolphinProcess';
+import { MessageHandler } from './messageHandler';
 
 @singleton()
 export class SlippiJs {
@@ -34,6 +35,7 @@ export class SlippiJs {
 		@inject(ElectronLiveStatsStore) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(ElectronSessionStore) private storeSession: ElectronSessionStore,
 		@inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
+		@inject(MessageHandler) private messageHandler: MessageHandler,
 		@inject(MemoryRead) private memoryRead: MemoryRead,
 	) {
 		this.initSlippiJs();
@@ -50,6 +52,7 @@ export class SlippiJs {
 				this.handleDisconnected();
 			}
 			if (status === ConnectionStatus.CONNECTED) {
+				this.messageHandler.sendMessage('Notification', 'Dolphin connected', NotificationType.Success);
 				await this.handleConnected();
 			}
 			if (status === ConnectionStatus.CONNECTING) {
@@ -72,6 +75,9 @@ export class SlippiJs {
 		this.dolphinConnection.on(ConnectionEvent.ERROR, (err) => {
 			// Log the error messages we get from Dolphin
 			this.log.error('Dolphin connection error', err);
+			if (err.message.includes('Unexpected game data cursor')) {
+				this.messageHandler.sendMessage('Notification', "Dolphin connection seems unstable, consider restarting.", NotificationType.Danger, 5000);
+			}
 		});
 	}
 
@@ -113,6 +119,7 @@ export class SlippiJs {
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Searching);
 		this.log.info('Looking For Dolphin Process');
 		this.dolphinProcessInterval = setInterval(async () => {
+
 			if (await isDolphinRunning()) {
 				this.log.info('Dolphin Found');
 				this.dolphinConnection.connect('127.0.0.1', Ports.DEFAULT);

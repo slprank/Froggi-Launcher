@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { CommandType } from '$lib/models/types/commandTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';

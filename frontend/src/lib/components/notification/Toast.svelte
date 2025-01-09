@@ -3,7 +3,6 @@
 	import { fly } from 'svelte/transition';
 	import { notifications } from './Notifications.svelte';
 	import { isElectron, isMobile, isOverlayPage } from '$lib/utils/store.svelte';
-	import { page } from '$app/stores';
 
 	export let themes = {
 		danger: '#E26D69',

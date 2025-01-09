@@ -338,6 +338,6 @@
 		statsScene: LiveStatsScene,
 	) {
 		if (curOverlay?.[statsScene]?.active) return;
-		notifications.warning('Selected scene is disabled', 5000);
+		notifications.warning(`Selected scene ${statsScene} is disabled`, 3000);
 	}
 </script>

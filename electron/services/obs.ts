@@ -140,6 +140,7 @@ export class ObsWebSocket {
 		});
 		this.obs.on('ConnectionOpened', () => {
 			this.storeObs.setConnectionState(ConnectionState.Connected);
+			this.messageHandler.sendMessage("Notification", "OBS Connected", NotificationType.Success, 2000);
 			setTimeout(this.initConnection.bind(this), 1000);
 			this.log.info('OBS Connection Opened');
 		});

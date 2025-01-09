@@ -37,7 +37,9 @@
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import { notifications } from '$lib/components/notification/Notifications.svelte';
+	import Notifications, {
+		notifications,
+	} from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
 	import { debounce, isNil } from 'lodash';
 	import { AutoUpdater } from '$lib/models/types/autoUpdaterTypes';
@@ -167,24 +169,11 @@
 			case 'Notification':
 				if (await getIsIframe()) return;
 				const message = payload[0] as Parameters<MessageEvents['Notification']>[0];
-				const type = payload[1] as Parameters<MessageEvents['Notification']>[0];
-				switch (type) {
-					case NotificationType.Default:
-						notifications.default(message, 2000);
-						break;
-					case NotificationType.Danger:
-						notifications.danger(message, 2000);
-						break;
-					case NotificationType.Info:
-						notifications.info(message, 2000);
-						break;
-					case NotificationType.Success:
-						notifications.success(message, 2000);
-						break;
-					case NotificationType.Warning:
-						notifications.warning(message, 2000);
-						break;
-				}
+				const type = payload[1] as keyof Omit<typeof notifications, 'send' | 'subscribe'>;
+				const timeout = Number(
+					(payload[2] as Parameters<MessageEvents['Notification']>[0]) ?? 2000,
+				);
+				notifications[type](message, timeout);
 				break;
 			case 'Obs':
 				(() => {

@@ -131,11 +131,11 @@ export enum LiveStatsScene {
 }
 
 export enum NotificationType {
-	Default = 'Default',
-	Danger = 'Danger',
-	Warning = 'Warning',
-	Info = 'Info',
-	Success = 'Success',
+	Default = 'default',
+	Danger = 'danger',
+	Warning = 'warning',
+	Info = 'info',
+	Success = 'success',
 }
 
 export enum SceneBackground {
