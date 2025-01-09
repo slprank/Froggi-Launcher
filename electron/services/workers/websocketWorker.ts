@@ -49,17 +49,16 @@ parentPort?.on("message", <J extends keyof MessageEvents>(message: string) => {
     delete parse["socketId"];
     for (const [topic, payload] of Object.entries(parse) as [topic: J, payload: Parameters<MessageEvents[J]>]) {
         if (!socketId) {
+            const message = JSON.stringify({
+                [`${topic}`]: payload,
+            });
             connections.forEach((conn: any) => {
                 conn.socket.send(
-                    JSON.stringify({
-                        [`${topic}`]: payload,
-                    }),
+                    message,
                 );
             });
         } else {
-            connections.find(conn => conn.id === socketId)?.socket.send(JSON.stringify({
-                [`${topic}`]: payload,
-            }))
+            connections.find(conn => conn.id === socketId)?.socket.send(message);
         }
     }
 })
