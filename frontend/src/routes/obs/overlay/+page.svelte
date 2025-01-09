@@ -46,8 +46,10 @@
 		<div>
 			<h1 class="text-4xl font-bold color-secondary">Overlays</h1>
 		</div>
-		<div class="w-full h-full flex-1 flex flex-col gap-2 overflow-auto">
-			<div class="w-full border-secondary rounded-sm max-h-[50%]">
+		<div class="w-full h-full flex-1 flex flex-col gap-2 overflow-hidden">
+			<div
+				class="w-full border-secondary flex flex-col rounded-sm max-h-[50%] min-h-48 overflow-auto"
+			>
 				<h1 class="text-2xl font-bold w-full text-center color-secondary">Demo</h1>
 				<div
 					class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"
@@ -66,7 +68,7 @@
 					{/each}
 				</div>
 			</div>
-			<div class="flex-1 flex flex-col w-full border-secondary">
+			<div class="flex-1 flex flex-col w-full border-secondary overflow-auto">
 				<h1 class="text-2xl font-bold w-full text-center color-secondary">Custom</h1>
 				<div
 					class="flex-1 flex flex-wrap gap-4 w-full items-center justify-evenly overflow-auto py-4 rounded-md p-4"

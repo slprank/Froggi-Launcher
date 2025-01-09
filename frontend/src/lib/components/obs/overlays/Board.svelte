@@ -97,7 +97,7 @@
 
 {#if curScene && rowHeight && fixedLayers && ready}
 	<div class="w-full h-full overflow-hidden relative origin-top-left">
-		{#key curScene && curStatsScene}
+		{#key curScene}
 			{#key innerHeight * innerWidth}
 				<BoardContainer
 					scene={curScene}
