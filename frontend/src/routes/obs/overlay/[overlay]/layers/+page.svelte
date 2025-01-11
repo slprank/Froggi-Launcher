@@ -14,7 +14,7 @@
 			.filter((layer) => layer.preview)
 			.map((layer) => layer.id);
 	};
-	$: $statsScene, getOverlay();
+	$: $statsScene, $overlays, getOverlay();
 </script>
 
 <SecondaryOverlay bind:layerIds preview={true} />

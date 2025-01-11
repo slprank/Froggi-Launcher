@@ -339,7 +339,7 @@ export class ElectronOverlayStore {
 		const overlays = this.getOverlays();
 		Object.values(overlays).forEach(overlay => {
 			if (!overlay.froggiVersion) {
-				overlay.froggiVersion === "0.0.0"
+				overlay.froggiVersion = "0.0.0"
 			}
 			// Migrate overlay
 			// Compare version and migrate

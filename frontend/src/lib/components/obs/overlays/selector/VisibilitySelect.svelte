@@ -112,7 +112,7 @@
 				{#each tempActiveConditions as activeConditions, i}
 					<h1 class="color-secondary text-sm">
 						{#each activeConditions as activeCondition, j}
-							<span>{activeCondition.value === 2 ? 'Not' : ''}</span>
+							<span>{activeCondition.value === 2 ? ' Not' : ''}</span>
 							{activeCondition.title}
 							{#if activeConditions.length != j + 1}
 								<span class="color-secondary text-sm">or</span>
