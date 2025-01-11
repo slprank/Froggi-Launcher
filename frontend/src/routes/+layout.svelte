@@ -21,6 +21,8 @@
 
 	let ready: boolean = false;
 
+	$: hasWakeLockSupport = 'wakeLock' in navigator;
+
 	onMount(async () => {
 		await initClient();
 		initWakeLock();
@@ -50,7 +52,7 @@
 	$: setOverlayPage($page.url.pathname);
 
 	const initWakeLock = () => {
-		if (!('wakeLock' in navigator)) return;
+		if (!hasWakeLockSupport) return;
 		navigator.wakeLock.request();
 	};
 </script>

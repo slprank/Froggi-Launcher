@@ -266,25 +266,17 @@ export class ElectronOverlayStore {
 			this.setScene(overlayId, statsScene, scene)
 		})
 
-		this.clientEmitter.on('OverlayDuplicate', async (overlayId) => {
-			this.copyOverlay(overlayId);
-		});
+		this.clientEmitter.on('OverlayDuplicate', this.copyOverlay.bind(this));
 
-		this.clientEmitter.on('OverlayDelete', (overlayId) => {
-			this.deleteOverlay(overlayId);
-		});
+		this.clientEmitter.on('OverlayDelete', this.deleteOverlay.bind(this));
 
 		this.clientEmitter.on('SceneItemDuplicate', this.copySceneLayerItem.bind(this))
 
 		this.clientEmitter.on('SceneLayerDuplicate', this.duplicateSceneLayer.bind(this))
 
-		this.clientEmitter.on('SelectedItemChange', (itemId) => {
-			this.setCurrentItemId(itemId);
-		});
+		this.clientEmitter.on('SelectedItemChange', this.setCurrentItemId.bind(this));
 
-		this.clientEmitter.on('LayerPreviewChange', (layerIndex) => {
-			this.setCurrentLayoutIndex(layerIndex);
-		});
+		this.clientEmitter.on('LayerPreviewChange', this.setCurrentLayoutIndex.bind(this));
 
 		this.clientEmitter.on('OverlayDownload', async (overlayId) => {
 			const overlay = this.getOverlayById(overlayId);
@@ -347,7 +339,7 @@ export class ElectronOverlayStore {
 		const overlays = this.getOverlays();
 		Object.values(overlays).forEach(overlay => {
 			if (!overlay.froggiVersion) {
-				overlay.froggiVersion = "0.0.0"
+				overlay.froggiVersion === "0.0.0"
 			}
 			// Migrate overlay
 			// Compare version and migrate

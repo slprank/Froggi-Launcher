@@ -37,6 +37,7 @@
 	const createDuplicateOverlay = () => {
 		if (!overlay) return;
 		duplicateOverlay(overlay);
+		console.log('Duplicate');
 		open = false;
 	};
 

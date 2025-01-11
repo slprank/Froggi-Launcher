@@ -8,13 +8,13 @@
 	let layerIds: string[] = [];
 
 	const getOverlay = async () => {
-		const overlay = await getOverlayById(overlayId);
+		const overlay = $overlays[overlayId];
 		if (!overlay) return;
 		layerIds = overlay[$statsScene].layers
 			.filter((layer) => layer.preview)
 			.map((layer) => layer.id);
 	};
-	$: $statsScene, $overlays, getOverlay();
+	$: $statsScene, getOverlay();
 </script>
 
 <SecondaryOverlay bind:layerIds preview={true} />

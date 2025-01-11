@@ -73,6 +73,7 @@
 	$: curScene = curOverlay[curStatsScene];
 
 	const handleError = (e: ErrorEvent) => {
+		console.error(e);
 		$electronEmitter.emit('CleanupCustomResources');
 		$electronEmitter.emit('RemoveDuplicateItems');
 		setTimeout(refreshExternal, 2000);
@@ -91,40 +92,42 @@
 	onMount(() => {
 		handleResize({ currentTarget: window } as any);
 	});
+
+	$: console.log(innerHeight);
+	$: console.log(innerWidth);
+	$: console.log(curScene);
 </script>
 
 <svelte:window on:resize={debounce(handleResize, 1000)} on:error={handleError} />
 
 {#if curScene && rowHeight && fixedLayers && ready}
 	<div class="w-full h-full overflow-hidden relative origin-top-left">
-		{#key curScene}
-			{#key innerHeight * innerWidth}
-				<BoardContainer
-					scene={curScene}
-					bind:boardHeight={innerHeight}
-					bind:boardWidth={innerWidth}
-				/>
-				{#each fixedLayers as layer, i}
-					<div class="w-full h-full z-2 absolute">
-						<Grid
-							items={layer.items}
-							bind:rowHeight
-							gap={[0, 0]}
-							let:dataItem
-							cols={[[COL, COL]]}
-							fastStart={true}
-						>
-							<GridContent
-								{preview}
-								{dataItem}
-								{curScene}
-								additionalDelay={SCENE_TRANSITION_DELAY +
-									curScene.animation.layerRenderDelay * i}
-							/>
-						</Grid>
-					</div>
-				{/each}
-			{/key}
+		{#key innerHeight * innerWidth}
+			<BoardContainer
+				scene={curScene}
+				bind:boardHeight={innerHeight}
+				bind:boardWidth={innerWidth}
+			/>
+			{#each fixedLayers as layer, i}
+				<div class="w-full h-full z-2 absolute">
+					<Grid
+						items={layer.items}
+						bind:rowHeight
+						gap={[0, 0]}
+						let:dataItem
+						cols={[[COL, COL]]}
+						fastStart={true}
+					>
+						<GridContent
+							{preview}
+							{dataItem}
+							{curScene}
+							additionalDelay={SCENE_TRANSITION_DELAY +
+								curScene.animation.layerRenderDelay * i}
+						/>
+					</Grid>
+				</div>
+			{/each}
 		{/key}
 		<div class="w-full h-full z-8 absolute" />
 	</div>

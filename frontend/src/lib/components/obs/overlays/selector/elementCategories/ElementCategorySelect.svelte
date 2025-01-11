@@ -4,8 +4,8 @@
 	import { statsScene } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import CurrentPlayerCustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/CurrentPlayerCustomHudSelect.svelte';
-	import Player1CustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/Player1CustomHudSelect.svelte';
-	import Player2CustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/Player2CustomHudSelect.svelte';
+	import Player1HudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/Player1HudSelect.svelte';
+	import Player2HudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/Player2HudSelect.svelte';
 	import CustomElementSelect from '$lib/components/obs/overlays/selector/elementCategories/Custom/CustomElementSelect.svelte';
 	import Session from '$lib/components/obs/overlays/selector/elementCategories/Session/Session.svelte';
 	import CustomHudSelect from '$lib/components/obs/overlays/selector/elementCategories/CustomHud/CustomHudSelect.svelte';
@@ -77,11 +77,11 @@
 			].includes($statsScene),
 		},
 		{
-			category: ElementCategory.Player1CustomHud,
+			category: ElementCategory.Player1Hud,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
-			category: ElementCategory.Player2CustomHud,
+			category: ElementCategory.Player2Hud,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
 		},
 		{
@@ -281,11 +281,11 @@
 				{#if selectedCategory === ElementCategory.CurrentPlayerCustomHud}
 					<CurrentPlayerCustomHudSelect on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.Player1CustomHud}
-					<Player1CustomHudSelect on:select={select} />
+				{#if selectedCategory === ElementCategory.Player1Hud}
+					<Player1HudSelect on:select={select} />
 				{/if}
-				{#if selectedCategory === ElementCategory.Player2CustomHud}
-					<Player2CustomHudSelect on:select={select} />
+				{#if selectedCategory === ElementCategory.Player2Hud}
+					<Player2HudSelect on:select={select} />
 				{/if}
 				{#if selectedCategory === ElementCategory.CurrentPlayerControllerInput}
 					<CurrentPlayerControllerInput on:select={select} />

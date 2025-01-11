@@ -134,11 +134,9 @@
 		);
 	}
 
-	export async function duplicateOverlay(overlay: Overlay) {
-		await new Promise(() =>
-			electronEmitter.subscribe((electronEmitter) =>
-				electronEmitter.emit('OverlayDuplicate', overlay.id),
-			),
+	export function duplicateOverlay(overlay: Overlay) {
+		electronEmitter.subscribe((electronEmitter) =>
+			electronEmitter.emit('OverlayDuplicate', overlay.id),
 		);
 	}
 

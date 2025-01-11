@@ -37,9 +37,7 @@
 		getPage,
 	} from '$lib/utils/fetchSubscriptions.svelte';
 	import { WEBSOCKET_PORT } from '$lib/models/const';
-	import Notifications, {
-		notifications,
-	} from '$lib/components/notification/Notifications.svelte';
+	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
 	import { debounce, isNil } from 'lodash';
 	import { AutoUpdater } from '$lib/models/types/autoUpdaterTypes';
@@ -290,6 +288,7 @@
 	export const initElectronEvents = async () => {
 		console.log('Initializing electron');
 		const _localEmitter = await getLocalEmitter();
+		_localEmitter.removeAllListeners();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
 			for (const [key, value] of Object.entries(parse) as [
@@ -302,7 +301,7 @@
 		});
 
 		const _electronEmitter = await getElectronEmitter();
-		_electronEmitter.offAny(console.log);
+		_electronEmitter.removeAllListeners();
 		_electronEmitter.onAny((event, ...data) => {
 			window.electron.send('message', JSON.stringify({ [event as string]: data }));
 		});
