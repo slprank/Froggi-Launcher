@@ -92,10 +92,6 @@
 	onMount(() => {
 		handleResize({ currentTarget: window } as any);
 	});
-
-	$: console.log(innerHeight);
-	$: console.log(innerWidth);
-	$: console.log(curScene);
 </script>
 
 <svelte:window on:resize={debounce(handleResize, 1000)} on:error={handleError} />
