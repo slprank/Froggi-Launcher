@@ -198,7 +198,7 @@
 							fileName={selectedItemId}
 							directory="image"
 							label="Upload"
-							acceptedExtensions={['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp']}
+							acceptedExtensions={['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp']}
 							on:change={(event) => {
 								payload.image.name = event.detail;
 							}}

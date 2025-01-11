@@ -142,7 +142,7 @@
 		value={CustomElement.SlippiRankCurrentPlayerCharacter2Icon}
 		on:select={select}
 	>
-		Most Played Character 2 - Icon
+		2nd Most Played Character 2 - Icon
 	</SelectOption>
 	<SelectOption
 		description="Current Player 3rd Most Player Character"

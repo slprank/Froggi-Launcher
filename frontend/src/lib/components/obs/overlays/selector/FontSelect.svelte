@@ -59,7 +59,7 @@
 		directory="font"
 		fileName={fontId}
 		label="Custom"
-		acceptedExtensions={['.woff2', '.woff', '.otf', '.ttf']}
+		acceptedExtensions={['woff2', 'woff', 'otf', 'ttf']}
 		on:change={updateFontSrc}
 	/>
 	<h1

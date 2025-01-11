@@ -7,6 +7,12 @@
 	--secondary-color: #450d21;
 }
 
+.dark {
+	/* Dark mode palette */
+	--primary-color: #1a1a1a;
+	--secondary-color: #d1d1d1;
+}
+
 body::-webkit-autobar {
 	background-color: #fff;
 	width: 16px;

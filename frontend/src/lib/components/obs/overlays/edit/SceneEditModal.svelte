@@ -153,12 +153,12 @@
 											directory={'image'}
 											label="Upload"
 											acceptedExtensions={[
-												'.jpg',
-												'.jpeg',
-												'.png',
-												'.gif',
-												'.svg',
-												'.webp',
+												'jpg',
+												'jpeg',
+												'png',
+												'gif',
+												'svg',
+												'webp',
 											]}
 											on:change={(event) => {
 												curScene.background.customImage.name = event.detail;
