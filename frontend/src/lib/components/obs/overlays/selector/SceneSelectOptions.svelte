@@ -3,7 +3,7 @@
 	import Select from '$lib/components/input/Select.svelte';
 	import { electronEmitter, statsScene } from '$lib/utils/store.svelte';
 	import { tooltip } from 'svooltip';
-	import type { Overlay } from '$lib/models/types/overlay';
+	import { Overlay } from '$lib/models/types/overlay';
 
 	export let overlay: Overlay;
 

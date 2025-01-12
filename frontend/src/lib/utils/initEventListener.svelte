@@ -39,15 +39,15 @@
 	import { WEBSOCKET_PORT } from '$lib/models/const';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { MessageEvents } from './customEventEmitter';
-	import { debounce, isNil } from 'lodash';
+	import { debounce, isNil, throttle } from 'lodash';
 	import { AutoUpdater } from '$lib/models/types/autoUpdaterTypes';
 
 	const debouncedSetGameFrame = debounce(
 		(value: Parameters<MessageEvents['GameFrame']>[0]) => {
 			gameFrame.set(value);
 		},
-		32,
-		{ trailing: true },
+		2,
+		{ maxWait: 160 },
 	);
 
 	async function messageDataHandler<J extends keyof MessageEvents>(
