@@ -115,6 +115,7 @@
 				break;
 			case 'CurrentPlayer':
 				(() => {
+					console.log('CurrentPlayer');
 					const value = payload[0] as Parameters<MessageEvents['CurrentPlayer']>[0];
 					if (!value) return;
 					currentPlayer.set(value);

@@ -37,17 +37,17 @@ export class ElectronCurrentPlayerStore {
 		return this.store.get(`player.${connectCode}`) as CurrentPlayer;
 	}
 
-	getCurrentPlayerCurrentRankStats(): RankedNetplayProfile | undefined {
-		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
-		if (!connectCode) return;
-		return this.store.get(`player.${connectCode}.rank.current`) as RankedNetplayProfile;
-	}
-
 	updateCurrentPlayerConnectCode() {
 		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
 		if (!connectCode) return;
 		this.log.info('Setting current connect code', connectCode);
 		this.store.set(`player.${connectCode}.connectCode`, connectCode);
+	}
+
+	getCurrentPlayerCurrentRankStats(): RankedNetplayProfile | undefined {
+		const connectCode = this.storeSettings.getCurrentPlayerConnectCode();
+		if (!connectCode) return;
+		return this.store.get(`player.${connectCode}.rank.current`) as RankedNetplayProfile;
 	}
 
 	setCurrentPlayerCurrentRankStats(rankStats: RankedNetplayProfile | undefined) {

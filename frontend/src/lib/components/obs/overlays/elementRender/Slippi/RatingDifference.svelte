@@ -21,7 +21,7 @@
 	};
 </script>
 
-{#if defaultPreview || ($currentPlayer?.rank.current && $currentPlayer?.rank.new && $currentPlayer.rank.current?.rating !== $currentPlayer.rank.current?.rating)}
+{#if defaultPreview || ($currentPlayer?.rank?.current && $currentPlayer?.rank.new && $currentPlayer.rank.current?.rating !== $currentPlayer.rank.current?.rating)}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `+132.41`
