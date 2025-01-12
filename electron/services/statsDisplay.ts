@@ -168,11 +168,14 @@ export class StatsDisplay {
 
 	private async handlePostGameScene(game: GameStats | null) {
 		if (isNil(game)) return;
+		this.log.info("Handle post game scene:")
 
 		const playerConnectCode = this.storeSettings.getCurrentPlayerConnectCode()
 
 		const bestOf = this.storeLiveStats.getBestOf();
+		this.log.info("Best of:", bestOf)
 		const isPostSet = game.score.some((score) => score >= Math.ceil(bestOf / 2));
+		this.log.info("Is post set:", isPostSet)
 		if (isPostSet) {
 			setTimeout(async () => {
 				if (game.settings?.matchInfo?.mode === 'ranked' && !isNil(playerConnectCode)) {

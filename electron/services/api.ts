@@ -15,7 +15,6 @@ export class Api {
 		try {
 			const rankData = await this.getPlayerRankStats(player.connectCode);
 			if (!rankData) return;
-			this.log.info("Fetched user:", this.enrichData(rankData))
 			return { ...player, rank: { current: this.enrichData(rankData) } }
 		} catch (err) {
 			this.log.error(err);
@@ -54,6 +53,8 @@ export class Api {
 		let player: any = await data?.getConnectCode?.user;
 
 		if (!response) return;
+
+		this.log.info("Fetched user:", player)
 
 		const rankData: RankedNetplayProfile = {
 			connectCode: connectCode,
