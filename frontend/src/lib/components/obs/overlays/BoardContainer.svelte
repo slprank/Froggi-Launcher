@@ -7,6 +7,7 @@
 	import { createAnimation } from './element/animations/Animations.svelte';
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
+	import { Element } from 'svelte/types/compiler/interfaces';
 
 	export let boardHeight: number | undefined = undefined;
 	export let boardWidth: number | undefined = undefined;

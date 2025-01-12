@@ -58,9 +58,7 @@
 				</div>
 				<button
 					class={`w-32 transition background-color-primary bg-opacity-25 hover:bg-opacity-40  font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl ${
-						$statsScene === button.liveScene
-							? 'border-secondary bg-opacity-50'
-							: 'border-1 border-white'
+						$statsScene === button.liveScene ? 'border-secondary' : 'border-accent'
 					}`}
 					on:click={() => {
 						updateLiveScene(button.liveScene);
