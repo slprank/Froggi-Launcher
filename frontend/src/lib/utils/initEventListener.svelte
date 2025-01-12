@@ -46,7 +46,7 @@
 		(value: Parameters<MessageEvents['GameFrame']>[0]) => {
 			gameFrame.set(value);
 		},
-		16,
+		32,
 		{ trailing: true },
 	);
 

@@ -27,7 +27,12 @@
 	import { rankVisibilityOption } from './visibilityConditions/RankVisibilityOptions.svelte';
 	import { InGameState } from '$lib/models/enum';
 	import { FrameEntryType } from '@slippi/slippi-js';
-	import { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
+	import {
+		CurrentPlayer,
+		GameStartTypeExtended,
+		GameStats,
+		Player,
+	} from '$lib/models/types/slippiData';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -38,6 +43,7 @@
 	let visible = true;
 	const updateVisibilityValue = (
 		dataItem: GridContentItem,
+		gameSettings: GameStartTypeExtended,
 		gameState: InGameState,
 		gameFrame: FrameEntryType | null | undefined,
 		postGame: GameStats,
@@ -57,7 +63,7 @@
 				inGameVisibilityOption(
 					option,
 					currentPlayers,
-					$gameSettings,
+					gameSettings,
 					gameFrame,
 					gameState,
 				) ||
@@ -107,6 +113,7 @@
 	$: {
 		updateVisibilityValue(
 			dataItem,
+			$gameSettings,
 			$gameState,
 			$gameFrame,
 			$postGame,

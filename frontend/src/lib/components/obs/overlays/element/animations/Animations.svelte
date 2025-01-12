@@ -11,6 +11,7 @@
 	import { getRelativePixelSize } from '$lib/utils/helper';
 	import type { AnimationConfig } from 'svelte/animate';
 	import { COL, ROW } from '$lib/models/const';
+	import { Element } from 'svelte/types/compiler/interfaces';
 
 	const animationFlyRandom = (
 		node: any,
@@ -37,7 +38,6 @@
 			y: y,
 			x: x,
 			easing: getEasing(option.easing),
-			tick: () => {},
 		});
 	};
 
@@ -46,6 +46,8 @@
 		option: AnimationOptions | any,
 		additionalDelay: number,
 		dataItem: GridContentItem | undefined,
+		width: number,
+		height: number,
 	): transitionFunctions.TransitionConfig => {
 		if (!dataItem) return fly(node, { duration: 0 });
 		const delay =
@@ -55,11 +57,15 @@
 			additionalDelay;
 		const y = getRelativePixelSize(
 			((dataItem[COL]?.y + dataItem[COL]?.h / 2 - ROW / 2) / ROW) * 50,
+			width,
+			height,
 		);
 		const x = getRelativePixelSize(
 			((dataItem[COL]?.x + dataItem[COL]?.w / 2 - COL / 2) / COL) * 50,
+			width,
+			height,
 		);
-		return fly(node, { duration: option.duration, x: x, y: y, delay: delay, tick: () => {} });
+		return fly(node, { duration: option.duration, x: x, y: y, delay: delay });
 	};
 
 	function roundaboutTransform(
@@ -110,12 +116,11 @@
 				);
 				return `transform: ${transformed};`;
 			},
-			tick: () => {},
 		};
 	}
 
 	const emptyAnimation = (node: Element, delay: number): AnimationConfig => {
-		return fly(node, { delay: delay, duration: 0, tick: () => {} });
+		return fly(node, { delay: delay, duration: 0 });
 	};
 
 	const getEasing = (easing: string): EasingFunction => {
@@ -138,7 +143,6 @@
 		dataItem: GridContentItem | undefined = undefined,
 	): AnimationConfig => {
 		if (!animation) {
-			console.error('No animation settings provided');
 			return {
 				tick: () => {},
 			};
@@ -164,7 +168,14 @@
 				return animationFlyRandom(node, animation.options, additionalDelay, height, width);
 
 			case Animation.FlyAutomatic:
-				return animationFlyAutomatic(node, animation.options, additionalDelay, dataItem);
+				return animationFlyAutomatic(
+					node,
+					animation.options,
+					additionalDelay,
+					dataItem,
+					width,
+					height,
+				);
 
 			case Animation.Percent:
 				return animationRoundabout(node, animation.options, height, width);

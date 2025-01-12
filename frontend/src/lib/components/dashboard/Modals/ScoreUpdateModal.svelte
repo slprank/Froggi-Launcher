@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
-	import type { GameStats } from '$lib/models/types/slippiData';
+	import type { GameStats, Player } from '$lib/models/types/slippiData';
 	import { currentPlayers, electronEmitter, recentGames } from '$lib/utils/store.svelte';
 	import AddGameModal from './AddGameModal.svelte';
 	import CharacterIcon from './CharacterIcon.svelte';
@@ -18,8 +18,8 @@
 	};
 	$: updateGames($recentGames);
 
-	const getDisplayName = (playerIndex: number) => {
-		const displayName = $currentPlayers.at(playerIndex)?.displayName;
+	const getDisplayName = (players: Player[], playerIndex: number) => {
+		const displayName = players.at(playerIndex)?.displayName;
 		return displayName?.length ? displayName : `Player${playerIndex + 1}`;
 	};
 
@@ -51,10 +51,10 @@
 		</div>
 		<div class="flex justify-between gap-4">
 			<h1 class="color-secondary text-2xl font-semibold">
-				{getDisplayName(0)}
+				{getDisplayName($currentPlayers, 0)}
 			</h1>
 			<h1 class="color-secondary text-2xl font-semibold">
-				{getDisplayName(1)}
+				{getDisplayName($currentPlayers, 1)}
 			</h1>
 		</div>
 		<div

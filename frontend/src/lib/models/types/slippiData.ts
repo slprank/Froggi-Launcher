@@ -1,4 +1,4 @@
-import type { ActionCountsType, FrameEntryType, GameEndType, GameStartType, OverallType, PlayerType, StatsType } from "@slippi/slippi-js";
+import type { ActionCountsType, FrameEntryType, GameEndType, GameStartType, OverallType, PlayerType, PostFrameUpdateType, PreFrameUpdateType, StatsType } from "@slippi/slippi-js";
 import type { BestOf } from "../enum";
 
 export interface SlippiCharacter {
@@ -53,6 +53,10 @@ export interface Player extends PlayerType {
     rank: Rank | undefined;
 }
 
+export interface PlayerFrameType {
+    pre: PreFrameUpdateType;
+    post: PostFrameUpdateType;
+}
 
 export type PlayerGame = {
     [mode in GameStartMode]: { [matchId: string]: GameStats[] };

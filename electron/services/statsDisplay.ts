@@ -29,7 +29,7 @@ import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow, getGameMode } from '../utils/functions';
 import { analyzeMatch } from '../utils/analyzeMatch';
 import os from 'os';
-import { debounce, isNil } from 'lodash';
+import { isNil, throttle } from 'lodash';
 import { getWinnerIndex } from '../../frontend/src/lib/utils/gamePredicates';
 import { Command } from '../../frontend/src/lib/models/types/overlay';
 import { MessageHandler } from './messageHandler';
@@ -76,12 +76,11 @@ export class StatsDisplay {
 
 		this.slpParser.on(
 			SlpParserEvent.FRAME,
-			debounce(
+			throttle(
 				(frameEntry: FrameEntryType) => {
 					this.handleGameFrame(frameEntry);
 				},
-				2,
-				{ trailing: true, maxWait: 160 },
+				2
 			),
 		);
 	}
