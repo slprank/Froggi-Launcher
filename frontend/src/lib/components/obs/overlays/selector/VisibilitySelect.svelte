@@ -42,7 +42,7 @@
 
 <div class="grid grid-flow-col gap-2 items-center">
 	<button
-		class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border-secondary"
+		class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap w-full h-10 px-2 xl:text-xl border-secondary"
 		on:click={() => (open = true)}
 	>
 		Select
@@ -84,7 +84,7 @@
 					{#if tempSelectedOptions.length}
 						<div class="w-48 flex items-end">
 							<button
-								class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
+								class="w-full transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
 								on:click={() => removeOption(i)}
 							>
 								Delete
@@ -97,7 +97,7 @@
 		</div>
 		<div class="w-48 flex items-end">
 			<button
-				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
+				class="w-full transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
 				on:click={addNewCondition}
 			>
 				New Condition
@@ -128,7 +128,7 @@
 
 		<div class="w-48 flex items-end">
 			<button
-				class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
+				class="w-full transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
 				on:click={handleUpdate}
 			>
 				Update

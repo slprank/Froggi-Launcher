@@ -61,17 +61,17 @@
 			class="flex-l flex flex-col items-center overflow-y-auto gap-4 border border-gray-700 rounded-md p-2"
 		>
 			<button
-				class="transition duration-100 rounded-md w-full justify-center bg-black border-secondary bg-opacity-40 hover:bg-opacity-60"
+				class="transition duration-100 rounded-md w-full justify-center background-color-primary border-secondary bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
 					addGame(0);
 				}}
 			>
-				<h1 class="text-white text-shadow-md">+</h1>
+				<h1 class="text-secondary-color text-shadow-md">+</h1>
 			</button>
 			{#each games.map((game) => game.at(-1)) as game, i}
 				<h1 class="color-secondary text-center text-xl font-semibold">
 					Game {i + 1}
-					<span class={`${game?.isMock ? 'text-red-700' : ''}`}>
+					<span class={`${game?.isMock ? 'text-danger-color' : 'text-secondary-color'}`}>
 						{game?.isMock ? '*' : ''}
 					</span>
 				</h1>
@@ -135,12 +135,12 @@
 				</div>
 
 				<button
-					class="transition duration-100 w-full rounded-md justify-center bg-black border-secondary bg-opacity-40 hover:bg-opacity-60"
+					class="transition duration-100 w-full rounded-md justify-center background-color-primary border-secondary bg-opacity-40 hover:bg-opacity-60"
 					on:click={async () => {
 						addGame(i + 1);
 					}}
 				>
-					<h1 class="text-white text-shadow-md">+</h1>
+					<h1 class="text-secondary-color text-shadow-md">+</h1>
 				</button>
 			{:else}
 				<div class="flex gap-4 justify-center items-center">

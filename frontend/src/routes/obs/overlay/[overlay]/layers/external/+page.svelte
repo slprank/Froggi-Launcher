@@ -51,9 +51,9 @@
 				</TextFitMulti>
 			</div>
 			<div class="w-full aspect-video border-2 border-zinc-800 relative">
-				<div class="w-full h-full absolute bg-black" />
+				<div class="w-full h-full absolute background-color-primary" />
 				<div
-					class="w-full h-full absolute bg-black bg-cover bg-center"
+					class="w-full h-full absolute background-color-primary bg-cover bg-center"
 					style={`background-image: url('${
 						base64 || '/image/backgrounds/MeleeMenuAll.png'
 					}');
@@ -82,14 +82,14 @@
 	>
 		<div class="w-full gap-2 flex flex-col justify-center">
 			<TextFitMulti
-				class="h-16 w-full text-gray-500 text-md font-medium text-shadow justify-center underline"
+				class="h-16 w-full text-secondary-color text-md font-medium text-shadow justify-center underline"
 			>
 				{curOverlay?.title ?? 'Preview'}
 			</TextFitMulti>
 			<div class="w-full h-full aspect-video max-h-full border-2 border-zinc-800 relative">
-				<div class="w-full h-full absolute bg-black" />
+				<div class="w-full h-full absolute background-color-primary" />
 				<div
-					class="w-full h-full absolute bg-black bg-cover bg-center"
+					class="w-full h-full absolute background-color-primary bg-cover bg-center"
 					style={`background-image: url('${
 						base64 || '/image/backgrounds/MeleeMenuAll.png'
 					}');

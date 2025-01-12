@@ -116,19 +116,19 @@
 	<div class="tokens" class:showOptions on:click={handleTokenClick}>
 		<div class="w-12 min-w-12 flex flex-1 items-center">
 			{#if !readonly}
-				<div class="w-full text-white">
+				<div class="w-full text-secondary-color">
 					{#if label}
 						<label
-							class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							class="block uppercase tracking-wide text-secondary-color text-xs font-bold mb-2"
 							for="grid-first-name"
 						>
-							<h1 class="text-gray-500 text-shadow text-sm">
+							<h1 class="text-secondary-color text-shadow text-sm">
 								{label}
 							</h1>
 						</label>
 					{/if}
 					<input
-						class="bg-black bg-opacity-75 text-white text-md rounded-md border-b-0"
+						class="background-color-primary bg-opacity-75 text-secondary-color text-md rounded-md border-b-0"
 						{id}
 						autocomplete="off"
 						bind:value={inputValue}

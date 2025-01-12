@@ -32,21 +32,21 @@
 		<h1 class="text-center color-secondary text-2xl font-semibold">New overlay</h1>
 		<div class="flex flex-col flex-1 gap-4">
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				on:click={createHorizontalOverlay}
 			>
 				Create Blank - Horizontal
 			</button>
 
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				on:click={createVerticalOverlay}
 			>
 				Create Blank - Vertical
 			</button>
 
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				on:click={importOverlay}
 				data-tooltip="Import overlay"
 			>

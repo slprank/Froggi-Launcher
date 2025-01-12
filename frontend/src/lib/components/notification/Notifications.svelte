@@ -8,7 +8,6 @@
 		>([]);
 
 		async function send(message: string, type = 'default', timeout = 5000) {
-			console.log('message: ', message, type);
 			if (await getIsIframe()) return;
 
 			const newNotification = { id: id(), type, message, timeout };

@@ -16,18 +16,18 @@
 <LazyLoad class="w-full h-12 col-span-12 border-b-1 border-gray-500">
 	<div class="w-full h-12 grid grid-cols-12 gap-1" in:animate>
 		<div class="w-full h-12 col-span-2 grid content-center justify-center">
-			<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl text-shadow">
+			<h1 class="whitespace-nowrap m-0 font-medium text-secondary-color text-xl text-shadow">
 				{player.rank}
 			</h1>
 		</div>
 		<div class="w-full h-12 col-span-3 grid grid-rows-6 content-center">
 			<div class="w-full h-full max-w-full row-span-3">
-				<h1 class="w-full max-w-full text-white text-xl text-shadow">
+				<h1 class="w-full max-w-full text-secondary-color text-xl text-shadow">
 					{player.nickname}
 				</h1>
 			</div>
 			<div class="w-full h-full max-w-full row-span-2">
-				<h1 class="w-full max-w-full text-gray-500 text-md text-shadow">
+				<h1 class="w-full max-w-full text-secondary-color text-md text-shadow">
 					{player.connectCode}
 				</h1>
 			</div>
@@ -38,10 +38,14 @@
 			{/each}
 		</div>
 		<div class="w-full h-12 col-span-2 grid content-center justify-center text-shadow">
-			<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl">{player.rating}</h1>
+			<h1 class="whitespace-nowrap m-0 font-medium text-secondary-color text-xl">
+				{player.rating}
+			</h1>
 		</div>
 		<div class="w-full h-12 col-span-2 grid content-center justify-center text-shadow">
-			<h1 class="whitespace-nowrap m-0 font-medium text-white text-xl">{player.winLoss}</h1>
+			<h1 class="whitespace-nowrap m-0 font-medium text-secondary-color text-xl">
+				{player.winLoss}
+			</h1>
 		</div>
 	</div>
 </LazyLoad>

@@ -69,7 +69,7 @@
 		]}
 	>
 		<div
-			class={`w-full border-b-1 border-t-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center bg-black bg-opacity-30 hover:bg-opacity-60`}
+			class={`w-full border-b-1 border-t-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between items-center background-color-primary bg-opacity-30 hover:bg-opacity-60`}
 			style={`${isSelected && 'background-color: rgba(255, 255, 255, 0.10);'}`}
 		>
 			<div class="col-span-1 grid justify-center">
@@ -97,16 +97,18 @@
 				</button>
 			</div>
 			<button
-				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white transition"
+				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-secondary-color transition"
 				on:click={() => changeEditLayer(layerIndex)}
 			>
 				<div class="w-full h-full grid justify-center items-center text-[1.5em]">
 					{layerIndex + 1}
 				</div>
 			</button>
-			<div class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-white">
+			<div
+				class="w-full h-full col-span-1 grid justify-center text-lg font-bold text-secondary-color"
+			>
 				<button
-					class="w-8 h-12 grid justify-center text-lg font-bold text-white hover:scale-[1.05]"
+					class="w-8 h-12 grid justify-center text-lg font-bold text-secondary-color hover:scale-[1.05]"
 					on:click={async () => {
 						changeEditLayer(await moveLayerUp(curOverlay.id, $statsScene, layerIndex));
 					}}
@@ -114,7 +116,7 @@
 					<img src="/image/button-icons/up.png" alt="up" style="filter: invert(1)" />
 				</button>
 				<button
-					class="w-8 h-12 grid justify-center text-lg font-bold text-white hover:scale-[1.05]"
+					class="w-8 h-12 grid justify-center text-lg font-bold text-secondary-color hover:scale-[1.05]"
 					on:click={async () => {
 						changeEditLayer(
 							await moveLayerDown(curOverlay.id, $statsScene, layerIndex),
@@ -131,10 +133,10 @@
 				</button>
 			</div>
 			<div
-				class="w-full h-full col-span-1 grid justify-center items-center text-lg font-bold text-white"
+				class="w-full h-full col-span-1 grid justify-center items-center text-lg font-bold text-secondary-color"
 			>
 				<button
-					class="w-6 h-10 grid justify-center items-center text-lg font-bold text-white hover:scale-[1.05]"
+					class="w-6 h-10 grid justify-center items-center text-lg font-bold text-secondary-color hover:scale-[1.05]"
 					on:click={async () => (deleteLayerModalOpen = true)}
 				>
 					<img
@@ -147,13 +149,13 @@
 		</div>
 		<div class="w-full items-center overflow-hidden">
 			<button
-				class="w-full h-full justify-center bg-black bg-opacity-40 hover:bg-opacity-60"
+				class="w-full h-full justify-center background-color-primary bg-opacity-40 hover:bg-opacity-60"
 				on:click={async () => {
 					if (isLastRow) setTimeout(() => scrollToBottom(), 50);
 					await newLayer(curOverlay.id, $statsScene, layerIndex + 1);
 				}}
 			>
-				<h1 class="text-white">+</h1>
+				<h1 class="text-secondary-color">+</h1>
 			</button>
 		</div>
 		<ConfirmModal

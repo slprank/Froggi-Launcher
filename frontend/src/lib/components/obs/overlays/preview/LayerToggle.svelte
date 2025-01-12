@@ -45,49 +45,49 @@
 {#if layers && curOverlay}
 	<div class="h-full flex flex-col">
 		<div
-			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between bg-black bg-opacity-50"
+			class="w-full h-12 border-b-1 border-zinc-700 gap-2 p-2 grid grid-flow-col grid-cols-6 justify-between background-color-primary bg-opacity-50"
 		>
 			<div
 				class="col-span-1 grid justify-center"
 				in:fly|local={{ duration: 750, x: 150, delay: 100 }}
 			>
-				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Visible</h1>
+				<h1 class="text-lg font-bold text-secondary-color text-shadow-md no-w">Visible</h1>
 			</div>
 
 			<div
 				class="col-span-2 grid justify-center"
 				in:fly|local={{ duration: 750, x: 150, delay: 100 }}
 			>
-				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Preview</h1>
+				<h1 class="text-lg font-bold text-secondary-color text-shadow-md no-w">Preview</h1>
 			</div>
 			<div
 				class="col-span-1 grid justify-center"
 				in:fly|local={{ duration: 750, x: 150, delay: 100 }}
 			>
-				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Layer</h1>
+				<h1 class="text-lg font-bold text-secondary-color text-shadow-md no-w">Layer</h1>
 			</div>
 			<div
 				class="col-span-1 grid justify-center"
 				in:fly|local={{ duration: 750, x: 150, delay: 100 }}
 			>
-				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Move</h1>
+				<h1 class="text-lg font-bold text-secondary-color text-shadow-md no-w">Move</h1>
 			</div>
 			<div
 				class="col-span-1 grid justify-center"
 				in:fly|local={{ duration: 750, x: 150, delay: 100 }}
 			>
-				<h1 class="text-lg font-bold text-white text-shadow-md no-w">Del</h1>
+				<h1 class="text-lg font-bold text-secondary-color text-shadow-md no-w">Del</h1>
 			</div>
 		</div>
 		<div class={`w-full max-h-full overflow-auto flex-1`} bind:this={scrollElement}>
 			<div class="w-full h-6 items-center overflow-hidden">
 				<button
-					class="w-full h-full justify-center bg-black bg-opacity-40 hover:bg-opacity-60"
+					class="w-full h-full justify-center background-color-primary bg-opacity-40 hover:bg-opacity-60"
 					on:click={async () => {
 						await newLayer(overlayId, $statsScene, 0);
 					}}
 				>
-					<h1 class="text-white text-shadow-md">+</h1>
+					<h1 class="text-secondary-color text-shadow-md">+</h1>
 				</button>
 			</div>
 			{#each layers as layer, layerIndex (layer.id)}

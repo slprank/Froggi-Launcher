@@ -28,10 +28,10 @@
 	class="flex flex-col gap-4 w-full items-center justify-start overflow-auto py-4 border-secondary rounded-md p-4"
 >
 	<div>
-		<h1 class="text-4xl font-bold color-secondary">Authorization</h1>
+		<h1 class="text-4xl font-bold text-secondary-color">Authorization</h1>
 	</div>
 	<h1 class="text-xl font-bold color-secondary">
-		Authentication - <span class={`${$isAuthorized ? 'text-green-500' : 'text-secondary'}`}>
+		Authentication - <span class={`${$isAuthorized ? 'text-success-color' : 'text-secondary'}`}>
 			{!$isAuthorized ? 'Unauthorized' : 'Authorized'}
 		</span>
 	</h1>
@@ -56,7 +56,7 @@
 		/>
 		{#if $isElectron}
 			<button
-				class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer border-secondary"
+				class="w-full rounded-md p-2 background-success-color text-secondary-color hover:cursor-pointer border-secondary"
 				on:click={updateKey}
 			>
 				Update
@@ -64,7 +64,7 @@
 		{/if}
 		{#if !$isElectron}
 			<button
-				class="w-full rounded-md p-2 bg-green-500 text-white hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0 border-secondary"
+				class="w-full rounded-md p-2 background-success-color text-secondary-color hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0 border-secondary"
 				on:click={authenticate}
 				disabled={$isAuthorized}
 			>

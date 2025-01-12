@@ -57,7 +57,7 @@
 					{#each demoOverlays as overlay, i}
 						<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
 							<button
-								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] my-4"
+								class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] my-4"
 								on:click={() => {
 									openPreview(overlay.id);
 								}}
@@ -76,7 +76,7 @@
 					{#each customOverlays as overlay, i}
 						<div in:fly={{ duration: 250, y: 50, delay: i * 50 }}>
 							<button
-								class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 min-h-[5rem] my-4"
+								class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border-secondary rounded w-40 min-h-[5rem] my-4"
 								on:click={() => {
 									openPreview(overlay.id);
 								}}
@@ -91,7 +91,7 @@
 		{#if $isElectron}
 			<div>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 text-3xl font-semibold text-white text-md whitespace-nowrap p-4 border-secondary rounded"
+					class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 text-3xl font-semibold text-secondary-color text-md whitespace-nowrap p-4 border-secondary rounded"
 					on:click={() => (newOverlayModalOpen = true)}
 				>
 					Add new

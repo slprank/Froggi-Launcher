@@ -20,7 +20,7 @@
 	</div>
 	<div class="flex justify-center" style={`opacity: ${isControllerCommandEnabled ? 1 : 0.5}`}>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap w-full h-12 p-2 xl:text-xl border-secondary"
+			class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap w-full h-12 p-2 xl:text-xl border-secondary"
 			on:click={() => (isNewCommandModalOpen = true)}
 		>
 			Add New Command

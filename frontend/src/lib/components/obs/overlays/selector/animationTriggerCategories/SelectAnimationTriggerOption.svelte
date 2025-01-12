@@ -15,8 +15,8 @@
 
 <div class="flex flex-row items-center gap-2">
 	<button
-		class={`w-80 transition bg-black bg-opacity-25 hover:bg-opacity-40 hover:scale-105 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xlrounded-sm ${
-			selected ? 'border-green-700 bg-opacity-50' : 'border-white'
+		class={`w-80 transition background-color-primary bg-opacity-25 hover:bg-opacity-40 hover:scale-105 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl ${
+			selected ? 'border-success bg-opacity-50' : 'border-secondary'
 		}`}
 		style={`${selected ? 'border-width: 0.125em' : ''}`}
 		on:click={() => {

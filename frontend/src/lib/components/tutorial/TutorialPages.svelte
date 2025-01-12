@@ -57,14 +57,14 @@
 		<div class="flex justify-between w-full">
 			<button
 				disabled={pageIndex === 0}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 h-20 my-4 disabled:opacity-50"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border-secondary rounded w-40 h-20 my-4 disabled:opacity-50"
 				on:click={handlePrevious}
 			>
 				Previous
 			</button>
 			<button
 				disabled={pageIndex === scenes.length - 1}
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 h-20 my-4 disabled:opacity-50"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border-secondary rounded w-40 h-20 my-4 disabled:opacity-50"
 				on:click={handleNext}
 			>
 				Next

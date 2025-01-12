@@ -36,7 +36,7 @@
 		</Select>
 		<CommandSelect bind:command={sceneCommand} displayOverlayCommands={false} />
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
+			class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-12 px-2 xl:text-xl border-secondary"
 			on:click={addSceneCommand}
 		>
 			Add Command

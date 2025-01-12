@@ -23,7 +23,7 @@
 
 		{#each Object.values(BestOf).filter((bestOf) => typeof bestOf === 'number') as bestOf}
 			<button
-				class={`transition bg-black hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary ${
+				class={`transition background-color-primary hover:bg-opacity-40  font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary ${
 					currentBestOf === bestOf ? 'bg-opacity-50' : 'bg-opacity-25'
 				}`}
 				on:click={() => handleUpdate(bestOf)}

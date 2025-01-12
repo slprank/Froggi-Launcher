@@ -160,7 +160,7 @@
 <svelte:window on:keydown={debounce(handleKeydown, 50)} />
 
 <h1
-	class="text-gray-500 text-lg font-medium color-secondary"
+	class="text-secondary-color text-lg font-medium color-secondary"
 	transition:fly={{ duration: 250, y: 50 }}
 >
 	Selected element
@@ -182,7 +182,7 @@
 			</div>
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 200 }}>
 				<button
-					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
+					class="w-full transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
 					on:click={() => {
 						isElementModalOpen = true;
 					}}
@@ -192,7 +192,7 @@
 			</div>
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
-					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
+					class="w-full transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
 					on:click={() => copyElement(selectedItemId)}
 				>
 					Copy
@@ -200,7 +200,7 @@
 			</div>
 			<div class="w-24 flex items-end" transition:fly={{ duration: 250, y: 30, delay: 250 }}>
 				<button
-					class="w-full transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
+					class="w-full transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
 					on:click={() => deleteElement(selectedItemId)}
 				>
 					Delete

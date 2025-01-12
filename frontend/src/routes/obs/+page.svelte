@@ -15,27 +15,27 @@
 		</div>
 		<div class="flex-1 flex flex-col justify-center items-center h-full w-full gap-4">
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem]"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem]"
 				on:click={() => goto('/obs/tutorial')}
 			>
 				Tutorial
 			</button>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem]"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem]"
 				on:click={() => goto('/obs/overlay')}
 			>
 				Overlays
 			</button>
 
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] disabled:text-zinc-700 disabled:border-zinc-700 disabled:hover:pointer-events-none disabled:hover:scale-100"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] disabled:text-zinc-700 disabled:border-zinc-700 disabled:hover:pointer-events-none disabled:hover:scale-100"
 				on:click={() => goto('/obs/settings')}
 				disabled={!$isAuthorized}
 			>
 				OBS Settings
 			</button>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] disabled:text-zinc-700 disabled:border-zinc-700 disabled:hover:pointer-events-none disabled:hover:scale-100"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border border-secondary rounded w-40 min-h-[5rem] disabled:text-zinc-700 disabled:border-zinc-700 disabled:hover:pointer-events-none disabled:hover:scale-100"
 				on:click={() => goto('/obs/dashboard')}
 				disabled={!$isAuthorized}
 			>

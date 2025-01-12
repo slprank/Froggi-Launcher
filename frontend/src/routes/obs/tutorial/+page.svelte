@@ -14,19 +14,19 @@
 		</div>
 		<div class="flex-1 flex flex-col justify-center items-center h-full w-full gap-4">
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 h-20"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border-secondary rounded w-40 h-20"
 				on:click={() => goto('/obs/tutorial/new-overlay')}
 			>
 				Create a new overlay
 			</button>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 h-20"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border-secondary rounded w-40 h-20"
 				on:click={() => goto('/obs/tutorial/integrate-obs')}
 			>
 				Integrate with OBS
 			</button>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border-secondary rounded w-40 h-20"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border-secondary rounded w-40 h-20"
 				on:click={() => goto('/obs/tutorial/remote-obs')}
 			>
 				Remote control OBS

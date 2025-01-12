@@ -65,7 +65,7 @@
 	<div class={`flex flex-col gap-2 p-2 `}>
 		<h1
 			class={`text-xl font-semibold text-nowrap ${
-				!authValidator.ipAddress ? 'color-secondary' : 'text-green-700'
+				!authValidator.ipAddress ? 'color-secondary' : 'text-success-color'
 			}`}
 		>
 			Local Ip Address:
@@ -75,7 +75,7 @@
 	<div class="flex flex-col gap-2 p-2">
 		<h1
 			class={`text-xl font-semibold text-nowrap ${
-				!authValidator.port ? 'color-secondary' : 'text-green-700'
+				!authValidator.port ? 'color-secondary' : 'text-success-color'
 			}`}
 		>
 			Port:
@@ -85,7 +85,7 @@
 	<div class="flex flex-col gap-2 p-2">
 		<h1
 			class={`text-xl font-semibold text-nowrap ${
-				!authValidator.password ? 'color-secondary' : 'text-green-700'
+				!authValidator.password ? 'color-secondary' : 'text-success-color'
 			}`}
 		>
 			Password:

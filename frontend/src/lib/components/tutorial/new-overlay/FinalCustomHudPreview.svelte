@@ -78,7 +78,7 @@
 </h2>
 
 <button
-	class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
+	class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-xl py-2 px-4 border border-white rounded w-40 h-20 my-4"
 	on:click={() => goto('/obs/tutorial/integrate-obs')}
 >
 	Integrate with OBS

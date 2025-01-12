@@ -55,12 +55,14 @@
 		{#if div}
 			<div
 				style={`${dataItem?.data.advancedStyling ? dataItem?.data.css.customParent : ''};`}
-				class={`h-full w-full ${edit ? 'bg-white' : 'text-white'} bg-opacity-50 relative`}
+				class={`h-full w-full ${
+					edit ? 'bg-white' : 'text-secondary-color'
+				} bg-opacity-50 relative`}
 			>
 				{#if edit}
 					<GridElements {dataItem} {edit} />
 					<h1
-						class="text-white absolute top-0 left-0"
+						class="text-secondary-color absolute top-0 left-0"
 						style={`filter: drop-shadow(1.2px 1.2px 0.8px black);font-size: 0.5rem; line-height: 0.5rem;`}
 					>
 						{CustomElement[dataItem?.elementId] ?? ''}

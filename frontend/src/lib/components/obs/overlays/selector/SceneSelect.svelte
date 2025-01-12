@@ -54,10 +54,10 @@
 			}}
 		>
 			<button
-				class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary ${
+				class={`transition background-color-primary font-semibold text-secondary-color text-md whitespace-nowrap h-10 p-2 xl:text-xl rounded-sm border ${
 					$statsScene === button.liveScene
-						? 'border-secondary bg-opacity-50'
-						: 'border-white'
+						? 'border-secondary-color'
+						: 'border-accent-color'
 				}`}
 				on:click={() => {
 					updateLiveScene(button.liveScene);

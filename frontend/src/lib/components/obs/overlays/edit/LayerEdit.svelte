@@ -32,7 +32,7 @@
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
+			class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={async () => (selectedLayer = await newLayer(overlay.id, $statsScene))}
 		>
 			<TextFitMulti>New layer</TextFitMulti>
@@ -40,7 +40,7 @@
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
+			class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={async () =>
 				(selectedLayer = await moveLayerUp(overlay.id, $statsScene, selectedLayer))}
 		>
@@ -49,7 +49,7 @@
 	</div>
 	<div>
 		<button
-			class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
+			class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 			on:click={async () =>
 				(selectedLayer = await moveLayerDown(overlay.id, $statsScene, selectedLayer))}
 		>
@@ -59,7 +59,7 @@
 	{#if curScene?.layers?.length > 1}
 		<div transition:fly={{ duration: 250, y: -25 }}>
 			<button
-				class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
+				class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 lg:w-22 xl:w-auto px-2 xl:text-xl border border-white rounded"
 				on:click={async () =>
 					(selectedLayer = await deleteLayer(overlay.id, $statsScene, selectedLayer))}
 			>

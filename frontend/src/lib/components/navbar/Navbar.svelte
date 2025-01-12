@@ -61,7 +61,7 @@
 			<div
 				in:fly={{ x: -100, duration: 150 }}
 				out:fly={{ x: -100, duration: 400 }}
-				class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-r-1 border-opacity-25 border-secondary-color justify-between py-4 items-center space-y-4 z-50"
+				class="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col background-color-primary bg-opacity-25 border-r-1 border-opacity-25 border-secondary-color justify-between py-4 items-center space-y-4 z-50"
 			>
 				<BackButton />
 				<div />
@@ -147,7 +147,7 @@
 			<div
 				in:fly={{ x: 100, duration: 150 }}
 				out:fly={{ x: 100, duration: 400 }}
-				class="fixed top-0 right-0 h-screen w-16 m-0 flex flex-col bg-black bg-opacity-25 border-l-1 border-opacity-25 border-secondary-color justify-between py-4 items-center space-y-4 z-50"
+				class="fixed top-0 right-0 h-screen w-16 m-0 flex flex-col background-color-primary bg-opacity-25 border-l-1 border-opacity-25 border-secondary-color justify-between py-4 items-center space-y-4 z-50"
 			>
 				<div />
 				<div
@@ -194,7 +194,7 @@
 			<div
 				in:fly={{ y: 100, duration: 150 }}
 				out:fly={{ y: 100, duration: 400 }}
-				class={`fixed grid justify-center w-screen h-16 m-0 bg-black bg-opacity-60 border-t-1 border-opacity-25 bottom-0 border-white z-50 p-1`}
+				class={`fixed grid justify-center w-screen h-16 m-0 background-color-primary bg-opacity-60 border-t-1 border-opacity-25 bottom-0 border-white z-50 p-1`}
 			>
 				<div
 					class={`flex justify-evenly content-center items-center w-screen ${

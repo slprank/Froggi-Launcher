@@ -14,7 +14,7 @@
 	</div>
 	<div class="w-full flex justify-center">
 		<button
-			class="rounded-md p-2 bg-green-500 border-secondary text-white hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0"
+			class="rounded-md p-2 background-success-color border-secondary text-secondary-color hover:cursor-pointer disabled:bg-gray-700 disabled:hover:scale-0"
 			on:click={saveLogs}
 		>
 			Save logs

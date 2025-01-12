@@ -81,7 +81,7 @@
 						<hr />
 					{:else}
 						<li>
-							<button on:click={item.onClick}>
+							<button on:click={item.onClick} class="background-color-primary">
 								<i />
 								{item.displayText}
 							</button>

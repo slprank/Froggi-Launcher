@@ -161,7 +161,7 @@
 			{#if savedStyle}
 				<div class="flex gap-4">
 					<button
-						class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
+						class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary rounded"
 						on:click={loadStyling}
 						use:tooltip={{
 							content:
@@ -498,7 +498,7 @@
 				<button
 					in:fly={{ duration: 250, x: 100 }}
 					on:click={testAnimationTriggers}
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+					class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				>
 					Test animation
 				</button>
@@ -507,7 +507,7 @@
 				<button
 					in:fly={{ duration: 250, x: 100 }}
 					on:click={testCustomAnimationTriggers}
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+					class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				>
 					Test animation
 				</button>
@@ -549,7 +549,7 @@
 				<button
 					in:fly={{ duration: 250, x: 100 }}
 					on:click={() => testVisibilityAnimation()}
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+					class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 				>
 					Test animation
 				</button>
@@ -596,7 +596,7 @@
 			{/if}
 			<div>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+					class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
 					on:click={saveStyling}
 					use:tooltip={{
 						content:

@@ -25,7 +25,9 @@
 >
 	<div class={`place-items-start px-2 w-full h-full max-h-full max-w-6xl pb-12 overflow-hidden`}>
 		<div class="w-full h-12 grid content-center" in:fly={{ y: 100, duration: 1500 }}>
-			<h1 class="text-white text-md md:text-xl whitespace-nowrap m-0 font-medium text-shadow">
+			<h1
+				class="text-secondary-color text-md md:text-xl whitespace-nowrap m-0 font-medium text-shadow"
+			>
 				Leaderboard
 			</h1>
 		</div>
@@ -48,39 +50,39 @@
 		<div class="max-h-full overflow-auto" in:fly={{ y: 100, duration: 1500, delay: 300 }}>
 			<div class="w-full h-12 grid grid-cols-12 col-span-12 min-w-2xl max-w-6xl">
 				<div
-					class="w-full h-full grid grid-cols-12 col-span-12 border-b-1 border-gray-500 rounded-t-md bg-black bg-opacity-50"
+					class="w-full h-full grid grid-cols-12 col-span-12 border-b-1 border-gray-500 rounded-t-md background-color-primary bg-opacity-50"
 				>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
 						<TextFitMulti
-							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-secondary-color text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							RANK
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-3 grid content-center justify-start">
 						<TextFitMulti
-							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-secondary-color text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							PLAYER
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-3 grid content-center justify-start">
 						<TextFitMulti
-							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-secondary-color text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							CHARACTERS
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
 						<TextFitMulti
-							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-secondary-color text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							RATING
 						</TextFitMulti>
 					</div>
 					<div class="w-full h-12 col-span-2 grid content-center justify-center">
 						<TextFitMulti
-							class="text-white text-xl whitespace-nowrap m-0 font-medium text-shadow"
+							class="text-secondary-color text-xl whitespace-nowrap m-0 font-medium text-shadow"
 						>
 							W/L
 						</TextFitMulti>
@@ -89,8 +91,8 @@
 			</div>
 			<div
 				class="w-full grid grid-cols-12 min-w-2xl max-w-6xl h-full
-			[&>*:nth-child(odd)]:bg-black [&>*:nth-child(odd)]:bg-opacity-25
-			[&>*:nth-child(even)]:bg-black [&>*:nth-child(even)]:bg-opacity-50"
+			[&>*:nth-child(odd)]:background-color-primary [&>*:nth-child(odd)]:bg-opacity-25
+			[&>*:nth-child(even)]:background-color-primary [&>*:nth-child(even)]:bg-opacity-50"
 			>
 				{#each Array.from(Array(200)) as _, i}
 					<LeaderboardRow
@@ -118,7 +120,7 @@
 						class="w-full h-36 md:h-16 grid justify-center content-center mb-36 md:mb-16"
 						on:visible={() => console.log('trigger request')}
 					>
-						<h1 class="text-white text-shadow text-md">Loading..</h1>
+						<h1 class="text-secondary-color text-shadow text-md">Loading..</h1>
 					</LazyLoad>
 				{/if}
 			{/key}

@@ -57,7 +57,7 @@
 	</div>
 	<div class="flex flex-col gap-2">
 		<button
-			class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
+			class={`transition background-color-primary bg-opacity-25 hover:bg-opacity-40  font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
 			on:click={updateTag}
 		>
 			Change Tag
@@ -74,13 +74,13 @@
 		<h1 class="color-secondary text-3xl font-semibold">{$gameScore.at(1)}</h1>
 	</div>
 	<button
-		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
+		class={`transition background-color-primary bg-opacity-25 hover:bg-opacity-40  font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
 		on:click={resetScore}
 	>
 		Reset Score
 	</button>
 	<button
-		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
+		class={`transition background-color-primary bg-opacity-25 hover:bg-opacity-40  font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
 		on:click={updateScore}
 	>
 		Update Score
@@ -91,7 +91,7 @@
 		<h1 class="color-secondary text-3xl font-semibold">Best Of</h1>
 	</div>
 	<button
-		class={`transition bg-black bg-opacity-25 hover:bg-opacity-40  font-semibold text-white text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
+		class={`transition background-color-primary bg-opacity-25 hover:bg-opacity-40  font-semibold text-secondary-color text-lg whitespace-nowrap h-10 px-2 xl:text-xl border-secondary`}
 		on:click={updateBestOf}
 	>
 		Update Best Of - ({$gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3})

@@ -60,8 +60,7 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 
 <main
-	class="fixed w-screen h-screen bg-cover bg-center color-secondary"
-	style="background-color: #FBF0E5"
+	class="fixed w-screen h-screen background-color-primary color-secondary"
 	in:fade={{ delay: 50, duration: 150 }}
 >
 	{#if overlay && boardHeight && boardWidth}
@@ -77,7 +76,7 @@
 						<Preview />
 					</div>
 					<div
-						class="w-full border-secondary bg-black bg-opacity-20 flex-1 overflow-hidden"
+						class="w-full border-secondary background-color-primary bg-opacity-20 flex-1 overflow-hidden"
 					>
 						<LayerToggle />
 					</div>
@@ -93,7 +92,7 @@
 					</h1>
 					<div class="flex gap-2 justify-center items-center">
 						<button
-							class="transition bg-black bg-opacity-30 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
+							class="transition background-color-primary bg-opacity-30 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
 							on:click={() => {
 								isSceneModalOpen = true;
 							}}
@@ -101,19 +100,19 @@
 							Configure
 						</button>
 						<button
-							class="transition bg-black bg-opacity-30 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
+							class="transition background-color-primary bg-opacity-30 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
 							on:click={downloadOverlay}
 						>
 							Share
 						</button>
 						<button
-							class="transition bg-black bg-opacity-30 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
+							class="transition background-color-primary bg-opacity-30 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
 							on:click={() => (isPreviewModalOpen = true)}
 						>
 							Preview
 						</button>
 						<button
-							class="transition bg-black bg-opacity-30 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
+							class="transition background-color-primary bg-opacity-30 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 p-2 xl:text-xl border-secondary rounded"
 							on:click={() => (isEmbedModalOpen = true)}
 						>
 							Embed
@@ -133,7 +132,7 @@
 					<BoardEdit bind:borderHeight={boardHeight} bind:selectedItemId />
 				</div>
 				<button
-					class="transition bg-black bg-opacity-25 hover:bg-opacity-40 font-semibold text-white text-md whitespace-nowrap h-10 px-2 xl:text-xl border-secondary"
+					class="transition background-color-primary bg-opacity-25 hover:bg-opacity-40 font-semibold text-secondary-color text-md whitespace-nowrap h-10 px-2 xl:text-xl border-accent"
 					on:click={() => {
 						selectedItemId = newId();
 						isElementModalOpen = true;
