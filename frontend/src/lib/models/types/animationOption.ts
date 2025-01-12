@@ -149,8 +149,8 @@ export enum VisibilityOption {
     PostGame5SummaryPlayer2Stock3 = "Post Game 5 Summary Player 2 Stock 3",
     PostGame5SummaryPlayer2Stock4 = "Post Game 5 Summary Player 2 Stock 4",
 
-    RankStatsBeforeRankUpdated = "Rank Stats Pre Updated",
-    RankStatsAfterRankUpdated = "Rank Stats Post Updated",
+    RankStatsBeforeRankUpdated = "Rank Stats Pre Update",
+    RankStatsAfterRankUpdated = "Rank Stats Post Update",
     RankStatsMatchWon = "Rank Stats Match Won",
 
 }

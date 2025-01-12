@@ -1,8 +1,8 @@
 {
-	"id": "rank",
+	"id": "rankpreview",
 	"defaultScene": "Menu",
 	"description": "Scene Description",
-	"isDemo": false,
+	"isDemo": true,
 	"title": "Rank Preview",
 	"aspectRatio": { "width": 16, "height": 9 },
 	"Waiting For Dolphin": {
@@ -64,21 +64,35 @@
 				}
 			}
 		},
-		"fallback": "Menu",
+		"fallback": "Rank Change",
 		"font": { "family": "default", "src": "" },
 		"layers": [{ "id": "cg0ze3mdd", "items": [], "preview": true }]
 	},
 	"Menu": {
-		"active": true,
+		"active": false,
 		"animation": {
 			"duration": 250,
 			"in": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
-				"type": "none"
+				"options": {
+					"delay": 0,
+					"duration": 250,
+					"easing": "cubicOut",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
+				"type": "fly automatic"
 			},
 			"out": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
-				"type": "none"
+				"options": {
+					"delay": 750,
+					"duration": 250,
+					"easing": "cubicOut",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
+				"type": "fly automatic"
 			},
 			"layerRenderDelay": 250
 		},
@@ -113,7 +127,7 @@
 				}
 			}
 		},
-		"fallback": "Menu",
+		"fallback": "Rank Change",
 		"font": { "family": "Roboto Bold Italic", "src": "" },
 		"layers": [
 			{
@@ -121,11 +135,11 @@
 				"items": [
 					{
 						"512": {
-							"fixed": true,
-							"resizable": false,
+							"fixed": false,
+							"resizable": true,
 							"draggable": true,
 							"customDragger": false,
-							"customResizer": true,
+							"customResizer": false,
 							"min": { "w": 1, "h": 1 },
 							"max": { "y": 511, "h": 513 },
 							"w": 512,
@@ -219,11 +233,11 @@
 					},
 					{
 						"512": {
-							"fixed": true,
-							"resizable": false,
+							"fixed": false,
+							"resizable": true,
 							"draggable": true,
 							"customDragger": false,
-							"customResizer": true,
+							"customResizer": false,
 							"min": { "w": 1, "h": 1 },
 							"max": { "y": 511, "h": 513 },
 							"w": 512,
@@ -334,11 +348,11 @@
 					},
 					{
 						"512": {
-							"fixed": true,
-							"resizable": false,
+							"fixed": false,
+							"resizable": true,
 							"draggable": true,
 							"customDragger": false,
-							"customResizer": true,
+							"customResizer": false,
 							"min": { "w": 1, "h": 1 },
 							"max": { "y": 511, "h": 513 },
 							"w": 512,
@@ -445,11 +459,11 @@
 					},
 					{
 						"512": {
-							"fixed": true,
-							"resizable": false,
+							"fixed": false,
+							"resizable": true,
 							"draggable": true,
 							"customDragger": false,
-							"customResizer": true,
+							"customResizer": false,
 							"min": { "w": 1, "h": 1 },
 							"max": { "y": 511, "h": 513 },
 							"w": 512,
@@ -598,7 +612,7 @@
 				}
 			}
 		},
-		"fallback": "Menu",
+		"fallback": "Rank Change",
 		"font": { "family": "default", "src": "" },
 		"layers": [{ "id": "cmzjnrixt", "items": [], "preview": true }]
 	},
@@ -654,7 +668,7 @@
 				}
 			}
 		},
-		"fallback": "Menu",
+		"fallback": "Rank Change",
 		"font": { "family": "default", "src": "" },
 		"layers": [{ "id": "cenqd8n5b", "items": [], "preview": true }]
 	},
@@ -710,28 +724,35 @@
 				}
 			}
 		},
-		"fallback": "Menu",
+		"fallback": "Rank Change",
 		"font": { "family": "default", "src": "" },
 		"layers": [{ "id": "cmiamseli", "items": [], "preview": true }]
 	},
 	"Rank Change": {
-		"active": false,
+		"active": true,
 		"animation": {
 			"duration": 250,
 			"in": {
 				"options": {
-					"delay": 1000,
-					"duration": 0,
-					"easing": "",
+					"delay": 0,
+					"duration": 250,
+					"easing": "cubicOut",
 					"start": 0,
 					"x": 0,
 					"y": 0
 				},
-				"type": "none"
+				"type": "fly automatic"
 			},
 			"out": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
-				"type": "none"
+				"options": {
+					"delay": 750,
+					"duration": 250,
+					"easing": "cubicOut",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
+				"type": "fly automatic"
 			},
 			"layerRenderDelay": 250
 		},
@@ -767,8 +788,576 @@
 			}
 		},
 		"fallback": "Menu",
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "id": "c8nem74ro", "items": [], "preview": true }]
+		"font": { "family": "Roboto Bold Italic", "src": "" },
+		"layers": [
+			{
+				"id": "c8nem74ro",
+				"items": [
+					{
+						"512": {
+							"fixed": true,
+							"resizable": false,
+							"draggable": true,
+							"customDragger": false,
+							"customResizer": true,
+							"min": { "w": 1, "h": 1 },
+							"max": { "y": 511, "h": 513 },
+							"w": 512,
+							"h": 31,
+							"x": 0,
+							"y": 0,
+							"id": "c2xrs3ae5"
+						},
+						"id": "c2xrs3ae5",
+						"elementId": 4000,
+						"data": {
+							"advancedStyling": false,
+							"animationTrigger": {
+								"in": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"selectedOptions": {}
+							},
+							"class": { "rounded": "", "alignment": "justify-center" },
+							"css": {
+								"background": "#ffffff00",
+								"borderLeft": "0rem solid",
+								"borderRight": "0rem solid",
+								"borderTop": "0rem solid",
+								"borderBottom": "0rem solid",
+								"borderColor": "#ffffffff",
+								"color": "#ffffffff",
+								"opacity": 1,
+								"fill": "#ff000000",
+								"stroke": "#ffffff",
+								"strokeWidth": 3,
+								"fillOpacity": 1
+							},
+							"description": "",
+							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
+							"font": { "family": "default" },
+							"image": { "objectFit": "contain" },
+							"visibility": {
+								"in": {
+									"options": {
+										"delay": 1000,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"selectedOptions": []
+							},
+							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"string": "",
+							"textStroke": { "size": 1, "color": "#000000ff" },
+							"transform": {
+								"rotate": 0,
+								"scale": "1, 1",
+								"translate": { "x": 0, "y": 0 }
+							}
+						}
+					},
+					{
+						"512": {
+							"fixed": true,
+							"resizable": false,
+							"draggable": true,
+							"customDragger": false,
+							"customResizer": true,
+							"min": { "w": 1, "h": 1 },
+							"max": { "y": 511, "h": 513 },
+							"w": 512,
+							"h": 59,
+							"x": 0,
+							"y": 31,
+							"id": "c40dzpw7p"
+						},
+						"elementId": 6000,
+						"id": "c40dzpw7p",
+						"data": {
+							"advancedStyling": false,
+							"animationTrigger": {
+								"in": {
+									"options": {
+										"delay": 2000,
+										"duration": 3000,
+										"easing": "cubicInOut",
+										"start": 0,
+										"x": 0,
+										"y": -100
+									},
+									"type": "fade"
+								},
+								"out": {
+									"options": {
+										"delay": null,
+										"duration": 1000,
+										"easing": "cubicInOut",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "fade"
+								},
+								"selectedOptions": {
+									"Slippi Stats Rank Change": true,
+									"Player 2 Score Change": false,
+									"Player 1 Score Change": false,
+									"Player 2 Connect Code Change": false,
+									"Player 1 Connect Code Change": false,
+									"Player 2 Tag Change": false,
+									"Player 1 Tag Change": false,
+									"Match Game Mode Change": false,
+									"Match Best Of Change": false,
+									"Slippi Stats Rating Change": false,
+									"Slippi Stats Losses Change": false,
+									"Slippi Stats Wins Change": false
+								}
+							},
+							"class": { "rounded": "", "alignment": "justify-center" },
+							"css": {
+								"background": "#ffffff00",
+								"borderLeft": "0rem solid",
+								"borderRight": "0rem solid",
+								"borderTop": "0rem solid",
+								"borderBottom": "0rem solid",
+								"borderColor": "#ffffffff",
+								"color": "#ffffffff",
+								"opacity": 1,
+								"fill": "#ff000000",
+								"stroke": "#ffffff",
+								"strokeWidth": 3,
+								"fillOpacity": 1
+							},
+							"description": "",
+							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
+							"font": { "family": "default" },
+							"image": { "objectFit": "contain" },
+							"visibility": {
+								"in": {
+									"options": {
+										"delay": 1000,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"selectedOptions": []
+							},
+							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"string": "",
+							"textStroke": { "size": 1, "color": "#000000ff" },
+							"transform": {
+								"rotate": 0,
+								"scale": "1, 1",
+								"translate": { "x": 0, "y": 0 }
+							}
+						}
+					},
+					{
+						"512": {
+							"fixed": true,
+							"resizable": false,
+							"draggable": true,
+							"customDragger": false,
+							"customResizer": true,
+							"min": { "w": 1, "h": 1 },
+							"max": { "y": 511, "h": 513 },
+							"w": 512,
+							"h": 28,
+							"x": 0,
+							"y": 94,
+							"id": "cdvyk63dd"
+						},
+						"elementId": 4006,
+						"id": "cdvyk63dd",
+						"data": {
+							"advancedStyling": false,
+							"animationTrigger": {
+								"in": {
+									"options": {
+										"delay": 2000,
+										"duration": 3000,
+										"easing": "cubicInOut",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "fade"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 1000,
+										"easing": "cubicInOut",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "fade"
+								},
+								"selectedOptions": {
+									"Slippi Stats Rank Change": true,
+									"Player 2 Score Change": false,
+									"Player 1 Score Change": false,
+									"Player 2 Connect Code Change": false,
+									"Player 1 Connect Code Change": false,
+									"Player 2 Tag Change": false,
+									"Player 1 Tag Change": false,
+									"Match Game Mode Change": false,
+									"Match Best Of Change": false,
+									"Slippi Stats Rating Change": false,
+									"Slippi Stats Losses Change": false,
+									"Slippi Stats Wins Change": false
+								}
+							},
+							"class": { "rounded": "", "alignment": "justify-center" },
+							"css": {
+								"background": "#ffffff00",
+								"borderLeft": "0rem solid",
+								"borderRight": "0rem solid",
+								"borderTop": "0rem solid",
+								"borderBottom": "0rem solid",
+								"borderColor": "#ffffffff",
+								"color": "#ffffffff",
+								"opacity": 1,
+								"fill": "#ff000000",
+								"stroke": "#ffffff",
+								"strokeWidth": 3,
+								"fillOpacity": 1
+							},
+							"description": "",
+							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
+							"font": { "family": "default" },
+							"image": { "objectFit": "contain" },
+							"visibility": {
+								"in": {
+									"options": {
+										"delay": 1000,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"selectedOptions": []
+							},
+							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"string": "",
+							"textStroke": { "size": 1, "color": "#000000ff" },
+							"transform": {
+								"rotate": 0,
+								"scale": "1, 1",
+								"translate": { "x": 0, "y": 0 }
+							}
+						}
+					},
+					{
+						"512": {
+							"fixed": true,
+							"resizable": false,
+							"draggable": true,
+							"customDragger": false,
+							"customResizer": true,
+							"min": { "w": 1, "h": 1 },
+							"max": { "y": 511, "h": 513 },
+							"w": 512,
+							"h": 24,
+							"x": 0,
+							"y": 122,
+							"id": "ctuiz3mci"
+						},
+						"elementId": 4009,
+						"id": "ctuiz3mci",
+						"data": {
+							"advancedStyling": false,
+							"animationTrigger": {
+								"in": {
+									"options": {
+										"delay": 0,
+										"duration": 250,
+										"easing": "cubicOut",
+										"start": 0,
+										"x": 0,
+										"y": -100
+									},
+									"type": "fly"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 250,
+										"easing": "cubicOut",
+										"start": 0,
+										"x": 0,
+										"y": 100
+									},
+									"type": "fly"
+								},
+								"selectedOptions": {
+									"Slippi Stats Rating Change": true,
+									"Player 2 Score Change": false,
+									"Player 1 Score Change": false,
+									"Player 2 Connect Code Change": false,
+									"Player 1 Connect Code Change": false,
+									"Player 2 Tag Change": false,
+									"Player 1 Tag Change": false,
+									"Match Game Mode Change": false,
+									"Match Best Of Change": false,
+									"Slippi Stats Rank Change": false,
+									"Slippi Stats Losses Change": false,
+									"Slippi Stats Wins Change": false
+								}
+							},
+							"class": { "rounded": "", "alignment": "justify-center" },
+							"css": {
+								"background": "#ffffff00",
+								"borderLeft": "0rem solid",
+								"borderRight": "0rem solid",
+								"borderTop": "0rem solid",
+								"borderBottom": "0rem solid",
+								"borderColor": "#ffffffff",
+								"color": "#ffffffff",
+								"opacity": 1,
+								"fill": "#ff000000",
+								"stroke": "#ffffff",
+								"strokeWidth": 3,
+								"fillOpacity": 1
+							},
+							"description": "",
+							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
+							"font": { "family": "default" },
+							"image": { "objectFit": "contain" },
+							"visibility": {
+								"in": {
+									"options": {
+										"delay": 1000,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"selectedOptions": []
+							},
+							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"string": "",
+							"textStroke": { "size": 1, "color": "#000000ff" },
+							"transform": {
+								"rotate": 0,
+								"scale": "1, 1",
+								"translate": { "x": 0, "y": 0 }
+							}
+						}
+					}
+				],
+				"preview": true
+			},
+			{
+				"id": "cuut1am3n",
+				"items": [
+					{
+						"512": {
+							"fixed": true,
+							"resizable": true,
+							"draggable": true,
+							"customDragger": false,
+							"customResizer": true,
+							"min": { "w": 1, "h": 1 },
+							"max": { "y": 511, "h": 513 },
+							"w": 42,
+							"h": 16,
+							"x": 292,
+							"y": 126,
+							"id": "clzc4oqs9"
+						},
+						"elementId": 4140,
+						"id": "clzc4oqs9",
+						"data": {
+							"advancedStyling": false,
+							"animationTrigger": {
+								"in": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 0,
+										"easing": "",
+										"start": 0,
+										"x": 0,
+										"y": 0
+									},
+									"type": "none"
+								},
+								"selectedOptions": {
+									"Player 2 Score Change": false,
+									"Player 1 Score Change": false,
+									"Player 2 Connect Code Change": false,
+									"Player 1 Connect Code Change": false,
+									"Player 2 Tag Change": false,
+									"Player 1 Tag Change": false,
+									"Match Game Mode Change": false,
+									"Match Best Of Change": false,
+									"Slippi Stats Rating Change": false,
+									"Slippi Stats Rank Change": false,
+									"Slippi Stats Losses Change": false,
+									"Slippi Stats Wins Change": false,
+									"Session Rating Change": false,
+									"Session Games Number Change": false,
+									"Session Losses Change": false,
+									"Session Wins Change": false
+								}
+							},
+							"class": { "rounded": "", "alignment": "justify-start" },
+							"css": {
+								"background": "#ffffff00",
+								"borderLeft": "0rem solid",
+								"borderRight": "0rem solid",
+								"borderTop": "0rem solid",
+								"borderBottom": "0rem solid",
+								"borderColor": "#ffffffff",
+								"color": "#ffffffff",
+								"opacity": 1,
+								"fill": "#ff000000",
+								"stroke": "#ffffff",
+								"strokeWidth": 3,
+								"fillOpacity": 1
+							},
+							"description": "",
+							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
+							"font": { "family": "default" },
+							"image": { "objectFit": "contain" },
+							"visibility": {
+								"in": {
+									"options": {
+										"delay": 1000,
+										"duration": 250,
+										"easing": "cubicOut",
+										"start": 0,
+										"x": 100,
+										"y": 0
+									},
+									"type": "fly"
+								},
+								"out": {
+									"options": {
+										"delay": 0,
+										"duration": 250,
+										"easing": "cubicOut",
+										"start": 0,
+										"x": -100,
+										"y": 0
+									},
+									"type": "fly"
+								},
+								"selectedOptions": [
+									{
+										"Session Positive Net Rating": 0,
+										"Session Positive Win Rate": 0,
+										"Rank Stats Match Won": 0,
+										"Rank Stats Post Update": 0,
+										"Rank Stats Pre Update": 1
+									}
+								]
+							},
+							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"string": "",
+							"textStroke": { "size": 1, "color": "#000000ff" },
+							"transform": {
+								"rotate": 0,
+								"scale": "1, 1",
+								"translate": { "x": 0, "y": 0 }
+							}
+						}
+					}
+				],
+				"preview": true
+			}
+		]
 	},
-	"customFiles": {}
+	"customFiles": {},
+	"froggiVersion": "0.0.0"
 }

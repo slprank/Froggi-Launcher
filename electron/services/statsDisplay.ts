@@ -176,15 +176,13 @@ export class StatsDisplay {
 		this.log.info("Best of:", bestOf)
 		const isPostSet = game.score.some((score) => score >= Math.ceil(bestOf / 2));
 		this.log.info("Is post set:", isPostSet)
-		if (isPostSet) {
-			setTimeout(async () => {
-				if (game.settings?.matchInfo?.mode === 'ranked' && !isNil(playerConnectCode)) {
-					const currentPlayerRankStats = await this.api.getPlayerRankStats(
-						playerConnectCode,
-					);
-					this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
-				}
-			}, 4000);
+		const isRanked = game.settings?.matchInfo?.mode === 'ranked';
+		if (isPostSet && isRanked && playerConnectCode) {
+			const currentPlayerRankStats = await this.api.getPlayerRankStats(
+				playerConnectCode,
+			);
+			this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerRankStats);
+		} else {
 			this.storeLiveStats.setStatsSceneTimeout(
 				LiveStatsScene.PostSet,
 				LiveStatsScene.Menu,
@@ -226,7 +224,6 @@ export class StatsDisplay {
 
 	private async getCurrentPlayersWithRankStats(settings: GameStartType): Promise<Player[]> {
 		this.log.info("Getting current players with rank stats")
-		this.log.info("Game Start:", settings)
 		const isNewGame = this.storeLiveStats.getGameSettings()?.matchInfo?.matchId !== settings?.matchInfo?.matchId;
 		const currentPlayers = settings.players.filter((player) => player);
 

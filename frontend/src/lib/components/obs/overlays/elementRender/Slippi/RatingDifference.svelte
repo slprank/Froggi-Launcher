@@ -13,20 +13,21 @@
 	$: difference =
 		($currentPlayer?.rank?.new?.rating ?? 0) - ($currentPlayer?.rank?.current?.rating ?? 0);
 
-	$: difference, (currentDifference = getCurrentDifference(difference));
+	$: currentDifference = getCurrentDifference(difference);
 
 	const getCurrentDifference = (difference: number) => {
 		if (!isNil(currentDifference)) return currentDifference;
-		return difference;
+		if (difference < 0.1) return Number(difference.toFixed(2));
+		return Number(difference.toFixed(1));
 	};
 </script>
 
-{#if defaultPreview || ($currentPlayer?.rank?.current && $currentPlayer?.rank.new && $currentPlayer.rank.current?.rating !== $currentPlayer.rank.current?.rating)}
+{#if defaultPreview || !isNil(currentDifference)}
 	<TextElement {style} {dataItem}>
 		{defaultPreview
 			? `+132.41`
-			: $currentPlayer?.rank?.current?.rating
-			? `${difference >= 0 && '+'}${difference}`
-			: ''}
+			: currentDifference
+			? `${currentDifference >= 0 ? '+' : ''}${currentDifference}`
+			: '+0'}
 	</TextElement>
 {/if}

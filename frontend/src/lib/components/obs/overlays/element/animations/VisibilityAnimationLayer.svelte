@@ -27,6 +27,7 @@
 	import { rankVisibilityOption } from './visibilityConditions/RankVisibilityOptions.svelte';
 	import { InGameState } from '$lib/models/enum';
 	import { FrameEntryType } from '@slippi/slippi-js';
+	import { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
 	export let animationIn: Function;
 	export let animationOut: Function;
 	export let dataItem: GridContentItem;
@@ -39,6 +40,9 @@
 		dataItem: GridContentItem,
 		gameState: InGameState,
 		gameFrame: FrameEntryType | null | undefined,
+		postGame: GameStats,
+		currentPlayer: CurrentPlayer | undefined,
+		currentPlayers: Player[],
 	) => {
 		if (edit || preview) return true;
 
@@ -52,46 +56,46 @@
 			if (
 				inGameVisibilityOption(
 					option,
-					$currentPlayers,
+					currentPlayers,
 					$gameSettings,
 					gameFrame,
 					gameState,
 				) ||
-				inGamePlayer1VisibilityOption(option, gameFrame, $currentPlayers) ||
-				inGamePlayer2VisibilityOption(option, gameFrame, $currentPlayers) ||
+				inGamePlayer1VisibilityOption(option, gameFrame, currentPlayers) ||
+				inGamePlayer2VisibilityOption(option, gameFrame, currentPlayers) ||
 				matchStatsVisibilityOption(option, $gameScore) ||
-				postGameVisibilityOption(option, $currentPlayers, $currentPlayer, $postGame) ||
+				postGameVisibilityOption(option, currentPlayers, currentPlayer, postGame) ||
 				postGame1SummaryVisibilityOption(
 					option,
-					$currentPlayers,
-					$currentPlayer,
+					currentPlayers,
+					currentPlayer,
 					$recentGames,
 				) ||
 				postGame2SummaryVisibilityOption(
 					option,
-					$currentPlayers,
-					$currentPlayer,
+					currentPlayers,
+					currentPlayer,
 					$recentGames,
 				) ||
 				postGame3SummaryVisibilityOption(
 					option,
-					$currentPlayers,
-					$currentPlayer,
+					currentPlayers,
+					currentPlayer,
 					$recentGames,
 				) ||
 				postGame4SummaryVisibilityOption(
 					option,
-					$currentPlayers,
-					$currentPlayer,
+					currentPlayers,
+					currentPlayer,
 					$recentGames,
 				) ||
 				postGame5SummaryVisibilityOption(
 					option,
-					$currentPlayers,
-					$currentPlayer,
+					currentPlayers,
+					currentPlayer,
 					$recentGames,
 				) ||
-				rankVisibilityOption(option, $currentPlayer) ||
+				rankVisibilityOption(option, currentPlayer) ||
 				sessionVisibilityOption(option, $sessionStats)
 			) {
 				return true;
@@ -101,16 +105,25 @@
 	};
 
 	$: {
-		updateVisibilityValue(dataItem, $gameState, $gameFrame);
+		updateVisibilityValue(
+			dataItem,
+			$gameState,
+			$gameFrame,
+			$postGame,
+			$currentPlayer,
+			$currentPlayers,
+		);
 	}
+
+	const toggleVisibility = () => {
+		visible = !visible;
+	};
 
 	onMount(() => {
 		if (!isDemo) return;
-		$localEmitter.on('TestVisibilityTrigger', () => {
-			visible = !visible;
-		});
+		$localEmitter.on('TestVisibilityTrigger', toggleVisibility);
 		return () => {
-			$localEmitter.off('TestVisibilityTrigger', () => {});
+			$localEmitter.off('TestVisibilityTrigger', toggleVisibility);
 		};
 	});
 </script>

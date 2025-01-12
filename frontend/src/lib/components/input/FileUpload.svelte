@@ -23,14 +23,15 @@
 		);
 	};
 
+	const handleComplete = (reportedFileName) => {
+		if (!acceptedExtensions.some((extension) => reportedFileName.includes(extension))) return;
+		dispatch('change', reportedFileName);
+	};
+
 	onMount(() => {
-		$localEmitter.on('ImportCustomFileComplete', (reportedFileName) => {
-			if (!acceptedExtensions.some((extension) => reportedFileName.includes(extension)))
-				return;
-			dispatch('change', reportedFileName);
-		});
+		$localEmitter.on('ImportCustomFileComplete', handleComplete);
 		return () => {
-			$localEmitter.off('ImportCustomFileComplete', () => {});
+			$localEmitter.off('ImportCustomFileComplete', handleComplete);
 		};
 	});
 </script>

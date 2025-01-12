@@ -17,13 +17,16 @@
 
 	onMount(() => {
 		updateLayers(curOverlay);
-		$localEmitter.on('LayerPreviewChange', (layerIndex: number) => {
-			selectedLayerIndex = layerIndex;
-		});
+		$localEmitter.on('LayerPreviewChange', handleLayerPreviewChange);
+
 		return () => {
-			$localEmitter.off('LayerPreviewChange', () => {});
+			$localEmitter.off('LayerPreviewChange', handleLayerPreviewChange);
 		};
 	});
+
+	const handleLayerPreviewChange = (layerIndex: number) => {
+		selectedLayerIndex = layerIndex;
+	};
 
 	const updateLayers = (overlay: Overlay) => {
 		layers = overlay[$statsScene].layers;
