@@ -113,7 +113,7 @@ export class ElectronCurrentPlayerStore {
 			this.store.onDidChange(`player.${connectCode}`, (value) => {
 				this.messageHandler.sendMessage('CurrentPlayer', value as CurrentPlayer);
 			}),
-			this.store.onDidChange(`settings.${connectCode}.rank.new`, async () => {
+			this.store.onDidChange(`player.${connectCode}.rank.new`, async () => {
 				await this.handleRankChange();
 			}),
 			this.store.onDidChange('stats.scene', () => {
