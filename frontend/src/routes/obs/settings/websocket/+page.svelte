@@ -70,7 +70,11 @@
 		>
 			Local Ip Address:
 		</h1>
-		<TextInput value={auth?.ipAddress ?? ''} on:change={handleIpAddressChange} />
+		<TextInput
+			value={auth?.ipAddress ?? ''}
+			on:change={handleIpAddressChange}
+			placeholder="127.0.0.1"
+		/>
 	</div>
 	<div class="flex flex-col gap-2 p-2">
 		<h1
@@ -80,7 +84,7 @@
 		>
 			Port:
 		</h1>
-		<TextInput value={`${auth?.port}`} on:change={handlePortChange} />
+		<TextInput value={`${auth?.port}`} on:change={handlePortChange} placeholder="4455" />
 	</div>
 	<div class="flex flex-col gap-2 p-2">
 		<h1
@@ -90,7 +94,11 @@
 		>
 			Password:
 		</h1>
-		<TextInput value={auth.password} on:change={(e) => (auth.password = e.detail)} />
+		<TextInput
+			value={auth.password}
+			on:change={(e) => (auth.password = e.detail)}
+			placeholder="password123"
+		/>
 	</div>
 	<button class="p-2 border-secondary" on:click={updateAuth}>
 		<h1 class="color-secondary text-xl font-semibold">Update</h1>

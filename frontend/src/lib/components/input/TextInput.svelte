@@ -23,7 +23,7 @@
 			on:focus={() => (autofocus = autoFocusValue)}
 			{placeholder}
 			type="text"
-			class="w-full h-full pl-2 appearance-none border-secondary background-primary-color text-secondary rounded-md"
+			class="w-full h-full pl-2 appearance-none border-secondary background-primary-color text-secondary-color rounded-md"
 			bind:value
 			on:change={(e) => {
 				handleChange(value);

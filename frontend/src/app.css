@@ -147,6 +147,10 @@ main {
 	color: var(--secondary-color);
 }
 
+.text-success-color {
+	color: var(--success-color);
+}
+
 button:active {
 	opacity: 0.5;
 }
