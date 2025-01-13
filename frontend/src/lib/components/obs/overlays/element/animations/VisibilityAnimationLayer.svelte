@@ -32,6 +32,7 @@
 		GameStartTypeExtended,
 		GameStats,
 		Player,
+		SessionStats,
 	} from '$lib/models/types/slippiData';
 	export let animationIn: Function;
 	export let animationOut: Function;
@@ -45,10 +46,13 @@
 		dataItem: GridContentItem,
 		gameSettings: GameStartTypeExtended,
 		gameState: InGameState,
+		gameScore: number[],
 		gameFrame: FrameEntryType | null | undefined,
 		postGame: GameStats,
+		recentGames: GameStats[][],
 		currentPlayer: CurrentPlayer | undefined,
 		currentPlayers: Player[],
+		sessionStats: SessionStats | undefined,
 	) => {
 		if (edit || preview) return true;
 
@@ -69,40 +73,40 @@
 				) ||
 				inGamePlayer1VisibilityOption(option, gameFrame, currentPlayers) ||
 				inGamePlayer2VisibilityOption(option, gameFrame, currentPlayers) ||
-				matchStatsVisibilityOption(option, $gameScore) ||
+				matchStatsVisibilityOption(option, gameScore) ||
 				postGameVisibilityOption(option, currentPlayers, currentPlayer, postGame) ||
 				postGame1SummaryVisibilityOption(
 					option,
 					currentPlayers,
 					currentPlayer,
-					$recentGames,
+					recentGames,
 				) ||
 				postGame2SummaryVisibilityOption(
 					option,
 					currentPlayers,
 					currentPlayer,
-					$recentGames,
+					recentGames,
 				) ||
 				postGame3SummaryVisibilityOption(
 					option,
 					currentPlayers,
 					currentPlayer,
-					$recentGames,
+					recentGames,
 				) ||
 				postGame4SummaryVisibilityOption(
 					option,
 					currentPlayers,
 					currentPlayer,
-					$recentGames,
+					recentGames,
 				) ||
 				postGame5SummaryVisibilityOption(
 					option,
 					currentPlayers,
 					currentPlayer,
-					$recentGames,
+					recentGames,
 				) ||
 				rankVisibilityOption(option, currentPlayer) ||
-				sessionVisibilityOption(option, $sessionStats)
+				sessionVisibilityOption(option, sessionStats)
 			) {
 				return true;
 			}
@@ -115,10 +119,13 @@
 			dataItem,
 			$gameSettings,
 			$gameState,
+			$gameScore,
 			$gameFrame,
 			$postGame,
+			$recentGames,
 			$currentPlayer,
 			$currentPlayers,
+			$sessionStats,
 		);
 	}
 

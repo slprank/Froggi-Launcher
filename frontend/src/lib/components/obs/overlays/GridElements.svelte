@@ -98,28 +98,26 @@
 	bind:this={div}
 >
 	{#if div}
-		{#key dataItem}
-			<div class="w-full h-full">
-				<Custom {dataItem} {style} />
+		<div class="w-full h-full">
+			<Custom {dataItem} {style} />
 
-				<InGame {dataItem} {defaultPreview} {style} />
+			<InGame {dataItem} {defaultPreview} {style} />
 
-				<Match {dataItem} {defaultPreview} {style} />
+			<Match {dataItem} {defaultPreview} {style} />
 
-				<RecentGame {dataItem} {defaultPreview} {style} />
+			<RecentGame {dataItem} {defaultPreview} {style} />
 
-				<RecentMatch {dataItem} {defaultPreview} {style} />
+			<RecentMatch {dataItem} {defaultPreview} {style} />
 
-				<RecentMatchSummary {dataItem} {defaultPreview} {style} />
+			<RecentMatchSummary {dataItem} {defaultPreview} {style} />
 
-				<SlippiRank {dataItem} {defaultPreview} {style} />
+			<SlippiRank {dataItem} {defaultPreview} {style} />
 
-				<Session {dataItem} {defaultPreview} {style} />
+			<Session {dataItem} {defaultPreview} {style} />
 
-				<!-- Post Game Stats -->
-				<!-- Post Set Stats -->
-			</div>
-		{/key}
+			<!-- Post Game Stats -->
+			<!-- Post Set Stats -->
+		</div>
 	{/if}
 </div>
 
