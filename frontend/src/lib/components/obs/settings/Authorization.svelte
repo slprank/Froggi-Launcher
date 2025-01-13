@@ -49,8 +49,9 @@
 			Authorization Key
 		</h1>
 		<input
-			class="w-full rounded-md p-2 disabled:grayscale border-secondary"
+			class="w-full background-primary-color text-white rounded-md p-2 disabled:grayscale border-secondary"
 			type="text"
+			placeholder="key"
 			bind:value={authKey}
 			disabled={!$isElectron && $isAuthorized}
 		/>

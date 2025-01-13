@@ -67,7 +67,7 @@ export class StatsDisplay {
 		});
 
 		this.slpParser.on(SlpParserEvent.END, async (gameEnd: GameEndType) => {
-			await new Promise((resolve) => setTimeout(resolve, 10));
+			await new Promise((resolve) => setTimeout(resolve, 0));
 			const settings = this.slpParser.getSettings();
 			const latestFrame = this.slpParser.getLatestFrame();
 			if (isNil(settings) || isNil(latestFrame) || isNil(gameEnd)) return;

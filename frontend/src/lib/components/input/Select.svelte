@@ -18,7 +18,7 @@
 	<div class="w-full flex justify-center items-center">
 		<select
 			id="dropdown"
-			class="w-full rounded-md bg-gray-50 border-secondary color-secondary text-sm block p-2.5"
+			class="w-full rounded-md background-primary-color border-secondary color-secondary text-sm block p-2.5"
 			bind:value={selected}
 			on:change={change}
 		>

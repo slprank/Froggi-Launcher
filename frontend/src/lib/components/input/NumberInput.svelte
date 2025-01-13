@@ -34,10 +34,10 @@
 	{#if label}
 		<h1 class="color-secondary text-sm font-medium m-0">{label}</h1>
 	{/if}
-	<div class="w-full h-11 bg-white rounded-md">
+	<div class="w-full h-11 rounded-md">
 		<input
 			type="number"
-			class="bg-white w-full h-full px-2 rounded border-0 bg-transparent border-secondary"
+			class="background-primary-color w-full h-full px-2 rounded border-0 bg-transparent border-secondary"
 			id="numberInput"
 			step={step ?? 1}
 			{min}
