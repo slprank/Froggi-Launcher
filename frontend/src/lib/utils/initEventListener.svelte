@@ -291,6 +291,7 @@
 		_localEmitter.removeAllListeners();
 		window.electron.receive('message', (data: any) => {
 			let parse = JSON.parse(data);
+			console.log(parse);
 			for (const [key, value] of Object.entries(parse) as [
 				key: keyof MessageEvents,
 				value: Parameters<MessageEvents[keyof MessageEvents]>,
@@ -315,6 +316,7 @@
 		socket.removeEventListener('message', console.log);
 		socket.addEventListener('message', ({ data }: { data: any }) => {
 			const parse = JSON.parse(data);
+			console.log(parse);
 			for (const [key, value] of Object.entries(parse) as [
 				key: keyof MessageEvents,
 				value: Parameters<MessageEvents[keyof MessageEvents]>,

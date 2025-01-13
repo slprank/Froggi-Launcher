@@ -110,6 +110,8 @@ export class MessageHandler {
 		try {
 			this.webSocketWorker.on('message', (value: string) => {
 				const parse = JSON.parse(value);
+				const socketId = parse['socketId'];
+				if (!socketId) return;
 				for (let [key, value] of Object.entries(parse) as [
 					key: keyof MessageEvents,
 					value: Parameters<MessageEvents[keyof MessageEvents]>,
@@ -133,11 +135,20 @@ export class MessageHandler {
 	}
 
 	sendMessage<J extends keyof MessageEvents>(topic: J, ...payload: Parameters<MessageEvents[J]>) {
+		this.sendElectronMessage(topic, ...payload);
+		this.sendWebsocketMessage(topic, ...payload);
+		this.localEmitter.emit(topic, ...payload);
+	}
+
+	private sendWebsocketMessage<J extends keyof MessageEvents>(topic: J, ...payload: Parameters<MessageEvents[J]>) {
 		this.webSocketWorker.postMessage(
 			JSON.stringify({
 				[topic]: payload,
 			}),
 		);
+	}
+
+	private sendElectronMessage<J extends keyof MessageEvents>(topic: J, ...payload: Parameters<MessageEvents[J]>) {
 		this.mainWindow.webContents.send(
 			'message',
 			JSON.stringify({
@@ -152,17 +163,15 @@ export class MessageHandler {
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
-		this.webSocketWorker.postMessage(
-			JSON.stringify({
-				[topic]: payload,
-				socketId: socketId,
-			}),
-		);
-		if (socketId) return;
-		this.sendMessage(topic, ...payload);
+		if (socketId) {
+			this.sendWebsocketMessage(topic, ...payload);
+		} else {
+			this.sendElectronMessage(topic, ...payload);
+		}
 	}
 
 	private initData(socketId: string | undefined = undefined) {
+		console.log("Init Data", socketId)
 		this.sendInitMessage(socketId, 'CurrentPlayer', this.storeCurrentPlayer.getCurrentPlayer());
 		this.sendInitMessage(socketId, 'CurrentPlayers', this.storePlayers.getCurrentPlayers());
 		this.sendInitMessage(
