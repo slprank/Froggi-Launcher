@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
 	import { electronEmitter } from '$lib/utils/store.svelte';
 
 	export let shareUrl: string = '';
@@ -18,7 +19,7 @@
 	<div class="share-info">
 		<span class="share-label">{label}</span>
 		{#if shareUrl}
-			<span class="share-url">{shareUrl}</span>
+			<SecretUrl class="share-url" value={shareUrl} />
 		{:else}
 			<span class="share-empty">No ngrok URL — start ngrok in Settings → Remote Access</span>
 		{/if}

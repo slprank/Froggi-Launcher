@@ -1,0 +1,1370 @@
+{
+  "isDemo": true,
+  "description": "Highlight videos from the \"Highlights (replay buffer)\" flow: Post Game plays video \"game\" (this game's best 5), Post Set video \"set\" (the set, game by game), Menu video \"tournament\" (every set, shuffled). Turn the flow on in Automation → Flows.",
+  "froggiVersion": "2.0.0-beta.90",
+  "id": "highlights",
+  "aspectRatio": {
+    "width": 16,
+    "height": 9
+  },
+  "title": "Highlights (game, set, tournament)",
+  "postGame": {
+    "active": true,
+    "fallback": "menu",
+    "animation": {
+      "duration": 250,
+      "in": {
+        "options": {
+          "delay": 0,
+          "duration": 250,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly automatic"
+      },
+      "out": {
+        "options": {
+          "delay": 0,
+          "duration": 150,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly"
+      },
+      "layerRenderDelay": 60
+    },
+    "background": {
+      "color": "#000000",
+      "customImage": {},
+      "image": {},
+      "opacity": 100,
+      "type": "None",
+      "animation": {
+        "in": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        },
+        "out": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        }
+      }
+    },
+    "font": {
+      "family": "Roboto Bold Italic"
+    },
+    "layers": [
+      {
+        "title": "Video \"game\"",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 512,
+              "h": 288,
+              "x": 0,
+              "y": 0,
+              "id": "ssyvokys9"
+            },
+            "elementId": 3000,
+            "id": "ssyvokys9",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#0b0e13f2",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 448,
+              "h": 16,
+              "x": 32,
+              "y": 8,
+              "id": "ssryapb2j"
+            },
+            "elementId": 1000,
+            "id": "ssryapb2j",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "THIS GAME'S HIGHLIGHTS",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 448,
+              "h": 252,
+              "x": 32,
+              "y": 30,
+              "id": "ssjukqdhc"
+            },
+            "elementId": 2100,
+            "id": "ssjukqdhc",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "video": {
+                "key": "game",
+                "volume": 0
+              }
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 0
+      }
+    ]
+  },
+  "postSet": {
+    "active": true,
+    "fallback": "menu",
+    "animation": {
+      "duration": 250,
+      "in": {
+        "options": {
+          "delay": 0,
+          "duration": 250,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly automatic"
+      },
+      "out": {
+        "options": {
+          "delay": 0,
+          "duration": 150,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly"
+      },
+      "layerRenderDelay": 60
+    },
+    "background": {
+      "color": "#000000",
+      "customImage": {},
+      "image": {},
+      "opacity": 100,
+      "type": "None",
+      "animation": {
+        "in": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        },
+        "out": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        }
+      }
+    },
+    "font": {
+      "family": "Roboto Bold Italic"
+    },
+    "layers": [
+      {
+        "title": "Video \"set\"",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 512,
+              "h": 288,
+              "x": 0,
+              "y": 0,
+              "id": "ss1snex4i"
+            },
+            "elementId": 3000,
+            "id": "ss1snex4i",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#0b0e13f2",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 448,
+              "h": 16,
+              "x": 32,
+              "y": 8,
+              "id": "ss9bhgjld"
+            },
+            "elementId": 1000,
+            "id": "ss9bhgjld",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "SET HIGHLIGHTS",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 448,
+              "h": 252,
+              "x": 32,
+              "y": 30,
+              "id": "ssruobl1d"
+            },
+            "elementId": 2100,
+            "id": "ssruobl1d",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "video": {
+                "key": "set",
+                "volume": 0
+              }
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 0
+      }
+    ]
+  },
+  "menu": {
+    "active": true,
+    "fallback": "menu",
+    "animation": {
+      "duration": 250,
+      "in": {
+        "options": {
+          "delay": 0,
+          "duration": 250,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly automatic"
+      },
+      "out": {
+        "options": {
+          "delay": 0,
+          "duration": 150,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly"
+      },
+      "layerRenderDelay": 60
+    },
+    "background": {
+      "color": "#000000",
+      "customImage": {},
+      "image": {},
+      "opacity": 100,
+      "type": "None",
+      "animation": {
+        "in": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        },
+        "out": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        }
+      }
+    },
+    "font": {
+      "family": "Roboto Bold Italic"
+    },
+    "layers": [
+      {
+        "title": "Video \"tournament\"",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 512,
+              "h": 288,
+              "x": 0,
+              "y": 0,
+              "id": "sstzjgf0b"
+            },
+            "elementId": 3000,
+            "id": "sstzjgf0b",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#0b0e13f2",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 448,
+              "h": 16,
+              "x": 32,
+              "y": 8,
+              "id": "ss5zobfie"
+            },
+            "elementId": 1000,
+            "id": "ss5zobfie",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "TOURNAMENT HIGHLIGHTS",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 448,
+              "h": 252,
+              "x": 32,
+              "y": 30,
+              "id": "ss3z18r8b"
+            },
+            "elementId": 2100,
+            "id": "ss3z18r8b",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "video": {
+                "key": "tournament",
+                "volume": 0
+              }
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 0
+      }
+    ]
+  }
+}

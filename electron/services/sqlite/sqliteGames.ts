@@ -4,6 +4,7 @@ import { SqliteOrm } from "./initiSqlite";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { GameStartMode, GameStats } from "../../../frontend/src/lib/models/types/slippiData";
 import { GameStatsEntity } from "./entities/game/gameStatsEntity";
+import { PlayerTypeEntity } from "./entities/player/playerEntity";
 import { ElectronGamesStore } from "../../services/store/storeGames";
 import { MessageHandler } from "../../services/messageHandler";
 
@@ -116,15 +117,38 @@ export class SqliteGame {
     }
   }
 
+  /** Persist the players' set identities (froggiKey) of stored games. */
+  async updatePlayerKeys(games: GameStats[]): Promise<void> {
+    await this.sqlite.initializing;
+    const repo = this.sqlite.getRepository(PlayerTypeEntity);
+    for (const game of games) {
+      for (const p of (game.settings?.players ?? []) as (PlayerTypeEntity | null)[]) {
+        if (p?.id) await repo.update(p.id, { froggiKey: p.froggiKey ?? null });
+      }
+    }
+  }
+
   async updateGamesBatch(games: GameStats[]): Promise<void> {
     await this.sqlite.initializing;
     if (!games.length) return;
     for (const game of games) {
       const entity = game as GameStatsEntity;
       if (!entity.id) continue;
-      await this.gameStatsRepo.update(entity.id, { score: game.score, timestamp: game.timestamp });
+      await this.gameStatsRepo.update(entity.id, { score: game.score, timestamp: game.timestamp, resultOverride: game.resultOverride ?? null });
     }
     this.messageHandler.sendMessage('RecentGames', games);
+  }
+
+  /** Save the host's side swaps on a set's first game. */
+  async setGameSides(id: number, sides: GameStats['sides']): Promise<void> {
+    await this.sqlite.initializing;
+    await this.gameStatsRepo.update(id, { sides: sides ?? null });
+  }
+
+  /** Save a stored game's highlights (frames + score). */
+  async setGameHighlights(id: number, highlights: GameStats['highlights']): Promise<void> {
+    await this.sqlite.initializing;
+    await this.gameStatsRepo.update(id, { highlights: highlights ?? null });
   }
 
   private async sendRecentGames() {

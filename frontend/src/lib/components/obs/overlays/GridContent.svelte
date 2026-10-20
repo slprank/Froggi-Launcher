@@ -3,7 +3,8 @@
 	import type { GridContentItem, Scene } from '$lib/models/types/overlay';
 	import { fly, type TransitionConfig } from 'svelte/transition';
 	import { COL } from '$lib/models/const';
-	import AnimationLayer from './element/animations/AnimationLayer.svelte';
+	import AnimationStack from './element/animations/AnimationStack.svelte';
+	import { elementValue } from './element/animations/elementValue';
 	import { createAnimation } from './element/animations/Animations.svelte';
 	import GridElements from '$lib/components/obs/overlays/GridElements.svelte';
 	import VisibilityAnimationLayer from './element/animations/VisibilityAnimationLayer.svelte';
@@ -74,7 +75,7 @@
 				} bg-opacity-50 relative`}
 			>
 				{#if edit}
-					<GridElements {dataItem} {edit} {designWidth} {designHeight} {overlayId} />
+					<GridElements {dataItem} {edit} {designWidth} {designHeight} {overlayId} sceneFont={curScene?.font?.family} />
 					<h1
 						class="text-secondary-color absolute top-0 left-0"
 						style={`font-size: 0.5rem; line-height: 0.5rem;`}
@@ -114,33 +115,11 @@
 								{overlayId}
 								isDemo={!!demoItem}
 							>
-								<AnimationLayer
-									animationIn={(node) =>
-										createAnimation(
-											node,
-											dataItem?.data.animationTrigger.in,
-											boardHeight,
-											boardWidth,
-											0,
-											dataItem,
-										)}
-									animationOut={(node) =>
-										createAnimation(
-											node,
-											dataItem?.data.animationTrigger.out,
-											boardHeight,
-											boardWidth,
-											0,
-											dataItem,
-										)}
-									{dataItem}
-									{edit}
-									{preview}
-									{overlayId}
-									isDemo={!!demoItem}
-								>
-									<GridElements {dataItem} {preview} {designWidth} {designHeight} {overlayId} />
-								</AnimationLayer>
+								<AnimationStack {dataItem} {boardHeight} {boardWidth} {edit} {preview} {overlayId} isDemo={!!demoItem}>
+									<div style="display: contents" use:elementValue={dataItem.id}>
+										<GridElements {dataItem} {preview} {designWidth} {designHeight} {overlayId} sceneFont={curScene?.font?.family} />
+									</div>
+								</AnimationStack>
 							</VisibilityAnimationLayer>
 						{/if}
 					</div>

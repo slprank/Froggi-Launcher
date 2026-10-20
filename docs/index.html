@@ -3,394 +3,204 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Froggi — Slippi Stream Overlay Tool for Melee</title>
+  <title>Froggi — Stream &amp; tournament tool for Melee</title>
   <link rel="icon" type="image/png" href="icon.png" />
-  <meta name="description" content="Froggi is a free desktop app that reads Slippi data and drives live OBS overlays for Super Smash Bros. Melee tournaments and ranked matches." />
-  <meta name="keywords" content="Slippi, Melee, SSBM, Super Smash Bros Melee, stream overlay, OBS overlay, tournament overlay, Froggi, ranked overlay, slippi overlay" />
+  <meta name="description" content="Froggi is a free desktop app for Super Smash Bros. Melee: live Slippi overlays for OBS, stage striking on phones, a tournament dashboard, automation, highlights and minigames." />
+  <meta name="keywords" content="Slippi, Melee, SSBM, stream overlay, OBS overlay, tournament, stage striking, Froggi, ranked overlay, doubles overlay" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Froggi — Slippi Stream Overlay Tool" />
-  <meta property="og:description" content="Free desktop app that reads Slippi data and drives live OBS overlays for Melee." />
+  <meta property="og:title" content="Froggi — Stream & tournament tool for Melee" />
+  <meta property="og:description" content="Live Slippi overlays, stage striking on phones, a tournament dashboard and automation — free and open source." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://sindrevatnaland.github.io/Froggi/" />
-  <meta property="og:image" content="https://sindrevatnaland.github.io/Froggi/preview.png" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Froggi — Slippi Stream Overlay Tool" />
-  <meta name="twitter:description" content="Free desktop app that reads Slippi data and drives live OBS overlays for Melee." />
+  <meta property="og:image" content="https://sindrevatnaland.github.io/Froggi/icon.png" />
+  <meta name="twitter:card" content="summary" />
 
   <style>
+    @font-face { font-family: 'Cookie'; src: url('Cookie-Regular.woff2') format('woff2'); font-display: swap; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Froggi's own colours (app.css): cream + maroon, dark mode grey */
     :root {
-      --bg: #f4f5f7;
-      --surface: #ffffff;
-      --border: rgba(0,0,0,0.08);
-      --border-hover: rgba(0,0,0,0.18);
-      --text: #111111;
-      --muted: rgba(0,0,0,0.4);
-      --accent: #40DCA5;
-      --accent-dark: #2bb88a;
-      --bmc: #FFDD00;
-      --bmc-dark: #e6c800;
+      --primary: #fbf0e5;
+      --secondary: #450d21;
+      --success: #22c55e;
+      --soft: color-mix(in srgb, var(--secondary) 8%, transparent);
+      --line: color-mix(in srgb, var(--secondary) 22%, transparent);
+      --muted: color-mix(in srgb, var(--secondary) 65%, transparent);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --primary: #1a1a1a; --secondary: #d1d1d1; --success: #16a34a; }
     }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    header {
-      width: 100%;
-      max-width: 680px;
-      padding: 4rem 1.5rem 2rem;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .app-icon {
-      width: 96px;
-      height: 96px;
-      border-radius: 22px;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    }
-
-    .logo {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--text);
-    }
-
-    .tagline {
-      margin-top: 0.75rem;
-      font-size: 1rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    main {
-      width: 100%;
-      max-width: 680px;
-      padding: 0 1.5rem 4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      padding: 1.5rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    .card-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    /* Download */
-    .download-primary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .download-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .download-sub {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 0.15rem;
-    }
-
-    .btn-download {
-      display: inline-block;
-      background: var(--accent);
-      color: #000;
-      font-weight: 700;
-      font-size: 0.85rem;
-      padding: 0.55rem 1.25rem;
-      border-radius: 0.3rem;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background 0.15s;
-    }
-    .btn-download:hover { background: var(--accent-dark); }
-
-    .other-platforms {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .btn-alt {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.3rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 0.25rem;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .btn-alt:hover { color: var(--text); border-color: var(--border-hover); }
-
-    /* Feature grid */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
-
-    @media (max-width: 480px) {
-      .feature-grid { grid-template-columns: 1fr; }
-    }
-
-    .feat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      padding: 1rem 1.1rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-
-    .feat-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--accent-dark);
-      margin-bottom: 0.35rem;
-      letter-spacing: 0.01em;
-    }
-
-    .feat-body {
-      font-size: 0.8rem;
-      color: var(--text);
-      opacity: 0.6;
+      background: var(--primary);
+      color: var(--secondary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       line-height: 1.55;
+      display: flex; flex-direction: column; align-items: center;
     }
+    a { color: inherit; }
+    main { width: 100%; max-width: 920px; padding: 0 1.25rem 3rem; display: flex; flex-direction: column; gap: 2.75rem; }
 
-    /* Links */
-    .link-row {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
+    header { text-align: center; padding: 3.5rem 1rem 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.9rem; }
+    .app-icon { width: 92px; height: 92px; border-radius: 22px; box-shadow: 0 6px 24px rgba(0,0,0,0.15); }
+    h1 { font-size: 2.8rem; font-weight: 800; font-style: italic; letter-spacing: -0.02em; }
+    .tagline { max-width: 560px; font-size: 1.05rem; color: var(--muted); }
 
-    .link-card {
-      flex: 1;
-      min-width: 140px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      text-decoration: none;
-      padding: 0.875rem 1rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 0.35rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      transition: border-color 0.15s;
-    }
-    .link-card:hover { border-color: var(--border-hover); }
+    .card { border: 1px solid var(--line); border-radius: 0.6rem; padding: 1.25rem; background: var(--soft); }
+    .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin-bottom: 0.6rem; }
 
-    .link-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
+    .download { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+    .dl-name { font-size: 1.15rem; font-weight: 700; }
+    .dl-sub { font-size: 0.8rem; opacity: 0.6; word-break: break-all; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; font-weight: 700;
+      border-radius: 0.4rem; padding: 0.7rem 1.4rem; background: var(--secondary); color: var(--primary);
+      transition: transform 0.12s, opacity 0.12s;
     }
-    .link-desc {
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
+    .btn:hover { transform: translateY(-1px); opacity: 0.92; }
+    .alts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; font-size: 0.85rem; }
+    .alt { border: 1px solid var(--line); border-radius: 999px; padding: 0.25rem 0.85rem; text-decoration: none; opacity: 0.75; }
+    .alt:hover { opacity: 1; background: var(--soft); }
 
-    /* BuyMeACoffee card */
-    .link-card--bmc {
-      border-color: var(--bmc);
-      background: #fffde7;
-    }
-    .link-card--bmc:hover { border-color: var(--bmc-dark); background: #fff9c4; }
-    .link-card--bmc .link-title { color: #7a5f00; }
-    .link-card--bmc .link-desc  { color: #a08000; }
+    section h2 { font-size: 1.35rem; font-weight: 800; font-style: italic; margin-bottom: 0.25rem; }
+    section > p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; }
+    .feat { border: 1px solid var(--line); border-radius: 0.5rem; padding: 0.95rem 1rem; }
+    .feat b { display: block; margin-bottom: 0.25rem; }
+    .feat span { font-size: 0.88rem; color: var(--muted); }
 
-    footer {
-      padding: 2rem 1.5rem;
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-align: center;
+    .support { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: center; }
+    /* Buy Me a Coffee — official yellow + cup + Cookie wordmark */
+    .bmc {
+      display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none;
+      background: #FFDD00; color: #000; border-radius: 0.6rem; padding: 0.45rem 1.2rem 0.45rem 0.9rem;
+      font-family: 'Cookie', cursive; font-size: 1.65rem; line-height: 1; box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      transition: transform 0.12s;
     }
+    .bmc:hover { transform: translateY(-1px); }
+    .bmc img { height: 1.6rem; }
+    .link { border: 1px solid var(--line); border-radius: 0.5rem; padding: 0.6rem 1.1rem; text-decoration: none; font-weight: 600; }
+    .link:hover { background: var(--soft); }
+
+    footer { padding: 1.5rem; font-size: 0.8rem; opacity: 0.55; text-align: center; }
   </style>
 </head>
 <body>
 
 <header>
   <img class="app-icon" src="icon.png" alt="Froggi" />
-  <div class="logo">Froggi</div>
-  <p class="tagline">Realtime Slippi overlays for Super Smash Bros. Melee.<br>Tournament tools, live dashboards, and remote stream control — all in one app.</p>
+  <h1>Froggi</h1>
+  <p class="tagline">The stream and tournament tool for Super Smash Bros. Melee — live Slippi overlays for OBS, stage striking on players' phones, a tournament dashboard and automation. Free and open source.</p>
 </header>
 
 <main>
-
-  <!-- Download -->
   <div class="card">
-    <p class="card-label">Download</p>
-    <div class="download-primary">
+    <p class="label">Download</p>
+    <div class="download">
       <div>
-        <p class="download-name" id="dl-name">Loading…</p>
-        <p class="download-sub" id="dl-sub"></p>
+        <p class="dl-name" id="dl-name">Download Froggi</p>
+        <p class="dl-sub" id="dl-sub">Windows · macOS · Linux</p>
       </div>
-      <a class="btn-download" id="dl-btn" href="https://github.com/SindreVatnaland/Froggi/releases/latest">
-        Download
-      </a>
+      <a class="btn" id="dl-btn" href="https://github.com/SindreVatnaland/Froggi/releases">⬇ Download</a>
     </div>
-    <div class="other-platforms">
-      <a class="btn-alt" id="dl-win" href="https://github.com/SindreVatnaland/Froggi/releases/latest">Windows</a>
-      <a class="btn-alt" id="dl-mac" href="https://github.com/SindreVatnaland/Froggi/releases/latest">macOS</a>
-      <a class="btn-alt" id="dl-linux" href="https://github.com/SindreVatnaland/Froggi/releases/latest">Linux</a>
-      <a class="btn-alt" href="https://github.com/SindreVatnaland/Froggi/releases">All releases →</a>
+    <div class="alts">
+      <a class="alt" id="dl-win" href="https://github.com/SindreVatnaland/Froggi/releases">Windows</a>
+      <a class="alt" id="dl-mac" href="https://github.com/SindreVatnaland/Froggi/releases">macOS</a>
+      <a class="alt" id="dl-linux" href="https://github.com/SindreVatnaland/Froggi/releases">Linux</a>
+      <a class="alt" href="https://github.com/SindreVatnaland/Froggi/releases">All releases →</a>
     </div>
   </div>
 
-  <!-- Features -->
-  <div class="feature-grid">
-
-    <div class="feat-card">
-      <p class="feat-title">Realtime overlays</p>
-      <p class="feat-body">Custom overlays driven by live Slippi data — scoreboard, HUD, rank preview, win/loss tracker, and more. Build your own layout in the overlay editor.</p>
+  <section>
+    <h2>For streamers</h2>
+    <p>Overlays that follow the game by themselves — no clicking during a match.</p>
+    <div class="grid">
+      <div class="feat"><b>Live overlays</b><span>Percent, stocks, characters, score, rank, win chance, fight stats and more — build your own in the editor or start from a demo (HUD, scoreboard, doubles, post-game stats).</span></div>
+      <div class="feat"><b>OBS in one click</b><span>Froggi connects to OBS, adds your overlay as a browser source and switches scenes for menus, games, post-game and sets.</span></div>
+      <div class="feat"><b>Overlays on the game</b><span>Draw your HUD straight on the Dolphin window — no OBS needed (Windows).</span></div>
+      <div class="feat"><b>Highlights</b><span>Froggi spots punishes and combos live and plays the best moments from OBS's replay buffer after each game, set or event.</span></div>
+      <div class="feat"><b>Ranked &amp; sessions</b><span>Slippi rank, rating changes and session wins/losses — shown on stream as they happen.</span></div>
+      <div class="feat"><b>Singles &amp; doubles</b><span>Every player element works for all four doubles players, with team names, team colours and team stocks.</span></div>
     </div>
+  </section>
 
-    <div class="feat-card">
-      <p class="feat-title">Easy OBS integration</p>
-      <p class="feat-body">Add any overlay to OBS as a browser source in seconds — copy the URL or scan the QR code. Auto scene switching and remote OBS control built in.</p>
+  <section>
+    <h2>For tournaments</h2>
+    <p>Run sets from one dashboard while the stream keeps up.</p>
+    <div class="grid">
+      <div class="feat"><b>Stage striking on phones</b><span>Each player scans a link: character pick, rock-paper-scissors, strikes, bans and counterpicks with DSR — shown live on stream.</span></div>
+      <div class="feat"><b>Tournament dashboard</b><span>Set score, best of, player and team names, fixing a set by hand, and loading earlier replays into a set.</span></div>
+      <div class="feat"><b>Automatic scores</b><span>Wins are reported from the Slippi replays, in singles and doubles.</span></div>
     </div>
+  </section>
 
-    <div class="feat-card">
-      <p class="feat-title">Overlays on the game itself</p>
-      <p class="feat-body">Inject overlays directly on top of the Dolphin window — no OBS required. Run your HUD and stats over the game whether you're streaming or just playing. (Windows)</p>
+  <section>
+    <h2>Automate &amp; play</h2>
+    <p>Make Froggi react to the game exactly the way you want.</p>
+    <div class="grid">
+      <div class="feat"><b>Flows</b><span>When → And → Then cards: switch scenes, call webhooks, control OBS, run timers and build highlight reels from game events.</span></div>
+      <div class="feat"><b>Webhooks</b><span>Send game events to Discord bots, dashboards or your own tools.</span></div>
+      <div class="feat"><b>AI assistant</b><span>Connect Claude (or another AI app) to build overlays, set up OBS and fix problems by chatting.</span></div>
+      <div class="feat"><b>Minigames</b><span>Bingo and Iron Man — solo, local or online against a friend, with a live overlay.</span></div>
+      <div class="feat"><b>Remote control</b><span>Control scenes and overlays from your phone, at home or over the internet.</span></div>
+      <div class="feat"><b>No account</b><span>Runs on your computer. Free forever, open source.</span></div>
     </div>
+  </section>
 
-    <div class="feat-card">
-      <p class="feat-title">Tournament ready</p>
-      <p class="feat-body">Stage striking flow, best-of tracking, and ranked set detection. Score updates automatically as games finish.</p>
+  <section>
+    <h2>Support Froggi</h2>
+    <p>Froggi is made in spare time. If it helps your stream or your event, a coffee keeps it going.</p>
+    <div class="support">
+      <a class="bmc" href="https://buymeacoffee.com/sindrevatnw"><img src="bmc-cup.svg" alt="" />Buy me a coffee</a>
+      <a class="link" href="https://github.com/SindreVatnaland/Froggi">GitHub</a>
+      <a class="link" href="https://discord.gg/rX7aQmbrEa">Discord</a>
     </div>
-
-    <div class="feat-card">
-      <p class="feat-title">Remote stream control</p>
-      <p class="feat-body">Expose your stream over the internet with Tailscale Funnel. Control OBS scenes, volumes, and overlays from your phone — anywhere.</p>
-    </div>
-
-    <div class="feat-card">
-      <p class="feat-title">Live ranked data</p>
-      <p class="feat-body">Pulls realtime Slippi ranked stats — Elo, placement, wins and losses — and surfaces them on stream automatically.</p>
-    </div>
-
-    <div class="feat-card">
-      <p class="feat-title">Dashboard monitoring</p>
-      <p class="feat-body">Live game dashboard shows stocks, percent, stage, and score at a glance. Preview your OBS output directly inside the app.</p>
-    </div>
-
-    <div class="feat-card">
-      <p class="feat-title">Webhooks</p>
-      <p class="feat-body">Send real-time game events — stock changes, percent, rank updates, stage strikes — as HTTP POST requests to any endpoint. Integrate with bots, dashboards, or custom tooling.</p>
-    </div>
-
-    <div class="feat-card">
-      <p class="feat-title">Bingo</p>
-      <p class="feat-body">Play Melee bingo solo or against an opponent online. Win conditions, timers, lockout mode, and a live OBS overlay — all synced in real time.</p>
-    </div>
-
-    <div class="feat-card">
-      <p class="feat-title">No account required</p>
-      <p class="feat-body">Works entirely offline. Open source, free forever.</p>
-    </div>
-
-  </div>
-
-  <!-- Links -->
-  <div class="link-row">
-    <a class="link-card" href="https://github.com/SindreVatnaland/Froggi">
-      <span class="link-title">GitHub</span>
-      <span class="link-desc">Source code, issues, releases</span>
-    </a>
-    <a class="link-card link-card--bmc" href="https://buymeacoffee.com/sindrevatnw">
-      <span class="link-title">☕ Buy Me a Coffee</span>
-      <span class="link-desc">Support development</span>
-    </a>
-  </div>
-
+  </section>
 </main>
 
-<footer>Free and open source · Super Smash Bros. Melee stream tool</footer>
-
-<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="sindrevatnw" data-description="Support Froggi development!" data-message="" data-color="#FFDD00" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+<footer>Froggi · free and open source · not affiliated with Nintendo or Project Slippi</footer>
 
 <script>
+  // The newest release that has a file for this OS — betas included (Froggi 2 ships as betas; files are
+  // uploaded OS by OS, so the newest release may not have this OS's file yet).
   (async function () {
-    const RELEASES = 'https://github.com/SindreVatnaland/Froggi/releases/latest';
-    const API = 'https://api.github.com/repos/SindreVatnaland/Froggi/releases/latest';
+    const RELEASES = 'https://github.com/SindreVatnaland/Froggi/releases';
+    const API = 'https://api.github.com/repos/SindreVatnaland/Froggi/releases?per_page=30';
     const ua = navigator.userAgent;
-
-    const isMac   = /Mac/i.test(ua);
-    const isWin   = /Win/i.test(ua);
-    const isLinux = /Linux/i.test(ua) && !/Android/i.test(ua);
-    const isArm   = /arm|aarch/i.test(navigator.platform || ua);
-
-    const btn  = document.getElementById('dl-btn');
+    const os = /Win/i.test(ua) ? 'win' : /Mac/i.test(ua) ? 'mac' : /Linux/i.test(ua) && !/Android/i.test(ua) ? 'linux' : null;
+    const isArm = /arm|aarch/i.test(navigator.platform || ua);
+    const btn = document.getElementById('dl-btn');
     const name = document.getElementById('dl-name');
-    const sub  = document.getElementById('dl-sub');
+    const sub = document.getElementById('dl-sub');
+    const label = { win: 'Windows', mac: 'macOS', linux: 'Linux' };
+    if (!os) return;
+    document.getElementById('dl-' + os).style.display = 'none';
+    name.textContent = 'Download for ' + label[os];
+    sub.textContent = 'Finding the newest version…';
 
-    if (isMac)   document.getElementById('dl-mac').style.display  = 'none';
-    if (isWin)   document.getElementById('dl-win').style.display  = 'none';
-    if (isLinux) document.getElementById('dl-linux').style.display = 'none';
-
-    if (isMac)        { name.textContent = 'Download for macOS';  sub.textContent = 'Fetching latest…'; }
-    else if (isWin)   { name.textContent = 'Download for Windows'; sub.textContent = 'Fetching latest…'; }
-    else if (isLinux) { name.textContent = 'Download for Linux';   sub.textContent = 'Fetching latest…'; }
-    else              { name.textContent = 'Download';              sub.textContent = 'Choose your platform below'; btn.href = RELEASES; return; }
-
+    const pick = (assets) => {
+      if (os === 'mac') {
+        const dmgs = assets.filter((a) => a.name.endsWith('.dmg'));
+        return dmgs.find((a) => (isArm ? /arm64/i : /x64/i).test(a.name)) || dmgs[0];
+      }
+      if (os === 'win') return assets.find((a) => a.name.endsWith('.exe'));
+      return assets.find((a) => a.name.endsWith('.AppImage'));
+    };
     try {
       const res = await fetch(API, { headers: { Accept: 'application/vnd.github+json' } });
       if (!res.ok) throw new Error('API error');
-      const release = await res.json();
-      const assets = release.assets || [];
-
-      let asset;
-      if (isMac) {
-        asset = assets.find(a => a.name.endsWith('.dmg') && (isArm ? /arm64/i.test(a.name) : /x64/i.test(a.name)))
-             || assets.find(a => a.name.endsWith('.dmg'));
-        if (asset) sub.textContent = asset.name;
-      } else if (isWin) {
-        asset = assets.find(a => a.name.endsWith('.exe'));
-        if (asset) sub.textContent = asset.name;
-      } else if (isLinux) {
-        asset = assets.find(a => a.name.endsWith('.AppImage'));
-        if (asset) sub.textContent = asset.name;
+      const releases = (await res.json())
+        .filter((r) => !r.draft)
+        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+      for (const r of releases) {
+        const asset = pick(r.assets || []);
+        if (!asset) continue;
+        btn.href = asset.browser_download_url;
+        sub.textContent = r.tag_name + (r.prerelease ? ' (beta)' : '') + ' · ' + asset.name;
+        return;
       }
-
-      btn.href = asset ? asset.browser_download_url : RELEASES;
-      if (!asset) sub.textContent = 'See all releases →';
+      throw new Error('no file');
     } catch (_) {
       btn.href = RELEASES;
       sub.textContent = 'See all releases →';

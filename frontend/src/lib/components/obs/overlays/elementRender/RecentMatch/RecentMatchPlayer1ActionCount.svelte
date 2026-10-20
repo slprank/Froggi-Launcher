@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { finite } from '$lib/utils/finite';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import TextElement from '$lib/components/obs/overlays/element/TextElement.svelte';
@@ -11,7 +12,7 @@
 	export let playerIndex: number;
 	export let stats: MatchStats;
 
-	$: actionCount = stats?.actionCounts?.[playerIndex ?? 0];
+	$: actionCount = stats?.actionCounts?.find((a) => a.playerIndex === playerIndex);
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountAirDodge}
@@ -89,7 +90,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountGrabSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCount?.grabCount, playerIndex].some((e) => e === undefined || e === null)
-			? Number(
+			? finite(
 					(
 						(actionCount?.grabCount.success ?? 0) /
 						((actionCount?.grabCount.success ?? 0) + (actionCount?.grabCount.fail ?? 0))
@@ -110,7 +111,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountGrabFailPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCount?.grabCount, playerIndex].some((e) => e === undefined || e === null)
-			? Number(
+			? finite(
 					(
 						(actionCount?.grabCount.fail ?? 0) /
 						((actionCount?.grabCount.success ?? 0) + (actionCount?.grabCount.fail ?? 0))
@@ -144,7 +145,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountGroundTechSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCount?.groundTechCount, playerIndex].some((e) => e === undefined || e === null)
-			? Number(
+			? finite(
 					(
 						((actionCount?.groundTechCount.neutral ?? 0) +
 							(actionCount?.groundTechCount.in ?? 0) +
@@ -194,7 +195,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountGroundTechFailPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCount?.groundTechCount, playerIndex].some((e) => e === undefined || e === null)
-			? Number(
+			? finite(
 					(
 						(actionCount?.groundTechCount.fail ?? 0) /
 						((actionCount?.groundTechCount.fail ?? 0) +
@@ -226,7 +227,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountLCancelSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCount?.lCancelCount, playerIndex].some((e) => e === undefined || e === null)
-			? Number(
+			? finite(
 					(
 						(actionCount?.lCancelCount.success ?? 0) /
 						((actionCount?.lCancelCount.success ?? 0) +
@@ -248,7 +249,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1ActionCountLCancelFailPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCount?.lCancelCount, playerIndex].some((e) => e === undefined || e === null)
-			? Number(
+			? finite(
 					(
 						(actionCount?.lCancelCount.fail ?? 0) /
 						((actionCount?.lCancelCount.fail ?? 0) +

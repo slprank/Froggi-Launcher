@@ -109,6 +109,7 @@ export class ElectronFroggiStore {
         const version = this.store.get("__internal__.migrations.version") as string;
         this.log.info("Froggi Version", version);
         this.store.set("settings.froggi.version", version);
+        this.store.set("settings.froggi.platform", process.platform);
     }
 
     private initStoreListeners() {

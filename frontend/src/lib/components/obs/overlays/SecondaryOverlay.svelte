@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { overlays } from '$lib/utils/store.svelte';
+	import { isElectron, overlays, statsScene, urls } from '$lib/utils/store.svelte';
+	import AssetPreloader from './AssetPreloader.svelte';
 	import { fade } from 'svelte/transition';
 	import Board from '$lib/components/obs/overlays/Board.svelte';
 	import { page } from '$app/stores';
@@ -24,6 +25,11 @@
 </script>
 
 <svelte:window on:error={handleError} />
+
+<!-- The live overlay (OBS / injection) preloads its images and videos; previews don't. -->
+{#if curOverlay && !preview}
+	<AssetPreloader overlay={curOverlay} scene={sceneOverride ?? $statsScene} base={($isElectron ? $urls?.localResource : $urls?.externalResource) ?? ''} />
+{/if}
 
 <!-- |local: a preview card must not hold up page navigation (Svelte 3 waits for nested global outros
      and a still-delayed intro can stall them, leaving the old page stacked above the new one). -->

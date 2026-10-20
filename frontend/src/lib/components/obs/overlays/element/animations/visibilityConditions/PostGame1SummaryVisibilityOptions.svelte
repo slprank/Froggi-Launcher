@@ -5,7 +5,7 @@
 		VisibilityToggle,
 	} from '$lib/models/types/animationOption';
 	import type { CurrentPlayer, GameStats, Player } from '$lib/models/types/slippiData';
-	import { getWinnerIndex } from '$lib/utils/gamePredicates';
+	import { gameWinnerSlot, getWinnerIndex } from '$lib/utils/gamePredicates';
 
 	export const postGame1SummaryVisibilityOption = (
 		option: SelectedVisibilityCondition,
@@ -26,6 +26,12 @@
 			if (winnerIndex === player?.playerIndex) return true;
 		if (option[VisibilityOption.PostGame1SummaryCurrentPlayerWin] === VisibilityToggle.False)
 			if (winnerIndex !== player?.playerIndex) return true;
+		// Player 1 / Player 2 = the set's sides (from the stored set score of that game).
+		const winnerSlot = gameWinnerSlot(recentGames, gameIndex);
+		if (option[VisibilityOption.PostGame1SummaryPlayer1Win] === VisibilityToggle.True) if (winnerSlot === 0) return true;
+		if (option[VisibilityOption.PostGame1SummaryPlayer1Win] === VisibilityToggle.False) if (game && winnerSlot !== 0) return true;
+		if (option[VisibilityOption.PostGame1SummaryPlayer2Win] === VisibilityToggle.True) if (winnerSlot === 1) return true;
+		if (option[VisibilityOption.PostGame1SummaryPlayer2Win] === VisibilityToggle.False) if (game && winnerSlot !== 1) return true;
 
 		if (option[VisibilityOption.PostGame1SummaryPlayer1Stock1] === VisibilityToggle.True)
 			if (

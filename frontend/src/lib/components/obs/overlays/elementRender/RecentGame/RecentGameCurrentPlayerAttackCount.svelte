@@ -12,7 +12,7 @@
 	export let playerIndex: number;
 	export let stats: StatsType | null | undefined;
 
-	$: attackCount = stats?.actionCounts?.[playerIndex ?? 0]?.attackCount;
+	$: attackCount = stats?.actionCounts?.find((a) => a.playerIndex === playerIndex)?.attackCount;
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerAttackCountBair}

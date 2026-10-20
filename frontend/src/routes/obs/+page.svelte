@@ -1,16 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { isAuthorized } from '$lib/utils/store.svelte';
-	import { Layers, Trophy, Settings, BookOpen, Send, PlugZap, Workflow } from 'lucide-svelte';
+	import { Layers, Trophy, BookOpen, PlugZap, Workflow } from 'lucide-svelte';
 
+	// URLs stay under /obs (OBS browser sources and bookmarks point here); only the labels say "Stream".
 	const navItems = [
-		{
-			label: 'Connect OBS',
-			description: 'Get OBS connected — one-click auto setup.',
-			path: '/obs/setup',
-			icon: PlugZap,
-			requiresAuth: false,
-		},
 		{
 			label: 'Overlays',
 			description: 'Manage and preview stream overlays.',
@@ -26,24 +20,17 @@
 			requiresAuth: true,
 		},
 		{
-			label: 'OBS Settings',
-			description: 'WebSocket connection, scene commands, controller bindings.',
-			path: '/obs/settings',
-			icon: Settings,
-			requiresAuth: true,
+			label: 'OBS Connection',
+			description: 'Status, one-click setup and the WebSocket address.',
+			path: '/obs/setup',
+			icon: PlugZap,
+			requiresAuth: false,
 		},
 		{
-			label: 'Flows',
-			description: 'When something happens in game, and conditions hold, then POST or control OBS.',
-			path: '/obs/flows',
+			label: 'Automation',
+			description: 'Scene and controller commands, flows, webhooks.',
+			path: '/obs/automation',
 			icon: Workflow,
-			requiresAuth: true,
-		},
-		{
-			label: 'Webhooks',
-			description: 'Send real-time game events to external HTTP endpoints.',
-			path: '/obs/webhook',
-			icon: Send,
 			requiresAuth: true,
 		},
 		{
@@ -59,8 +46,8 @@
 <main class="background-primary-color text-secondary-color flex justify-center">
 	<div class="w-full max-w-lg flex flex-col gap-6">
 		<div>
-			<h1 class="font-bold text-3xl">OBS</h1>
-			<p class="text-sm opacity-50 mt-1">Overlays, dashboard, and settings.</p>
+			<h1 class="font-bold text-3xl">Stream</h1>
+			<p class="text-sm opacity-50 mt-1">Overlays, dashboard, OBS connection and automation.</p>
 		</div>
 
 		<div class="flex flex-col gap-3">

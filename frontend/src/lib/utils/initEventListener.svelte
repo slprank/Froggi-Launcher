@@ -41,6 +41,17 @@
 		strikeState,
 		strikeTokens,
 		flows,
+		flowTestResult,
+		flowGameState,
+		flowFailures,
+		highlightReels,
+		serverClockOffset,
+		videoVolumes,
+		teamNames,
+		liveFightStats,
+		continueSetAcrossSessions,
+		previewFrozen,
+		recentReplays,
 		webhookProfiles,
 		webhooksEnabled,
 		techniqueEvents,
@@ -91,10 +102,14 @@
 		16,
 	);
 
+	// While a screenshot preview shows a frozen replay moment, live game data must not replace it.
+	const FROZEN_TOPICS = new Set<string>(['GameFrame', 'GameSettings', 'CurrentPlayers', 'PostGameStats', 'GameScore', 'RecentGames', 'LiveFightStats', 'GameState', 'CurrentMatch', 'MatchStats']);
+
 	async function messageDataHandler<J extends keyof MessageEvents>(
 		topic: J,
 		...payload: Parameters<MessageEvents[J]>
 	) {
+		if (get(previewFrozen) && FROZEN_TOPICS.has(topic)) return;
 		switch (topic) {
 			case 'AuthorizationKey':
 				(() => {
@@ -384,8 +399,34 @@
 			case 'ObsProcessStatus':
 				obsProcessStatus.set(payload[0] as Parameters<MessageEvents['ObsProcessStatus']>[0]);
 				break;
+			case 'TeamNames':
+				teamNames.set(payload[0] as Parameters<MessageEvents['TeamNames']>[0]);
+				break;
+			case 'RecentReplays':
+				recentReplays.set(payload[0] as Parameters<MessageEvents['RecentReplays']>[0]);
+				break;
+			case 'ContinueSetAcrossSessions':
+				continueSetAcrossSessions.set(payload[0] as Parameters<MessageEvents['ContinueSetAcrossSessions']>[0]);
+				break;
+			case 'LiveFightStats':
+				liveFightStats.set(payload[0] as Parameters<MessageEvents['LiveFightStats']>[0]);
+				break;
 			case 'Flows':
 				flows.set(payload[0] as Parameters<MessageEvents['Flows']>[0]);
+				break;
+			case 'HighlightReels':
+				highlightReels.set(payload[0] as Parameters<MessageEvents['HighlightReels']>[0]);
+				serverClockOffset.set((payload[1] as number) - Date.now());
+				videoVolumes.set((payload[2] as Record<string, number>) ?? {});
+				break;
+			case 'FlowFailures':
+				flowFailures.set(payload[0] as Parameters<MessageEvents['FlowFailures']>[0]);
+				break;
+			case 'FlowState':
+				flowGameState.set(payload[0] as Parameters<MessageEvents['FlowState']>[0]);
+				break;
+			case 'FlowTestResult':
+				flowTestResult.set(payload[0] as Parameters<MessageEvents['FlowTestResult']>[0]);
 				break;
 			case 'StrikePlayerTokens':
 				strikeTokens.set(payload[0] as Parameters<MessageEvents['StrikePlayerTokens']>[0]);

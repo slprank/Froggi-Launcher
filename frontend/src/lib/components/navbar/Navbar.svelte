@@ -127,6 +127,17 @@
 								</svg>
 								</NavButton>
 							</div>
+							<div
+								use:tooltip={{
+									content: `<p>Buy me a coffee</p>`,
+									html: true,
+									placement: 'right',
+									delay: [1000, 0],
+									offset: 25,
+								}}
+							>
+								<BuyMeACoffee />
+							</div>
 						</div>
 				</div>
 				<div class="w-full flex flex-col gap-2 justify-end items-center h-[20%]">
@@ -166,6 +177,7 @@
 					>
 						<ConnectionStateButton
 							iconPath="/image/button-icons/obs.png"
+							label="Stream"
 							connectionState={$obsConnection.state}
 							click={() => goto('/obs')}
 						/>
@@ -234,6 +246,7 @@
 					<div class="w-12 bg-black bg-opacity-30 justify-center items-center rounded-2xl space-y-2 p-1">
 						<ConnectionStateButton
 							iconPath="/image/button-icons/obs.png"
+							label="Stream"
 							connectionState={$obsConnection.state}
 							click={() => goto('/obs')}
 						/>

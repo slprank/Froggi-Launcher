@@ -1,7 +1,8 @@
+import { isSetComplete } from '../../frontend/src/lib/utils/gamePredicates';
 import "reflect-metadata";
 import { ElectronGamesStore } from '../../electron/services/store/storeGames';
 import { StatsDisplay } from '../../electron/services/statsDisplay';
-import { GameStartType, SlippiGame, SlpParser, SlpStream } from '@slippi/slippi-js';
+import { GameEndType, GameStartType, SlippiGame, SlpParser, SlpStream } from '@slippi/slippi-js';
 import Store from "electron-store";
 import { Api } from "../../electron/services/api";
 import { ElectronSessionStore } from "../../electron/services/store/storeSession";
@@ -71,6 +72,8 @@ describe('ElectronGamesStore', () => {
         { file: "direct-set-1/Replay 3 [L].slp", expectedLength: 3, expectedScore: [1, 2], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: undefined },
         { file: "direct-set-1/Replay 4 [W].slp", expectedLength: 4, expectedScore: [1, 3], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
 
+        { file: "direct-doubles-set-1/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "teams", connectCode: "NOHACK#0", expectedScene: LiveStatsScene.PostGame, setBestOf: BestOf.BestOf3 },
+
         { file: "direct-set-2/Replay 1 [W].slp", expectedLength: 1, expectedScore: [0, 1], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostGame, setBestOf: BestOf.BestOf3 },
         { file: "direct-set-2/Replay 2 [W].slp", expectedLength: 2, expectedScore: [0, 2], expectedMode: "direct", connectCode: "FLCD#507", expectedScene: LiveStatsScene.PostSet, setBestOf: undefined },
 
@@ -129,7 +132,7 @@ describe('ElectronGamesStore', () => {
 
         storePlayers = new ElectronPlayersStore(log, eventEmitter, messageHandler)
 
-        storeCurrentPlayer = new ElectronCurrentPlayerStore(log, store, storeLiveStats, storeSession, storeSettings, messageHandler, sqliteCurrentPlayer, storePlayers)
+        storeCurrentPlayer = new ElectronCurrentPlayerStore(log, store, storeSession, storeSettings, messageHandler, sqliteCurrentPlayer, storePlayers)
         storeCurrentPlayer.getCurrentPlayer = async (): Promise<CurrentPlayer | undefined> => {
             return {
                 connectCode: connectCode,
@@ -150,7 +153,7 @@ describe('ElectronGamesStore', () => {
 
 
 
-        statsDisplay = new StatsDisplay(log, eventEmitter, slpParser, slpStream, api, electronGamesStore, storeLiveStats, storePlayers, storeCurrentPlayer, storeSettings, storeSession, messageHandler, packetCapture)
+        statsDisplay = new StatsDisplay(log, eventEmitter, slpParser, slpStream, api, electronGamesStore, storeLiveStats, storePlayers, storeCurrentPlayer, storeSettings, storeSession, messageHandler, packetCapture, { loadGames: jest.fn() } as never)
         statsDisplay["getCurrentPlayersWithRankStats"] = async (settings: GameStartType): Promise<Player[]> => (new Promise<Player[]>(resolve => {
             const players = settings.players.filter(player => player)
             resolve([{ connectCode: players.at(0)?.connectCode, rank: {}, playerIndex: players.at(0)?.playerIndex } as Player, { connectCode: players.at(1)?.connectCode, rank: {}, playerIndex: players.at(1)?.playerIndex } as Player])
@@ -191,8 +194,12 @@ describe('ElectronGamesStore', () => {
 
             expect(electronGamesStore.getGameScore()).toStrictEqual(gameTest.expectedScore);
             expect(matchGames).toHaveLength(gameTest.expectedLength);
-            expect(storeLiveStats.getStatsScene()).toStrictEqual(gameTest.expectedScene);
+            // Scenes are switched by the "Scene switching" flow; it decides on whether the set is complete
+            // (state.set.isComplete) — Post Set when decided, Post Game otherwise.
+            expect(isSetComplete(electronGamesStore.getGameScore(), storeLiveStats.getBestOf())).toBe(gameTest.expectedScene !== LiveStatsScene.PostGame);
             expect(firstRecentGame?.settings?.matchInfo.mode).toStrictEqual(gameTest.expectedMode);
+            // Every stored game keeps a reference to its replay file (highlights point into it).
+            for (const g of recentGames ?? []) expect(g.replayPath).toMatch(/sample-games\/.+\.slp$/);
             if (currentGameSettings.matchInfo?.matchId) {
                 expect(currentGameSettings.matchInfo?.matchId).toStrictEqual(lastRecentGame?.settings?.matchInfo?.matchId);
             }
@@ -283,6 +290,85 @@ describe('ElectronGamesStore', () => {
 
             const recentGames = await electronGamesStore.getRecentGames();
             expect(recentGames.length).toBeLessThanOrEqual(1);
+        }, 30000);
+
+        /** Play a replay as if Slippi started a NEW session (other match id), same players. */
+        async function playInNewSession(file: string, matchId: string) {
+            const path = `${__dirname}/../sample-games/${file}`;
+            statsDisplay["getGameFiles"] = async () => [path];
+            const realFind = statsDisplay["findGameFromSettings"];
+            statsDisplay["findGameFromSettings"] = async () => new SlippiGame(path);
+            const game = new SlippiGame(path);
+            const settings = structuredClone(game.getSettings()!);
+            settings.matchInfo = { ...settings.matchInfo!, matchId };
+            // The new session's replay carries the new match id (Froggi stores it unless the set continues).
+            const realCreate = statsDisplay["createGameStats"].bind(statsDisplay);
+            statsDisplay["createGameStats"] = (g: SlippiGame, e?: GameEndType) => {
+                const stats = realCreate(g, e);
+                if (stats?.settings && !storeLiveStats.getSetMatchId()) stats.settings.matchInfo.matchId = matchId;
+                return stats;
+            };
+            await statsDisplay.handleGameStart(settings);
+            await statsDisplay.handleGameEnd(game.getGameEnd()!, game.getLatestFrame(), settings);
+            statsDisplay["findGameFromSettings"] = realFind;
+            statsDisplay["createGameStats"] = realCreate;
+        }
+
+        test('online: a new Slippi session with the same players continues the set (toggle on)', async () => {
+            await sqlite.clearAllTables();
+            connectCode = "FLCD#507";
+            storeLiveStats["getBestOf"] = () => BestOf.BestOf5;
+            electronGamesStore.setContinueSetAcrossSessions(true);
+
+            await playGame("direct-set-1/Replay 1 [W].slp");
+            expect(electronGamesStore.getGameScore()).toStrictEqual([0, 1]);
+            await playInNewSession("direct-set-1/Replay 2 [W].slp", "mode.direct-2099-01-01T00:00:00.00-0");
+            expect(electronGamesStore.getGameScore()).toStrictEqual([0, 2]);
+
+            const recentGames = await electronGamesStore.getRecentGames();
+            expect(recentGames).toHaveLength(2);
+            const firstMatchId = new SlippiGame(`${__dirname}/../sample-games/direct-set-1/Replay 1 [W].slp`).getSettings()?.matchInfo?.matchId;
+            expect(recentGames.every((g) => g.settings?.matchInfo.matchId === firstMatchId)).toBe(true);
+        }, 30000);
+
+        test('online: with the toggle off a new session starts a new set', async () => {
+            await sqlite.clearAllTables();
+            connectCode = "FLCD#507";
+            storeLiveStats["getBestOf"] = () => BestOf.BestOf5;
+            electronGamesStore.setContinueSetAcrossSessions(false);
+
+            await playGame("direct-set-1/Replay 1 [W].slp");
+            await playInNewSession("direct-set-1/Replay 2 [W].slp", "mode.direct-2099-01-01T00:00:00.00-0");
+            expect(electronGamesStore.getGameScore()).toStrictEqual([0, 1]);
+            electronGamesStore.setContinueSetAcrossSessions(true);
+        }, 30000);
+
+        test('loading previous games rebuilds the set; the next game of the session continues it', async () => {
+            await sqlite.clearAllTables();
+            connectCode = "FLCD#507";
+            storeLiveStats["getBestOf"] = () => BestOf.BestOf5;
+            const files = ["Replay 3 [L].slp", "Replay 2 [W].slp", "Replay 1 [W].slp"].map((f) => `${__dirname}/../sample-games/direct-set-1/${f}`);
+            statsDisplay["getGameFiles"] = async () => files; // newest first, like the Slippi folder
+
+            await statsDisplay.loadSetGames([...files, "/etc/passwd"], true); // paths outside the list are ignored
+            expect(electronGamesStore.getGameScore()).toStrictEqual([1, 2]);
+            expect(await electronGamesStore.getRecentGames()).toHaveLength(3);
+            expect(storeLiveStats.fightStats.snapshot().match["FLCD#507"].kos).toBeGreaterThan(0);
+
+            await playGame("direct-set-1/Replay 4 [W].slp");
+            expect(electronGamesStore.getGameScore()).toStrictEqual([1, 3]);
+        }, 30000);
+
+        test('host fix after a game: identities are saved on the stored game', async () => {
+            await sqlite.clearAllTables();
+            connectCode = "FLCD#507";
+            await playGame("direct-doubles-set-1/Replay 1 [W].slp");
+            const before = (await electronGamesStore.getRecentGames()).at(-1)!.settings!.players.filter((p) => p);
+            expect(before.every((p) => (p as { froggiKey?: string }).froggiKey === p.connectCode)).toBe(true);
+            const [a, b] = before;
+            await statsDisplay.setPlayerKeys({ [a.playerIndex]: b.connectCode, [b.playerIndex]: a.connectCode });
+            const after = (await electronGamesStore.getRecentGames()).at(-1)!.settings!.players.filter((p) => p) as { playerIndex: number; froggiKey?: string }[];
+            expect(after.find((p) => p.playerIndex === a.playerIndex)?.froggiKey).toBe(b.connectCode);
         }, 30000);
 
         afterAll(() => {

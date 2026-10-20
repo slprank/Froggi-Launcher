@@ -18,6 +18,7 @@ import type { AssetPackService } from '../assetPackService';
 import type { ElectronWebhookStore } from '../store/storeWebhook';
 import type { FlowService } from '../flowService';
 import type { IronManService } from '../ironmanService';
+import type { StatsDisplay } from '../statsDisplay';
 import type { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
 
 /**
@@ -50,4 +51,5 @@ export const mcpContext: {
 	assetPackService?: AssetPackService;
 	webhookStore?: ElectronWebhookStore;
 	flowService?: FlowService;
+	statsDisplay?: StatsDisplay;
 } = {};

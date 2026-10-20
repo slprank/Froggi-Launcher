@@ -9,7 +9,7 @@ import { LiveStatsScene } from '../../frontend/src/lib/models/enum';
 
 const log = { info: jest.fn(), debug: jest.fn(), warn: jest.fn(), error: jest.fn() };
 
-function setup(persisted?: StrikeState, recentGames: GameStats[] = []) {
+function setup(persisted?: StrikeState, recentGames: GameStats[] = [], gameSettings?: unknown) {
 	const clientEmitter = new EventEmitter();
 	const localEmitter = new EventEmitter();
 	let stored = persisted;
@@ -22,7 +22,8 @@ function setup(persisted?: StrikeState, recentGames: GameStats[] = []) {
 	};
 	const storeGames = { getRecentGames: async () => recentGames, clearRecentGames: async () => undefined };
 	let scene = LiveStatsScene.Menu;
-	const storeLiveStats = { setStatsScene: jest.fn((x) => { scene = x; }), getStatsScene: () => scene };
+	const setStatsScene = jest.fn((x) => { scene = x; });
+	const storeLiveStats = { setStatsScene, autoScene: setStatsScene, getStatsScene: () => scene, getGameSettings: () => gameSettings };
 	const messageHandler = { sendHostMessage: jest.fn() };
 	const service = new ElectronSetService(log as never, clientEmitter as never, localEmitter as never, strikeStore as never, storeGames as never, storeLiveStats as never, messageHandler as never);
 	return { service, clientEmitter, localEmitter, state: () => service.getState(), scene: () => scene, setScene: (x: LiveStatsScene) => { scene = x; }, messageHandler, tokens: () => tokens! };
@@ -181,6 +182,7 @@ describe('Stage striking — Slippi auto-report', () => {
 		await service.reportFromGame(slippiGame(-1));
 		expect(state().score).toEqual({ p1: 0, p2: 0 });
 	});
+
 
 	it('a manual report after the auto-report does not double count', async () => {
 		const { service, state } = setup();
@@ -354,18 +356,38 @@ describe('Stage striking — set rules', () => {
 		expect(setup(recent).state().phase).toBe('stageBan');
 	});
 
-	it('scene: Post Game stays after a game; the first striking action shows Strike Phase; never during a game', () => {
-		const { service, state, clientEmitter, scene, setScene } = setup();
+	it('striking actions on a phone are announced to flows (the scene flow shows Stage Striking); rejected ones are not', () => {
+		const { service, state, clientEmitter, localEmitter } = setup();
+		const actions: unknown[] = [];
+		localEmitter.on('StrikePlayerAction', (a: unknown) => actions.push(a));
 		toGame1(service);
 		service.reportWinner(1);
-		setScene(LiveStatsScene.PostGame);
-		expect(scene()).toBe(LiveStatsScene.PostGame);
 		clientEmitter.emit('StrikeStage', 31, P1); // P1 (winner) bans
 		expect(state().bans).toEqual([31]);
-		expect(scene()).toBe(LiveStatsScene.StrikePhase);
-		setScene(LiveStatsScene.InGame);
-		clientEmitter.emit('PickStage', 8, P2);
-		expect(scene()).toBe(LiveStatsScene.InGame);
+		expect(actions).toEqual([{ event: 'ban', player: 1, playerName: 'A', phase: 'stagePick', stage: 'Battlefield', character: null, rps: null }]);
+		clientEmitter.emit('StrikeStage', 32, P1); // not P1's turn any more → rejected
+		expect(actions).toHaveLength(1);
+		// the set's stage log: the ban, by the winner, in game 2
+		expect(state().stageLog?.at(-1)).toEqual({ game: 2, action: 'ban', stageId: 31, player: 1 });
+	});
+
+	it('changes that are no player\'s choice (a reported game…) reach flows once, as event "change"', async () => {
+		const { service, localEmitter } = setup();
+		const events: string[] = [];
+		localEmitter.on('StrikePlayerAction', (a: { event: string }) => events.push(a.event));
+		toGame1(service);
+		await Promise.resolve();
+		events.length = 0;
+		service.reportWinner(1);
+		await Promise.resolve();
+		expect(events).toEqual(['change']);
+	});
+
+	it('starting a set from the Dashboard is announced to flows', async () => {
+		const { clientEmitter, localEmitter } = setup();
+		const started = new Promise((resolve) => localEmitter.on('SetStarted', resolve));
+		clientEmitter.emit('StartSet', 'A', 'B', 3);
+		expect(await started).toMatchObject({ p1Name: 'A', p2Name: 'B', bestOf: 3, ruleset: 'singles' });
 	});
 });
 
@@ -450,5 +472,226 @@ describe('Stage striking — host controls', () => {
 		clientEmitter.emit('StrikePause', false);
 		clientEmitter.emit('SelectCharacter', 2, 20, P2);
 		expect(state().characters.p2).toBe(20);
+	});
+});
+
+describe('Stage striking — doubles ruleset', () => {
+	it('doubles: BF, DL, FD, PS, YS starters, no counterpicks, FoD locked, team names default', () => {
+		const { service, state } = setup();
+		service.startSet('', '', 3, true, 'doubles');
+		expect([...state().starters].sort((a, b) => a - b)).toEqual([3, 8, 28, 31, 32]);
+		expect(state().counterpicks).toEqual([]);
+		expect([state().p1Name, state().p2Name]).toEqual(['Team 1', 'Team 2']);
+		expect(stageStatus(state(), 2)).toBe('locked'); // Fountain of Dreams is not in doubles
+		expect(stageStatus(state(), 3)).toBe('available'); // Pokémon Stadium is a starter
+	});
+});
+
+describe('Stage striking — doubles teams', () => {
+	// ports 1-4: blue, red, red, blue → Team 1 = red (ports 2+3), Team 2 = blue (ports 1+4)
+	const teamsSettings = {
+		isTeams: true,
+		players: [
+			{ playerIndex: 0, port: 1, teamId: 1, connectCode: '', displayName: 'Cody' },
+			{ playerIndex: 1, port: 2, teamId: 0, connectCode: '', displayName: 'Mango' },
+			{ playerIndex: 2, port: 3, teamId: 0, connectCode: '', displayName: '' },
+			{ playerIndex: 3, port: 4, teamId: 1, connectCode: '', displayName: 'aMSa' },
+		],
+	};
+
+	it('phones show each team\'s players by tag, else "Port N", lower port first', () => {
+		const { service, state } = setup(undefined, [], teamsSettings);
+		service.startSet('', '', 3, true, 'doubles');
+		expect(state().teamMembers).toEqual({ p1: ['Cody', 'aMSa'], p2: ['Mango', 'Port 3'] }); // Team 1 = the team with port 1
+	});
+
+	it('a team picks both characters at once; one pick alone is rejected', () => {
+		const { service, state } = setup(undefined, [], teamsSettings);
+		service.startSet('', '', 3, true, 'doubles');
+		service.selectCharacter(1, 2);
+		expect(state().characters.p1).toBeNull();
+		service.selectCharacter(1, 2, 20);
+		service.selectCharacter(2, 9, 15);
+		expect(state().characters).toEqual({ p1: 2, p2: 9 });
+		expect(state().partnerCharacters).toEqual({ p1: 20, p2: 15 });
+		expect(state().phase).toBe('rps');
+	});
+
+	it('the doubles game winner is reported by team', async () => {
+		const { service, state } = setup(undefined, [], teamsSettings);
+		service.startSet('', '', 3, true, 'doubles');
+		service.playerConnect(1);
+		service.playerConnect(2);
+		service.selectCharacter(1, 2, 20);
+		service.selectCharacter(2, 9, 15);
+		service.rpsChoice(1, 'rock');
+		service.rpsChoice(2, 'scissors');
+		service.rpsWinnerOrder(1);
+		for (const id of state().starters.slice(0, 4)) service.strikeStage(id);
+		expect(state().phase).toBe('playing');
+		const game = {
+			gameEnd: { gameEndMethod: 2, lrasInitiatorIndex: -1, placements: [0, 1, 2, 3].map((i) => ({ playerIndex: i, position: i === 3 ? 0 : 1 })) },
+			isMock: false, isReplay: false, postGameStats: null, score: [0, 0], timestamp: null, lastFrame: null,
+			settings: { ...teamsSettings, stageId: 31, matchInfo: {} },
+		} as unknown as GameStats;
+		await service.reportFromGame(game); // aMSa (port 4, Cody's team = Team 1) placed first
+		expect(state().score).toEqual({ p1: 1, p2: 0 });
+		expect(state().games[0]).toMatchObject({ p1Char: 2, p2Char: 9, p1PartnerChar: 20, p2PartnerChar: 15 });
+	});
+});
+
+describe('Stage striking — loading previous games', () => {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const { SlippiGame } = require('@slippi/slippi-js');
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const path = require('path');
+	const load = (dir: string, file: string) => {
+		const slp = new SlippiGame(path.join(__dirname, '../sample-games', dir, file));
+		return { settings: slp.getSettings(), gameEnd: slp.getGameEnd(), lastFrame: slp.getLatestFrame(), postGameStats: null } as unknown as GameStats;
+	};
+	const set1 = ['Replay 1 [W].slp', 'Replay 2 [W].slp', 'Replay 3 [L].slp'].map((f) => load('direct-set-1', f));
+
+	it('3 games into a Bo5: score, DSR, records and the next step as if reported live', () => {
+		const { service, state } = setup();
+		service.startSet('A', 'B', 5);
+		service.loadGames(set1);
+		expect(state().games).toHaveLength(3);
+		expect(state().score.p1 + state().score.p2).toBe(3);
+		expect(state().gameNum).toBe(4);
+		expect(state().phase).toBe('stagePick'); // Bo5: no ban, the loser picks
+		const lastWinner = state().games[2].winner!;
+		expect(state().currentStriker).toBe(lastWinner === 1 ? 2 : 1);
+		for (const g of state().games) expect(state().dsrStages[g.winner === 1 ? 'p1' : 'p2']).toContain(g.stageId);
+		expect(state().games.every((g) => g.p1Char !== null && g.p2Char !== null)).toBe(true);
+	});
+
+	it('the same result whichever way it is fed: live reports == loaded games', async () => {
+		const live = setup();
+		live.service.startSet('A', 'B', 5);
+		for (const g of set1) {
+			(live.service as unknown as { state: StrikeState }).state = { ...live.state(), phase: 'playing' }; // skip the phone steps
+			await live.service.reportFromGame(g);
+		}
+		const loaded = setup();
+		loaded.service.startSet('A', 'B', 5);
+		loaded.service.loadGames(set1);
+		expect(loaded.state().score).toEqual(live.state().score);
+		expect(loaded.state().dsrStages).toEqual(live.state().dsrStages);
+	});
+
+	it('a finished set stops at the winning game; nothing loads without a running set', () => {
+		const all = [...set1, load('direct-set-1', 'Replay 4 [W].slp')];
+		const { service, state } = setup();
+		service.startSet('A', 'B', 3);
+		service.loadGames(all);
+		expect(state().phase).toBe('setComplete');
+		expect(Math.max(state().score.p1, state().score.p2)).toBe(2);
+
+		const idle = setup();
+		idle.service.loadGames(all);
+		expect(idle.state().games).toHaveLength(0);
+	});
+
+	it('doubles replay: the red team (Team 2, ports 2 + 3) wins and both teams\' characters are recorded', () => {
+		const { service, state } = setup();
+		service.startSet('', '', 3, true, 'doubles');
+		service.loadGames([load('direct-doubles-set-1', 'Replay 1 [W].slp')]);
+		expect(state().score).toEqual({ p1: 0, p2: 1 });
+		const g = state().games[0];
+		expect([g.p1Char, g.p2Char, g.p1PartnerChar, g.p2PartnerChar].every((c) => c !== null)).toBe(true);
+		expect(state().teamMembers).not.toBeNull();
+	});
+});
+
+describe('Stage striking — names from phones', () => {
+	it('a phone renames only its own side; the host can overwrite either; empty = default', () => {
+		const { service, clientEmitter, state, tokens } = setup();
+		service.startSet('', '', 3);
+		clientEmitter.emit('StrikeSetName', 1, '  Mango  ', tokens()[1]);
+		clientEmitter.emit('StrikeSetName', 2, 'Hacker', tokens()[1]); // P1's token can't rename P2
+		expect([state().p1Name, state().p2Name]).toEqual(['Mango', 'Player 2']);
+		clientEmitter.emit('StrikeSetName', 2, 'Zain'); // host (no token)
+		clientEmitter.emit('StrikeSetName', 1, 'Mango (TO fix)');
+		expect([state().p1Name, state().p2Name]).toEqual(['Mango (TO fix)', 'Zain']);
+		clientEmitter.emit('StrikeSetName', 2, '   ', tokens()[2]);
+		expect(state().p2Name).toBe('Player 2');
+	});
+});
+
+describe('Stage striking — timeline', () => {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const { strikeTimeline } = require('../../frontend/src/lib/utils/strikeStageStatus');
+	it('game 1: 1-2-1 strikes with the striker, then the stage left over', () => {
+		const { service, state } = setup();
+		service.startSet('A', 'B', 3);
+		expect(strikeTimeline(state())).toEqual([]);
+		service.selectCharacter(1, 2);
+		service.selectCharacter(2, 20);
+		service.rpsChoice(1, 'rock');
+		service.rpsChoice(2, 'scissors');
+		service.rpsWinnerOrder(2); // B strikes first
+		const [a, b] = DEFAULT_STARTERS;
+		service.strikeStage(a);
+		service.strikeStage(b);
+		const t = strikeTimeline(state());
+		expect(t.map((s: { kind: string; player: number | null }) => `${s.kind}:${s.player}`)).toEqual(['strike:2', 'strike:1', 'strike:1', 'strike:2', 'final:null']);
+		expect(t.map((s: { stageId: number | null }) => s.stageId)).toEqual([a, b, null, null, null]);
+		expect(t.findIndex((s: { current: boolean }) => s.current)).toBe(2);
+	});
+
+	it('game 2 (Bo3): the winner bans, then the loser picks; no ban in Bo5', () => {
+		const { service, state } = setup();
+		toGame1(service);
+		service.reportWinner(1);
+		let t = strikeTimeline(state());
+		expect(t.map((s: { kind: string; player: number | null }) => `${s.kind}:${s.player}`)).toEqual(['ban:1', 'pick:2']);
+		expect(t[0].current).toBe(true);
+		const bo5 = setup();
+		toGame1(bo5.service, 5);
+		bo5.service.reportWinner(2);
+		t = strikeTimeline(bo5.state());
+		expect(t.map((s: { kind: string; player: number | null }) => `${s.kind}:${s.player}`)).toEqual(['pick:1']);
+	});
+});
+
+describe('Stage striking — the set follows its games list', () => {
+	it('adding, changing and removing games in the list rebuilds score and DSR; same results = no change', () => {
+		const { service, state } = setup();
+		toGame1(service, 5);
+		const g = (winnerPort: number, stageId: number) => slippiGame(winnerPort, stageId);
+		service.syncFromGames([g(0, 31)]);
+		expect(state().score).toEqual({ p1: 1, p2: 0 });
+		const phase = state().phase;
+		service.syncFromGames([g(0, 31)]); // unchanged → untouched
+		expect(state().phase).toBe(phase);
+
+		service.syncFromGames([g(0, 31), g(1, 32)]); // an artificial game won by P2
+		expect(state().score).toEqual({ p1: 1, p2: 1 });
+		expect(state().dsrStages).toEqual({ p1: [31], p2: [32] });
+
+		service.syncFromGames([g(1, 32)]); // game 1 removed
+		expect(state().score).toEqual({ p1: 0, p2: 1 });
+
+		service.syncFromGames([]); // nothing left → back to the start of game 1
+		expect(state().games).toHaveLength(0);
+		expect(state().phase).toBe('charSelect');
+	});
+});
+
+describe('Stage striking — swapped sides', () => {
+	it('names, score and choices swap; each phone keeps its link and now plays the other side', () => {
+		const { service, state } = setup();
+		toGame1(service);
+		service.reportWinner(1);
+		const before = state();
+		service.swapSides('sides');
+		const after = state();
+		expect([after.p1Name, after.p2Name]).toEqual([before.p2Name, before.p1Name]);
+		expect(after.score).toEqual({ p1: before.score.p2, p2: before.score.p1 });
+		expect(after.lastWinner).toBe(2);
+		expect(after.sidesSwapped).toBe(true);
+		// the link that was Player 1's (token P1) now acts as side 2
+		expect(service.allowedAs(P1, 2)).toBe(true);
+		expect(service.allowedAs(P1, 1)).toBe(false);
 	});
 });

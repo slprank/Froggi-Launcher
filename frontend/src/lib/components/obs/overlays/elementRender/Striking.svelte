@@ -4,6 +4,10 @@
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import { STAGE_DATA } from '$lib/models/constants/stageData';
 	import { colorOverlay } from '$lib/utils/colorOverlay';
+	import RpsIcon from './RpsIcon.svelte';
+	import TextElement from '../element/TextElement.svelte';
+	import { resolvePackImage } from '$lib/models/types/assetPack';
+	import { assetPacks, isElectron, urls } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
 	export let defaultPreview: boolean;
@@ -23,6 +27,9 @@
 		!choice ? '' : (strikeState?.rps?.p1 && strikeState?.rps?.p2) || strikeState?.phase !== 'rps' ? RPS_LABELS[choice] : '✓ Ready';
 
 	$: id = dataItem.elementId;
+	// Character picks come from the element's asset pack (Styling → Character images; default stock icons).
+	$: resourceBase = ($isElectron ? $urls?.localResource : $urls?.externalResource) ?? '';
+	$: packSrc = (charId: number) => resolvePackImage($assetPacks, dataItem.data.assetPack, charId, 0, resourceBase);
 
 	$: p1Rps = strikeState?.rps?.p1;
 	$: p2Rps = strikeState?.rps?.p2;
@@ -36,6 +43,8 @@
 	$: finalStageName = finalStageId != null ? (STAGE_DATA[finalStageId]?.name ?? '') : '';
 	$: p1Char = strikeState?.characters?.p1;
 	$: p2Char = strikeState?.characters?.p2;
+	$: p1PartnerChar = strikeState?.partnerCharacters?.p1;
+	$: p2PartnerChar = strikeState?.partnerCharacters?.p2;
 	$: bansRemaining = null;  // not in StrikeState
 	$: timerSeconds = null;   // not in StrikeState
 	$: dsrP1 = strikeState?.dsrStages?.p1 ?? [];
@@ -117,46 +126,42 @@
 		/>
 	</div>
 {:else if id === CustomElement.StrikeRpsPlayer1Choice}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? RPS_LABELS.rock : rpsText(p1Rps)}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? RPS_LABELS.rock : rpsText(p1Rps)}
+	</TextElement>
+
+{:else if id === CustomElement.StrikeRpsPlayer1Icon || id === CustomElement.StrikeRpsPlayer2Icon}
+	<RpsIcon {dataItem} {defaultPreview} {style} {strikeState} player={id === CustomElement.StrikeRpsPlayer1Icon ? 1 : 2} />
 
 {:else if id === CustomElement.StrikeRpsPlayer2Choice}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? RPS_LABELS.paper : rpsText(p2Rps)}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? RPS_LABELS.paper : rpsText(p2Rps)}
+	</TextElement>
 
 {:else if id === CustomElement.StrikeRpsWinner}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? 'Player 1' : nameOf(rpsWinner)}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? 'Player 1' : nameOf(rpsWinner)}
+	</TextElement>
 
 {:else if id === CustomElement.StrikeCurrentStriker}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? 'Player 1' : nameOf(currentStriker)}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? 'Player 1' : nameOf(currentStriker)}
+	</TextElement>
 
 {:else if id === CustomElement.StrikePlayer1Name || id === CustomElement.StrikePlayer2Name}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? (id === CustomElement.StrikePlayer1Name ? 'Player 1' : 'Player 2') : nameOf(id === CustomElement.StrikePlayer1Name ? 1 : 2)}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? (id === CustomElement.StrikePlayer1Name ? 'Player 1' : 'Player 2') : nameOf(id === CustomElement.StrikePlayer1Name ? 1 : 2)}
+	</TextElement>
+
+{:else if id === CustomElement.StrikePlayer1Score || id === CustomElement.StrikePlayer2Score}
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? (id === CustomElement.StrikePlayer1Score ? 2 : 1) : (id === CustomElement.StrikePlayer1Score ? strikeState?.score?.p1 : strikeState?.score?.p2) ?? 0}
+	</TextElement>
 
 {:else if id === CustomElement.StrikeFinalStageName}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? 'Battlefield' : finalStageName}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? 'Battlefield' : finalStageName}
+	</TextElement>
 
 {:else if id === CustomElement.StrikeFinalStageImage}
 	{@const sid = defaultPreview ? 31 : finalStageId}
@@ -164,6 +169,7 @@
 		<div class="strike-stage-img-wrap" style={style.cssValue}>
 			<img
 				class="strike-stage-img {style.classValue}"
+				style={`object-fit: ${dataItem?.data.image?.objectFit ?? 'contain'}`}
 				src="/image/stages/{sid}.png"
 				alt={STAGE_DATA[sid]?.name ?? ''}
 				on:error={hideOnError}
@@ -176,7 +182,7 @@
 	{#if charId != null}
 		<img
 			class="strike-char-img {style.classValue}"
-			src="/image/characters/{charId}/0/stock.png"
+			src={packSrc(charId)}
 			alt="P1"
 			style={style.cssValue}
 			on:error={hideOnError}
@@ -188,33 +194,39 @@
 	{#if charId != null}
 		<img
 			class="strike-char-img {style.classValue}"
-			src="/image/characters/{charId}/0/stock.png"
+			src={packSrc(charId)}
 			alt="P2"
 			style={style.cssValue}
 			on:error={hideOnError}
 		/>
 	{/if}
 
+{:else if id === CustomElement.StrikePlayer1PartnerCharacter || id === CustomElement.StrikePlayer2PartnerCharacter}
+	{@const charId = defaultPreview ? (id === CustomElement.StrikePlayer1PartnerCharacter ? 20 : 15) : id === CustomElement.StrikePlayer1PartnerCharacter ? p1PartnerChar : p2PartnerChar}
+	{#if charId != null}
+		<img
+			class="strike-char-img {style.classValue}"
+			src={packSrc(charId)}
+			alt="Partner"
+			style={style.cssValue}
+			on:error={hideOnError}
+		/>
+	{/if}
+
 {:else if id === CustomElement.StrikeOrderDisplay}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? 'P2 bans 1 → P1 bans 2 → P2 bans 1' : strikeOrderText}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? 'P2 bans 1 → P1 bans 2 → P2 bans 1' : strikeOrderText}
+	</TextElement>
 
 {:else if id === CustomElement.StrikeBansRemaining}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? '2' : (bansRemaining != null ? String(bansRemaining) : '')}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? '2' : (bansRemaining != null ? String(bansRemaining) : '')}
+	</TextElement>
 
 {:else if id === CustomElement.StrikeTimerSeconds}
-	<div class="strike-text" style={style.cssValue}>
-		<span class={style.classValue}>
-			{defaultPreview ? '30' : formatTimer(timerSeconds)}
-		</span>
-	</div>
+	<TextElement {style} {dataItem}>
+		{defaultPreview ? '30' : formatTimer(timerSeconds)}
+	</TextElement>
 
 {:else if isFixedStage(id)}
 	{@const stageId = defaultPreview ? (FIXED_STAGE_ID[id] ?? 31) : (FIXED_STAGE_ID[id] ?? undefined)}
@@ -281,14 +293,6 @@
 {/if}
 
 <style>
-	.strike-text {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
 	.strike-stage-img-wrap {
 		width: 100%;
 		height: 100%;
@@ -298,14 +302,14 @@
 	}
 
 	.strike-stage-img {
-		max-width: 100%;
-		max-height: 100%;
-		object-fit: contain;
+		width: 100%;
+		height: 100%;
 	}
 
+	/* Fill the element box; contain keeps the icon centred under the player's name. */
 	.strike-char-img {
-		max-width: 100%;
-		max-height: 100%;
+		width: 100%;
+		height: 100%;
 		object-fit: contain;
 	}
 

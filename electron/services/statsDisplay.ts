@@ -25,6 +25,7 @@ import {
 	RankedNetplayProfile,
 	SlippiLauncherSettings,
 	StatsTypeExtended,
+	ReplaySummary,
 } from '../../frontend/src/lib/models/types/slippiData';
 import { STAGE_DATA } from '../../frontend/src/lib/models/constants/stageData';
 import { isDamaged } from '../../frontend/src/lib/models/constants/actionStates';
@@ -38,6 +39,7 @@ import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronPlayersStore } from './store/storePlayers';
 import { dateTimeNow } from '../utils/functions';
 import { analyzeMatch } from '../utils/analyzeMatch';
+import { assignKeys, continuesSet as continuesSetAcrossSessions, type KeyedPlayer } from '../../frontend/src/lib/utils/playerIdentity';
 import os from 'os';
 import { debounce, isNil } from 'lodash';
 import { Command } from '../../frontend/src/lib/models/types/overlay';
@@ -50,7 +52,10 @@ import { ElectronSessionStore } from './store/storeSession';
 import { retryFunctionAsync } from './../utils/retryHelper';
 import { predictNewRating } from './../utils/rankPrediction';
 import { getPlayerRank } from '../../frontend/src/lib/utils/playerRankHelper';
-import { didPlayerWin, getGameMode } from '../../frontend/src/lib/utils/gamePredicates';
+import { didPlayerWin, getGameMode, isDisconnectEnding, isSetComplete } from '../../frontend/src/lib/utils/gamePredicates';
+import { applyTeamOrder, orderTeams, setReference, slotOrder } from '../../frontend/src/lib/utils/teams';
+import { fightStatsFromFrames } from '../../frontend/src/lib/utils/fightStats';
+import { ElectronSetService } from './setService';
 
 function computeEdgeguardStats(
 	frames: Record<number, FrameEntryType>,
@@ -119,6 +124,7 @@ export class StatsDisplay {
 		@inject(delay(() => ElectronSessionStore)) private storeSession: ElectronSessionStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
 		@inject(PacketCapture) private packetCapture: PacketCapture,
+		@inject(delay(() => ElectronSetService)) private setService: ElectronSetService,
 	) {
 		this.log = scopedLog(this.log, 'Stats');
 		this.initStatDisplay();
@@ -175,8 +181,18 @@ export class StatsDisplay {
 		clearInterval(this.pauseInterval);
 	}
 
+	/** Host swap from Fix set…: the striking set, the stored set (score), and the live players. */
+	private async swapSides(kind: 'sides' | 'team1' | 'team2') {
+		const isTeams = !!this.storeLiveStats.getGameSettings()?.isTeams;
+		this.messageHandler.sendMessage('SidesSwapped', kind);
+		const stored = await this.storeGames.swapSides(kind);
+		this.storePlayers.swapPlayers(kind, isTeams);
+		this.log.info(`Sides swapped (${kind})${stored ? '' : ' — no stored game yet: applies to this game only'}`);
+	}
+
 	async handleGameFrame(frameEntry: FrameEntryType) {
 		this.messageHandler.sendMessage('GameFrame', frameEntry);
+		this.storeLiveStats.trackFightStats(frameEntry);
 		this.storeLiveStats.setGameState(InGameState.Running);
 		this.resetPauseInterval();
 	}
@@ -195,12 +211,14 @@ export class StatsDisplay {
 		const recentGames = await this.storeGames.getRecentGames();
 		const { settings: resolvedSettings, isNewGame } = await this.resolveReplaySettings(settings, recentGames);
 		await this.applyCurrentPlayers(resolvedSettings, isNewGame);
+		this.storeLiveStats.startFightStats(resolvedSettings, isNewGame);
 
 		this.storeLiveStats.setGameState(InGameState.Running);
-		this.storeLiveStats.setStatsScene(LiveStatsScene.InGame);
+		// Scenes are switched by flows (the "Scene switching" flow: Game starts → In Game).
 
 		if (!isNewGame) return;
 		this.log.info("New game detected. Clearing recent games.");
+		this.messageHandler.sendMessage('NewSetDetected');
 		await this.storeGames.clearRecentGames();
 	}
 
@@ -229,7 +247,23 @@ export class StatsDisplay {
 		const prevGame = recentGames.at(-1);
 		const bestOf = this.storeLiveStats.getBestOf();
 		const prevSetEnded = prevGame?.score?.some(score => score >= Math.ceil(bestOf / 2));
-		const isNewGame = Boolean(isNewMatchId || isFirstReplay || prevSetEnded);
+		// A new Slippi session (disconnect / restart) with the same online players continues the set:
+		// its games are stored under the set's match id, so score and stats carry on.
+		const continuesSet = !isFirstReplay && continuesSetAcrossSessions({
+			enabled: this.storeGames.getContinueSetAcrossSessions(),
+			currentMatchId,
+			previousMatchId: prevMatchId,
+			previousSetEnded: !!prevSetEnded,
+			currentPlayers: settings.players,
+			previousPlayers: previousGameSettings?.players,
+		});
+		if (continuesSet) this.log.info(`New Slippi session with the same players — continuing set ${prevMatchId}`);
+		this.storeLiveStats.setSetMatchId(continuesSet ? prevMatchId : undefined);
+		const isNewGame = Boolean((isNewMatchId && !continuesSet) || isFirstReplay || prevSetEnded);
+
+		// Who is who across the set (offline doubles: Red-1 …; online: connect code).
+		const keys = assignKeys(settings.players ?? [], !!settings.isTeams, isNewGame ? undefined : previousGameSettings?.players);
+		for (const p of settings.players ?? []) if (p) (p as KeyedPlayer).froggiKey = keys[p.playerIndex] ?? null;
 
 		// Offline/local play has no live matchId. Mint a synthetic per-set id so its games group
 		// under a unique id instead of piling under "" (the unbounded bucket that hung startup).
@@ -237,6 +271,8 @@ export class StatsDisplay {
 			this.storeLiveStats.setLocalSetId(`local-${crypto.randomUUID()}`);
 		}
 
+		(settings as GameStartTypeExtended).gameStartId = crypto.randomUUID();
+		(settings as GameStartTypeExtended).isNewSet = isNewGame;
 		this.storeLiveStats.setGameSettings(settings);
 		return { settings, isNewGame };
 	}
@@ -271,7 +307,8 @@ export class StatsDisplay {
 		let gameStats = await this.findCurrentGameStats(settings, gameEnd);
 		if (!gameStats) {
 			this.log.info("Did not find the recently played game.")
-			this.storeLiveStats.setStatsScene(LiveStatsScene.Menu)
+			// Still a game end for flows (no stats to show) — the scene flow moves on from In Game.
+			this.messageHandler.sendMessage('GameEndWithoutReplay', gameEnd);
 			return;
 		};
 
@@ -281,6 +318,13 @@ export class StatsDisplay {
 			gameStats.settings.matchInfo.mode = "local";
 		}
 
+		// Keep the live game's set identities (and any host fix) on the stored game.
+		const live = this.storeLiveStats.getGameSettings()?.players ?? [];
+		if (gameStats.settings?.players) {
+			gameStats.settings.players = gameStats.settings.players.map((p) =>
+				p ? ({ ...p, froggiKey: (live.find((l) => l?.playerIndex === p.playerIndex) as KeyedPlayer | undefined)?.froggiKey ?? null } as typeof p) : p,
+			);
+		}
 		gameStats = await this.handleGameSetStats(gameStats);
 		if (gameStats) this.storeLiveStats.setGameStats(gameStats);
 		await this.handlePostGameScene(gameStats);
@@ -298,7 +342,7 @@ export class StatsDisplay {
 
 		const bestOf = this.storeLiveStats.getBestOf();
 		this.log.debug("Best of:", bestOf)
-		const isPostSet = game.score.some((score) => score >= Math.ceil(bestOf / 2));
+		const isPostSet = isSetComplete(game.score, bestOf);
 		this.log.debug("Is post set:", isPostSet)
 		const isRanked = game.settings?.matchInfo?.mode === 'ranked';
 		const player = await this.storeCurrentPlayer.getCurrentPlayer();
@@ -315,8 +359,8 @@ export class StatsDisplay {
 			return;
 		}
 
+		// Scenes (Post Game / Post Set / Rank Change) are switched by flows; here only the rank data.
 		if (isPostSet && isRanked && playerConnectCode && prevRank && !game.isReplay && prevRank.current) {
-			this.storeLiveStats.setStatsScene(LiveStatsScene.RankChange);
 			if (player.rank?.predictedRating) {
 				await this.handlePredictedRank(player, prevRank.current, game);
 				return
@@ -330,18 +374,22 @@ export class StatsDisplay {
 			}
 		}
 
-		if (isPostSet) {
-			return this.storeLiveStats.setStatsSceneTimeout(
-				LiveStatsScene.PostSet,
-				LiveStatsScene.Menu,
-				150000,
-			);
-		} else
-			return this.storeLiveStats.setStatsSceneTimeout(
-				LiveStatsScene.PostGame,
-				LiveStatsScene.Menu,
-				150000,
-			);
+		// A ranked game cut short by a disconnect has no winner in the replay, so the score never reaches
+		// the end of the set. Slippi's server decides whether the set counted — ask it in the background.
+		if (!isPostSet && isRanked && isDisconnectEnding(game.gameEnd) && playerConnectCode && prevRank.current && !game.isReplay) {
+			void this.checkRankAfterDisconnect(prevRank.current, playerConnectCode);
+		}
+	}
+
+	/** After a disconnect: show the rank change if Slippi counted the set (totalSets went up). */
+	private async checkRankAfterDisconnect(prevRank: RankedNetplayProfile, connectCode: string) {
+		const newRank = await this.api.getNewRankWithBackoff(prevRank, connectCode);
+		if (newRank.totalSets <= prevRank.totalSets) {
+			this.log.info('Ranked game ended by a disconnect; the set was not counted (yet)');
+			return;
+		}
+		this.log.info('Ranked set ended by a disconnect — showing the rank change');
+		await this.storeCurrentPlayer.setCurrentPlayerNewRankStats(newRank);
 	}
 
 	private async handlePredictedRank(player: CurrentPlayer, prevRank: RankedNetplayProfile, game: GameStats) {
@@ -364,7 +412,6 @@ export class StatsDisplay {
 	}
 
 	private async mockPostGameScene() {
-		this.storeLiveStats.setStatsScene(LiveStatsScene.RankChange);
 		await new Promise((resolve) => setTimeout(resolve, 2000));
 		const currentPlayerRankStats = await this.storeCurrentPlayer.getCurrentPlayerCurrentRankStats();
 		if (!currentPlayerRankStats) return;
@@ -382,8 +429,9 @@ export class StatsDisplay {
 			isMock: true,
 		}
 		await this.storeCurrentPlayer.setCurrentPlayerNewRankStats(currentPlayerNewRankStats);
+		// Restore the real rank quietly — announcing it would be a second rank change (flows would react).
 		setTimeout(() => {
-			this.storeCurrentPlayer.setCurrentPlayerNewRankStats(prevRank);
+			void this.storeCurrentPlayer.setCurrentPlayerCurrentRankStats(prevRank);
 		}, 10000);
 	}
 
@@ -418,11 +466,30 @@ export class StatsDisplay {
 		const currentPlayers = settings.players.filter((player) => player);
 		const previousPlayers = this.storePlayers.getCurrentPlayers();
 
+		// Doubles: players in slot order (T1P1, T2P1, T1P2, T2P2) so Player 1/2 elements show each team's
+		// first player; teams keep their slot from the set's first game. No rating lookups in doubles.
+		if (settings.isTeams) {
+			if (isNewGame) this.storePlayers.newSet(); // new teams → back to "Tag & Tag" (unless Start Set named them)
+			const recent = isNewGame ? [] : await this.storeGames.getRecentGames();
+			const first = recent.find((g) => g.settings?.isTeams && g.settings.players?.length);
+			// Sides from the set's first game, with the host's swaps (Fix set…).
+			const ref = setReference(first);
+			return this.storePlayers.withSetTags(
+				slotOrder(applyTeamOrder(orderTeams(currentPlayers, first ? ref.teamRef : undefined), ref.teamOrder)).map(
+					(p) => ({ ...p, rank: previousPlayers?.find((x) => x.connectCode && x.connectCode === p.connectCode)?.rank }) as Player,
+				),
+			);
+		}
+
 		if ((!isNewGame || currentPlayers.some((player) => !player.connectCode)) && previousPlayers) {
 			previousPlayers.forEach((player, i) => {
 				player.displayName ||= currentPlayers[i]?.displayName;
 			});
-			return previousPlayers;
+			// Same players, maybe on other ports (a new Slippi session): refresh port/character by connect code.
+			return previousPlayers.map((prev) => {
+				const now = prev.connectCode ? currentPlayers.find((c) => c.connectCode === prev.connectCode) : undefined;
+				return now ? ({ ...prev, ...now, displayName: now.displayName || prev.displayName, rank: prev.rank } as Player) : prev;
+			});
 		}
 
 		const currentPlayer = await this.storeCurrentPlayer.getCurrentPlayer();
@@ -603,13 +670,22 @@ export class StatsDisplay {
 					mode: getGameMode(settings),
 					// Persist the synthetic local set id when Slippi gave no matchId, so local games
 					// group per set. getGameMode still reads "local" (the id doesn't match its regex).
-					matchId: matchId ? matchId : (this.storeLiveStats.getLocalSetId() ?? ""),
+					matchId: this.storeLiveStats.getSetMatchId() ?? (matchId ? matchId : (this.storeLiveStats.getLocalSetId() ?? "")),
 					bestOf: this.storeLiveStats.getBestOf(),
 				},
 			},
 			timestamp: dateTimeNow(),
+			replayPath: this.replayReference(game.getFilePath()),
 		} as GameStats;
 		return gameStats;
+	}
+
+	/** A replay file as stored with its game: relative to the Slippi replay folder when inside it, else absolute. */
+	private replayReference(filePath: string | null | undefined): string | null {
+		if (!filePath) return null;
+		const root = this.storeSettings.getReplayRootPath();
+		const relative = root ? path.relative(root, filePath) : '';
+		return relative && !relative.startsWith('..') && !path.isAbsolute(relative) ? relative.split(path.sep).join('/') : filePath;
 	}
 
 	private enrichPostGameStats(game: SlippiGame | null): StatsTypeExtended | null {
@@ -722,7 +798,137 @@ export class StatsDisplay {
 		this.abortController = new AbortController();
 	};
 
+	/** The latest replays in the Slippi folder (newest first) — the host can load them into the set. */
+	async latestReplayFiles(): Promise<string[]> {
+		return ((await this.getGameFiles()) ?? []).slice(0, 10);
+	}
+
+	async sendRecentReplays() {
+		const summaries: ReplaySummary[] = [];
+		for (const file of await this.latestReplayFiles()) {
+			try {
+				const slp = new SlippiGame(file);
+				const settings = slp.getSettings();
+				if (!settings) continue;
+				const winners = new Set((slp.getGameEnd()?.placements ?? []).filter((pl) => pl.position === 0).map((pl) => pl.playerIndex));
+				const winnerTeam = settings.isTeams ? settings.players.find((p) => winners.has(p.playerIndex))?.teamId : undefined;
+				const last = slp.getLatestFrame();
+				summaries.push({
+					path: file,
+					startAt: slp.getMetadata()?.startAt ?? null,
+					stageId: settings.stageId ?? null,
+					isTeams: !!settings.isTeams,
+					matchId: settings.matchInfo?.matchId ?? '',
+					players: settings.players.filter((p) => p).map((p) => ({
+						playerIndex: p.playerIndex,
+						port: p.port,
+						characterId: p.characterId ?? null,
+						teamId: p.teamId ?? null,
+						tag: p.displayName || p.connectCode || p.nametag || `Port ${p.port}`,
+						won: settings.isTeams ? p.teamId === winnerTeam && winnerTeam != null : winners.has(p.playerIndex),
+						stocks: last?.players?.[p.playerIndex]?.post?.stocksRemaining ?? null,
+					})),
+				});
+			} catch (err) {
+				this.log.warn('Could not read replay', file, err);
+			}
+		}
+		this.messageHandler.sendHostMessage('RecentReplays', summaries);
+	}
+
+	/**
+	 * Host: these replays are the set's finished games (Froggi was closed / a new Slippi session).
+	 * Score, match stats, fight stats, players and the stage-striking state are rebuilt from them.
+	 */
+	async loadSetGames(paths: string[], continueNextSession: boolean, swapSides = false) {
+		const allowed = await this.latestReplayFiles();
+		const files = paths.filter((p) => allowed.includes(p)).sort(); // file names are timestamps → oldest first
+		if (!files.length) return;
+		this.storeGames.setContinueSetAcrossSessions(continueNextSession);
+
+		const slps = files.map((f) => new SlippiGame(f));
+		const firstMatchId = slps[0].getSettings()?.matchInfo?.matchId ?? '';
+		if (!firstMatchId) this.storeLiveStats.setLocalSetId(`local-${crypto.randomUUID()}`);
+		const setId = firstMatchId || this.storeLiveStats.getLocalSetId() || '';
+
+		const games: GameStats[] = [];
+		const fight = [];
+		for (const slp of slps) {
+			const game = this.createGameStats(slp);
+			if (!game?.settings) continue;
+			game.settings.matchInfo = { ...game.settings.matchInfo, matchId: setId };
+			const startAt = slp.getMetadata()?.startAt;
+			game.timestamp = startAt ? new Date(startAt) : new Date(dateTimeNow().getTime() + games.length * 1000);
+			const keys = assignKeys(game.settings.players, !!game.settings.isTeams, games.at(-1)?.settings?.players);
+			game.settings.players = game.settings.players.map((p) => (p ? ({ ...p, froggiKey: keys[p.playerIndex] ?? null } as typeof p) : p));
+			games.push(game);
+			fight.push(fightStatsFromFrames(game.settings.players, !!game.settings.isTeams, slp.getFrames()));
+		}
+		if (!games.length) return;
+		// The host chose which side is Player/Team 1 when picking the games.
+		if (swapSides) games[0].sides = { swapped: true, teamOrder: [false, false] };
+
+		await this.storeGames.replaceRecentGames(games);
+		this.storeLiveStats.setMatchStats(analyzeMatch(games));
+		this.storeLiveStats.setGameStats(games.at(-1)!);
+		const running = this.storeLiveStats.getStatsScene() === LiveStatsScene.InGame; // game state can lag after the end
+		if (!running) this.storeLiveStats.fightStats.clearGame();
+		this.storeLiveStats.fightStats.setFinished(fight);
+		this.storeLiveStats.sendFightStats();
+		if (!running) await this.applyCurrentPlayers(games.at(-1)!.settings as GameStartType, false);
+		this.setService.loadGames(games);
+		this.log.info(`Loaded ${games.length} replay(s) into set ${setId}`);
+	}
+
+	/** Host: add one of the latest replays to the set's games (Edit Games → From replay). */
+	async addSetGameFromReplay(file: string) {
+		if (!(await this.latestReplayFiles()).includes(file)) return;
+		const slp = new SlippiGame(file);
+		const game = this.createGameStats(slp);
+		if (!game?.settings) return;
+		const games = await this.storeGames.getRecentGames();
+		const setId = this.storeGames.getRecentGameId() || game.settings.matchInfo.matchId;
+		game.settings.matchInfo = { ...game.settings.matchInfo, matchId: setId };
+		const startAt = slp.getMetadata()?.startAt;
+		game.timestamp = startAt ? new Date(startAt) : dateTimeNow();
+		const keys = assignKeys(game.settings.players, !!game.settings.isTeams, games.at(-1)?.settings?.players);
+		game.settings.players = game.settings.players.map((p) => (p ? ({ ...p, froggiKey: keys[p.playerIndex] ?? null } as typeof p) : p));
+		await this.storeGames.addMatchGame(game);
+		this.storeLiveStats.setMatchStats(analyzeMatch([...games, game]));
+		this.log.info('Added a replay to the set:', path.basename(file));
+	}
+
+	/** Host fix of who is who (froggiKey per playerIndex): the running game, else the set's last game. */
+	async setPlayerKeys(keys: Record<number, string>) {
+		const apply = <P extends { playerIndex: number } | null>(players: P[]) =>
+			players.map((p) => (p && keys[p.playerIndex] ? ({ ...p, froggiKey: keys[p.playerIndex] } as P) : p));
+		const settings = this.storeLiveStats.getGameSettings();
+		if (settings) {
+			settings.players = apply(settings.players);
+			this.storeLiveStats.setGameSettings(settings);
+			this.storeLiveStats.fightStats.setPlayers(settings.players);
+			this.storeLiveStats.sendFightStats();
+		}
+		const running = this.storeLiveStats.getStatsScene() === LiveStatsScene.InGame; // game state can lag after the end
+		if (!running) {
+			const games = await this.storeGames.getRecentGames();
+			const last = games.at(-1);
+			if (last?.settings) {
+				last.settings.players = apply(last.settings.players);
+				await this.storeGames.updateRecentGamePlayers(games);
+				this.storeLiveStats.setMatchStats(analyzeMatch(games));
+			}
+		}
+		if (settings) await this.applyCurrentPlayers(settings, false);
+		this.log.info('Host fixed player identities:', keys);
+	}
+
 	private initListeners() {
+		this.clientEmitter.on('RecentReplaysRequest', () => this.sendRecentReplays());
+		this.clientEmitter.on('LoadSetGames', (paths, continueNext, swapSides) => this.loadSetGames(paths, continueNext, swapSides));
+		this.clientEmitter.on('SetPlayerKeys', (keys) => this.setPlayerKeys(keys));
+		this.clientEmitter.on('SwapSides', (kind) => void this.swapSides(kind));
+		this.clientEmitter.on('AddSetGameFromReplay', (file) => this.addSetGameFromReplay(file));
 		this.clientEmitter.on('SimulateGameStart', this.simulateGame.bind(this));
 		this.clientEmitter.on('SimulateGameEnd', this.simulateGameEnd.bind(this));
 	}

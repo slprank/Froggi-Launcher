@@ -1,8 +1,8 @@
 <script lang="ts">
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
+	import QrReveal from '$lib/components/QrReveal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { urls, remoteAccess } from '$lib/utils/store.svelte';
-	// @ts-ignore
-	import QrCode from 'svelte-qrcode';
 	// @ts-ignore
 	import Clipboard from 'svelte-clipboard';
 	import Modal from '../Modal.svelte';
@@ -70,10 +70,10 @@
 			<div class="flex-1 p-5 flex flex-col items-center gap-3">
 				<p class="modal-label w-full">Scan to open</p>
 				<div class="border-secondary p-1 rounded-sm">
-					<QrCode value={activeUrl} size="160" />
+					<QrReveal value={activeUrl} size={160} />
 				</div>
 				<div class="flex items-center gap-2 rounded px-3 py-2 border-secondary w-full">
-					<span class="text-xs font-mono flex-1 truncate opacity-60">{activeUrl}</span>
+					<SecretUrl class="text-xs font-mono flex-1 truncate opacity-60" value={activeUrl} />
 					<Clipboard
 						text={activeUrl}
 						let:copy

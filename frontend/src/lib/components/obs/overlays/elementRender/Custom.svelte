@@ -6,6 +6,7 @@
 	import { isElectron, urls } from '$lib/utils/store.svelte';
 	import TextElement from '../element/TextElement.svelte';
 	import NonInteractiveIFrame from '../preview/NonInteractiveIFrame.svelte';
+	import { isVideoFile } from '$lib/utils/overlayAssets';
 
 	export let dataItem: GridContentItem;
 	export let style: GridContentItemStyle;
@@ -33,16 +34,31 @@
 			dataItem?.data.advancedStyling ? dataItem?.data.css.customBox : ''
 		}; `}
 	>
-		<img
-			use:colorOverlay={dataItem?.data.colorOverlay}
-			class="w-full h-full"
-			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
-					${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
-			src={`${url}/public/custom/${overlayId}/image/${encodeURI(
-				dataItem?.data.image.name ?? '',
-			)}`}
-			alt="custom"
-		/>
+		{#if isVideoFile(dataItem?.data.image.name)}
+			<!-- Videos loop silently, like an animated image (OBS browser sources can't take audio from here anyway). -->
+			<video
+				class="w-full h-full"
+				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+						${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+				src={`${url}/public/custom/${overlayId}/image/${encodeURI(dataItem?.data.image.name ?? '')}`}
+				autoplay
+				muted
+				loop
+				playsinline
+				disablepictureinpicture
+			/>
+		{:else}
+			<img
+				use:colorOverlay={dataItem?.data.colorOverlay}
+				class="w-full h-full"
+				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+						${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
+				src={`${url}/public/custom/${overlayId}/image/${encodeURI(
+					dataItem?.data.image.name ?? '',
+				)}`}
+				alt="custom"
+			/>
+		{/if}
 	</div>
 {:else if dataItem?.elementId === CustomElement.CustomBoxIframe}
 	<NonInteractiveIFrame

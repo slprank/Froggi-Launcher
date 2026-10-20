@@ -15,7 +15,7 @@ describe('fillOverlayDefaults (imported overlays)', () => {
 		} as unknown as Overlay;
 		const o = fillOverlayDefaults(imported);
 		for (const scene of Object.values(LiveStatsScene)) expect(o[scene]?.layers.length).toBeGreaterThan(0);
-		expect(o.inGame.animation.layerRenderDelay).toBe(250);
+		expect(o.inGame.animation.layerRenderDelay).toBe(60); // default delay between layers
 		const data = o.inGame.layers[0].items[0].data;
 		expect(data.css.color).toBe('#123456');
 		expect(data.font.family).toBe('default');

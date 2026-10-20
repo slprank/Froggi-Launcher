@@ -3,6 +3,7 @@
 	import {
 		localEmitter,
 		previewTestAnimation,
+		previewFrozen,
 		gameFrame,
 		gameState,
 		gameSettings,
@@ -18,6 +19,7 @@
 	import { inGameVisibilityOption } from './visibilityConditions/InGameVisibilityOptions.svelte';
 	import { inGamePlayer1VisibilityOption } from './visibilityConditions/InGamePlayer1VisibilityOptions.svelte';
 	import { inGamePlayer2VisibilityOption } from './visibilityConditions/InGamePlayer2VisibilityOptions.svelte';
+	import { doublesVisibilityOption } from '$lib/utils/doublesConditions';
 	import { postGameVisibilityOption } from './visibilityConditions/PostGameVisibilityOptions.svelte';
 	import { postGame1SummaryVisibilityOption } from './visibilityConditions/PostGame1SummaryVisibilityOptions.svelte';
 	import { postGame2SummaryVisibilityOption } from './visibilityConditions/PostGame2SummaryVisibilityOptions.svelte';
@@ -61,7 +63,8 @@
 		sessionStats: SessionStats | undefined,
 		strikeStateVal: StrikeState | undefined,
 	) => {
-		if (edit || preview) return true;
+		// Previews show everything — except a screenshot of a frozen replay moment, which applies the conditions.
+		if (edit || (preview && !$previewFrozen)) return true;
 
 		const options = dataItem.data.visibility.selectedOptions;
 
@@ -81,6 +84,7 @@
 				) ||
 				inGamePlayer1VisibilityOption(option, gameFrame, currentPlayers) ||
 				inGamePlayer2VisibilityOption(option, gameFrame, currentPlayers) ||
+				doublesVisibilityOption(option, gameFrame, currentPlayers, !!gameSettings?.isTeams, gameSettings?.stageId) ||
 				matchStatsVisibilityOption(option, gameScore) ||
 				postGameVisibilityOption(option, currentPlayers, currentPlayer, postGame) ||
 				postGame1SummaryVisibilityOption(

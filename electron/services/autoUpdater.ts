@@ -7,6 +7,7 @@ import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { scopedLog } from '../utils/logger';
 import { App } from 'electron';
 import { ElectronFroggiStore } from './store/storeFroggi';
+import { configureUpdateFeed, releaseDownloadUrl } from '../update/updateFeed';
 
 @singleton()
 export class AutoUpdater {
@@ -65,7 +66,7 @@ export class AutoUpdater {
 			this.messageHandler.sendMessage('AutoUpdaterStatus', AutoUpdaterStatus.UpdateAvailable);
 			this.messageHandler.sendMessage(
 				'AutoUpdaterDownloadUrl',
-				`https://github.com/slprank/Froggi-Launcher/releases/download/${info.releaseName}/${info.files[0].url}`,
+				releaseDownloadUrl(info.version, info.files[0].url),
 			);
 		});
 
@@ -82,7 +83,7 @@ export class AutoUpdater {
 		autoUpdater.on('update-downloaded', (data: UpdateDownloadedEvent) => {
 			this.log.verbose(`Download Complete: ${data.version}`);
 			this.log.info(
-				`Download Url: https://github.com/slprank/Froggi-Launcher/releases/download/${data.releaseName}/${data.files[0].url}`,
+				`Download Url: ${releaseDownloadUrl(data.version, data.files[0].url)}`,
 			);
 			this.messageHandler.sendMessage(
 				'AutoUpdaterStatus',
@@ -116,7 +117,7 @@ export class AutoUpdater {
 
 		this.clientEmitter.on('AutoUpdaterCheckForUpdate', async () => {
 			if (this.status !== AutoUpdaterStatus.UpToDate) return;
-			this.safeCheckForUpdates(() => autoUpdater.checkForUpdatesAndNotify());
+			this.safeCheckForUpdates(() => this.withFeed(() => autoUpdater.checkForUpdatesAndNotify()));
 		});
 
 		this.clientEmitter.on('AutoUpdaterDownloadUpdate', async () => {
@@ -129,7 +130,13 @@ export class AutoUpdater {
 		});
 
 		// All config and listeners registered — safe to start the check now
-		this.safeCheckForUpdates(() => autoUpdater.checkForUpdates());
+		this.safeCheckForUpdates(() => this.withFeed(() => autoUpdater.checkForUpdates()));
+	}
+
+	/** Re-pick the update feed before each check (a release may have finished building meanwhile). */
+	private async withFeed<T>(check: () => Promise<T>): Promise<T> {
+		await configureUpdateFeed(autoUpdater.allowPrerelease, this.log);
+		return check();
 	}
 
 	// electron-updater's own 'error' event only fires for failures it recognizes internally —

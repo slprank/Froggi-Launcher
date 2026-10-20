@@ -25,6 +25,8 @@
 
 	const handleComplete = (reportedFileName: string) => {
 		if (!acceptedExtensions.some((extension) => reportedFileName.includes(extension))) return;
+		// Several uploaders can be on screen (e.g. one per RPS hand) — only take our own file.
+		if (reportedFileName.replace(/\.[^.]+$/, '') !== kebabCase(fileName)) return;
 		dispatch('change', reportedFileName);
 	};
 

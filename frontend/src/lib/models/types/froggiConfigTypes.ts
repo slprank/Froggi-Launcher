@@ -2,6 +2,8 @@
 export interface Froggi {
   betaOptIn: boolean | undefined;
   version: string | undefined;
+  /** The host's OS (process.platform) — remote browsers need it to know what the host supports. */
+  platform: string | undefined;
   closeAction: 'minimize' | 'quit' | undefined;
   /** undefined = not yet asked, true/false = user's crash-report consent */
   crashReportsEnabled: boolean | undefined;

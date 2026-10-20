@@ -79,6 +79,7 @@
 	$: updateSelectedLayer(overlay, $statsScene, selectedLayerIndex);
 
 	onMount(() => {
+		$electronEmitter.emit('FlowsRequest'); // overlay warnings check the flows' video keys
 		if ($isElectron) {
 			$electronEmitter.emit('CurrentOverlayEditor', {
 				...$currentOverlayEditor,

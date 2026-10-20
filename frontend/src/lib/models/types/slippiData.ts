@@ -81,6 +81,31 @@ export type StatsTypeExtended = StatsType | {
     overall: OverallTypeExtended[]
 }
 
+/** A frozen game state for an overlay screenshot (preview page ?state=<id>) — a replay at one moment. */
+export interface PreviewState {
+    gameSettings: GameStartTypeExtended;
+    currentPlayers: Player[];
+    gameFrame: FrameEntryType | null;
+    postGame: GameStats;
+    gameScore: number[];
+    fightStats: import('../../utils/fightStats').LiveFightStats;
+    /** The replay as the set's only game — per-game summaries and set totals. */
+    recentGames: GameStats[];
+    matchStats: MatchStats | undefined;
+}
+
+/** One of the latest replays in the Slippi folder — offered for loading into the running set. */
+export interface ReplaySummary {
+    /** File path (also the id; Electron only accepts paths from its own latest-replays list). */
+    path: string;
+    startAt: string | null;
+    stageId: number | null;
+    isTeams: boolean;
+    matchId: string;
+    /** stocks = stocks left when the game ended. */
+    players: { playerIndex: number; port: number; characterId: number | null; teamId: number | null; tag: string; won: boolean; stocks: number | null }[];
+}
+
 export interface GameStats {
     gameEnd: GameEndType;
     isMock: boolean;
@@ -88,6 +113,19 @@ export interface GameStats {
     lastFrame: FrameEntryType | null
     postGameStats: StatsType | null;
     score: number[]
+    /**
+     * Host override of the result: the winner side (0 = Player/Team 1, null = doesn't count) and a
+     * note (e.g. "LRAS by mistake", "DQ: illegal controller"). Wins over what the replay says.
+     */
+    resultOverride?: { winnerSlot: 0 | 1 | null; note: string } | null;
+    /** On the set's first game: the host swapped sides (Player/Team 1 ↔ 2) and/or the two players inside a team
+     *  (Dashboard → Fix set…). Everything that works out sides from the first game follows (utils/teams.ts setReference). */
+    sides?: SetSides | null;
+    /** Highlights marked in this game (flow card Mark highlight): frames in the .slp + score — watchable later from the replay. */
+    highlights?: GameHighlight[] | null;
+    /** The game's replay file: relative to the Slippi replay folder (e.g. "2026-10/Game_20261020T1200.slp"),
+     *  absolute when it lives elsewhere. With `highlights` it points at every highlight (daily highlights, viewer). */
+    replayPath?: string | null;
     settings: GameStartTypeExtended | null;
     timestamp: Date | null;
 }
@@ -110,10 +148,14 @@ export interface OverallTypeExtended extends OverallType {
 
 export type GameStartTypeExtended = GameStartType & {
     isSimulated: boolean | null;
+    /** Unique per game start (also per simulated run) — "game starts" fires once per id. */
+    gameStartId?: string;
+    /** This game starts a new set (a different match / players, or the last set ended) — flows: {{newSet}}. */
+    isNewSet?: boolean;
     matchInfo: MatchInfoExtended;
 }
 
-export type GameStartMode = "ranked" | "unranked" | "direct" | "local";
+export type GameStartMode = "ranked" | "unranked" | "direct" | "teams" | "local";
 
 export type MatchInfoExtended = {
     sessionId: string | null;
@@ -197,3 +239,17 @@ export interface StageData {
     getRandallPosition: ((frame: number) => number[][] | undefined) | undefined;
 }
 
+/** A highlight of a stored game: frames in its replay and the score the flow gave it. */
+export interface GameHighlight {
+    startFrame: number;
+    endFrame: number;
+    score: number;
+}
+
+/** Host fixes to who is Player/Team 1 and 2 for a set (stored on its first game). */
+export interface SetSides {
+    /** Player/Team 1 ↔ 2. */
+    swapped?: boolean;
+    /** Doubles: the two players inside Team 1 / Team 2 swapped (who is "Player 1" vs "Player 3"). */
+    teamOrder?: [boolean, boolean];
+}

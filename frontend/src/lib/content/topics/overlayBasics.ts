@@ -2,6 +2,78 @@ import type { ContentTopic } from '../types';
 
 export const overlayBasicsTopics: ContentTopic[] = [
 	{
+		id: 'overlay-animation-triggers',
+		title: 'Animation triggers (replay an animation when something changes)',
+		category: 'overlays',
+		summary: 'An element can replay an animation when it — or another element of the scene — changes what it shows, or on a game event such as taking damage. One element can have several animations, each with its own triggers.',
+		blocks: [
+			{
+				type: 'list',
+				text: 'How it works (Styling → Animation Triggers):',
+				items: [
+					'Element triggers: "This element changes" (or another element of the same scene) — changes, increases or decreases. Increases/decreases compare the first number shown, e.g. a percent popping when it goes back to 0% on respawn. Works for every element: win chance, fight and edge stats, characters, video (fires on a new highlight reel, not every clip).',
+					'Appearing never counts: when an element shows up (scene switch, visibility condition) the scene animation / visibility animation plays, not the trigger.',
+					'Game event triggers stay: e.g. "Player1 Percent Increase" makes a character render shake on damage, plus stock loss, countdown, techniques and stage striking events.',
+					'Animation 1, 2, … (+ Add): each animation has its own in/out and its own triggers, and they can play together (a pop on the element\'s own change + a shake on damage). A trigger can be used by one animation of the element only.',
+					'New elements start with "This element changes" — nothing happens until you pick an animation type.',
+					'Problems are marked in the editor: an element pointing at something that does not exist — a Video whose key no enabled flow sets, or a trigger watching a deleted element (e.g. after importing someone\'s overlay) — gets a red outline, a count on its layer and a note at the top of its settings.',
+					'Older overlays keep working: old "value changed" triggers (tag, score, rating, rank, session…) are hidden in the picker; where the element itself shows that value they were converted to "This element changes", anywhere else they stay and are marked legacy.',
+				],
+			},
+		],
+	},
+	{
+		id: 'win-chance',
+		title: 'Win chance (game and set)',
+		category: 'overlays',
+		summary: 'Win Chance elements show how likely Player 1 / Player 2 (doubles: their team) are to win this game and the set, estimated from stocks and percent.',
+		blocks: [
+			{
+				type: 'list',
+				text: 'How it is estimated:',
+				items: [
+					'Remaining life per side = stocks left minus how far into the current stock it is (percent ÷ 120, the typical KO percent). Doubles add the teammates together.',
+					'Game chance = life² ÷ (life² + opponent life²) — squaring makes a lead count for more than a plain ratio. Empty when no game runs.',
+					'Timer: as the clock runs down, the game chance leans toward whoever would win on time (more stocks, then lower percent). How fast it leans depends on how long stocks have lasted this set (avg seconds per stock; 40 s until a few stocks are taken). A stock lead that can\'t be erased in time — even if the leader self-destructed every stock after this one (5 s each) — is a 100% win.',
+					'Set chance = this game\'s chance combined with the set score and the best-of, every later game counted as 50/50.',
+					'It is a quick estimate from what is on screen — it does not know characters, skill or stage. Flows can read it as {{state.odds.game.1}} / {{state.odds.set.1}} (percent), plus {{state.odds.secondsLeft}} and {{state.odds.stockSeconds.avg}} / .min / .max / .count.',
+				],
+			},
+		],
+	},
+	{
+		id: 'overlay-doubles',
+		title: 'Doubles overlays and live fight stats',
+		category: 'overlays',
+		summary: 'Every Player 1/2 element can show any of the four doubles players (Styling → Player); there are team elements, team conditions, and live fight stats for singles and doubles.',
+		blocks: [
+			{
+				type: 'list',
+				text: 'How doubles works:',
+				items: [
+					'Team 1 is the team with the lowest port in the set\'s first game (colour doesn\'t matter) and keeps its place for the whole set, even when teams swap colours. Within a team the lower port is Player 1. Wrong way round? Dashboard → Fix set… → Swap teams / Swap players in a team (singles: Swap Player 1 ↔ 2) — names, score, overlays and the striking phones follow; when loading replays there, pick which team is Team 1 before loading.',
+					'Team names: typed on the Dashboard (or at Start Set), else "Tag & Tag" when both players have a tag, else Team 1 / Team 2. Start Set (doubles) also takes each player\'s tag — overlays and the phones use them for the whole set.',
+					'Player 1 elements show Team 1 · Player 1, Player 2 elements Team 2 · Player 1. Styling → Player switches any Player 1/2 element to another player (e.g. Team 1 · Player 2).',
+					'Add Element → "Doubles & Ports": team names (rename on the Dashboard), team stocks, your/opponent team, port numbers, and fight stats.',
+					'Visibility → Doubles: Doubles Game, second-player stocks/alive/combo/off-stage, team alive, and "Team N Stocks <= X".',
+					'Teammates on the same character: the higher port is drawn a bit lighter, so viewers can tell them apart.',
+					'Demo overlay "Doubles (game right, webcams left)": the 4:3 game on the right; on the left per team a webcam frame (put your camera source under it in OBS), team name + set score and a row per player (port, character, stocks); percents with names under them along the bottom of the game.',
+				],
+			},
+			{
+				type: 'list',
+				text: 'Fight stats (live, singles and doubles, per game and for the whole set):',
+				items: [
+					'Damage dealt — percent dealt to opponents (hits on a teammate don\'t count).',
+					'KOs — credited to whoever hit the player last.',
+					'Avg KO % — on average, at what percent this player KOs opponents.',
+					'Avg death % — on average, at what percent this player dies (self-destructs included).',
+					'Team versions add up both players; in singles a team is just that player.',
+				],
+			},
+		],
+	},
+	{
 		id: 'overlay-structure',
 		title: 'How an overlay is built: scenes, layers, elements',
 		category: 'overlays',
@@ -19,7 +91,7 @@ export const overlayBasicsTopics: ContentTopic[] = [
 				type: 'list',
 				text: 'Common element types:',
 				items: [
-					'Static content — custom text, images, boxes/shapes',
+					'Static content — custom text, images (or a short MP4/WebM video, which plays muted on a loop — handy for animated backgrounds), boxes/shapes. The overlay in OBS loads its images and videos ahead of time: the scene on screen first (a thin bar at the top shows progress), then the rest, so scene changes don\'t pop in.',
 					'Live Slippi data — player name/tag, rank, rating, stocks, percent, character, stage',
 					'Minigame elements — Bingo board, rating graph',
 					'Custom styling per element — colors, borders, fonts, shadows, animations for how it enters/exits',

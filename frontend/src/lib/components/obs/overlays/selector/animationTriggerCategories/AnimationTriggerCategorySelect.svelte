@@ -17,8 +17,23 @@
 	import Player1DataAnimationTriggerSelect from './Player1DataAnimationTriggerSelect.svelte';
 	import Player2DataAnimationTriggerSelect from './Player2DataAnimationTriggerSelect.svelte';
 	import StrikeAnimationTriggerSelect from './StrikeAnimationTriggerSelect.svelte';
+	import { LEGACY_TRIGGERS } from '$lib/utils/elementTriggers';
 
 	export let selectedOption: SelectedAnimationTriggerCondition;
+
+	// Categories whose triggers are all legacy (an element trigger does the same) are hidden unless one is in use.
+	const T = AnimationTrigger;
+	const CATEGORY_TRIGGERS: Partial<Record<AnimationTriggerCategory, AnimationTrigger[]>> = {
+		[AnimationTriggerCategory.MatchState]: [T.MatchBestOfChange, T.MatchGameModeChange, T.MatchPlayer1TagChange, T.MatchPlayer2TagChange, T.SlippiRankPlayer1ConnectCodeChange, T.SlippiRankPlayer2ConnectCodeChange, T.MatchPlayer1ScoreChange, T.MatchPlayer2ScoreChange],
+		[AnimationTriggerCategory.Player1Data]: [T.SlippiRankPlayer1ConnectCodeChange, T.SlippiRankPlayer1RatingChange, T.SlippiRankPlayer1RankChange],
+		[AnimationTriggerCategory.Player2Data]: [T.SlippiRankPlayer2ConnectCodeChange, T.SlippiRankPlayer2RatingChange, T.SlippiRankPlayer2RankChange],
+		[AnimationTriggerCategory.RankStats]: [T.SlippiRankStatsWinsChange, T.SlippiRankStatsLossesChange, T.SlippiRankStatsRankChange, T.SlippiRankStatsRatingChange, T.SlippiRankStatsRatingDifferenceChange],
+		[AnimationTriggerCategory.SessionStats]: [T.SessionWins, T.SessionLosses, T.SessionGames, T.SessionRating],
+	};
+	const hasOptions = (category: AnimationTriggerCategory) => {
+		const list = CATEGORY_TRIGGERS[category];
+		return !list || list.some((t) => !LEGACY_TRIGGERS.has(t) || selectedOption[t]);
+	};
 
 	function select(event: CustomEvent<AnimationTrigger>) {
 		selectedOption[event.detail] = !selectedOption[event.detail];
@@ -86,14 +101,14 @@
 			visible: [LiveStatsScene.StrikePhase].includes($statsScene),
 		},
 	];
-	let selectedCategory: AnimationTriggerCategory =
-		buttons?.find((button) => button.visible)?.category ?? AnimationTriggerCategory.GameState;
+	const shown = buttons.filter((b) => b.visible && hasOptions(b.category));
+	let selectedCategory: AnimationTriggerCategory = shown[0]?.category ?? AnimationTriggerCategory.GameState;
 </script>
 
 <div class="w-full h-full flex flex-col gap-4">
 	<h1 class="text-lg font-medium text-secondary-color">Category</h1>
 	<div class="w-lg 3xl:w-full flex flex-wrap gap-2">
-		{#each buttons.filter((b) => b.visible) as button}
+		{#each shown as button}
 			<div class="grid gap-2 justify-start items-start">
 				<button
 					class={`btn text-md whitespace-nowrap h-10 px-2 xl:text-xl border rounded ${

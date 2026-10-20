@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { isNil } from 'lodash';
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 
-	export let scenes: { title: string; component: any }[] = [];
+	export let heading = 'Tutorial';
+	export let scenes: { title: string; component: any; props?: Record<string, unknown> }[] = [];
 
 	let scrollElement: HTMLElement;
 	const scrollToTop = () => {
@@ -31,7 +33,6 @@
 		if (e.key === 'ArrowRight') handleNext();
 	}
 
-	$: progress = scenes.length > 1 ? (pageIndex / (scenes.length - 1)) * 100 : 100;
 	$: currentTitle = scenes[pageIndex]?.title ?? '';
 </script>
 
@@ -40,17 +41,13 @@
 <main class="h-screen w-full background-primary-color text-secondary-color flex justify-center">
 	<div class="w-full max-w-3xl h-full flex flex-col p-6 gap-0">
 
+		<BackButton />
 		<!-- Header -->
 		<div class="flex items-baseline justify-between mb-3">
-			<h1 class="font-bold text-3xl text-secondary-color">Tutorial</h1>
+			<h1 class="font-bold text-3xl text-secondary-color">{heading}</h1>
 			<span class="text-sm opacity-50 font-medium tabular-nums">
 				{pageIndex + 1} / {scenes.length}
 			</span>
-		</div>
-
-		<!-- Progress bar -->
-		<div class="progress-track mb-1">
-			<div class="progress-fill" style="width: {progress}%" />
 		</div>
 
 		<!-- Current page title -->
@@ -66,7 +63,7 @@
 			{#key pageIndex}
 				<div>
 					{#if scenes[pageIndex]}
-						<svelte:component this={scenes[pageIndex].component} />
+						<svelte:component this={scenes[pageIndex].component} {...scenes[pageIndex].props ?? {}} />
 					{:else}
 						<p class="opacity-50">Page not found.</p>
 					{/if}
@@ -84,13 +81,15 @@
 				← Previous
 			</button>
 
-			<!-- Step dots -->
-			<div class="flex gap-1.5 flex-wrap justify-center flex-1">
-				{#each scenes as _, i}
+			<!-- Progress: one segment per step, click to jump -->
+			<div class="steps flex-1">
+				{#each scenes as scene, i}
 					<button
-						class="step-dot {i === pageIndex ? 'step-dot-active' : ''} {i < pageIndex ? 'step-dot-done' : ''}"
+						class="step"
+						class:step--done={i <= pageIndex}
+						title="{i + 1}. {scene.title}"
 						on:click={() => { pageIndex = i; scrollToTop(); }}
-						aria-label="Go to step {i + 1}"
+						aria-label="Go to step {i + 1}: {scene.title}"
 					/>
 				{/each}
 			</div>
@@ -107,50 +106,20 @@
 </main>
 
 <style>
-	.progress-track {
-		width: 100%;
-		height: 3px;
+	.steps { display: flex; gap: 3px; align-items: center; }
+	.step {
+		flex: 1;
+		height: 6px;
+		padding: 0;
+		border: none;
+		border-radius: 3px;
 		background-color: var(--secondary-color);
 		opacity: 0.15;
-		border-radius: 2px;
-		overflow: hidden;
-		position: relative;
-	}
-
-	.progress-fill {
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-		background-color: var(--secondary-color);
-		opacity: 1;
-		border-radius: 2px;
-		transition: width 0.3s ease;
-	}
-
-	.step-dot {
-		width: 7px;
-		height: 7px;
-		border-radius: 50%;
-		background-color: var(--secondary-color);
-		opacity: 0.2;
-		border: none;
-		padding: 0;
 		cursor: pointer;
-		transition: opacity 0.2s, transform 0.2s;
-		flex-shrink: 0;
+		transition: opacity 0.2s;
 	}
-
-	.step-dot:hover {
-		opacity: 0.5;
-	}
-
-	.step-dot-done {
-		opacity: 0.4;
-	}
-
-	.step-dot-active {
-		opacity: 1;
-		transform: scale(1.4);
-	}
+	/* A thin bar: no hover grow, just brighten. */
+	.step:hover { opacity: 0.45; transform: none; }
+	.step--done { opacity: 0.85; }
+	.step--done:hover { opacity: 1; }
 </style>

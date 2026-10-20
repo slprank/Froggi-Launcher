@@ -1,7 +1,7 @@
 <script lang="ts">
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
+	import QrReveal from '$lib/components/QrReveal.svelte';
 	import ObsIntegration from '$lib/components/obs/ObsIntegration.svelte';
-	// @ts-ignore
-	import QrCode from 'svelte-qrcode';
 
 	/** Local URL: used for Popup and ObsIntegration */
 	export let url: string;
@@ -31,7 +31,7 @@
 	<div class="overlay-row border-secondary">
 		<div class="overlay-row-info">
 			<span class="overlay-label">Display on device / OBS</span>
-			<span class="overlay-url">{url}</span>
+			<SecretUrl class="overlay-url" value={url} />
 		</div>
 		<div class="overlay-row-actions">
 			{#key pulseKey}
@@ -50,10 +50,10 @@
 	</div>
 	{#if showQr}
 		<div class="qr-expand border-secondary">
-			<QrCode value={resolvedQrUrl} size="180" color="#ffffff" background="#1a1a1a" />
+			<QrReveal value={resolvedQrUrl} size={180} />
 			<div class="qr-text">
 				<p class="qr-hint">Scan to open on your phone or second screen</p>
-				<p class="qr-url">{resolvedQrUrl}</p>
+				<p class="qr-url"><SecretUrl value={resolvedQrUrl} /></p>
 				{#if resolvedQrUrl !== url}
 					<p class="qr-note">⚠ Do not share this URL — use the ngrok link for opponents</p>
 				{/if}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
-	import { CurrentPlayer, Match, MatchStats } from '$lib/models/types/slippiData';
+	import { CurrentPlayer, Player, Match, MatchStats } from '$lib/models/types/slippiData';
 	import CurrentPlayerActionCount from './RecentMatch/RecentMatchCurrentPlayerActionCount.svelte';
 	import CurrentPlayerAttackCount from './RecentMatch/RecentMatchCurrentPlayerAttackCount.svelte';
 	import CurrentPlayerOverallStats from './RecentMatch/RecentMatchCurrentPlayerOverallStats.svelte';
@@ -16,6 +16,8 @@
 	export let style: GridContentItemStyle;
 	export let matchStats: MatchStats;
 	export let currentPlayer: CurrentPlayer;
+	// Element's player list (slot-aware): Player 1/2 stats follow the chosen doubles slot.
+	export let currentPlayers: Player[] = [];
 
 	$: currentPlayerIndex = currentPlayer?.playerIndex;
 </script>
@@ -42,10 +44,10 @@
 	stats={matchStats}
 />
 
-<Player1AttackCount {dataItem} {defaultPreview} {style} playerIndex={0} stats={matchStats} />
-<Player1ActionCount {dataItem} {defaultPreview} {style} playerIndex={0} stats={matchStats} />
-<Player1OverallStats {dataItem} {defaultPreview} {style} playerIndex={0} stats={matchStats} />
+<Player1AttackCount {dataItem} {defaultPreview} {style} playerIndex={currentPlayers[0]?.playerIndex ?? 0} stats={matchStats} />
+<Player1ActionCount {dataItem} {defaultPreview} {style} playerIndex={currentPlayers[0]?.playerIndex ?? 0} stats={matchStats} />
+<Player1OverallStats {dataItem} {defaultPreview} {style} playerIndex={currentPlayers[0]?.playerIndex ?? 0} stats={matchStats} />
 
-<Player2AttackCount {dataItem} {defaultPreview} {style} playerIndex={1} stats={matchStats} />
-<Player2ActionCount {dataItem} {defaultPreview} {style} playerIndex={1} stats={matchStats} />
-<Player2OverallStats {dataItem} {defaultPreview} {style} playerIndex={1} stats={matchStats} />
+<Player2AttackCount {dataItem} {defaultPreview} {style} playerIndex={currentPlayers[1]?.playerIndex ?? 1} stats={matchStats} />
+<Player2ActionCount {dataItem} {defaultPreview} {style} playerIndex={currentPlayers[1]?.playerIndex ?? 1} stats={matchStats} />
+<Player2OverallStats {dataItem} {defaultPreview} {style} playerIndex={currentPlayers[1]?.playerIndex ?? 1} stats={matchStats} />

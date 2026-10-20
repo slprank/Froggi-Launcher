@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { finite } from '$lib/utils/finite';
 	import { CustomElement } from '$lib/models/constants/customElement';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { currentPlayer, postGame } from '$lib/utils/store.svelte';
@@ -13,7 +14,7 @@
 	export let playerIndex: number;
 	export let stats: StatsType | null | undefined;
 
-	$: actionCounts = stats?.actionCounts?.[playerIndex ?? 0];
+	$: actionCounts = stats?.actionCounts?.find((a) => a.playerIndex === playerIndex);
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountAirDodge}
@@ -91,7 +92,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGrabSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCounts?.grabCount, playerIndex].some(isNil)
-			? Number(
+			? finite(
 					(
 						(actionCounts?.grabCount.success ?? 0) /
 						((actionCounts?.grabCount.success ?? 0) +
@@ -113,7 +114,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGrabFailPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCounts?.grabCount, playerIndex].some(isNil)
-			? Number(
+			? finite(
 					(
 						(actionCounts?.grabCount.fail ?? 0) /
 						((actionCounts?.grabCount.success ?? 0) +
@@ -148,7 +149,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCounts?.groundTechCount, playerIndex].some(isNil)
-			? Number(
+			? finite(
 					(
 						((actionCounts?.groundTechCount.neutral ?? 0) +
 							(actionCounts?.groundTechCount.in ?? 0) +
@@ -198,7 +199,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountGroundTechFailPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCounts?.groundTechCount, playerIndex].some(isNil)
-			? Number(
+			? finite(
 					(
 						(actionCounts?.groundTechCount.fail ?? 0) /
 						((actionCounts?.groundTechCount.fail ?? 0) +
@@ -230,7 +231,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLCancelSuccessPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCounts?.lCancelCount, playerIndex].some(isNil)
-			? Number(
+			? finite(
 					(
 						(actionCounts?.lCancelCount.success ?? 0) /
 						((actionCounts?.lCancelCount.success ?? 0) +
@@ -252,7 +253,7 @@
 {:else if dataItem?.elementId === CustomElement.PostGameCurrentPlayerActionCountLCancelFailPercent}
 	<TextElement {style} {dataItem}>
 		{![actionCounts?.lCancelCount, playerIndex].some(isNil)
-			? Number(
+			? finite(
 					(
 						(actionCounts?.lCancelCount.fail ?? 0) /
 						((actionCounts?.lCancelCount.fail ?? 0) +

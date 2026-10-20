@@ -4,15 +4,23 @@
 
 	// Watch your own stream from the dashboard. Saved per device (localStorage).
 	const KEY = 'froggi.dashboard.streamPreview';
+	const HIDDEN_KEY = 'froggi.dashboard.streamPreviewHidden';
+	let hidden = false;
 	let input = '';
 	let saved = '';
 	let editing = false;
 
 	onMount(() => {
 		saved = localStorage.getItem(KEY) ?? '';
+		hidden = localStorage.getItem(HIDDEN_KEY) === '1';
 		input = saved;
 		editing = !saved;
 	});
+
+	const toggleHidden = () => {
+		hidden = !hidden;
+		localStorage.setItem(HIDDEN_KEY, hidden ? '1' : '0');
+	};
 
 	const save = () => {
 		saved = input.trim();
@@ -27,12 +35,17 @@
 <div class="dash-card border-secondary stream-card">
 	<div class="flex items-center justify-between mb-2">
 		<p class="dash-label">Stream preview</p>
-		{#if saved && !editing}
-			<button class="text-xs opacity-50 hover:opacity-100" on:click={() => (editing = true)}>Change</button>
-		{/if}
+		<span class="flex gap-3">
+			{#if saved && !editing && !hidden}
+				<button class="text-xs opacity-50 hover:opacity-100" on:click={() => (editing = true)}>Change</button>
+			{/if}
+			<button class="text-xs opacity-50 hover:opacity-100" on:click={toggleHidden}>{hidden ? 'Show' : 'Hide'}</button>
+		</span>
 	</div>
 
-	{#if editing}
+	{#if hidden}
+		<!-- hidden: nothing loads (the stream doesn't play in the background) -->
+	{:else if editing}
 		<div class="flex gap-2">
 			<input
 				class="stream-input border-secondary"
@@ -47,11 +60,10 @@
 		{/if}
 	{/if}
 
-	{#if embed && !editing}
+	{#if embed && !editing && !hidden}
 		<div class="frame">
 			<iframe src={embed.url} title="Stream preview" allow="autoplay; fullscreen; encrypted-media" allowfullscreen />
 		</div>
-		<p class="text-xs opacity-40 mt-1">Starts muted. Twitch only plays on secure pages or localhost.</p>
 	{/if}
 </div>
 

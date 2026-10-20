@@ -6,6 +6,8 @@
 	import '$lib/styles/styles.css';
 	import '$lib/styles/tooltip.css';
 	import { onMount } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
+	import { pathOf, recordNavigation } from '$lib/utils/navHistory';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
 	import {
 		electronEmitter,
@@ -19,15 +21,16 @@
 	// Hide the navbar (and its padding) for overlay pages and for direct/popup URLs
 	// opened with ?nonav (e.g. the live-view popup window).
 	$: nonav = $page.url.searchParams.has('nonav');
-	$: chromeless = $isOverlayPage || nonav;
+	// From the path itself (not only the store) so chrome never flashes in on these pages.
+	$: chromeless = $isOverlayPage || nonav || isOverlayPath($page.url.pathname);
 	// The .nav-pad class reserves room for the side navbars — but only in landscape,
 	// where they exist. Portrait/mobile uses a floating Home button (no side bars),
 	// so no horizontal padding there.
 	import GlobalModal from '$lib/components/global/GlobalModal.svelte';
+	import BuyMeACoffeeModal from '$lib/components/bmc/BuyMeACoffeeModal.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { initClient } from '$lib/utils/init.svelte';
 	import { page } from '$app/stores';
-	import BuyMeACoffeeEmbed from '$lib/components/embeds/BuyMeACoffeeEmbed.svelte';
 
 	let ready: boolean = false;
 
@@ -62,16 +65,17 @@
 
 	$: $isOverlayPage, updateBackgroundColor();
 
+	/** Pages without app chrome: OBS sources, the live viewer, phone striking pages. */
+	const isOverlayPath = (pathname: string) =>
+		pathname.startsWith('/obs/overlay/') ||
+		pathname.startsWith('/obs/bingo/overlay') ||
+		pathname.startsWith('/obs/game-preview') ||
+		pathname.startsWith('/obs/opponent') ||
+		pathname.startsWith('/live') ||
+		pathname.startsWith('/set/p/') ||
+		pathname.startsWith('/client/');
 	const setOverlayPage = (pathname: string) => {
-		isOverlayPage.set(
-			pathname.startsWith('/obs/overlay/') ||
-			pathname.startsWith('/obs/bingo/overlay') ||
-			pathname.startsWith('/obs/game-preview') ||
-			pathname.startsWith('/obs/opponent') ||
-			pathname.startsWith('/live') ||
-			pathname.startsWith('/set/p/') ||
-			pathname.startsWith('/client/')
-		);
+		isOverlayPage.set(isOverlayPath(pathname));
 		// Edit pages: any /obs/overlay/[id]/... that isn't a pure preview/inject
 		isEditPage.set(
 			/^\/obs\/overlay\/(?!inject)[^/]+/.test(pathname) &&
@@ -88,6 +92,8 @@
 		requestWakeLock();
 		document.addEventListener('visibilitychange', requestWakeLock);
 	};
+	// Trail for the dynamic back button (components/navigation/BackButton.svelte).
+	afterNavigate(({ to }) => to && recordNavigation(pathOf(to.url)));
 </script>
 
 {#if $isElectron}
@@ -99,8 +105,8 @@
 {#if ready}
 	{#if !chromeless}<Navbar />{/if}
 	<GlobalModal />
+	<BuyMeACoffeeModal />
 	<Toast />
-	<BuyMeACoffeeEmbed />
 	<div class:nav-pad={!chromeless}>
 		<slot />
 	</div>

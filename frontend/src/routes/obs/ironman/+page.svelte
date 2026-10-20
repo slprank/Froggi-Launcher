@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { tooltip } from 'svooltip';
@@ -514,7 +515,7 @@
 				{#if qrPeerUrl}
 					<div class="peer-url-row border-secondary">
 						<p class="text-xs opacity-50">Share with opponent</p>
-						<p class="text-xs opacity-40 break-all">{qrPeerUrl}</p>
+						<p class="text-xs opacity-40 break-all"><SecretUrl value={qrPeerUrl} /></p>
 					</div>
 				{/if}
 			</div>

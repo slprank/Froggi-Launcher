@@ -17,17 +17,15 @@ export const isObsRunning = async () => {
 		: `ps -e -o comm=`;
 	const shell = isWindows ? 'powershell.exe' : '/bin/bash';
 
-	return await new Promise((resolve) => {
+	return await new Promise<boolean>((resolve) => {
 		exec(command, { shell: shell }, (_: ExecException | null, stdout: string) => {
-			if (stdout) {
-				const lines = stdout.split('\n').map(line => line.toLowerCase());
-				for (const process of validProcesses) {
-					if (lines.some(line => line.includes(process.toLowerCase()))) {
-						return resolve(true);
-					}
-				}
-			}
-			resolve(false);
+			// Match the executable name exactly — a substring check also matched e.g. Obsidian or any
+			// path containing "obs", so a closed OBS could still look "open".
+			const names = (stdout ?? '').split('\n').map((line) => {
+				const first = isWindows ? line.split(',')[0] : line;
+				return (first.replace(/"/g, '').trim().split(/[\\/]/).pop() ?? '').toLowerCase();
+			});
+			resolve(validProcesses.some((p) => names.includes(p)));
 		});
 	});
 };

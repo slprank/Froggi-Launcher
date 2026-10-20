@@ -82,6 +82,9 @@ export enum ElementCategory {
 	CurrentPlayerPostGameOverallStats = 'Current Player Overall Stats',
 	Player1PostGameOverallStats = 'Player 1 Overall Stats',
 	Player2PostGameOverallStats = 'Player 2 Overall Stats',
+	EdgeStats = 'Edge Cancels & Edgeguards',
+	WinChance = 'Win Chance',
+	Highlights = 'Video',
 
 	CurrentPlayerPostGameMatchAttackCount = 'Current Player Match Attack Count',
 	Player1PostGameMatchAttackCount = 'Player 1 Match Attack Count',
@@ -121,6 +124,7 @@ export enum ElementCategory {
 
 	Minigames = 'Minigames',
 	LiveGame = 'Live Game',
+	Doubles = 'Doubles & Ports',
 }
 
 export enum InGameState {

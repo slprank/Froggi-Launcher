@@ -1,13 +1,14 @@
 import { MessageEvents, TypedEmitter } from "./customEventEmitter";
 import { Worker } from 'worker_threads';
 
-const unauthorized: (keyof MessageEvents)[] = ["InitData", "InitElectron", "InitAuthentication", "Ping"];
+// HighlightReelShown: OBS browser sources have no host password; it only starts a reel's shared clock once.
+const unauthorized: (keyof MessageEvents)[] = ["InitData", "InitElectron", "InitAuthentication", "Ping", "HighlightReelShown"];
 
 /** Stage-striking actions a player's phone may send without the host password — but only with the
  *  player's link token as the last argument; setService checks the token against the player/turn. */
 export const STRIKE_PLAYER_TOPICS: (keyof MessageEvents)[] = [
     "StrikePlayerConnect", "RpsChoice", "RpsWinnerOrder", "StrikeStage", "PickStage", "SelectCharacter",
-    "StrikeAgreeRequest", "StrikeAgreeResponse",
+    "StrikeAgreeRequest", "StrikeAgreeResponse", "StrikeSetName",
 ];
 
 /** May an unauthenticated client send this? (connection basics, or a striking action carrying a token) */

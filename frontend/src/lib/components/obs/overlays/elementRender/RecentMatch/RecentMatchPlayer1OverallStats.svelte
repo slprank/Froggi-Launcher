@@ -11,7 +11,7 @@
 	export let playerIndex: number;
 	export let stats: MatchStats;
 
-	$: overall = stats?.overall?.[playerIndex ?? 0];
+	$: overall = stats?.overall?.find((o) => o.playerIndex === playerIndex);
 </script>
 
 {#if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallBeneficialTradeCount}
@@ -21,7 +21,7 @@
 		)
 			? overall?.beneficialTradeRatio.count
 			: defaultPreview
-			? `${8 + playerIndex}`
+			? `${24 + playerIndex * 4}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallBeneficialTradeRatio}
@@ -31,7 +31,7 @@
 		)
 			? (overall?.beneficialTradeRatio?.ratio ?? 0) * 100
 			: defaultPreview
-			? `${75.0 + playerIndex}`
+			? `${(75 + playerIndex * 11.2).toFixed(1)}`
 			: '0'}%
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallCounterHitCount}
@@ -39,7 +39,7 @@
 		{![overall?.counterHitRatio?.count, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.counterHitRatio.count
 			: defaultPreview
-			? `${10 + playerIndex}`
+			? `${30 + playerIndex * 4}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallCounterHitRatio}
@@ -47,7 +47,7 @@
 		{![overall?.counterHitRatio.ratio, playerIndex].some((e) => e === undefined || e === null)
 			? (overall?.counterHitRatio.ratio ?? 0) * 100
 			: defaultPreview
-			? `${60.0 + playerIndex}`
+			? `${60 + playerIndex * 9}`
 			: '0.0'}%
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallDamageTotal}
@@ -55,7 +55,7 @@
 		{![overall?.totalDamage, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.totalDamage.toFixed(1)
 			: defaultPreview
-			? `${360.5 + playerIndex}`
+			? `${(1081.5 + playerIndex * 162.2).toFixed(1)}`
 			: '0.0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallOpeningsTotal}
@@ -63,7 +63,7 @@
 		{![overall?.openingsPerKill?.total, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.openingsPerKill.total
 			: defaultPreview
-			? `${27 + playerIndex}`
+			? `${81 + playerIndex * 12}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallDamagePerOpening}
@@ -71,7 +71,7 @@
 		{![overall?.damagePerOpening.ratio, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.damagePerOpening.ratio?.toFixed(1)
 			: defaultPreview
-			? `${15.6 + playerIndex}`
+			? `${(15.6 + playerIndex * 2.3).toFixed(1)}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallOpeningsPerKill}
@@ -79,7 +79,7 @@
 		{![overall?.openingsPerKill.count, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.openingsPerKill.count.toFixed(1) ?? '0.0'
 			: defaultPreview
-			? `${6.7 + playerIndex}`
+			? `${(6.7 + playerIndex * 1).toFixed(1)}`
 			: '0.0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallDigitalInputsTotal}
@@ -87,7 +87,7 @@
 		{overall?.digitalInputsPerMinute.total !== undefined
 			? overall?.digitalInputsPerMinute.total
 			: defaultPreview
-			? `${945 + playerIndex}`
+			? `${2835 + playerIndex * 425}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallDigitalInputsPerMinute}
@@ -95,7 +95,7 @@
 		{overall?.digitalInputsPerMinute.count !== undefined
 			? overall?.digitalInputsPerMinute.count.toFixed(0)
 			: defaultPreview
-			? `${315 + playerIndex}`
+			? `${(315 + playerIndex * 47.2).toFixed(1)}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallDigitalInputsPerSecond}
@@ -111,7 +111,7 @@
 		{![overall?.inputsPerMinute.total, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.inputsPerMinute.total
 			: defaultPreview
-			? `${1200 + playerIndex}`
+			? `${3600 + playerIndex * 540}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallInputsPerMinute}
@@ -119,7 +119,7 @@
 		{![overall?.inputsPerMinute.count, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.inputsPerMinute.count.toFixed(0)
 			: defaultPreview
-			? `${400 + playerIndex}`
+			? `${400 + playerIndex * 60}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallInputsPerSecond}
@@ -135,7 +135,7 @@
 		{![overall?.neutralWinRatio.count, playerIndex].some((e) => e === undefined || e === null)
 			? overall?.neutralWinRatio.count
 			: defaultPreview
-			? `${18 + playerIndex}`
+			? `${54 + playerIndex * 8}`
 			: '0'}
 	</TextElement>
 {:else if dataItem?.elementId === CustomElement.PostGameMatchPlayer1OverallNeutralWinsRatio}

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { PLAYER_SLOTS } from '$lib/utils/teams';
 	import { BUILTIN_ASSET_PACKS, DEFAULT_ASSET_PACK_ID } from '$lib/models/types/assetPack';
-	import { PACK_CHARACTER_ELEMENTS } from '../elementCategories';
+	import { PACK_CHARACTER_ELEMENTS, STRIKE_CHARACTER_ELEMENTS } from '../elementCategories';
 	import Select from '$lib/components/input/Select.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import type { ElementPayload } from '$lib/models/types/overlay';
@@ -15,7 +16,7 @@
 	import AnimationInput from '$lib/components/input/AnimationInput.svelte';
 	import BooleanInput from '$lib/components/input/BooleanInput.svelte';
 	import FontSelectorLayer from '$lib/components/obs/overlays/selector/FontSelectLayer.svelte';
-	import { getDefaultElementPayload } from '../edit/OverlayHandler.svelte';
+	import { getNewElementPayload } from '../edit/OverlayHandler.svelte';
 	import NumberInput from '$lib/components/input/NumberInput.svelte';
 	import VisibilitySelect from './VisibilitySelect.svelte';
 	import AnimationTriggerSelect from './AnimationTriggerSelect.svelte';
@@ -26,6 +27,12 @@
 	import { tooltip } from 'svooltip';
 	import { ELEMENT_TRANSITION_LIMIT } from '$lib/models/const';
 	import FileUpload from '$lib/components/input/FileUpload.svelte';
+	import { page } from '$app/stores';
+	import { flows, overlays } from '$lib/utils/store.svelte';
+	import { flowVideoKeys, sceneWarnings } from '$lib/utils/overlayWarnings';
+	import type { ElementTrigger, TriggerAnimation } from '$lib/models/types/overlay';
+	import { SELF, activeTriggers, elementTriggerKey, triggerAnimations } from '$lib/utils/elementTriggers';
+	import { getDefaultAnimations } from '$lib/utils/overlayElementDefaults';
 
 	export let selectedItemId: string;
 	export let selectedElementId: number;
@@ -36,7 +43,13 @@
 	$: customImageSettings = isCustomImageSettings(selectedElementId);
 	$: stringSettings = isStringSettings(selectedElementId);
 	$: imageSettings = isImageSettings(selectedElementId);
-	$: isPackCharacter = PACK_CHARACTER_ELEMENTS.has(selectedElementId);
+	$: isPackCharacter = PACK_CHARACTER_ELEMENTS.has(selectedElementId) || STRIKE_CHARACTER_ELEMENTS.has(selectedElementId);
+	$: rpsIconSettings = selectedElementId === CustomElement.StrikeRpsPlayer1Icon || selectedElementId === CustomElement.StrikeRpsPlayer2Icon;
+	const RPS_HANDS: { value: 'rock' | 'paper' | 'scissors'; label: string }[] = [
+		{ value: 'rock', label: 'Rock' },
+		{ value: 'paper', label: 'Paper' },
+		{ value: 'scissors', label: 'Scissors' },
+	];
 	$: if (isPackCharacter && payload && !payload.assetPack) payload.assetPack = DEFAULT_ASSET_PACK_ID;
 	// Elements created before the color option existed have no colorOverlay yet.
 	$: if ((imageSettings || customImageSettings) && payload && !payload.colorOverlay)
@@ -129,22 +142,59 @@
 
 	function updateStyle() {
 		if (getSettingsType(selectedElementId) === getSettingsType(prevSelectedElementId)) return;
-		payload = getDefaultElementPayload();
+		payload = getNewElementPayload();
 		prevSelectedElementId = selectedElementId;
 	}
 	$: selectedElementId, updateStyle();
 
 	const fixAnimationInputDelay = () => {
-		if (payload.animationTrigger.in.type === Animation.None) {
-			payload.animationTrigger.in.options.delay = 0;
-			payload.animationTrigger.in.options.duration = 0;
-		}
-		if (payload.animationTrigger.out.type === Animation.None) {
-			payload.animationTrigger.out.options.delay = 0;
-			payload.animationTrigger.out.options.duration = 0;
+		for (const t of triggerAnimations(payload)) {
+			if (t.in.type === Animation.None) {
+				t.in.options.delay = 0;
+				t.in.options.duration = 0;
+			}
+			if (t.out.type === Animation.None) {
+				t.out.options.delay = 0;
+				t.out.options.duration = 0;
+			}
 		}
 	};
-	$: payload.animationTrigger, fixAnimationInputDelay();
+	$: payload.animationTrigger, payload.extraAnimationTriggers, fixAnimationInputDelay();
+
+	// Trigger animations: animation 1 = payload.animationTrigger, 2… = payload.extraAnimationTriggers.
+	// Each has its own in/out and triggers; a trigger belongs to one animation only.
+	let animIndex = 0;
+	$: animations = triggerAnimations(payload);
+	$: if (animIndex >= animations.length) animIndex = 0;
+	$: currentAnimation = animations[animIndex];
+	$: takenByOthers = new Set(
+		animations
+			.filter((_, i) => i !== animIndex)
+			.flatMap((t) => [...activeTriggers(t.selectedOptions), ...(t.elementTriggers ?? []).map(elementTriggerKey)]),
+	);
+	const addAnimation = () => {
+		const next: TriggerAnimation = { in: getDefaultAnimations(), out: getDefaultAnimations(), selectedOptions: {} as SelectedAnimationTriggerCondition, elementTriggers: [] };
+		payload.extraAnimationTriggers = [...(payload.extraAnimationTriggers ?? []), next];
+		animIndex = animations.length;
+	};
+	const removeAnimation = () => {
+		if (animIndex === 0) return;
+		payload.extraAnimationTriggers = (payload.extraAnimationTriggers ?? []).filter((_, i) => i !== animIndex - 1);
+		animIndex = 0;
+	};
+	// Elements a trigger can watch: this one, then every other element of the scene.
+	const humanize = (name: string) => name.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+	$: sceneLayers = $overlays[$page.params.overlay]?.[$statsScene]?.layers ?? [];
+	// Problems with this element (utils/overlayWarnings.ts) — e.g. a video key no flow sets.
+	$: itemWarnings = sceneWarnings($overlays[$page.params.overlay]?.[$statsScene], flowVideoKeys($flows))[selectedItemId] ?? [];
+	$: triggerElements = [
+		{ value: SELF, label: 'This element' },
+		...sceneLayers.flatMap((layer, i) =>
+			(layer.items ?? [])
+				.filter((item) => item.id !== selectedItemId)
+				.map((item) => ({ value: item.id, label: `${layer.title || `Layer ${i + 1}`} · ${humanize(CustomElement[item.elementId] ?? `Element ${item.elementId}`)}` })),
+		),
+	];
 
 	const testAnimationTriggers = () => {
 		$localEmitter.emit('TestAnimationTrigger');
@@ -159,9 +209,17 @@
 	const handleVisibilityUpdate = (event: CustomEvent<SelectedVisibilityCondition[]>) => {
 		payload.visibility.selectedOptions = event.detail;
 	};
-	const handleTriggerUpdate = (event: CustomEvent<SelectedAnimationTriggerCondition>) => {
-		payload.animationTrigger.selectedOptions = event.detail;
+	const handleTriggerUpdate = (event: CustomEvent<{ selectedOptions: SelectedAnimationTriggerCondition; elementTriggers: ElementTrigger[] }>) => {
+		const t = triggerAnimations(payload)[animIndex];
+		if (!t) return;
+		t.selectedOptions = event.detail.selectedOptions;
+		t.elementTriggers = event.detail.elementTriggers;
+		payload = payload;
 	};
+	// Player-bound elements (names contain Player1 / Player2) can show any doubles slot.
+	$: elementName = CustomElement[selectedElementId] ?? '';
+	$: isPlayerElement = /Player[12]/.test(elementName);
+	$: isPlayer2Element = /Player2/.test(elementName);
 </script>
 
 {#key selectedElementId}
@@ -171,6 +229,11 @@
 			in:fly={{ duration: 250, x: 150, delay: 250 }}
 			out:fly={{ duration: 250, x: 150 }}
 		>
+			{#if itemWarnings.length}
+				<div class="element-warning">
+					{#each itemWarnings as w}<p>⚠ {w}</p>{/each}
+				</div>
+			{/if}
 			{#if savedStyle}
 				<button
 					class="btn text-xs h-8 px-4 border-secondary rounded"
@@ -208,16 +271,48 @@
 				</section>
 			{/if}
 
+			{#if selectedElementId === CustomElement.PostGameHighlightVideo}
+				<section class="styling-section">
+					<p class="section-label">Video</p>
+					<label class="flex flex-col gap-1 text-sm mb-2">
+						Key
+						<input
+							value={payload.video?.key ?? payload.highlight?.key ?? 'game'}
+							on:change={(e) => (payload.video = { key: e.currentTarget.value.trim() || 'game', volume: payload.video?.volume ?? (payload.highlight?.sound ? 100 : 0) })}
+							class="w-full border-secondary text-secondary-color background-primary-color text-sm rounded block px-3 py-2"
+						/>
+					</label>
+					<label class="flex flex-col gap-1 text-sm">
+						Volume · {payload.video?.volume ?? (payload.highlight?.sound ? 100 : 0)}
+						<input
+							type="range"
+							min="0"
+							max="100"
+							step="5"
+							value={payload.video?.volume ?? (payload.highlight?.sound ? 100 : 0)}
+							on:change={(e) => (payload.video = { key: payload.video?.key ?? payload.highlight?.key ?? 'game', volume: Number(e.currentTarget.value) })}
+						/>
+					</label>
+					<p class="text-xs opacity-50 mt-2 leading-relaxed">
+						Plays what a flow points this key at: a highlight reel ("Build highlight reel" — the best moments, cut
+						from OBS's replay buffer, looping) or one video file ("Set video"). Every screen (OBS, a phone, a
+						remote device) shows the same moment at the same time. 0 = muted; a flow's "Set video volume" for
+						this key overrides it. A new set clears the reels.
+					</p>
+				</section>
+			{/if}
+
 			{#if selectedElementId === CustomElement.CustomImage}
 				<section class="styling-section">
-					<p class="section-label">Image</p>
+					<p class="section-label">Image or video</p>
 					<FileUpload
 						fileName={selectedItemId}
 						directory="image"
 						label="Upload"
-						acceptedExtensions={['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp']}
+						acceptedExtensions={['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'mp4', 'webm']}
 						on:change={(event) => { payload.image.name = event.detail; }}
 					/>
+					<p class="text-xs opacity-50 mt-1">MP4 / WebM videos play muted and on loop.</p>
 				</section>
 				<p class="section-label">Image Positioning</p>
 			{/if}
@@ -251,6 +346,28 @@
 						<option value="justify-start">Left</option>
 						<option selected value="justify-center">Center</option>
 						<option value="justify-end">Right</option>
+					</Select>
+				</section>
+			{/if}
+
+			{#if isPlayerElement}
+				<section class="styling-section">
+					<p
+						class="section-label"
+						use:tooltip={{
+							content: 'Which player this element shows. Default = its own player (Player 1 / Player 2; in doubles each team\'s first player). Pick a team slot to show any of the four doubles players.',
+							placement: 'top-start',
+							offset: 15,
+							delay: [200, 0],
+						}}
+					>
+						Player
+					</p>
+					<Select bind:selected={payload.playerSlot}>
+						<option value={undefined} selected={!payload.playerSlot}>Default ({isPlayer2Element ? 'Player 2 / Team 2 · Player 1' : 'Player 1 / Team 1 · Player 1'})</option>
+						{#each PLAYER_SLOTS as slot (slot.value)}
+							<option value={slot.value} selected={payload.playerSlot === slot.value}>{slot.label}</option>
+						{/each}
 					</Select>
 				</section>
 			{/if}
@@ -437,6 +554,32 @@
 				</div>
 			</section>
 
+			{#if rpsIconSettings}
+				<section class="styling-section">
+					<p class="section-label">Icons</p>
+					<div class="pill-group">
+						<button class="pill" class:pill--active={(payload.rpsIconStyle ?? 'outline') === 'outline'} on:click={() => (payload.rpsIconStyle = 'outline')}>Outline (text colour)</button>
+						<button class="pill" class:pill--active={payload.rpsIconStyle === 'color'} on:click={() => (payload.rpsIconStyle = 'color')}>Colour</button>
+					</div>
+					{#each RPS_HANDS as h (h.value)}
+						<div class="flex gap-2 items-end">
+							<div class="flex-1">
+								<FileUpload
+									fileName={`${selectedItemId}-${h.value}`}
+									directory="image"
+									label={`${h.label}${payload.rpsIcons?.[h.value] ? ' · your icon' : ' · built-in'}`}
+									acceptedExtensions={['png', 'svg', 'webp', 'gif', 'jpg', 'jpeg']}
+									on:change={(event) => (payload.rpsIcons = { ...(payload.rpsIcons ?? {}), [h.value]: event.detail })}
+								/>
+							</div>
+							{#if payload.rpsIcons?.[h.value]}
+								<button class="btn text-xs h-10 px-3 border-secondary rounded" on:click={() => (payload.rpsIcons = { ...(payload.rpsIcons ?? {}), [h.value]: undefined })}>Built-in</button>
+							{/if}
+						</div>
+					{/each}
+				</section>
+			{/if}
+
 			<section class="styling-section">
 				<p class="section-label">Shadow</p>
 				<ShadowSelect bind:value={payload.shadow} />
@@ -459,21 +602,45 @@
 					Animation Triggers
 				</p>
 				{#if !preAnimatedElement}
-					<AnimationTriggerSelect
-						bind:selectedOption={payload.animationTrigger.selectedOptions}
-						on:update={handleTriggerUpdate}
-					/>
-				{/if}
-				{#if payload.animationTrigger.selectedOptions && !preAnimatedElement}
-					<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
-						<AnimationInput bind:animation={payload.animationTrigger.in} label="In" max={ELEMENT_TRANSITION_LIMIT} />
-						<AnimationInput bind:animation={payload.animationTrigger.out} label="Out" max={ELEMENT_TRANSITION_LIMIT} />
+					<div class="pill-group">
+						{#each animations as _, i}
+							<button class="pill" class:pill--active={animIndex === i} on:click={() => (animIndex = i)}>Animation {i + 1}</button>
+						{/each}
+						<button class="pill" title="Another animation with its own triggers" on:click={addAnimation}>+ Add</button>
 					</div>
-				{/if}
-				{#if payload.animationTrigger.selectedOptions && !preAnimatedElement}
-					<button in:fly={{ duration: 250, x: 100 }} on:click={testAnimationTriggers} class="btn text-xs h-8 px-4 border-secondary rounded">
-						Test animation
-					</button>
+					{#key animIndex}
+						{#if currentAnimation}
+							<AnimationTriggerSelect
+								selectedOption={currentAnimation.selectedOptions}
+								elementTriggers={currentAnimation.elementTriggers ?? []}
+								taken={takenByOthers}
+								elements={triggerElements}
+								label="Triggers · Animation {animIndex + 1}"
+								on:update={handleTriggerUpdate}
+							/>
+						{/if}
+						<div class="w-full flex gap-4" in:fly={{ duration: 250, x: 100 }}>
+							{#if animIndex === 0}
+								<AnimationInput bind:animation={payload.animationTrigger.in} label="In" max={ELEMENT_TRANSITION_LIMIT} />
+								<AnimationInput bind:animation={payload.animationTrigger.out} label="Out" max={ELEMENT_TRANSITION_LIMIT} />
+							{:else}
+								{#each payload.extraAnimationTriggers ?? [] as extra, i}
+									{#if i + 1 === animIndex}
+										<AnimationInput bind:animation={extra.in} label="In" max={ELEMENT_TRANSITION_LIMIT} />
+										<AnimationInput bind:animation={extra.out} label="Out" max={ELEMENT_TRANSITION_LIMIT} />
+									{/if}
+								{/each}
+							{/if}
+						</div>
+					{/key}
+					<div class="flex gap-2">
+						<button in:fly={{ duration: 250, x: 100 }} on:click={testAnimationTriggers} class="btn text-xs h-8 px-4 border-secondary rounded">
+							Test animation
+						</button>
+						{#if animIndex > 0}
+							<button on:click={removeAnimation} class="btn text-xs h-8 px-4 border-secondary rounded">Remove animation {animIndex + 1}</button>
+						{/if}
+					</div>
 				{/if}
 				{#if preAnimatedElement}
 					<button in:fly={{ duration: 250, x: 100 }} on:click={testCustomAnimationTriggers} class="btn text-xs h-8 px-4 border-secondary rounded">
@@ -564,6 +731,18 @@
 {/key}
 
 <style>
+	.element-warning { border: 1px solid #ef4444; border-radius: 0.375rem; padding: 0.5rem 0.7rem; color: #ef4444; font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.2rem; }
+	.pill-group { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.pill {
+		font-size: 0.78rem;
+		padding: 0.2rem 0.7rem;
+		border: 1px solid var(--secondary-color);
+		border-radius: 1rem;
+		color: var(--secondary-color);
+		background: transparent;
+		opacity: 0.4;
+	}
+	.pill--active, .pill:hover { opacity: 1; background: color-mix(in srgb, var(--secondary-color) 12%, transparent); }
 	.styling-section {
 		display: flex;
 		flex-direction: column;

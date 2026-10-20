@@ -15,7 +15,7 @@
 	} from '$lib/utils/store.svelte';
 	import {
 		generateNewItem,
-		getDefaultElementPayload,
+		getNewElementPayload,
 	} from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 	import StylingSelect from '$lib/components/obs/overlays/selector/StylingSelect.svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -36,7 +36,7 @@
 
 	let isElementSelectOpen = false;
 	let selectedElementId: CustomElement;
-	let payload: ElementPayload = getDefaultElementPayload();
+	let payload: ElementPayload = getNewElementPayload();
 	$: isNewElement = !getCurrentItems().some((item) => item.id === selectedItemId);
 
 	$: demoItem = {

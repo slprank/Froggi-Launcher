@@ -1,13 +1,29 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
-	import { strikeState, electronEmitter, isOverlayPage, urls } from '$lib/utils/store.svelte';
+	import { strikeState, electronEmitter, urls } from '$lib/utils/store.svelte';
 	import { STAGE_DATA } from '$lib/models/constants/stageData';
 	import PhoneLiveGame from '$lib/components/set/PhoneLiveGame.svelte';
+	import CharPicker from '$lib/components/set/CharPicker.svelte';
+	import StrikeTimeline from '$lib/components/set/StrikeTimeline.svelte';
+	import { stageStatus } from '$lib/utils/strikeStageStatus';
 
 	// The player's secret from their QR link (/set/p/N?t=…) — phones aren't authorised, so every
 	// striking action carries it. Without it (host browser) actions go through the host password.
 	const token = (): string | undefined => $page.url.searchParams.get('t') ?? undefined;
+
+	// Players type their own name (tag); the host can still overwrite it from the dashboard.
+	let editingName = false;
+	let nameDraft = '';
+	const startEditName = () => {
+		nameDraft = myName;
+		editingName = true;
+	};
+	const saveName = () => {
+		if (!editingName) return;
+		editingName = false;
+		if (nameDraft.trim() && nameDraft.trim() !== myName) $electronEmitter.emit('StrikeSetName', playerNum, nameDraft, token());
+	};
 
 	// Keep the phone screen on while striking. Wake Lock needs HTTPS (ngrok / Tailscale links);
 	// on plain-HTTP LAN links it isn't available and the screen may still dim.
@@ -26,13 +42,12 @@
 		$electronEmitter.emit('StrikePlayerConnect', playerNum, token());
 	};
 
+	// No app chrome here: the root layout marks /set/p/ as an overlay page by its path.
 	onMount(() => {
-		isOverlayPage.set(true);
 		$electronEmitter.emit('StrikePlayerConnect', playerNum, token());
 		requestWakeLock();
 		document.addEventListener('visibilitychange', onVisibility);
 		return () => {
-			isOverlayPage.set(false);
 			document.removeEventListener('visibilitychange', onVisibility);
 			wakeLock?.release().catch(() => undefined);
 		};
@@ -45,18 +60,6 @@
 		28: 'Dream Land N64', 31: 'Battlefield', 32: 'Final Destination',
 	};
 
-	const MELEE_CHARS = [
-		22,  8,  7,  5, 12, 17,  1,  0, 25, // Dr.Mario Mario Luigi Bowser Peach Yoshi DK Falcon Ganon
-		20,  2, 11, 14,  4, 16, 18,  6, 21, // Falco Fox Ness ICs Kirby Samus Zelda Link Y.Link
-		24, 13, 15, 10,  3,  9, 23,          // Pichu Pikachu Puff Mewtwo G&W Marth Roy
-	];
-	const CHAR_NAMES: Record<number, string> = {
-		0:'C. Falcon',1:'Donkey Kong',2:'Fox',3:'Mr. Game & Watch',4:'Kirby',5:'Bowser',6:'Link',
-		7:'Luigi',8:'Mario',9:'Marth',10:'Mewtwo',11:'Ness',12:'Peach',
-		13:'Pikachu',14:'Ice Climbers',15:'Jigglypuff',16:'Samus',17:'Yoshi',
-		18:'Zelda',19:'Sheik',20:'Falco',21:'Young Link',22:'Dr. Mario',
-		23:'Roy',24:'Pichu',25:'Ganondorf',
-	};
 
 	function stageName(id: number): string {
 		return STAGE_DATA[id]?.name ?? STAGE_NAMES[id] ?? `Stage ${id}`;
@@ -66,7 +69,9 @@
 		(e.currentTarget as HTMLImageElement).style.display = 'none';
 	}
 
-	$: playerNum = parseInt($page.params.num) as 1 | 2;
+	// The link's side; after the host swaps sides (Fix set…) the same link plays the other side.
+	$: linkNum = parseInt($page.params.num) as 1 | 2;
+	$: playerNum = ($strikeState?.sidesSwapped ? (linkNum === 1 ? 2 : 1) : linkNum) as 1 | 2;
 	$: myKey = playerNum === 1 ? 'p1' : 'p2';
 	$: s = $strikeState;
 	$: phase = s?.phase ?? 'lobby';
@@ -81,6 +86,11 @@
 	$: isLoser = lastWinner !== null && lastWinner !== playerNum;
 	$: myChar = playerNum === 1 ? s?.characters?.p1 : s?.characters?.p2;
 	$: oppChar = playerNum === 1 ? s?.characters?.p2 : s?.characters?.p1;
+	// Strikes left in the current 1-2-1 turn (the striker's share minus what is already struck).
+	$: strikesLeft = Math.max(0, (s?.strikeOrder ?? []).slice(0, (s?.strikeOrderIndex ?? 0) + 1).reduce((n, [, count]) => n + count, 0) - (s?.strikes?.length ?? 0));
+	$: myPartnerChar = playerNum === 1 ? s?.partnerCharacters?.p1 : s?.partnerCharacters?.p2;
+	$: oppPartnerChar = playerNum === 1 ? s?.partnerCharacters?.p2 : s?.partnerCharacters?.p1;
+	$: myMembers = s?.ruleset === 'doubles' ? (playerNum === 1 ? s?.teamMembers?.p1 : s?.teamMembers?.p2) ?? ['Player 1', 'Player 2'] : [];
 
 	function rpsChoice(choice: 'rock' | 'paper' | 'scissors') {
 		if (myRps !== null && myRps !== undefined) return;
@@ -111,6 +121,8 @@
 	}
 
 	// Stages the picker may not choose (they already won there) — still shown so players can agree.
+	// Pick phase: every legal stage (starters + counterpicks), in place, with its status.
+	$: pickStages = [...new Set([...(s?.starters ?? []), ...(s?.counterpicks ?? [])])];
 	$: myDsrStages = (s?.dsrStages?.[playerNum === 1 ? 'p1' : 'p2'] ?? []).filter(
 		(id) => !(s?.stages ?? []).includes(id) && !(s?.bans ?? []).includes(id),
 	);
@@ -142,20 +154,9 @@
 		$electronEmitter.emit('PickStage', stageId, token());
 	}
 
-	let pendingChar: number | null = null;
-
-	function tapChar(charId: number) {
-		pendingChar = charId;
-	}
-
-	function confirmChar() {
-		if (pendingChar === null) return;
-		$electronEmitter.emit('SelectCharacter', playerNum, pendingChar, token());
-		pendingChar = null;
-	}
-
-	function cancelChar() {
-		pendingChar = null;
+	// Doubles: the team picks for both its players at once (CharPicker), singles one character.
+	function confirmChars(chars: number[]) {
+		$electronEmitter.emit('SelectCharacter', playerNum, chars[0], token(), chars[1]);
 	}
 
 	const RPS_EMOJI: Record<string, string> = { rock: '✊', paper: '✋', scissors: '✌️' };
@@ -170,18 +171,26 @@
 	{#if s && phase !== 'lobby'}
 	<div class="top-bar">
 		<div class="top-score" class:top-score--me={true}>
-			<span class="top-name">{myName}</span>
-			<span class="top-pts" class:pts-active={playerNum === 1}>{s?.score?.p1 ?? 0}</span>
+			{#if editingName}
+				<!-- svelte-ignore a11y-autofocus -->
+				<input class="name-input" maxlength="30" bind:value={nameDraft} on:keydown={(e) => e.key === 'Enter' && saveName()} on:blur={saveName} autofocus />
+			{:else}
+				<button class="top-name top-name--edit" title="Change your name" on:click={startEditName}>{myName} <span class="pencil">✎</span></button>
+			{/if}
+			<span class="top-pts pts-active">{(playerNum === 1 ? s?.score?.p1 : s?.score?.p2) ?? 0}</span>
 		</div>
 		<span class="top-sep">–</span>
 		<div class="top-score top-score--opp">
-			<span class="top-pts" class:pts-active={playerNum === 2}>{s?.score?.p2 ?? 0}</span>
+			<span class="top-pts">{(playerNum === 1 ? s?.score?.p2 : s?.score?.p1) ?? 0}</span>
 			<span class="top-name">{oppName}</span>
 		</div>
 	</div>
 	{/if}
 
 	<div class="player-body">
+		{#if ['striking', 'stageBan', 'stagePick', 'charLock', 'charPick', 'playing'].includes(phase)}
+			<div class="timeline-wrap"><StrikeTimeline state={s} accent="var(--accent)" /></div>
+		{/if}
 
 		<!-- LOBBY / CONNECTING -->
 		{#if phase === 'lobby'}
@@ -191,7 +200,7 @@
 		{@const oppConnected = connected.includes(oppNum)}
 		<div class="waiting-screen">
 			<p class="app-name">Froggi</p>
-			<p class="waiting-role">Stage Striking · Player {playerNum}</p>
+			<p class="waiting-role">Stage Striking · {s?.ruleset === 'doubles' ? 'Team' : 'Player'} {playerNum}</p>
 			<div class="conn-status-list">
 				<div class="conn-status-row">
 					<span class="conn-dot" class:conn-dot--on={iAmConnected} class:conn-dot--off={!iAmConnected}></span>
@@ -249,15 +258,12 @@
 		<!-- STRIKING (G1) -->
 		{:else if phase === 'striking'}
 		<div class="phase-section">
-			{#if s?.rps?.winner}
+			{#if s?.rps?.winner && !(s?.strikes?.length)}
 			<p class="rps-result-hint">{firstStriker === playerNum ? 'You strike first' : `${oppName} strikes first`}</p>
 			{/if}
 			{#if isMyTurn}
-			<p class="phase-title">Strike a stage</p>
-			<p class="phase-sub">
-				Strike {s?.strikeOrder?.[s?.strikeOrderIndex ?? 0]?.[1] ?? 1}
-				stage{(s?.strikeOrder?.[s?.strikeOrderIndex ?? 0]?.[1] ?? 1) > 1 ? 's' : ''}
-			</p>
+			<p class="phase-title">Your turn · strike {strikesLeft} {strikesLeft === 1 ? 'stage' : 'stages'}</p>
+			<p class="phase-sub">Tap a stage to strike it</p>
 			<div class="stage-grid-p">
 				{#each s?.starters ?? [] as stageId}
 				{#if !s?.strikes?.includes(stageId)}
@@ -275,8 +281,8 @@
 				{/each}
 			</div>
 			{:else}
-			<p class="phase-title">Opponent is striking…</p>
-			<p class="phase-sub">&nbsp;</p>
+			<p class="phase-title">{oppName} is striking…</p>
+			<p class="phase-sub">{strikesLeft} {strikesLeft === 1 ? 'stage' : 'stages'} to go</p>
 			<div class="stage-grid-p stage-grid-p--passive">
 				{#each s?.starters ?? [] as stageId}
 				<div class="stage-btn" class:stage-btn--struck={s?.strikes?.includes(stageId)}>
@@ -343,19 +349,28 @@
 				{/if}
 			{:else if isMyTurn}
 			<p class="phase-title">Pick a stage</p>
+			<!-- Every legal stage stays in place: banned ones greyed, DSR ones red. -->
 			<div class="stage-grid-p">
-				{#each s?.stages ?? [] as stageId}
-				<button class="stage-btn" on:click={() => pickStage(stageId)}>
-					<img src="/image/stages/{stageId}.png" alt={stageName(stageId)} class="stage-btn-img" />
-					<span>{stageName(stageId)}</span>
-				</button>
-				{/each}
-				{#each myDsrStages as stageId}
+				{#each pickStages as stageId}
+				{@const status = stageStatus(s, stageId)}
+				{#if status === 'dsr'}
 				<button class="stage-btn stage-btn--dsr" disabled={!s?.allowAgreement} on:click={() => (confirmAgreeStage = stageId)}>
 					<img src="/image/stages/{stageId}.png" alt={stageName(stageId)} class="stage-btn-img" />
 					<span>{stageName(stageId)}</span>
 					<span class="dsr-tag">{s?.allowAgreement ? 'You won here · ask' : 'You already won here'}</span>
 				</button>
+				{:else if status === 'struck'}
+				<div class="stage-btn stage-btn--struck">
+					<img src="/image/stages/{stageId}.png" alt="" class="stage-btn-img" />
+					<span>{stageName(stageId)} · Banned</span>
+					<span class="strike-x">✕</span>
+				</div>
+				{:else}
+				<button class="stage-btn" on:click={() => pickStage(stageId)}>
+					<img src="/image/stages/{stageId}.png" alt={stageName(stageId)} class="stage-btn-img" />
+					<span>{stageName(stageId)}</span>
+				</button>
+				{/if}
 				{/each}
 			</div>
 			{#if myDsrStages.length}
@@ -373,10 +388,12 @@
 			{:else}
 			<p class="phase-title">Opponent is picking a stage…</p>
 			<div class="stage-grid-p stage-grid-p--passive">
-				{#each s?.stages ?? [] as stageId}
-				<div class="stage-btn">
+				{#each pickStages as stageId}
+				{@const status = stageStatus(s, stageId)}
+				<div class="stage-btn" class:stage-btn--struck={status === 'struck' || status === 'dsr'}>
 					<img src="/image/stages/{stageId}.png" alt={stageName(stageId)} class="stage-btn-img" />
-					<span>{stageName(stageId)}</span>
+					<span>{stageName(stageId)}{status === 'struck' ? ' · Banned' : status === 'dsr' ? ' · DSR' : ''}</span>
+					{#if status === 'struck'}<span class="strike-x">✕</span>{/if}
 				</div>
 				{/each}
 			</div>
@@ -388,28 +405,13 @@
 		<div class="phase-section">
 			{#if myChar !== null && myChar !== undefined}
 			<div class="char-picked">
-				<img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />
+				<div class="char-picked-imgs"><img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />{#if myPartnerChar != null}<img src="/image/characters/css/{myPartnerChar}.png" alt="" class="char-picked-img" />{/if}</div>
 				<p class="phase-sub">Locked in — waiting for opponent…</p>
 			</div>
 			{:else}
 			<p class="phase-title">Pick your character</p>
 			<p class="phase-sub">Double blind — don't show your screen</p>
-			<div class="char-grid">
-				{#each MELEE_CHARS as charId}
-				<button class="char-btn" class:char-btn--pending={pendingChar === charId} on:click={() => tapChar(charId)} title={CHAR_NAMES[charId]}>
-					<img src="/image/characters/css/{charId}.png" alt={CHAR_NAMES[charId]} class="char-btn-img" />
-				</button>
-				{/each}
-			</div>
-			{#if pendingChar !== null}
-			<div class="char-confirm-bar">
-				<img src="/image/characters/css/{pendingChar}.png" alt="" class="char-confirm-img" />
-				<div class="char-confirm-btns">
-					<button class="char-confirm-ok" on:click={confirmChar}>Confirm</button>
-					<button class="char-confirm-cancel" on:click={cancelChar}>Cancel</button>
-				</div>
-			</div>
-			{/if}
+			<CharPicker members={myMembers} on:confirm={(e) => confirmChars(e.detail)} />
 			{/if}
 		</div>
 
@@ -419,28 +421,13 @@
 			{#if isWinner}
 			{#if myChar !== null && myChar !== undefined}
 			<div class="char-picked">
-				<img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />
+				<div class="char-picked-imgs"><img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />{#if myPartnerChar != null}<img src="/image/characters/css/{myPartnerChar}.png" alt="" class="char-picked-img" />{/if}</div>
 				<p class="phase-sub">Locked in — opponent is picking…</p>
 			</div>
 			{:else}
 			<p class="phase-title">Lock your character</p>
 			<p class="phase-sub">Visible to opponent</p>
-			<div class="char-grid">
-				{#each MELEE_CHARS as charId}
-				<button class="char-btn" class:char-btn--pending={pendingChar === charId} on:click={() => tapChar(charId)} title={CHAR_NAMES[charId]}>
-					<img src="/image/characters/css/{charId}.png" alt={CHAR_NAMES[charId]} class="char-btn-img" />
-				</button>
-				{/each}
-			</div>
-			{#if pendingChar !== null}
-			<div class="char-confirm-bar">
-				<img src="/image/characters/css/{pendingChar}.png" alt="" class="char-confirm-img" />
-				<div class="char-confirm-btns">
-					<button class="char-confirm-ok" on:click={confirmChar}>Confirm</button>
-					<button class="char-confirm-cancel" on:click={cancelChar}>Cancel</button>
-				</div>
-			</div>
-			{/if}
+			<CharPicker members={myMembers} on:confirm={(e) => confirmChars(e.detail)} />
 			{/if}
 			{:else}
 			<p class="phase-title">Opponent is locking their character…</p>
@@ -453,7 +440,7 @@
 			{#if isLoser}
 			{#if myChar !== null && myChar !== undefined}
 			<div class="char-picked">
-				<img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />
+				<div class="char-picked-imgs"><img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />{#if myPartnerChar != null}<img src="/image/characters/css/{myPartnerChar}.png" alt="" class="char-picked-img" />{/if}</div>
 				<p class="phase-sub">Locked in!</p>
 			</div>
 			{:else}
@@ -461,31 +448,16 @@
 			{#if oppChar !== null && oppChar !== undefined}
 			<div class="opp-locked">
 				<span class="phase-sub">Opponent locked:</span>
-				<img src="/image/characters/css/{oppChar}.png" alt="" class="char-sm" />
+				<img src="/image/characters/css/{oppChar}.png" alt="" class="char-sm" />{#if oppPartnerChar != null}<img src="/image/characters/css/{oppPartnerChar}.png" alt="" class="char-sm" />{/if}
 			</div>
 			{/if}
-			<div class="char-grid">
-				{#each MELEE_CHARS as charId}
-				<button class="char-btn" class:char-btn--pending={pendingChar === charId} on:click={() => tapChar(charId)} title={CHAR_NAMES[charId]}>
-					<img src="/image/characters/css/{charId}.png" alt={CHAR_NAMES[charId]} class="char-btn-img" />
-				</button>
-				{/each}
-			</div>
-			{#if pendingChar !== null}
-			<div class="char-confirm-bar">
-				<img src="/image/characters/css/{pendingChar}.png" alt="" class="char-confirm-img" />
-				<div class="char-confirm-btns">
-					<button class="char-confirm-ok" on:click={confirmChar}>Confirm</button>
-					<button class="char-confirm-cancel" on:click={cancelChar}>Cancel</button>
-				</div>
-			</div>
-			{/if}
+			<CharPicker members={myMembers} on:confirm={(e) => confirmChars(e.detail)} />
 			{/if}
 			{:else}
 			<p class="phase-title">Opponent is picking their character…</p>
 			{#if myChar !== null && myChar !== undefined}
 			<div class="char-picked">
-				<img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />
+				<div class="char-picked-imgs"><img src="/image/characters/css/{myChar}.png" alt="" class="char-picked-img" />{#if myPartnerChar != null}<img src="/image/characters/css/{myPartnerChar}.png" alt="" class="char-picked-img" />{/if}</div>
 			</div>
 			{/if}
 			{/if}
@@ -565,28 +537,36 @@
 	.player-root {
 		position: fixed; inset: 0;
 		display: flex; flex-direction: column;
-		background: #111;
-		color: #e0e0e0;
+		/* Dark by default; light when the phone is in light mode (same palette as the rest of Froggi). */
+		--bg: #111; --fg: #e0e0e0; --accent: #40dca5; --on-accent: #111; --win: #4ade80; --bad: #f87171;
+		background: var(--bg);
+		color: var(--fg);
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	}
 
 	.top-bar {
 		display: flex; align-items: center; justify-content: center;
 		gap: 0.75rem; padding: 0.6rem 1rem;
-		background: rgba(255,255,255,0.04);
-		border-bottom: 1px solid rgba(255,255,255,0.08);
+		background: color-mix(in srgb, var(--fg) 4%, transparent);
+		border-bottom: 1px solid color-mix(in srgb, var(--fg) 8%, transparent);
 		flex-shrink: 0;
 	}
 	.top-score { display: flex; align-items: center; gap: 0.5rem; }
+	.timeline-wrap { margin-bottom: 0.9rem; }
 	.top-name { font-size: 0.8rem; font-weight: 600; }
-	.top-sep { font-size: 1rem; color: rgba(255,255,255,0.3); }
-	.top-pts { font-size: 1.1rem; font-weight: 800; color: rgba(255,255,255,0.3); }
-	.pts-active { color: #40dca5; }
+	.top-name--edit { background: none; border: none; color: inherit; padding: 0; cursor: pointer; }
+	.pencil { opacity: 0.45; font-size: 0.75rem; }
+	.name-input { width: 9rem; font-size: 0.8rem; font-weight: 600; padding: 0.15rem 0.4rem; border-radius: 0.3rem; border: 1px solid var(--accent); background: color-mix(in srgb, var(--fg) 6%, transparent); color: var(--fg); }
+	.top-sep { font-size: 1rem; color: color-mix(in srgb, var(--fg) 30%, transparent); }
+	.top-pts { font-size: 1.1rem; font-weight: 800; color: color-mix(in srgb, var(--fg) 45%, transparent); }
+	.pts-active { color: var(--accent); }
 
+	/* One screen, no scrolling: the phase fills what's left and the grids stretch into it
+	   (scroll is only a fallback for very small screens). */
 	.player-body {
-		flex: 1; overflow-y: auto;
+		flex: 1; min-height: 0; overflow-y: auto;
 		display: flex; flex-direction: column;
-		padding: 1rem;
+		padding: 0.75rem 1rem;
 	}
 
 	.waiting-screen {
@@ -594,16 +574,16 @@
 		justify-content: center; gap: 0.6rem; text-align: center; padding: 1.5rem;
 	}
 	.app-name {
-		font-size: 1.4rem; font-weight: 800; color: #40dca5; letter-spacing: 0.02em;
+		font-size: 1.4rem; font-weight: 800; color: var(--accent); letter-spacing: 0.02em;
 		margin-bottom: 0.1rem;
 	}
 	.waiting-role {
-		font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.05em;
+		font-size: 0.75rem; color: color-mix(in srgb, var(--fg) 50%, transparent); letter-spacing: 0.05em;
 		text-transform: uppercase; margin-bottom: 0.5rem;
 	}
 	.conn-status-list {
 		display: flex; flex-direction: column; gap: 0.4rem;
-		background: rgba(255,255,255,0.05); border-radius: 0.5rem;
+		background: color-mix(in srgb, var(--fg) 5%, transparent); border-radius: 0.5rem;
 		padding: 0.6rem 1rem; min-width: 180px; margin-bottom: 0.25rem;
 	}
 	.conn-status-row {
@@ -618,95 +598,73 @@
 		animation: blink 1.2s ease-in-out infinite;
 	}
 	.conn-label {
-		font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.6);
+		font-size: 0.75rem; font-weight: 600; color: color-mix(in srgb, var(--fg) 60%, transparent);
 		min-width: 5rem; text-align: left;
 	}
 	.conn-state {
-		font-size: 0.75rem; color: rgba(255,255,255,0.4);
+		font-size: 0.75rem; color: color-mix(in srgb, var(--fg) 60%, transparent);
 	}
 	@keyframes blink {
 		0%, 100% { opacity: 1; } 50% { opacity: 0.2; }
 	}
 	.waiting-hint {
-		font-size: 0.72rem; color: rgba(255,255,255,0.3); max-width: 260px; line-height: 1.5;
+		font-size: 0.72rem; color: color-mix(in srgb, var(--fg) 55%, transparent); max-width: 260px; line-height: 1.5;
 	}
 
-	.phase-section { display: flex; flex-direction: column; gap: 0.75rem; }
+	.phase-section { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 0.6rem; }
 	.phase-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
-	.phase-sub { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin: 0; }
+	.phase-sub { font-size: 0.8rem; color: color-mix(in srgb, var(--fg) 50%, transparent); margin: 0; }
 
 	.rps-countdown {
 		font-size: 2.5rem; font-weight: 700; text-align: center;
-		color: rgba(255,255,255,0.6); margin-bottom: 0.5rem;
+		color: color-mix(in srgb, var(--fg) 60%, transparent); margin-bottom: 0.5rem;
 		transition: color 0.2s;
 	}
-	.rps-countdown--urgent { color: #f87171; }
+	.rps-countdown--urgent { color: var(--bad); }
 
 	.rps-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 	.rps-btn {
 		flex: 1; min-width: 80px; padding: 1.2rem 0.5rem;
 		display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-		font-size: 2rem; background: rgba(255,255,255,0.06);
-		border: 1px solid rgba(255,255,255,0.15); border-radius: 0.5rem;
-		color: #e0e0e0; cursor: pointer;
+		font-size: 2rem; background: color-mix(in srgb, var(--fg) 6%, transparent);
+		border: 1px solid color-mix(in srgb, var(--fg) 15%, transparent); border-radius: 0.5rem;
+		color: var(--fg); cursor: pointer;
 	}
 	.rps-btn span { font-size: 0.75rem; }
-	.rps-btn:active { background: rgba(255,255,255,0.12); }
+	.rps-btn:active { background: color-mix(in srgb, var(--fg) 12%, transparent); }
 
 	.rps-result-hint {
-		font-size: 0.72rem; color: rgba(255,255,255,0.4);
+		font-size: 0.72rem; color: color-mix(in srgb, var(--fg) 60%, transparent);
 		margin: 0 0 0.75rem; text-align: center;
 	}
 
-	.stage-grid-p { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-	.stage-grid-p--passive { opacity: 0.6; pointer-events: none; }
+	.stage-grid-p {
+		flex: 1; min-height: 0; max-height: 34rem;
+		display: grid; gap: 0.5rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr);
+	}
+	@media (orientation: landscape) { .stage-grid-p { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+	/* Dim the images, not the labels — opacity washes out to white in light mode. */
+	.stage-grid-p--passive { pointer-events: none; }
+	.stage-grid-p--passive .stage-btn-img { filter: saturate(0.6) brightness(0.7); }
 
 	.stage-btn {
-		position: relative; width: calc(33.3% - 0.34rem);
-		min-width: 90px; display: flex; flex-direction: column; align-items: center;
-		background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15);
+		position: relative; min-width: 0; min-height: 0;
+		display: flex; flex-direction: column; align-items: center;
+		background: color-mix(in srgb, var(--fg) 4%, transparent); border: 1px solid color-mix(in srgb, var(--fg) 15%, transparent);
 		border-radius: 0.4rem; overflow: hidden; cursor: pointer;
-		font-size: 0.65rem; text-align: center; color: #e0e0e0;
+		font-size: 0.65rem; text-align: center; color: var(--fg);
 	}
-	.stage-btn:active { border-color: #40dca5; }
-	.stage-btn--struck { opacity: 0.3; pointer-events: none; }
-	.stage-btn-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+	.stage-btn:active { border-color: var(--accent); }
+	.stage-btn--struck { opacity: 0.55; pointer-events: none; }
+	.stage-btn--struck .stage-btn-img { filter: grayscale(1) brightness(0.55); }
+	.stage-btn-img { width: 100%; flex: 1; min-height: 0; object-fit: cover; display: block; }
 	.strike-x {
 		position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
 		font-size: 1.8rem; color: #ff4444; font-weight: 900;
 	}
 
-	.char-grid {
-		display: grid; grid-template-columns: repeat(9, 1fr); gap: 0.3rem;
-	}
-	.char-btn:nth-child(19) { grid-column-start: 2; }
-	.char-btn {
-		aspect-ratio: 1; background: rgba(255,255,255,0.04);
-		border: 1px solid rgba(255,255,255,0.1); border-radius: 0.3rem;
-		cursor: pointer; overflow: hidden; padding: 0;
-	}
-	.char-btn:active { border-color: #40dca5; background: rgba(64,220,165,0.1); }
-	.char-btn-img { width: 100%; height: 100%; object-fit: contain; display: block; }
-
-	.char-btn--pending { border-color: #40dca5; background: rgba(64,220,165,0.15); }
-
-	.char-confirm-bar {
-		display: flex; align-items: center; gap: 0.75rem;
-		background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
-		border-radius: 0.5rem; padding: 0.5rem 0.75rem; margin-top: 0.25rem;
-	}
-	.char-confirm-img { width: 48px; height: 48px; object-fit: contain; }
-	.char-confirm-btns { display: flex; gap: 0.5rem; margin-left: auto; }
-	.char-confirm-ok {
-		padding: 0.4rem 1rem; border-radius: 0.35rem; font-size: 0.8rem; font-weight: 700;
-		background: #40dca5; color: #111; border: none; cursor: pointer;
-	}
-	.char-confirm-cancel {
-		padding: 0.4rem 0.75rem; border-radius: 0.35rem; font-size: 0.8rem;
-		background: rgba(255,255,255,0.08); color: #e0e0e0;
-		border: 1px solid rgba(255,255,255,0.15); cursor: pointer;
-	}
-
+	.char-picked-imgs { display: flex; gap: 0.5rem; }
 	.char-picked { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1rem 0; }
 	.char-picked-img { width: 96px; height: 96px; object-fit: contain; }
 
@@ -719,35 +677,36 @@
 	.char-vs { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; }
 	.char-vs-side { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; font-size: 0.75rem; }
 	.char-vs-img { width: 72px; height: 72px; object-fit: contain; }
-	.vs-label { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+	.vs-label { font-size: 0.7rem; color: color-mix(in srgb, var(--fg) 50%, transparent); }
 
 	.set-complete-view { align-items: center; padding-top: 2rem; gap: 0.5rem; }
 	.complete-label { font-size: 1.3rem; font-weight: 800; }
-	.complete-score { font-size: 2.5rem; font-weight: 900; color: #40dca5; }
+	.complete-score { font-size: 2.5rem; font-weight: 900; color: var(--accent); }
 
+	/* One compact line of game chips — never pushes the stages off screen. */
 	.game-history {
-		margin-top: 1.25rem;
-		padding-top: 1rem;
-		border-top: 1px solid rgba(255,255,255,0.08);
+		flex-shrink: 0;
+		margin-top: 0.6rem;
+		padding-top: 0.5rem;
+		border-top: 1px solid color-mix(in srgb, var(--fg) 8%, transparent);
+		display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem;
 	}
 	.history-label {
 		font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
-		letter-spacing: 0.08em; opacity: 0.3; margin-bottom: 0.5rem;
+		letter-spacing: 0.08em; opacity: 0.55; margin-right: 0.2rem;
 	}
 	.history-row {
-		display: grid;
-		grid-template-columns: 1.5rem 1.25rem 1fr 1.25rem 1.5rem;
-		align-items: center; gap: 0.4rem;
-		padding: 0.2rem 0;
+		display: flex; align-items: center; gap: 0.3rem;
+		padding: 0.15rem 0.4rem; border-radius: 0.3rem; background: color-mix(in srgb, var(--fg) 5%, transparent);
 	}
-	.h-gnum { font-size: 0.65rem; font-weight: 600; opacity: 0.35; }
-	.h-char { width: 1.25rem; height: 1.25rem; object-fit: contain; }
+	.h-gnum { font-size: 0.6rem; font-weight: 600; opacity: 0.6; }
+	.h-char { width: 1.1rem; height: 1.1rem; object-fit: contain; }
 	.h-win { opacity: 1; }
-	.h-lose { opacity: 0.2; }
-	.h-stage { width: 100%; height: 28px; object-fit: cover; border-radius: 0.2rem; opacity: 0.7; }
-	.h-result { font-size: 0.65rem; font-weight: 800; text-align: right; }
-	.h-result--w { color: #4ade80; }
-	.h-result--l { color: rgba(255,255,255,0.25); }
+	.h-lose { opacity: 0.35; }
+	.h-stage { width: 2.2rem; height: 1.25rem; object-fit: cover; border-radius: 0.2rem; opacity: 0.75; }
+	.h-result { font-size: 0.65rem; font-weight: 800; }
+	.h-result--w { color: var(--win); }
+	.h-result--l { color: color-mix(in srgb, var(--fg) 50%, transparent); }
 	.stage-btn--dsr {
 		position: relative;
 		outline: 2px solid #ef4444;
@@ -771,4 +730,7 @@
 		color: inherit;
 	}
 	.paused-bar { background: #f59e0b; color: #000; text-align: center; font-size: 0.8rem; font-weight: 700; padding: 0.4rem; }
+	@media (prefers-color-scheme: light) {
+		.player-root { --bg: var(--primary-color); --fg: var(--secondary-color); --accent: #0d8a5f; --on-accent: #fff; --win: #15803d; --bad: #dc2626; }
+	}
 </style>

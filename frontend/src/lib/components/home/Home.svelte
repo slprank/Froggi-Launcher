@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { currentPlayer, recentGames, sessionStats, dolphinState, obsConnection, isElectron } from '$lib/utils/store.svelte';
+	import { currentPlayer, recentGames, sessionStats, dolphinState, obsConnection, obsProcessStatus, isElectron } from '$lib/utils/store.svelte';
+	import { obsStatus, OBS_STATUS_TEXT } from '$lib/utils/obsStatus';
 	import { ConnectionState } from '$lib/models/enum';
 	import { goto } from '$app/navigation';
 	import { characterNameByExternalId, stageNameByExternalId } from '$lib/models/constants/ids';
-	import { Settings, Gamepad2, BookOpen, Monitor, Webhook, Radio } from 'lucide-svelte';
+	import { Settings, Gamepad2, BookOpen, Monitor, Radio } from 'lucide-svelte';
+	import { bmcOpen } from '$lib/components/bmc/BuyMeACoffeeModal.svelte';
 	import { fly, fade } from 'svelte/transition';
 	import LiveShareCard from '$lib/components/LiveShareCard.svelte';
 	import ReplayDemo from '$lib/components/viewer/ReplayDemo.svelte';
@@ -81,10 +83,10 @@
 	// ── Quick nav ─────────────────────────────────────────────────────────────
 	const nav = [
 		{ label: 'Minigames',  icon: Gamepad2, path: '/minigames',     desc: 'Bingo & Iron Man' },
-		{ label: 'OBS',        icon: Monitor,  path: '/obs',           desc: 'Overlays & scenes' },
+		{ label: 'Stream',     icon: Monitor,  path: '/obs',           desc: 'Overlays, dashboard & automation' },
 		{ label: 'Tutorials',  icon: BookOpen, path: '/obs/tutorial',  desc: 'Guides & setup'   },
-		{ label: 'Webhooks',   icon: Webhook,  path: '/obs/webhook',   desc: 'HTTP events'      },
 		{ label: 'Settings',   icon: Settings, path: '/settings',      desc: 'Configure Froggi' },
+		{ label: 'Share live game', icon: Radio, path: '', desc: 'Let friends watch your games live' },
 	];
 
 	// ── Live game modal ─────────────────────────────────────────────────────────
@@ -92,6 +94,7 @@
 	function openLiveView() {
 		window.open('/live?nonav=1', 'froggi-live', 'width=1000,height=620,menubar=no,toolbar=no');
 	}
+	$: obsState = obsStatus($obsConnection, $obsProcessStatus?.running);
 </script>
 
 <div class="home text-secondary-color">
@@ -173,42 +176,47 @@
 					{/each}
 				</div>
 			{/if}
-			<p class="section-label" style="margin-top: 1rem;">Navigate</p>
-		{:else}
-			<p class="section-label">Navigate</p>
 		{/if}
-		<div class="nav-grid">
-			{#each nav as item, i}
-				<button class="nav-card border-secondary" on:click={() => goto(item.path)}
-					in:fly={{ y: 10, duration: 200, delay: 80 + i * 30 }}>
-					<svelte:component this={item.icon} size={20} strokeWidth={1.5} />
+		<!-- Actions pinned to the bottom (margin-top:auto) so the history/data above stays on top. -->
+		<div class="home-footer">
+			<p class="section-label">Navigate</p>
+			<div class="nav-grid">
+				{#each nav as item, i}
+					<button class="nav-card border-secondary" on:click={() => (item.path ? goto(item.path) : (showLive = true))}
+						in:fly={{ y: 10, duration: 200, delay: 80 + i * 30 }}>
+						<svelte:component this={item.icon} size={20} strokeWidth={1.5} />
+						<div>
+							<div class="nav-label">{item.label}</div>
+							<div class="nav-desc">{item.desc}</div>
+						</div>
+					</button>
+				{/each}
+				<button class="nav-card bmc bmc-card" on:click={() => bmcOpen.set(true)} in:fly={{ y: 10, duration: 200, delay: 80 + nav.length * 30 }}>
+					<img class="bmc-card-cup" src="/image/icons/bmc-cup.svg" alt="" />
 					<div>
-						<div class="nav-label">{item.label}</div>
-						<div class="nav-desc">{item.desc}</div>
+						<div class="bmc-card-title font-cookie">Buy me a coffee</div>
+						<div class="nav-desc bmc-card-desc">Support Froggi</div>
 					</div>
 				</button>
-			{/each}
+			</div>
+
+			<div class="footer-row">
+				<button class="obs-status border-secondary" on:click={() => goto($obsConnection?.state === ConnectionState.Connected ? '/obs' : '/obs/setup')} in:fade={{ duration: 200, delay: 260 }}>
+					<span class="obs-dot" class:obs-ok={$obsConnection?.state === ConnectionState.Connected}></span>
+					<span class="obs-lbl">OBS</span>
+					<span class="obs-state">{obsState === 'notSetUp' ? 'Not set up — tap to connect' : OBS_STATUS_TEXT[obsState]}</span>
+					<span class="obs-arrow">→</span>
+				</button>
+
+			</div>
 		</div>
-
-		<button class="obs-status border-secondary" on:click={() => goto($obsConnection?.state === ConnectionState.Connected ? '/obs' : '/obs/setup')} in:fade={{ duration: 200, delay: 260 }}>
-			<span class="obs-dot" class:obs-ok={$obsConnection?.state === ConnectionState.Connected}></span>
-			<span class="obs-lbl">OBS</span>
-			<span class="obs-state">{$obsConnection?.state === ConnectionState.Connected ? 'Connected' : 'Not set up — tap to connect'}</span>
-			<span class="obs-arrow">→</span>
-		</button>
 	</div>
 
-	<!-- ── Watch live game CTA ── -->
-	<div class="home-footer">
-		<button class="live-cta" on:click={() => (showLive = true)}>
-			<Radio size={20} strokeWidth={2} />
-			<span>Watch live game</span>
-		</button>
-	</div>
 </div>
 
 {#if showLive}
-	<div class="live-backdrop" role="button" tabindex="-1"
+	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+	<div class="live-backdrop"
 		on:click|self={() => (showLive = false)}
 		on:keydown={(e) => e.key === 'Escape' && (showLive = false)}
 		transition:fade={{ duration: 150 }}>
@@ -221,7 +229,7 @@
 				<ReplayDemo camera="live" hud />
 				<span class="live-preview-tag">Preview</span>
 			</div>
-			<p class="live-explain">This is exactly what your viewers see — read-only, no password needed to watch.</p>
+			<p class="live-explain"><b>Share your game with friends.</b> Send them a link and they watch your game live in their browser — nothing to install, no stream needed. This preview is exactly what they see (read-only, they can't control anything).</p>
 			<button class="btn live-open" on:click={openLiveView}>
 				<Radio size={18} strokeWidth={2} /> Open live view
 			</button>
@@ -230,6 +238,7 @@
 		</div>
 	</div>
 {/if}
+
 
 <style>
 	.home {
@@ -288,21 +297,17 @@
 	.obs-state { font-size: 0.68rem; opacity: 0.4; flex: 1; text-align: left; }
 	.obs-arrow { font-size: 0.72rem; opacity: 0.25; margin-left: auto; }
 
-	/* ── Footer CTA ── */
-	.home-footer {
-		position: sticky; bottom: 0; padding: 0.75rem 1.25rem;
-		background: var(--primary-color, #0b0e13);
-		border-top: 1px solid var(--secondary-color);
-		display: flex; justify-content: center;
-	}
-	.live-cta {
-		display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-		width: 100%; max-width: 720px; padding: 0.7rem 1rem; border-radius: 0.4rem;
-		font-size: 0.9rem; font-weight: 600; cursor: pointer;
-		color: var(--secondary-color); background: rgba(255,255,255,0.03);
-		border: 1px solid var(--secondary-color); transition: background 0.1s, transform 0.1s;
-	}
-	.live-cta:hover { background: color-mix(in srgb, var(--secondary-color) 10%, transparent); transform: translateY(-1px); }
+	/* ── Footer (pinned to the bottom; history/data stays on top) ── */
+	.home-footer { margin-top: auto; flex-shrink: 0; padding-top: 0.75rem; }
+	.footer-row { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+	.footer-row .obs-status { margin-top: 0; flex: 1; }
+
+	/* Buy Me a Coffee card (colours + shine: .bmc in app.css). */
+	.nav-card.bmc-card { background: #ffdd00; color: #0d0c22; border: 1px solid #e6c700; }
+	.nav-card.bmc-card:hover { background: #ffe433; }
+	.bmc-card-cup { height: 1.5rem; flex-shrink: 0; }
+	.bmc-card-title { font-size: 1.45rem; line-height: 1; }
+	.bmc-card-desc { color: #0d0c22; opacity: 0.6; }
 
 	/* ── Live modal ── */
 	.live-backdrop {
@@ -371,7 +376,6 @@
 		.nav-card { padding: 1.05rem 1rem; }
 		.nav-label { font-size: 0.92rem; }
 		.nav-desc { font-size: 0.72rem; }
-		.live-cta { padding: 0.95rem 1rem; font-size: 1rem; }
 		.obs-status { padding: 0.75rem 0.85rem; }
 	}
 </style>

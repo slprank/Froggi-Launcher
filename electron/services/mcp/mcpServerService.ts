@@ -34,6 +34,8 @@ import { mcpContext } from './mcpContext';
 import { registerExplainTools } from './tools/explain';
 import { registerDiagnosticsTools } from './tools/diagnostics';
 import { registerOverlayReadTools } from './tools/overlayRead';
+import { registerOverlayScreenshotTools } from './tools/overlayScreenshot';
+import { StatsDisplay } from '../statsDisplay';
 import { registerOverlaySchemaTools } from './tools/overlaySchema';
 import { registerOverlayWriteTools } from './tools/overlayWrite';
 import { registerOnlinePlayReadTools, registerOnlinePlayWriteTools } from './tools/onlinePlay';
@@ -47,6 +49,7 @@ import { FlowService } from '../flowService';
 import { ElectronWebhookStore } from '../store/storeWebhook';
 import { registerOverlayUndoTools } from './tools/overlayUndo';
 import { registerObsSetupTools } from './tools/obsSetup';
+import { registerObsReadTools } from './tools/obsRead';
 import { registerObsAddSourceTools } from './tools/obsAddSource';
 import { registerAutomationReadTools } from './tools/automationRead';
 import { registerAutomationComboTools } from './tools/automationCombo';
@@ -75,10 +78,12 @@ Before suggesting how to DISPLAY an overlay, check what's actually available and
 - Call get_injection_status: on Windows you can ALSO inject overlays directly into the Dolphin game window — offer this (set_overlay_injection to toggle one, set_auto_inject to auto-inject on Dolphin connect). Overlay injection is WINDOWS-ONLY; on macOS/Linux only OBS is available, so don't offer injection there.
 - When both are available, tell the user about both and which is possible right now.
 
+To SEE an overlay yourself, call capture_overlay_screenshot (PNG): pick the scene and a replay moment (replay "latest" or 0–9, atSeconds) so it shows real players, percent and stocks — check your work with it before telling the user it's done, and compare it against the HUD reference.
 When you build an overlay, show it: call show_overlay_preview right after creating it and again after meaningful changes, pinning the scene you're working on (statsScene, e.g. "inGame"). Clients that support MCP Apps render it inline as a live view of Froggi on this machine; otherwise give the user the returned editUrl (opens Froggi's editor in their browser, this machine only) and previewUrl as links. Only if the user wants a preview reachable from outside this machine, use get_overlay_preview_url's publicUrl (needs Tailscale Funnel or ngrok).
 
 Early in a conversation (once, alongside your first Froggi call), run diagnose_errors. If unreportedDeveloperErrors is non-empty, briefly tell the user Froggi logged errors that look like bugs and offer to send a crash report to the developer (with their OK) — don't push if they decline; offer mark_errors "resolved" instead so it isn't raised again. Never re-suggest an error that already has a flag.
 
+For step-by-step help, use list_tutorials / get_tutorial — the same tutorials the user sees in the app (Stream → Tutorial), so your steps match what's on their screen.
 For simple in-app tasks, explain how to do it in Froggi first (where to click) so the user learns the app; only do it for them with a tool if they ask you to.
 
 Playing minigames online: only the HOST needs ngrok; guests just need Froggi and the code. Use get_online_play_status and follow its nextStep: explain installing ngrok, signing in (authtoken — best pasted in Froggi Settings → Remote Access, not in chat) and starting the tunnel; run ngrok_setup only if they want you to. Then explain where the Share Code / join link is and how the friend enters it (howToShareAndJoin) — don't hand out or enter codes yourself. You can also help show the minigame on stream: OBS browser source (obs_add_overlay_browser_source with minigame, or the "Game Preview" URL on the Minigames page). Minigames can also go into a custom overlay via the BingoBoard (9000) and IronManRoster (9010) elements — that overlay can be injected into Dolphin (Windows).
@@ -116,6 +121,7 @@ export class McpServerService {
 		@inject(delay(() => AssetPackService)) private assetPackService: AssetPackService,
 		@inject(delay(() => ElectronWebhookStore)) private webhookStore: ElectronWebhookStore,
 		@inject(delay(() => FlowService)) private flowService: FlowService,
+		@inject(delay(() => StatsDisplay)) private statsDisplay: StatsDisplay,
 	) {
 		this.log = scopedLog(this.log, 'MCP');
 		this.log.info('Initializing MCP Server Service');
@@ -138,6 +144,7 @@ export class McpServerService {
 		mcpContext.bingoService = this.bingoService;
 		mcpContext.ironmanService = this.ironmanService;
 		mcpContext.clientEmitter = this.clientEmitter;
+		mcpContext.statsDisplay = this.statsDisplay;
 		mcpContext.assetPackService = this.assetPackService;
 		mcpContext.webhookStore = this.webhookStore;
 		mcpContext.flowService = this.flowService;
@@ -207,12 +214,14 @@ export class McpServerService {
 			registerDiagnosticsTools(server);
 			registerCrashDiagnosisReadTools(server);
 			registerOverlayReadTools(server);
+			registerOverlayScreenshotTools(server);
 			registerOverlaySchemaTools(server);
 			registerAutomationReadTools(server);
 			registerOnlinePlayReadTools(server);
 			registerAssetPackReadTools(server);
 			registerWebhookReadTools(server);
 			registerFlowReadTools(server);
+			registerObsReadTools(server);
 		}
 		if (this.froggiStore.getMcpWriteEnabled()) {
 			registerFlowWriteTools(server);

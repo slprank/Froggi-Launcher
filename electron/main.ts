@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { app, BrowserWindow, dialog, IpcMain, ipcMain, Menu, nativeImage, Tray, Notification, powerSaveBlocker, session } from 'electron';
+import { app, BrowserWindow, dialog, IpcMain, ipcMain, Menu, nativeImage, Tray, Notification, powerSaveBlocker, session, shell } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { container } from 'tsyringe';
 import getAppDataPath from 'appdata-path';
@@ -494,6 +494,21 @@ try {
 			mainWindow.focus();
 		});
 	}
+
+	// New windows (window.open / target=_blank, also from iframes like the Buy Me a Coffee embed):
+	// Froggi's own pages (the /live pop-out) open in the app, everything else in the system browser.
+	app.on('web-contents-created', (_event, contents) => {
+		contents.setWindowOpenHandler(({ url }) => {
+			try {
+				const { hostname, protocol } = new URL(url);
+				if (protocol === 'file:' || ['localhost', '127.0.0.1', '[::1]'].includes(hostname)) return { action: 'allow' };
+				if (protocol === 'http:' || protocol === 'https:') void shell.openExternal(url);
+			} catch {
+				// unparsable URL — never open it
+			}
+			return { action: 'deny' };
+		});
+	});
 
 	app.on('ready', async () => {
 		if (!dev) await performUpdate(app, mainLog);

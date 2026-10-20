@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
 	import { bingoSession, bingoLobby, electronEmitter, currentPlayer, urls, remoteAccess, ngrokStatus, bingoRevertMessage, bingoVoteState, bingoVoteActionNotice, froggiSettings } from '$lib/utils/store.svelte';
 	import { encryptUrl } from '$lib/utils/urlCrypto';
 	import type { BingoVoteActionType } from '$lib/models/types/bingo';
@@ -604,7 +605,7 @@
 					{#if !$remoteAccess?.ngrok}
 						<p class="info-warning">⚠ No ngrok URL detected. Set up ngrok in Settings → Remote Access to play online.</p>
 					{:else}
-						<p class="info-ok">● ngrok active: {$remoteAccess.ngrok}</p>
+						<p class="info-ok">● ngrok active: <SecretUrl value={$remoteAccess.ngrok ?? ''} /></p>
 					{/if}
 				</div>
 

@@ -1,25 +1,39 @@
 <script lang="ts">
-	import type { CustomElement } from '$lib/models/constants/customElement';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import { readable, type Readable } from 'svelte/store';
+	import { LEGACY_TRIGGERS } from '$lib/utils/elementTriggers';
+	import type { AnimationTrigger } from '$lib/models/types/animationOption';
 
 	const dispatch = createEventDispatcher();
 
-	export let value: any;
+	export let value: AnimationTrigger;
 	export let description: string;
 	export let selected: boolean = false;
+
+	// Legacy "value changed" triggers (an element trigger does the same) only show where already used;
+	// a trigger used by another animation of the element can't be picked here.
+	const taken = getContext<Readable<Set<string>> | undefined>('animationTriggerTaken') ?? readable(new Set<string>());
+	$: legacy = LEGACY_TRIGGERS.has(value);
+	$: usedElsewhere = $taken.has(value) && !selected;
 </script>
 
-<button
-	class="option-row border-secondary"
-	class:option-row--active={selected}
-	on:click={() => dispatch('select', value)}
->
-	<span class="indicator" class:indicator--active={selected} />
-	<div class="option-text">
-		<span class="option-label"><slot /></span>
-		<span class="option-desc">{description}</span>
-	</div>
-</button>
+{#if !legacy || selected}
+	<button
+		class="option-row border-secondary"
+		class:option-row--active={selected}
+		class:option-row--disabled={usedElsewhere}
+		disabled={usedElsewhere}
+		on:click={() => dispatch('select', value)}
+	>
+		<span class="indicator" class:indicator--active={selected} />
+		<div class="option-text">
+			<span class="option-label"><slot />{legacy ? ' (legacy)' : ''}</span>
+			<span class="option-desc">
+				{usedElsewhere ? 'Used by another animation of this element' : legacy ? 'Old trigger — use an element trigger instead. Untick to remove.' : description}
+			</span>
+		</div>
+	</button>
+{/if}
 
 <style>
 	.option-row {
@@ -33,6 +47,11 @@
 		cursor: pointer;
 		text-align: left;
 		transition: border-color 0.1s;
+	}
+
+	.option-row--disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
 	}
 
 	.option-row--active {

@@ -18,6 +18,9 @@
 	import RecentGameCurrentPlayerOverall from '$lib/components/obs/overlays/selector/elementCategories/PostGame/RecentGameCurrentPlayerOverall.svelte';
 	import RecentGamePlayer1AttackCount from '$lib/components/obs/overlays/selector/elementCategories/PostGame/RecentGamePlayer1AttackCount.svelte';
 	import RecentGamePlayer1ActionCount from '$lib/components/obs/overlays/selector/elementCategories/PostGame/RecentGamePlayer1ActionCount.svelte';
+	import EdgeStatsSelect from '$lib/components/obs/overlays/selector/elementCategories/PostGame/EdgeStatsSelect.svelte';
+	import WinChanceSelect from '$lib/components/obs/overlays/selector/elementCategories/WinChanceSelect.svelte';
+	import HighlightsSelect from '$lib/components/obs/overlays/selector/elementCategories/HighlightsSelect.svelte';
 	import RecentGamePlayer1Overall from '$lib/components/obs/overlays/selector/elementCategories/PostGame/RecentGamePlayer1Overall.svelte';
 	import RecentGamePlayer2AttackCount from '$lib/components/obs/overlays/selector/elementCategories/PostGame/RecentGamePlayer2AttackCount.svelte';
 	import RecentGamePlayer2ActionCount from '$lib/components/obs/overlays/selector/elementCategories/PostGame/RecentGamePlayer2ActionCount.svelte';
@@ -50,6 +53,7 @@
 	import BingoElementSelect from './Bingo/BingoElementSelect.svelte';
 	import IronManElementSelect from './IronMan/IronManElementSelect.svelte';
 	import LiveGameElementSelect from './LiveGame/LiveGameElementSelect.svelte';
+	import DoublesElementSelect from './Doubles/DoublesElementSelect.svelte';
 	import CurrentPlayerActionStateSelect from './CustomHud/CurrentPlayerActionStateSelect.svelte';
 	import Player1ActionStateSelect from './CustomHud/Player1ActionStateSelect.svelte';
 	import Player2ActionStateSelect from './CustomHud/Player2ActionStateSelect.svelte';
@@ -67,6 +71,10 @@
 	$: buttons = [
 		{
 			category: ElementCategory.LiveGame,
+			visible: true,
+		},
+		{
+			category: ElementCategory.Doubles,
 			visible: true,
 		},
 		{
@@ -221,6 +229,19 @@
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
 		{
+			// Video by key (highlight reels, or any file a flow points the key at) — every scene.
+			category: ElementCategory.Highlights,
+			visible: true,
+		},
+		{
+			category: ElementCategory.WinChance,
+			visible: true,
+		},
+		{
+			category: ElementCategory.EdgeStats,
+			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
+		},
+		{
 			category: ElementCategory.CurrentPlayerPostGameMatchAttackCount,
 			visible: [LiveStatsScene.PostGame, LiveStatsScene.PostSet].includes($statsScene),
 		},
@@ -310,6 +331,9 @@
 				out:fly={{ duration: 100, x: -16 }}
 				class="elem-inner"
 			>
+				{#if selectedCategory === ElementCategory.Doubles}
+					<DoublesElementSelect on:select={select} />
+				{/if}
 				{#if selectedCategory === ElementCategory.LiveGame}
 					<LiveGameElementSelect on:select={select} />
 				{/if}
@@ -413,6 +437,15 @@
 				{/if}
 				{#if selectedCategory === ElementCategory.Player2PostGameOverallStats}
 					<RecentGamePlayer2Overall on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.Highlights}
+					<HighlightsSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.WinChance}
+					<WinChanceSelect on:select={select} />
+				{/if}
+				{#if selectedCategory === ElementCategory.EdgeStats}
+					<EdgeStatsSelect on:select={select} />
 				{/if}
 
 				{#if selectedCategory === ElementCategory.CurrentPlayerPostGameMatchAttackCount}

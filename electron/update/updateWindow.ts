@@ -3,6 +3,7 @@ import { autoUpdater } from "electron-updater";
 import path from "path";
 import { ElectronLog } from "electron-log";
 import Store from 'electron-store';
+import { configureUpdateFeed } from "./updateFeed";
 
 export async function performUpdate(_app: Electron.App, log: ElectronLog): Promise<void> {
   const store = new Store();
@@ -11,6 +12,8 @@ export async function performUpdate(_app: Electron.App, log: ElectronLog): Promi
   autoUpdater.autoDownload = false;
   autoUpdater.autoRunAppAfterInstall = true;
   autoUpdater.allowPrerelease = Boolean(store.get('settings.froggi.betaOptIn'));
+  // A release still being built for this OS → offer the newest one that has our build.
+  await configureUpdateFeed(autoUpdater.allowPrerelease, log);
 
   const updateWindow = createUpdateWindow(log);
 

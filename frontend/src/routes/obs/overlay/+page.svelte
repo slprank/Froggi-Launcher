@@ -1,10 +1,11 @@
 <script lang="ts">
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { isElectron, isMobile, overlays } from '$lib/utils/store.svelte';
 	import { fly } from 'svelte/transition';
 	import OverlayModal from '$lib/components/obs/overlays/OverlayModal.svelte';
 	import OverlayPreviewModal from '$lib/components/obs/overlays/OverlayPreviewModal.svelte';
 	import OverlayPreviewScaled from '$lib/components/obs/overlays/preview/OverlayPreviewScaled.svelte';
-	import SceneSelect from '$lib/components/obs/overlays/selector/SceneSelect.svelte';
+	import SceneBar from '$lib/components/obs/overlays/SceneBar.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
 	import { getOverlayById } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
 
@@ -61,7 +62,8 @@
 
 <svelte:window on:error={handleError} />
 
-<main class={`background-primary-color ${$isMobile ? 'pb-32' : 'pb-16'}`}>
+<main class={`overlays-main background-primary-color ${$isMobile ? 'pb-32' : 'pb-20'}`}>
+	<BackButton />
 	<!-- Page header -->
 	<div class="flex items-center gap-3 mb-5">
 		<h1 class="text-xl font-semibold text-secondary-color">Overlays</h1>
@@ -155,14 +157,7 @@
 	{/if}
 </main>
 
-<!-- Sticky scene bar -->
-<div
-	class="scene-bar border-t border-secondary-color background-primary-color"
-	style={$isElectron ? 'left: 5rem; right: 5rem;' : 'left: 0; right: 0;'}
->
-	<p class="bar-label">Scene</p>
-	<SceneSelect />
-</div>
+<SceneBar />
 
 {#if selectedOverlay}
 	<OverlayPreviewModal bind:open={overlayPreviewOpen} overlay={selectedOverlay} />
@@ -236,23 +231,9 @@
 		padding: 0 0.125rem;
 	}
 
-	.scene-bar {
-		position: fixed;
-		bottom: 0;
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.5rem 1rem;
-		z-index: 20;
-	}
-
-	.bar-label {
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		opacity: 0.4;
-		white-space: nowrap;
-		flex-shrink: 0;
+	/* Readable width on big screens — the grid otherwise turns tall (9:16) cards into towers. */
+	.overlays-main {
+		max-width: 72rem;
+		margin-inline: auto;
 	}
 </style>

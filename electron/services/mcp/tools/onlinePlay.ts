@@ -39,7 +39,7 @@ export function registerOnlinePlayReadTools(server: McpServer) {
 					ironman: ironmanLobby && { opponentConnected: ironmanLobby.opponentConnected, opponentName: ironmanLobby.opponentName },
 				},
 				nextStep: nextStep(ngrok),
-				tutorial: 'Froggi has a step-by-step page: OBS → Tutorials → Minigames online (/obs/tutorial/minigames-online).',
+				tutorial: 'Froggi has a step-by-step page: Stream → Tutorial → Minigames online (/obs/tutorial/minigames-online).',
 			});
 		},
 	);

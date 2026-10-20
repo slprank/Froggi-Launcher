@@ -20,6 +20,8 @@
 	import { tick } from 'svelte';
 	import { LiveStatsScene } from '$lib/models/enum';
 	import GameStateRender from '$lib/components/viewer/GameStateRender.svelte';
+	import { flows } from '$lib/utils/store.svelte';
+	import { flowVideoKeys, sceneWarnings } from '$lib/utils/overlayWarnings';
 
 	// Editing aid: show the live game (live camera) behind the canvas so elements can
 	// be positioned against real motion. Reads the same live stores the overlay
@@ -35,6 +37,8 @@
 	$: selectedItemId = $currentOverlayEditor.itemId;
 
 	$: curOverlay = $overlays[overlayId] as Overlay | undefined;
+	// Elements pointing at things that don't exist (utils/overlayWarnings.ts) get a red outline.
+	$: warnings = sceneWarnings(curOverlay?.[$statsScene], flowVideoKeys($flows));
 	let items: GridContentItem[] = [];
 	let syncingFromServer = false;
 
@@ -166,11 +170,14 @@
 						>
 							<div class="w-full h-full relative">
 								<div
-									class={`w-full h-full absolute outline outline-1 outline-offset-[-1px]  ${
-										selectedItemId === dataItem?.id
-											? 'outline-secondary-color'
-											: 'outline-dotted'
+									class={`w-full h-full absolute outline outline-offset-[-1px]  ${
+										warnings[dataItem?.id]
+											? 'outline-2 outline-red-500'
+											: selectedItemId === dataItem?.id
+												? 'outline-1 outline-secondary-color'
+												: 'outline-1 outline-dotted'
 									}`}
+									title={warnings[dataItem?.id]?.join('\n')}
 								>
 									<GridContent edit={true} {dataItem} designWidth={borderWidth} designHeight={borderHeight} />
 								</div>

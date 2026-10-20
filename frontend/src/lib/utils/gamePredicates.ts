@@ -2,6 +2,7 @@ import { STAGE_DATA, Stage } from "../../lib/models/constants/stageData";
 import type { GameStartMode, GameStats, Player } from "../../lib/models/types/slippiData";
 import type { GameEndType, GameStartType, PostFrameUpdateType } from "@slippi/slippi-js";
 import { isNil } from "lodash";
+import { getTeamWinnerIndex, setReference } from "./teams";
 
 /** The settings entry for a port index. `settings.players` skips empty ports (ports 1 + 3 →
  *  [port1, port3]), so array position ≠ playerIndex — always look players up by playerIndex. */
@@ -69,9 +70,23 @@ export const getPlayerSlot = (
 
 /** Running set score [Player 1 wins, Player 2 wins] — indexed by player slot, not by port. */
 export const getGameScore = (recentGames: GameStats[]) => {
-    const reference = recentGames.find((game) => game?.settings?.players?.length)?.settings?.players;
+    // Sides from the set's first game, with the host's swaps (setReference).
+    const reference = setReference(recentGames.find((game) => game?.settings?.players?.length)).players;
+    // Doubles: score per TEAM slot; teams keep their slot from the set's first game (see teams.ts).
+    const firstTeamsGame = recentGames.find((game) => game?.settings?.isTeams && game.settings.players?.length);
+    const teamRef = firstTeamsGame ? setReference(firstTeamsGame).teamRef : undefined;
     return recentGames.reduce((score: number[], game: GameStats | undefined) => {
         if (!game) return score
+        if (game.resultOverride) {
+            const forced = game.resultOverride.winnerSlot
+            if (forced === 0 || forced === 1) score[forced] += 1
+            return score
+        }
+        if (game.settings?.isTeams) {
+            const team = getTeamWinnerIndex(game, teamRef)
+            if (team === 0 || team === 1) score[team] += 1
+            return score
+        }
         if (isTiedGame(game)) return score
         const slot = getPlayerSlot(game, getWinnerIndex(game), reference)
         if (isNil(slot) || slot > 1) return score
@@ -160,6 +175,15 @@ export const isLrasEnding = (gameEnd: GameEndType) => {
     return gameEnd.gameEndMethod == 7
 }
 
+/** The set is decided: someone reached the winning score for this best-of (Bo3 → 2, Bo5 → 3). */
+export const isSetComplete = (score: number[] | undefined, bestOf: number | undefined) =>
+    (score ?? []).some((n) => n >= Math.ceil((bestOf ?? 3) / 2));
+
+/** The game did not finish normally and nobody quit on purpose: a disconnect / dropped connection.
+ *  Slippi writes these as No Contest (7) without an LRAS player, or leaves the end unresolved (0). */
+export const isDisconnectEnding = (gameEnd: GameEndType | null | undefined) =>
+    !!gameEnd && (gameEnd.gameEndMethod === 0 || (gameEnd.gameEndMethod === 7 && (gameEnd.lrasInitiatorIndex ?? -1) < 0))
+
 // Inspired from this https://github.com/Sheepolution/Melee-Ghost-Streamer/blob/7c9dd6662e6c3d2850ccfc29afc805f7a9a4ecf3/app/src/compute.js#L20
 export const isHandwarmers = (gameStats: GameStats): boolean => {
     if (isNil(gameStats)) return false;
@@ -220,4 +244,13 @@ export const isHandwarmers = (gameStats: GameStats): boolean => {
     }
 
     return weight >= 2;
+}
+/** Which set side (0 = Player/Team 1) won games[i], from the stored set scores (works for doubles too). */
+export function gameWinnerSlot(games: { score?: number[] | null }[], i: number): 0 | 1 | undefined {
+	const now = games[i]?.score;
+	if (!now || i < 0) return undefined;
+	const before = (i > 0 ? games[i - 1]?.score : undefined) ?? [0, 0];
+	if ((now[0] ?? 0) > (before[0] ?? 0)) return 0;
+	if ((now[1] ?? 0) > (before[1] ?? 0)) return 1;
+	return undefined;
 }

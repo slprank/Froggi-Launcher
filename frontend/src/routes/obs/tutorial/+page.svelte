@@ -1,51 +1,17 @@
 <script lang="ts">
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { goto } from '$app/navigation';
-	import { Paintbrush, Plug, Gamepad2, Trophy, Webhook } from 'lucide-svelte';
+	import { Paintbrush, Plug, Gamepad2, Trophy, Webhook, Workflow, Bot, Swords } from 'lucide-svelte';
+	import { TUTORIALS } from '$lib/content/tutorials';
 
-	import { Swords } from 'lucide-svelte';
-
-	const tutorials = [
-		{
-			title: 'Build an overlay',
-			description: 'Create HUD elements, scenes, layers, and animations from scratch.',
-			path: '/obs/tutorial/new-overlay',
-			icon: Paintbrush,
-		},
-		{
-			title: 'Integrate with OBS',
-			description: 'Embed overlays, set up WebSocket, and automate scene switching.',
-			path: '/obs/tutorial/integrate-obs',
-			icon: Plug,
-		},
-		{
-			title: 'Remote control OBS',
-			description: 'Map controller button combos to trigger OBS commands.',
-			path: '/obs/tutorial/remote-obs',
-			icon: Gamepad2,
-		},
-		{
-			title: 'Run a tournament',
-			description: 'Stage striking, player links, ngrok and Tailscale setup for online play.',
-			path: '/set/tutorial',
-			icon: Trophy,
-		},
-		{
-			title: 'Play minigames online',
-			description: 'Set up ngrok to play Bingo or Iron Man with a friend, or Tailscale for a permanent stable URL.',
-			path: '/obs/tutorial/minigames-online',
-			icon: Swords,
-		},
-		{
-			title: 'Webhooks',
-			description: 'Send real-time game events to any HTTP endpoint.',
-			path: '/obs/tutorial/webhook',
-			icon: Webhook,
-		},
-	];
+	// Same list the AI assistant reads (content/tutorials).
+	const ICONS = { Paintbrush, Plug, Gamepad2, Trophy, Webhook, Workflow, Bot, Swords };
+	const tutorials = TUTORIALS.map((t) => ({ title: t.title, description: t.description, path: t.path, icon: ICONS[t.icon] }));
 </script>
 
 <main class="background-primary-color text-secondary-color flex justify-center">
 	<div class="w-full max-w-lg flex flex-col gap-6">
+		<BackButton />
 		<div>
 			<h1 class="font-bold text-3xl">Tutorials</h1>
 			<p class="text-sm opacity-50 mt-1">Choose a guide to get started.</p>

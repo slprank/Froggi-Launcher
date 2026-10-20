@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { assetPacks, electronEmitter, isElectron, urls } from '$lib/utils/store.svelte';
@@ -54,7 +55,7 @@
 	<div class="w-full max-w-3xl">
 		{#if !selected}
 			<div class="flex items-center gap-3 mb-5">
-				<a class="btn text-sm h-8 px-3 border-secondary rounded flex items-center" href="/obs/overlay">← Overlays</a>
+				<BackButton />
 				<h1 class="text-xl font-semibold">Asset packs</h1>
 				{#if $isElectron}
 					<button class="btn text-sm h-8 px-4 border-secondary rounded ml-auto" on:click={() => $electronEmitter.emit('AssetPackImport')}>
@@ -89,7 +90,7 @@
 			</div>
 		{:else}
 			<div class="flex items-center gap-2 mb-4 flex-wrap">
-				<a class="btn text-sm h-8 px-3 border-secondary rounded flex items-center" href="/obs/overlay/assets">← Packs</a>
+				<BackButton href="/obs/overlay/assets" label="Asset packs" />
 				{#if selected.builtIn || !$isElectron}
 					<h1 class="text-xl font-semibold">{selected.title}</h1>
 				{:else}

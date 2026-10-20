@@ -9,8 +9,6 @@ import type { RankChangeDiff } from '../../../frontend/src/lib/models/types/webh
 import { delay, inject, singleton } from 'tsyringe';
 import type { ElectronLog } from 'electron-log';
 import { ElectronSettingsStore } from './storeSettings';
-import { LiveStatsScene } from '../../../frontend/src/lib/models/enum';
-import { ElectronLiveStatsStore } from './storeLiveStats';
 import { MessageHandler } from '../messageHandler';
 import { ElectronSessionStore } from './storeSession';
 import { isMatch } from 'lodash';
@@ -22,7 +20,6 @@ export class ElectronCurrentPlayerStore {
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
 		@inject('ElectronStore') private store: Store,
-		@inject(delay(() => ElectronLiveStatsStore)) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(delay(() => ElectronSessionStore)) private storeSession: ElectronSessionStore,
 		@inject(delay(() => ElectronSettingsStore)) private storeSettings: ElectronSettingsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
@@ -132,21 +129,6 @@ export class ElectronCurrentPlayerStore {
 			this.log.info("Setting new rank to current rank");
 			await this.setCurrentPlayerCurrentRankStats(player.rank?.new);
 		}, 3000);
-		const rankSceneTimeout = 8000;
-		if (this.storeLiveStats.getStatsScene() === LiveStatsScene.RankChange) {
-			this.storeLiveStats.setStatsSceneTimeout(
-				LiveStatsScene.RankChange,
-				LiveStatsScene.PostSet,
-				rankSceneTimeout,
-			);
-			setTimeout(() => {
-				if (this.storeLiveStats.getStatsScene() !== LiveStatsScene.PostSet) return;
-				this.storeLiveStats.setStatsSceneTimeout(
-					LiveStatsScene.PostSet,
-					LiveStatsScene.Menu,
-					150000 - rankSceneTimeout - 100,
-				);
-			}, rankSceneTimeout)
-		}
+		// Rank Change → Post Set → Menu is the "Scene switching" flow's job (When: Rank changes).
 	}
 }

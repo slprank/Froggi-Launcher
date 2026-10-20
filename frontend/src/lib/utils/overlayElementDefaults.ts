@@ -2,6 +2,7 @@ import { Animation } from '../models/enum';
 import type { AnimationSettings, ElementPayload } from '../models/types/overlay';
 import type { SelectedAnimationTriggerCondition } from '../models/types/animationOption';
 import { SCENE_TRANSITION_DELAY } from '../models/const';
+import { defaultElementTriggers } from './elementTriggers';
 
 export function getDefaultAnimations(delay: number = 0): AnimationSettings {
 	return {
@@ -92,4 +93,14 @@ export function getDefaultElementPayload(): ElementPayload {
 			},
 		},
 	};
+}
+
+/**
+ * A NEW element's payload: animation 1 replays when the element changes ("self") — nothing happens until
+ * an animation type is set. Not part of getDefaultElementPayload: that one is merged into old elements too.
+ */
+export function getNewElementPayload(): ElementPayload {
+	const payload = getDefaultElementPayload();
+	payload.animationTrigger.elementTriggers = defaultElementTriggers();
+	return payload;
 }

@@ -53,6 +53,7 @@ export const GAME_HUD_GUIDES: Record<HudReference['game'], HudGuideItem[]> = {
 		{ element: '"GAME!" / "TIME!"', where: 'Center', when: 'Match end: GAME! when stocks run out, TIME! when the timer hits 0 (a tie goes to Sudden Death)', froggi: 'CustomString elements with visibility Game End / Game Time (Game Tie for ties)' },
 		{ element: 'Pause', where: 'Center', when: 'Offline only (online play cannot pause)', froggi: 'visibility Game Paused=True; hide other elements with Game Paused=False if wanted' },
 		{ element: 'Off-screen bubble', where: 'Screen edge near the player', when: 'While a character is off-screen (a magnifying bubble)', froggi: 'No bubble element — use the player radar InGamePlayerRadar (3200, or 3201 animated): Ultimate-style with "Radar Left/Right" (see the Ultimate radar), or one fixed radar on "Player N Off Stage"' },
+		{ element: 'Doubles (teams)', where: 'Same bottom row, four panels in PORT order (not grouped by team), each panel tinted in its team colour', when: 'Teams games', froggi: 'No separate screenshot — it is the normal 4-port HUD. Rebuild per player with playerSlot on Player 1/2 elements (Percent, Character stocks with "Team N Player 2 Stock K" for second players); group teams together instead of by port — see the "doubles" demo overlay' },
 		{ element: 'Online frame delay', where: 'Small "Delay: Nf" bottom-right', when: 'Slippi online, if enabled', froggi: 'Leave that corner free' },
 	],
 	ultimate: [

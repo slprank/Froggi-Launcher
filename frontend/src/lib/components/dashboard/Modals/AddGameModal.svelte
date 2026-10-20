@@ -22,6 +22,10 @@
 
 	export let open: boolean;
 	export let selectedGameIndex: number;
+	/** Prefill (Report result… on the striking card): the current characters, stage and live stocks. */
+	export let preset: { chars?: [number | null, number | null]; stageId?: number | null; stocks?: [number, number] } | undefined = undefined;
+	let presetApplied = false;
+	$: if (!open) presetApplied = false;
 
 	// Frames are keyed by port index — use the real ports (e.g. 1 + 3), not 0/1.
 	const p1Port = $currentPlayers.at(0)?.playerIndex ?? 0;
@@ -63,8 +67,9 @@
 		},
 		postGameStats: null,
 		score: [0, 0],
+		// A copy — editing the form must not change the last recorded game.
 		settings:
-			$recentGames.at(-1)?.settings ??
+			cloneDeep($recentGames.at(-1)?.settings) ??
 			({
 				players: [
 					{
@@ -137,6 +142,19 @@
 			game.gameEnd.placements[$currentPlayers.at(1)?.playerIndex ?? 1].position === 0
 		);
 	};
+
+	$: if (open && preset && !presetApplied) {
+		presetApplied = true;
+		const [c1, c2] = preset.chars ?? [null, null];
+		if (c1 != null) handleCharacterChange(p1Port, new CustomEvent('change', { detail: c1 as Character }));
+		if (c2 != null) handleCharacterChange(p2Port, new CustomEvent('change', { detail: c2 as Character }));
+		if (preset.stageId != null && game.settings) game.settings.stageId = preset.stageId;
+		if (preset.stocks) {
+			handleStockChange(p1Port, preset.stocks[0]);
+			handleStockChange(p2Port, preset.stocks[1]);
+		}
+		game = game;
+	}
 
 	const addGame = () => {
 		$electronEmitter.emit('RecentGamesMock', game, selectedGameIndex);

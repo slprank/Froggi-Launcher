@@ -1,13 +1,13 @@
 import { delay, inject, singleton } from 'tsyringe';
 import type { ElectronLog } from 'electron-log';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
-const CHARACTER_NAMES_BY_ID = [
+export const CHARACTER_NAMES_BY_ID = [
 	'Captain Falcon', 'Donkey Kong', 'Fox', 'Mr. Game & Watch', 'Kirby', 'Bowser', 'Link', 'Luigi',
 	'Mario', 'Marth', 'Mewtwo', 'Ness', 'Peach', 'Pikachu', 'Ice Climbers', 'Jigglypuff', 'Samus',
 	'Yoshi', 'Zelda', 'Sheik', 'Falco', 'Young Link', 'Dr. Mario', 'Roy', 'Pichu', 'Ganondorf',
 	'Master Hand', 'Wireframe Male', 'Wireframe Female', 'Giga Bowser', 'Crazy Hand', 'Sandbag', 'Popo',
 ] as const;
-const STAGE_NAMES_BY_ID: string[] = [
+export const STAGE_NAMES_BY_ID: string[] = [
 	'Dummy', 'TEST', 'Fountain of Dreams', 'Pokémon Stadium', "Princess Peach's Castle", 'Kongo Jungle',
 	'Brinstar', 'Corneria', "Yoshi's Story", 'Onett', 'Mute City', 'Rainbow Cruise', 'Jungle Japes',
 	'Great Bay', 'Hyrule Temple', 'Brinstar Depths', "Yoshi's Island", 'Green Greens', 'Fourside',
@@ -243,7 +243,8 @@ export class WebhookService {
 
 		this.localEmitter.on('GameSettings', (settings) => {
 			if (!settings) return;
-			const gameId = `${settings.matchInfo?.matchId}-${settings.matchInfo?.gameNumber}`;
+			// Once per game start: offline games repeat matchId/gameNumber, so use the start id when there is one.
+			const gameId = (settings as GameStartTypeExtended).gameStartId ?? `${settings.matchInfo?.matchId}-${settings.matchInfo?.gameNumber}`;
 			if (gameId === this.lastGameSettingsId) return;
 			this.lastGameSettingsId = gameId;
 			this.prevFrameState.clear();

@@ -18,6 +18,9 @@
 	export let selectedLayerIndex: number = 0;
 	export let scrollToBottom: Function;
 	export let layer: Layer;
+	/** Warnings per item id in this scene (utils/overlayWarnings.ts). */
+	export let warnings: Record<string, string[]> = {};
+	$: layerWarnings = (layer.items ?? []).flatMap((i) => warnings[i.id] ?? []);
 
 	$: isSelected = selectedLayerIndex === layerIndex;
 	let isLastRow = curOverlay[$statsScene]?.layers.length === layerIndex + 1;
@@ -133,6 +136,9 @@
 				</button>
 			</div>
 		</div>
+		{#if layerWarnings.length}
+			<p class="layer-warning" title={layerWarnings.join('\n')}>⚠ {layerWarnings.length} problem{layerWarnings.length > 1 ? 's' : ''} — hover to see</p>
+		{/if}
 		<input
 			class="layer-title background-primary-color bg-opacity-30 text-secondary-color"
 			placeholder={`Layer ${layer.index + 1}`}
@@ -161,6 +167,12 @@
 {/if}
 
 <style>
+	.layer-warning {
+		font-size: 0.68rem;
+		padding: 0.1rem 0.5rem;
+		color: #ef4444;
+		cursor: help;
+	}
 	.layer-title {
 		width: 100%;
 		height: 1.25rem;

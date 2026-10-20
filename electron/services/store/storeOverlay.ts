@@ -10,7 +10,7 @@ import { BrowserWindow, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import { LiveStatsScene, NotificationType } from '../../../frontend/src/lib/models/enum';
-import { cloneDeep, isNil, kebabCase, merge } from 'lodash';
+import { cloneDeep, isNil, kebabCase, merge, mergeWith } from 'lodash';
 import { findFilesStartingWith, saveCustomFiles } from '../../utils/fileHandler';
 import { COL, MIN } from '../../../frontend/src/lib/models/const';
 import gridHelp from "../../utils/gridHelp.js"
@@ -19,6 +19,7 @@ import { SqliteOverlay } from './../sqlite/sqliteOverlay';
 import semver from 'semver'
 import { OverlayEntity } from 'services/sqlite/entities/overlay/overlayEntity';
 import { fillOverlayDefaults, getNewOverlay } from './../../utils/overlayHandler';
+import { migrateOverlayTriggers } from '../../../frontend/src/lib/utils/elementTriggers';
 import { buildFroggiZip, FROGGI_EXT, isZip, readFroggiZip, readJsonEntry, safeName, wrongKindMessage } from '../../utils/froggiFile';
 import { AssetPackService } from '../assetPackService';
 
@@ -250,9 +251,9 @@ export class ElectronOverlayStore {
 		if (!(await this.getOverlayById(overlayId))) return { error: `No overlay with id "${overlayId}"` };
 		const EXT_BY_CT: Record<string, string> = {
 			'image/png': '.png', 'image/jpeg': '.jpg', 'image/gif': '.gif', 'image/webp': '.webp',
-			'image/svg+xml': '.svg', 'image/avif': '.avif',
+			'image/svg+xml': '.svg', 'image/avif': '.avif', 'video/mp4': '.mp4', 'video/webm': '.webm',
 		};
-		const ALLOWED = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
+		const ALLOWED = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif', '.mp4', '.webm'];
 		const MAX = 15 * 1024 * 1024;
 
 		let buf: Buffer;
@@ -277,7 +278,7 @@ export class ElectronOverlayStore {
 					const { canceled, filePaths } = await dialog.showOpenDialog(this.mainWindow, {
 						title: 'Choose an image for the overlay',
 						properties: ['openFile'],
-						filters: [{ name: 'Images', extensions: ALLOWED.map((e) => e.slice(1)) }],
+						filters: [{ name: 'Images and videos', extensions: ALLOWED.map((e) => e.slice(1)) }],
 					});
 					if (canceled || !filePaths[0]) return { canceled: true };
 					filePath = filePaths[0];
@@ -297,9 +298,11 @@ export class ElectronOverlayStore {
 			return { error: `Could not read image: ${(e as Error).message}` };
 		}
 		if (ext === '.jpeg') ext = '.jpg';
-		if (!ALLOWED.includes(ext)) return { error: 'Not a supported image (png/jpg/gif/webp/svg/avif) — check the extension or content type' };
+		if (!ALLOWED.includes(ext)) return { error: 'Not a supported image or video (png/jpg/gif/webp/svg/avif, mp4/webm) — check the extension or content type' };
 		if (!buf.length) return { error: 'Image is empty' };
-		if (buf.length > MAX) return { error: 'Image too large (>15MB)' };
+		const isVideo = ext === '.mp4' || ext === '.webm';
+		// Videos are bigger by nature; they are also embedded in .froggi exports, so keep them sensible.
+		if (buf.length > (isVideo ? 50 * 1024 * 1024 : MAX)) return { error: isVideo ? 'Video too large (>50MB) — trim or compress it' : 'Image too large (>15MB)' };
 
 		const base = baseName.replace(/\.[^.]*$/, '').replace(/[^a-zA-Z0-9_-]/g, '') || 'image';
 		const saveDir = path.join(this.appDir, 'public', 'custom', overlayId, 'image');
@@ -510,6 +513,7 @@ export class ElectronOverlayStore {
 		// Currently not a flexible solution
 		newItem.data.font.src = prevItem.data.font.src?.replace(prevFileName, newFileName)
 		newItem.data.image.name = prevItem.data.image.name?.replace(prevFileName, newFileName)
+		if (prevItem.data.rpsIcons) newItem.data.rpsIcons = Object.fromEntries(Object.entries(prevItem.data.rpsIcons).map(([hand, name]) => [hand, name?.replace(prevFileName, newFileName)]));
 
 		layer.items.push(newItem);
 
@@ -601,7 +605,9 @@ export class ElectronOverlayStore {
 		const item = layer?.items.find((item) => item.id === itemId);
 		if (isNil(overlay) || isNil(layer) || isNil(item)) return;
 
-		item.data = merge({}, item.data, payloadPatch);
+		// Arrays in the patch REPLACE the old array (elementTriggers, extraAnimationTriggers, visibility conditions) —
+		// an index-wise merge could never remove an entry.
+		item.data = mergeWith({}, item.data, payloadPatch, (_old: unknown, next: unknown) => (Array.isArray(next) ? next : undefined));
 
 		return this.setScene(overlayId, statsScene, overlay[statsScene]);
 	}
@@ -645,6 +651,7 @@ export class ElectronOverlayStore {
 			// Currently not a flexible solution
 			item.data.font.src = item.data.font.src?.replace(prevFileName, newFileName)
 			item.data.image.name = item.data.image.name?.replace(prevFileName, newFileName)
+			if (item.data.rpsIcons) item.data.rpsIcons = Object.fromEntries(Object.entries(item.data.rpsIcons).map(([hand, name]) => [hand, name?.replace(prevFileName, newFileName)]));
 		})
 
 		const layers: Layer[] = [...overlay[statsScene].layers];
@@ -902,6 +909,7 @@ export class ElectronOverlayStore {
 			// version), so migrate here: old layer order + any fields/scenes added since.
 			if (semver.valid(overlay.froggiVersion) && semver.gt("0.9.20-beta.1", overlay.froggiVersion)) this.reverseLayers(overlay);
 			fillOverlayDefaults(overlay);
+			migrateOverlayTriggers(overlay);
 			overlay.id = newId()
 			overlay.deletedAt = null
 			writeFiles(path.join(this.appDir, "public", "custom", overlay.id));
@@ -952,6 +960,7 @@ export class ElectronOverlayStore {
 				// Demo JSON may predate newer scenes (e.g. Strike Phase) — fill them so the editor and
 				// the scene switcher always find every scene.
 				fillOverlayDefaults(overlay);
+				migrateOverlayTriggers(overlay);
 				await this.persistOverlay(overlay);
 			} catch (e) {
 				this.log.error(e)
@@ -998,6 +1007,9 @@ export class ElectronOverlayStore {
 					needsSave = true;
 				}
 			}
+
+			// Legacy "value changed" triggers → element triggers (utils/elementTriggers.ts).
+			if (migrateOverlayTriggers(overlay)) needsSave = true;
 
 			if (overlay.froggiVersion !== froggiVersion) {
 				overlay.froggiVersion = froggiVersion;

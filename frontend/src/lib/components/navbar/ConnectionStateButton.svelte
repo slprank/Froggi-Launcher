@@ -8,6 +8,7 @@
 	export let style: string = '';
 	export { _class as class };
 	export let click = () => {};
+	export let label = '';
 
 	let _class: string;
 
@@ -45,7 +46,7 @@
 		transition:fly={{ duration: 150, x: -50 }}
 		on:click={click}
 		use:tooltip={{
-			content: `<p>${connectionState}</p>`,
+			content: `<p>${label ? `${label} · OBS ` : ''}${connectionState}</p>`,
 			html: true,
 			placement: 'left',
 			delay: [1000, 0],

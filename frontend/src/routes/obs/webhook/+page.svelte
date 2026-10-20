@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { electronEmitter, webhookProfiles, webhooksEnabled } from '$lib/utils/store.svelte';
 	import { WebhookEvent, type WebhookAuthType, type WebhookProfile } from '$lib/models/types/webhook';
 	import { fly } from 'svelte/transition';
@@ -271,6 +272,9 @@
 			  editingProfile.loginUrl.trim().length > 0);
 </script>
 
+<main class="flex justify-center">
+	<div class="w-full max-w-2xl">
+<BackButton />
 <h1 class="text-xl font-semibold text-secondary-color mb-6">Webhooks</h1>
 
 <div class="webhook-page">
@@ -353,6 +357,8 @@
 		{/each}
 	</div>
 </div>
+	</div>
+</main>
 
 {#if showModal}
 	<div class="modal-backdrop" on:click|self={closeModal} role="presentation">

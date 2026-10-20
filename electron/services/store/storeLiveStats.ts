@@ -12,6 +12,7 @@ import {
 } from '../../../frontend/src/lib/models/types/slippiData';
 import { isNil, merge } from 'lodash';
 import { TypedEmitter } from '../../../frontend/src/lib/utils/customEventEmitter';
+import { FightStatsTracker } from '../../../frontend/src/lib/utils/fightStats';
 
 @singleton()
 export class ElectronLiveStatsStore {
@@ -26,6 +27,10 @@ export class ElectronLiveStatsStore {
 	// Synthetic id for the current offline/local set. Slippi gives local games no matchId,
 	// so without this they all collide under "" — one unbounded bucket. Minted per set.
 	private localSetId: string | undefined;
+	// Set continued across Slippi sessions: new games are stored under this (the set's) match id.
+	private setMatchId: string | undefined;
+	// Live damage / KOs / KO % / death % per player, this game + this set.
+	readonly fightStats = new FightStatsTracker();
 
 	constructor(
 		@inject('ElectronLog') private log: ElectronLog,
@@ -65,6 +70,19 @@ export class ElectronLiveStatsStore {
 		if (!frameEntry) return;
 		this.gameFrame = frameEntry;
 		this.messageHandler.sendMessage('GameFrame', frameEntry as FrameEntryType);
+	}
+
+	startFightStats(settings: GameStartType, newSet: boolean) {
+		this.fightStats.startGame(settings.players, !!settings.isTeams, newSet);
+		this.messageHandler.sendMessage('LiveFightStats', this.fightStats.snapshot());
+	}
+
+	sendFightStats() {
+		this.messageHandler.sendMessage('LiveFightStats', this.fightStats.snapshot());
+	}
+
+	trackFightStats(frameEntry: FrameEntryType) {
+		if (this.fightStats.frame(frameEntry)) this.messageHandler.sendMessage('LiveFightStats', this.fightStats.snapshot());
 	}
 
 	deleteGameFrame() {
@@ -128,6 +146,14 @@ export class ElectronLiveStatsStore {
 
 	getBestOf(): BestOf {
 		return (this.gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3) as BestOf;
+	}
+
+	getSetMatchId(): string | undefined {
+		return this.setMatchId;
+	}
+
+	setSetMatchId(id: string | undefined) {
+		this.setMatchId = id;
 	}
 
 	getLocalSetId(): string | undefined {

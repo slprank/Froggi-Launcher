@@ -22,6 +22,8 @@
 		type ViewerSettings,
 	} from '$lib/utils/viewer/renderData';
 	import { characterNameByExternalId, characterNameByInternalId } from '$lib/utils/viewer/ids';
+	import { detectKos, koPlacement, KO_DURATION_MS, type KoKind, type Rect } from '$lib/utils/viewer/koEffects';
+	import { onDestroy } from 'svelte';
 
 	export let settings: ViewerSettings | null | undefined;
 	export let frame: ViewerFrame | null | undefined;
@@ -154,6 +156,60 @@
 	})();
 
 	$: items = frame?.items ?? [];
+
+	// ── KO effects (utils/viewer/koEffects.ts): Melee-style blast off the sides / bottom, star off the top ──
+	export let koEffects = true;
+	/** size = scale of the effect (blasts: world size 1; stars: same size on screen at any zoom). */
+	type Effect = { id: number; kind: KoKind; x: number; y: number; angle: number; color: string; size: number };
+	let effects: Effect[] = [];
+	let effectId = 0;
+	let prevActions: Record<number, number | undefined> = {};
+	/** Each player's position on the previous frame — a KO effect appears where the player last was. */
+	let prevPositions: Record<number, { x: number; y: number }> = {};
+	const timers = new Set<ReturnType<typeof setTimeout>>();
+	onDestroy(() => timers.forEach(clearTimeout));
+	const PALETTE = ['#b91c1c', '#1d4ed8', '#eab308', '#15803d'];
+
+	// The stage's blast zones (world space) — blasts start there.
+	$: blastZone = ((z) => (z ? { xMin: z[0][0], yMin: z[0][1], xMax: z[1][0], yMax: z[1][1] } : null))(
+		(stageData as { blastZones?: number[][] } | undefined)?.blastZones,
+	);
+	// What the camera shows, in world space (y up).
+	$: viewNumbers = viewBox.split(' ').map(Number);
+	$: visible = ((): Rect => {
+		if (camera === 'live' && camCenter && camScale) {
+			const hw = 365 / camScale;
+			const hh = 300 / camScale;
+			return { xMin: camCenter[0] - hw, xMax: camCenter[0] + hw, yMin: camCenter[1] - hh, yMax: camCenter[1] + hh };
+		}
+		const [vx, vy, vw, vh] = viewNumbers;
+		return { xMin: vx, xMax: vx + vw, yMin: -(vy + vh), yMax: -vy };
+	})();
+
+	$: if (frame && koEffects) {
+		const players = Object.entries(frame.players ?? {})
+			.filter(([, p]) => p?.post)
+			.map(([i, p]) => ({ playerIndex: Number(i), actionStateId: p!.post!.actionStateId ?? -1, x: p!.post!.positionX ?? 0, y: p!.post!.positionY ?? 0 }));
+		for (const ko of detectKos(prevActions, players)) {
+			const at = koPlacement({ ...ko, ...(prevPositions[ko.playerIndex] ?? {}) }, visible, blastZone);
+			const color = renderDatas.find((rd) => rd.playerState.playerIndex === ko.playerIndex)?.innerColor ?? PALETTE[ko.playerIndex] ?? '#ffffff';
+			// Blasts are world-sized (like Melee's beam from the blast zone); stars keep one size on screen.
+			const size = ko.kind === 'blast' ? 0.65 : (visible.xMax - visible.xMin) / 700;
+			const effect: Effect = { id: ++effectId, kind: ko.kind, ...at, color, size };
+			effects = [...effects, effect];
+			const t = setTimeout(() => {
+				timers.delete(t);
+				effects = effects.filter((e) => e.id !== effect.id);
+			}, KO_DURATION_MS[ko.kind]);
+			timers.add(t);
+		}
+		prevActions = Object.fromEntries(players.map((p) => [p.playerIndex, p.actionStateId]));
+		prevPositions = Object.fromEntries(players.map((p) => [p.playerIndex, { x: p.x, y: p.y }]));
+	}
+	// The blast's beams: [tilt in degrees, size, opacity] — the main one + two smaller, fainter ones tilted to each side.
+	const BEAMS: [number, number, number][] = [[-17, 0.6, 0.6], [17, 0.6, 0.6], [0, 1, 1]];
+	// Sparks along the beam: [x, y, delay ms, size].
+	const SPARKS: [number, number, number, number][] = [[50, -44, 60, 7], [100, 30, 120, 6], [150, -18, 180, 8], [200, 12, 240, 5], [250, -6, 300, 6], [80, -58, 90, 5]];
 </script>
 
 {#if stageId != null}
@@ -185,12 +241,73 @@
 			{#each items as item, i (i)}
 				<ViewerItem {item} />
 			{/each}
+
+			{#each effects as e (e.id)}
+				<g transform={`translate(${e.x} ${e.y}) rotate(${e.angle}) scale(${e.size})`}>
+					{#if e.kind === 'blast'}
+						<!-- KO blast: wide at the blast zone, tapering into the stage — player colour, white core, flash at its base -->
+						<!-- three beams: the main one + two smaller, tilted to each side -->
+						{#each BEAMS as [tilt, scale, opacity]}
+							<g transform={`rotate(${tilt}) scale(${scale})`} {opacity}>
+								<g class="ko-beam">
+									<path d="M0 -74 Q-26 0 0 74 Q60 64 340 3 L340 -3 Q60 -64 0 -74 Z" fill={e.color} opacity="0.55" />
+									<path d="M0 -46 Q-16 0 0 46 Q50 38 310 2 L310 -2 Q50 -38 0 -46 Z" fill={e.color} />
+									<path d="M0 -18 Q-7 0 0 18 Q40 14 270 1 L270 -1 Q40 -14 0 -18 Z" fill="#ffffff" opacity="0.95" />
+								</g>
+							</g>
+						{/each}
+						<g class="ko-flash">
+							<circle r="46" fill={e.color} opacity="0.6" />
+							<circle r="26" fill="#ffffff" />
+						</g>
+						{#each SPARKS as [x, y, delay, r]}
+							<g transform={`translate(${x} ${y})`}>
+								<path class="ko-spark" style={`animation-delay: ${delay}ms`} d={`M0 ${-r * 2} L${r * 0.5} ${-r * 0.5} L${r * 2} 0 L${r * 0.5} ${r * 0.5} L0 ${r * 2} L${-r * 0.5} ${r * 0.5} L${-r * 2} 0 L${-r * 0.5} ${-r * 0.5} Z`} fill="#ffffff" />
+							</g>
+						{/each}
+					{:else}
+						<g class="ko-star">
+							<circle r="22" fill="#fff7cc" opacity="0.35" />
+							<path d="M0 -18 L4 -4 L18 0 L4 4 L0 18 L-4 4 L-18 0 L-4 -4 Z" fill="#ffffff" />
+							<circle r="4" fill={e.color} />
+						</g>
+					{/if}
+				</g>
+			{/each}
 			</g>
 		</g>
 	</svg>
 {/if}
 
 <style>
+	/* KO effects: CSS animations on inner groups (their parents carry position, direction and size). */
+	.ko-beam { transform-box: fill-box; transform-origin: left center; animation: ko-beam 1.1s cubic-bezier(0.2, 0.9, 0.3, 1) forwards; }
+	@keyframes ko-beam {
+		0% { transform: scale(0.05, 0.5); opacity: 1; }
+		14% { transform: scale(1, 1.1); opacity: 1; }
+		55% { transform: scale(1.05, 0.8); opacity: 0.95; }
+		100% { transform: scale(1.1, 0.05); opacity: 0; }
+	}
+	.ko-flash { transform-box: fill-box; transform-origin: center; animation: ko-flash 0.55s ease-out forwards; }
+	@keyframes ko-flash {
+		0% { transform: scale(0.3); opacity: 1; }
+		100% { transform: scale(1.8); opacity: 0; }
+	}
+	.ko-spark { transform-box: fill-box; transform-origin: center; opacity: 0; animation: ko-spark 0.6s ease-out forwards; }
+	@keyframes ko-spark {
+		0% { transform: scale(0) rotate(0deg); opacity: 0; }
+		30% { transform: scale(1.3) rotate(30deg); opacity: 1; }
+		100% { transform: scale(0) rotate(90deg); opacity: 0; }
+	}
+	.ko-star { transform-box: fill-box; transform-origin: center; animation: ko-star 1.4s ease-in-out forwards; }
+	@keyframes ko-star {
+		0% { transform: scale(0) rotate(0deg); opacity: 0; }
+		18% { transform: scale(1.6) rotate(20deg); opacity: 1; }
+		45% { transform: scale(0.8) rotate(45deg); opacity: 1; }
+		70% { transform: scale(1.2) rotate(70deg); opacity: 0.9; }
+		100% { transform: scale(0) rotate(110deg); opacity: 0; }
+	}
+
 	/* Invulnerable / intangible (e.g. respawn platform) — vague opacity blink. */
 	.char-invuln { animation: invuln-blink 0.5s ease-in-out infinite; }
 	@keyframes invuln-blink {

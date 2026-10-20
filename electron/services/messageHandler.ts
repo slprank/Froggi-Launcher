@@ -2,9 +2,11 @@ import { BrowserWindow, shell } from 'electron';
 import { AssetPackService } from './assetPackService';
 import type { IpcMain } from 'electron';
 import type { ElectronLog } from 'electron-log';
-import { delay, inject, singleton } from 'tsyringe';
+import { container, delay, inject, singleton } from 'tsyringe';
+import { ElectronHighlightStore } from './store/storeHighlights';
 import WebSocket, { WebSocketServer } from 'ws';
 import { ElectronGamesStore } from './store/storeGames';
+import { getPreviewState } from '../utils/previewStates';
 import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { ElectronObsStore } from './store/storeObs';
@@ -107,6 +109,21 @@ export class MessageHandler {
 		try {
 			this.app.use('/public', staticFileServe);
 
+			// Frozen game state for an overlay screenshot (utils/previewStates.ts) — random id, short-lived.
+			this.app.get('/preview-state/:id', (req: express.Request, res: express.Response) => {
+				const state = getPreviewState(String(req.params.id));
+				if (!state) return void res.status(404).end();
+				res.json(state);
+			});
+
+			// Highlight videos registered by flows ("Set highlight video") — only those files, by id.
+			this.app.get('/highlights/:id', (req: express.Request, res: express.Response) => {
+				const file = container.resolve(ElectronHighlightStore).file(String(req.params.id));
+				if (!file) return void res.status(404).end();
+				res.setHeader('Access-Control-Allow-Origin', '*');
+				res.sendFile(file);
+			});
+
 			this.app.get('/lobby-info', (_req: express.Request, res: express.Response) => {
 				res.setHeader('Access-Control-Allow-Origin', '*');
 				res.json({ game: this.lobbyGame });
@@ -204,6 +221,7 @@ export class MessageHandler {
 						if (isAuthorized || isAllowedUnauthenticated(key, value)) {
 							this.clientEmitter.emit(key as keyof MessageEvents, ...(value as any));
 						}
+						if (isAuthorized) this.replyToHost(socketId, key);
 						// Unauthorized commands are dropped silently — clients get a passive
 						// "unauthorized" UI state (Settings → Authorization explains it). No popup
 						// on connect; active command feedback is handled client-side.
@@ -278,6 +296,7 @@ export class MessageHandler {
 					value: Parameters<MessageEvents[keyof MessageEvents]>,
 				]) {
 					if (["socketId", "AuthorizationKey"].includes(key as string)) continue;
+					if (this.isKeyAuthorized(parse['AuthorizationKey'] ?? '', parse['MatchId'] ?? '')) this.replyToHost(socketId, key as string);
 					sendAuthenticatedMessage(
 						parse['socketId'],
 						parse['AuthorizationKey'],
@@ -303,6 +322,23 @@ export class MessageHandler {
 		this.sendElectronMessage(topic, ...payload);
 		this.sendWebsocketMessage(topic, ...payload);
 		this.localEmitter.emit(topic, ...payload);
+	}
+
+	/** Same check as the WebSocket handlers: the host password (or the live ranked match id). */
+	private isKeyAuthorized(authKey: string, matchId: string): boolean {
+		const serverKey = this.storeSettings.getAuthorizationKey();
+		const currentMatchId = this.storeLiveStats.getGameSettings()?.matchInfo?.matchId ?? null;
+		const matchIdValid = Boolean(matchId && currentMatchId && matchId === currentMatchId && this.storeLiveStats.getGameMode() === 'ranked');
+		return matchIdValid || (Boolean(serverKey) && authKey === serverKey);
+	}
+
+	/**
+	 * Host-only data asked for by an AUTHORIZED remote client (the TO's phone/laptop with the host
+	 * password) goes back to that socket alone — never broadcast to overlays, phones or viewers.
+	 */
+	private replyToHost(socketId: string, topic: string) {
+		const tokens = topic === 'StrikePlayerTokensRequest' ? this.storeStrike.getPlayerTokens() : undefined;
+		if (tokens) this.sendInitMessage(socketId, 'StrikePlayerTokens', tokens);
 	}
 
 	/** Only to the Froggi app window (the host) — never to WebSocket clients (overlays, phones, viewers). */
@@ -353,6 +389,10 @@ export class MessageHandler {
 		// Cheap + time-critical first: a player's phone shows the striking state straight away instead
 		// of waiting for the overlay list etc. to load.
 		this.sendInitMessage(socketId, 'StrikeState', this.storeStrike.getStrikeState());
+		this.sendInitMessage(socketId, 'TeamNames', this.storePlayers.getTeamNames());
+		this.sendInitMessage(socketId, 'ContinueSetAcrossSessions', this.storeGames.getContinueSetAcrossSessions());
+		const highlights = container.resolve(ElectronHighlightStore);
+		this.sendInitMessage(socketId, 'HighlightReels', highlights.current(), Date.now(), highlights.currentVolumes());
 		this.sendInitMessage(socketId, 'CurrentPlayer', await this.storeCurrentPlayer.getCurrentPlayer());
 		this.sendInitMessage(socketId, 'CurrentPlayers', this.storePlayers.getCurrentPlayers());
 		this.sendInitMessage(
@@ -375,6 +415,7 @@ export class MessageHandler {
 		);
 		this.sendInitMessage(socketId, 'SceneSwitchCommands', this.storeObsCommands.getSceneCommands());
 		this.sendInitMessage(socketId, 'PostGameStats', this.storeLiveStats.getGameStats());
+		this.sendInitMessage(socketId, 'LiveFightStats', this.storeLiveStats.fightStats.snapshot());
 		this.sendInitMessage(socketId, 'RecentGames', recentGames);
 		this.sendInitMessage(socketId, 'Url', this.storeSettings.getLocalUrl());
 		this.sendInitMessage(

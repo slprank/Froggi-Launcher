@@ -36,6 +36,20 @@
 		P2 RPS Choice
 	</SelectOption>
 	<SelectOption
+		description="Player 1's pick as an icon — shuffles when both have picked (your own icons: Styling)"
+		value={CustomElement.StrikeRpsPlayer1Icon}
+		on:select={select}
+	>
+		P1 RPS Icon
+	</SelectOption>
+	<SelectOption
+		description="Player 2's pick as an icon — shuffles when both have picked (your own icons: Styling)"
+		value={CustomElement.StrikeRpsPlayer2Icon}
+		on:select={select}
+	>
+		P2 RPS Icon
+	</SelectOption>
+	<SelectOption
 		description="Name of the player who won RPS"
 		value={CustomElement.StrikeRpsWinner}
 		on:select={select}
@@ -116,6 +130,20 @@
 		P2 Name
 	</SelectOption>
 	<SelectOption
+		description="Games Player 1 has won in the set (Slippi games and games reported by hand)"
+		value={CustomElement.StrikePlayer1Score}
+		on:select={select}
+	>
+		P1 Set Score
+	</SelectOption>
+	<SelectOption
+		description="Games Player 2 has won in the set (Slippi games and games reported by hand)"
+		value={CustomElement.StrikePlayer2Score}
+		on:select={select}
+	>
+		P2 Set Score
+	</SelectOption>
+	<SelectOption
 		description="Player 1's selected character icon"
 		value={CustomElement.StrikePlayer1Character}
 		on:select={select}
@@ -128,6 +156,20 @@
 		on:select={select}
 	>
 		P2 Character
+	</SelectOption>
+	<SelectOption
+		description="Doubles: Team 1's second player's character (P1 Character = the team's first player)"
+		value={CustomElement.StrikePlayer1PartnerCharacter}
+		on:select={select}
+	>
+		Team 1 · 2nd Character
+	</SelectOption>
+	<SelectOption
+		description="Doubles: Team 2's second player's character (P2 Character = the team's first player)"
+		value={CustomElement.StrikePlayer2PartnerCharacter}
+		on:select={select}
+	>
+		Team 2 · 2nd Character
 	</SelectOption>
 
 	<p class="section-label">Stage images</p>

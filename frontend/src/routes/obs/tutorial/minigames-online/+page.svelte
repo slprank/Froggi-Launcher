@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { Swords, Globe } from 'lucide-svelte';
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { electronEmitter, ngrokStatus, tailscaleStatus, remoteAccess } from '$lib/utils/store.svelte';
 	import { goto } from '$app/navigation';
 
@@ -98,9 +101,7 @@
 
 		<!-- Header -->
 		<div class="flex items-baseline justify-between mb-3">
-			<button class="text-sm opacity-40 hover:opacity-70 transition-opacity" on:click={() => goto('/obs/tutorial')}>
-				← Tutorials
-			</button>
+			<BackButton />
 			{#if goal !== 'none'}
 				<button class="text-xs opacity-30 hover:opacity-60 transition-opacity" on:click={() => { goal = 'none'; step = 0; }}>
 					Change goal
@@ -134,7 +135,7 @@
 					<p class="text-sm opacity-50 mb-2">What do you want to set up?</p>
 
 					<button class="goal-card" on:click={() => selectGoal('friends')}>
-						<div class="goal-icon">🎮</div>
+						<span class="goal-icon"><Swords size={22} strokeWidth={1.5} /></span>
 						<div class="flex flex-col min-w-0 text-left">
 							<span class="font-semibold text-base leading-tight">Play Bingo or Iron Man with a friend</span>
 							<span class="text-sm opacity-55 mt-0.5 leading-snug">
@@ -144,13 +145,13 @@
 						<span class="ml-auto opacity-30 text-lg shrink-0">→</span>
 					</button>
 
-					<button class="goal-card" on:click={() => selectGoal('remote')}>
-						<div class="goal-icon">📡</div>
+					<!-- ponytail: the old Tailscale steps (ts-*) below are unreachable now; remove when this page is next reworked. -->
+					<button class="goal-card" on:click={() => goto('/obs/tutorial/remote-obs')}>
+						<span class="goal-icon"><Globe size={22} strokeWidth={1.5} /></span>
 						<div class="flex flex-col min-w-0 text-left">
 							<span class="font-semibold text-base leading-tight">Stable access and remote control</span>
 							<span class="text-sm opacity-55 mt-0.5 leading-snug">
-								Get a permanent URL that never changes — control Froggi from your phone, run stream-side without being at your PC, or share with a co-host.
-								Uses <b>Tailscale</b>.
+								A permanent URL that never changes — control Froggi and OBS from your phone or a co-host. Covered in the <b>Remote control OBS</b> tutorial.
 							</span>
 						</div>
 						<span class="ml-auto opacity-30 text-lg shrink-0">→</span>
@@ -267,7 +268,7 @@
 					{#if ngrokRunning && ngrokUrl}
 						<div class="url-display border-secondary mt-3">
 							<span class="url-display-label">Your tunnel URL</span>
-							<span class="url-display-value font-mono">{ngrokUrl}</span>
+							<SecretUrl class="url-display-value font-mono" value={ngrokUrl} />
 						</div>
 						<p class="hint mt-2">Froggi automatically turns this into a share code for your friend. You don't need to copy the full URL.</p>
 					{:else if !ngrokAuthenticated}
@@ -393,7 +394,7 @@
 					{#if tsFunnelActive && tsUrl}
 						<div class="url-display border-secondary mt-3">
 							<span class="url-display-label">Your permanent URL</span>
-							<span class="url-display-value font-mono">{tsUrl}</span>
+							<SecretUrl class="url-display-value font-mono" value={tsUrl} />
 						</div>
 						<p class="hint mt-2">Bookmark this — it never changes between sessions.</p>
 					{:else if !tsAuthenticated}
@@ -407,7 +408,7 @@
 					{#if tsFunnelActive && tsUrl}
 						<p>Your Tailscale URL is active:</p>
 						<div class="url-display border-secondary">
-							<span class="url-display-value font-mono">{tsUrl}</span>
+							<SecretUrl class="url-display-value font-mono" value={tsUrl} />
 						</div>
 						<p>You can now:</p>
 						<ul>
@@ -457,27 +458,30 @@
 <style>
 	.tutorial-content h2 { display: none; }
 
+	/* Same look as the Tutorials list cards. */
 	.goal-card {
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-		padding: 1rem 1.1rem;
+		padding: 1rem 1.25rem;
 		border: 1px solid var(--secondary-color);
-		border-radius: 0.5rem;
-		background: transparent;
+		border-radius: 0.375rem;
+		background-color: var(--primary-color);
 		color: var(--secondary-color);
 		cursor: pointer;
-		transition: background 0.15s;
+		transition: opacity 0.15s, transform 0.15s;
 		width: 100%;
 		text-align: left;
 	}
 	.goal-card:hover {
-		background: color-mix(in srgb, var(--secondary-color) 6%, transparent);
+		transform: scale(1.01);
 	}
 	.goal-icon {
-		font-size: 1.8rem;
-		line-height: 1;
 		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.5rem;
 	}
 
 	.step-content {

@@ -3,7 +3,10 @@
 	"description": "Scene Description",
 	"froggiVersion": "0.0.0",
 	"id": "scoreboard",
-	"aspectRatio": { "width": 16, "height": 9 },
+	"aspectRatio": {
+		"width": 16,
+		"height": 9
+	},
 	"title": "Score",
 	"waitingForDolphin": {
 		"active": false,
@@ -33,7 +36,7 @@
 				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -66,8 +69,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 162, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 162,
+				"items": []
+			}
+		]
 	},
 	"menu": {
 		"active": true,
@@ -97,7 +110,7 @@
 				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -130,8 +143,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 163, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 163,
+				"items": []
+			}
+		]
 	},
 	"inGame": {
 		"active": true,
@@ -161,7 +184,7 @@
 				},
 				"type": "fly automatic"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -194,7 +217,10 @@
 				}
 			}
 		},
-		"font": { "family": "Roboto Bold Italic", "src": "" },
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
 		"layers": [
 			{
 				"index": 0,
@@ -208,8 +234,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 16,
 							"h": 24,
 							"x": 248,
@@ -245,7 +277,10 @@
 								},
 								"selectedOptions": {}
 							},
-							"class": { "rounded": "", "alignment": "justify-center" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-center"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -261,9 +296,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -289,13 +331,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "-",
-							"textStroke": { "size": 1, "color": "#000000ff" },
+							"textStroke": {
+								"size": 1,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					},
@@ -306,8 +359,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 210,
 							"h": 24,
 							"x": 0,
@@ -342,7 +401,6 @@
 									"type": "fade"
 								},
 								"selectedOptions": {
-									"Player 1 Tag Change": true,
 									"Game Countdown": false,
 									"Player 2 Score Change": false,
 									"Player 1 Score Change": false,
@@ -350,9 +408,18 @@
 									"Player 1 Connect Code Change": false,
 									"Player 2 Tag Change": false,
 									"Match Best Of Change": false
-								}
+								},
+								"elementTriggers": [
+									{
+										"source": "self",
+										"when": "change"
+									}
+								]
 							},
-							"class": { "rounded": "", "alignment": "justify-end" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-end"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -368,9 +435,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -396,13 +470,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "",
-							"textStroke": { "size": 1, "color": "#000000ff" },
+							"textStroke": {
+								"size": 1,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					},
@@ -413,8 +498,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 210,
 							"h": 24,
 							"x": 302,
@@ -455,11 +546,19 @@
 									"Player 1 Score Change": false,
 									"Player 2 Connect Code Change": false,
 									"Player 1 Connect Code Change": false,
-									"Player 2 Tag Change": true,
 									"Match Best Of Change": false
-								}
+								},
+								"elementTriggers": [
+									{
+										"source": "self",
+										"when": "change"
+									}
+								]
 							},
-							"class": { "rounded": "", "alignment": "justify-start" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-start"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -475,9 +574,18 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default", "base64": "" },
-							"image": { "objectFit": "contain", "src": "" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default",
+								"base64": ""
+							},
+							"image": {
+								"objectFit": "contain",
+								"src": ""
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -503,13 +611,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "",
-							"textStroke": { "size": 1, "color": "#000000ff" },
+							"textStroke": {
+								"size": 1,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					},
@@ -520,8 +639,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 30,
 							"h": 24,
 							"x": 265,
@@ -557,16 +682,24 @@
 								},
 								"selectedOptions": {
 									"Player 1 Score Change": false,
-									"Player 2 Score Change": true,
 									"Game Countdown": false,
 									"Player 2 Connect Code Change": false,
 									"Player 1 Connect Code Change": false,
 									"Player 2 Tag Change": false,
 									"Player 1 Tag Change": false,
 									"Match Best Of Change": false
-								}
+								},
+								"elementTriggers": [
+									{
+										"source": "self",
+										"when": "change"
+									}
+								]
 							},
-							"class": { "rounded": "", "alignment": "justify-start" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-start"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -582,9 +715,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -610,13 +750,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "",
-							"textStroke": { "size": 1, "color": "#000000ff" },
+							"textStroke": {
+								"size": 1,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					},
@@ -627,8 +778,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 30,
 							"h": 24,
 							"x": 217,
@@ -663,7 +820,6 @@
 									"type": "fade"
 								},
 								"selectedOptions": {
-									"Player 1 Score Change": true,
 									"Player 2 Score Change": false,
 									"Game Countdown": false,
 									"Player 2 Connect Code Change": false,
@@ -671,9 +827,18 @@
 									"Player 2 Tag Change": false,
 									"Player 1 Tag Change": false,
 									"Match Best Of Change": false
-								}
+								},
+								"elementTriggers": [
+									{
+										"source": "self",
+										"when": "change"
+									}
+								]
 							},
-							"class": { "rounded": "", "alignment": "justify-end" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-end"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -689,9 +854,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -717,13 +889,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "",
-							"textStroke": { "size": 1, "color": "#000000ff" },
+							"textStroke": {
+								"size": 1,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					}
@@ -759,7 +942,7 @@
 				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -792,8 +975,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 165, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 165,
+				"items": []
+			}
+		]
 	},
 	"postSet": {
 		"active": false,
@@ -823,7 +1016,7 @@
 				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -856,8 +1049,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 166, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 166,
+				"items": []
+			}
+		]
 	},
 	"rankChange": {
 		"active": false,
@@ -887,7 +1090,7 @@
 				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -920,8 +1123,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 167, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 167,
+				"items": []
+			}
+		]
 	},
 	"customFiles": {}
 }

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
+	import QrReveal from '$lib/components/QrReveal.svelte';
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
@@ -6,8 +8,6 @@
 	import ObsIntegration from '$lib/components/obs/ObsIntegration.svelte';
 	// @ts-ignore
 	import Clipboard from 'svelte-clipboard';
-	// @ts-ignore
-	import QrCode from 'svelte-qrcode';
 	import { getOverlayById } from './OverlayHandler.svelte';
 
 	export let overlayId: string = $page.params.overlay;
@@ -98,11 +98,11 @@
 				</div>
 
 				<div class="border-secondary p-1 rounded-sm">
-					<QrCode value={activeExternalUrl} size="180" />
+					<QrReveal value={activeExternalUrl} size={180} />
 				</div>
 
 				<div class="flex items-center gap-2 rounded px-3 py-2 border-secondary w-full">
-					<span class="text-xs font-mono flex-1 truncate opacity-60">{activeExternalUrl}</span>
+					<SecretUrl class="text-xs font-mono flex-1 truncate opacity-60" value={activeExternalUrl} />
 					<Clipboard text={activeExternalUrl} let:copy on:copy={() => notifications.success('Copied!', 2000)}>
 						<button on:click={copy} class="btn text-xs h-7 px-3 border-secondary rounded shrink-0">
 							Copy

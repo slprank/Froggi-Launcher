@@ -18,7 +18,7 @@
 	import { startCase } from 'lodash';
 	// Re-exported so ElementModal.svelte's existing import keeps working —
 	// the actual definitions live in a plain .ts module shared with Electron (MCP overlay-write tools).
-	export { getDefaultElementPayload } from '$lib/utils/overlayElementDefaults';
+	export { getDefaultElementPayload, getNewElementPayload } from '$lib/utils/overlayElementDefaults';
 
 	export function generateNewItem(
 		elementId: CustomElement,

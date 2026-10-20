@@ -1,7 +1,9 @@
 <script lang="ts">
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { electronEmitter, flows } from '$lib/utils/store.svelte';
+	import { electronEmitter, flowFailures, flows } from '$lib/utils/store.svelte';
+	import { flowProblems } from '$lib/utils/flowProblems';
 	import type { Flow } from '$lib/models/types/flow';
 	import { describe } from '$lib/components/flows/flowOptions';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
@@ -17,7 +19,10 @@
 	};
 
 	// Automation flows: WHEN something happens AND conditions hold THEN do things (POST / OBS).
-	onMount(() => $electronEmitter.emit('FlowsRequest'));
+	onMount(() => {
+		$electronEmitter.emit('FlowsRequest');
+		$electronEmitter.emit('FlowFailuresRequest');
+	});
 
 	const newFlow = () => {
 		const id = `flow-${Date.now().toString(36)}`;
@@ -25,7 +30,6 @@
 			id,
 			name: 'New flow',
 			enabled: false,
-			format: 'any',
 			nodes: [
 				{ id: 'trigger', kind: 'trigger', position: { x: 40, y: 120 }, data: { type: 'gameStart' } },
 				{ id: 'action', kind: 'action', position: { x: 300, y: 120 }, data: { type: 'obsSaveReplay' } },
@@ -54,21 +58,34 @@
 		confirmOpen = false;
 		setTimeout(() => id && $electronEmitter.emit('FlowDelete', id), MODAL_CLOSE_MS);
 	};
+	/** Singles / Doubles tag when the flow has a "Game format is" condition. */
+	const formatTag = (flow: Flow) => {
+		const c = flow.nodes.find((n) => n.kind === 'condition' && n.data.type === 'gameFormat');
+		return c?.kind === 'condition' && c.data.type === 'gameFormat' ? c.data.format : '';
+	};
 	$: sorted = [...$flows].sort((a, b) => a.name.localeCompare(b.name));
+	// Flows → Problems (generic checks: scenes nothing switches to, invalid flows, failures).
+	$: problemCount = flowProblems($flows, $flowFailures).length;
 </script>
 
 <main class="flex justify-center">
 	<div class="w-full max-w-2xl">
+		<BackButton />
 		<div class="flex items-center gap-3 mb-2">
-			<a class="btn text-sm h-8 px-3 border-secondary rounded flex items-center" href="/obs">← OBS</a>
 			<h1 class="text-xl font-semibold text-secondary-color">Flows</h1>
 			<button class="btn text-sm h-8 px-3 border-secondary rounded ml-auto" on:click={() => $electronEmitter.emit('FlowImport')}>Import .froggi</button>
 			<button class="btn text-sm h-8 px-4 border-secondary rounded" on:click={newFlow}>+ New flow</button>
 		</div>
 		<p class="text-xs opacity-50 mb-4">
-			WHEN something happens in the game, AND your conditions hold, THEN Froggi sends a POST request or controls OBS.
-			Each flow can run in singles, doubles or both.
+			WHEN something happens in the game, AND your conditions hold, THEN Froggi switches scenes, sends a web
+			request or controls OBS. The "Scene switching" flow decides which scene your overlays show.
 		</p>
+		{#if problemCount}
+			<div class="scene-warning">
+				<span>{problemCount} thing{problemCount === 1 ? '' : 's'} to check in your flows.</span>
+				<button class="btn text-xs h-7 px-3 border-secondary rounded shrink-0" on:click={() => goto('/obs/flows/problems')}>See problems</button>
+			</div>
+		{/if}
 		<div class="flex flex-col gap-2">
 			{#each sorted as flow (flow.id)}
 				<div class="flow-row border-secondary">
@@ -77,7 +94,7 @@
 						<span class="flow-name">{flow.name}</span>
 						<span class="flow-sum">{summary(flow)}</span>
 					</button>
-					<span class="pill-tag">{flow.format === 'any' ? 'Singles + Doubles' : flow.format}</span>
+					{#if formatTag(flow)}<span class="pill-tag">{formatTag(flow)}</span>{/if}
 					<button class="text-xs opacity-50 hover:opacity-100" on:click={() => $electronEmitter.emit('FlowExport', flow.id)} title="Share as a .froggi file (bearer tokens are left out)">Export</button>
 					<button class="text-xs opacity-50 hover:opacity-100" on:click={() => askDelete(flow)}>Delete</button>
 				</div>
@@ -94,7 +111,7 @@
 						<span class="flow-name">{demo.name}</span>
 						<span class="flow-sum">{demo.description}</span>
 					</div>
-					<span class="pill-tag">{demo.format === 'any' ? 'Singles + Doubles' : demo.format}</span>
+					{#if formatTag(demo)}<span class="pill-tag">{formatTag(demo)}</span>{/if}
 					<button class="btn text-xs h-7 px-3 border-secondary rounded" on:click={() => useDemo(demo)}>Use</button>
 				</div>
 			{/each}
@@ -113,4 +130,8 @@
 	.section-label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.45; }
 	.flow-sum { white-space: normal; }
 	.toggle-check { width: 0.9rem; height: 0.9rem; }
+	.scene-warning {
+		display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding: 0.6rem 0.8rem; border-radius: 0.375rem;
+		font-size: 0.78rem; border: 1px solid #f59e0b; background: color-mix(in srgb, #f59e0b 12%, transparent);
+	}
 </style>

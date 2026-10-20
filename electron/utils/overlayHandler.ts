@@ -14,7 +14,7 @@ const getDefaultScene = (active: boolean = true): Scene => {
       duration: 250,
       in: getFlyAutomatic(),
       out: getFlyAutomatic(),
-      layerRenderDelay: 250,
+      layerRenderDelay: 60,
     },
     background: {
       color: '#000000',

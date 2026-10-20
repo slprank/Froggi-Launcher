@@ -81,7 +81,10 @@ export interface CssTransform {
 
 export interface ElementPayload {
 	advancedStyling: boolean;
+	/** Animation 1 (see utils/elementTriggers.ts). */
 	animationTrigger: TriggerAnimation;
+	/** Animations 2…n — each with its own in/out and its own triggers (a trigger is used by one animation only). */
+	extraAnimationTriggers?: TriggerAnimation[];
 	class: Class;
 	css: Css;
 	description: string;
@@ -98,6 +101,16 @@ export interface ElementPayload {
 	colorOverlay?: ColorOverlay;
 	/** Character elements: asset pack id (see models/types/assetPack). Default: built-in stock icons. */
 	assetPack?: string;
+	/** Which player this Player 1/2 element shows (doubles slots); unset = its own player. */
+	playerSlot?: import('../../utils/teams').PlayerSlot;
+	/** RPS icon elements: your own icon file per hand (uploaded to the overlay's image folder); unset = built-in SVG. */
+	rpsIcons?: { rock?: string; paper?: string; scissors?: string };
+	/** Built-in RPS hands: "outline" (element text colour, default) or "color" (full-colour emoji). */
+	rpsIconStyle?: 'outline' | 'color';
+	/** Video element: the key a flow points at a video / highlight reel, and its volume (0–100). */
+	video?: { key: string; volume: number };
+	/** Older Video elements (before volume): read as video {key, volume 100 | 0}. */
+	highlight?: { key: string; sound: boolean };
 }
 
 export interface ColorOverlay {
@@ -209,7 +222,16 @@ export interface VisibilityAnimations {
 export interface TriggerAnimation {
 	in: AnimationSettings
 	out: AnimationSettings
+	/** Named (game event) triggers: label → on. */
 	selectedOptions: SelectedAnimationTriggerCondition
+	/** Element triggers: replay when this or another element of the scene changes what it shows. */
+	elementTriggers?: ElementTrigger[]
+}
+
+/** source = "self" or another element's item id (same scene); when = any change, or the number going up / down. */
+export interface ElementTrigger {
+	source: string
+	when: 'change' | 'increase' | 'decrease'
 }
 
 export interface SceneAnimation extends Animations {

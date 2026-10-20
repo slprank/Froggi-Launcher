@@ -162,6 +162,25 @@ button:active {
 	}
 }
 
+/* Tutorial scroll areas: room for the 2% hover scale so full-width buttons aren't clipped. */
+.tutorial-content {
+	padding-inline: 0.75rem;
+	overflow-x: hidden;
+}
+
+/* Tutorial text can be selected and copied (the rest of the app is not selectable). */
+.tutorial-content:not(.view-autobar),
+.tutorial-content *:not(.view-autobar) {
+	-webkit-user-select: text;
+	user-select: text;
+}
+.tutorial-content .t-link {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
 @media (orientation: portrait) {
 	main {
 		padding: 0.5rem;
@@ -248,3 +267,52 @@ img {
 	padding: 0.1em 0.35em;
 	border-radius: 0.2rem;
 }
+
+/* ── Buy Me a Coffee ─────────────────────────────────────────────────────────
+   Official yellow + navy, and a slow shine sweep. The sweep starts and ends fully
+   outside the button (no slice popping in when the animation loops). */
+.bmc {
+	position: relative;
+	overflow: hidden;
+	background: #ffdd00;
+	color: #0d0c22;
+	border: 1px solid #e6c700;
+}
+.bmc:hover {
+	background: #ffe433;
+}
+.bmc::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 40%;
+	background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+	transform: translateX(-250%) skewX(-20deg);
+	animation: bmc-shine 7s ease-in-out infinite;
+	pointer-events: none;
+}
+@keyframes bmc-shine {
+	0%,
+	72% {
+		transform: translateX(-250%) skewX(-20deg);
+	}
+	88%,
+	100% {
+		transform: translateX(350%) skewX(-20deg);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.bmc::after {
+		display: none;
+	}
+}
+.font-cookie {
+	font-family: 'Cookie', cursive;
+	font-weight: 400;
+}
+
+/* Tooltips (svooltip): wrap long text into more lines instead of one wide strip; \n starts a new line. */
+.svooltip { max-width: min(22rem, 90vw); line-height: 1.4; }
+.svooltip-content { white-space: pre-line; }

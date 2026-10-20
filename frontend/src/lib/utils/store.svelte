@@ -95,6 +95,8 @@
 
 	export const overlays = writable<Record<string, Overlay>>({});
 	export const currentOverlayEditor = writable<OverlayEditor>({ layerIndex: 0 } as OverlayEditor);
+	/** What each shown element displays, by item id — element triggers watch it (utils/elementTriggers.ts). */
+	export const elementValues = writable<Record<string, string>>({});
 	export const postGame = writable<GameStats>({} as GameStats);
 	export const currentMatch = writable<MatchStats>({} as MatchStats);
 	export const recentRankedSets = writable<GameStats[]>([]);
@@ -123,6 +125,21 @@
 	export const strikeTokens = writable<{ 1: string; 2: string } | undefined>(undefined);
 	/** Automation flows (SQLite, run in Electron). */
 	export const flows = writable<import('$lib/models/types/flow').Flow[]>([]);
+	export const highlightReels = writable<import('$lib/utils/highlightReel').HighlightReels>({});
+	/** Video volumes set by flows (key → 0–100); overrides the Video element's own volume. */
+	export const videoVolumes = writable<Record<string, number>>({});
+	/** Server clock − this device's clock (ms), so every device plays a reel at the same position. */
+	export const serverClockOffset = writable<number>(0);
+	export const flowFailures = writable<import('$lib/models/types/flow').FlowFailure[]>([]);
+	export const flowGameState = writable<import('$lib/utils/flowState').FlowGameState | undefined>();
+	export const flowTestResult = writable<Parameters<import('$lib/utils/customEventEmitter').MessageEvents['FlowTestResult']>[0] | undefined>();
+	/** Doubles team names set by the host ('' = "Tag & Tag"). */
+	export const teamNames = writable<[string, string]>(['', '']);
+	export const continueSetAcrossSessions = writable<boolean>(true);
+	// Screenshot preview (?state=<id>): a frozen replay moment — live game updates are ignored.
+	export const previewFrozen = writable<boolean>(false);
+	export const recentReplays = writable<import('$lib/models/types/slippiData').ReplaySummary[]>([]);
+	export const liveFightStats = writable<import('$lib/utils/fightStats').LiveFightStats>({ game: {}, match: {} });
 	export const webhookProfiles = writable<WebhookProfile[]>([]);
 	export const webhooksEnabled = writable<boolean>(true);
 

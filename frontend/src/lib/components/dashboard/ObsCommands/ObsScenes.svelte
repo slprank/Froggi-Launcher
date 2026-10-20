@@ -2,12 +2,14 @@
 	import { CommandType } from '$lib/models/types/commandTypes';
 	import { electronEmitter, obsConnection } from '$lib/utils/store.svelte';
 	import { onMount } from 'svelte';
+	import Modal from '$lib/components/modal/Modal.svelte';
 
-	// Dashboard scene switcher. Favourites (★) are shown first as big buttons; stored per device
-	// (localStorage), so each control device can keep its own shortlist.
+	// Dashboard scene switcher. Favourites are shown first as big buttons; picked in a modal and stored
+	// per device (localStorage), so each control device can keep its own shortlist.
 	const FAVOURITES_KEY = 'froggi.dashboard.favouriteScenes';
 	let favourites: string[] = [];
 	let showAll = false;
+	let pickOpen = false;
 
 	onMount(() => {
 		try {
@@ -46,23 +48,29 @@
 	{#if listed.length}
 		<div class="flex flex-col gap-1.5" class:mt-2={favouriteScenes.length}>
 			{#each listed as name (name)}
-				<div class="scene-row">
-					<button class="scene-btn flex-1" class:scene-btn--live={current === name} on:click={() => switchScene(name)}>
-						{name}
-					</button>
-					<button
-						class="star"
-						class:star--on={favourites.includes(name)}
-						title={favourites.includes(name) ? 'Remove from favourites' : 'Add to favourites'}
-						on:click={() => toggleFavourite(name)}
-					>★</button>
-				</div>
+				<button class="scene-btn" class:scene-btn--live={current === name} on:click={() => switchScene(name)}>{name}</button>
 			{/each}
 		</div>
 	{/if}
-	{#if !favouriteScenes.length}
-		<p class="hint">★ a scene to pin it here.</p>
-	{/if}
+	<button class="show-all" on:click={() => (pickOpen = true)}>★ {favouriteScenes.length ? 'Edit favourites' : 'Pick favourite scenes'}</button>
+
+	<Modal bind:open={pickOpen} on:close={() => (pickOpen = false)}>
+		<div class="confirm-box background-primary-color border-secondary text-secondary-color">
+			<p class="title">Favourite scenes</p>
+			<p class="desc">Favourites are big buttons at the top — saved on this device.</p>
+			<div class="pick-list">
+				{#each scenes as name (name)}
+					<label class="pick-row border-secondary">
+						<input type="checkbox" class="toggle-check" checked={favourites.includes(name)} on:change={() => toggleFavourite(name)} />
+						<span>{name}</span>
+					</label>
+				{/each}
+			</div>
+			<div class="actions">
+				<button class="btn text-sm h-9 px-5 border-secondary rounded confirm-ok" on:click={() => (pickOpen = false)}>Done</button>
+			</div>
+		</div>
+	</Modal>
 {:else}
 	<p class="hint">No scenes — connect OBS.</p>
 {/if}
@@ -72,11 +80,6 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
 		gap: 0.4rem;
-	}
-	.scene-row {
-		display: flex;
-		gap: 0.35rem;
-		align-items: center;
 	}
 	.scene-btn {
 		text-align: left;
@@ -102,16 +105,14 @@
 		border-color: #ef4444;
 		background: color-mix(in srgb, #ef4444 15%, transparent);
 	}
-	.star {
-		font-size: 0.9rem;
-		opacity: 0.25;
-		color: var(--secondary-color);
-		background: none;
-	}
-	.star--on {
-		opacity: 1;
-		color: #facc15;
-	}
+	.confirm-box { width: min(380px, 90vw); max-height: 80vh; padding: 1.25rem; border-radius: 0.375rem; display: flex; flex-direction: column; gap: 0.6rem; }
+	.title { font-weight: 700; }
+	.desc { font-size: 0.75rem; opacity: 0.55; }
+	.pick-list { display: flex; flex-direction: column; gap: 0.35rem; overflow-y: auto; }
+	.pick-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.6rem; border-radius: 0.3rem; font-size: 0.85rem; cursor: pointer; }
+	.toggle-check { width: 0.9rem; height: 0.9rem; }
+	.actions { display: flex; justify-content: flex-end; margin-top: 0.3rem; }
+	.confirm-ok { background: var(--secondary-color); color: var(--primary-color); }
 	.show-all {
 		margin-top: 0.4rem;
 		font-size: 0.7rem;

@@ -143,7 +143,7 @@
 		<div class="preview-wrap">
 			<div
 				class="preview-frame border-secondary"
-				style="aspect-ratio: {arW}/{arH}; {isVertical ? 'height: min(55vh, 100%)' : 'width: 100%'};"
+				style="aspect-ratio: {arW}/{arH}; {isVertical ? 'height: 55vh' : 'width: 100%'};"
 			>
 				{#if overlay?.id}
 					<OverlayPreviewScaled overlayId={overlay.id} />

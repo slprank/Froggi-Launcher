@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Animation } from '../../../../frontend/src/lib/models/enum';
 import { CustomElement } from '../../../../frontend/src/lib/models/constants/customElement';
+import { LEGACY_TRIGGERS } from '../../../../frontend/src/lib/utils/elementTriggers';
 import {
 	AnimationTrigger,
 	VisibilityOption,
@@ -14,6 +15,7 @@ const text = (value: unknown) => ({ content: [{ type: 'text' as const, text: typ
 
 // Numeric-range → human label for the element catalog. Ranges come from CustomElement.
 const RANGE_LABELS: Array<{ min: number; max: number; label: string }> = [
+	{ min: 1900, max: 1999, label: 'Doubles (team names/stocks), ports, live fight stats, win chance, edge cancels & edgeguards' },
 	{ min: 1000, max: 1999, label: 'Text / dynamic strings (percent, tags, scores, rank data)' },
 	{ min: 2000, max: 2999, label: 'Character render images' },
 	{ min: 3000, max: 3999, label: 'Boxes, iframes & controller inputs' },
@@ -92,8 +94,24 @@ Both carry \`{ in: AnimationSettings, out: AnimationSettings, selectedOptions }\
 - **visibility**: element shows only while its conditions hold; plays \`in\` when it appears and
   \`out\` when it hides. \`selectedOptions\` is an ARRAY of objects mapping a VisibilityOption label →
   toggle (0 Disabled / 1 must-be-true / 2 must-be-false).
-- **animationTrigger**: replays \`in\` (then \`out\`) whenever a game event fires. \`selectedOptions\` is
-  an OBJECT mapping an AnimationTrigger label → boolean.
+- **animationTrigger** (= animation 1): replays \`in\` (then \`out\`) whenever one of its triggers fires.
+  Two kinds of trigger, combine freely (any one fires it):
+  - \`elementTriggers\`: \`[{ source, when }]\` — replays when an element of the SAME scene changes what it
+    shows. \`source\` = "self" (this element) or another element's item id; \`when\` = "change" | "increase"
+    | "decrease" (increase/decrease compare the first number the element shows, e.g. percent going up vs
+    resetting to 0 on respawn). An element that is not shown has no value: appearing never fires (scene
+    animations / visibility conditions handle appearing). The Video element fires on a new reel for its
+    key, not on every clip. This covers EVERY element (win chance, fight/edge stats, video, characters…).
+    New elements get \`[{source:"self", when:"change"}]\` by default (does nothing while in/out are "none").
+  - \`selectedOptions\`: OBJECT mapping a named AnimationTrigger label → boolean, for game EVENTS that are
+    not a shown value — e.g. "Player1 Percent Increase" to shake a character render on damage, stock loss,
+    countdown, technique, stage struck. Labels marked legacy in list_overlay_conditions ("value changed")
+    still work but are hidden in the editor — use an element trigger instead.
+- **extraAnimationTriggers**: optional array of more \`{ in, out, selectedOptions, elementTriggers }\` on the
+  same element (animation 2, 3…), each with its own animation and triggers, nested so they can play at
+  once (e.g. a pop on "self increase" + a shake on another element's change). A trigger (named label or
+  source+when) belongs to ONE animation of an element — never repeat it across its animations.
+- An animation whose in and out are both "none" never replays.
 - AnimationSettings = { type: Animation, options: { delay, duration, easing, start, x, y } }.
   x/y are used by fly/slide. duration/delay in ms.
 
@@ -172,6 +190,17 @@ the backdrop's color over a panel for a "hole punch" look.
 to let the user choose a file in Froggi), then use the returned fileName: a CustomImage element (2000)
 with payload \`{"image":{"name":fileName,"objectFit":"contain"}}\`, or a scene background via
 configure_overlay_scene \`background {type:"Custom Image", customImage:{name:fileName, objectFit:"cover"}}\`.
+**Video** (2100, any scene) — plays what a flow points \`key\` at, payload \`{"video":{"key":"game","volume":0}}\`
+(volume 0–100, 0 = muted; flow card setVideoVolume overrides it): a highlight reel (buildHighlightReel — clips of
+OBS replay-buffer files, no cutting, in order, looping) or one whole file (setHighlightVideo {key, path}). Every
+screen plays the same position (shared clock); the next 2 clips are loaded ahead. The installed, off-by-default flow
+"highlights" builds keys "game" (best 5 of the game), "set" (the set, game by game) and "tournament" (shuffled);
+demo overlay "Highlights" shows them; the Game & set stats demo has "game"/"set" below its stats. MP4/MOV (OBS format
+Hybrid MP4 recommended). The element DEPENDS on a flow: until an enabled flow builds a reel / sets a file for its
+key it shows nothing (the "highlights" flow ships OFF — turn it on, or build one, when adding Video).
+**Videos** — an .mp4/.webm stored the same way plays muted on a loop in a CustomImage element (not as a
+scene background: for a moving background use a full-size CustomImage on the bottom layer). The live
+overlay preloads its images and videos (current scene first, thin bar at the top while loading).
 
 **Backdrops for several elements** — duplicate_overlay_layer copies a layer ON TOP of the original
 (the original moves to layerIndex+1); turn the lower copy's elements into translucent boxes
@@ -235,8 +264,33 @@ Hide in-game HUD elements during the intro with \`Game Ready=False, Game Go=Fals
 the current set (updates after every game). For a "1 - 0" scoreboard: score, a CustomString "-", score.
 (MatchPlayer1Score/2Score 4422/4423 are older duplicates kept only so existing overlays still render.)
 
-**Players** — Froggi overlays are 1v1 (singles): every per-player element is Player 1 / Player 2 /
-Current Player. Doubles and free-for-all aren't supported yet — say so if the user asks.
+**Players & doubles** — per-player elements are Player 1 / Player 2 / Current Player. In doubles (Slippi
+teams games) Team 1 is the team with the lowest port in the set's first game (colour doesn't matter) and keeps its slot
+for the whole set even if colours swap; within a team the lower port is Player 1. Player 1 elements
+show Team 1 · Player 1 and Player 2 elements show Team 2 · Player 1 — set payload.playerSlot
+("t1p1" | "t1p2" | "t2p1" | "t2p2") on any Player 1/2 element to show another doubles player (e.g. a
+Player1 percent with playerSlot "t1p2" = Team 1's second player). Two teammates on the same character:
+the higher port's icons are drawn lighter automatically. The set score counts team wins. Visibility
+conditions "Player 1/2 …" refer to Team 1 · P1 / Team 2 · P1. Free-for-all (3+ teams) isn't supported.
+Doubles elements: Team1Name/Team2Name (1910/1911; the host's team names from the Dashboard, else
+"Tag & Tag"), Team1Stocks/Team2Stocks (1920/1921), CurrentPlayerTeamName/OpponentTeamName and
+…TeamStocks (1930–1933), Player1Port/Player2Port (1900/1901, "P1"–"P4", slot-aware). Doubles conditions:
+"Doubles Game", "Team N Player 2 Alive / Stock 1–4 / Combo / Off Stage (Left/Right)", "Team N Alive",
+"Team N Stocks <= 1…8". Live fight stats (singles too; Team = both players, in singles just that
+player): Live{Player1|Player2|Team1|Team2}{Damage|Kos|AvgKoPercent|AvgDeathPercent} for this game
+(1940–1955) and LiveMatch… for the whole set (1960–1975) — damage dealt to opponents, KOs (last hitter),
+average percent of KO'd opponents, average own death percent. Win chance (1976–1979):
+WinChance{Game|Set}{Player1|Player2} — "64%" from stocks + percent (doubles: the team), set = this game's
+chance + set score with later games 50/50 (explain_topic win-chance); the game one is empty outside a game. Edge stats (Post Game / Post Set, update at
+game end): {PostGame|PostGameMatch}{Player1|Player2}{EdgeCancels|EdgeCancelsSlow|Edgeguards|EdgeguardAttempts|
+EdgeguardPercent} (1980–1989 this game, 1990–1999 whole set; edgeguards = opponent knocked off stage in
+hitstun and lost the stock before getting back). Post-game Player 1/2 stats follow
+playerSlot too. The demo overlay "doubles" is a 4:3 game in a 16:9 canvas: team data in the side bands
+(teams kept together), per-player stocks + percent along the bottom of the game.
+Demo "game-stats" (Game & set stats): Post Game = this game's fight + punish stats per player in the side
+bands and the set so far in the middle; Post Set = set totals (incl. L-cancel %, inputs/min) and a row per
+game — stage, both characters (loser faded via "Post Game N Summary Player P Win" = False, winner ringed),
+4 stock icons each (lost stocks faded: "Post Game N Summary Player P Stock K"), score.
 
 ## Designing a good overlay (read before building)
 **Ask the aspect ratio first — never assume 16:9.** Ask what the overlay is for and its shape: the
@@ -288,6 +342,17 @@ HUD (game HUD stays — use get_game_hud_reference regions and keep off them); (
 - Phases: "Strike Phase: Char Select / RPS / RPS Result / Striking / Stage Ban / Stage Pick /
   Character Pick (game 2+) / Playing / Complete", "Strike: Game 1", "Strike: Stage Agreement
   Pending"; turn: "Strike Player 1/2 Turn" (+ StrikeCurrentStriker 7030 text).
+- Picks: StrikePlayer1Character / StrikePlayer2Character (7200/7210) and, in doubles, each team's
+  second player's pick StrikePlayer1PartnerCharacter / StrikePlayer2PartnerCharacter (7201/7211);
+  names StrikePlayer1Name/2Name (7220/7230; team names in doubles); set score as striking counts it
+  (Slippi games + games reported by hand) StrikePlayer1Score/2Score (7240/7250).
+- Rock-paper-scissors: StrikeRpsPlayer1Icon / StrikeRpsPlayer2Icon (7001/7011) = the pick as a hand icon
+  (built-in Fluent Emoji hands — payload rpsIconStyle "outline" (element text colour, default) | "color" —
+  or the user's own files: payload rpsIcons {rock, paper, scissors} = file names in the overlay's image
+  folder). Hidden until BOTH picked
+  (a ✓ shows a ready player); on the reveal it shuffles ~1.5 s, then lands on the pick (element triggers
+  see only the landing). Text versions: StrikeRpsPlayer1Choice/2Choice (7000/7010), winner name
+  StrikeRpsWinner (7020).
 - Demo "Stage Striking" (id stage-striking) is exactly this — copy it with duplicate_overlay.
 
 ## Demo HUD walkthrough (demo "HUD", inGame scene — read it with list_elements)
@@ -363,8 +428,8 @@ Elements (see the demo "Rank - Inject.json", \`rankChange\` scene, read it with 
 - SlippiRankChangeRatingDifference (4140) — the +/- rating delta, gated visible on BOTH
   \`Rank Stats Pre Update\` and \`Rank Stats Post Update\`.
 Conditions/triggers: \`Rank Stats Pre Update\` / \`Rank Stats Post Update\` gate each phase;
-\`Player 1 Rating Change\` / \`Slippi Stats Rating Change\` are triggers to animate on when the rating
-changes. (A rolling numeric counter on the rating is planned but not built yet — today the value swaps
+to animate when the rating changes, give the rating element an element trigger
+\`{source:"self", when:"change"}\` (the old named "Rating Change" triggers are legacy). (A rolling numeric counter on the rating is planned but not built yet — today the value swaps
 old→new between the phases.)
 
 ## Player state, techniques & frame (in-game live data)
@@ -452,7 +517,7 @@ export function registerOverlaySchemaTools(server: McpServer) {
 	server.registerTool(
 		'list_overlay_conditions',
 		{
-			description: 'Condition options for showing elements and triggering animations. kind="visibility" → VisibilityOption values (element visible only while conditions hold; encoded as an array of {label: 0 Disabled|1 True|2 False} in data.visibility.selectedOptions). kind="trigger" → AnimationTrigger values (replay animation on event; encoded as {label: boolean} in data.animationTrigger.selectedOptions). Omit kind for both.',
+			description: 'Condition options for showing elements and triggering animations. kind="visibility" → VisibilityOption values (element visible only while conditions hold; encoded as an array of {label: 0 Disabled|1 True|2 False} in data.visibility.selectedOptions). kind="trigger" → AnimationTrigger values (replay animation on event; encoded as {label: boolean} in data.animationTrigger.selectedOptions) + legacy labels + the element-trigger encoding. Omit kind for both.',
 			inputSchema: { kind: z.enum(['visibility', 'trigger']).optional() },
 		},
 		async ({ kind }) => {
@@ -467,7 +532,10 @@ export function registerOverlaySchemaTools(server: McpServer) {
 			if (kind !== 'visibility') {
 				out.trigger = {
 					encoding: 'data.animationTrigger.selectedOptions = { "<label>": true }',
-					options: Object.values(AnimationTrigger),
+					options: Object.values(AnimationTrigger).filter((t) => !LEGACY_TRIGGERS.has(t)),
+					legacy: [...LEGACY_TRIGGERS],
+					legacyNote: 'Legacy "value changed" triggers: still work, hidden in the editor. For a new overlay use data.animationTrigger.elementTriggers [{source: "self" | <item id>, when: "change" | "increase" | "decrease"}] instead.',
+					elementTriggers: 'data.animationTrigger.elementTriggers = [{ "source": "self", "when": "change" }] — see describe_element_options (section Animations).',
 				};
 			}
 			return text(out);

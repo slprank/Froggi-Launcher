@@ -56,7 +56,7 @@
 		margin-top: 1rem;
 		padding: 0.8rem;
 		border-radius: 0.6rem;
-		background: rgba(255, 255, 255, 0.05);
+		background: color-mix(in srgb, var(--fg) 5%, transparent);
 	}
 	.timer {
 		font-size: 1rem;

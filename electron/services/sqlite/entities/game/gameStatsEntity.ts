@@ -32,6 +32,22 @@ export class GameStatsEntity implements GameStats {
   @Column({ type: "simple-json", default: "[0,0]" })
   score: number[];
 
+  /** Host override of the result (winner side + why) — see GameStats.resultOverride. */
+  @Column({ type: "simple-json", nullable: true })
+  resultOverride: { winnerSlot: 0 | 1 | null; note: string } | null;
+
+  /** Host side swaps for the set (on its first game) — see GameStats.sides. */
+  @Column({ type: "simple-json", nullable: true })
+  sides: { swapped?: boolean; teamOrder?: [boolean, boolean] } | null;
+
+  /** Highlights marked in this game (frames + score) — see GameStats.highlights. */
+  @Column({ type: "simple-json", nullable: true })
+  highlights: { startFrame: number; endFrame: number; score: number }[] | null;
+
+  /** The replay file (relative to the Slippi replay folder) — see GameStats.replayPath. */
+  @Column({ type: "text", nullable: true })
+  replayPath: string | null;
+
   @OneToOne(() => GameSettingsEntity, { cascade: true, eager: true, onDelete: "CASCADE" })
   @JoinColumn()
   settings: GameSettingsEntity | null;

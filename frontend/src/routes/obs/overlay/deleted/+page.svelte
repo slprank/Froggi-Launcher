@@ -1,10 +1,12 @@
 <script lang="ts">
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { electronEmitter, isElectron, overlays } from '$lib/utils/store.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import OverlayPreviewScaled from '$lib/components/obs/overlays/preview/OverlayPreviewScaled.svelte';
 	import type { Overlay } from '$lib/models/types/overlay';
 	import { MODAL_CLOSE_MS } from '$lib/models/const';
+	import SceneBar from '$lib/components/obs/overlays/SceneBar.svelte';
 
 	// Restored overlays stay mounted but hidden — see the overlays list page for why.
 	$: all = Object.values($overlays ?? {}).sort((a, b) => (b.deletedAt ?? '').localeCompare(a.deletedAt ?? ''));
@@ -31,10 +33,10 @@
 	};
 </script>
 
-<main class="flex justify-center background-primary-color pb-16">
-	<div class="w-full max-w-2xl">
+<main class="flex justify-center background-primary-color pb-20">
+	<div class="w-full" style="max-width: 72rem;">
+		<BackButton />
 		<div class="flex items-center gap-3 mb-5">
-			<a class="btn text-sm h-8 px-3 border-secondary rounded flex items-center" href="/obs/overlay">← Back</a>
 			<h1 class="text-xl font-semibold text-secondary-color">Deleted overlays</h1>
 		</div>
 
@@ -86,6 +88,9 @@
 		</div>
 	{/if}
 </Modal>
+
+<!-- Same scene picker as the Overlays page, so a deleted overlay can be checked in every scene. -->
+<SceneBar />
 
 <ConfirmModal bind:open={confirmPermanentOpen} on:confirm={deletePermanently}>
 	Permanently delete this overlay? This cannot be undone.

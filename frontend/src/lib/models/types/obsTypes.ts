@@ -25,6 +25,8 @@ export interface ObsConnection {
     } | undefined,
     state: ConnectionState,
     port?: string,
+    /** When Froggi last connected to OBS (ISO) — set = OBS has been set up; not connected now usually just means OBS is closed. */
+    lastConnectedAt?: string,
 }
 
 export interface ObsScenes {

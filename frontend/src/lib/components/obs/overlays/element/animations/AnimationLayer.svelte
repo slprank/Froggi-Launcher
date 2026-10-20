@@ -1,5 +1,7 @@
 <script lang="ts">
-	import type { GridContentItem } from '$lib/models/types/overlay';
+	import type { GridContentItem, TriggerAnimation } from '$lib/models/types/overlay';
+	import { SELF, elementTriggerFires, hasTriggerAnimation } from '$lib/utils/elementTriggers';
+	import { elementValues } from '$lib/utils/store.svelte';
 	import {
 		localEmitter,
 		previewTestAnimation,
@@ -47,6 +49,8 @@
 	export let isDemo: boolean = false;
 	export let preview: boolean = false;
 	export let overlayId: string | undefined = undefined;
+	/** The animation this layer plays (animation 1 = data.animationTrigger, see AnimationStack). */
+	export let trigger: TriggerAnimation = dataItem?.data.animationTrigger;
 
 	let key: number | undefined = 0;
 	let prevGameFrame: FrameEntryType | null | undefined;
@@ -65,8 +69,8 @@
 		sessionStats: SessionStats | undefined | null,
 		gameScore: number[],
 	): number | undefined => {
-		if (!dataItem || $isIframe || $isElectron) return;
-		const option = dataItem.data.animationTrigger.selectedOptions;
+		if (!dataItem || $isIframe || $isElectron || !hasTriggerAnimation(trigger)) return key;
+		const option = trigger.selectedOptions ?? {};
 
 		if (inGameStateTrigger(option, gameSettings, gameFrame, prevGameFrame))
 			return Math.random();
@@ -145,6 +149,17 @@
 		$gameScore,
 		$techniqueEvents,
 	);
+
+	// Element triggers: this or another element of the scene changed what it shows.
+	let prevElementValues: Record<string, string | undefined> = {};
+	const elementTriggerFired = (values: Record<string, string>) => {
+		const list = trigger?.elementTriggers ?? [];
+		const sourceOf = (source: string) => (source === SELF ? dataItem?.id : source) ?? '';
+		const fired = list.some((t) => elementTriggerFires(t.when, prevElementValues[sourceOf(t.source)], values[sourceOf(t.source)]));
+		prevElementValues = Object.fromEntries(list.map((t) => [sourceOf(t.source), values[sourceOf(t.source)]]));
+		return fired && !!dataItem && !$isIframe && !$isElectron && hasTriggerAnimation(trigger);
+	};
+	$: if (elementTriggerFired($elementValues)) key = Math.random();
 
 	const replay = () => {
 		const tempTrigger = key;

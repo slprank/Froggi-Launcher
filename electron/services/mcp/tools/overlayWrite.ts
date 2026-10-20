@@ -5,7 +5,7 @@ import { mcpContext } from '../mcpContext';
 import { Animation, LiveStatsScene, SceneBackground } from '../../../../frontend/src/lib/models/enum';
 import { CustomElement } from '../../../../frontend/src/lib/models/constants/customElement';
 import type { ElementPayload, Scene } from '../../../../frontend/src/lib/models/types/overlay';
-import { getDefaultElementPayload } from '../../../../frontend/src/lib/utils/overlayElementDefaults';
+import { getDefaultElementPayload, getNewElementPayload } from '../../../../frontend/src/lib/utils/overlayElementDefaults';
 import { newId } from '../../../utils/functions';
 
 const text = (value: unknown) => ({ content: [{ type: 'text' as const, text: typeof value === 'string' ? value : JSON.stringify(value, null, 2) }] });
@@ -32,6 +32,8 @@ const animSettingsSchema = z.object({
 
 // Loose passthrough — MCP tool callers supply a partial payload; the shape is merged over
 // getDefaultElementPayload() before use, so no field here needs to be required.
+/** New element defaults: "this element changes" as animation 1's trigger, unless the payload sets its own animationTrigger. */
+const newPayloadBase = (payload: unknown) => ((payload as { animationTrigger?: unknown } | undefined)?.animationTrigger ? getDefaultElementPayload() : getNewElementPayload());
 const partialPayloadSchema = z.record(z.string(), z.unknown()).optional();
 
 // Grid placement. The overlay grid is 512 columns × 288 rows (COL × ROW) for EVERY aspect ratio — it
@@ -215,7 +217,7 @@ export function registerOverlayWriteTools(server: McpServer) {
 	server.registerTool(
 		'add_overlay_image',
 		{
-			description: 'Store an image for an overlay and get its file name. Use the source the user gave: `url` for a link; `filePath` for a local file path (e.g. an image the user dropped into Claude Code); `base64` (data URI or raw base64 + fileName) only if you actually have the image bytes. If the user attached an image in chat that you cannot access as a path/URL/bytes — or gave nothing — use `picker: true`: Froggi opens a file dialog on their machine and waits for them to choose (tell them to look for it). Then use the returned fileName: on a CustomImage element (elementId 2000) as payload {"image": {"name": fileName, "objectFit": "contain"}}, or as a scene background via configure_overlay_scene background {type:"Custom Image", customImage:{name: fileName, objectFit:"cover"}}.',
+			description: 'Store an image — or a short MP4/WebM video (plays muted on loop, max 50MB) — for an overlay and get its file name. Use the source the user gave: `url` for a link; `filePath` for a local file path (e.g. an image the user dropped into Claude Code); `base64` (data URI or raw base64 + fileName) only if you actually have the image bytes. If the user attached an image in chat that you cannot access as a path/URL/bytes — or gave nothing — use `picker: true`: Froggi opens a file dialog on their machine and waits for them to choose (tell them to look for it). Then use the returned fileName: on a CustomImage element (elementId 2000) as payload {"image": {"name": fileName, "objectFit": "contain"}}, or as a scene background via configure_overlay_scene background {type:"Custom Image", customImage:{name: fileName, objectFit:"cover"}} (images only — for a video background put a full-size CustomImage element on the bottom layer).',
 			inputSchema: {
 				overlayId: z.string(),
 				url: z.string().url().optional(),
@@ -290,7 +292,7 @@ export function registerOverlayWriteTools(server: McpServer) {
 			// Deep-merge over defaults so a partial nested payload (e.g. animationTrigger with only
 			// `in`) can't clobber the rest of the structure and leave the editor with an undefined
 			// animation slot. Matches updateItemInLayer's merge semantics.
-			const merged: ElementPayload = merge(getDefaultElementPayload(), payload as Partial<ElementPayload> | undefined);
+			const merged: ElementPayload = merge(newPayloadBase(payload), payload as Partial<ElementPayload> | undefined);
 			const itemId = newId();
 			merged.font = withCustomFontFamily(merged.font, itemId);
 			const afterScene = await mcpContext.overlayStore!.addItemToLayer(overlayId, statsScene as LiveStatsScene, layerIndex, elementId as CustomElement, merged, itemId, position);
@@ -323,7 +325,7 @@ export function registerOverlayWriteTools(server: McpServer) {
 
 			const items = elements.map((e) => {
 				const id = newId();
-				const payload: ElementPayload = merge(getDefaultElementPayload(), e.payload as Partial<ElementPayload> | undefined);
+				const payload: ElementPayload = merge(newPayloadBase(e.payload), e.payload as Partial<ElementPayload> | undefined);
 				payload.font = withCustomFontFamily(payload.font, id);
 				return { id, layerIndex: e.layerIndex ?? 0, elementId: e.elementId as CustomElement, payload, position: e.position };
 			});
@@ -462,7 +464,7 @@ export function registerOverlayWriteTools(server: McpServer) {
 	server.registerTool(
 		'update_overlay_element',
 		{
-			description: 'Merge a partial payload patch into an existing element (styling, text, etc.) — sibling fields not mentioned are preserved. Custom font on one element: payload {"font":{"src":"<fileName from add_overlay_font>"}} (family is set for you). Records undo history.',
+			description: 'Merge a partial payload patch into an existing element (styling, text, etc.) — sibling fields not mentioned are preserved. Arrays in the patch REPLACE the old array (e.g. animationTrigger.elementTriggers, extraAnimationTriggers, visibility.selectedOptions) — send the whole list. Turn a named trigger off with selectedOptions {"<label>": false}; legacy overlays: replace a legacy "value changed" trigger by setting it false and adding an element trigger. Custom font on one element: payload {"font":{"src":"<fileName from add_overlay_font>"}} (family is set for you). Records undo history.',
 			inputSchema: {
 				overlayId: z.string(),
 				statsScene: z.enum(STATS_SCENES as [string, ...string[]]),

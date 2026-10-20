@@ -11,6 +11,8 @@ import { enableObsWebsocket, getObsWebsocketConfig, isObsRunning } from '../util
 import { scopedLog } from '../utils/logger';
 import { TypedEmitter } from '../../frontend/src/lib/utils/customEventEmitter';
 import { AspectRatio } from '../../frontend/src/lib/models/types/overlay';
+import { ElectronHighlightStore } from './store/storeHighlights';
+import { REPLAY_FORMATS } from '../../frontend/src/lib/models/types/flow';
 
 @singleton()
 export class ObsWebSocket {
@@ -24,6 +26,7 @@ export class ObsWebSocket {
 		@inject("ClientEmitter") private clientEmitter: TypedEmitter,
 		@inject(ElectronObsStore) private storeObs: ElectronObsStore,
 		@inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
+		@inject(delay(() => ElectronHighlightStore)) private storeHighlights: ElectronHighlightStore,
 	) {
 		this.log = scopedLog(this.log, 'OBS');
 		this.log.info('Initializing OBS');
@@ -158,35 +161,81 @@ export class ObsWebSocket {
 		}
 	};
 
-	private startReplayBuffer = async () => {
+	/** Profile category of the active output mode (Simple / Advanced). */
+	private outputCategory = async () => ((await this.obs.call('GetProfileParameter', { parameterCategory: 'Output', parameterName: 'Mode' })).parameterValue === 'Advanced' ? 'AdvOut' : 'SimpleOutput');
+
+	private profileValue = async (parameterCategory: string, parameterName: string) => (await this.obs.call('GetProfileParameter', { parameterCategory, parameterName })).parameterValue;
+
+	/** Stop → start, so OBS picks up changed replay-buffer settings (no OBS restart needed). OBS reports
+	 *  "stopped" a moment before it can start again, so the start is retried. */
+	private restartReplayBuffer = async () => {
+		const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+		await this.obs.call('StopReplayBuffer');
+		for (let i = 0; i < 25 && (await this.obs.call('GetReplayBufferStatus')).outputActive; i++) await wait(200);
+		for (let attempt = 1; ; attempt++) {
+			await wait(300);
+			try {
+				return await this.obs.call('StartReplayBuffer');
+			} catch (err) {
+				if (attempt >= 3) throw err;
+			}
+		}
+	};
+
+	/**
+	 * Start the replay buffer. The user's OBS settings are respected: only `configure` (the Enable
+	 * button) turns the buffer on in the profile — with 30 s when it was off; a set length is kept.
+	 */
+	private startReplayBuffer = async (configure = false) => {
 		try {
-			// Turn the replay buffer on with a 30s duration in whichever output mode is active
-			// (Simple / Advanced). OBS builds the replay output when it reloads its output settings.
-			for (const category of ['SimpleOutput', 'AdvOut']) {
-				for (const [parameterName, parameterValue] of [['RecRB', 'true'], ['RecRBTime', '30']]) {
-					try {
-						await this.obs.call('SetProfileParameter', { parameterCategory: category, parameterName, parameterValue });
-					} catch { /* ignore — category may not exist in this output mode */ }
+			if (configure) {
+				const category = await this.outputCategory();
+				if ((await this.profileValue(category, 'RecRB')) !== 'true') {
+					await this.obs.call('SetProfileParameter', { parameterCategory: category, parameterName: 'RecRB', parameterValue: 'true' });
+					await this.obs.call('SetProfileParameter', { parameterCategory: category, parameterName: 'RecRBTime', parameterValue: '30' });
 				}
 			}
-
 			const { outputActive } = await this.obs.call('GetReplayBufferStatus');
-			if (outputActive) {
-				await this.obs.call('StopReplayBuffer');
-				await new Promise(resolve => setTimeout(resolve, 600));
-			}
-			await this.obs.call('StartReplayBuffer');
+			if (!outputActive) await this.obs.call('StartReplayBuffer');
 		} catch (err: any) {
 			if (err?.message?.includes('not available')) {
-				this.messageHandler.sendMessage(
+				if (configure) this.messageHandler.sendMessage(
 					'Notification',
 					'Replay Buffer is now enabled in your OBS profile — OBS applies it after a restart (or open OBS Settings and press OK). Then press Enable again.',
 					NotificationType.Warning,
 				);
+				else this.log.info('Replay buffer is off in OBS — not started');
 			} else {
 				this.log.error(`Could not start Replay Buffer`, err);
 			}
 		}
+	};
+
+	/**
+	 * Flow card "OBS replay buffer settings": length (s) and file format in the active output mode.
+	 * Nothing happens when they already match; otherwise a running buffer restarts to apply them
+	 * (its content so far is lost). Returns what changed. Throws with a readable reason.
+	 */
+	setReplayBufferSettings = async (seconds?: number, format?: string, fileName?: string): Promise<string> => {
+		if (format && !REPLAY_FORMATS[format]) throw new Error(`Unknown format ${format}`);
+		const category = await this.outputCategory();
+		const wanted: [string, string, string][] = [[category, 'RecRB', 'true']];
+		if (seconds) wanted.push([category, 'RecRBTime', String(Math.round(Math.min(21600, Math.max(5, seconds))))]);
+		if (format) wanted.push([category, 'RecFormat2', format]);
+		// The replay file name prefix: OBS reads it from the Simple section in both output modes (OBS 32).
+		// Folders come from OBS's own "Filename Formatting" (shared with recordings) — not touched.
+		if (fileName) wanted.push(['SimpleOutput', 'RecRBPrefix', fileName]);
+		const changes: string[] = [];
+		for (const [cat, name, value] of wanted) {
+			if ((await this.profileValue(cat, name)) === value) continue;
+			await this.obs.call('SetProfileParameter', { parameterCategory: cat, parameterName: name, parameterValue: value });
+			changes.push(`${name}=${value}`);
+		}
+		if (!changes.length) return 'Replay buffer settings already set';
+		this.log.info('Replay buffer settings changed:', changes.join(', '));
+		if ((await this.obs.call('GetReplayBufferStatus')).outputActive) await this.restartReplayBuffer();
+		else await this.startReplayBuffer();
+		return `Replay buffer: ${changes.join(', ')}`;
 	};
 
 	searchForObs = async () => {
@@ -200,6 +249,11 @@ export class ObsWebSocket {
 			await this.obs.connect(`ws://${ipAddress}:${port}`, password);
 		} catch {
 			this.log.error(`Could not connect to OBS: ws://${ipAddress}:${port}`);
+			// Back to waiting for the OBS process (it may be closing or starting) — never stuck "Searching".
+			if (this.storeObs.getConnectionState() !== ConnectionState.Connected) {
+				this.storeObs.setConnectionState(ConnectionState.Disconnected);
+				setTimeout(() => this.startProcessSearchInterval(), 5000);
+			}
 		}
 	};
 
@@ -253,7 +307,12 @@ export class ObsWebSocket {
 		this.obs.on('InputVolumeChanged', () => {
 			this.updateObsData();
 		});
-		this.obs.on('ReplayBufferSaved', () => {
+		this.obs.on('ReplayBufferSaved', (event) => {
+			// Highlights: register the file (timed by Froggi's save request), then flows: "OBS saved a replay".
+			if (event?.savedReplayPath) {
+				this.storeHighlights.saved(event.savedReplayPath);
+				this.messageHandler.sendMessage('ObsReplaySaved', event.savedReplayPath);
+			}
 			this.messageHandler.sendMessage(
 				'Notification',
 				'Replay Saved',
@@ -267,12 +326,15 @@ export class ObsWebSocket {
 		this.startProcessSearchInterval();
 	};
 
+	/** True while polling for the OBS process. Separate from the connection state: polling is "waiting
+	 *  for OBS to open" (Disconnected), only a real connect attempt is "Searching" (shown as Connecting…). */
+	private polling = false;
+
 	private async startProcessSearchInterval() {
-		const connectionState = this.storeObs.getConnectionState();
-		if (connectionState === ConnectionState.Connected) return;
-		if (connectionState === ConnectionState.Searching) return;
+		if (this.storeObs.getConnectionState() === ConnectionState.Connected) return;
+		if (this.polling) return;
 		this.stopProcessSearchInterval();
-		this.storeObs.setConnectionState(ConnectionState.Searching);
+		this.polling = true;
 		this.log.info('Looking For OBS Process');
 
 		const checkObs = async () => {
@@ -304,8 +366,8 @@ export class ObsWebSocket {
 				this.storeObs.setIpAddress('127.0.0.1');
 				this.storeObs.setPort(String(obsWebsocketConfig?.server_port ?? '4455'));
 				this.storeObs.setPassword(effectivePassword);
-				this.searchForObs();
 				this.stopProcessSearchInterval();
+				this.searchForObs();
 				return;
 			}
 
@@ -325,19 +387,18 @@ export class ObsWebSocket {
 		};
 
 		await checkObs();
-		this.obsProcessInterval = setInterval(checkObs, 15000);
+		if (this.polling) this.obsProcessInterval = setInterval(checkObs, 15000);
 	}
 
 	private stopProcessSearchInterval() {
 		clearInterval(this.obsProcessInterval);
+		this.polling = false;
 	}
 
 	private pauseProcessSearchInterval(timeout: number) {
 		this.log.info(`Pausing OBS Process Search for ${timeout}ms`);
-		clearInterval(this.obsProcessInterval);
-		setTimeout(() => {
-			this.startProcessSearchInterval();
-		}, timeout);
+		this.stopProcessSearchInterval();
+		setTimeout(() => this.startProcessSearchInterval(), timeout);
 	}
 
 	executeCommand = async <T extends keyof OBSRequestTypes>(
@@ -346,8 +407,12 @@ export class ObsWebSocket {
 	) => {
 		try {
 			this.log.info(`Executing command: ${command}`, payload);
+			const requestedAt = Date.now();
 			await this.obs.call(command, payload);
+			// The saved file ends at this moment — highlight clips are timed from it.
+			if (command === 'SaveReplayBuffer') this.storeHighlights.requestedSave(requestedAt);
 			await this.updateObsData();
+			return true;
 		} catch (err) {
 			this.log.error(`Could not execute command: ${command}`, err);
 			this.messageHandler.sendMessage(
@@ -355,6 +420,7 @@ export class ObsWebSocket {
 				`Could not execute command: ${command}`,
 				NotificationType.Warning,
 			);
+			return false;
 		}
 	};
 
@@ -439,7 +505,7 @@ export class ObsWebSocket {
 			enabled ? this.startPreview() : this.stopPreview();
 		});
 		this.clientEmitter.on('EnableReplayBuffer', () => {
-			this.startReplayBuffer();
+			this.startReplayBuffer(true);
 		});
 	}
 }

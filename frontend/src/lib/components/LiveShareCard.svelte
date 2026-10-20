@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	/**
 	 * Share the live game view (/live). Both options expose a PUBLIC link (Tailscale
 	 * Funnel / ngrok) — viewers don't install anything, they just open the URL:
@@ -6,7 +7,7 @@
 	 *  - ngrok: temporary public URL (expires when ngrok stops).
 	 * Viewers only watch; sending commands still needs the host password.
 	 */
-	import { electronEmitter, isElectron, remoteAccess } from '$lib/utils/store.svelte';
+	import { electronEmitter, isElectron, ngrokStatus, remoteAccess, tailscaleStatus } from '$lib/utils/store.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { Radio } from 'lucide-svelte';
 
@@ -17,6 +18,7 @@
 	$: ngrokUrl = join($remoteAccess?.ngrok);
 	// The permanent link names the machine on your tailnet — hidden until asked for (e.g. on stream).
 	let showTailscale = false;
+	let showNgrok = false;
 
 	let copied = '';
 	async function copy(url: string, id: string) {
@@ -60,7 +62,16 @@
 					<button class="btn text-xs h-7 px-3 border-secondary rounded" on:click={() => open(tailscaleUrl)}>Open</button>
 				</div>
 			{:else}
-				<span class="link-empty">Enable Tailscale Funnel in Settings → Remote Access.</span>
+				<span class="link-empty">
+					{#if !$tailscaleStatus?.installed}
+						Needs <b>Tailscale</b> (free): install it once and you get an address that never changes.
+					{:else if !$tailscaleStatus?.authenticated}
+						Tailscale is installed — log in to it to get your permanent address.
+					{:else}
+						Tailscale is ready — turn on <b>Funnel</b> to share this link.
+					{/if}
+				</span>
+				<button class="btn text-xs h-7 px-3 border-secondary rounded self-start" on:click={() => goto('/settings#remote-access')}>Set up Tailscale →</button>
 			{/if}
 		</div>
 
@@ -75,12 +86,26 @@
 		<p class="link-desc">Temporary public link — stops when you close ngrok.</p>
 		{#if ngrokUrl}
 			<div class="link-row">
-				<button class="link-url link-url--btn" on:click={() => open(ngrokUrl)}>{ngrokUrl}</button>
+				{#if showNgrok}
+					<button class="link-url link-url--btn" on:click={() => open(ngrokUrl)}>{ngrokUrl}</button>
+				{:else}
+					<span class="link-url link-url--hidden">Hidden</span>
+				{/if}
+				<button class="btn text-xs h-7 px-3 border-secondary rounded" on:click={() => (showNgrok = !showNgrok)}>{showNgrok ? 'Hide' : 'Show'}</button>
 				<button class="btn text-xs h-7 px-3 border-secondary rounded" on:click={() => copy(ngrokUrl, 'ng')}>{copied === 'ng' ? 'Copied' : 'Copy'}</button>
 				<button class="btn text-xs h-7 px-3 border-secondary rounded" on:click={() => open(ngrokUrl)}>Open</button>
 			</div>
 		{:else}
-			<span class="link-empty">Start ngrok in Settings → Remote Access.</span>
+			<span class="link-empty">
+				{#if !$ngrokStatus?.installed}
+					Needs <b>ngrok</b> (free) — a temporary link, nothing to install for your viewers.
+				{:else if !$ngrokStatus?.authenticated}
+					ngrok is installed — add your free auth token to start it.
+				{:else}
+					ngrok is ready — start it to get a link.
+				{/if}
+			</span>
+			<button class="btn text-xs h-7 px-3 border-secondary rounded self-start" on:click={() => goto('/settings#remote-access')}>Set up ngrok →</button>
 		{/if}
 	</div>
 

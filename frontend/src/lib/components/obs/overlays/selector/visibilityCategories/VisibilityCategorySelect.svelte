@@ -6,6 +6,7 @@
 	import InGameStateVisibilitySelect from './InGameStateVisibilitySelect.svelte';
 	import InGamePlayer1StateVisibilitySelect from './InGamePlayer1StateVisibilitySelect.svelte';
 	import InGamePlayer2StateVisibilitySelect from './InGamePlayer2StateVisibilitySelect.svelte';
+	import DoublesVisibilitySelect from './DoublesVisibilitySelect.svelte';
 	import RecentGameVisibilitySelect from './RecentGameVisibilitySelect.svelte';
 	import Game1SummaryVisibilitySelect from './Game1SummaryVisibilitySelect.svelte';
 	import Game2SummaryVisibilitySelect from './Game2SummaryVisibilitySelect.svelte';
@@ -72,6 +73,10 @@
 		{
 			category: VisibilityCategory.Player2State,
 			visible: [LiveStatsScene.InGame].includes($statsScene),
+		},
+		{
+			category: VisibilityCategory.Doubles,
+			visible: true,
 		},
 		{
 			category: VisibilityCategory.MatchStats,
@@ -185,6 +190,9 @@
 						{selectedVisibilityOption}
 					/>
 				</div>
+			{/if}
+			{#if selectedCategory === VisibilityCategory.Doubles}
+				<DoublesVisibilitySelect on:select={select} {selectedVisibilityOption} />
 			{/if}
 			{#if selectedCategory === VisibilityCategory.MatchStats}
 				<div class="flex flex-col gap-2">

@@ -1,3 +1,4 @@
+import { overlayWarnings } from '../../../../frontend/src/lib/utils/overlayWarnings';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { mcpContext } from '../mcpContext';
@@ -189,13 +190,17 @@ export function registerOverlayReadTools(server: McpServer) {
 	server.registerTool(
 		'get_overlay',
 		{
-			description: 'Get one overlay by id. Summarized by default (counts only); pass verbose:true for the full raw structure including every element\'s styling.',
+			description: 'Get one overlay by id. Summarized by default (counts only); pass verbose:true for the full raw structure including every element\'s styling. `warnings` (scene → item id → messages) lists what the overlay points at that does not exist: a Video key no enabled flow sets a video for, or an element trigger watching an element that is gone (e.g. after importing an overlay).',
 			inputSchema: { overlayId: z.string(), verbose: z.boolean().optional() },
 		},
 		async ({ overlayId, verbose }) => {
 			const overlay = await mcpContext.overlayStore!.getOverlayById(overlayId);
 			if (!overlay) return error(`No overlay with id "${overlayId}"`);
-			return text(verbose ? overlay : summarizeOverlay(overlay as never));
+			// Things the overlay points at that don't exist (video keys no enabled flow sets, element triggers on
+			// deleted elements) — fix them or tell the user (utils/overlayWarnings.ts; the editor shows them too).
+			const warnings = overlayWarnings(overlay as never, mcpContext.flowService?.getFlows() ?? []);
+			const result = verbose ? overlay : summarizeOverlay(overlay as never);
+			return text(Object.keys(warnings).length ? { ...result, warnings } : result);
 		},
 	);
 

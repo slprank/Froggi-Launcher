@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { ALL_TOPICS, getTopic, renderAsMarkdown } from '../../../../frontend/src/lib/content';
+import { TUTORIALS, getTutorial, tutorialAsMarkdown } from '../../../../frontend/src/lib/content/tutorials';
 
 const text = (value: unknown) => ({ content: [{ type: 'text' as const, text: typeof value === 'string' ? value : JSON.stringify(value, null, 2) }] });
 const error = (message: string) => ({ content: [{ type: 'text' as const, text: message }], isError: true });
@@ -19,6 +20,22 @@ export function registerExplainTools(server: McpServer) {
 			const topic = getTopic(topicId);
 			if (!topic) return error(`Unknown topic "${topicId}" — call list_explainer_topics first.`);
 			return text(renderAsMarkdown(topic));
+		},
+	);
+
+	server.registerTool(
+		'list_tutorials',
+		{ description: 'List Froggi\'s step-by-step tutorials — the same ones the user sees under Stream → Tutorial (build an overlay, OBS, remote control, running a tournament, minigames online, flows, the AI assistant, webhooks). Use them to guide the user step by step with the same wording and screenshots they see in the app.', inputSchema: {} },
+		async () => text(TUTORIALS.map((t) => ({ id: t.id, title: t.title, description: t.description, path: t.path, pages: t.pages.map((p) => p.title) }))),
+	);
+
+	server.registerTool(
+		'get_tutorial',
+		{ description: 'Get one tutorial in full (markdown, page by page, screenshots described by caption and path). Point the user to the tutorial page in the app (path) when they want to follow along.', inputSchema: { tutorialId: z.string() } },
+		async ({ tutorialId }) => {
+			const tutorial = getTutorial(tutorialId);
+			if (!tutorial) return error(`Unknown tutorial "${tutorialId}" — call list_tutorials first.`);
+			return text(tutorialAsMarkdown(tutorial));
 		},
 	);
 }

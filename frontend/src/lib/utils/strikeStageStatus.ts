@@ -62,3 +62,44 @@ export function strikeTurn(state: StrikeState | undefined): { player: 1 | 2 | nu
 		default: return { player: null, action: 'waiting' };
 	}
 }
+
+export type TimelineStep = {
+	kind: 'strike' | 'ban' | 'pick' | 'final';
+	/** Who strikes/bans/picks (null = the stage that's left over in game 1). */
+	player: 1 | 2 | null;
+	/** The stage, once chosen. */
+	stageId: number | null;
+	/** The step being decided right now. */
+	current: boolean;
+};
+
+/**
+ * The stage-choosing steps of the current game in order, for a progress-bar timeline:
+ * game 1 = the 1-2-1 strikes then the stage that's left; game 2+ = the winner's ban (none in Bo5)
+ * then the loser's pick. Empty before game 1's strike order is chosen.
+ */
+export function strikeTimeline(state: StrikeState | undefined): TimelineStep[] {
+	if (!state) return [];
+	const steps: Omit<TimelineStep, 'current'>[] = [];
+	const firstGame = (state.gameNum ?? 1) === 1 && !state.lastWinner;
+	if (firstGame) {
+		if (!state.strikeOrder?.length || ['charSelect', 'rps', 'rpsResult', 'lobby'].includes(state.phase)) return [];
+		let i = 0;
+		for (const [player, count] of state.strikeOrder) {
+			for (let k = 0; k < count; k++) steps.push({ kind: 'strike', player, stageId: state.strikes?.[i++] ?? null });
+		}
+		steps.push({ kind: 'final', player: null, stageId: state.phase === 'striking' ? null : state.finalStageId });
+	} else {
+		if (!['stageBan', 'stagePick', 'charLock', 'charPick', 'playing'].includes(state.phase) || !state.lastWinner) return [];
+		const winner = state.lastWinner;
+		const loser: 1 | 2 = winner === 1 ? 2 : 1;
+		const banning = state.phase === 'stageBan';
+		const bans = banning ? (state.strikes ?? []) : (state.bans ?? []);
+		const banCount = state.bestOf === 5 ? 0 : 1;
+		for (let k = 0; k < banCount; k++) steps.push({ kind: 'ban', player: winner, stageId: bans[k] ?? null });
+		steps.push({ kind: 'pick', player: loser, stageId: banning || state.phase === 'stagePick' ? null : state.finalStageId });
+	}
+	const deciding = ['striking', 'stageBan', 'stagePick'].includes(state.phase);
+	const next = deciding ? steps.findIndex((s) => s.stageId === null) : -1;
+	return steps.map((s, i) => ({ ...s, current: i === next }));
+}

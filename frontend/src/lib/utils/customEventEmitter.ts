@@ -90,6 +90,7 @@ export interface MessageEvents {
 	OpenUrl: (url: string) => void;
 	PlayersUpdate: (players: Player[]) => void; // Here
 	PostGameStats: (stats: GameStats | undefined) => void;
+	LiveFightStats: (stats: import('./fightStats').LiveFightStats) => void;
 	RecentGames: (games: GameStats[]) => void;
 	RecentGamesDelete: (gameIndex: number) => void; // Here
 	RecentGamesReset: () => void; // Here
@@ -184,7 +185,12 @@ export interface MessageEvents {
 	StrikeState: (state: StrikeState | undefined) => void;
 	StrikeStateUpdate: (state: StrikeState | undefined) => void;
 	StrikePlayerConnect: (player: 1 | 2, token?: string) => void;
-	StartSet: (p1Name: string, p2Name: string, bestOf: 3 | 5, allowAgreement?: boolean) => void;
+	/** Host (Fix set…): swap Player/Team 1 ↔ 2 for the set, or the two players inside Team 1 / Team 2. */
+	SwapSides: (kind: 'sides' | 'team1' | 'team2') => void;
+	/** Electron-internal: sides were swapped (the striking set swaps its own side data). */
+	SidesSwapped: (kind: 'sides' | 'team1' | 'team2') => void;
+	/** Dashboard Start Set. Doubles: `teams` = the typed team names and each team's player tags (lower port first; '' = none). */
+	StartSet: (p1Name: string, p2Name: string, bestOf: 3 | 5, allowAgreement?: boolean, ruleset?: import('../models/types/stageStriking').StrikeRuleset, teams?: { names: [string, string]; tags: { p1: [string, string]; p2: [string, string] } }) => void;
 	StrikeAgreeRequest: (player: 1 | 2, stageId: number, token?: string) => void;
 	StrikeAgreeResponse: (player: 1 | 2, accept: boolean, token?: string) => void;
 	/** Host ends the match: a winner completes the set with that result, null cancels it. */
@@ -205,14 +211,60 @@ export interface MessageEvents {
 	FlowSave: (flow: Flow) => void;
 	FlowDelete: (flowId: string) => void;
 	FlowExport: (flowId: string) => void;
+	/** Doubles team names ('' = "Tag & Tag"). */
+	TeamNames: (names: [string, string]) => void;
+	ContinueSetAcrossSessions: (enabled: boolean) => void;
+	/** Host: list the latest replays (Slippi folder) to load into the set. */
+	RecentReplaysRequest: () => void;
+	RecentReplays: (replays: import('../models/types/slippiData').ReplaySummary[]) => void;
+	/** Host: make these replays (paths from RecentReplays) the set's finished games. `swapSides`: the earliest
+	 *  game's default Player/Team 1 (lower port / the team with the lowest port) becomes side 2. */
+	LoadSetGames: (paths: string[], continueNextSession: boolean, swapSides?: boolean) => void;
+	/** Host fix: set identity (froggiKey) per playerIndex for the running game, else the set's last game. */
+	SetPlayerKeys: (keys: Record<number, string>) => void;
+	/** Host: add one replay (path from RecentReplays) to the set's games. */
+	AddSetGameFromReplay: (path: string) => void;
+	/** Host: override game i's result (winner side, null = doesn't count) with a note; null clears it. */
+	RecentGamesSetResult: (gameIndex: number, override: { winnerSlot: 0 | 1 | null; note: string } | null) => void;
+	SetContinueSetAcrossSessions: (enabled: boolean) => void;
+	SetTeamNames: (names: [string, string]) => void;
 	FlowImport: () => void;
 	/** Run a flow's actions now (editor "Test" button), skipping trigger and conditions. */
 	FlowTest: (flowId: string) => void;
+	/** Put the default "Scene switching" flow back (enabled). */
+	FlowRestoreSceneDefault: () => void;
+	/** Videos by key (utils/highlightReel.ts — a reel or one whole file), the server clock (ms) so clients
+	 *  play in sync, and volumes set by flows (key → 0–100, overrides the element's volume). */
+	HighlightReels: (reels: import('./highlightReel').HighlightReels, serverNow: number, volumes: Record<string, number>) => void;
+	/** A client shows reel `key` — starts its shared clock once (allowed without the host password). */
+	HighlightReelShown: (key: string, id: string) => void;
+	/** A game started in a different set than the last one (statsDisplay: recent games are cleared). */
+	NewSetDetected: () => void;
+	/** Electron-internal: OBS saved its replay buffer to this file. */
+	ObsReplaySaved: (path: string) => void;
+	/** Recent flow action failures (newest first). */
+	FlowFailures: (failures: import('../models/types/flow').FlowFailure[]) => void;
+	FlowFailuresRequest: () => void;
+	FlowFailuresClear: () => void;
+	FlowStateRequest: () => void;
+	/** The live flow game state ({{state.…}}) for the editor's key picker. */
+	FlowState: (state: import('./flowState').FlowGameState) => void;
+	/** Result of every action from the editor's Test button (HTTP status + response text, or the error). */
+	FlowTestResult: (result: { flowId: string; at: string; results: { action: string; ok: boolean; detail: string }[] }) => void;
 	RpsChoice: (player: 1 | 2, choice: RpsChoice, token?: string) => void;
 	RpsWinnerOrder: (firstStriker: 1 | 2, token?: string) => void;
 	StrikeStage: (stageId: number, token?: string) => void;
 	PickStage: (stageId: number, token?: string) => void;
-	SelectCharacter: (player: 1 | 2, charId: number, token?: string) => void;
+	SelectCharacter: (player: 1 | 2, charId: number, token?: string, partnerCharId?: number) => void;
+	/** Rename a side of the running set — the host (either side) or a phone (its own side). */
+	StrikeSetName: (player: 1 | 2, name: string, token?: string) => void;
+	/** Electron-internal: a set was started from the Dashboard (flows trigger "Set starts"). */
+	/** A game ended but its replay was not found (no stats) — flows still get "Game ends". */
+	GameEndWithoutReplay: (gameEnd: import('@slippi/slippi-js').GameEndType) => void;
+	/** Electron-internal: a player did a striking action on their phone (flows trigger). */
+	/** Something happened in stage striking (a player's choice, or event "change") — flows' "Stage Striking" trigger. */
+	StrikePlayerAction: (action: { event: import('../models/types/flow').StrikeEvent; player: 1 | 2 | null; playerName: string | null; phase: string; stage?: string | null; character?: string | null; rps?: string | null }) => void;
+	SetStarted: (set: { p1Name: string; p2Name: string; bestOf: number; ruleset: string }) => void;
 	ReportWinner: (player: 1 | 2) => void;
 	UndoLastGame: () => void;
 	MarkWarmup: () => void;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { currentOverlayEditor, overlays, statsScene } from '$lib/utils/store.svelte';
+	import { currentOverlayEditor, flows, overlays, statsScene } from '$lib/utils/store.svelte';
+	import { flowVideoKeys, sceneWarnings } from '$lib/utils/overlayWarnings';
 	import { fly } from 'svelte/transition';
 	import LayerDisplayRow from '$lib/components/obs/overlays/preview/LayerDisplayRow.svelte';
 	import { newLayer } from '$lib/components/obs/overlays/edit/OverlayHandler.svelte';
@@ -14,6 +15,7 @@
 
 	$: curOverlay = $overlays[overlayId];
 	$: scene = curOverlay?.[$statsScene];
+	$: warnings = sceneWarnings(scene, flowVideoKeys($flows));
 	let layers: Layer[] = [];
 
 	const updateLayers = (overlay: Overlay | undefined, statsScene: LiveStatsScene) => {
@@ -73,6 +75,7 @@
 						{layer}
 						{layerIndex}
 						{scrollToBottom}
+						{warnings}
 						bind:selectedLayerIndex
 					/>
 				</div>

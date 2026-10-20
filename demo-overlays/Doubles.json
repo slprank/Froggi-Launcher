@@ -1,0 +1,6025 @@
+{
+  "isDemo": true,
+  "description": "Doubles for a 4:3 game on the right of a 16:9 stream: on the left per team a webcam frame (put your camera source under it in OBS), team name + set score and a row per player (port, character, stocks); percents with names under them along the bottom of the game. Uses Styling → Player slots and the Doubles conditions.",
+  "froggiVersion": "2.0.0-beta.91",
+  "id": "doubles",
+  "aspectRatio": {
+    "width": 16,
+    "height": 9
+  },
+  "title": "Doubles (game right, webcams left)",
+  "inGame": {
+    "active": true,
+    "fallback": "menu",
+    "animation": {
+      "duration": 250,
+      "in": {
+        "options": {
+          "delay": 0,
+          "duration": 250,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly automatic"
+      },
+      "out": {
+        "options": {
+          "delay": 0,
+          "duration": 150,
+          "easing": "expoIn",
+          "start": 0,
+          "x": 0,
+          "y": 0
+        },
+        "type": "fly"
+      },
+      "layerRenderDelay": 60
+    },
+    "background": {
+      "color": "#000000",
+      "customImage": {},
+      "image": {},
+      "opacity": 100,
+      "type": "None",
+      "animation": {
+        "in": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        },
+        "out": {
+          "options": {
+            "delay": 0,
+            "duration": 0,
+            "easing": "",
+            "start": 0,
+            "x": 0,
+            "y": 0
+          },
+          "type": "none"
+        }
+      }
+    },
+    "font": {
+      "family": "Roboto Bold Italic"
+    },
+    "layers": [
+      {
+        "title": "Webcam frames",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 120,
+              "h": 68,
+              "x": 4,
+              "y": 4,
+              "id": "ss64lg2tj"
+            },
+            "elementId": 3000,
+            "id": "ss64lg2tj",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0.2rem solid",
+                "borderRight": "0.2rem solid",
+                "borderTop": "0.2rem solid",
+                "borderBottom": "0.2rem solid",
+                "borderColor": "#ef4444ff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 120,
+              "h": 10,
+              "x": 4,
+              "y": 32,
+              "id": "ssf8cz2ka"
+            },
+            "elementId": 1000,
+            "id": "ssf8cz2ka",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffff40",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "WEBCAM",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 120,
+              "h": 68,
+              "x": 4,
+              "y": 148,
+              "id": "ssmy4f0dg"
+            },
+            "elementId": 3000,
+            "id": "ssmy4f0dg",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0.2rem solid",
+                "borderRight": "0.2rem solid",
+                "borderTop": "0.2rem solid",
+                "borderBottom": "0.2rem solid",
+                "borderColor": "#3b82f6ff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 120,
+              "h": 10,
+              "x": 4,
+              "y": 176,
+              "id": "ssgc6qpzq"
+            },
+            "elementId": 1000,
+            "id": "ssgc6qpzq",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffff40",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "WEBCAM",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 0
+      },
+      {
+        "title": "Team headers (name, set score)",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 92,
+              "h": 13,
+              "x": 6,
+              "y": 75,
+              "id": "ss7edcmpb"
+            },
+            "elementId": 1910,
+            "id": "ss7edcmpb",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-start"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 24,
+              "h": 15,
+              "x": 100,
+              "y": 74,
+              "id": "ss3u2m7os"
+            },
+            "elementId": 4200,
+            "id": "ss3u2m7os",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ef4444ff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 92,
+              "h": 13,
+              "x": 6,
+              "y": 219,
+              "id": "ss05s7lei"
+            },
+            "elementId": 1911,
+            "id": "ss05s7lei",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-start"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 24,
+              "h": 15,
+              "x": 100,
+              "y": 218,
+              "id": "sso49ernn"
+            },
+            "elementId": 4200,
+            "id": "sso49ernn",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#3b82f6ff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1"
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 1
+      },
+      {
+        "title": "Player rows (port, character, stocks)",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 6,
+              "y": 96,
+              "id": "ssfquo6sb"
+            },
+            "elementId": 1900,
+            "id": "ssfquo6sb",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 22,
+              "h": 22,
+              "x": 24,
+              "y": 92,
+              "id": "ssegzgsye"
+            },
+            "elementId": 6225,
+            "id": "ssegzgsye",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 52,
+              "y": 96,
+              "id": "ssbannd4y"
+            },
+            "elementId": 6225,
+            "id": "ssbannd4y",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 1 Stock 1": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 69,
+              "y": 96,
+              "id": "ssz0emrvf"
+            },
+            "elementId": 6225,
+            "id": "ssz0emrvf",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 1 Stock 2": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 86,
+              "y": 96,
+              "id": "sstva0hip"
+            },
+            "elementId": 6225,
+            "id": "sstva0hip",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 1 Stock 3": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 103,
+              "y": 96,
+              "id": "ssgad35l9"
+            },
+            "elementId": 6225,
+            "id": "ssgad35l9",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 1 Stock 4": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 6,
+              "y": 121,
+              "id": "ssm26mi0y"
+            },
+            "elementId": 1900,
+            "id": "ssm26mi0y",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 22,
+              "h": 22,
+              "x": 24,
+              "y": 117,
+              "id": "sshz0nart"
+            },
+            "elementId": 6225,
+            "id": "sshz0nart",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 52,
+              "y": 121,
+              "id": "ssbnlzgcj"
+            },
+            "elementId": 6225,
+            "id": "ssbnlzgcj",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 1 Player 2 Stock 1": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 69,
+              "y": 121,
+              "id": "ssn2qavsy"
+            },
+            "elementId": 6225,
+            "id": "ssn2qavsy",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 1 Player 2 Stock 2": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 86,
+              "y": 121,
+              "id": "sseefnpax"
+            },
+            "elementId": 6225,
+            "id": "sseefnpax",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 1 Player 2 Stock 3": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 103,
+              "y": 121,
+              "id": "ssx3i4iyl"
+            },
+            "elementId": 6225,
+            "id": "ssx3i4iyl",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 1 Player 2 Stock 4": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 6,
+              "y": 240,
+              "id": "ssclsx7if"
+            },
+            "elementId": 1900,
+            "id": "ssclsx7if",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 22,
+              "h": 22,
+              "x": 24,
+              "y": 236,
+              "id": "ssxi2v7ic"
+            },
+            "elementId": 6225,
+            "id": "ssxi2v7ic",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 52,
+              "y": 240,
+              "id": "ssb4wtcbe"
+            },
+            "elementId": 6225,
+            "id": "ssb4wtcbe",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 2 Stock 1": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 69,
+              "y": 240,
+              "id": "ss4etuiee"
+            },
+            "elementId": 6225,
+            "id": "ss4etuiee",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 2 Stock 2": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 86,
+              "y": 240,
+              "id": "ss28xcivw"
+            },
+            "elementId": 6225,
+            "id": "ss28xcivw",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 2 Stock 3": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 103,
+              "y": 240,
+              "id": "ssf4e0b5a"
+            },
+            "elementId": 6225,
+            "id": "ssf4e0b5a",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Player 2 Stock 4": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 6,
+              "y": 265,
+              "id": "ssyyaeffh"
+            },
+            "elementId": 1900,
+            "id": "ssyyaeffh",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 22,
+              "h": 22,
+              "x": 24,
+              "y": 261,
+              "id": "ssq0vy323"
+            },
+            "elementId": 6225,
+            "id": "ssq0vy323",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 52,
+              "y": 265,
+              "id": "ss8f76btf"
+            },
+            "elementId": 6225,
+            "id": "ss8f76btf",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 2 Player 2 Stock 1": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 69,
+              "y": 265,
+              "id": "ss4boh55q"
+            },
+            "elementId": 6225,
+            "id": "ss4boh55q",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 2 Player 2 Stock 2": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 86,
+              "y": 265,
+              "id": "ssaxtjm7k"
+            },
+            "elementId": 6225,
+            "id": "ssaxtjm7k",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 2 Player 2 Stock 3": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2",
+              "assetPack": "builtin-stock"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 14,
+              "h": 14,
+              "x": 103,
+              "y": 265,
+              "id": "ssv25puzq"
+            },
+            "elementId": 6225,
+            "id": "ssv25puzq",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "contain"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Team 2 Player 2 Stock 4": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2",
+              "assetPack": "builtin-stock"
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 2
+      },
+      {
+        "title": "Percents + names",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 28,
+              "x": 136,
+              "y": 240,
+              "id": "ssrkh24rn"
+            },
+            "elementId": 1011,
+            "id": "ssrkh24rn",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 12,
+              "x": 136,
+              "y": 268,
+              "id": "ss0y75u2u"
+            },
+            "elementId": 4420,
+            "id": "ss0y75u2u",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p1"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 28,
+              "x": 231,
+              "y": 240,
+              "id": "ssecrcrwt"
+            },
+            "elementId": 1011,
+            "id": "ssecrcrwt",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 12,
+              "x": 231,
+              "y": 268,
+              "id": "ssbiz3mbr"
+            },
+            "elementId": 4420,
+            "id": "ssbiz3mbr",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t1p2"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 28,
+              "x": 330,
+              "y": 240,
+              "id": "sspjdh2g8"
+            },
+            "elementId": 1011,
+            "id": "sspjdh2g8",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 12,
+              "x": 330,
+              "y": 268,
+              "id": "ssxemm4ql"
+            },
+            "elementId": 4420,
+            "id": "ssxemm4ql",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p1"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 28,
+              "x": 425,
+              "y": 240,
+              "id": "ssa48clor"
+            },
+            "elementId": 1011,
+            "id": "ssa48clor",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2"
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 86,
+              "h": 12,
+              "x": 425,
+              "y": 268,
+              "id": "ssw876kzo"
+            },
+            "elementId": 4420,
+            "id": "ssw876kzo",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000000",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 1,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "playerSlot": "t2p2"
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 3
+      },
+      {
+        "title": "Backdrops",
+        "items": [
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 128,
+              "h": 72,
+              "x": 0,
+              "y": 72,
+              "id": "ss29326ml"
+            },
+            "elementId": 3000,
+            "id": "ss29326ml",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#0b0e13f2",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 124,
+              "h": 52,
+              "x": 2,
+              "y": 90,
+              "id": "ss5af3r09"
+            },
+            "elementId": 3000,
+            "id": "ss5af3r09",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#ef444426",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 128,
+              "h": 72,
+              "x": 0,
+              "y": 216,
+              "id": "ssjtopmk9"
+            },
+            "elementId": 3000,
+            "id": "ssjtopmk9",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#0b0e13f2",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 124,
+              "h": 52,
+              "x": 2,
+              "y": 234,
+              "id": "ssber02pd"
+            },
+            "elementId": 3000,
+            "id": "ssber02pd",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#3b82f626",
+                "borderLeft": "0rem solid",
+                "borderRight": "0rem solid",
+                "borderTop": "0rem solid",
+                "borderBottom": "0rem solid",
+                "borderColor": "#ffffffff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": []
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 186,
+              "h": 46,
+              "x": 132,
+              "y": 238,
+              "id": "ssm1mnyou"
+            },
+            "elementId": 3000,
+            "id": "ssm1mnyou",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000099",
+                "borderLeft": "0.15rem solid",
+                "borderRight": "0.15rem solid",
+                "borderTop": "0.15rem solid",
+                "borderBottom": "0.15rem solid",
+                "borderColor": "#ef4444ff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          },
+          {
+            "512": {
+              "fixed": true,
+              "resizable": true,
+              "draggable": true,
+              "customDragger": false,
+              "customResizer": true,
+              "min": {
+                "w": 1,
+                "h": 1
+              },
+              "max": {
+                "y": 511,
+                "h": 513
+              },
+              "w": 186,
+              "h": 46,
+              "x": 322,
+              "y": 238,
+              "id": "ssnii5wce"
+            },
+            "elementId": 3000,
+            "id": "ssnii5wce",
+            "data": {
+              "advancedStyling": false,
+              "animationTrigger": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 0,
+                    "easing": "",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "none"
+                },
+                "selectedOptions": {}
+              },
+              "class": {
+                "rounded": "rounded-md",
+                "alignment": "justify-center"
+              },
+              "css": {
+                "background": "#00000099",
+                "borderLeft": "0.15rem solid",
+                "borderRight": "0.15rem solid",
+                "borderTop": "0.15rem solid",
+                "borderBottom": "0.15rem solid",
+                "borderColor": "#3b82f6ff",
+                "color": "#ffffffff",
+                "opacity": 1,
+                "fill": "#ff000000",
+                "stroke": "#ff000000",
+                "strokeWidth": 3,
+                "fillOpacity": 1
+              },
+              "description": "",
+              "percent": {
+                "startColor": "#ffffff",
+                "endColor": "#6f1622"
+              },
+              "font": {
+                "family": "default"
+              },
+              "image": {
+                "objectFit": "cover"
+              },
+              "visibility": {
+                "in": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineOut",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "out": {
+                  "options": {
+                    "delay": 0,
+                    "duration": 150,
+                    "easing": "sineIn",
+                    "start": 0,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "type": "fade"
+                },
+                "selectedOptions": [
+                  {
+                    "Game Running": 1
+                  }
+                ]
+              },
+              "shadow": {
+                "x": 0,
+                "y": 0,
+                "spread": 0,
+                "color": "#000000ff"
+              },
+              "string": "",
+              "textStroke": {
+                "size": 0,
+                "color": "#000000ff"
+              },
+              "transform": {
+                "rotate": 0,
+                "scale": "1, 1",
+                "translate": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            }
+          }
+        ],
+        "preview": true,
+        "id": null,
+        "index": 4
+      }
+    ]
+  }
+}

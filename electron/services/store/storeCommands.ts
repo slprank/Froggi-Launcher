@@ -243,10 +243,11 @@ export class ElectronCommandStore {
 		requestType: RequestType,
 		payload: PayloadType[Type],
 	) => {
+		// true = OBS accepted it, false = it failed (e.g. OBS not connected).
 		if (type === CommandType.Obs)
-			await this.executeObsCommand(requestType as keyof OBSRequestTypes, payload);
+			return this.executeObsCommand(requestType as keyof OBSRequestTypes, payload);
 		if (type === CommandType.ObsCustom)
-			await this.executeObsCustomCommand(
+			return this.executeObsCustomCommand(
 				requestType as ObsCustomRequest,
 				payload as ObsCustomPayload<ObsCustomRequest>,
 			);
@@ -255,13 +256,14 @@ export class ElectronCommandStore {
 		// 		requestType as OverlayRequest,
 		// 		payload as OverlayPayload<OverlayRequest>,
 		// 	);
+		return undefined;
 	};
 
 	private executeObsCommand = async <T extends keyof OBSRequestTypes>(
 		command: T,
 		payload: OBSRequestTypes[T] | undefined,
 	) => {
-		await this.obsWebSocket.executeCommand(command, payload);
+		return this.obsWebSocket.executeCommand(command, payload);
 	};
 
 	private executeObsCustomCommand = async <T extends ObsCustomRequest>(
@@ -270,8 +272,9 @@ export class ElectronCommandStore {
 	) => {
 		switch (command) {
 			case 'ToggleSceneItem':
-				await this.toggleSceneItem(payload.itemName);
+				return this.toggleSceneItem(payload.itemName);
 		}
+		return false;
 	};
 
 	// private executeOverlayCommand = async <T extends OverlayRequest>(
@@ -298,13 +301,15 @@ export class ElectronCommandStore {
 					sceneItemId: item.sceneItemId,
 				})
 			).sceneItemEnabled;
-			this.executeCommand(CommandType.Obs, 'SetSceneItemEnabled', {
+			// Flip it (this used to write the same state back, so nothing toggled).
+			return await this.obsWebSocket.executeCommand('SetSceneItemEnabled', {
 				sceneName: scene,
 				sceneItemId: item.sceneItemId,
-				enabled: state,
+				sceneItemEnabled: !state,
 			});
 		} catch (err) {
 			this.log.error(err);
+			return false;
 		}
 	};
 

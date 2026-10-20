@@ -4,7 +4,8 @@
 	import { CHARACTERS, CHARACTERS_INTERNAL_EXTERNAL } from '$lib/models/constants/characterData';
 	import type { GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { resolvePackImage } from '$lib/models/types/assetPack';
-	import { assetPacks, currentPlayer, currentPlayers, gameFrame, isElectron, urls } from '$lib/utils/store.svelte';
+	import { assetPacks, currentPlayer, currentPlayers, gameFrame, gameSettings, isElectron, urls } from '$lib/utils/store.svelte';
+	import { isLighterTeammate, playersForSlot } from '$lib/utils/teams';
 	import { isNil } from 'lodash';
 
 	// "Player 1 / Player 2 / Current Player Character": the player's character + skin from an asset
@@ -13,12 +14,15 @@
 	export let defaultPreview: boolean;
 	export let style: GridContentItemStyle;
 
+	$: players = playersForSlot($currentPlayers, dataItem.data.playerSlot);
 	$: player =
 		dataItem.elementId === CustomElement.InGamePlayer1Character
-			? $currentPlayers.at(0)
+			? players.at(0)
 			: dataItem.elementId === CustomElement.InGamePlayer2Character
-				? $currentPlayers.at(1)
+				? players.at(1)
 				: $currentPlayer;
+	// Two teammates on the same character: the higher port is drawn lighter (not when recoloured).
+	$: lighter = !defaultPreview && !dataItem.data.colorOverlay?.enabled && isLighterTeammate($gameSettings?.players ?? [], player);
 
 	// Live frame first (follows Sheik/Zelda transforms), else the character from game start.
 	$: postFrame = $gameFrame?.players?.[player?.playerIndex ?? 0]?.post;
@@ -38,7 +42,7 @@
 		<img
 			use:colorOverlay={dataItem?.data.colorOverlay}
 			class="h-full w-full"
-			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+			style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'}; ${lighter ? 'filter: brightness(1.35) saturate(0.85);' : ''}
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 			{src}
 			alt="character"

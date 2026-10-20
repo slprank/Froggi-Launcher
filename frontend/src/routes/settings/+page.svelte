@@ -1,4 +1,6 @@
 <script lang="ts">
+	import CopyAssistantInstructions from '$lib/components/CopyAssistantInstructions.svelte';
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { BACKEND_PORT, MCP_SERVER_PORT, MCP_SERVER_PATH } from '$lib/models/const';
 	import {
@@ -324,7 +326,7 @@
 	<!-- Remote Access (Electron only) -->
 	{#if $isElectron}
 	<section class="mb-6">
-		<p class="section-label">Remote Access</p>
+		<p class="section-label" id="remote-access">Remote Access</p>
 		<div class="settings-card border-secondary mt-2">
 			<p class="text-xs opacity-40 mb-3 leading-relaxed">
 				Expose Froggi on port <span class="font-mono">{port}</span> so it can be reached from outside your local network. Both options work — they serve different purposes.
@@ -339,7 +341,7 @@
 				<div class="tunnel-row">
 					<span class="tunnel-label">Tailscale</span>
 					{#if $remoteAccess.tailscale}
-						<span class="url-value font-mono flex-1 truncate">{$remoteAccess.tailscale}</span>
+						<SecretUrl class="url-value font-mono flex-1 truncate" value={$remoteAccess.tailscale} />
 						<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={copyTsUrl}>{tsCopied ? 'Copied!' : 'Copy'}</button>
 					{:else}
 						<span class="text-xs opacity-30 flex-1">No tunnel</span>
@@ -348,7 +350,7 @@
 				<div class="tunnel-row">
 					<span class="tunnel-label">ngrok</span>
 					{#if $remoteAccess.ngrok}
-						<span class="url-value font-mono flex-1 truncate">{$remoteAccess.ngrok}</span>
+						<SecretUrl class="url-value font-mono flex-1 truncate" value={$remoteAccess.ngrok ?? ''} />
 						<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={copyNgrokUrl}>{ngrokCopied ? 'Copied!' : 'Copy'}</button>
 					{:else}
 						<span class="text-xs opacity-30 flex-1">No tunnel</span>
@@ -549,11 +551,6 @@
 				</button>
 			</div>
 			{#if $froggiSettings?.mcpReadEnabled === true || $froggiSettings?.mcpWriteEnabled === true}
-				<div class="tunnel-row mt-1">
-					<span class="tunnel-label">URL</span>
-					<span class="url-value font-mono flex-1 truncate">{mcpUrl}</span>
-					<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={copyMcpUrl}>{mcpUrlCopied ? 'Copied!' : 'Copy'}</button>
-				</div>
 				<!-- Connect an AI app: pick the app, one button does the right thing for it. -->
 				<div class="flex items-center justify-between gap-4 mt-1">
 					<div class="min-w-0">
@@ -574,12 +571,28 @@
 						</button>
 					</div>
 				</div>
+				<div class="flex items-center justify-between gap-4 mt-1">
+					<div class="min-w-0">
+						<span class="text-sm text-secondary-color">Instructions for your AI</span>
+						<p class="text-xs opacity-40 mt-0.5">For a Claude project or your app's custom instructions</p>
+					</div>
+					<CopyAssistantInstructions cls="btn text-xs h-7 px-3 border-secondary rounded shrink-0" />
+				</div>
+				<!-- Addresses and other-device access: only for manual setups, so collapsed. -->
+				<details class="advanced mt-2">
+				<summary class="text-xs opacity-60">Advanced</summary>
+				<div class="tunnel-row mt-2">
+					<span class="tunnel-label">Local URL</span>
+					<span class="url-value font-mono flex-1 truncate">{mcpUrl}</span>
+					<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={copyMcpUrl}>{mcpUrlCopied ? 'Copied!' : 'Copy'}</button>
+				</div>
+				<p class="text-xs opacity-40 mt-1">Only for apps not in the list above — the buttons there set this up for you.</p>
 				<!-- Tailscale exposure surfaces only when Tailscale is ready; otherwise guide the user to it. -->
 				{#if tsInstalled && tsAuthenticated}
 					<div class="flex items-start justify-between gap-4 mt-2">
 						<div>
 							<span class="text-sm text-secondary-color">Expose over Tailscale (HTTPS)</span>
-							<p class="text-xs opacity-40 mt-0.5">Only for an AI app on <strong>another device</strong> in your tailnet. Apps on this computer use the local URL; web apps (claude.ai) can't reach a tailnet URL. Tailnet-only — never public.</p>
+							<p class="text-xs opacity-40 mt-0.5">Only for an AI app on <strong>another device</strong> in your tailnet. Apps on this computer don't need it; web apps (claude.ai) can't reach a tailnet URL. Tailnet-only — never public.</p>
 						</div>
 						<button
 							class="btn text-xs h-7 px-3 border-secondary rounded shrink-0"
@@ -592,7 +605,7 @@
 					{#if $froggiSettings?.mcpTailscaleEnabled === true && $mcpTailscaleUrl}
 						<div class="tunnel-row mt-1">
 							<span class="tunnel-label">HTTPS URL</span>
-							<span class="url-value font-mono flex-1 truncate">{$mcpTailscaleUrl}</span>
+							<SecretUrl class="url-value font-mono flex-1 truncate" value={$mcpTailscaleUrl} />
 							<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={copyMcpTsUrl}>{mcpTsUrlCopied ? 'Copied!' : 'Copy'}</button>
 						</div>
 					{/if}
@@ -601,6 +614,7 @@
 						Only needed to use the assistant from another device: install <strong>Tailscale</strong> in <strong>Remote Access</strong> above, and an "Expose over Tailscale (HTTPS)" toggle appears here. AI apps on this computer don't need it.
 					</p>
 				{/if}
+				</details>
 			{/if}
 		</div>
 	</section>
@@ -818,6 +832,7 @@
 		color: var(--secondary-color);
 	}
 
+	.advanced summary { cursor: pointer; }
 	.tunnel-row {
 		display: flex;
 		align-items: center;

@@ -77,6 +77,10 @@ export class PlayerTypeEntity implements PlayerType {
   @Column({ type: "varchar", nullable: true })
   nametag: string | null;
 
+  /** Froggi's set identity for this player (utils/playerIdentity.ts). */
+  @Column({ type: "varchar", nullable: true })
+  froggiKey: string | null;
+
   @Column({ type: "varchar" })
   displayName: string;
 

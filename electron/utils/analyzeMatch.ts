@@ -1,5 +1,6 @@
 import { ActionCountsType, OverallType } from "@slippi/slippi-js";
-import { GameStats, MatchStats } from "../../frontend/src/lib/models/types/slippiData";
+import { EdgeGuard, GameStats, MatchStats, OverallTypeExtended } from "../../frontend/src/lib/models/types/slippiData";
+import { playerKey } from "../../frontend/src/lib/utils/teams";
 
 const sumStat = <T>(items: T[], fn: (item: T) => number): number =>
     items.reduce((acc, item) => acc + fn(item), 0);
@@ -94,27 +95,47 @@ function aggregateOverall(overall: OverallType[], playerIndex: number) {
         neutralWinRatio: r(o => o.neutralWinRatio.count, o => o.neutralWinRatio.total),
         counterHitRatio: r(o => o.counterHitRatio.count, o => o.counterHitRatio.total),
         beneficialTradeRatio: r(o => o.beneficialTradeRatio.count, o => o.beneficialTradeRatio.total),
+        edgeGuard: aggregateEdgeGuard(overall as OverallTypeExtended[]),
     };
 }
 
+/** Edgeguards summed over the set (games without the stat are skipped). */
+function aggregateEdgeGuard(overall: OverallTypeExtended[]): EdgeGuard | undefined {
+    const games = overall.map(o => o.edgeGuard).filter((e): e is EdgeGuard => !!e);
+    if (!games.length) return undefined;
+    const totalAttempts = games.reduce((n, e) => n + e.totalAttempts, 0);
+    const successfulAttempts = games.reduce((n, e) => n + e.successfulAttempts, 0);
+    const pct = (n: number) => (totalAttempts > 0 ? (n / totalAttempts) * 100 : 0);
+    return {
+        totalAttempts,
+        successfulAttempts,
+        unsuccessfulAttempts: totalAttempts - successfulAttempts,
+        successfulAttemptsPercent: pct(successfulAttempts),
+        unsuccessfulAttemptsPercent: pct(totalAttempts - successfulAttempts),
+    };
+}
+
+/**
+ * Set totals per player, matched across games by player (connect code online, port offline) — so a
+ * port or colour swap between games doesn't mix players, and doubles keeps all four. Only players of
+ * the latest game are returned, with that game's playerIndex (what overlay elements look up).
+ */
 export const analyzeMatch = (gameStats: GameStats[] | undefined): MatchStats | undefined => {
     if (!gameStats?.length) return;
-    const stats = gameStats.map(g => g.postGameStats);
-    const player1Index = stats[0]?.actionCounts[0]?.playerIndex ?? 0;
-    const player2Index = stats[0]?.actionCounts[1]?.playerIndex ?? 1;
-    const p1Counts = stats.flatMap(s => s?.actionCounts[0] ?? []).filter(Boolean) as ActionCountsType[];
-    const p2Counts = stats.flatMap(s => s?.actionCounts[1] ?? []).filter(Boolean) as ActionCountsType[];
-    const p1Overall = stats.flatMap(s => s?.overall[0] ?? []).filter(Boolean) as OverallType[];
-    const p2Overall = stats.flatMap(s => s?.overall[1] ?? []).filter(Boolean) as OverallType[];
-
+    const keyOf = (game: GameStats, playerIndex: number) => {
+        const player = game.settings?.players?.find(p => p.playerIndex === playerIndex);
+        return player ? playerKey(player) : `port${playerIndex + 1}`;
+    };
+    const counts = new Map<string, ActionCountsType[]>();
+    const overall = new Map<string, OverallType[]>();
+    for (const game of gameStats) {
+        for (const a of game.postGameStats?.actionCounts ?? []) counts.set(keyOf(game, a.playerIndex), [...(counts.get(keyOf(game, a.playerIndex)) ?? []), a]);
+        for (const o of game.postGameStats?.overall ?? []) overall.set(keyOf(game, o.playerIndex), [...(overall.get(keyOf(game, o.playerIndex)) ?? []), o]);
+    }
+    const latest = gameStats.at(-1)!;
+    const players = (latest.postGameStats?.overall ?? []).map(o => ({ playerIndex: o.playerIndex, key: keyOf(latest, o.playerIndex) }));
     return {
-        actionCounts: [
-            aggregateActionCounts(p1Counts, player1Index),
-            aggregateActionCounts(p2Counts, player2Index),
-        ],
-        overall: [
-            aggregateOverall(p1Overall, player1Index),
-            aggregateOverall(p2Overall, player2Index),
-        ],
+        actionCounts: players.map(p => aggregateActionCounts(counts.get(p.key) ?? [], p.playerIndex)),
+        overall: players.map(p => aggregateOverall(overall.get(p.key) ?? [], p.playerIndex)),
     };
 };

@@ -726,6 +726,14 @@ export const PACK_CHARACTER_ELEMENTS = new Set<CustomElement>([
 	CustomElement.InGamePlayer2Character,
 ]);
 
+/** Stage striking character picks — drawn from an asset pack too (payload.assetPack; default stock icons). */
+export const STRIKE_CHARACTER_ELEMENTS = new Set<CustomElement>([
+	CustomElement.StrikePlayer1Character,
+	CustomElement.StrikePlayer2Character,
+	CustomElement.StrikePlayer1PartnerCharacter,
+	CustomElement.StrikePlayer2PartnerCharacter,
+]);
+
 export const BINGO_ELEMENTS = new Set<CustomElement>([
 	CustomElement.BingoBoard,
 ]);
@@ -737,6 +745,8 @@ export const IRONMAN_ELEMENTS = new Set<CustomElement>([
 export const STRIKING_ELEMENTS = new Set<CustomElement>([
 	CustomElement.StrikeRpsPlayer1Choice,
 	CustomElement.StrikeRpsPlayer2Choice,
+	CustomElement.StrikeRpsPlayer1Icon,
+	CustomElement.StrikeRpsPlayer2Icon,
 	CustomElement.StrikeRpsWinner,
 	CustomElement.StrikeCurrentStriker,
 	CustomElement.StrikeFinalStageName,
@@ -749,8 +759,12 @@ export const STRIKING_ELEMENTS = new Set<CustomElement>([
 	CustomElement.StrikeStageSlot6,
 	CustomElement.StrikePlayer1Character,
 	CustomElement.StrikePlayer2Character,
+	CustomElement.StrikePlayer1PartnerCharacter,
+	CustomElement.StrikePlayer2PartnerCharacter,
 	CustomElement.StrikePlayer1Name,
 	CustomElement.StrikePlayer2Name,
+	CustomElement.StrikePlayer1Score,
+	CustomElement.StrikePlayer2Score,
 	CustomElement.StrikeOrderDisplay,
 	CustomElement.StrikeBansRemaining,
 	CustomElement.StrikeTimerSeconds,
@@ -766,4 +780,49 @@ export const STRIKING_ELEMENTS = new Set<CustomElement>([
 	CustomElement.StrikeStageImageDL,
 	CustomElement.StrikeStageImageYS,
 	CustomElement.StrikeStageImagePS,
+]);
+
+/** Live fight stats elements: id → who (player slot / team), what, and game or whole set. */
+export type FightStatMetric = 'Damage' | 'Kos' | 'AvgKoPercent' | 'AvgDeathPercent';
+export const FIGHT_STAT_ELEMENTS = new Map<CustomElement, { subject: 'Player1' | 'Player2' | 'Team1' | 'Team2'; metric: FightStatMetric; match: boolean }>(
+	(['Live', 'LiveMatch'] as const).flatMap((scope) =>
+		(['Damage', 'Kos', 'AvgKoPercent', 'AvgDeathPercent'] as const).flatMap((metric) =>
+			(['Player1', 'Player2', 'Team1', 'Team2'] as const).map(
+				(subject) => [CustomElement[`${scope}${subject}${metric}` as keyof typeof CustomElement], { subject, metric, match: scope === 'LiveMatch' }] as const,
+			),
+		),
+	),
+);
+
+/** Win chance elements: id → whose side, game or set. */
+export const WIN_CHANCE_ELEMENTS = new Map<CustomElement, { side: 0 | 1; set: boolean }>([
+	[CustomElement.WinChanceGamePlayer1, { side: 0, set: false }],
+	[CustomElement.WinChanceGamePlayer2, { side: 1, set: false }],
+	[CustomElement.WinChanceSetPlayer1, { side: 0, set: true }],
+	[CustomElement.WinChanceSetPlayer2, { side: 1, set: true }],
+]);
+
+/** Edge cancels (slippi-js action counts) + edgeguards (Froggi, per game and summed over the set). */
+export type EdgeStatMetric = 'EdgeCancels' | 'EdgeCancelsSlow' | 'Edgeguards' | 'EdgeguardAttempts' | 'EdgeguardPercent';
+export const EDGE_STAT_ELEMENTS = new Map<CustomElement, { subject: 'Player1' | 'Player2'; metric: EdgeStatMetric; match: boolean }>(
+	(['PostGame', 'PostGameMatch'] as const).flatMap((scope) =>
+		(['EdgeCancels', 'EdgeCancelsSlow', 'Edgeguards', 'EdgeguardAttempts', 'EdgeguardPercent'] as const).flatMap((metric) =>
+			(['Player1', 'Player2'] as const).map(
+				(subject) => [CustomElement[`${scope}${subject}${metric}` as keyof typeof CustomElement], { subject, metric, match: scope === 'PostGameMatch' }] as const,
+			),
+		),
+	),
+);
+
+export const TEAM_ELEMENTS = new Set<CustomElement>([
+	CustomElement.Player1Port,
+	CustomElement.Player2Port,
+	CustomElement.Team1Name,
+	CustomElement.Team2Name,
+	CustomElement.Team1Stocks,
+	CustomElement.Team2Stocks,
+	CustomElement.CurrentPlayerTeamName,
+	CustomElement.OpponentTeamName,
+	CustomElement.CurrentPlayerTeamStocks,
+	CustomElement.OpponentTeamStocks,
 ]);

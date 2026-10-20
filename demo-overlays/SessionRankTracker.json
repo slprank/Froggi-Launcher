@@ -3,7 +3,10 @@
 	"description": "Scene Description",
 	"froggiVersion": "0.0.0",
 	"id": "session-win-loss",
-	"aspectRatio": { "width": 9, "height": 16 },
+	"aspectRatio": {
+		"width": 9,
+		"height": 16
+	},
 	"title": "Session Win/Loss",
 	"waitingForDolphin": {
 		"active": true,
@@ -23,10 +26,17 @@
 				"type": "none"
 			},
 			"out": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
+				"options": {
+					"delay": 0,
+					"duration": 0,
+					"easing": "",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -59,8 +69,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 13526, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 13526,
+				"items": []
+			}
+		]
 	},
 	"menu": {
 		"active": true,
@@ -90,7 +110,7 @@
 				},
 				"type": "fly automatic"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -123,7 +143,10 @@
 				}
 			}
 		},
-		"font": { "family": "Roboto Bold Italic", "src": "" },
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
 		"layers": [
 			{
 				"index": 0,
@@ -137,8 +160,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 40,
 							"h": 17,
 							"x": 52,
@@ -174,7 +203,10 @@
 								},
 								"selectedOptions": {}
 							},
-							"class": { "rounded": "", "alignment": "justify-center" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-center"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -190,9 +222,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -218,13 +257,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "W:",
-							"textStroke": { "size": 2, "color": "#000000ff" },
+							"textStroke": {
+								"size": 2,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					},
@@ -235,8 +285,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 70,
 							"h": 17,
 							"x": 93,
@@ -270,9 +326,18 @@
 									},
 									"type": "fade"
 								},
-								"selectedOptions": { "Session Wins Change": true }
+								"selectedOptions": {},
+								"elementTriggers": [
+									{
+										"source": "self",
+										"when": "change"
+									}
+								]
 							},
-							"class": { "rounded": "", "alignment": "justify-start" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-start"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -288,9 +353,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -316,13 +388,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "",
-							"textStroke": { "size": 2, "color": "#000000ff" },
+							"textStroke": {
+								"size": 2,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					},
@@ -333,8 +416,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 29,
 							"h": 17,
 							"x": 404,
@@ -370,7 +459,10 @@
 								},
 								"selectedOptions": {}
 							},
-							"class": { "rounded": "", "alignment": "justify-center" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-center"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -386,9 +478,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -414,13 +513,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "L:",
-							"textStroke": { "size": 2, "color": "#000000ff" },
+							"textStroke": {
+								"size": 2,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					},
@@ -431,8 +541,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 70,
 							"h": 17,
 							"x": 433,
@@ -477,15 +593,23 @@
 									"Match Best Of Change": false,
 									"Session Rating Change": false,
 									"Session Games Number Change": false,
-									"Session Losses Change": true,
 									"Session Wins Change": false,
 									"Slippi Stats Rating Change": false,
 									"Slippi Stats Rank Change": false,
 									"Slippi Stats Losses Change": false,
 									"Slippi Stats Wins Change": false
-								}
+								},
+								"elementTriggers": [
+									{
+										"source": "self",
+										"when": "change"
+									}
+								]
 							},
-							"class": { "rounded": "", "alignment": "justify-start" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-start"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -501,9 +625,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -529,13 +660,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "L:",
-							"textStroke": { "size": 2, "color": "#000000ff" },
+							"textStroke": {
+								"size": 2,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					}
@@ -553,8 +695,14 @@
 							"draggable": true,
 							"customDragger": false,
 							"customResizer": true,
-							"min": { "w": 1, "h": 1 },
-							"max": { "y": 511, "h": 513 },
+							"min": {
+								"w": 1,
+								"h": 1
+							},
+							"max": {
+								"y": 511,
+								"h": 513
+							},
 							"w": 119,
 							"h": 17,
 							"x": 199,
@@ -597,7 +745,6 @@
 									"Player 1 Tag Change": false,
 									"Match Game Mode Change": false,
 									"Match Best Of Change": false,
-									"Session Rating Change": true,
 									"Session Games Number Change": false,
 									"Session Losses Change": false,
 									"Session Wins Change": false,
@@ -605,9 +752,18 @@
 									"Slippi Stats Rank Change": false,
 									"Slippi Stats Losses Change": false,
 									"Slippi Stats Wins Change": false
-								}
+								},
+								"elementTriggers": [
+									{
+										"source": "self",
+										"when": "change"
+									}
+								]
 							},
-							"class": { "rounded": "", "alignment": "justify-center" },
+							"class": {
+								"rounded": "",
+								"alignment": "justify-center"
+							},
 							"css": {
 								"background": "#ffffff00",
 								"borderLeft": "0rem solid",
@@ -623,9 +779,16 @@
 								"fillOpacity": 1
 							},
 							"description": "",
-							"percent": { "startColor": "#ffffff", "endColor": "#6f1622" },
-							"font": { "family": "default" },
-							"image": { "objectFit": "contain" },
+							"percent": {
+								"startColor": "#ffffff",
+								"endColor": "#6f1622"
+							},
+							"font": {
+								"family": "default"
+							},
+							"image": {
+								"objectFit": "contain"
+							},
 							"visibility": {
 								"in": {
 									"options": {
@@ -651,13 +814,24 @@
 								},
 								"selectedOptions": []
 							},
-							"shadow": { "x": 0, "y": 0, "spread": 0, "color": "#000000ff" },
+							"shadow": {
+								"x": 0,
+								"y": 0,
+								"spread": 0,
+								"color": "#000000ff"
+							},
 							"string": "L:",
-							"textStroke": { "size": 2, "color": "#000000ff" },
+							"textStroke": {
+								"size": 2,
+								"color": "#000000ff"
+							},
 							"transform": {
 								"rotate": 0,
 								"scale": "1, 1",
-								"translate": { "x": 0, "y": 0 }
+								"translate": {
+									"x": 0,
+									"y": 0
+								}
 							}
 						}
 					}
@@ -683,10 +857,17 @@
 				"type": "none"
 			},
 			"out": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
+				"options": {
+					"delay": 0,
+					"duration": 0,
+					"easing": "",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -719,8 +900,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 13528, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 13528,
+				"items": []
+			}
+		]
 	},
 	"postGame": {
 		"active": false,
@@ -740,10 +931,17 @@
 				"type": "none"
 			},
 			"out": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
+				"options": {
+					"delay": 0,
+					"duration": 0,
+					"easing": "",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -776,8 +974,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 13529, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 13529,
+				"items": []
+			}
+		]
 	},
 	"postSet": {
 		"active": false,
@@ -797,10 +1005,17 @@
 				"type": "none"
 			},
 			"out": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
+				"options": {
+					"delay": 0,
+					"duration": 0,
+					"easing": "",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -833,8 +1048,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 13530, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 13530,
+				"items": []
+			}
+		]
 	},
 	"rankChange": {
 		"active": false,
@@ -854,10 +1079,17 @@
 				"type": "none"
 			},
 			"out": {
-				"options": { "delay": 0, "duration": 0, "easing": "", "start": 0, "x": 0, "y": 0 },
+				"options": {
+					"delay": 0,
+					"duration": 0,
+					"easing": "",
+					"start": 0,
+					"x": 0,
+					"y": 0
+				},
 				"type": "none"
 			},
-			"layerRenderDelay": 250
+			"layerRenderDelay": 60
 		},
 		"background": {
 			"color": "#000000",
@@ -890,8 +1122,18 @@
 				}
 			}
 		},
-		"font": { "family": "default", "src": "" },
-		"layers": [{ "index": 0, "preview": true, "id": 13531, "items": [] }]
+		"font": {
+			"family": "Roboto Bold Italic",
+			"src": ""
+		},
+		"layers": [
+			{
+				"index": 0,
+				"preview": true,
+				"id": 13531,
+				"items": []
+			}
+		]
 	},
 	"customFiles": {}
 }

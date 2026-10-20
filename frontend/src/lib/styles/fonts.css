@@ -36,3 +36,9 @@
 	src: local(''),
 		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/OpenSans.ttf') format('truetype');
 }
+@font-face {
+	/* Buy Me a Coffee's wordmark font (Google Fonts, OFL) — bundled so it works offline. */
+	font-family: 'Cookie';
+	src: url('/fonts/Cookie-Regular.woff2') format('woff2');
+	font-display: swap;
+}

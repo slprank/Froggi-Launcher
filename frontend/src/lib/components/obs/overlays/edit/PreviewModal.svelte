@@ -1,4 +1,5 @@
 <script lang="ts">
+	import QrReveal from '$lib/components/QrReveal.svelte';
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
@@ -6,7 +7,6 @@
 	//@ts-ignore
 	import Clipboard from 'svelte-clipboard';
 	//@ts-ignore
-	import QrCode from 'svelte-qrcode';
 
 	const overlayId = $page.params.overlay;
 	$: localUrl = `${$urls?.local}/obs/overlay/${overlayId}/layers/external`;
@@ -32,7 +32,7 @@
 		<div class="flex-1 flex flex-col justify-between items-center rounded-md">
 			<h1 class="text-xl font-medium text-secondary-color">Open on external device</h1>
 			<div class="border-secondary" style="border-width: 0.125em">
-				<QrCode value={`${externalUrl}`} />
+				<QrReveal value={`${externalUrl}`} size={200} />
 			</div>
 			<Clipboard
 				text={`${externalUrl}`}

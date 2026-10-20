@@ -2,6 +2,41 @@ import type { ContentTopic } from '../types';
 
 export const appTopics: ContentTopic[] = [
 	{
+		id: 'troubleshooting-no-game-data',
+		title: 'Dolphin is connected but overlays show nothing',
+		category: 'app',
+		summary: 'Froggi connects to Dolphin but no game data arrives (no percent/stocks, scene never leaves Menu) — usually Dolphin was not started from Slippi Launcher, or the replay folder is wrong.',
+		blocks: [
+			{
+				type: 'list',
+				text: 'Check in this order (nothing is written to the error log for these, so diagnose_errors will not show them — read_recent_logs with search "Dolphin" shows whether Dolphin was found and reached "Connection State: CONNECTED"):',
+				items: [
+					'Dolphin started outside Slippi Launcher (a standalone Dolphin, an old shortcut, or opening the .app/.exe directly): Froggi can find and connect to the process, but that Dolphin does not send Slippi game data. Fix: close Dolphin and start it from Slippi Launcher (Play / Watch). The log then shows "Dolphin Found" and "Connection State: CONNECTED", and game start appears when a game begins.',
+					'Replay folder: post-game stats and rank changes are read from the replays. If Slippi Launcher → Settings → Replays points at a folder that does not exist (on Windows often OneDrive\\Documents\\Slippi instead of Documents\\Slippi), live data works but post-game stats do not. Set the real folder and restart Froggi.',
+					'Still nothing: restart Dolphin from Slippi Launcher after Froggi is open, then start a game (menus alone send no game data).',
+				],
+			},
+		],
+	},
+	{
+		id: 'share-live-game',
+		title: 'Share your live game with friends',
+		category: 'app',
+		summary: 'Home → "Share live game": send friends a link and they watch your game live in their browser — nothing to install, no stream needed, read-only.',
+		blocks: [
+			{
+				type: 'list',
+				text: 'How it works:',
+				items: [
+					'Home → Share live game shows a preview of exactly what friends see: the stage, the characters moving, and a Melee-style HUD (percent and stocks along the bottom by port, centred; timer and set score on top).',
+					'"Open live view" opens it in a window on this computer. To share it, use a link: Permanent (Tailscale Funnel — never changes) or Temporary (ngrok — changes when ngrok restarts). Links stay hidden until "Show"; Copy works either way.',
+					'If Tailscale or ngrok isn\'t set up, the card says what is missing (not installed / not logged in / Funnel off) and "Set up …" goes to Settings → Remote Access.',
+					'Viewers can only watch (up to 5). Controlling Froggi still needs the host password.',
+				],
+			},
+		],
+	},
+	{
 		id: 'app-overview',
 		title: 'What Froggi does',
 		category: 'app',
@@ -62,7 +97,7 @@ export const appTopics: ContentTopic[] = [
 			},
 			{
 				type: 'note',
-				text: 'Apps on this computer always use the local URL — no Tailscale needed. "Expose over Tailscale (HTTPS)" is only for an MCP app on ANOTHER of your devices in the same tailnet. Web/cloud apps (claude.ai, the Claude mobile app\'s connectors) run on remote servers and cannot reach a tailnet-only URL, so exposing it does not help them.',
+				text: 'Apps on this computer always use the local URL — no Tailscale needed. The local URL and "Expose over Tailscale (HTTPS)" sit under Settings → AI Assistant → Advanced (collapsed); the "Connect an AI app" buttons need neither. "Expose over Tailscale (HTTPS)" is only for an MCP app on ANOTHER of your devices in the same tailnet. Web/cloud apps (claude.ai, the Claude mobile app\'s connectors) run on remote servers and cannot reach a tailnet-only URL, so exposing it does not help them.',
 			},
 		],
 	},

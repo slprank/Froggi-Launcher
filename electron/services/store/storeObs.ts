@@ -18,6 +18,8 @@ export class ElectronObsStore {
         @inject(delay(() => MessageHandler)) private messageHandler: MessageHandler,
     ) {
         this.log.info("Initializing Obs Store")
+        // The saved state is from the last run (e.g. "Searching") — nothing is connected at startup.
+        this.store.set('obs.connection.state', ConnectionState.Disconnected);
         this.initListeners();
     }
 
@@ -69,6 +71,7 @@ export class ElectronObsStore {
     setConnectionState(state: ConnectionState) {
         this.obsConnectionState = state;
         this.store.set('obs.connection.state', state);
+        if (state === ConnectionState.Connected) this.store.set('obs.connection.lastConnectedAt', new Date().toISOString());
     }
 
     setInputs(inputs: ObsInputs[]) {

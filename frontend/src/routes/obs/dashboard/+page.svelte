@@ -1,11 +1,20 @@
 <script lang="ts">
+	import SecretUrl from '$lib/components/SecretUrl.svelte';
+	import QrReveal from '$lib/components/QrReveal.svelte';
+	import BackButton from '$lib/components/navigation/BackButton.svelte';
 	import { BestOf, ConnectionState, InGameState } from '$lib/models/enum';
+	import { obsStatus, OBS_STATUS_TEXT } from '$lib/utils/obsStatus';
 	import { CommandType } from '$lib/models/types/commandTypes';
 	import ReplayBufferHandler from '$lib/components/dashboard/ReplayBufferHandler.svelte';
 	import ObsScenes from '$lib/components/dashboard/ObsCommands/ObsScenes.svelte';
 	import { onMount } from 'svelte';
 	import StreamPreview from '$lib/components/dashboard/StreamPreview.svelte';
 	import StrikePreview from '$lib/components/dashboard/StrikePreview.svelte';
+	import TeamNamesModal from '$lib/components/dashboard/Modals/TeamNamesModal.svelte';
+	import SetGamesModal from '$lib/components/dashboard/Modals/SetGamesModal.svelte';
+	import SetNamesModal from '$lib/components/dashboard/Modals/SetNamesModal.svelte';
+	import Modal from '$lib/components/modal/Modal.svelte';
+	import { teamDisplayName } from '$lib/utils/teams';
 	import ScoreUpdateModal from '$lib/components/dashboard/Modals/ScoreUpdateModal.svelte';
 	import TagUpdateModal from '$lib/components/dashboard/Modals/TagUpdateModal.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
@@ -13,7 +22,6 @@
 	import { notifications } from '$lib/components/notification/Notifications.svelte';
 	import { goto } from '$app/navigation';
 	import ObsIntegration from '$lib/components/obs/ObsIntegration.svelte';
-	import LiveShareCard from '$lib/components/LiveShareCard.svelte';
 	import {
 		controller,
 		currentPlayers,
@@ -29,17 +37,17 @@
 		recentGames,
 		sceneSwitch,
 		strikeState,
+		isAuthorized,
 		tailscaleStatus,
 		strikeTokens,
+		teamNames,
 		ngrokStatus,
 		urls,
 		remoteAccess,
 	} from '$lib/utils/store.svelte';
-	// @ts-ignore
-	import QrCode from 'svelte-qrcode';
 	import { tooltip } from 'svooltip';
 	import { STAGE_DATA } from '$lib/models/constants/stageData';
-	import { getWinnerIndex, findSettingsPlayer } from '$lib/utils/gamePredicates';
+	import { gameWinnerSlot, findSettingsPlayer } from '$lib/utils/gamePredicates';
 
 	let isScoreModalOpen = false;
 	let isTagModalOpen = false;
@@ -57,12 +65,40 @@
 
 	$: p1 = $currentPlayers?.at(0);
 	$: p2 = $currentPlayers?.at(1);
-	$: p1Name = p1?.displayName?.length ? p1.displayName : 'Player 1';
-	$: p2Name = p2?.displayName?.length ? p2.displayName : 'Player 2';
+	// Singles / Doubles: Auto follows the game being played (Slippi teams flag); you can force either.
+	const FORMAT_KEY = 'froggi.dashboard.format';
+	type DashFormat = 'auto' | 'singles' | 'doubles';
+	let formatPref: DashFormat = 'auto';
+	onMount(() => (formatPref = (localStorage.getItem(FORMAT_KEY) as DashFormat) || 'auto'));
+	const setFormat = (f: DashFormat) => {
+		formatPref = f;
+		localStorage.setItem(FORMAT_KEY, f);
+	};
+	const FORMATS: { value: DashFormat; label: string; tip: string }[] = [
+		{ value: 'auto', label: 'Auto', tip: 'Follows the game being played (teams game = doubles)' },
+		{ value: 'singles', label: 'Singles', tip: 'Always show 1v1' },
+		{ value: 'doubles', label: 'Doubles', tip: 'Always show teams' },
+	];
+	$: isDoubles = formatPref === 'doubles' || (formatPref === 'auto' && !!$gameSettings?.isTeams);
+	// In doubles the live players are in slot order: [T1P1, T2P1, T1P2, T2P2].
+	$: team1Auto = teamDisplayName('', [$currentPlayers?.[0], $currentPlayers?.[2]], 'Team 1');
+	$: team2Auto = teamDisplayName('', [$currentPlayers?.[1], $currentPlayers?.[3]], 'Team 2');
+	// During a set the set's names win (players can type their own on their phone).
+	$: inSet = !!$strikeState && $strikeState.phase !== 'lobby';
+	$: p1Name = inSet && $strikeState ? $strikeState.p1Name : isDoubles ? teamDisplayName($teamNames[0], [$currentPlayers?.[0], $currentPlayers?.[2]], 'Team 1') : p1?.displayName?.length ? p1.displayName : 'Player 1';
+	$: p2Name = inSet && $strikeState ? $strikeState.p2Name : isDoubles ? teamDisplayName($teamNames[1], [$currentPlayers?.[1], $currentPlayers?.[3]], 'Team 2') : p2?.displayName?.length ? p2.displayName : 'Player 2';
+	let isTeamNamesOpen = false;
+	let isSetGamesOpen = false;
+	let isSetNamesOpen = false;
+	const editNames = () => (inSet ? (isSetNamesOpen = true) : isDoubles ? (isTeamNamesOpen = true) : (isTagModalOpen = true));
+	// During a set the set's own score (it includes results reported by hand); otherwise Slippi's.
 	$: score0 = $gameScore?.at(0) ?? 0;
 	$: score1 = $gameScore?.at(1) ?? 0;
+	// One games list for the set (Slippi, artificial, from replay) — the striking set follows it.
+	const openEditGames = () => (isScoreModalOpen = true);
 	$: bestOf = $gameSettings?.matchInfo?.bestOf ?? BestOf.BestOf3;
 	$: obsConnected = $obsConnection?.state === ConnectionState.Connected;
+	$: obsState = obsStatus($obsConnection, $obsProcessStatus?.running);
 	$: obsWebsocketDisabled = $obsProcessStatus?.running && $obsProcessStatus?.websocketEnabled === false;
 	$: isLive = $gameState !== InGameState.Inactive;
 
@@ -140,13 +176,21 @@
 
 	$: matchId = $gameSettings?.matchInfo?.matchId ?? '';
 	$: isOnline = ngrokRunning;
-	$: strikeBase = isOnline
-		? ($remoteAccess.ngrok ?? $urls?.external ?? '')
-		: ($remoteAccess.tailscale ?? $urls?.external ?? '');
+	// Striking links: Tailscale's permanent address when it's on (public, works online and at the venue),
+	// else ngrok when it runs, else this network's address.
+	$: strikeBase = $remoteAccess.tailscale ?? (isOnline ? $remoteAccess.ngrok : undefined) ?? $urls?.external ?? '';
 	// Player links carry each player's secret token (only the app window receives them).
-	$: strikeP1Url = strikeBase && $strikeTokens ? `${strikeBase}/set/p/1?t=${$strikeTokens[1]}` : '';
-	$: strikeP2Url = strikeBase && $strikeTokens ? `${strikeBase}/set/p/2?t=${$strikeTokens[2]}` : '';
+	// Swapped sides (Fix set…): each side's phone is the other link (phones keep their link).
+	$: linkOf = (side: 1 | 2) => ($strikeState?.sidesSwapped ? (side === 1 ? 2 : 1) : side);
+	$: strikeP1Url = strikeBase && $strikeTokens ? `${strikeBase}/set/p/${linkOf(1)}?t=${$strikeTokens[linkOf(1)]}` : '';
+	$: strikeP2Url = strikeBase && $strikeTokens ? `${strikeBase}/set/p/${linkOf(2)}?t=${$strikeTokens[linkOf(2)]}` : '';
 	onMount(() => $electronEmitter.emit('StrikePlayerTokensRequest'));
+	// Remote dashboards (TO's phone with the host password) get the links once authorized.
+	let tokensAsked = false;
+	$: if ($isAuthorized && !$isElectron && !tokensAsked) {
+		tokensAsked = true;
+		$electronEmitter.emit('StrikePlayerTokensRequest');
+	}
 
 	$: tsInstalled = $tailscaleStatus?.installed ?? false;
 	$: tsAuthenticated = $tailscaleStatus?.authenticated ?? false;
@@ -197,16 +241,36 @@
 	let setP1Name = '';
 	let setP2Name = '';
 	let setBo: 3 | 5 = 3;
+	let setAllowAgreement = true;
 
+	// Doubles: each team's player tags (lower port first) — [Team 1: P1, P2], [Team 2: P1, P2].
+	let setTags: { p1: [string, string]; p2: [string, string] } = { p1: ['', ''], p2: ['', ''] };
 	const openStartSetModal = () => {
-		setP1Name = p1Name;
-		setP2Name = p2Name;
+		if (isDoubles) {
+			setP1Name = $teamNames[0] ?? '';
+			setP2Name = $teamNames[1] ?? '';
+			const tag = (i: number) => $currentPlayers?.[i]?.displayName ?? '';
+			setTags = { p1: [tag(0), tag(2)], p2: [tag(1), tag(3)] };
+		} else {
+			setP1Name = p1Name;
+			setP2Name = p2Name;
+		}
 		setBo = 3;
 		isStartSetModalOpen = true;
 	};
+	/** A team's name: typed, else "Tag & Tag" when both tags are typed, else Team N. */
+	const typedTeamName = (name: string, tags: [string, string], n: 1 | 2) =>
+		name.trim() || (tags[0].trim() && tags[1].trim() ? `${tags[0].trim()} & ${tags[1].trim()}` : `Team ${n}`);
 
 	const confirmStartSet = () => {
-		$electronEmitter.emit('StartSet', setP1Name || 'Player 1', setP2Name || 'Player 2', setBo);
+		if (isDoubles) {
+			$electronEmitter.emit('StartSet', typedTeamName(setP1Name, setTags.p1, 1), typedTeamName(setP2Name, setTags.p2, 2), setBo, setAllowAgreement, 'doubles', {
+				names: [setP1Name.trim(), setP2Name.trim()],
+				tags: setTags,
+			});
+		} else {
+			$electronEmitter.emit('StartSet', setP1Name || p1Name, setP2Name || p2Name, setBo, setAllowAgreement, 'singles');
+		}
 		isStartSetModalOpen = false;
 	};
 	const copyStrikeLink = async (url: string, idx: number, who: string) => {
@@ -223,22 +287,23 @@
 
 <main class="flex justify-center">
 <div class="w-full max-w-3xl">
+<BackButton />
 <h1 class="text-xl font-semibold text-secondary-color mb-4">Dashboard</h1>
 
 <!-- ── Match bar ── -->
 <div class="match-bar border-secondary mb-3">
 	<div class="match-names">
 		<div class="player-col">
-			<button class="player-name" on:click={() => (isTagModalOpen = true)}>{p1Name}</button>
+			<button class="player-name" on:click={editNames}>{p1Name}</button>
 			{#if strikeP1Url}
 				<div class="player-qr-group">
-					<span class="qr-type-label">P1 phone · stage striking</span>
+					<span class="qr-type-label">{isDoubles ? 'Team 1' : 'Player 1'} · striking link</span>
 					<button
 						class="qr-click"
 						use:tooltip={{ content: 'Copy URL', placement: 'top', delay: [200, 0] }}
 						on:click={() => copyStrikeLink(strikeP1Url, 11, 'Player 1')}
 					>
-						<QrCode value={strikeP1Url} size="64" color="#ffffff" background="#000000" />
+						<QrReveal value={strikeP1Url} size={72} />
 						{#if copiedIdx === 11}<span class="qr-copied-overlay">✓</span>{/if}
 					</button>
 				</div>
@@ -250,23 +315,31 @@
 			{/if}
 		</div>
 
-		<button class="score-block" on:click={() => (isScoreModalOpen = true)}>
-			<span class="score-num">{score0}</span>
-			<span class="score-sep">—</span>
-			<span class="score-num">{score1}</span>
-		</button>
+		<div class="center-col">
+			<button class="score-block" on:click={openEditGames}>
+				<span class="score-num">{score0}</span>
+				<span class="score-sep">—</span>
+				<span class="score-num">{score1}</span>
+			</button>
+			<button
+				class="btn text-xs h-7 px-4 border-secondary rounded start-set-btn"
+				class:start-set-btn--complete={setComplete}
+				class:start-set-btn--progress={setInProgress}
+				on:click={openStartSetModal}
+			>{setInProgress ? 'New set' : 'Start set'}</button>
+		</div>
 
 		<div class="player-col player-col--right">
-			<button class="player-name text-right" on:click={() => (isTagModalOpen = true)}>{p2Name}</button>
+			<button class="player-name text-right" on:click={editNames}>{p2Name}</button>
 			{#if strikeP2Url}
 				<div class="player-qr-group player-qr-group--right">
-					<span class="qr-type-label">P2 phone · stage striking</span>
+					<span class="qr-type-label">{isDoubles ? 'Team 2' : 'Player 2'} · striking link</span>
 					<button
 						class="qr-click"
 						use:tooltip={{ content: 'Copy URL', placement: 'top', delay: [200, 0] }}
 						on:click={() => copyStrikeLink(strikeP2Url, 12, 'Player 2')}
 					>
-						<QrCode value={strikeP2Url} size="64" color="#ffffff" background="#000000" />
+						<QrReveal value={strikeP2Url} size={72} />
 						{#if copiedIdx === 12}<span class="qr-copied-overlay">✓</span>{/if}
 					</button>
 				</div>
@@ -280,6 +353,14 @@
 	</div>
 	<div class="match-controls">
 		<div class="ctrl-left">
+			<div class="format-pills">
+				{#each FORMATS as f (f.value)}
+					<button class="format-pill" class:format-pill--on={formatPref === f.value} use:tooltip={{ content: f.tip, placement: 'top', delay: [250, 0] }} on:click={() => setFormat(f.value)}>
+						{f.value === 'auto' ? `Auto · ${isDoubles ? 'Doubles' : 'Singles'}` : f.label}
+					</button>
+				{/each}
+				<button class="format-pill format-pill--fix" use:tooltip={{ content: 'Fix who is on which port, or load previous games into the set', placement: 'top', delay: [250, 0] }} on:click={() => (isSetGamesOpen = true)}>⚠ Fix set…</button>
+			</div>
 			{#if $isElectron && ngrokConfigured}
 				<label class="flex items-center gap-1.5">
 					<span class="text-xs opacity-40">Online</span>
@@ -287,22 +368,39 @@
 				</label>
 			{/if}
 		</div>
-		<div class="ctrl-center">
-			<button
-				class="btn text-xs h-6 px-3 border-secondary rounded start-set-btn"
-				class:start-set-btn--complete={setComplete}
-				class:start-set-btn--progress={setInProgress}
-				on:click={openStartSetModal}
-			>Start Set</button>
-			<button class="btn text-xs h-6 px-2.5 border-secondary rounded" on:click={() => goto('/set')}>Stage striking →</button>
-		</div>
 		<div class="ctrl-right">
-			<button class="btn text-xs h-6 px-2.5 border-secondary rounded" on:click={() => (isScoreModalOpen = true)}>Edit Games</button>
+			<button class="btn text-xs h-6 px-2.5 border-secondary rounded" on:click={openEditGames}>Edit Games</button>
 		</div>
 	</div>
 	{#if !strikeBase}
 		<p class="no-tunnel-hint">No tunnel — <button class="inline-link" on:click={() => goto('/settings')}>configure ngrok</button> for strike links</p>
 	{/if}
+	{#if $recentGames.length > 0}
+		<!-- Games of the set (one list — Edit Games): winner from the set score, so overrides count. -->
+		<div class="history-list">
+			{#each $recentGames as game, i}
+				{@const win = gameWinnerSlot($recentGames, i)}
+				{@const gp1c = findSettingsPlayer(game.settings?.players, p1Idx)?.characterId ?? 0}
+				{@const gp2c = findSettingsPlayer(game.settings?.players, p2Idx)?.characterId ?? 0}
+				{@const gp1col = findSettingsPlayer(game.settings?.players, p1Idx)?.characterColor ?? 0}
+				{@const gp2col = findSettingsPlayer(game.settings?.players, p2Idx)?.characterColor ?? 0}
+				{@const gStage = STAGE_DATA[game.settings?.stageId ?? -1]?.name ?? '—'}
+				<button class="history-row" title={game.resultOverride ? `Changed by the host: ${game.resultOverride.note}` : 'Edit games'} on:click={openEditGames}>
+					<span class="history-num">G{i + 1}{game.isMock ? '*' : ''}</span>
+					<img class="history-char" class:history-char--win={win === 0} class:history-char--lose={win !== 0}
+						src="/image/characters/{gp1c}/{gp1col}/stock.png" alt="" />
+					<span class="history-stage">{gStage}{game.resultOverride ? ' ✎' : ''}</span>
+					<img class="history-char" class:history-char--win={win === 1} class:history-char--lose={win !== 1}
+						src="/image/characters/{gp2c}/{gp2col}/stock.png" alt="" />
+				</button>
+			{/each}
+		</div>
+	{/if}
+</div>
+
+<!-- ── Stage striking (live, with host overrides) ── -->
+<div class="mb-3">
+	<StrikePreview />
 </div>
 
 <!-- ── Live game ── -->
@@ -389,113 +487,17 @@
 </div>
 {/if}
 
-<!-- ── Game history ── -->
-{#if $recentGames.length > 0}
-<div class="dash-card border-secondary mb-3">
-	<p class="dash-label mb-2">Games</p>
-	<div class="history-list">
-		{#each $recentGames as game, i}
-			{@const wi = getWinnerIndex(game)}
-			{@const gp1c = findSettingsPlayer(game.settings?.players, p1Idx)?.characterId ?? 0}
-			{@const gp2c = findSettingsPlayer(game.settings?.players, p2Idx)?.characterId ?? 0}
-			{@const gp1col = findSettingsPlayer(game.settings?.players, p1Idx)?.characterColor ?? 0}
-			{@const gp2col = findSettingsPlayer(game.settings?.players, p2Idx)?.characterColor ?? 0}
-			{@const gStage = STAGE_DATA[game.settings?.stageId ?? -1]?.name ?? '—'}
-			<div class="history-row">
-				<span class="history-num">G{i + 1}</span>
-				<img class="history-char" class:history-char--win={wi === p1Idx} class:history-char--lose={wi !== p1Idx}
-					src="/image/characters/{gp1c}/{gp1col}/stock.png" alt="" />
-				<span class="history-stage">{gStage}</span>
-				<img class="history-char" class:history-char--win={wi === p2Idx} class:history-char--lose={wi !== p2Idx}
-					src="/image/characters/{gp2c}/{gp2col}/stock.png" alt="" />
-			</div>
-		{/each}
-	</div>
-</div>
-{/if}
-
-<!-- ── Stage striking (live, with host overrides) ── -->
-<div class="mb-3">
-	<StrikePreview />
-</div>
-
 <!-- ── Stream preview ── -->
 <div class="mb-3">
 	<StreamPreview />
 </div>
-
-<!-- ── Share live game ── -->
-{#if $isElectron}
-<div class="mb-3">
-	<LiveShareCard />
-</div>
-{/if}
-
-<!-- ── Connectivity ── -->
-{#if $isElectron}
-<div class="dash-card border-secondary mb-3">
-	<p class="dash-label mb-3">Connectivity</p>
-	<div class="flex flex-col gap-2">
-		<div class="conn-row">
-			<span class="conn-tag conn-tag--obs">OBS</span>
-			{#if obsConnected}
-				<span class="text-xs opacity-55 flex-1">Connected</span>
-			{:else if $obsConnection?.state === ConnectionState.Searching}
-				<span class="text-xs opacity-40 flex-1">Connecting…</span>
-			{:else if obsWebsocketDisabled}
-				<span class="text-xs opacity-40 flex-1">WebSocket disabled</span>
-				<ObsIntegration cls="btn text-xs h-6 px-3 border-secondary rounded shrink-0" />
-			{:else}
-				<span class="text-xs opacity-40 flex-1">Disconnected</span>
-				<ObsIntegration cls="btn text-xs h-6 px-3 border-secondary rounded shrink-0" />
-			{/if}
-		</div>
-		<div class="conn-row">
-			<span class="conn-tag conn-tag--ts">Remote Control</span>
-			{#if !tsConfigured}
-				<span class="text-xs opacity-40 flex-1">Not configured</span>
-				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={() => goto('/settings')}>Set up →</button>
-			{:else if tsFunnelActive && $remoteAccess.tailscale}
-				<span class="text-xs opacity-55 flex-1">Funnel on · link hidden</span>
-				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={async () => { await navigator.clipboard.writeText($remoteAccess.tailscale ?? ''); copiedIdx = 20; setTimeout(() => copiedIdx = null, 2000); }}>{copiedIdx === 20 ? '✓' : '⎘'}</button>
-				<input type="checkbox" class="toggle-check shrink-0" checked={tsFunnelActive} on:change={toggleTailscaleFunnel} />
-			{:else}
-				<span class="text-xs opacity-40 flex-1">Funnel off</span>
-				<button class="btn text-xs h-6 px-3 border-secondary rounded shrink-0" on:click={toggleTailscaleFunnel}>Enable</button>
-			{/if}
-		</div>
-		<div class="conn-row">
-			<span class="conn-tag conn-tag--ngrok">Stage Striking</span>
-			{#if !ngrokConfigured}
-				<span class="text-xs opacity-40 flex-1">Not configured</span>
-				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={() => goto('/settings')}>Set up →</button>
-			{:else if ngrokRunning && $remoteAccess.ngrok}
-				<span class="font-mono text-xs opacity-55 flex-1 truncate min-w-0">{$remoteAccess.ngrok}</span>
-				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={async () => { await navigator.clipboard.writeText($remoteAccess.ngrok ?? ''); copiedIdx = 21; setTimeout(() => copiedIdx = null, 2000); }}>{copiedIdx === 21 ? '✓' : '⎘'}</button>
-				<button
-					class="btn text-xs h-6 px-2 border-secondary rounded shrink-0"
-					class:conn-refresh-pulse={ngrokRefreshHint}
-					title="Restart tunnel for a fresh URL"
-					on:click={restartNgrok}
-				>↻</button>
-				<input type="checkbox" class="toggle-check shrink-0" checked={ngrokRunning} on:change={toggleNgrok} />
-			{:else}
-				<span class="text-xs opacity-40 flex-1">{ngrokRunning ? 'Starting…' : 'Stopped'}</span>
-				<button class="btn text-xs h-6 px-3 border-secondary rounded shrink-0" on:click={toggleNgrok}>{ngrokRunning ? 'Stop' : 'Start'}</button>
-			{/if}
-		</div>
-	</div>
-</div>
-{/if}
-
-
 
 <!-- ── OBS Controls ── -->
 <div class="obs-section" class:obs-section--offline={!obsConnected}>
 	<div class="obs-header">
 		<span class="dash-label">OBS Controls</span>
 		<span class="status-pill" class:status-pill--ok={obsConnected} class:status-pill--err={!obsConnected}>
-			OBS {obsConnected ? 'Connected' : 'Disconnected'}
+			OBS {obsConnected ? 'Connected' : obsState === 'closed' ? 'closed' : obsState === 'notSetUp' ? 'not set up' : 'not connected'}
 		</span>
 	</div>
 
@@ -565,11 +567,74 @@
 	</div>
 </div>
 
+
+<!-- ── Connectivity ── -->
+{#if $isElectron}
+<div class="dash-card border-secondary mb-3">
+	<p class="dash-label mb-3">Connectivity</p>
+	<div class="flex flex-col gap-2">
+		<div class="conn-row">
+			<span class="conn-tag conn-tag--obs">OBS</span>
+			{#if obsConnected}
+				<span class="text-xs opacity-55 flex-1">Connected</span>
+			{:else if $obsConnection?.state === ConnectionState.Searching}
+				<span class="text-xs opacity-40 flex-1">Connecting…</span>
+			{:else if obsWebsocketDisabled}
+				<span class="text-xs opacity-40 flex-1">WebSocket disabled</span>
+				<ObsIntegration cls="btn text-xs h-6 px-3 border-secondary rounded shrink-0" />
+			{:else}
+				<span class="text-xs opacity-40 flex-1">{OBS_STATUS_TEXT[obsState]}</span>
+				<ObsIntegration cls="btn text-xs h-6 px-3 border-secondary rounded shrink-0" />
+			{/if}
+		</div>
+		<div class="conn-row">
+			<span class="conn-tag conn-tag--ts" use:tooltip={{ content: "Tailscale Funnel — a permanent public address for this computer. It never changes, so links you share keep working.", placement: "top", delay: [200, 0] }}>Tailscale</span>
+			{#if !tsConfigured}
+				<span class="text-xs opacity-40 flex-1">Not set up — a permanent address that never changes</span>
+				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={() => goto('/settings#remote-access')}>Set up →</button>
+			{:else if tsFunnelActive && $remoteAccess.tailscale}
+				<SecretUrl class="font-mono text-xs opacity-55 flex-1 truncate min-w-0" value={$remoteAccess.tailscale ?? ''} />
+				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={async () => { await navigator.clipboard.writeText($remoteAccess.tailscale ?? ''); copiedIdx = 20; setTimeout(() => copiedIdx = null, 2000); }}>{copiedIdx === 20 ? '✓' : '⎘'}</button>
+				<input type="checkbox" class="toggle-check shrink-0" checked={tsFunnelActive} on:change={toggleTailscaleFunnel} />
+			{:else}
+				<span class="text-xs opacity-40 flex-1">Funnel off — turn on for a permanent address</span>
+				<button class="btn text-xs h-6 px-3 border-secondary rounded shrink-0" on:click={toggleTailscaleFunnel}>Enable</button>
+			{/if}
+		</div>
+		<div class="conn-row">
+			<span class="conn-tag conn-tag--ngrok" use:tooltip={{ content: "ngrok — a temporary public address (changes when ngrok restarts). Used for striking links and the live game when Tailscale isn't set up, and for minigames online.", placement: "top", delay: [200, 0] }}>ngrok</span>
+			{#if !ngrokConfigured}
+				<span class="text-xs opacity-40 flex-1">Not set up — a temporary address (minigames online; striking without Tailscale)</span>
+				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={() => goto('/settings#remote-access')}>Set up →</button>
+			{:else if ngrokRunning && $remoteAccess.ngrok}
+				<SecretUrl class="font-mono text-xs opacity-55 flex-1 truncate min-w-0" value={$remoteAccess.ngrok ?? ''} />
+				<button class="btn text-xs h-6 px-2 border-secondary rounded shrink-0" on:click={async () => { await navigator.clipboard.writeText($remoteAccess.ngrok ?? ''); copiedIdx = 21; setTimeout(() => copiedIdx = null, 2000); }}>{copiedIdx === 21 ? '✓' : '⎘'}</button>
+				<button
+					class="btn text-xs h-6 px-2 border-secondary rounded shrink-0"
+					class:conn-refresh-pulse={ngrokRefreshHint}
+					title="Restart tunnel for a fresh URL"
+					on:click={restartNgrok}
+				>↻</button>
+				<input type="checkbox" class="toggle-check shrink-0" checked={ngrokRunning} on:change={toggleNgrok} />
+			{:else}
+				<span class="text-xs opacity-40 flex-1">{ngrokRunning ? 'Starting…' : 'Stopped'}</span>
+				<button class="btn text-xs h-6 px-3 border-secondary rounded shrink-0" on:click={toggleNgrok}>{ngrokRunning ? 'Stop' : 'Start'}</button>
+			{/if}
+		</div>
+	</div>
+</div>
+{/if}
+
+
+
 </div>
 </main>
 
 <ScoreUpdateModal bind:open={isScoreModalOpen} />
 <TagUpdateModal bind:open={isTagModalOpen} />
+<TeamNamesModal bind:open={isTeamNamesOpen} placeholders={[team1Auto, team2Auto]} />
+<SetGamesModal bind:open={isSetGamesOpen} />
+<SetNamesModal bind:open={isSetNamesOpen} />
 <ConfirmModal bind:open={isBoConfirmOpen} on:confirm={confirmBestOf}>
 	Change to BO{pendingBo}? Games already played may affect scoring.
 </ConfirmModal>
@@ -581,16 +646,34 @@
 >
 	<div class="start-set-box background-primary-color border-secondary">
 		<p class="start-set-title">Start Set</p>
-		<div class="start-set-fields">
-			<div class="start-set-field">
-				<span class="start-set-hint">Player 1</span>
-				<input class="start-set-input border-secondary" bind:value={setP1Name} placeholder="Tag" />
+		{#if isDoubles}
+			<div class="start-set-fields">
+				<div class="start-set-field">
+					<span class="start-set-hint">Team 1</span>
+					<input class="start-set-input border-secondary" bind:value={setP1Name} placeholder={typedTeamName('', setTags.p1, 1)} />
+					<input class="start-set-input border-secondary" bind:value={setTags.p1[0]} placeholder="Player tag (port 1)" />
+					<input class="start-set-input border-secondary" bind:value={setTags.p1[1]} placeholder="Player tag" />
+				</div>
+				<div class="start-set-field">
+					<span class="start-set-hint">Team 2</span>
+					<input class="start-set-input border-secondary" bind:value={setP2Name} placeholder={typedTeamName('', setTags.p2, 2)} />
+					<input class="start-set-input border-secondary" bind:value={setTags.p2[0]} placeholder="Player tag (lower port)" />
+					<input class="start-set-input border-secondary" bind:value={setTags.p2[1]} placeholder="Player tag" />
+				</div>
 			</div>
-			<div class="start-set-field">
-				<span class="start-set-hint">Player 2</span>
-				<input class="start-set-input border-secondary" bind:value={setP2Name} placeholder="Tag" />
+		{:else}
+			<div class="start-set-fields">
+				<div class="start-set-field">
+					<span class="start-set-hint">Player 1</span>
+					<input class="start-set-input border-secondary" bind:value={setP1Name} placeholder="Tag" />
+				</div>
+				<div class="start-set-field">
+					<span class="start-set-hint">Player 2</span>
+					<input class="start-set-input border-secondary" bind:value={setP2Name} placeholder="Tag" />
+				</div>
 			</div>
-		</div>
+		{/if}
+		<p class="start-set-hint mb-1">{isDoubles ? 'Doubles' : 'Singles'} rules · {isDoubles ? 'BF, DL, FD, PS, YS · no counterpicks' : 'FoD, YS, DL, BF, FD · counterpick PS'} <span class="opacity-60">(switch with the Singles / Doubles pills)</span></p>
 		<div class="flex gap-2 mb-3">
 			{#each SET_BOS as bo}
 			<button class="btn text-xs h-7 px-4 border-secondary rounded flex-1"
@@ -598,6 +681,10 @@
 				on:click={() => (setBo = bo)}>BO{bo}</button>
 			{/each}
 		</div>
+		<label class="flex items-center gap-2 mb-3 text-xs">
+			<input type="checkbox" class="toggle-check" bind:checked={setAllowAgreement} />
+			<span>Players may agree to replay a stage DSR blocks</span>
+		</label>
 		<div class="start-set-footer">
 			<button class="btn border-secondary text-sm px-4" on:click={() => (isStartSetModalOpen = false)}>Cancel</button>
 			<button class="start-set-ok" on:click={confirmStartSet}>Start</button>
@@ -680,14 +767,20 @@
 	}
 
 	.match-controls {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
+		display: flex;
+		justify-content: space-between;
+		gap: 0.6rem;
 		align-items: center;
 		padding-top: 0.25rem;
 	}
-	.ctrl-left { display: flex; align-items: center; }
-	.ctrl-center { display: flex; justify-content: center; }
+	.ctrl-left { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+	.center-col { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+	.ctrl-center { display: flex; justify-content: center; gap: 0.4rem; white-space: nowrap; }
 	.ctrl-right { display: flex; gap: 0.5rem; justify-content: flex-end; }
+	/* Phones: stack the three control groups instead of overflowing sideways. */
+	@media (max-width: 640px) {
+		.match-controls { flex-wrap: wrap; gap: 0.5rem; }
+	}
 
 	.start-set-btn { transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s; }
 	.start-set-btn--progress { opacity: 0.45; }
@@ -862,12 +955,17 @@
 		gap: 0.2rem;
 	}
 
+	.history-list { margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid color-mix(in srgb, var(--secondary-color) 15%, transparent); }
 	.history-row {
 		display: grid;
 		grid-template-columns: 1.5rem 1.25rem 1fr 1.25rem;
 		align-items: center;
 		gap: 0.4rem;
 		padding: 0.15rem 0;
+		width: 100%;
+		background: none;
+		color: var(--secondary-color);
+		text-align: center;
 	}
 
 	.history-num {
@@ -1062,6 +1160,7 @@
 	/* OBS section */
 	.obs-section {
 		transition: opacity 0.2s;
+		margin-bottom: 0.75rem; /* same gap as the cards (mb-3) */
 	}
 
 	.obs-section--offline {
@@ -1180,4 +1279,9 @@
 		cursor: pointer;
 	}
 	.start-set-ok:hover { opacity: 0.9; }
+	.format-pills { display: flex; gap: 0.25rem; }
+	.format-pill { white-space: nowrap; font-size: 0.65rem; padding: 0.05rem 0.5rem; border-radius: 1rem; border: 1px solid var(--secondary-color); opacity: 0.4; color: var(--secondary-color); background: transparent; }
+	/* Stands out: something went wrong with the set? Fix it here. */
+	.format-pill--fix { opacity: 1; color: #ef4444; border-color: #ef4444; font-weight: 600; }
+	.format-pill--on { opacity: 1; background: color-mix(in srgb, var(--secondary-color) 12%, transparent); }
 </style>

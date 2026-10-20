@@ -8,9 +8,8 @@ import {
 } from '@slippi/slippi-js';
 import { inject, singleton } from 'tsyringe';
 import type { ElectronLog } from 'electron-log';
-import { ConnectionState, LiveStatsScene, NotificationType } from '../../frontend/src/lib/models/enum';
+import { ConnectionState, NotificationType } from '../../frontend/src/lib/models/enum';
 import { ElectronDolphinStore } from './store/storeDolphin';
-import { ElectronLiveStatsStore } from './store/storeLiveStats';
 import { Api } from './api';
 import { ElectronSettingsStore } from './store/storeSettings';
 import { findPlayKey } from '../utils/playkey';
@@ -35,7 +34,6 @@ export class SlippiJs {
 		@inject(SqliteCurrentPlayer) private sqliteCurrentPlayer: SqliteCurrentPlayer,
 		@inject(ElectronCurrentPlayerStore) private storeCurrentPlayer: ElectronCurrentPlayerStore,
 		@inject(ElectronDolphinStore) private storeDolphin: ElectronDolphinStore,
-		@inject(ElectronLiveStatsStore) private storeLiveStats: ElectronLiveStatsStore,
 		@inject(ElectronSessionStore) private storeSession: ElectronSessionStore,
 		@inject(ElectronSettingsStore) private storeSettings: ElectronSettingsStore,
 		@inject(MessageHandler) private messageHandler: MessageHandler,
@@ -48,7 +46,7 @@ export class SlippiJs {
 	initSlippiJs() {
 		this.log = scopedLog(this.log, 'Slippi');
 		this.log.info('Initializing SlippiJs');
-		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
+		// Scenes follow Dolphin through flows (the "Scene switching" flow: Dolphin connects / disconnects).
 		this.startProcessSearchInterval();
 
 		this.dolphinConnection.on(ConnectionEvent.STATUS_CHANGE, async (status) => {
@@ -90,7 +88,6 @@ export class SlippiJs {
 
 	private handleDisconnected() {
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Disconnected);
-		this.storeLiveStats.setStatsScene(LiveStatsScene.WaitingForDolphin);
 		this.memoryRead.stopMemoryRead();
 		void this.overlayInjection.stopInjection();
 		setTimeout(() => {
@@ -105,7 +102,6 @@ export class SlippiJs {
 	private async handleConnected() {
 		await this.handleUserSlippiData();
 		this.storeDolphin.setDolphinConnectionState(ConnectionState.Connected);
-		this.storeLiveStats.setStatsScene(LiveStatsScene.Menu);
 		await this.storeSession.checkAndResetSessionStats();
 		this.memoryRead.initMemoryRead();
 		await this.overlayInjection.injectIntoGame();

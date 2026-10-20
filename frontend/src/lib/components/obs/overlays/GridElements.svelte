@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { playersForSlot } from '$lib/utils/teams';
 	import type { Font, GridContentItem, GridContentItemStyle } from '$lib/models/types/overlay';
 	import { getRelativePixelSize } from '$lib/utils/helper';
 	import SlippiRank from './elementRender/SlippiRank.svelte';
@@ -16,6 +17,7 @@
 		currentMatch,
 		currentPlayer,
 		currentPlayers,
+		previewFrozen,
 		gameFrame,
 		gameScore,
 		gameSettings,
@@ -41,11 +43,21 @@
 		SESSION_ELEMENTS,
 		SLIPPIRANK_ELEMENTS,
 		STRIKING_ELEMENTS,
+		TEAM_ELEMENTS,
+		FIGHT_STAT_ELEMENTS,
+		EDGE_STAT_ELEMENTS,
+		WIN_CHANCE_ELEMENTS,
 	} from './elementCategories';
 	import BingoBoard from './elementRender/BingoBoard.svelte';
 	import IronManRoster from './elementRender/IronManRoster.svelte';
 	import PackCharacter from './elementRender/PackCharacter.svelte';
 	import Striking from './elementRender/Striking.svelte';
+	import Teams from './elementRender/Teams.svelte';
+	import FightStats from './elementRender/FightStats.svelte';
+	import EdgeStats from './elementRender/EdgeStats.svelte';
+	import WinChance from './elementRender/WinChance.svelte';
+	import HighlightVideo from './elementRender/HighlightVideo.svelte';
+	import { CustomElement } from '$lib/models/constants/customElement';
 	import { strikeState } from '$lib/utils/store.svelte';
 
 	export let dataItem: GridContentItem;
@@ -56,6 +68,8 @@
 	export let designWidth: number | undefined = undefined;
 	export let designHeight: number | undefined = undefined;
 	export let overlayId: string | undefined = undefined;
+	/** Font of the scene this element is drawn in (a pinned preview scene can differ from the live one). */
+	export let sceneFont: string | undefined = undefined;
 
 	$: scaleW = designWidth ?? innerWidth;
 	$: scaleH = designHeight ?? innerHeight;
@@ -72,7 +86,8 @@
 	let innerWidth = 0;
 	let innerHeight = 0;
 
-	$: defaultPreview = edit || preview;
+	// Previews use placeholder data — except a screenshot of a frozen replay moment (previewFrozen).
+	$: defaultPreview = edit || (preview && !$previewFrozen);
 
 	$: style = {} as GridContentItemStyle;
 
@@ -100,9 +115,10 @@
 		];
 	};
 
-	const getFont = (id: string | undefined, font: Font | undefined) => {
+	const getFont = (id: string | undefined, font: Font | undefined, sceneFont: string | undefined) => {
 		if (!id || isNil($overlays[id])) return;
 		if (font?.family === 'default') {
+			if (sceneFont) return sceneFont;
 			if ($overlays[id][$statsScene].active)
 				return $overlays[id][$statsScene].font.family;
 			const fallbackScene = $overlays[id][$statsScene].fallback;
@@ -124,11 +140,15 @@
 		dataItem.data.transform.translate.y ?? 0
 	}%) scale(${dataItem.data.transform.scale}) rotate(${dataItem.data.transform.rotate ?? 0}deg);`;
 
-	$: fontFamily = getFont(_overlayId, dataItem.data?.font);
+	$: fontFamily = getFont(_overlayId, dataItem.data?.font, sceneFont);
 
 	function toKebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 	}
+	// Element's own player choice (Styling → Player): Team 1/2 · Player 1/2 in doubles.
+	$: elementPlayers = playersForSlot($currentPlayers, dataItem?.data?.playerSlot);
+	// A doubles slot that isn't in this game (Team 1 · Player 2 in singles): show nothing.
+	$: slotMissing = !defaultPreview && !!dataItem?.data?.playerSlot && elementPlayers.length === 0;
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -141,7 +161,7 @@
 		${style.shadow};`}
 	bind:this={div}
 >
-	{#if div && shouldPreview}
+	{#if div && shouldPreview && !slotMissing}
 		<div class="w-full h-full">
 			{#if PACK_CHARACTER_ELEMENTS.has(dataItem.elementId)}
 				<PackCharacter {dataItem} {defaultPreview} {style} />
@@ -155,7 +175,7 @@
 					gameFrame={$gameFrame}
 					gameSettings={$gameSettings}
 					currentPlayer={$currentPlayer}
-					currentPlayers={$currentPlayers}
+					currentPlayers={elementPlayers}
 				/>
 			{:else if MATCH_ELEMENTS.has(dataItem.elementId)}
 				<Match
@@ -164,7 +184,7 @@
 					{style}
 					gameScore={$gameScore}
 					gameSettings={$gameSettings}
-					currentPlayers={$currentPlayers}
+					currentPlayers={elementPlayers}
 				/>
 			{:else if RECENTGAME_ELEMENTS.has(dataItem.elementId)}
 				<RecentGame
@@ -173,6 +193,7 @@
 					{style}
 					currentPlayer={$currentPlayer}
 					postGame={$postGame}
+					currentPlayers={elementPlayers}
 				/>
 			{:else if RECENTMATCH_ELEMENTS.has(dataItem.elementId)}
 				<RecentMatch
@@ -181,6 +202,7 @@
 					{style}
 					matchStats={$currentMatch}
 					currentPlayer={$currentPlayer}
+					currentPlayers={elementPlayers}
 				/>
 			{:else if RECENTMATCHSUMMARY_ELEMENTS.has(dataItem.elementId)}
 				<RecentMatchSummary
@@ -188,7 +210,7 @@
 					{defaultPreview}
 					{style}
 					recentGames={$recentGames}
-					currentPlayers={$currentPlayers}
+					currentPlayers={elementPlayers}
 				/>
 			{:else if SLIPPIRANK_ELEMENTS.has(dataItem.elementId)}
 				<SlippiRank
@@ -196,10 +218,20 @@
 					{defaultPreview}
 					{style}
 					currentPlayer={$currentPlayer}
-					currentPlayers={$currentPlayers}
+					currentPlayers={elementPlayers}
 				/>
 			{:else if SESSION_ELEMENTS.has(dataItem.elementId)}
 				<Session {dataItem} {defaultPreview} {style} />
+			{:else if dataItem.elementId === CustomElement.PostGameHighlightVideo}
+				<HighlightVideo {dataItem} {style} {defaultPreview} {preview} />
+			{:else if WIN_CHANCE_ELEMENTS.has(dataItem.elementId)}
+				<WinChance {dataItem} {defaultPreview} {style} allPlayers={$currentPlayers} frame={$gameFrame} score={$gameScore} bestOf={$gameSettings?.matchInfo?.bestOf ?? 3} gameSettings={$gameSettings} />
+			{:else if EDGE_STAT_ELEMENTS.has(dataItem.elementId)}
+				<EdgeStats {dataItem} {defaultPreview} {style} currentPlayers={elementPlayers} postGame={$postGame} matchStats={$currentMatch} />
+			{:else if FIGHT_STAT_ELEMENTS.has(dataItem.elementId)}
+				<FightStats {dataItem} {defaultPreview} {style} currentPlayers={elementPlayers} allPlayers={$currentPlayers} />
+			{:else if TEAM_ELEMENTS.has(dataItem.elementId)}
+				<Teams {dataItem} {defaultPreview} {style} currentPlayers={elementPlayers} allPlayers={$currentPlayers} />
 			{:else if STRIKING_ELEMENTS.has(dataItem.elementId)}
 				<Striking {dataItem} {defaultPreview} {style} strikeState={$strikeState} />
 			{:else if BINGO_ELEMENTS.has(dataItem.elementId)}

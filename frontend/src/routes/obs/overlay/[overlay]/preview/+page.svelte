@@ -2,7 +2,10 @@
 	import SecondaryOverlay from '$lib/components/obs/overlays/SecondaryOverlay.svelte';
 	import { page } from '$app/stores';
 	import { LiveStatsScene } from '$lib/models/enum';
-	import { previewTestAnimation } from '$lib/utils/store.svelte';
+	import { overlays, currentMatch, recentGames, currentPlayers, gameFrame, gameScore, gameSettings, gameState, liveFightStats, postGame, previewFrozen, previewTestAnimation } from '$lib/utils/store.svelte';
+	import { InGameState } from '$lib/models/enum';
+	import type { PreviewState } from '$lib/models/types/slippiData';
+	import { onMount } from 'svelte';
 	import { HUD_REFERENCES } from '$lib/content/hudReferences';
 
 	// ?scene=inGame pins a scene (MCP preview links), otherwise it follows the live game state.
@@ -12,6 +15,30 @@
 	$: showControls = $page.url.searchParams.has('controls');
 	// ?bg=<HUD reference id> draws that game screenshot behind the overlay (centered cover = center crop).
 	$: bgRef = HUD_REFERENCES.find((r) => r.id === $page.url.searchParams.get('bg'));
+
+	// ?state=<id>: a frozen replay moment for an overlay screenshot (MCP capture_overlay_screenshot).
+	// Screenshots (MCP capture_overlay_screenshot) wait for this: overlay loaded, state applied, entry animations done.
+	let stateReady = !$page.url.searchParams.get('state');
+	$: if (stateReady && $overlays?.[$page.params.overlay]) setTimeout(() => ((window as unknown as { __froggiReady?: boolean }).__froggiReady = true), 1500);
+
+	onMount(async () => {
+		const id = $page.url.searchParams.get('state');
+		if (!id) return;
+		const res = await fetch(`/preview-state/${encodeURIComponent(id)}`);
+		if (!res.ok) return;
+		const s: PreviewState = await res.json();
+		previewFrozen.set(true);
+		gameSettings.set(s.gameSettings);
+		currentPlayers.set(s.currentPlayers);
+		gameFrame.set(s.gameFrame);
+		postGame.set(s.postGame);
+		gameScore.set(s.gameScore);
+		liveFightStats.set(s.fightStats);
+		recentGames.set(s.recentGames);
+		if (s.matchStats) currentMatch.set(s.matchStats);
+		gameState.set(InGameState.Running);
+		stateReady = true;
+	});
 
 	const testAnimations = () => previewTestAnimation.set({ overlayId: $page.params.overlay, n: Date.now() });
 </script>

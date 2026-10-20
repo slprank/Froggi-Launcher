@@ -6,6 +6,7 @@
 	import { isNil } from 'lodash';
 	import { PlayerType } from '@slippi/slippi-js';
 	import { gameSettings, gameState, postGame } from '$lib/utils/store.svelte';
+	import { isLighterTeammate } from '$lib/utils/teams';
 
 	export let dataItem: GridContentItem;
 	export let player: PlayerType | undefined | null;
@@ -16,9 +17,12 @@
 	$: characterId = defaultPreview ? defaultPreviewId : player ? player.characterId : undefined;
 	$: characterColorId = defaultPreview
 		? 0
-		: findSettingsPlayer($gameSettings?.players, player?.playerIndex ?? 0)?.characterColor ?? undefined;
+		: // Costume unknown (e.g. right after a restart, no game settings yet) → the default costume, never a broken image.
+		  (findSettingsPlayer($gameSettings?.players, player?.playerIndex ?? 0)?.characterColor ?? player?.characterColor ?? 0);
 
-	// TODO: Include colors
+	// Doubles: two teammates on the same character — the higher port is drawn lighter (not when recoloured).
+	$: lighter =
+		!defaultPreview && !dataItem?.data.colorOverlay?.enabled && isLighterTeammate($gameSettings?.players ?? [], player ?? undefined);
 </script>
 
 {#if !isNil(characterId)}
@@ -32,7 +36,7 @@
 			<img
 			use:colorOverlay={dataItem?.data.colorOverlay}
 				class="h-full w-full aspect-video"
-				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'};
+				style={`object-fit: ${dataItem?.data.image.objectFit ?? 'contain'}; ${lighter ? 'filter: brightness(1.35) saturate(0.85);' : ''}
 			${dataItem?.data.advancedStyling ? dataItem?.data.css.customImage : ''};`}
 				src={`/image/characters/${characterId}/${characterColorId}/stock.png`}
 				alt="custom"

@@ -3,7 +3,7 @@
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import type { GameStats, Player } from '$lib/models/types/slippiData';
-	import { currentPlayers, electronEmitter, recentGames } from '$lib/utils/store.svelte';
+	import { currentPlayers, electronEmitter, recentGames, recentReplays } from '$lib/utils/store.svelte';
 	import AddGameModal from './AddGameModal.svelte';
 	import GameStage from './GameStage.svelte';
 	import { STAGE_DATA } from '$lib/models/constants/stageData';
@@ -31,6 +31,36 @@
 	const handleDelete = () => $electronEmitter.emit('RecentGamesDelete', selectedGameIndex);
 	const moveUp = (i: number) => $electronEmitter.emit('RecentGamesReorder', i, i - 1);
 	const moveDown = (i: number) => $electronEmitter.emit('RecentGamesReorder', i, i + 1);
+
+	// Change winner: an override with a note (forfeit, DQ, misclick…) — the score and striking follow it.
+	let overrideIndex: number | null = null;
+	let overrideWinner: '0' | '1' | 'none' = '0';
+	let overrideNote = '';
+	const openOverride = (i: number) => {
+		const current = games[i]?.resultOverride;
+		overrideIndex = i;
+		overrideWinner = current ? (current.winnerSlot === null ? 'none' : (String(current.winnerSlot) as '0' | '1')) : '0';
+		overrideNote = current?.note ?? '';
+	};
+	const saveOverride = () => {
+		if (overrideIndex === null || !overrideNote.trim()) return;
+		const winnerSlot = overrideWinner === 'none' ? null : (Number(overrideWinner) as 0 | 1);
+		$electronEmitter.emit('RecentGamesSetResult', overrideIndex, { winnerSlot, note: overrideNote.trim() });
+		overrideIndex = null;
+	};
+	const clearOverride = (i: number) => $electronEmitter.emit('RecentGamesSetResult', i, null);
+
+	// + From replay: one of the 10 newest replays in the Slippi folder joins the set's games.
+	let showReplays = false;
+	const listReplays = () => {
+		showReplays = !showReplays;
+		if (showReplays) $electronEmitter.emit('RecentReplaysRequest');
+	};
+	const addReplay = (path: string) => {
+		$electronEmitter.emit('AddSetGameFromReplay', path);
+		showReplays = false;
+	};
+	const time = (iso: string | null) => (iso ? new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '');
 </script>
 
 <Modal bind:open on:close={() => (open = false)} class="w-[95vw] max-w-[480px] max-h-[80vh]">
@@ -53,7 +83,8 @@
 				{@const p1stocks = game.lastFrame?.players?.[p1Idx]?.post.stocksRemaining ?? 0}
 				{@const p2stocks = game.lastFrame?.players?.[p2Idx]?.post.stocksRemaining ?? 0}
 				{@const stageName = STAGE_DATA[game.settings?.stageId ?? -1]?.name ?? '—'}
-				<div class="game-row border-secondary" class:game-mock={game.isMock} animate:flip={{ duration: 220 }}>
+				<div class="game-wrap" animate:flip={{ duration: 220 }}>
+				<div class="game-row border-secondary" class:game-mock={game.isMock}>
 					<span class="game-num text-secondary-color">G{i + 1}{game.isMock ? '*' : ''}</span>
 
 					<div class="char-stocks">
@@ -82,8 +113,30 @@
 					<div class="row-actions">
 						<button class="action-btn" disabled={i === 0} on:click={() => moveUp(i)} title="Move up">↑</button>
 						<button class="action-btn" disabled={i === games.length - 1} on:click={() => moveDown(i)} title="Move down">↓</button>
+						<button class="action-btn" on:click={() => openOverride(i)} title="Change the winner (with a note)">✎</button>
 						<button class="action-btn action-btn--del" on:click={() => deleteGame(i)} title="Delete">✕</button>
 					</div>
+				</div>
+				{#if game.resultOverride}
+					<p class="override-note text-secondary-color">
+						✎ {game.resultOverride.winnerSlot === null ? "Doesn't count" : `${getName(game.resultOverride.winnerSlot === 0 ? p1Idx : p2Idx)} won`} — {game.resultOverride.note}
+						<button class="clear-override" on:click={() => clearOverride(i)}>Use the game's result</button>
+					</p>
+				{/if}
+				{#if overrideIndex === i}
+					<div class="override-form border-secondary text-secondary-color">
+						<div class="flex gap-3 text-xs">
+							<label><input type="radio" bind:group={overrideWinner} value="0" /> {getName(p1Idx)} won</label>
+							<label><input type="radio" bind:group={overrideWinner} value="1" /> {getName(p2Idx)} won</label>
+							<label><input type="radio" bind:group={overrideWinner} value="none" /> Doesn't count</label>
+						</div>
+						<input class="note-input border-secondary" placeholder="Why? e.g. LRAS by mistake, DQ: illegal controller (required)" bind:value={overrideNote} />
+						<div class="flex gap-2 justify-end">
+							<button class="btn text-xs h-7 px-3 border-secondary rounded" on:click={() => (overrideIndex = null)}>Cancel</button>
+							<button class="btn text-xs h-7 px-3 border-secondary rounded disabled:opacity-40" disabled={!overrideNote.trim()} on:click={saveOverride}>Save</button>
+						</div>
+					</div>
+				{/if}
 				</div>
 			{:else}
 				<p class="empty-hint text-secondary-color">No games yet.</p>
@@ -91,10 +144,24 @@
 		</div>
 
 		<div class="modal-footer">
-			<button class="btn text-xs h-8 px-4 border-secondary rounded" on:click={() => addGame(games.length)}>
+			<button class="btn text-xs h-8 px-4 border-secondary rounded" on:click={() => addGame(games.length)} title="Characters, stage, winner and stocks left — for a game that wasn't recorded">
 				+ Add game
 			</button>
+			<button class="btn text-xs h-8 px-4 border-secondary rounded" on:click={listReplays}>+ From replay</button>
 		</div>
+		{#if showReplays}
+			<div class="replays text-secondary-color">
+				{#each $recentReplays as r (r.path)}
+					<button class="replay border-secondary" on:click={() => addReplay(r.path)}>
+						<span class="r-time">{time(r.startAt)}</span>
+						<span class="r-stage">{STAGE_DATA[r.stageId ?? -1]?.name ?? 'Stage'}</span>
+						<span class="r-players">{r.players.map((p) => `${p.tag}${p.won ? ' ✓' : ''}`).join(' vs ')}</span>
+					</button>
+				{:else}
+					<p class="empty-hint">No replays found — check the replay folder in Slippi Launcher.</p>
+				{/each}
+			</div>
+		{/if}
 	</div>
 
 	<ConfirmModal bind:open={deleteGameModalOpen} on:confirm={handleDelete}>Delete game?</ConfirmModal>
@@ -102,6 +169,15 @@
 </Modal>
 
 <style>
+	.override-note { font-size: 0.7rem; opacity: 0.75; margin: -0.2rem 0 0.2rem 2rem; }
+	.clear-override { font-size: 0.65rem; opacity: 0.6; text-decoration: underline; margin-left: 0.4rem; background: none; color: inherit; }
+	.override-form { display: flex; flex-direction: column; gap: 0.45rem; padding: 0.6rem; border-radius: 0.3rem; margin-bottom: 0.3rem; }
+	.note-input { height: 1.9rem; padding: 0 0.5rem; font-size: 0.75rem; background: transparent; color: var(--secondary-color); border-radius: 0.25rem; }
+	.replays { display: flex; flex-direction: column; gap: 0.3rem; max-height: 14rem; overflow-y: auto; margin-top: 0.5rem; }
+	.replay { display: flex; gap: 0.6rem; align-items: center; padding: 0.35rem 0.6rem; border-radius: 0.3rem; font-size: 0.75rem; text-align: left; background: transparent; color: var(--secondary-color); }
+	.r-time { opacity: 0.55; width: 2.8rem; }
+	.r-stage { width: 7.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+	.r-players { opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 	.modal-box {
 		padding: 1.25rem;
 		border-radius: 0.35rem;
